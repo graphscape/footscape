@@ -28,9 +28,13 @@ public class MockClient {
 
 	private String sessionId;
 
+	private String accountId;
+	
 	private ServiceEngineI engine;
 
 	private ContainerI container;
+
+	private String nick;
 
 	public List<MockUserActivity> activityIdList = new ArrayList<MockUserActivity>();
 
@@ -74,14 +78,15 @@ public class MockClient {
 
 		RequestI req = newRequest("/uiserver/login/submit");
 		// req.setPayload("accountId","");//by accountId or email
-		req.setPayload("accountId", accId);
-		req.setPayload("email", email);//
+		req.setPayload("accountId", accId);//accountId may be null
+		req.setPayload("email", email);//email may be null
 		req.setPayload("password", password);//
 
 		ResponseI res = this.service(req);
 
 		res.assertNoError();
-
+		String accId2 = (String)res.getPayload("accountId", true);
+		this.accountId = accId2;//
 		return (String) res.getPayload("loginId", true);
 
 	}
@@ -91,7 +96,8 @@ public class MockClient {
 		RequestI req = newRequest("/uiserver/login/auth");
 		ResponseI res = this.service(req);
 		res.assertNoError();
-		String accId = (String) res.getPayload("accountId");
+		String accId = (String) res.getPayload("accountId");// created for
+															// annomymous user.
 		String password = (String) res.getPayload("password");
 		return this.login(accId, null, password);
 	}
@@ -234,5 +240,24 @@ public class MockClient {
 
 		return rt;
 
+	}
+
+	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
+		RequestI req = this.newRequest("/uiserver/snapshot/user");
+		req.setPayload("refresh",forceRefresh);
+		ResponseI res = this.service(req);
+		
+		res.assertNoError();
+		
+		PropertiesI<Object> pts = res.getPayloads();
+		List<String> activityIds = (List<String>)pts.getProperty("activityIdList");
+		List<String> expIds = (List<String>)pts.getProperty("expIdList");
+		
+		MockUserSnapshot rt = new MockUserSnapshot();
+		rt.accountId = this.accountId;
+		rt.activityIdList = activityIds;
+		rt.expIdList = expIds;
+		
+		return rt;
 	}
 }
