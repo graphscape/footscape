@@ -1,0 +1,50 @@
+curl -XGET 'http://localhost:9200/node-index/cooper-confirm/_search' -d '{
+    "query": {
+        "match_all" : { }
+    }
+}'
+
+
+curl -XGET 'http://localhost:9200/node-index/account/_search' -d '{
+    "query": {
+        "term":{ "email" : "user1@domain1.com" }
+    }
+}'
+
+curl -XGET 'http://localhost:9200/node-index/_search' -d '{
+    "query": {
+        "term":{ "email" : "user1@domain1.com" }
+    }
+}'
+
+curl -XGET 'http://localhost:9200/node-index/_search' -d '{
+    "query": {
+        "term":{ "_type" : "account" }
+    }
+}'
+curl -XGET 'http://localhost:9200/node-index/_search' -d '{
+    "query": {
+        "term":{ "_type" : "signup-request" }
+    }
+}'
+
+curl -XGET 'http://localhost:9200/node-index/_search' -d '{
+    "query": {
+        "match_all" : { }
+    }
+}'
+
+
+curl -XGET 'http://localhost:9200/node-index/account/_search' -d '{
+    "query": {
+ 		"bool" : {
+    		"must" : [ {
+      				"term" : {"_type" : "account"}
+    			}, {
+    				"term" : {"email" : "user1@domain1.com"}
+    			}, {"term" : {"password" : "user1"}
+    		} ]
+  		}
+	}
+}'
+

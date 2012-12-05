@@ -1,0 +1,6 @@
+<config>
+
+<host value="localhost"/>
+<port value="7474"/>
+
+</config>

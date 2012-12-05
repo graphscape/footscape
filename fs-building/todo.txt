@@ -1,0 +1,92 @@
+== Html5 file ==
+http://code.google.com/p/gwt-nes-port/wiki/FileAPI
+== ==
+TODO 
+http://elasticsearch-users.115913.n3.nabble.com/Sorting-on-a-date-field-td1873287.html
+
+==issue to be add:
+
+
+2012-11-15 23:28:56,510 [RMI TCP Connection(9)-127.0.0.1] DEBUG com.fs.engine.impl.EngineImpl - path:/uiserver/activities/refresh
+ [WARN] /uicore/uidt/do
+java.lang.IllegalStateException: Invalid use of SingleClientConnManager: connection still allocated.
+Make sure to release the connection before allocating another one.
+	at org.apache.http.impl.conn.SingleClientConnManager.getConnection(SingleClientConnManager.java:199)
+	at org.apache.http.impl.conn.SingleClientConnManager$1.getConnection(SingleClientConnManager.java:173)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:390)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:641)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:576)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:554)
+	at com.fs.uicore.impl.testsupport.ContainerAndBridgeServlet.service(ContainerAndBridgeServlet.java:71)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:487)
+	at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:362)
+	at org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+	at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:181)
+	at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:729)
+	at org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:405)
+	at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+	at org.mortbay.jetty.handler.RequestLogHandler.handle(RequestLogHandler.java:49)
+	at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+	at org.mortbay.jetty.Server.handle(Server.java:324)
+	at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:505)
+	at org.mortbay.jetty.HttpConnection$RequestHandler.content(HttpConnection.java:843)
+	at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:647)
+	at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:211)
+	at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:380)
+	at org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:395)
+	at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:488)
+[ERROR] 500 - POST /uicore/uidt/do (127.0.0.1) 3859 bytes
+   Request headers
+      Host: 127.0.0.1:35298
+      User-Agent: Mozilla/5.0 (Ubuntu; X11; Linux x86_64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1
+      Accept: application/json
+      Accept-Language: en-us,en;q=0.5
+      Accept-Encoding: gzip, deflate
+      Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Connection: keep-alive
+      Content-Type: application/json; charset=UTF-8
+      Referer: http://127.0.0.1:35298/UiClientImplTest.html?gwt.codesvr=127.0.0.1:9997
+      Content-Length: 9
+      Cookie: splashShown1.6=1
+      Pragma: no-cache
+      Cache-Control: no-cache
+      X-HTTP-Method-Override: POST
+      X_FS_PATH: /uiserver/activities/refresh
+      X_FS_session_id: 98365cfd-c633-450a-a040-42b255c5bc39
+      _is_local: false
+   Response headers
+      Content-Type: text/html; charset=iso-8859-1
+      Content-Length: 3859
+
+==
+codec null:
+
+2012-11-15 00:03:03,721 [btpool0-5] INFO  com.fs.uicore.impl.testsupport.ContainerAndBridgeServlet - ["_O",{"loginId":["_S","37567f82-2813-486c-9ec9-41e7c2bb7c64"],"domain":["_S","thinkpad"],"account":["_S","wuzhen0808@gmail.com"],"_ERROR_INFO_S":["_ES",[]],"xmpp.password":null,"xmpp.user":null}]
+
+java.lang.ClassCastException: com.google.gwt.json.client.JSONNull cannot be cast to com.google.gwt.json.client.JSONArray
+	at com.fs.uicore.impl.gwt.client.json.ObjectPropertiesJCC.decodeWithOutType(ObjectPropertiesJCC.java:32)
+	at com.fs.uicore.impl.gwt.client.json.ObjectPropertiesJCC.decodeWithOutType(ObjectPropertiesJCC.java:1)
+	at com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport.decodeInternal(JsonCodecCSupport.java:30)
+	at com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport.decodeInternal(JsonCodecCSupport.java:1)
+	at com.fs.uicore.api.gwt.client.support.CodecSupport.decode(CodecSupport.java:29)
+	at com.fs.uicore.impl.gwt.client.UiClientImpl.processResponse(UiClientImpl.java:142)
+	at com.fs.uicore.impl.gwt.client.UiClientImpl$LasterFilter.onSuccess(UiClientImpl.java:115)
+	at com.fs.uicore.impl.gwt.client.UiClientImpl$LasterFilter.access$1(UiClientImpl.java:111)
+	at com.fs.uicore.impl.gwt.client.UiClientImpl$LasterFilter$1.onSuccess(UiClientImpl.java:99)
+	at com.fs.uicore.impl.gwt.client.UiClientImpl$LasterFilter$1.onSuccess(UiClientImpl.java:1)
+	at org.fusesource.restygwt.client.AbstractRequestCallback.onResponseReceived(AbstractRequestCallback.java:72)
+=====
+DEV:engine-impl remove jersey dependence
+====
+DEV:test SshShellI.wait
+================
+DOC:neo4j server install:
+	WARNING: Detected a limit of 1024 for maximum open files, while a minimum value of 40000 is recommended.
+
+================
+DEV:remove module:dbserver-impl,
+research how to clean data neo4j server.
+remove dependence on the dbserver-impl
+
+================

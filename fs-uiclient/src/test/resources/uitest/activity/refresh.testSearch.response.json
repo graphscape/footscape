@@ -1,0 +1,18 @@
+["_O",{
+	"participants":["_L",
+       [
+        ["_O",{
+          "accountId":["_S","acc-001"],
+          "expId":["_S","exp-001"],
+        }],
+		["_O",{
+          "accountId":["_S","acc-002"],
+          "expId":["_S","exp-002"],
+       	}],
+       	["_O",{
+          "accountId":["_S","acc-003"],
+          "expId":["_S","exp-003"],
+       	}],       
+       ]
+    ],
+}]

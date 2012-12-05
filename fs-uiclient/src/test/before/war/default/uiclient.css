@@ -1,0 +1,51 @@
+.wgt-ExpItemView {
+	border-left : 2px solid white;
+	border-bottom : 1px solid rgba(0, 0, 0, 0.05);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left:0px;
+}
+.wgt-ExpItemView table {
+	width:100%;
+}
+.wgt-ExpItemView:hover {
+	background: rgba(0, 0, 0, 0.0);
+	border-left : 2px solid rgba(0, 0, 0, 0.0);
+	border-bottom : 1px solid rgba(0, 0, 0, 0.5);
+	
+}
+
+.wgt-ExpItemView td {
+	vertical-align: bottom;
+}
+
+.wgt-ExpItemView td.expBody,
+.wgt-UserExpView td.expBody {
+	font-size: 18px;
+}
+
+.wgt-ExpItemView td.icon {
+	vertical-align: top;
+}
+
+.wgt-ExpItemView td.timestamp,
+.wgt-UserExpView td.timestamp {
+	font-size: 9px;
+}
+
+.wgt-UserExpView{
+	margin-top : 10px;
+	background: rgba(0, 0, 0, 0.0);
+	border-right : 2px solid rgba(0, 0, 0, 0.0);
+	border-bottom : 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.wgt-UserExpView.selected,
+.wgt-UserExpView:hover{
+	background: rgba(0, 0, 0, 0.0);
+	border-right : 2px solid rgba(0, 0, 0, 0.0);
+	border-bottom : 1px solid rgba(0, 0, 0, 0.5);
+	
+}
+
+

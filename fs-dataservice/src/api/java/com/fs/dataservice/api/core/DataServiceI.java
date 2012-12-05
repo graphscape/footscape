@@ -1,0 +1,53 @@
+/**
+ * All right is from Author of the file,to be explained in comming days.
+ * Oct 26, 2012
+ */
+package com.fs.dataservice.api.core;
+
+import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+
+/**
+ * @author wu
+ *         <p>
+ *         Data service is designed for small size of data access,it is not suit
+ *         for data analysis.Because it as the client of data base,and the
+ *         transfer protocol may be json over http.
+ *         <p>
+ *         Data service is designed for business facing,it means it's aim is not
+ *         provide a general purpose data data interface,but a framework is
+ *         provided for application layer extend.
+ *         <p>
+ *         For data analysis,it requires other means to be processed near more
+ *         with the data base.
+ * 
+ */
+public interface DataServiceI {
+
+	public <T extends OperationI> T prepareOperation(String name);
+
+	public <T extends OperationI> T prepareOperation(Class<T> opc);
+
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls);
+	
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype);
+
+	// TODO remove
+	public <T extends NodeWrapper> T getByUid(Class<T> wpcls, String uid,
+			boolean force);
+
+	public <T extends NodeWrapper> T getNewestById(Class<T> wpcls, String id,
+			boolean force);
+
+	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String field,
+			Object value, boolean force);
+
+	public <T extends OperationI> void registerOperation(String name,
+			Class<T> itfCls, Class<? extends T> impCls);
+
+	public void refresh();
+
+	public NodeConfigurations getConfigurations();
+
+}

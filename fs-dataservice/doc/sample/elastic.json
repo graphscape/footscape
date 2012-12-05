@@ -1,0 +1,127 @@
+
+curl -XPOST localhost:9200/twitter -d '{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "tweet" : {
+            "_source" : { "enabled" : false },
+            "properties" : {
+                "mail" : { "type" : "string", "index" : "not_analyzed" }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'http://localhost:9200/twitter/tweet/_mapping' -d '
+{
+    "tweet" : {
+        "properties" : {
+            "mail" : {"type" : "string", "store" : "yes", "index":"not_analyzed"}
+        }
+    }
+}
+'
+
+curl -XGET 'http://localhost:9200/twitter/tweet/_search' -d '{
+    "query": {
+        "term":{ "mail" : "user1 domain1 com" }
+    }
+}'
+
+curl -XGET 'http://localhost:9200/twitter/tweet/_search' -d '{
+    "query": {
+        "term":{ "user" : "user1" }
+    }
+}'
+
+curl -XPOST 'http://localhost:9200/twitter/tweet' -d '{
+    "user" : "user1",
+    "mail" : "user1@domain1.com"
+
+}'
+
+curl -XGET 'http://localhost:9200/twitter/tweet/_mapping'
+
+curl -XDELETE 'http://localhost:9200/twitter'
+
+curl -XPUT 'http://localhost:9200/twitter' -d '{
+    "index" : {
+        "analysis" : {
+            "analyzer" : {
+            	"default":{
+          			"tokenizer":"uax_url_email"
+          			
+        		}
+            }
+        }
+    }
+}
+'
+
+curl -XPOST 'http://localhost:9200/twitter/tweet' -d '{
+    "user" : "user1",
+    "mail" : "user1 domain1 com"
+
+}'
+
+curl -XGET 'http://localhost:9200/twitter/tweet/_search' -d '{
+    "query": {
+    	"match" : {
+       	 	"mail" : {
+            	"query" : "user1@domain1.com",
+            	"type" : "phrase"
+        	}
+    	}
+	}
+}'
+
+
+curl -XPUT localhost:9200/_template/node-template -d '
+{
+    "template" : "node-*",
+    "settings" : {
+        "number_of_shards" : 1,
+    	"analysis" : {
+        	"analyzer" : {
+       		 	"default":{
+        			"type":"keyword"
+    			}
+        	}
+    	}
+    }
+    
+}
+'
+curl -XGET localhost:9200/_template/node-template
+curl -XDELETE localhost:9200/_template/node-template
+
+curl -XPOST 'http://localhost:9200/node-test/account' -d '{
+    "user" : "user1",
+    "mail" : "user1@domain1.com"
+
+}'
+
+curl -XGET 'http://localhost:9200/node-test/account/_search' -d '{
+    "query": {
+        "term":{ "mail" : "user1@domain1.com" }
+    }
+}'
+
+curl -XGET 'http://localhost:9200/node-test/account/_search' -d '{
+    "query": {
+        "term":{ "user" : "user1" }
+    }
+}
+'
+
+curl -XDELETE 'http://localhost:9200/node-test'
+
+curl -XGET 'http://localhost:9200/node-test/_mapping'
+
+curl -XGET 'http://localhost:9200/node_index/account/_search' -d '{
+    "query": {
+        "term":{ "user" : "user1" }
+    }
+}'
+

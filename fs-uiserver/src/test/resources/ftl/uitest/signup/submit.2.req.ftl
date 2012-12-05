@@ -1,0 +1,2 @@
+<#--Test success submit signup information -->
+["_O",{"username":["_S","user1"],"password":["_S","pass1"],"isAgree":["_B",true],"email":["_S","user1@domain1.com"],"confirmCodeNotifier":["_S","test"]}]

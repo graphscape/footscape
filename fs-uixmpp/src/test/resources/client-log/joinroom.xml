@@ -1,0 +1,47 @@
+
+Create room by owner:
+<presence xmlns="jabber:client" to="room1@muc.thinkpad/user2inthinkpad">
+	<priority>5</priority>
+	<c node="http://psi-im.org/caps" xmlns="http://jabber.org/protocol/caps" ver="caps-b75d8d2b25" ext="cs ep-notify html" />
+	<x xmlns="http://jabber.org/protocol/muc" />
+</presence>
+
+<presence xmlns="jabber:client" to="user2@thinkpad/thinkpad" from="room1@muc.thinkpad/user2inthinkpad">
+	<priority>5</priority>
+	<c node="http://psi-im.org/caps" xmlns="http://jabber.org/protocol/caps" ver="caps-b75d8d2b25" ext="cs ep-notify html" />
+
+	<x xmlns="http://jabber.org/protocol/muc#user">
+		<item nick="user2inthinkpad" jid="user2@thinkpad" role="moderator" affiliation="owner" />
+		<status code="110" />
+		<status code="201" />
+	</x>
+</presence>
+...
+
+Failed one from gwt:
+<presence id="se0cc" type="set" to="room1@muc.thinkpad/admin" xmlns="jabber:client">
+	<x xmlns="http://jabber.org/protocol/muc" />
+</presence>
+
+Request: from=bosh@localhost/85216258-4633-4f59-88d1-1d0a7edc0bdf, to=sess-man@localhost, DATA=
+<presence id="se0cc" type="set" to="room1@muc.thinkpad/admin" xmlns="jabber:client" from="admin@thinkpad/testing">
+	<x xmlns="http://jabber.org/protocol/muc" />
+</presence>
+, SIZE=168, XMLNS=jabber:client, PRIORITY=NORMAL, PERMISSION=NONE, TYPE=set, conn:
+user_jid=admin@thinkpad/testing, packets=5, connectioId=bosh@localhost/85216258-4633-4f59-88d1-1d0a7edc0bdf,
+domain=thinkpad, authState=AUTHORIZED, isAnon=false
+2012-09-24 22:21:51 SessionManager.walk() FINEST:
+XMPPProcessorIfc: MessageAmp (amp)
+Request: from=bosh@localhost/85216258-4633-4f59-88d1-1d0a7edc0bdf, to=sess-man@localhost, DATA=
+<presence id="se0cc" type="set" to="room1@muc.thinkpad/admin" xmlns="jabber:client" from="admin@thinkpad/testing">
+	<x xmlns="http://jabber.org/protocol/muc" />
+</presence>
+, SIZE=168, XMLNS=jabber:client, PRIORITY=NORMAL, PERMISSION=NONE, TYPE=set, conn:
+user_jid=admin@thinkpad/testing, packets=5, connectioId=bosh@localhost/85216258-4633-4f59-88d1-1d0a7edc0bdf,
+domain=thinkpad, authState=AUTHORIZED, isAnon=false
+2012-09-24 22:21:51 Presence.process() INFO: Invalid
+presence found: from=bosh@localhost/85216258-4633-4f59-88d1-1d0a7edc0bdf, to=sess-man@localhost, DATA=
+<presence id="se0cc" type="set" to="room1@muc.thinkpad/admin" xmlns="jabber:client" from="admin@thinkpad/testing">
+	<x xmlns="http://jabber.org/protocol/muc" />
+</presence>
+, SIZE=168, XMLNS=jabber:client, PRIORITY=NORMAL, PERMISSION=NONE, TYPE=set

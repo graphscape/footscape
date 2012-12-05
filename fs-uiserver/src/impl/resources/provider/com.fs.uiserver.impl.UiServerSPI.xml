@@ -1,0 +1,96 @@
+<config>
+
+	<!-- When signup,how to notify the confirm code -->
+	<prefix name="confirmCodeNotifier">
+		<email.class value="com.fs.uiserver.impl.signup.EmailConfirmCodeNotifier" />
+		<config name="email">
+			<property name="mailfrom" value="$email.admin" />
+		</config>
+
+		<!-- Set directly to response,should disable in production env. -->
+		<resp.class value="com.fs.uiserver.impl.signup.ResponseConfirmCodeNotifier" />
+
+		<!-- Main notifier is the entry point for dispatching confirm code -->
+		<main.class value="com.fs.uiserver.impl.signup.CompositeConfirmCodeNotifier" />
+		<config name="main">
+		</config>
+
+	</prefix>
+
+	<prefix name="filter">
+		<property name="session.class" value="com.fs.uiserver.impl.filter.SessionFilter" />
+
+	</prefix>
+
+	<prefix name="handler">
+
+
+		<activities.class value="com.fs.uiserver.impl.handler.activities.ActivitiesHandler" />
+		<config name="activities">
+			<pattern value="/uiserver/activities/.*" />
+		</config>
+
+		<activity.class value="com.fs.uiserver.impl.handler.activity.ActivityHandler" />
+		<config name="activity">
+			<pattern value="/uiserver/activity/.*" />
+		</config>
+
+		<signup.class value="com.fs.uiserver.impl.handler.signup.SignupHandler" />
+		<config name="signup">
+			<pattern value="/uiserver/signup/.*" />
+		</config>
+
+		<client.class value="com.fs.uiserver.impl.handler.client.ClientHandler" />
+		<config name="client">
+			<pattern value="/uiserver/client/.*" />
+			<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
+		</config>
+
+		<i18n.class value="com.fs.uiserver.impl.handler.i18n.I18nHandler" />
+		<config name="i18n">
+			<pattern value="/uiserver/i18n/.*" />
+		</config>
+
+
+		<login.class value="com.fs.uiserver.impl.handler.login.LoginHandler" />
+		<config name="login">
+			<pattern value="/uiserver/login/.*" />
+			<property name="xmpp.domain" value="$xmpp.domain" />
+
+		</config>
+
+		<expe.class value="com.fs.uiserver.impl.handler.expe.ExpEditHandler" />
+		<config name="expe">
+			<pattern value="/uiserver/expe/.*" />
+		</config>
+
+		<exps.class value="com.fs.uiserver.impl.handler.exps.ExpSearchHandler" />
+		<config name="exps">
+			<pattern value="/uiserver/exps/.*" />
+			<defaultIconDataUrl
+				value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==" />
+		</config>
+
+
+		<cooper.class value="com.fs.uiserver.impl.handler.cooper.CooperHandler" />
+		<config name="cooper">
+			<pattern value="/uiserver/cooper/.*" />
+		</config>
+
+		<profile.class value="com.fs.uiserver.impl.handler.profile.ProfileHandler" />
+		<config name="profile">
+			<pattern value="/uiserver/profile/.*" />
+		</config>
+
+		<uexp.class value="com.fs.uiserver.impl.handler.uexp.UserExpHandler" />
+		<config name="uexp">
+			<pattern value="/uiserver/uexp/.*" />
+		</config>
+
+		<uelist.class value="com.fs.uiserver.impl.handler.uelist.UserExpListHandler" />
+		<config name="uelist">
+			<pattern value="/uiserver/uelist/.*" />
+		</config>
+
+	</prefix>
+</config>

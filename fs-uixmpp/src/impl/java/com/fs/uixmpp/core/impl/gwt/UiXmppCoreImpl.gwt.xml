@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+<inherits name="com.google.gwt.logging.Logging"/>
+
+	<inherits name="com.fs.uixmpp.core.api.gwt.UiXmppCoreApi" />
+	<inherits name="com.fs.uicommons.impl.gwt.UiCommonsImpl" />
+	<inherits name="tigase.jaxmpp.gwt.JaxmppGWT" />
+	<source path="client" /><!-- GwtSPII -->
+	<replace-with class="com.fs.uixmpp.core.impl.gwt.client.UiXmppGPIImpl">
+		<when-type-is class="com.fs.uixmpp.core.api.gwt.client.UiXmppCoreGPI" />
+	</replace-with>
+	<set-property name="gwt.logging.logLevel" value="FINEST"/>
+</module>

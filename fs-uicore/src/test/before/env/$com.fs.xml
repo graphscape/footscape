@@ -1,0 +1,4 @@
+<config>
+	<property name="xmpp.domain" value="localhost" />
+
+</config>

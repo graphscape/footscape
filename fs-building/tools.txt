@@ -1,0 +1,16 @@
+
+Ubuntu 11.10
+Eclipse Java EE IDE for Web Developers, version: Indigo
+Apache Maven 3.0.4
+Apache Ant(TM) version 1.8.2
+Apache-james-3.0-beta4
+git version 1.7.5.4
+svn, version 1.6.12
+ivyDE eclipse plugin version:2.1.0
+EGit eclipse plugin version:1.1.0 
+Subclipse eclipse plugin version:1.6.8
+Google plugin version:3.1.0
+Hadoop 2.0.0
+apt-get install jsvc
+apt-get install postgresql-9.1
+apt-get install pgadmin3

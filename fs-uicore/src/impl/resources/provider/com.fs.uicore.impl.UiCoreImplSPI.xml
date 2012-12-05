@@ -1,0 +1,28 @@
+
+<config>
+
+	<config name="WebApp.UICORE">
+		<context.path value="/uicore" />
+	</config>
+
+	<config name="servletHolder.UIDATA_TRANSFER">
+		<property name="path" value="/uidt/*" />
+		<prefix name="servlet">
+			<property name="class" value="com.fs.uicore.impl.servlet.UiDataTransferServlet" />
+			<config name="config" property="config">
+
+			</config>
+		</prefix>
+	</config>
+	
+	<prefix name="handler">
+
+		<cfgf.class value="com.fs.uicore.impl.handler.config.CfgFactoryHandler" />
+		<config name="cfgf">
+			<pattern value="/uicore/cfgf/.*" />
+			<cfgIdCsv value="com.fs.uicore.CfgFactory" />
+		</config>
+
+	</prefix>
+	
+</config>

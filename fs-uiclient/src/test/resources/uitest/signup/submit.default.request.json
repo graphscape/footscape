@@ -1,0 +1,8 @@
+["_O",
+	{
+		"username":["_S","user1"],
+		"password":["_S","pass1"],
+		"email":["_S","user1@some.com"]
+		"isAgree":["_B",true]
+	}
+]

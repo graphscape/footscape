@@ -1,0 +1,38 @@
+/**
+ * Jun 23, 2012
+ */
+package com.fs.uicore.api.gwt.client.data;
+
+import com.fs.uicore.api.gwt.client.core.UiData;
+import com.fs.uicore.api.gwt.client.util.ObjectUtil;
+
+/**
+ * @author wu
+ * 
+ */
+public class BasicData<T> extends UiData {
+	protected T value;
+
+	protected BasicData(T t) {
+		this.value = t;
+	}
+
+	/**
+	 * @return the value
+	 */
+	public T getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value
+	 *            the value to set
+	 */
+	public void setValue(T value) {
+		this.value = value;
+	}
+
+	protected boolean isEquals(BasicData<T> bd) {
+		return ObjectUtil.nullSafeEquals(this.value, bd.value);
+	}
+}

@@ -1,0 +1,48 @@
+<ivy-module version="2.0">
+	<info organisation="com.fs" module="commons" />
+	<configurations>
+		<conf name="api" />
+		<conf name="impl" extends="api" />
+		<conf name="runtime" extends="impl" />
+		<conf name="test" extends="runtime" />
+	</configurations>
+
+	<publications>
+		<artifact name="fs-commons-api" type="jar" conf="api" ext="jar" />
+		<artifact name="fs-commons-impl" type="jar" conf="impl" ext="jar" />
+	</publications>
+	<dependencies>
+		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="api->master" />
+		<dependency org="javax.mail" name="mail" rev="1.4.5" force="true" conf="api->master" />
+		<dependency org="com.google.guava" name="guava" rev="12.0" force="true" conf="impl->master(default)" />
+
+		<dependency org="commons-dbcp" name="commons-dbcp" rev="1.4" force="true" conf="impl->master" />
+
+		<dependency org="commons-codec" name="commons-codec" rev="1.3" force="true" conf="impl->master" />
+
+		<dependency org="commons-collections" name="commons-collections" rev="3.2.1" force="true" conf="impl->master" />
+
+		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" conf="impl->master" />
+
+		<dependency org="commons-pool" name="commons-pool" rev="1.5.6" force="true" conf="impl->master" />
+		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" force="true" conf="impl->master" />
+
+		<dependency org="dom4j" name="dom4j" rev="1.6.1" force="true" conf="impl->master" />
+		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master" />
+
+		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="impl->master" />
+		<dependency org="org.apache.commons" name="commons-exec" rev="1.1" force="true" conf="impl->master" />
+		<dependency org="org.apache.commons" name="commons-jexl" rev="2.1.1" force="true" conf="impl->master" />
+
+		<dependency org="org.apache.sshd" name="sshd-core" rev="0.7.0" force="true"
+			conf="impl->master;runtime->runtime(*)" />
+		<dependency org="org.freemarker" name="freemarker" rev="2.3.9" force="true" conf="impl->default" />
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="impl->master" />
+		<dependency org="org.springframework" name="spring-context-support" rev="3.1.1.RELEASE" force="true"
+			conf="impl->default" />
+		<dependency org="org.springframework.integration" name="spring-integration-mail" rev="2.1.3.RELEASE"
+			force="true" conf="impl->default" />
+
+
+	</dependencies>
+</ivy-module>

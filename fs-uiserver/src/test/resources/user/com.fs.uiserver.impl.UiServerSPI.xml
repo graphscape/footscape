@@ -1,0 +1,12 @@
+<config>
+
+	<prefix name="confirmCodeNotifier">
+		<test.class value="com.fs.uiserver.impl.test.signup.TestConfirmCodeNotifier" />
+		<config name="test">
+			
+		</config>
+
+
+	</prefix>
+
+</config>

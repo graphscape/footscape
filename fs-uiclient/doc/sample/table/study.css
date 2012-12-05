@@ -1,0 +1,18 @@
+
+table {
+	width:100%;
+  	background-color: #ccc;
+    border: 0px solid #ddd;  
+    position:absolute;
+}
+
+td {
+	vertial-align:top;
+}
+.right {
+	text-align:right;
+}
+.left {
+	text-align:left;
+	
+}

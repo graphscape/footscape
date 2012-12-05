@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name='com.google.gwt.json.JSON' />
+
+	<inherits name='org.fusesource.restygwt.RestyGWT' />
+
+	<inherits name='com.fs.uicore.impl.gwt.UiCoreImpl' />
+
+	<inherits name='com.fs.uicommons.impl.gwt.UiCommonsImpl' />
+
+	<inherits name='com.fs.uixmpp.groupchat.impl.gwt.UiGroupChatImpl' />
+
+	<inherits name='com.fs.uiclient.api.gwt.UiClientApi' />
+
+	<source path='client' />
+	<!-- SPI -->
+	<replace-with class="com.fs.uiclient.impl.gwt.client.UiClientGwtSPIImpl">
+		<when-type-is class="com.fs.uiclient.api.gwt.client.UiClientGwtSPI" />
+	</replace-with>
+</module>

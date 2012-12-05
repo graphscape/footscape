@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name='com.google.gwt.json.JSON' />
+
+	<inherits name='org.fusesource.restygwt.RestyGWT' />
+
+	<inherits name='com.fs.uicore.api.gwt.UiCoreApi' />
+
+	<source path='client' />
+	
+	<replace-with class="com.fs.uicore.impl.gwt.client.UiCoreGwtSPIImpl">
+		<when-type-is class="com.fs.uicore.api.gwt.client.UiCoreGwtSPI" />
+	</replace-with>
+	
+	<replace-with class="com.fs.uicore.impl.gwt.client.ContainerImpl">
+		<when-type-is class="com.fs.uicore.api.gwt.client.ContainerI" />
+	</replace-with>
+		
+
+</module>

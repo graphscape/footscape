@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name="com.fs.uiclient.impl.gwt.UiClientImpl" />
+	<entry-point class='com.fs.uiclient.impl.test.gwt.client.UiClientTestEntryPoint' />
+	<source path="client" />
+	<!-- <set-property name="gwt.logging.logLevel" value="WARNING" />Disable finest log of tigase gwt -->
+	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
+	<set-property name="gwt.logging.enabled" value="TRUE"/> 
+</module>

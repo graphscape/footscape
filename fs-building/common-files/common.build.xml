@@ -1,0 +1,371 @@
+
+<property environment="env" />
+<property file="../fs-building/common-files/common.build.properties" />
+<property file="./build.properties" />
+
+<path id="classpath.compile.api">
+	<fileset dir="${dir.target}/api/lib" />
+</path>
+
+<path id="classpath.compile.impl">
+	<fileset dir="${dir.target}/impl/lib" />
+	<pathelement location="${dir.target}/api/classes" />
+</path>
+
+<path id="classpath.compile.gwt">
+	<fileset dir="${dir.target}/runtime/lib" />
+	<fileset dir="${dir.target}/test/lib" includes="*gwt*.jar" />
+	<pathelement location="${dir.target}/impl/classes" />
+	<pathelement location="${dir.target}/api/classes" />
+
+</path>
+<path id="classpath.compile.test">
+	<fileset dir="${dir.target}/test/lib" />
+	<pathelement location="${dir.target}/api/classes" />
+	<pathelement location="${dir.target}/impl/classes" />
+
+</path>
+<target name="clean" depends="clean-cache" description="--> clean build">
+
+	<delete dir="${dir.target}" />
+	<if>
+		<available file="${dir.eclipse.gwt.war}" type="dir" />
+		<then>
+			<delete dir="${dir.eclipse.gwt.war}" />			
+		</then>
+	</if>
+</target>
+<target name="clean-cache" depends="setup">
+	<echo message="del:${user.home}/.ivy2/cache/${fs.ivy.organization}/${fs.ivy.module}" />
+	<delete dir="${user.home}/.ivy2/cache/${fs.ivy.organization}/${fs.ivy.module}" />
+</target>
+
+<target name="compile-">
+
+	<property name="classes.dir" value="${dir.target}/${part}/classes" />
+	<property name="java.dir" value="${dir.src}/${part}/java" />
+	<property name="resources.dir" value="${dir.src}/${part}/resources" />
+
+	<mkdir dir="${dir.target}/${part}/classes" />
+
+	<!-- Copy none java file in java src dir -->
+	<copy todir="${classes.dir}">
+		<fileset dir="${java.dir}">
+			<exclude name="**/*.java" />
+		</fileset>
+	</copy>
+	<!-- Copy java file as resource -->
+	<copy todir="${classes.dir}">
+		<fileset dir="${java.dir}">
+			<include name="${java.as.resource}" />
+		</fileset>
+	</copy>
+	<javac srcdir="${dir.src}/${part}/java" destdir="${dir.target}/${part}/classes" classpathref="classpath.compile.${part}"
+		source="1.6" target="1.6" debug="on" encoding="UTF-8" includeantruntime="false">
+	</javac>
+	<copy todir="${classes.dir}">
+		<fileset dir="${resources.dir}" />
+	</copy>
+</target>
+
+<target name="compile-api" depends="resolve">
+	<antcall target="compile-">
+		<param name="part" value="api" />
+	</antcall>
+</target>
+<target name="compile-impl" depends="compile-api">
+	<antcall target="compile-">
+		<param name="part" value="impl" />
+	</antcall>
+</target>
+
+<!-- Call this task only when publish -->
+<target name="compile-gwt" depends="compile-api,compile-impl">
+	<mkdir dir="${dir.target}/gwt/web" />
+	<if>
+		<isset property="gwt.module.name" />
+		<then>
+			<echo message="compile gwt module" />
+
+			<copy todir="${dir.target}/gwt/web">
+				<fileset dir="${dir.src}/impl/web">
+					<include name="**/*.*" />
+				</fileset>
+			</copy>
+			<java classname="com.google.gwt.dev.Compiler" fork="true" failonerror="true" dir="${dir.target}/gwt">
+				<jvmarg line="-Xmx256m" />
+				<classpath>
+					<path refid="classpath.compile.gwt" />
+				</classpath>
+				<arg line="-style PRETTY" />
+				<arg line="-logLevel INFO" />
+				<arg line="-war web" />
+				<arg value="${gwt.module.name}" />
+			</java>
+
+		</then>
+		<else>
+			<echo message="no gwt module" />
+		</else>
+
+
+	</if>
+</target>
+
+<target name="compile-test" depends="compile-impl">
+	<antcall target="compile-">
+		<param name="part" value="test" />
+	</antcall>
+</target>
+
+<target name="check">
+	<condition property="allIsWellBool">
+		<resourceexists>
+			<file file="${dir.fs.building}" />
+		</resourceexists>
+	</condition>
+</target>
+
+
+<target name="eclipse" depends="setup">
+
+
+	<!-- For gwt test in eclipse,copy java resource to classes folder;no need to compile package. -->
+	<if>
+		<isset property="resolve" />
+		<then>
+			<antcall target="resolve" />
+		</then>
+	</if>
+	<copy todir="${dir.target}/eclipse/classes">
+		<fileset dir="${dir.src}/api/java">
+			<include name="${java.as.resource}" />
+		</fileset>
+		<fileset dir="${dir.src}/impl/java">
+			<include name="${java.as.resource}" />
+		</fileset>
+		<fileset dir="${dir.src}/test/java">
+			
+			<include name="${java.as.resource}" />
+		</fileset>
+	</copy>
+
+	<!-- Prepare the war for gwt test case -->
+	<if>
+		<available file="${dir.test.before}/war" type="dir" />
+		<then>
+			<copy todir="${dir.eclipse.gwt.war}">
+				<fileset dir="${dir.test.before}/war">
+					<include name="**/*.*" />
+				</fileset>
+			</copy>
+			<copy todir="${dir.eclipse.gwt.war}/WEB-INF/lib">
+				<fileset dir="${dir.target}/test/lib">
+					<include name="**/*.jar" />
+					<!-- gwt-2.5.0 from gwt sdk home,not include here -->
+					<exclude name="**/gwt-servlet-2.5.0.jar" />
+				</fileset>
+			</copy>
+			<!-- gwt-serve-2.5.0.jar we got from ivy's size is not same as the sdk download from gwt web site,before runing 
+				gwt in eclipse,we must copy it here -->
+			<delete file="${dir.eclipse.gwt.war}/WEB-INF/lib/gwt-servlet-2.5.0.jar" />
+			
+			<copy todir="${dir.eclipse.gwt.war}/WEB-INF/lib">
+				<fileset dir="${gwt.sdk.home}">
+					<include name="gwt-servlet.jar" />
+				</fileset>
+			</copy>
+
+		</then>
+	</if>
+
+</target>
+<target name="fail" depends="check" unless="allIsWellBool">
+	<fail message="Failed check environment,${dir.fs.building}" />
+</target>
+
+<target name="git-commit">
+	<exec executable="git">
+		<arg value="commit" />
+		<arg value="-a" />
+		<arg value="-m" />
+		<arg value="${message}" />
+	</exec>
+</target>
+
+<target name="git-pull">
+	<echo message="git pull project : ${ant.project.name}" />
+	<exec executable="git">
+		<arg value="pull" />
+	</exec>
+</target>
+
+<target name="push">
+	<echo message="git push project : ${ant.project.name}" />
+	<exec executable="git">
+		<arg value="push" />
+		<arg value="origin" />
+		<arg value="master" />
+	</exec>
+</target>
+
+<target name="git-status">
+	<echo message="git pull project : ${ant.project.name}" />
+	<exec executable="git">
+		<arg value="status" />
+	</exec>
+</target>
+
+<target name="setup" depends="fail" if="allIsWellBool">
+	<echo message="Start building:${ant.project.name}" />
+	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${dir.fs.building}/tools/ivy/ivy-2.2.0.jar" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${dir.fs.building}/tools/ant-contrib/ant-contrib-0.6.jar" />
+	<ivy:settings id="fs.ivy.settings" file="${dir.fs.common.files}/common.ivysettings.xml" />
+
+</target>
+
+
+<target name="resolve" depends="setup" description="--> retreive dependencies with ivy">
+	<ivy:retrieve pattern="${dir.target}/[conf]/lib/[artifact]-[revision](-[classifier]).[ext]"
+		type="jar" settingsRef="fs.ivy.settings" />
+	<ivy:retrieve pattern="${dir.target}/[conf]/lib/[artifact]-[revision]-[type](-[classifier]).[ext]"
+		type="bundle,source" settingsRef="fs.ivy.settings" />
+
+
+</target>
+
+<target name="jar-">
+	<jar basedir="${dir.target}/${part}/classes" destfile="${dir.target}/${ant.project.name}-${part}-${revision}.jar">
+		<manifest>
+		</manifest>
+		<fileset dir="${dir.src}/${part}/java" id="id">
+			<include name="**/*.*" />
+		</fileset>
+
+		<fileset dir="${dir.target}/gwt" includes="${gwt.module.name}.jar" />
+	</jar>
+
+</target>
+<target name="package" depends="compile-test" description="">
+	<antcall target="package-gwt" />
+	<antcall target="jar-">
+		<param name="part" value="api" />
+	</antcall>
+	<antcall target="jar-">
+		<param name="part" value="impl" />
+	</antcall>
+
+</target>
+
+<!-- Note:this task package gwt generated js,and package task include this package(jar). -->
+<target name="package-gwt" depends="compile-gwt">
+	<if>
+		<isset property="gwt.module.name" />
+		<then>
+			<jar basedir="${dir.target}/gwt/web" destfile="${dir.target}/gwt/${gwt.module.name}.jar">
+				<manifest>
+				</manifest>
+			</jar>
+		</then>
+		<else>
+
+		</else>
+	</if>
+
+</target>
+
+<target name="publish" depends="package">
+
+	<echo message="Publising : ${dir.fs.building}" />
+
+	<ivy:publish artifactspattern="${dir.target}/[artifact]-[revision].[ext]" resolver="internal"
+		overwrite="true" pubrevision="${revision}" status="release" settingsRef="fs.ivy.settings" />
+	<echo message="|	${ant.project.name} rev: ${revision} published.					|" />
+
+</target>
+
+<target name="probe-proxy" depends="setup">
+	<condition property="proxy.enabled">
+		<and>
+			<isset property="proxy.host" />
+			<isreachable host="${proxy.host}" />
+		</and>
+	</condition>
+</target>
+
+<target name="proxy" depends="probe-proxy" if="proxy.enabled">
+	<echo message="Using proxy:${proxy.host}:${proxy.port}" />
+	<setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}" proxyuser="" proxypassword="" />
+</target>
+<target name="test-before">
+	<if>
+		<available file="${dir.test.before}" type="dir" />
+		<then>
+			<copy todir="${dir.target}/test">
+				<fileset dir="${dir.test.before}">
+					<include name="**/*.*" />
+				</fileset>
+			</copy>
+		</then>
+	</if>
+</target>
+<target name="test-xml" depends="compile-test,test-before" description="--> run test case">
+	<property name="xml.dir" value="${dir.target}/test/xml" />
+	<mkdir dir="${xml.dir}" />
+	<junit fork="yes" printsummary="yes" haltonfailure="no" showoutput="yes" dir="${dir.target}/test">
+		<jvmarg value="${test.jvmarg}" />
+
+		<formatter type="xml" />
+		<classpath refid="classpath.compile.test" />
+		<classpath location="${dir.target}/test/classes" />
+		<batchtest todir="${xml.dir}">
+			<fileset dir="${dir.src}/test/java">
+				<include name="**/*Test.java" />
+			</fileset>
+		</batchtest>
+
+	</junit>
+</target>
+<target name="test-html" depends="test-xml,test-report">
+
+</target>
+
+<target name="test-report">
+	<property name="xml.dir" value="${dir.target}/test/xml" />
+	<property name="html.dir" value="${dir.target}/test/html" />
+
+	<mkdir dir="${html.dir}" />
+	<junitreport todir="${html.dir}">
+		<fileset dir="${xml.dir}" includes="*Test*.xml" />
+		<report format="frames" todir="${html.dir}" />
+	</junitreport>
+</target>
+
+<target name="test" depends="test-xml">
+	<if>
+		<isset property="open" />
+		<then>
+			<antcall target="test-report" />
+			<antcall target="open-report" />
+		</then>
+	</if>
+</target>
+<target name="touch-ivy">
+	<touch file="ivy.xml" />
+</target>
+<target name="open-report">
+
+	<property name="html.dir" location="${dir.target}/test/html" />
+
+	<exec executable="${cmd.firefox}">
+		<arg value="file://${html.dir}/index.html" />
+	</exec>
+</target>
+
+
+
+
+
+
+
+

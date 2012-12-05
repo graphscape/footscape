@@ -1,0 +1,7 @@
+<config>
+	
+	<ok value="OK" />
+	<cancel value="Cancel" />
+	<failed.login value="Login failure, account or password not correct." />
+	
+</config>

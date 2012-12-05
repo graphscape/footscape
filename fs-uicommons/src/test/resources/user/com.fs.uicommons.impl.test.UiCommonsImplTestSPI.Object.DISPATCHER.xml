@@ -1,0 +1,23 @@
+
+<config>
+	<prefix name="handler.echo">
+		<class value="com.fs.uicommons.impl.test.handler.EchoHandler" />
+
+	</prefix>
+	<config name="handler.echo">
+		<property name="pattern" value="/uiserver/echo/.*" />
+		<property name="priority" value="2" />
+	</config>
+
+	<prefix name="handler.login">
+		<class value="com.fs.uicommons.impl.test.handler.LoginHandler" />
+
+	</prefix>
+	<config name="handler.login">
+		<property name="pattern" value="/uiserver/login/.*" />
+		<property name="priority" value="2" />
+	</config>
+
+
+
+</config>

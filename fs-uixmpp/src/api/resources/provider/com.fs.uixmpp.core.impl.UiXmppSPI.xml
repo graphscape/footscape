@@ -1,0 +1,18 @@
+
+<config>
+<!-- Proxy Servlet Config -->
+	<config name="servletHolder.BOSH_PROXY">
+		<property name="path" value="/bosh-proxy/*" />
+		<prefix name="servlet">
+			<property name="class" value="com.fs.uixmpp.core.impl.servlet.BoshProxyServlet" />
+			<config name="config" property="config">
+
+				<property name="path" value="/bosh" />
+				<property name="port.bak" value="5280" />
+				<property name="host.bak" value="/localhost" />
+				<property name="host" value="tigase.im" />
+				<property name="port" value="80"/>
+			</config>
+		</prefix>
+	</config>
+</config>

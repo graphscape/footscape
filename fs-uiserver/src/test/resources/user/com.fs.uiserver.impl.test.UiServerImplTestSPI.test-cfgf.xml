@@ -1,0 +1,10 @@
+<config>
+	<!-- Client init -->
+	<prefix name="round.0">
+
+		<config name="config" property="config" path="/uiserver/cfgf/init" requestFtl="uitest/cfgf/init.1.req.ftl"
+			expectedResponseFtl="uitest/cfgf/init.1.res.ftl" />
+
+	</prefix>
+	
+</config>

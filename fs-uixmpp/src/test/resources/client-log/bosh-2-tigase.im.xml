@@ -1,0 +1,41 @@
+
+2012-09-03 21:41:51,834
+<body to="tigase.im" content="text/xml; charset=utf-8" cache="on" xmlns:xmpp="urn:xmpp:xbosh" rid="7578374"
+	hold="1" secure="true" xml:lang="en" xmlns="http://jabber.org/protocol/httpbind" xmpp:version="1.0" wait="30" />
+<body maxpause="10" ack="7578374" authid="7c8dc8bc-ca04-4326-b4bf-f35933148c53" hold="1" polling="10"
+	from="tigase.im" xmlns:stream="http://etherx.jabber.org/streams" xmlns="http://jabber.org/protocol/httpbind"
+	xmpp:version="1.0" ver="1.6" wait="30" xmlns:xmpp="urn:xmpp:xbosh" sid="36421fde-aa4e-425b-bd98-c7c0f71ddc86"
+	secure="true" inactivity="10" requests="8" />
+2012-09-03 21:41:59,032
+<body sid="36421fde-aa4e-425b-bd98-c7c0f71ddc86" rid="7578375" xmlns="http://jabber.org/protocol/httpbind" />
+<body xmlns:xmpp="urn:xmpp:xbosh" ack="7578375" xmlns:stream="http://etherx.jabber.org/streams" from="tigase.im"
+	secure="true" xmlns="http://jabber.org/protocol/httpbind" xmpp:version="1.0">
+	<stream:features xmlns="jabber:client">
+		<ver xmlns="urn:xmpp:features:rosterver" />
+		<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+		<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+			<mechanism>PLAIN</mechanism>
+			<mechanism>ANONYMOUS</mechanism>
+		</mechanisms>
+		<register xmlns="http://jabber.org/features/iq-register" />
+		<compression xmlns="http://jabber.org/features/compress">
+			<method>zlib</method>
+		</compression>
+		<auth xmlns="http://jabber.org/features/iq-auth" />
+	</stream:features>
+</body>
+
+2012-09-03 21:42:00,043
+<body sid="36421fde-aa4e-425b-bd98-c7c0f71ddc86" rid="7578376" xmlns="http://jabber.org/protocol/httpbind" />
+<body xmlns:xmpp="urn:xmpp:xbosh" ack="7578376" xmlns:stream="http://etherx.jabber.org/streams" from="tigase.im"
+	secure="true" xmlns="http://jabber.org/protocol/httpbind" xmpp:version="1.0" />
+2012-09-03 21:42:31,174
+<body sid="36421fde-aa4e-425b-bd98-c7c0f71ddc86" rid="7578377" xmlns="http://jabber.org/protocol/httpbind">
+	<auth mechanism="PLAIN" xmlns="urn:ietf:params:xml:ns:xmpp-sasl">d3V6aGVuMDgwOEB0aWdhc2UuaW0Ad3V6aGVuMDgwOABnb29kd2Vlaw==</auth>
+</body>
+<body type="error" xmlns="http://jabber.org/protocol/httpbind">
+	<error type="cancel" code="404">
+		<item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" />
+		<text xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" xml:lang="en">Invalid SID</text>
+	</error>
+</body>

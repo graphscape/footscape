@@ -1,0 +1,63 @@
+<ivysettings>
+	<properties environment="env" />
+
+	<property name="fs.build.home" value="/home/wu/git/fs" />
+
+	<property name="dir.fs.building" value="${fs.build.home}/fs-building" />
+	<property name="repo.internal" value="${dir.fs.building}/ivy/internal" />
+
+	<property name="local-maven2-pattern"
+		value="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]"
+		override="false" />
+	<property name="m2-pattern" value="[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
+	<settings defaultResolver="default" />
+	<caches useOrigin="true">
+
+	</caches>
+	<resolvers>
+		<ibiblio name="central" m2compatible="true" checkconsistency="false" pattern="${m2-pattern}" />
+		<ibiblio name="springsource" m2compatible="true" root="http://repo.springsource.org/libs-release-remote"
+			pattern="${m2-pattern}" />
+		<ibiblio name="neo4j-releases" m2compatible="true" root="http://m2.neo4j.org/content/repositories/releases"
+			pattern="${m2-pattern}" />
+		<ibiblio name="tigase" m2compatible="true" root="http://maven.tigase.org"
+			pattern="${m2-pattern}" />
+		<filesystem name="internal" checksums="">
+			<ivy pattern="${repo.internal}/[organisation]/[module]/[revision]/ivys/ivy.xml" />
+			<artifact pattern="${repo.internal}/[organisation]/[module]/[revision]/[ext]s/[artifact].[ext]" />
+		</filesystem>
+		<filesystem name="local-maven2" m2compatible="true">
+			<ivy pattern="${local-maven2-pattern}" />
+			<artifact pattern="${local-maven2-pattern}" />
+		</filesystem>
+
+		<chain name="default" dual="false">
+			<resolver ref="internal" />
+			<resolver ref="local-maven2" />
+			<resolver ref="central" />
+			<resolver ref="neo4j-releases" />
+
+		</chain>
+		<!-- Special ones -->
+		<url name="neo4j-central-hack" m2compatible="true">
+			<artifact
+				pattern="http://repo.neo4j.org/content/repositories/central/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
+		</url>
+
+		<url name="repo1-hack" m2compatible="true">
+			<artifact
+				pattern="http://repo1.maven.org/maven2/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
+		</url>
+
+	</resolvers>
+	<modules>
+
+		<module organisation="commons-configuration" name="commons-configuration" resolver="repo1-hack" />
+		<module organisation="com.sun.jersey" name="jersey-client" resolver="repo1-hack" />
+		<module organisation="com.sun.jersey" name="jersey-servlet" resolver="repo1-hack" />
+
+
+	</modules>
+
+
+</ivysettings>

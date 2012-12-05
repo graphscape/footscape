@@ -1,0 +1,21 @@
+>537:ServletContainer.service
+>>376:WebComponent.service
+>>>1349:WebApplicationImpl.
+	void handleRequest(ContainerRequest request, ContainerResponseWriter responseWriter)
+            throws IOException;
+>>>1467:WebApplicationImpl. 
+	private void _handleRequest(final WebApplicationContext localContext,
+                                ContainerRequest request) {
+         ....                       
+        if (!rootsRule.accept(path, null, localContext)) {
+            throw new NotFoundException(request.getRequestUri());
+        }        
+>>>>RootResourceClassesRule
+
+	public boolean accept(CharSequence path, Object resource, UriRuleContext context) {
+	
+>>>>>AtomicMatchingPatterns
+
+>>.WebApplicationContext.trace
+
+		                       

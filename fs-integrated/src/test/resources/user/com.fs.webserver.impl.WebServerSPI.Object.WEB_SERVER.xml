@@ -1,0 +1,3 @@
+<config>
+	<property name="port" value="8090" />
+</config>

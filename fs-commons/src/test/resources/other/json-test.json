@@ -1,0 +1,20 @@
+["_O",
+	{"_ERROR_INFO_S":["_ES",[
+		["_E",{
+			"message":["_S","login failed"],
+			"detail":["_L",[]]
+			}
+		]
+		]
+	}
+]
+["_O",{"_ERROR_INFO_S":["_ES",[
+		["_E",{
+			"message":["_S","message-value"],
+			"detail":["_L",[]]
+			}
+		]
+		]
+		]
+	}
+]

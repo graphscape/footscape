@@ -1,0 +1,4 @@
+<config>
+
+	<property name="alias5" value="pvalue5-in-alias-xml" />
+</config>

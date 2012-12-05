@@ -1,0 +1,5 @@
+<config>
+	<!-- TODO see Activitor.active(),rename to interface class name+name of object -->
+	<host value="localhost" />
+	<port value="todo" />
+</config>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+
+	<inherits name='com.fs.uicommons.api.gwt.UiCommonsApi' />
+	<inherits name='com.fs.uicore.impl.gwt.UiCoreImpl' />
+	<source path='client' />
+	<!-- GwtSPII -->
+	<replace-with class="com.fs.uicommons.impl.gwt.client.UiCommonsGPIImpl">
+		<when-type-is class="com.fs.uicommons.api.gwt.client.UiCommonsGPI" />
+	</replace-with>
+
+
+
+</module>

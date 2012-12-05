@@ -1,0 +1,109 @@
+
+from=null, to=null, data=
+<iq from="c2s@thinkpad/127.0.0.1_5222_127.0.0.1_33816" id="82970c9c-b234-4405-a154-13f25d943a91"
+	to="sess-man@thinkpad" type="set">
+	<command xmlns="http://jabber.org/protocol/commands" node="STREAM_OPENED">
+		<x type="submit" xmlns="jabber:x:data">
+			<field var="session-id">
+				<value>74cb99e7-f7ed-457e-b6ad-577c66b02997</value>
+			</field>
+			<field var="hostname">
+				<value>thinkpad</value>
+			</field>
+			<field var="xml:lang">
+				<value>en</value>
+			</field>
+		</x>
+	</command>
+</iq>
+, XMLNS=null, priority=SYSTEM
+from=null, to=null, data=
+<iq from="c2s@thinkpad/127.0.0.1_5222_127.0.0.1_33816" id="cbf3365e-e706-4192-97dd-698688b4d59d"
+	to="sess-man@thinkpad" type="set">
+	<command xmlns="http://jabber.org/protocol/commands" node="STREAM_CLOSED" />
+</iq>
+, XMLNS=null, priority=SYSTEM
+from=null, to=null, data=
+<iq from="c2s@thinkpad/127.0.0.1_5222_127.0.0.1_33990" id="a64cfc82-8741-43b9-8087-c743c4bc7182"
+	to="sess-man@thinkpad" type="set">
+	<command xmlns="http://jabber.org/protocol/commands" node="STREAM_OPENED">
+		<x type="submit" xmlns="jabber:x:data">
+			<field var="session-id">
+				<value>c70f82ee-e553-4b03-8cbf-b32f057b66d6</value>
+			</field>
+			<field var="hostname">
+				<value>thinkpad</value>
+			</field>
+			<field var="xml:lang">
+				<value>en</value>
+			</field>
+		</x>
+	</command>
+</iq>
+, XMLNS=null, priority=SYSTEM
+2012-08-08 11:25:11
+SessionManager$ProcessorWorkerThread.process() WARNING: Exception during
+packet processing: from=null, to=sess-man@thinkpad, data=
+<iq id="65p8c" from="admin@thinkpad" to="thinkpad" type="set">
+	<command action="execute" node="http://jabber.org/protocol/admin#add-user"
+		xmlns="http://jabber.org/protocol/commands">
+		<x xmlns="jabber:x:data" type="submit">
+			<field var="accountjid">
+				<value>CData size: 14</value>
+			</field>
+			<field var="password">
+				<value>CData size: 5</value>
+			</field>
+			<field var="password-verify">
+				<value>CData size: 5</value>
+			</field>
+			<field var="email">
+				<value>CData size: 14</value>
+			</field>
+			<field var="given_name">
+				<value>CData size: 4</value>
+			</field>
+			<field var="surname">
+				<value>CData size: 3</value>
+			</field>
+		</x>
+	</command>
+</iq>
+, XMLNS=null, priority=NORMALtigase.xmpp.NoConnectionIdException:
+Connection ID not set for this session. This is probably the SM session
+to handle traffic addressed to the server itself. Or maybe it's a bug.
+at
+tigase.xmpp.XMPPResourceConnection.getConnectionId(XMPPResourceConnection.java:226)
+at
+tigase.xmpp.XMPPResourceConnection.getConnectionId(XMPPResourceConnection.java:245)
+at tigase.xmpp.impl.JabberIqCommand.process(JabberIqCommand.java:134)
+at
+tigase.server.xmppsession.SessionManager$ProcessorWorkerThread.process(SessionManager.java:2182)
+at tigase.util.WorkerThread.run(WorkerThread.java:118)
+2012-08-08
+12:56:36
+SessionManager.processPacket() FINEST: processing packet:
+from=null,
+to=sess-man@thinkpad, data=
+<iq id="2ucqa" from="admin@thinkpad/tclmt" to="sess-man@thinkpad">
+	<command node="http://jabber.org/protocol/admin#add-user"
+		xmlns="http://jabber.org/protocol/commands">
+		<x xmlns="jabber:x:data">
+			<field var="accountjid" type="jid-single">
+				<value>CData size: 14</value>
+			</field>
+			<field var="password" type="text-private">
+				<value>CData size: 5</value>
+			</field>
+			<field var="password-verify" type="text-private">
+				<value>CData size: 5</value>
+			</field>
+			<field var="email" type="text-single">
+				<value>CData size: 14</value>
+			</field>
+		</x>
+	</command>
+</iq>
+, XMLNS=null, priority=NORMAL, connection: user_jid=sess-man@thinkpad,
+connectioId=null
+

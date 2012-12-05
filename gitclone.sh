@@ -1,0 +1,10 @@
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-commons-impl.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-dbclient-api.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-dbclient-impl.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-engine-api.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-engine-impl.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-integrated.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-model-api.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-model-impl.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-userui-api.git
+#git clone http://wuzhen0808:goodweek@bitbucket.org/wuzhen0808/fs-userui-impl.git

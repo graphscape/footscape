@@ -1,0 +1,51 @@
+<ivy-module version="2.0">
+	<info organisation="com.fs" module="uiclient" />
+	<configurations>
+		<conf name="api" />
+		<conf name="impl" extends="api" />
+		<conf name="runtime" extends="impl" />
+		<conf name="test" extends="runtime" />
+	</configurations>
+
+	<publications>
+	
+		<artifact name="fs-uiclient-api" type="jar" conf="api" ext="jar" />
+		<artifact name="fs-uiclient-impl" type="jar" conf="impl" ext="jar" />
+		
+	</publications>
+	<dependencies>
+
+
+		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+
+		<dependency org="com.fs" name="uicore" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+
+		<dependency org="com.fs" name="uicommons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		
+		<dependency org="com.fs" name="uixmpp" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		
+		<dependency org="com.fs" name="uiserver" rev="1.0.0" force="true" conf="test->runtime(*)" />
+		
+		<dependency org="com.google.gwt" name="gwt-user" rev="2.5.0" force="true" conf="impl->master" />
+		
+		<dependency org="com.google.gwt" name="gwt-servlet" rev="2.5.0" force="true" conf="impl->master" />
+
+		<dependency org="com.google.gwt" name="gwt-dev" rev="2.5.0" force="true" conf="test->master" />
+
+
+		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" force="true" conf="*->master" />
+
+
+		<dependency org="javax.validation" name="validation-api" rev="1.0.0.GA" force="true"
+			conf="test->master,sources" />
+		<!-- Junit -->
+		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
+
+		<dependency org="org.fusesource.restygwt" name="restygwt" rev="1.2" force="true"
+			conf="impl->master(default)" />
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="test->master" />
+		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="test->master" />
+
+
+	</dependencies>
+</ivy-module>

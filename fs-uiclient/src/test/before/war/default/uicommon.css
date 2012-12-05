@@ -1,0 +1,366 @@
+
+.adjusters {
+	background : #fff;
+	position : absolute;
+	display: none;
+}
+
+.adjusters.visible {
+	display: block;
+}
+
+.adjuster {
+	cursor : pointer;
+}
+
+.adjusted-overflow * {
+	overflow : visible;
+}
+
+.opacities {
+	opacity : 0.4;
+	position : absolute;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+	border:1px solid orange;
+}
+
+.opacities * {
+	position : absolute;
+}
+
+.visible {
+	display : block;
+}
+
+.invisible {
+	display : none;
+}
+
+.elo-Canvas {
+	border:1px solid green;
+}
+
+.elo-Canvas.invisible {
+	display:block;
+}
+
+.elo-Canvas canvas{
+	border: 1px solid orange;
+	display:block;
+}
+
+.elo-ImageBox {
+	border : 1px solid red;
+	position : absolute;
+	width : 110px;
+	height : 110px;
+	overflow : visible;
+}
+
+.elo-ImageBox.dragging{
+	box-shadow: 0 3px 6px rgba(0, 255, 0, 0.5);
+}
+
+.elo-ImageBox .decorator{
+	position : absolute;
+	background : gray;
+	opacity : 0.5;
+	overflow : visible;
+}
+
+.elo-ImageBox .plus{
+	background : gray;
+	opacity : 0.4;
+	float:right;
+	width:10px;
+	height:10px;
+}
+
+.elo-ImageBox .minus{
+	background : gray;
+	opacity : 0.4;
+	float:left;
+	width:10px;
+	height:10px;
+}
+
+.elo-ImageCroper {
+	border: 1px solid blue;
+	overflow : visible;
+}
+
+
+/*Anchor,button*/
+.wgt-AnchorWImpl {
+	background: #034F82;
+	background: -moz-linear-gradient(top, #034F82 0%, #034F82 100%);
+	border: 1px solid #034F82;
+	border-radius: 2px;
+	color: #ccc;
+	cursor: pointer;
+	float: right;
+	margin-top:-2px;
+	margin-bottom:0px;
+	margin-left: 1px;
+	padding-top:6px;
+	padding-left:6px;
+	padding-right:6px;
+	padding-bottom: 6px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #000;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+}
+
+.wgt-AnchorWImpl.selected,.wgt-AnchorWImpl:hover {
+	background: #034F82;
+	background: -moz-linear-gradient(top, #034F82 25%, #999 50%);
+	border-color: #034F82;
+	text-shadow: 0 1px 0 #034F82;
+	color: #fff;
+
+}
+
+/*BarWidget*/
+
+table.wgt-BarWidgetImpl{
+	width:100%;
+}
+
+.wgt-BarWidgetImpl .left {
+	float : left;
+}
+
+.wgt-BarWidgetImpl .right {
+	padding-right:10px;
+	float : right;/*text-align not work?*/	
+	
+}
+
+.wgt-BarWidgetImpl .wgt-ItemView {
+	
+}
+.wgt-BossView table{
+	width : 100%;
+}
+.wgt-BossView td{
+	vertical-align:top;
+}
+.wgt-BossView .position-top{
+	
+}
+.wgt-BossView td.position-left{
+	width:166px;
+}
+
+.wgt-BossView td.position-center{
+	padding-left : 15px;
+	width:60%;
+}
+
+.wgt-BossView td.position-right{
+	
+}
+
+.wgt-BossView .position-bottom{
+	font-size: 9px;
+	border-top:1px solid white;
+	text-align:center;
+}
+
+/**
+Console View
+**/
+.wgt-ConsoleView {
+	height: 300px;
+	width: 600px;
+	overflow-x: scroll;
+	overflow-y: scroll;
+	border-radius: 2px;
+	box-shadow: inset 3px 3px 5px #000;
+}
+
+.wgt-ConsoleView table {
+	margin: 3px;
+	color: green;
+	background-color: #000;
+	padding: 3px;
+	border: 0px;
+	font-weight: bold;
+}
+
+.wgt-ConsoleView td {
+	white-space: nowrap;
+	border-bottom: 1px solid #ccc;
+}
+
+.wgt-ErrorInfosWidgetImpl {
+	color: red;
+	white-space: nowrap;
+	width:200px;
+	overflow:hidden;
+}
+
+.wgt-ErrorInfosWidgetImpl.adjusted-ext {
+	overflow : visible;
+}
+
+/*FormView*/
+/*Let the column of title to align right*/
+.wgt-FormView .wgt-LabelImpl {
+	float: right;
+}
+
+/*HeaderView*/
+.wgt-HeaderView {
+	background-color: #034F82;
+	width: 100%;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+	padding: 0px 0px;
+}
+
+/*Label*/
+.wgt-LabelImpl {
+	
+}
+
+/**/
+.wgt-ManagersView {
+	margin-top : 50px;
+}
+
+.wgt-ManagersView td {
+	vertical-align: top;
+}
+
+.wgt-ManagersView .position-left {
+	width: 1%;
+}
+
+.wgt-ManagersView .position-right {
+	width: 1%;
+}
+
+.wgt-ManagersView .position-topLeft {
+	width: 1%;
+	height: 1px;
+}
+
+/**/
+.position-left .wgt-ManagerView {
+	margin-left:10px;
+	margin-top:10px;
+	padding-top:10px;
+	padding-left : 10px;
+}
+
+/*Menu*/
+.wgt-MenuWImpl {
+	background-color: #fff;
+	border: 1px solid #CCC;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+	margin-top: 0px;
+	font-weight: bold;
+	position : absolute;
+}
+
+.wgt-MenuWImpl ul {
+	list-style: none;
+	margin: 2px 0;
+	padding-left: 0;
+	background-color: #fff;
+}
+
+.wgt-MenuWImpl .wgt-MenuItemWImpl {
+	
+	border-width: 0;
+	border-radius: 0;
+	color: #034F82;
+	cursor: pointer;
+	display: inline-block;
+	float: none;
+	height: auto;
+	padding: 3px 3px;
+	position: static;
+	text-decoration: none;
+	text-indent: 3px;
+	white-space: nowrap;
+	width: auto;
+	text-shadow: 0 0px 0 #000;
+}
+
+.wgt-MenuWImpl li:hover,.wgt-MenuWImpl li:focus,.wgt-MenuItemWImpl:hover
+	{
+	background: #4BA1DE;
+	color: #fff;
+}
+
+.wgt-PropertiesEditorImpl .position-left {
+	float:none;
+	align:right;
+}
+
+.wgt-PropertiesEditorImpl .position-right {
+	float:none;
+	align:left;
+}
+
+.wgt-StackWImpl .wgt-PanelWImpl.position-unselected {
+	display: none;
+}
+
+.wgt-StackWImpl .position-selected {
+	display: block;
+}
+
+/*Tab*/
+.wgt-TabberWImpl .position-header {
+	border-bottom: 1px solid #888;
+	padding: 0px;
+}
+
+.wgt-TabWImpl {
+	background: -moz-linear-gradient(top, #eee 100%, #fff 100%);
+	/* FF3.6+ */
+	background-color: #fff;
+	border-top-left-radius: 1px;
+	border-top-right-radius: 1px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-bottom: 0px;
+	cursor: pointer;
+	float: left;
+	font-weight: bold;
+	margin-left: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 2px;
+	padding-bottom: 0px;
+}
+
+.wgt-TabWImpl.position-selected,.wgt-TabWImpl:hover {
+	background: -moz-linear-gradient(top, #eee 0%, #ccc 100%); /* FF3.6+ */
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #ccc;
+	box-shadow: 0px 2px 0px #ccc;
+	font-weight: bold;
+	margin-bottom: 1px;
+}
+
+.wgt-TabWImpl.position-unselected {
+	border-left: 0px solid #ccc;
+	border-right: 0px solid #ccc;
+	border-top: 0px solid #ccc;
+	border-bottom: 0px;
+}
+
+/*End of CSS file*/

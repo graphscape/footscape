@@ -1,0 +1,187 @@
+>.required tools
+	>>.git for version control
+	>>.ivyDE for dev in eclipse
+	>>.ant for building
+	>>.gwt sdk
+		http://code.google.com/p/google-web-toolkit/downloads/list
+	
+	
+>.prepare enviroment
+	>>.setting env var: 
+		export FS_BUILD_HOME=<somedir>/fs
+	>>.setting env var: 
+		export FS_BUILDING=$FS_BUILDING_HOME/fs-building
+	>>.setting env var(Optional,only for fs-filesystem module):
+		export FS_FILESYSTEM=hdfs://<host>:<port>
+	>>.	
+	>>.mkdir $FS_BUILD_HOME/fs
+	>>.clone fs-building project
+		git clone <the bf-building git url>
+	>>.clone special project
+		git clone <the specific git url>
+	>>.cd bf-building for building all modules.
+	>>.ant 		
+>.prepare runtime env(or for testing).
+	>>.Install 3rd party soft ware:
+		>>>.James Mail Server:
+			>>>>.download zip or tar
+				http://james.apache.org/server/3/quick-start.html
+				unzip to a folder
+			>>>>.start server:
+				# cd apache-james-3.0-beta4/bin
+				# ./james start
+				
+			>>>>.run as service in linux:
+				# sudo ln -s <yourfolder>/apache-james-3.0-beta4/bin/james /etc/init.d/james
+				# update-rc.d james defaults
+			
+		>>>.Active MQ (optional, for correlation)
+			
+		>>>.Neo4j server :
+			>>>>.Download:
+				http://neo4j.org/download
+			>>>>.Server guide:
+				http://docs.neo4j.org/chunked/stable/server.html
+			>>>>.Tools:
+				http://docs.neo4j.org/chunked/stable/tools.html
+	>>.Passwordless ssh(Admin module use this, e.g. current user ssh to the neo4j server)
+		To run dbclient test,which will exec command to clean db 
+		>>.Generate kaypair in client host:
+			ssh-keygen -t rsa
+		>>.Append the public key to server host:
+			cat .ssh/id_rsa.pub | ssh b@B 'cat >> .ssh/authorized_keys'
+		>>.ssh-add id_rsa
+	>>.Env config:
+		>>>.mkdir $HOME/.fs/env
+		>>>.copy $FS_BUILDING/template-config/* $HOME/.fs/env
+		>>>.update the config with your value.
+				
+>.build guide in $FS_BUILDING dir
+		
+	>>git operation with ant
+		# ant git-pull
+		# ant git-push
+		
+	>>generate a new project directory with template,
+		below command will generated a dir structure in target/bf-<module-name>
+		# ant create -Dmodule=<module-name>	
+	>>test:
+		# ant test -Dopen=	
+>.other guide
+	>>.git password setting:
+		vi <project>/.git/conf
+		set the password in url like,http://username:password@bitbucket.org/....			
+	>>.eclipse:
+		>>>make sure ivyDE installed
+		>>>generate setting file 
+			cd $FS_BUILDING
+			ant eclilpse
+			ls ivy/ivysettings.for.ivyde.xml
+		>>>config ivyDE:
+			setting the global ivy setting file,not user project specific ivy settting:
+			file:/${env_var:FS_BUILD_HOME}/fs-building/ivy/ivysettings.for.ivyde.xml
+		>>>add ivy library:	
+			right click on ivy.xml
+			select:Add Ivy Library...
+			click finish
+		>>>Install Freemarker Editor(optional):
+			http://hjzhao.blogspot.com/2011/05/install-freemarker-eclipse-plugin.html
+			http://download.jboss.org/jbosstools/updates/stable/helios/
+				
+>.hadoop config:
+	>>.download 2.0.0, unzip it 
+	>>.config 
+		# vi $HADOOP_HOME/etc/hadoop/core-site.xml
+			<configuration>
+			  <property>
+			    <name>fs.default.name</name>
+			    <value>hdfs://localhost:9000</value>
+			  </property>
+			  <property>
+			    <name>mapred.job.tracker</name>
+			    <value>hdfs://localhost:9001</value>
+			  </property>
+			  <property>
+			    <name>dfs.replication</name>
+			    <value>1</value>
+			  </property>
+			</configuration>					
+	>>.default dir:
+		/tmp/hadoop-<user>/dfs/name
+		/tmp/hadoop-<user>/dfs/data		
+	>>.format fs
+		# $HADOOP_HOME/bin/hdfs namenode -format
+	>>.start name node	
+		# sbin/hadoop-daemon.sh start namenode		
+	>>.start data node
+		# sbin/hadoop-daemon.sh start datanode
+>.jsvc:
+	>>.apt-get install jsvc
+	>>.or build from source:
+		http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.10-native-src.tar.gz
+>.dev tools:
+	>>.Json editor:
+		http://sourceforge.net/projects/eclipsejsonedit/files/
+					
+>.reference code:
+	>>.Spring Data for Neo4j
+		git clone https://github.com/SpringSource/spring-data-neo4j.git
+	>>.			
+>.useful links
+	>>maven central repo
+		http://search.maven.org/#browse	 
+		http://ant.apache.org/manual/index.html
+	>>Json:
+		
+	>>REST:
+		http://www.vogella.com/articles/REST/article.html
+		http://blogs.steeplesoft.com/2012/01/a-jersey-pojomapping-clientserver-example/
+	>>Ant contrib:
+		http://ant-contrib.sourceforge.net/ant-contrib/manual/tasks/
+	>>GWT REST
+		http://restygwt.fusesource.org/documentation/restygwt-user-guide.html		
+	>>Spring jms:
+		http://static.springsource.org/spring/docs/2.0.7/reference/jms.html	
+	>>.http://www.winslam.com/laramee/jms/index.html
+	>>.Hadoop:
+		>>>.Quick start:
+			http://hadoop.apache.org/common/docs/r0.17.2/quickstart.html
+		>>>.2.0.0
+			http://slaytanic.blog.51cto.com/2057708/885198
+		>>>.HDFS Tutorial 
+			http://developer.yahoo.com/hadoop/tutorial/module2.html
+		>>>.Tutorial
+			http://www.michael-noll.com/tutorials/running-hadoop-on-ubuntu-linux-single-node-cluster/		
+	>>.XMPP
+		>>>.Tigas
+			
+			https://projects.tigase.org/projects/tigase-server/files
+		>>>.Jaber client:
+			http://www.pidgin.im/download/ubuntu/
+		>>>.gwt xmpp
+			https://github.com/EmiteGWT/emite
+>.building tigase:
+	>>.Generate .pem:http://www.sslshopper.com/article-most-common-openssl-commands.html
+		>>>.Generate pk and cert request 
+			openssl req -out CSR.csr -new -newkey rsa:2048 -nodes -keyout privateKey.key
+		>>>.Generate self signed cert:
+			openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
+		>>>.Convert cert to pem format
+					
+>.usefull command
+		git commit -a -m ''
+		git push
+	>>.Hdfs command:
+		# hdfs dfs -ls /
+		# hdfs dfs -mkdir /testdir
+		# hdfs dfs -put file.txt /testdir/file.txt
+	>>.
+>>.gwt related
+webAppCreator -out fooApp -junit $HOME/.ivy2/cache/junit/junit/jars/junit-4.8.2.jar com.example.foo.Foo
+>.troubles 
+	>>.eclipse running gwt test:
+		>>>.Detected warnings related to 'com.google.gwt.editor.client.SimpleBeanEditorDriver'.   Are validation-api-<version>.jar and validation-api-<version>-sources.jar on the classpath?
+		>>>.ivyDE>Settings>ClassPath>Accepted Type:and "source" type  
+	>>. run test: 
+		>>>.com.sun.jersey.api.container.ContainerException: No WebApplication provider is present
+		>>>.Check the classpath,make sure the jersey-server-xxx.jar has same version with other jersey-yyy.jar

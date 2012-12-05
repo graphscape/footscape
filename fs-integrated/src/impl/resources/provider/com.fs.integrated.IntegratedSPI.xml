@@ -1,0 +1,10 @@
+
+<config>
+
+	<config name="WebApp.INTEGRATED" context.path="/integrated" />
+	<!-- TODO package when build -->
+	<config name="webResource.integrated" format="zip" url="classpath:com.fs.integrated.gwt.Integrated.jar">
+		<name value="integrated" />
+	</config>
+
+</config>

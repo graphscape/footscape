@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [
+	<!ENTITY common.build SYSTEM "../fs-building/common-files/common.build.xml">
+]>
+
+<project name="fs-integrated" default="publish" xmlns:ivy="antlib:org.apache.ivy.ant">
+	 &common.build;
+	
+	<target name="binary" depends="package">
+		<!-- -->
+		<zip destfile="${dir.target}/fs-bin-${revision}.zip" basedir="${dir.src}/impl/dist">
+			<zipfileset dir="${dir.target}/runtime/lib" excludes="commons-daemon-*.jar" prefix="lib" />
+			<zipfileset dir="${dir.target}" includes="fs-integrated-api-${revision}.jar" prefix="bin" />
+			<zipfileset dir="${dir.target}" includes="fs-integrated-impl-${revision}.jar" prefix="bin" />
+			<zipfileset dir="${dir.target}/runtime/lib" includes="commons-daemon-*.jar" prefix="bin" />
+
+		</zip>
+	</target>
+	<target name="install" depends="binary">
+		<unzip src="${dir.target}/fs-bin-${revision}.zip" dest="${dir.target}/fs-bin-${revision}" />
+		<chmod file="${dir.target}/fs-bin-${revision}/bin/fs.sh" perm="700" />
+
+	</target>
+	<target name="start-binary" depends="install">
+		<exec executable="jsvc">
+			<arg value="start" />
+		</exec>
+
+	</target>
+</project>

@@ -1,0 +1,5 @@
+<config>
+	<property name="pname1" value="pvalue1-in-xml" />
+	<property name="pname4" value="$alias4" />
+	<property name="pname5" value="$alias5" />
+</config>

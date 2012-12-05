@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='gwtcc'>
+
+	<inherits name='com.fs.uicore.api.gwt.UiCoreApi' />
+	
+	<inherits name='com.fs.uicommons.api.gwt.UiCommonsApi' />
+
+	<source path='client' />
+
+</module>

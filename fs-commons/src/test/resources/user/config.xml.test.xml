@@ -1,0 +1,36 @@
+
+<!-- Do not input id for the first config element -->
+
+<config>
+
+	<property name="pname0" value="pvalue0" />
+
+	<pname1 value="pvalue1" />
+	<pname2 value="pvalue2" />
+
+	<config name="sub1.config1" pname1="pvalue1" pname2="pvalue2">
+		<property name="pname3" value="pvalue3" />
+		<pname4 value="pvalue4" />
+
+	</config>
+	<config name="sub1.config2">
+		<pname5 value="pvalue5" />
+		<config name="sub2.config1">
+			<pname6 value="pvalue6" />
+		</config>
+	</config>
+	<config name="sub1.config3">
+		<prefix name="sub2">
+			<pname7 value="pvalue7" />
+			<config name="config1" property="pname8">
+				<pname9 value="pvalue9" />
+			</config>
+		</prefix>
+		<property name="pname10">
+			<![CDATA[
+				pvalue10 of long text
+			]]>
+		</property>
+	</config>
+
+</config>

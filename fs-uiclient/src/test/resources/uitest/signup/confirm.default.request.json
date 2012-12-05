@@ -1,0 +1,6 @@
+["_O",
+	{
+		"email":["_S","user1@some.com"],
+		"confirmCode":["_S","confirm-001"],
+	}
+]

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	
+	<inherits name="com.google.gwt.dom.DOM" />
+	
+	<inherits name='com.fs.uicore.api.gwt.UiCoreApi' />
+
+	<inherits name='com.fs.uicommons.api.gwt.UiCommonsApi' />
+
+	<source path='client' />
+
+</module>

@@ -1,0 +1,406 @@
+/**
+ * All right is from Author of the file,to be explained in comming days.
+ * Oct 27, 2012
+ */
+package com.fs.dataservice.core.impl.elastic.operations;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHitField;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortOrder;
+
+import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.ErrorInfo;
+import com.fs.commons.api.value.ErrorInfos;
+import com.fs.commons.api.value.PropertiesI;
+import com.fs.dataservice.api.core.DataServiceI;
+import com.fs.dataservice.api.core.NodeI;
+import com.fs.dataservice.api.core.NodeType;
+import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.support.OperationSupport;
+import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+import com.fs.dataservice.core.impl.elastic.ElasticClientI;
+import com.fs.dataservice.core.impl.elastic.SearchHitNode;
+
+/**
+ * @author wu
+ * 
+ */
+public class NodeQueryOperationE<W extends NodeWrapper> extends
+		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements
+		NodeQueryOperationI<W> {
+
+	private static class Range {
+		String name;
+		Object from;
+		boolean includeFrom;
+		Object to;
+		boolean includeTo;
+	}
+
+	private static class Sort {
+		private String field;
+		private SortOrder order;
+	}
+
+	private static final String PK_NODETYPE = "nodeType";
+
+	private static final String PK_WRAPPER_CLS = "wrapperClass";
+
+	private static final String PK_TERMS_EQUAL = "termsEquals";
+
+	private static final String PK_TERMS_RANGES = "termsRanges";
+
+	protected List<Sort> sortList = new ArrayList<Sort>();
+
+	private ElasticClientI elastic;
+
+	protected NodeConfig nodeConfig;
+
+	/**
+	 * @param ds
+	 */
+	public NodeQueryOperationE(DataServiceI ds) {
+		super(new NodeQueryResult<W>(ds));
+		this.elastic = (ElasticClientI) ds;
+		this.parameters.setProperties(PK_TERMS_EQUAL,
+				new MapProperties<Object>());
+		this.parameters.setProperties(PK_TERMS_RANGES,
+				new MapProperties<Range>());
+	}
+
+	/*
+	 * Oct 27, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> nodeType(NodeType ntype) {
+
+		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
+				ntype, true);
+		this.nodeType(nc);
+
+		return this;
+	}
+
+	/*
+	 * Oct 27, 2012
+	 */
+	@Override
+	protected void executeInternal(NodeQueryResultI<W> rst) throws Exception {
+		Client client = elastic.getClient();
+		BoolQueryBuilder qb = new BoolQueryBuilder();
+		NodeType ntype = this.getNodeType(true);// type is must.
+		String uid = this.getUniqueId();
+		// types
+		String typeS = ntype.toString();
+		if (uid != null) {// id must under type.
+			IdsQueryBuilder qb1 = new IdsQueryBuilder(typeS);//
+
+			// ids
+			qb1.addIds(uid);//
+			qb.must(qb1);
+		}
+		// type field
+		TermQueryBuilder typeQ = new TermQueryBuilder(NodeI.PK_TYPE, typeS);// NOTE,NodeType
+																			// is
+																			// not
+																			// string,cannot
+																			// query
+																			// out.
+		qb.must(typeQ);
+		// fields equals
+		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters
+				.getProperty(PK_TERMS_EQUAL);
+
+		this.validateKeyIsConfigedInType(ntype, tes.keyList(),
+				rst.getErrorInfo());
+		if (rst.hasError()) {
+			return;
+		}
+		for (String key : tes.keyList()) {
+			Object value = tes.getProperty(key);
+			TermQueryBuilder qbi = new TermQueryBuilder(key, value);
+			qb.must(qbi);//
+		}
+		// end of equals
+		// ranges
+		PropertiesI<Range> rgs = (PropertiesI<Range>) this.parameters
+				.getProperty(PK_TERMS_RANGES);
+
+		this.validateKeyIsConfigedInType(ntype, rgs.keyList(),
+				rst.getErrorInfo());
+		if (rst.hasError()) {
+			return;
+		}
+		for (String key : rgs.keyList()) {
+			Range rg = rgs.getProperty(key);
+			RangeQueryBuilder qbi = new RangeQueryBuilder(key);
+			qbi.from(rg.from);
+			qbi.to(rg.to);
+			qb.must(qbi);//
+		}
+
+		// end of ranges
+		SearchRequestBuilder srb = client.prepareSearch()
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)//
+				.setQuery(qb)//
+				.setFrom(this.getFrom())//
+				.setSize(this.getMaxSize())//
+				.setExplain(true)//
+		;
+		for (Sort s : this.sortList) {
+			srb.addSort(s.field, s.order);
+		}
+		SearchResponse response = srb.execute()//
+				.actionGet();
+		SearchHits shs = response.getHits();
+		List<W> nL = new ArrayList<W>();
+		for (SearchHit sh : shs.getHits()) {
+			Map<String, SearchHitField> shMap = sh.getFields();
+
+			SearchHitNode shn = new SearchHitNode(ntype, this.dataService, sh);
+			W w = (W) this.nodeConfig.newWraper();
+			w.forOp(this.dataService);// NOTE
+			w.attachTo(shn);
+			nL.add(w);
+		}
+		rst.set(nL);//
+	}
+
+	/**
+	 * Nov 3, 2012
+	 */
+	private void validateKeyIsConfigedInType(NodeType ntype,
+			List<String> keyList, ErrorInfos errorInfo) {
+		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
+				ntype, true);
+		for (String k : keyList) {
+			if (null == nc.getField(k, false)) {
+				errorInfo.add(new ErrorInfo("no field:" + k + ",in type:"
+						+ ntype));
+			}
+		}
+	}
+
+	/**
+	 * Oct 27, 2012
+	 */
+	@Override
+	public NodeType getNodeType(boolean force) {
+		//
+		return (NodeType) this.getParameter(PK_NODETYPE, force);
+	}
+
+	@Override
+	public NodeQueryOperationI<W> propertyEq(String key, Object value) {
+		//
+		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters
+				.getProperty(PK_TERMS_EQUAL);
+		tes.setProperty(key, value);
+		return this;
+	}
+
+	@Override
+	public NodeQueryOperationI<W> propertyGt(String key, Object value,
+			boolean include) {
+		//
+		Range rg = this.getOrCreateRange(key);
+		rg.from = value;
+		rg.includeFrom = include;
+		return this;
+	}
+
+	public Range getOrCreateRange(String key) {
+		PropertiesI<Range> tes = (PropertiesI<Range>) this.parameters
+				.getProperty(PK_TERMS_RANGES);
+
+		Range rt = tes.getProperty(key);
+		if (rt == null) {
+			rt = new Range();
+			rt.name = key;
+			tes.setProperty(key, rt);
+		}
+		return rt;
+
+	}
+
+	@Override
+	public NodeQueryOperationI<W> propertyLt(String key, Object value,
+			boolean include) {
+		Range rg = this.getOrCreateRange(key);
+		rg.to = value;
+		rg.includeTo = include;
+		return this;
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> uniqueId(String uid) {
+		this.parameter(NodeI.PK_UNIQUE_ID, uid);
+		return this;
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public String getUniqueId() {
+		//
+		return (String) this.parameters.getProperty(NodeI.PK_UNIQUE_ID);
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> first(int from) {
+		//
+		this.parameter("first", from);
+		return this;
+
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> maxSize(int maxs) {
+		this.parameter("maxSize", maxs);
+		return this;
+
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public int getFrom() {
+		//
+		Integer rt = (Integer) this.parameters.getProperty("first");
+		return rt == null ? 0 : rt;
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public int getMaxSize() {
+		Integer rt = (Integer) this.parameters.getProperty("maxSize");
+		return rt == null ? 100 : rt;
+	}
+
+	/*
+	 * Oct 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> id(String id) {
+		//
+		return this.propertyEq(NodeI.PK_ID, id);
+	}
+
+	/*
+	 * Nov 14, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> sort(String key) {
+		//
+		return this.sort(key, false);
+	}
+
+	/*
+	 * Nov 14, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> sort(String key, boolean desc) {
+		//
+		Sort sort = new Sort();
+		sort.field = key;
+		sort.order = desc ? SortOrder.DESC : SortOrder.ASC;
+		this.sortList.add(sort);
+		return this;
+	}
+
+	/*
+	 * Nov 14, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> sortTimestamp(boolean desc) {
+		//
+		return this.sort(NodeI.PK_TIMESTAMP, desc);
+
+	}
+
+	/*
+	 * Nov 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> singleNewest(boolean nf) {
+		//
+		this.first(0);
+		this.maxSize(1);
+		this.sortTimestamp(true);//
+		return this;
+	}
+
+	/*
+	 * Nov 28, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> nodeType(Class<W> cls) {
+		//
+		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(cls,
+				true);
+		this.nodeType(nc);
+		return this;
+	}
+
+	/**
+	 * Nov 28, 2012
+	 */
+	private void nodeType(NodeConfig nc) {
+		this.parameter(PK_NODETYPE, nc.getNodeType());
+		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());
+		this.nodeConfig = nc;
+	}
+
+	/*
+	 * Dec 4, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> timestampRange(Date from,
+			boolean includeFrom, Date to, boolean includeTo) {
+		//
+		this.propertyRange(NodeI.PK_TIMESTAMP, from, includeFrom, to, includeTo);
+		return this;
+	}
+
+	/*
+	 * Dec 4, 2012
+	 */
+	@Override
+	public NodeQueryOperationI<W> propertyRange(String key, Object from,
+			boolean includeFrom, Object to, boolean includeTo) {
+		//
+		this.propertyGt(key, from, includeFrom);
+		this.propertyLt(key, to, includeTo);//
+		return this;
+	}
+
+}

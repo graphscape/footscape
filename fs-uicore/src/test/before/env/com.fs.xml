@@ -1,0 +1,6 @@
+<config>
+	<config name="commons.impl.CommonsSPI.MAIL_SENDER">
+		<host value="localhost" />
+	</config>
+
+</config>

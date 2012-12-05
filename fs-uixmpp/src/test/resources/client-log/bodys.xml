@@ -1,0 +1,145 @@
+
+2012-08-23 15:23:05,734
+BoshBinding
+<body to="fstest.com" content="text/xml; charset=utf-8" cache="on" xmlns:xmpp="urn:xmpp:xbosh" rid="8697599"
+	hold="1" secure="true" xml:lang="en" xmlns="http://jabber.org/protocol/httpbind" xmpp:version="1.0" wait="30" />
+
+
+<body authid="fb54175e-e615-40b0-87ea-4b85cabe3772" from="fstest.com" xmlns="http://jabber.org/protocol/httpbind"
+	hold="1" xmlns:xmpp="urn:xmpp:xbosh" polling="10" maxpause="10" wait="30" ver="1.6" inactivity="10" requests="2"
+	secure="true" ack="8697599" xmpp:version="1.0" sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" xmlns:stream="http://etherx.jabber.org/streams" />
+
+2012-08-23 15:23:05,832
+BoshBinding
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697600" xmlns="http://jabber.org/protocol/httpbind" />
+
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697600" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<stream:features xmlns="jabber:client">
+		<ver xmlns="urn:xmpp:features:rosterver" />
+		<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+		<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+			<mechanism>PLAIN</mechanism>
+			<mechanism>ANONYMOUS</mechanism>
+		</mechanisms>
+		<register xmlns="http://jabber.org/features/iq-register" />
+		<auth xmlns="http://jabber.org/features/iq-auth" />
+	</stream:features>
+</body>
+
+2012-08-23 15:23:10,088
+BoshBinding
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697601" xmlns="http://jabber.org/protocol/httpbind" />
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697601" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams" />
+
+2012-08-23 15:23:40,146
+Auth
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697602" xmlns="http://jabber.org/protocol/httpbind">
+	<auth mechanism="PLAIN" xmlns="urn:ietf:params:xml:ns:xmpp-sasl">dXNlcjFAZnN0ZXN0LmNvbQB1c2VyMQB1c2VyMQ==</auth>
+</body>
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697602" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" />
+</body>
+
+2012-08-23 15:23:40,270
+Ping
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697603" xmlns="http://jabber.org/protocol/httpbind" />
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697603" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams" />
+	
+2012-08-23 15:24:10,317
+Restart?
+<body to="fstest.com" sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" xmlns:xmpp="urn:xmpp:xbosh" rid="8697604"
+	xml:lang="en" xmlns="http://jabber.org/protocol/httpbind" from="user1@fstest.com" xmpp:restart="true" />
+	
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697604" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<stream:features xmlns="jabber:client">
+		<ver xmlns="urn:xmpp:features:rosterver" />
+		<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+		<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+		<register xmlns="http://jabber.org/features/iq-register" />
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" />
+	</stream:features>
+</body>
+
+2012-08-23 15:24:17,776
+BoshBinding
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697605" xmlns="http://jabber.org/protocol/httpbind" />
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697605" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams" />
+
+2012-08-23 15:24:47,820
+?????30 seconds later after the Restart?set 2 connection?server no message?
+ResourceBinding
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697606" xmlns="http://jabber.org/protocol/httpbind">
+	<iq xmlns="jabber:client" id="Wui3j" type="set">
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+			<resource>testing</resource>
+		</bind>
+	</iq>
+</body>
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="8697606" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<iq type="result" to="user1@fstest.com/testing" id="Wui3j" xmlns="jabber:client">
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+			<jid>user1@fstest.com/testing</jid>
+		</bind>
+	</iq>
+</body>
+
+
+2012-08-23 15:24:58,857
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697607" xmlns="http://jabber.org/protocol/httpbind" />
+<body xmlns="http://jabber.org/protocol/httpbind" type="error">
+	<error code="404" type="cancel">
+		<item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" />
+		<text xml:lang="en" xmlns="urn:ietf:params:xml:ns:xmpp-stanzas">Invalid SID</text>
+	</error>
+</body>
+2012-08-23 15:24:58,907
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697608" xmlns="http://jabber.org/protocol/httpbind">
+	<iq id="Muu36" type="get">
+		<query xmlns="jabber:iq:roster" />
+	</iq>
+</body>
+<body xmlns="http://jabber.org/protocol/httpbind" type="error">
+	<error code="404" type="cancel">
+		<item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" />
+		<text xml:lang="en" xmlns="urn:ietf:params:xml:ns:xmpp-stanzas">Invalid SID</text>
+	</error>
+</body>
+Thu Aug 23 15:24:58
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697609" xmlns="http://jabber.org/protocol/httpbind">
+	<presence />
+</body>
+<body xmlns="http://jabber.org/protocol/httpbind" type="error">
+	<error code="404" type="cancel">
+		<item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" />
+		<text xml:lang="en" xmlns="urn:ietf:params:xml:ns:xmpp-stanzas">Invalid SID</text>
+	</error>
+</body>
+
+Thu Aug 23 15:24:58
+<body sid="628a8db9-cf80-482d-8db2-a0fde599b6ed" rid="8697610" xmlns="http://jabber.org/protocol/httpbind">
+	<message to="user2@fstest.com" id="ivctj" xmlns="jabber:client" type="normal">
+		<body>hello,this is tester1.</body>
+	</message>
+</body>
+<body xmlns="http://jabber.org/protocol/httpbind" type="error">
+	<error code="404" type="cancel">
+		<item-not-found xmlns="urn:ietf:params:xml:ns:xmpp-stanzas" />
+		<text xml:lang="en" xmlns="urn:ietf:params:xml:ns:xmpp-stanzas">Invalid SID</text>
+	</error>
+</body>
+	
+	
+	
+	
+	
+	
+	
+	
+	

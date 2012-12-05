@@ -1,0 +1,5 @@
+<config>
+	
+	<refresh.interval value="30S"/>
+	
+</config>

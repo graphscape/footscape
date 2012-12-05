@@ -1,0 +1,25 @@
+<config>
+	<!-- See:XxxTestSPI -->
+	<!-- Client init -->
+	<prefix name="round.0">
+
+		<config name="config" property="config" path="/uiserver/client/init" requestFtl="uitest/client/init.1.req.ftl"
+			expectedResponseFtl="uitest/client/init.1.res.ftl" />
+
+	</prefix>
+	<!-- Submit failed test -->
+	<prefix name="round.1">
+
+		<config name="config" property="config" path="/uiserver/signon/submit" requestFtl="uitest/login/submit.1.req.ftl"
+			expectedResponseFtl="uitest/login/submit.1.res.ftl" />
+
+	</prefix>
+	<!-- Submit success test -->
+	<prefix name="round.2">
+
+		<config name="config" property="config" path="/uiserver/signon/submit" requestFtl="uitest/login/submit.2.req.ftl"
+			expectedResponseFtl="uitest/login/submit.2.res.ftl" />
+
+	</prefix>
+	
+</config>

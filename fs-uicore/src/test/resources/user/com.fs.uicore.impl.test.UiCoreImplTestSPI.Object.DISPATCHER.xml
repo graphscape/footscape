@@ -1,0 +1,20 @@
+
+<config>
+	<prefix name="handler.echo">
+		<class value="com.fs.uicore.impl.test.handler.EchoHandler" />
+
+	</prefix>
+	<config name="handler.echo">
+		<property name="pattern" value="/handler1/.*" />
+		<property name="priority" value="2" />
+	</config>
+
+	<prefix name="handler.error">
+		<class value="com.fs.uicore.impl.test.handler.ErrorTestHandler" />
+
+	</prefix>
+	<config name="handler.error">
+		<property name="pattern" value="/handler2/.*" />
+		<property name="priority" value="3" />
+	</config>
+</config>

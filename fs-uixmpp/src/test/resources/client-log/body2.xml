@@ -1,0 +1,114 @@
+
+2012-08-23 16:01:48,992
+..BoshBind start
+======================================================================
+<body to="fstest.com" content="text/xml; charset=utf-8" cache="on" xmlns:xmpp="urn:xmpp:xbosh" rid="6349430"
+	hold="1" secure="true" xml:lang="en" xmlns="http://jabber.org/protocol/httpbind" xmpp:version="1.0" wait="30" />
+--SID	
+
+<body authid="cfa95b80-327f-4d9c-b0b0-2a2b6b82e75b" from="fstest.com" xmlns="http://jabber.org/protocol/httpbind"
+	hold="1" xmlns:xmpp="urn:xmpp:xbosh" polling="10" maxpause="10" wait="30" ver="1.6" inactivity="10" requests="2"
+	secure="true" ack="6349430" xmpp:version="1.0" sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" xmlns:stream="http://etherx.jabber.org/streams" />
+BoshBind
+2012-08-23 16:01:49,115
+======================================================================
+..<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349431" xmlns="http://jabber.org/protocol/httpbind" />
+
+Features
+--<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349431" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<stream:features xmlns="jabber:client">
+		<ver xmlns="urn:xmpp:features:rosterver" />
+		<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+		<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+			<mechanism>PLAIN</mechanism>
+			<mechanism>ANONYMOUS</mechanism>
+		</mechanisms>
+		<register xmlns="http://jabber.org/features/iq-register" />
+		<auth xmlns="http://jabber.org/features/iq-auth" />
+	</stream:features>
+</body>
+
+2012-08-23 16:01:49,226
+BoshBind
+======================================================================
+..<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349432" xmlns="http://jabber.org/protocol/httpbind" />
+Streams?
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349432" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams" />
+
+2012-08-23 16:02:19,281
+======================================================================
+Auth
+<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349433" xmlns="http://jabber.org/protocol/httpbind">
+	<auth mechanism="PLAIN" xmlns="urn:ietf:params:xml:ns:xmpp-sasl">dXNlcjFAZnN0ZXN0LmNvbQB1c2VyMQB1c2VyMQ==</auth>
+</body>
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349433" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" />
+</body>
+
+2012-08-23 16:02:19,412
+======================================================================
+Bosh
+<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349434" xmlns="http://jabber.org/protocol/httpbind" />
+Message
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349434" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<message to="user1@fstest.com" from="user2@fstest.com/thinkpad" xmlns="jabber:client" id="aad4a"
+		type="chat">
+		<body>dageage</body>
+		<active xmlns="http://jabber.org/protocol/chatstates" />
+	</message>
+</body>
+Thu Aug 23 16:02:22 CST 2012
+Restart?
+<body to="fstest.com" sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" xmlns:xmpp="urn:xmpp:xbosh" rid="6349435"
+	xml:lang="en" xmlns="http://jabber.org/protocol/httpbind" from="user1@fstest.com" xmpp:restart="true" />
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349435" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<stream:features xmlns="jabber:client">
+		<ver xmlns="urn:xmpp:features:rosterver" />
+		<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+		<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+		<register xmlns="http://jabber.org/features/iq-register" />
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" />
+	</stream:features>
+</body>
+
+2012-08-23 16:02:22,425
+
+<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349436" xmlns="http://jabber.org/protocol/httpbind" />
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349436" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<message to="user1@fstest.com" from="user2@fstest.com/thinkpad" xmlns="jabber:client" id="aad5a"
+		type="chat">
+		<body>geage</body>
+		<active xmlns="http://jabber.org/protocol/chatstates" />
+	</message>
+</body>
+Thu Aug 23 16:02:25
+<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349437" xmlns="http://jabber.org/protocol/httpbind">
+	<iq xmlns="jabber:client" id="y8aqa" type="set">
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+			<resource>testing</resource>
+		</bind>
+	</iq>
+</body>
+<body from="fstest.com" xmlns="http://jabber.org/protocol/httpbind" ack="6349437" secure="true"
+	xmpp:version="1.0" xmlns:xmpp="urn:xmpp:xbosh" xmlns:stream="http://etherx.jabber.org/streams">
+	<iq type="result" to="user1@fstest.com/testing" id="y8aqa" xmlns="jabber:client">
+		<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+			<jid>user1@fstest.com/testing</jid>
+		</bind>
+	</iq>
+</body>
+2012-08-23 16:02:34,761
+<body sid="0d220b01-3397-49f8-a3f9-2c2a47bb0266" rid="6349438" xmlns="http://jabber.org/protocol/httpbind" />
+
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,21 @@
+
+===
+add DateLabelI widget,use it in UserExpView
+===
+
+add SelectorI widget,use it in UserExpView
+
+===
+
+when click 'create' in uelist view:
+
+Caused by: com.fs.uicore.api.gwt.client.UiException: force:interface com.fs.uiclient.api.gwt.client.expe.ExpEditModelI/null in class:class com.fs.uiclient.impl.gwt.client.main.MainModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[class:class com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[class:class com.fs.uicommons.api.gwt.client.mvc.simple.SimpleActionModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[]], class:class com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[class:class com.fs.uicommons.api.gwt.client.mvc.simple.SimpleActionModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[], class:class com.fs.uicommons.api.gwt.client.mvc.simple.SimpleActionModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[], class:class com.fs.uicommons.api.gwt.client.mvc.simple.SimpleActionModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[], class:class com.fs.uicore.api.gwt.client.support.SimpleModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[], class:class com.fs.uicore.api.gwt.client.support.SimpleModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[], class:class com.fs.uicore.api.gwt.client.support.SimpleModel,path:class:class com.fs.uicore.api.gwt.client.commons.Path,names:[],childList:[]]]
+	at com.fs.uicore.api.gwt.client.support.UiObjectSupport.getChild(UiObjectSupport.java:176)
+	at com.fs.uicore.api.gwt.client.support.UiObjectSupport.getChild(UiObjectSupport.java:191)
+	at com.fs.uiclient.impl.gwt.client.uelist.OpenExpEditAP.processRequest(OpenExpEditAP.java:25)
+	at com.fs.uicommons.api.gwt.client.mvc.support.AbstractControl.processRequest(AbstractControl.java:234)
+	at com.fs.uicommons.api.gwt.client.mvc.support.AbstractControl.handleActionStateChanging(AbstractControl.java:127)
+	at com.fs.uicommons.api.gwt.client.mvc.support.AbstractControl$1.handle(AbstractControl.java:114)
+	at com.fs.uicommons.api.gwt.client.mvc.support.AbstractControl$1.handle(AbstractControl.java:1)
+	at com.fs.uicore.api.gwt.client.support.EventHandlerEntry.tryHandle(EventHandlerEntry.java:59)
+	... 30 more

@@ -1,0 +1,14 @@
+<ivy-module version="2.0">
+	<info organisation="commons-daemon" module="commons-daemon" revision="1.0.3" status="release"
+		publication="20120609113952" />
+	<configurations>
+		<conf name="master" />
+	</configurations>
+
+	<publications>
+		<artifact name="commons-daemon" type="jar" conf="master" ext="jar" />
+	</publications>
+	<dependencies>
+
+	</dependencies>
+</ivy-module>
