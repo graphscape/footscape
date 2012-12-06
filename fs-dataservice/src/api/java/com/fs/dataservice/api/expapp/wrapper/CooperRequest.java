@@ -16,6 +16,8 @@ public class CooperRequest extends AuthedNode {
 
 	public static final String EXP_ID1 = "expId1";
 
+	public static final String ACCOUNT_ID2 = "accontId2";
+
 	public static final String EXP_ID2 = "expId2";
 
 	/**
@@ -49,8 +51,16 @@ public class CooperRequest extends AuthedNode {
 	public static void config(NodeConfigurations cfs) {
 		AuthedNode.config(cfs
 				.addConfig(NodeTypes.COOPER_REQUEST, CooperRequest.class)
-				.field(EXP_ID1).field(EXP_ID2));
+				.field(EXP_ID1).field(EXP_ID2).field(ACCOUNT_ID2));
 
+	}
+
+	public void setAccountId2(String accId2) {
+		this.setProperty(ACCOUNT_ID2, accId2);
+	}
+
+	public String getAccountId2() {
+		return this.getPropertyAsString(ACCOUNT_ID2);
 	}
 
 }

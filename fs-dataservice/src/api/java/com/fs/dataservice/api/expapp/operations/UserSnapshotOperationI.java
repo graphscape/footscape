@@ -5,17 +5,21 @@
 package com.fs.dataservice.api.expapp.operations;
 
 import com.fs.dataservice.api.core.OperationI;
-import com.fs.dataservice.api.core.result.VoidResultI;
+import com.fs.dataservice.api.expapp.result.UserSnapshotResultI;
 
 /**
  * @author wu
  * 
  */
 public interface UserSnapshotOperationI extends
-		OperationI<UserSnapshotOperationI, VoidResultI> {
-	
+		OperationI<UserSnapshotOperationI, UserSnapshotResultI> {
+
 	public static final String PK_ACCOUNTID = "accountId";
+	
+	public static final String PK_REFRESH_FOR_SAVE = "refreshForSave";
 
 	public UserSnapshotOperationI accountId(String accId);
+	
+	public UserSnapshotOperationI refreshForSave(boolean ref);
 
 }

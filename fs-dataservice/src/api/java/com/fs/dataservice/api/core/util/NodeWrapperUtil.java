@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 
 /**
  * @author wu
@@ -21,6 +22,28 @@ public class NodeWrapperUtil {
 		for (W w : wl) {
 			PropertiesI<Object> pts = w.convert(from, force, to);
 			rt.add(pts);
+		}
+		return rt;
+	}
+
+	public static List<String> getIdList(List<? extends NodeWrapper> nwL) {
+		List<String> rt = new ArrayList<String>();
+		for (NodeWrapper nw : nwL) {
+			rt.add(nw.getId());//
+		}
+		return rt;
+	}
+
+	/**
+	 * Dec 6, 2012
+	 */
+	public static <T> List<T> getFieldList(List<? extends NodeWrapper> nwL,
+			String key) {
+		//
+		List<T> rt = new ArrayList<T>();
+		for (NodeWrapper nw : nwL) {
+			T vi = (T) nw.getProperty(key, true);
+			rt.add(vi);
 		}
 		return rt;
 	}

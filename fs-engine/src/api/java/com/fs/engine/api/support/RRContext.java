@@ -201,7 +201,7 @@ public class RRContext extends ContextSupport implements RRContextI {
 	@Override
 	public <T> T getPayload(Class<T> cls, String key, T def) {
 		//
-		Object rt = this.getPayload();
+		Object rt = this.getPayload(key);
 		if (rt == null) {
 			return def;
 		}

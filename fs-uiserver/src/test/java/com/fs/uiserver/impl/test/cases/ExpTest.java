@@ -33,7 +33,7 @@ public class ExpTest extends AuthedTestBase {
 
 		String cooperUid = this.client1.cooperRequest(expId1, expId2);
 
-		this.client2.cooperConfirm(cooperUid);
+		this.client2.cooperConfirm(cooperUid, true);
 
 		List<MockUserActivity> maL = this.client1.refreshActivity();
 		assertEquals("should be one activity created for client1", 1,

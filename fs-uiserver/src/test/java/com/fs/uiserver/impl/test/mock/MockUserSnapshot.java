@@ -4,6 +4,7 @@
  */
 package com.fs.uiserver.impl.test.mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,41 @@ import java.util.List;
  */
 public class MockUserSnapshot {
 
-	public List<String> activityIdList;
-	public List<String> expIdList;
-	public List<String> cooperRequestIdList;
-	public String accountId;
-	
+	private List<String> activityIdList = new ArrayList<String>();
+	private List<String> expIdList = new ArrayList<String>();
+	private List<String> cooperRequestIdList = new ArrayList<String>();
+	private String accountId;
+
+	public MockUserSnapshot(String accId) {
+		this.accountId = accId;
+	}
+
+	public List<String> getActivityIdList() {
+		return this.activityIdList;
+	}
+
+	public List<String> getExpIdList() {
+		return this.expIdList;
+	}
+
+	public List<String> getCooperRequestIdList() {
+		return this.cooperRequestIdList;
+	}
+
+	public String getAccountId() {
+		return this.accountId;
+	}
+
+	public void addActivityIdList(List<String> activityIds) {
+		this.activityIdList.addAll(activityIds);
+	}
+
+	public void addExpIdList(List<String> eL) {
+		this.expIdList.addAll(eL);
+	}
+
+	public void addCooperRequestIdList(List<String> crL) {
+		this.cooperRequestIdList.addAll(crL);
+	}
+
 }

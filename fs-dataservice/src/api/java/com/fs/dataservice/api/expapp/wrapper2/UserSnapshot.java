@@ -57,26 +57,28 @@ public class UserSnapshot extends NodeWrapper {
 
 	public List<String> getExpIdList() {
 		String csv = this.getPropertyAsString(PK_EXP_ID_CSV);
-		
+
 		return this.csvToList(csv);
 	}
+
 	public List<String> getActivityIdList() {
 		String csv = this.getPropertyAsString(PK_ACTIVITY_ID_CSV);
-		
+
 		return this.csvToList(csv);
 	}
+
 	public List<String> getCooperRequestIdList() {
 		String csv = this.getPropertyAsString(PK_COOPER_REQUEST_ID_CSV);
-		
+
 		return this.csvToList(csv);
 	}
-	
 
 	private List<String> csvToList(String csv) {
 		List<String> rt = new ArrayList<String>();
-		if (csv == null) {
+		if (csv == null || csv.length() == 0) {
 			return rt;
 		}
+
 		String[] arr = csv.split(",");
 
 		rt.addAll(Arrays.asList(arr));

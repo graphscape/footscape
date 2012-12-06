@@ -4,8 +4,8 @@
  */
 package com.fs.uiserver.impl.handler.usshot;
 
-import com.fs.dataservice.api.core.result.VoidResultI;
 import com.fs.dataservice.api.expapp.operations.UserSnapshotOperationI;
+import com.fs.dataservice.api.expapp.result.UserSnapshotResultI;
 import com.fs.dataservice.api.expapp.wrapper2.UserSnapshot;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
@@ -37,8 +37,8 @@ public class UserSnapshotHandler extends UiHandlerSupport {
 			us = this.getSnapshot(accId, true);
 		}
 
-		res.setPayload("expIdList", us.getActivityIdList());
-		res.setPayload("activityIdList", us.getExpIdList());
+		res.setPayload("activityIdList", us.getActivityIdList());
+		res.setPayload("expIdList", us.getExpIdList());
 		res.setPayload("cooperRequestIdList", us.getCooperRequestIdList());
 	}
 
@@ -50,12 +50,14 @@ public class UserSnapshotHandler extends UiHandlerSupport {
 
 	}
 
-	protected void snapshot(String accId) {
+	protected String snapshot(String accId) {
 		// (String) req.getPayload("accountId");
 		UserSnapshotOperationI uso = this.dataService
 				.prepareOperation(UserSnapshotOperationI.class);
 		uso.accountId(accId);
-		VoidResultI rst = uso.execute().getResult().assertNoError();
+		uso.refreshForSave(true);
+		UserSnapshotResultI rst = uso.execute().getResult().assertNoError();
+		return rst.get(true);//
 		//
 	}
 

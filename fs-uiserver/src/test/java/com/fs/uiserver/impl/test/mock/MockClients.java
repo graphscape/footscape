@@ -49,18 +49,18 @@ public class MockClients {
 
 	}
 
-	public void cooperRequest(int maxSize) {
+	public void cooperRequest(int maxSize, boolean refreshSnapshot) {
 		for (int i = 0; i < this.clients.length; i++) {
 
 			MockClient c1 = this.clients[i];
 			MockClient c2 = i == this.clients.length - 1 ? this.clients[0]
 					: this.clients[i + 1];
 
-			MockUserSnapshot us1 = c1.getUserSnapshot(true);
-			MockUserSnapshot us2 = c2.getUserSnapshot(true);
+			MockUserSnapshot us1 = c1.getUserSnapshot(refreshSnapshot);
+			MockUserSnapshot us2 = c2.getUserSnapshot(refreshSnapshot);
 
-			List<String> expList1 = us1.expIdList;
-			List<String> expList2 = us2.expIdList;
+			List<String> expList1 = us1.getExpIdList();
+			List<String> expList2 = us2.getExpIdList();
 
 			for (int j = 0; j < maxSize && j < expList1.size(); j++) {
 				String expId1 = expList1.get(j);
@@ -72,20 +72,31 @@ public class MockClients {
 
 	}
 
-	public void cooperConfirm(int maxSize) {
+	public void cooperConfirm(int maxSize, boolean refreshSnapshot, boolean findAct) {
 		for (int i = 0; i < this.clients.length; i++) {
 
 			MockClient c1 = this.clients[i];
 			MockClient c2 = i == this.clients.length - 1 ? this.clients[0]
 					: this.clients[i + 1];
 
-			MockUserSnapshot us1 = c1.getUserSnapshot(true);
+			MockUserSnapshot us1 = c1.getUserSnapshot(refreshSnapshot);
 
-			List<String> crIdL1 = us1.cooperRequestIdList;
-			for (String id : crIdL1) {
-				c1.cooperConfirm(id);
+			List<String> crIdL1 = us1.getCooperRequestIdList();
+			
+			for (int j = 0; j < maxSize; j++) {
+				String id = crIdL1.get(j);
+				c1.cooperConfirm(id,findAct);
 			}
+			//
 		}
+
+	}
+
+	/**
+	 * Dec 6, 2012
+	 */
+	public MockClient getClient(int i) {
+		return this.clients[i];
 
 	}
 

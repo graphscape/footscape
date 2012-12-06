@@ -183,10 +183,12 @@ public class MockClient {
 	/**
 	 * Nov 3, 2012
 	 */
-	public void cooperConfirm(String cooperId) {
+	public void cooperConfirm(String cooperId, boolean findAct) {
 		RequestI req = this.newRequest("/uiserver/cooper/confirm");
 
 		req.setPayload("cooperRequestId", cooperId);
+		
+		req.setPayload("useNewestActivityId", findAct);
 
 		ResponseI res = this.service(req);
 		res.assertNoError();
@@ -243,21 +245,20 @@ public class MockClient {
 	}
 
 	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
-		RequestI req = this.newRequest("/uiserver/snapshot/user");
+		RequestI req = this.newRequest("/uiserver/usshot/snapshot");
 		req.setPayload("refresh",forceRefresh);
 		ResponseI res = this.service(req);
 		
 		res.assertNoError();
 		
 		PropertiesI<Object> pts = res.getPayloads();
-		List<String> activityIds = (List<String>)pts.getProperty("activityIdList");
-		List<String> expIds = (List<String>)pts.getProperty("expIdList");
-		
-		MockUserSnapshot rt = new MockUserSnapshot();
-		rt.accountId = this.accountId;
-		rt.activityIdList = activityIds;
-		rt.expIdList = expIds;
-		
+		List<String> activityIds = (List<String>)pts.getProperty("activityIdList",true);
+		List<String> expIds = (List<String>)pts.getProperty("expIdList",true);
+		List<String> corrIds = (List<String>) pts.getProperty("cooperRequestIdList",true);
+		MockUserSnapshot rt = new MockUserSnapshot(this.accountId);
+		rt.addActivityIdList(activityIds);
+		rt.addExpIdList(expIds);
+		rt.addCooperRequestIdList( corrIds);
 		return rt;
 	}
 }
