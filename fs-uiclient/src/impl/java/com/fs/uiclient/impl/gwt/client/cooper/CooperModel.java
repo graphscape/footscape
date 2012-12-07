@@ -29,6 +29,7 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 		ControlUtil.addAction(this, CooperModel.A_REQUEST);
 		ControlUtil.addAction(this, CooperModel.A_CONFIRM);
 		ControlUtil.addAction(this, CooperModel.A_REFRESH);
+		
 
 	}
 
@@ -50,11 +51,8 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 		this.setValue(L_COOPERREQUEST_ID, crId);
 	}
 
-	/*
-	 * Dec 4, 2012
-	 */
 	@Override
-	public List<CooperRequestModel> getCooperRequestModelList() {
+	public List<CooperRequestModel> getIncomingCooperRequestModelList() {
 		//
 		return this.getChildList(CooperRequestModel.class);
 

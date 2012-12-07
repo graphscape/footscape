@@ -77,32 +77,42 @@ public class CooperConfirmOperationE extends
 			// TODO move this creating to other more reliable machanism
 
 			// relate activity with exp2,exp2's user create this activity.
-			this.linkExp2Activity(exp2, actId);
+			this.tryLinkExp2Activity(exp2, actId);
 
 		}
 		// relate activity with exp1,exp1 request for cooper and activity is
 		// allowed for his enter.
-		this.linkExp2Activity(exp1, actId);
+		this.tryLinkExp2Activity(exp1, actId);
 
 		// find the related activity to see if any?
 		// UserActivity
 
 	}
 
-	protected void linkExp2Activity(Expectation exp, String actId) {
-		ExpActivity ea = new ExpActivity().forCreate(this.dataService);
-		ea.setAccountId(exp.getAccountId());
-		ea.setActivityId(actId);
-		ea.setExpId(exp.getId());//
-		ea.save(true);// Note the last one is refresh
-		// query the user's activity list,update the link
-
-		// TODO duplicated entry:
-		UserActivity ua = new UserActivity().forCreate(this.dataService);
-		ua.setAccountId(exp.getAccountId());// the exp's user
-		ua.setActivityUid(actId);
-		ua.save(true);
-
+	protected void tryLinkExp2Activity(Expectation exp, String actId) {
+		ExpActivity oldEa = this.dataService.getNewest(ExpActivity.class,
+				new String[] { ExpActivity.PK_EXP_ID,
+						ExpActivity.PK_ACTIVITY_ID },
+				new Object[] { exp.getId(), actId }, false);
+		if (oldEa == null) {
+			ExpActivity ea = new ExpActivity().forCreate(this.dataService);
+			ea.setAccountId(exp.getAccountId());
+			ea.setExpId(exp.getId());//
+			ea.setActivityId(actId);
+			ea.save(true);// Note the last one is refresh
+			// query the user's activity list,update the link
+		}
+		UserActivity oldUa = this.dataService.getNewest(UserActivity.class,
+				new String[] { UserActivity.PK_ACCOUNT_ID,
+						UserActivity.PK_ACTIVITY_ID },
+				new Object[] { exp.getAccountId(), actId }, false);
+		if (oldUa == null) {
+			// TODO duplicated entry:
+			UserActivity ua = new UserActivity().forCreate(this.dataService);
+			ua.setAccountId(exp.getAccountId());// the exp's user
+			ua.setActivityId(actId);
+			ua.save(true);
+		}
 	}
 
 	/*

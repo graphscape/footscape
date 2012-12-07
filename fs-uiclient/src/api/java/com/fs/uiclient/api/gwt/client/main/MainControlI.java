@@ -20,7 +20,7 @@ public interface MainControlI extends ControlI {
 	public static String LZ_CHATROOMS = "chatRoomsLazyMvc";
 	public static String LZ_ACTIVITIES = "activitiesLazyMvc";
 	public static String LZ_COOPER = "cooperLazyMvc";
-	
+	public static String LZ_USERSNAPSHOT = "userSnapshotLazyMvc";
 	
 	
 }

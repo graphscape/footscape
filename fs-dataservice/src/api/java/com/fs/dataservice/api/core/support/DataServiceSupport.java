@@ -4,6 +4,7 @@
  */
 package com.fs.dataservice.api.core.support;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,15 +88,17 @@ public abstract class DataServiceSupport extends ConfigurableSupport implements
 	 * Oct 30, 2012
 	 */
 	@Override
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls) {
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(
+			Class<W> cls) {
 		NodeQueryOperationI<W> rt = this
 				.prepareOperation(NodeQueryOperationI.class);
 		rt.nodeType(cls);
 		return rt;
 	}
+
 	@Override
-	
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype) {
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(
+			NodeType ntype) {
 		//
 		NodeQueryOperationI<W> rt = this
 				.prepareOperation(NodeQueryOperationI.class);
@@ -106,15 +109,25 @@ public abstract class DataServiceSupport extends ConfigurableSupport implements
 	@Override
 	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String field,
 			Object value, boolean force) {
+		return this.getNewest(wpcls, new String[] { field },
+				new Object[] { value }, force);
+	}
+
+	@Override
+	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String[] fields,
+			Object[] values, boolean force) {
 		NodeQueryOperationI<T> qo = this.prepareNodeQuery(wpcls);
-		qo.propertyEq(field, value);
+		for (int i = 0; i < fields.length; i++) {
+			qo.propertyEq(fields[i], values[i]);
+		}
 		qo.sortTimestamp(true);
 		NodeQueryResultI<T> rst = qo.execute().getResult();
 		T node = rst.first(false);
 		if (node == null) {
 			if (force) {
 				throw new FsException("no node found for cls:" + wpcls
-						+ ",field:" + field + ",value:" + value);
+						+ ",field:" + Arrays.asList(fields) + ",value:"
+						+ Arrays.asList(values));
 			}
 			return null;
 		}

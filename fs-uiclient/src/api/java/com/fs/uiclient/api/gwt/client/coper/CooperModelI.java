@@ -22,15 +22,19 @@ public interface CooperModelI extends ModelI {
 
 	public static final String A_CONFIRM = "confirm";
 
-	public static final String A_REFRESH = "refresh";// refresh the
-														// request/confirm from
-														// other one.
+	// Refresh CRs to me.
+
+	// For confirm to me,it is no need to Listen,because activity is created.
+
+	// For reject TODO listen.
+
+	public static final String A_REFRESH = "refresh";
 
 	public static final Location L_EXPID1 = Location.valueOf("expId1");
 
 	public static final Location L_EXPID2 = Location.valueOf("expId2");
 
-	//
+	// before confirm action,please set this value.
 	public static final Location L_COOPERREQUEST_ID = Location
 			.valueOf("cooperRequestId");// for confirm
 
@@ -41,8 +45,9 @@ public interface CooperModelI extends ModelI {
 
 	public void cooperRequestId(String crId);// for confirm action, to set this
 												// value first.
-	
-	public List<CooperRequestModel> getCooperRequestModelList(); 
+	// incoming cooper request only needed,for outgoing cr, it is a "message" to
+	// another people,no worth to do see it here.may be in "history" message.
 
-	
+	public List<CooperRequestModel> getIncomingCooperRequestModelList();
+
 }

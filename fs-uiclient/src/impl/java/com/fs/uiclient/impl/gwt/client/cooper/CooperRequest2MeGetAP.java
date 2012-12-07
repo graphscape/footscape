@@ -13,20 +13,20 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
- *         <p>
- *         Send request for cooperation with another exp.
+ * 
  */
-public class CooperRequestAP implements ActionProcessorI {
+public class CooperRequest2MeGetAP implements ActionProcessorI {
 
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void processRequest(ControlI c, String a, UiRequest req) {
-		String id1 = (String) c.getModel().getValue(CooperModelI.L_EXPID1);
-		String id2 = (String) c.getModel().getValue(CooperModelI.L_EXPID2);
-		req.getPayloads().setProperty("expId1", StringData.valueOf(id1));
-		req.getPayloads().setProperty("expId2", StringData.valueOf(id2));
+		String cooperRequestId = (String) c.getModel().getValue(
+				CooperModelI.L_COOPERREQUEST_ID);
+
+		req.getPayloads().setProperty("cooperRequestId",
+				StringData.valueOf(cooperRequestId));
 
 	}
 
@@ -36,6 +36,7 @@ public class CooperRequestAP implements ActionProcessorI {
 	@Override
 	public void processResponse(ControlI c, String a, UiResponse res) {
 		//
+		StringData actId = (StringData) res.getPayload("activityId", true);
 
 	}
 

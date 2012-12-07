@@ -16,7 +16,9 @@ public class CooperRequestModel extends ModelSupport {
 
 	private String expId2;
 
-	private String accountId;
+	private String accountId1;
+
+	private String accountId2;
 
 	/**
 	 * @param name
@@ -59,7 +61,7 @@ public class CooperRequestModel extends ModelSupport {
 	 * @return the accountId
 	 */
 	public String getAccountId() {
-		return accountId;
+		return accountId1;
 	}
 
 	/**
@@ -67,7 +69,35 @@ public class CooperRequestModel extends ModelSupport {
 	 *            the accountId to set
 	 */
 	public void setAccountId(String accountId) {
-		this.accountId = accountId;
+		this.accountId1 = accountId;
+	}
+
+	/**
+	 * @return the accountId1
+	 */
+	public String getAccountId1() {
+		return accountId1;
+	}
+
+	/**
+	 * @param accountId1 the accountId1 to set
+	 */
+	public void setAccountId1(String accountId1) {
+		this.accountId1 = accountId1;
+	}
+
+	/**
+	 * @return the accountId2
+	 */
+	public String getAccountId2() {
+		return accountId2;
+	}
+
+	/**
+	 * @param accountId2 the accountId2 to set
+	 */
+	public void setAccountId2(String accountId2) {
+		this.accountId2 = accountId2;
 	}
 
 }

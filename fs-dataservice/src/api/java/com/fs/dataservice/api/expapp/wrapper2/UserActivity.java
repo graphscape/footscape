@@ -39,7 +39,7 @@ public class UserActivity extends NodeWrapper {
 		this.setProperty(PK_ACCOUNT_ID, accId);
 	}
 
-	public void setActivityUid(String accId) {
+	public void setActivityId(String accId) {
 		this.setProperty(PK_ACTIVITY_ID, accId);
 	}
 

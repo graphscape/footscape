@@ -4,17 +4,24 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
+import java.util.List;
+
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
+import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.SimpleValueDeliverI.ValueSourceI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -35,7 +42,8 @@ public class UserExpListControl extends ControlSupport implements
 		// create is local action
 		this.localMap.put(UserExpListModelI.A_CREATE, true);//
 
-		// refresh list,summary list.
+		// refresh list,summary list,TODO this should be triggered by snapshot
+		// changing.
 		this.addActionProcessor(UserExpListModelI.A_REFRESH, new RefreshAP());
 
 		this.addActionProcessor(UserExpListModelI.A_CREATE, new OpenExpEditAP());
@@ -71,6 +79,7 @@ public class UserExpListControl extends ControlSupport implements
 					}
 				});
 		// listen to activities model for new activity
+		// Node:activities model should listen to snapshot model.
 		ActivitiesModelI asm = this.getModel().getParent()
 				.find(ActivitiesModelI.class, true);
 		asm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
@@ -93,6 +102,42 @@ public class UserExpListControl extends ControlSupport implements
 						UserExpListControl.this.onExpCreated(expId);
 					}
 				});
+		// listen to the snapshot for new exp and cooperrequest.
+		LazyMvcI ussMvc = this.getMainControl().getLazyObject(
+				MainControlI.LZ_USERSNAPSHOT, true);
+		final UserSnapshotModelI um = ussMvc.get().getModel();
+		new SimpleValueDeliver<DateData, DateData>(um,
+				UserSnapshotModelI.L_COMMIT, new ValueSourceI<DateData>() {
+
+					@Override
+					public DateData getValue() {
+						//
+						return null;
+					}
+
+					@Override
+					public void setValue(DateData x) {
+						//
+						UserExpListControl.this.onSnapshotCommiting(um, x);
+					}
+				}).mapDefaultDirect().start();
+
+	}
+
+	protected void onSnapshotCommiting(UserSnapshotModelI usm, DateData dd) {
+		List<String> expIdL = usm.getExpIdList();//
+		// NO need to process exp from snapshot for now.
+
+		List<String> actIdL = usm.getActivityIdList();
+		// NO need to process actId for now,it should be through
+		// ActivitiesModelI.
+
+		List<String> crIdL = usm.getCooperRequestIdList();
+		
+	}
+
+	public MainControlI getMainControl() {
+		return this.getManager().getControl(MainControlI.class, true);
 	}
 
 	/**

@@ -28,6 +28,8 @@ import com.fs.uiclient.impl.gwt.client.tasks.TaskManager;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
+import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotControlImpl;
+import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotModelImpl;
 import com.fs.uicommons.api.gwt.client.frwk.support.LazyMvcHeaderItemHandler;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
@@ -53,7 +55,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	public MainControl(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -65,6 +66,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 		this.activeHeaderItems();//
 		this.activeRooms();// connect rooms in xmpp module to chat rooms in this
 							// module.
+
 		this.activeTasks();
 
 	}
@@ -73,6 +75,9 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 		ModelI rootM = this.getClient(true).getRootModel();//
 		SessionModelI sm = rootM.getChild(SessionModelI.class, true);//
+		// TODO server side provide the snapshot replacement,push to client
+		// command/data from server side.
+		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_USERSNAPSHOT, true));
 		// after auth,active activities control.
 		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_ACTIVITIES, true));
 		// active search
@@ -123,6 +128,22 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	protected void activeLazyMvcs() {
 		ModelI rootM = this.getClient(true).getRootModel();//
+		this.addLazyMvc(MainControlI.LZ_USERSNAPSHOT, new LazyMcSupport(
+				this.model, "usshot") {
+
+			@Override
+			protected ModelI createModel(String name) {
+				//
+				return new UserSnapshotModelImpl(name);
+			}
+
+			@Override
+			protected ControlI createControl(String name) {
+				//
+				return new UserSnapshotControlImpl(name);
+			}
+		});
+
 		this.addLazyMvc(MainControlI.LZ_ACTIVITIES, new LazyMcSupport(
 				this.model, "activities") {
 
@@ -286,7 +307,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 				return new ChatRoomsControl(name);
 			}
 		});
-		
+
 	}
 
 	protected void activeTasks() {

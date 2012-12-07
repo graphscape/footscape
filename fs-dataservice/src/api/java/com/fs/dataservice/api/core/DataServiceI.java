@@ -42,7 +42,10 @@ public interface DataServiceI {
 
 	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String field,
 			Object value, boolean force);
-
+	
+	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String[] field,
+			Object[] value, boolean force);
+	
 	public <T extends OperationI> void registerOperation(String name,
 			Class<T> itfCls, Class<? extends T> impCls);
 
