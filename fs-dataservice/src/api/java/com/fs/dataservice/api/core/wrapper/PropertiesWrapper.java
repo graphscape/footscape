@@ -40,6 +40,13 @@ public class PropertiesWrapper<O, T extends PropertiesI<O>> {
 		return this;
 	}
 
+	public PropertiesI<O> convert() {
+		//
+		PropertiesI<O> rt = new MapProperties<O>();
+		rt.setProperties(this.target);
+		return rt;
+	}
+
 	public PropertiesI<O> convert(String[] from, boolean[] force, String[] to) {
 		//
 		PropertiesI<O> rt = new MapProperties<O>();

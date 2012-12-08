@@ -21,43 +21,39 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
 public interface ActivitiesModelI extends ModelI {
 	// refresh the activities list of sumber info,such as activity id.
 	// detail infor is not need here.
-	public static final String A_REFRESH = "refresh";
+	public static final String A_ACTIVITES = "activities";
 
 	public static class ItemModel extends ModelSupport {
 
-		public static final Location L_ACTID = Location.valueOf("actId");
+		protected String actId;
 
-		// the related exp id for this user.
-		public static final Location L_USER_EXP_ID = Location
-				.valueOf("userExpId");
+		protected List<String> expIdList;
 
 		/**
 		 * @param name
 		 * @param actId
 		 */
-		public ItemModel(String name, String actId, String exp) {
-			super(name);
-			this.setValue(L_ACTID, actId);
-			this.setValue(L_USER_EXP_ID, exp);
+		public ItemModel(String actId, List<String> expIdList) {
+			super(actId);
+			this.actId = actId;
+			this.expIdList = expIdList;
 		}
 
 		public String getActId() {
-			return this.getValue(String.class, L_ACTID);
+			return this.actId;
 		}
 
-		public String getUserExpId() {
-			return this.getValue(String.class, L_USER_EXP_ID);
+		public List<String> getUserExpId() {
+			return this.expIdList;
 		}
 
 	}
 
 	public List<ItemModel> getItemList();
-	
-	public List<ActivityModelI> getActivityList();
-	
-	public ItemModel getItem(String actId, boolean force);
 
-	public ItemModel addItem(String actId, String expId);
+	public List<ActivityModelI> getActivityList();
+
+	public ItemModel getItem(String actId, boolean force);
 
 	public ActivityModelI getActivity(String actId);
 

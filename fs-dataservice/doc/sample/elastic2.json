@@ -3,7 +3,12 @@ curl -XGET localhost:9200/_template/node-template
 
 curl -XGET localhost:9200/datas-meta/meta-info/0
 
-curl -XGET 'http://localhost:9200/node-index/account/_search' -d '{
+curl -XGET 'http://localhost:9200/node-index/account/_search?pretty=true' -d '{
+    "query": {
+        "match_all":{}
+    }
+}'
+curl -XGET 'http://localhost:9200/node-index/accountInfo/_search?pretty=true' -d '{
     "query": {
         "match_all":{}
     }

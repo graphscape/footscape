@@ -12,6 +12,8 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class CooperRequestModel extends ModelSupport {
 
+	private String cooperRequestId;
+	
 	private String expId1;
 
 	private String expId2;
@@ -98,6 +100,20 @@ public class CooperRequestModel extends ModelSupport {
 	 */
 	public void setAccountId2(String accountId2) {
 		this.accountId2 = accountId2;
+	}
+
+	/**
+	 * @return the cooperRequestId
+	 */
+	public String getCooperRequestId() {
+		return cooperRequestId;
+	}
+
+	/**
+	 * @param cooperRequestId the cooperRequestId to set
+	 */
+	public void setCooperRequestId(String cooperRequestId) {
+		this.cooperRequestId = cooperRequestId;
 	}
 
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 
 /**
  * @author wu
@@ -21,6 +20,16 @@ public class NodeWrapperUtil {
 		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();
 		for (W w : wl) {
 			PropertiesI<Object> pts = w.convert(from, force, to);
+			rt.add(pts);
+		}
+		return rt;
+	}
+
+	public static <W extends NodeWrapper> List<PropertiesI<Object>> convert(
+			List<W> wl) {
+		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();
+		for (W w : wl) {
+			PropertiesI<Object> pts = w.convert();
 			rt.add(pts);
 		}
 		return rt;

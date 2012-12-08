@@ -70,24 +70,26 @@ public class UserExpListHandler extends UiHandlerSupport {
 				new String[] { "id", "body", "timestamp" }//
 				);
 
-		// additional fields;
+		// additional fields;TODO use snapshot
 		for (PropertiesI<Object> pts : el) {
 			String id = (String) pts.getProperty("id", true);//
-			//act
+			// act
 			ExpActivity act = this.getExpActivity(id);
-			pts.setProperty("activityId", act.getActivityId());
-			
-			//req
+			if (act != null) {
+				pts.setProperty("activityId", act.getActivityId());
+			}
+			// req
 			List<PropertiesI<Object>> crL = this.getCooperRequestList(id);
 			pts.setProperty("cooperRequestList", crL);
-			
+
 		}
 		res.setPayload("userExpList", el);
 	}
-	
-	protected ExpActivity getExpActivity(String expId){
-		ExpActivity rt = this.dataService.getNewest(ExpActivity.class, ExpActivity.PK_EXP_ID, expId, false);
-		
+
+	protected ExpActivity getExpActivity(String expId) {
+		ExpActivity rt = this.dataService.getNewest(ExpActivity.class,
+				ExpActivity.PK_EXP_ID, expId, false);
+
 		return rt;
 	}
 
@@ -104,7 +106,7 @@ public class UserExpListHandler extends UiHandlerSupport {
 		List<PropertiesI<Object>> rt = NodeWrapperUtil.convert(rst.list(),
 				new String[] { NodeI.PK_ID, CooperRequest.ACCOUNT_ID,
 						CooperRequest.EXP_ID1, NodeI.PK_TIMESTAMP },//
-				new boolean[] { true, true, true }, //
+				new boolean[] { true, true, true, true }, //
 				new String[] { "id", "accountId", "expId1", "timestamp" }//
 				);
 		return rt;

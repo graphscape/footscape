@@ -9,9 +9,9 @@ import java.util.List;
 
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.dataservice.api.expapp.wrapper2.UserActivity;
+import com.fs.dataservice.api.expapp.wrapper.Activity;
+import com.fs.dataservice.api.expapp.wrapper.Expectation;
+import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
@@ -25,34 +25,51 @@ import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 public class ActivitiesHandler extends UiHandlerSupport {
 
 	// query activities by account.
-	@Handle("refresh")
-	public void handleRefresh(HandleContextI hc, RequestI req, ResponseI res) {
+	@Handle("activities")
+	public void handleActivities(HandleContextI hc, RequestI req, ResponseI res) {
+		List<String> idL = (List<String>) req.getPayload("idList");
 
-		// the relation between activity and user.
+		// TODO parttern of data retrieving.
+		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();
 
-		NodeQueryOperationI<UserActivity> qo = this.dataService
-				.prepareNodeQuery(UserActivity.TYPE);//
-		qo.propertyEq(UserActivity.PK_ACCOUNT_ID, this.getLogin(hc, true)
-				.getAccountId());//
+		List<Activity> actL = this.dataService.getNewestListById(
+				Activity.class, idL, true, false);
 
-		NodeQueryResultI<UserActivity> rst = qo.execute().getResult()
-				.assertNoError();
-		// TODO pager
-		List<PropertiesI<Object>> uaRL = new ArrayList<PropertiesI<Object>>();
-		List<UserActivity> uaL = rst.list();
-		for (UserActivity ua : uaL) {
-			String actId = (String) ua.getProperty(
-					UserActivity.PK_ACTIVITY_ID, true);
-			String accId = (String) ua.getProperty(UserActivity.PK_ACCOUNT_ID,
-					true);
+		for (Activity act : actL) {
+			PropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty("id", act.getId());
+			List<PropertiesI<Object>> expL = this.expList(act.getId());
+			pts.setProperty("expectations", expL);
+			rt.add(pts);
+		}
+		res.setPayload("activities");
+	}
+
+	protected List<PropertiesI<Object>> expList(String actId) {
+
+		List<ExpActivity> eaL = this.dataService.getListNewestFirst(
+				ExpActivity.class, ExpActivity.PK_ACTIVITY_ID, actId, 0,
+				Integer.MAX_VALUE);
+
+		return this.toPayload(eaL);
+	}
+
+	protected List<PropertiesI<Object>> toPayload(List<ExpActivity> eaL) {
+		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();
+
+		for (ExpActivity ea : eaL) {
+			String expId = ea.getExpId();
+			Expectation exp = this.dataService.getNewestById(Expectation.class,
+					expId, true);
 
 			PropertiesI<Object> pts = new MapProperties<Object>();
-			pts.setProperty("accountId", accId);
-			pts.setProperty("actId", actId);
+			pts.setProperty("accountId", ea.getAccountId());
+			pts.setProperty("expId", ea.getExpId());
+			pts.setProperty("body", exp.getBody());
 
-			uaRL.add(pts);
-
+			rt.add(pts);
 		}
-		res.setPayload("activities", uaRL);
+
+		return rt;
 	}
 }

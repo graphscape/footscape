@@ -6,6 +6,9 @@ package com.fs.uiserver.impl.handler.cooper;
 
 import java.util.List;
 
+import com.fs.commons.api.value.PropertiesI;
+import com.fs.dataservice.api.core.NodeI;
+import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.dataservice.api.expapp.operations.CooperConfirmOperationI;
 import com.fs.dataservice.api.expapp.operations.CooperRequestOperationI;
 import com.fs.dataservice.api.expapp.result.CooperConfirmResultI;
@@ -81,6 +84,18 @@ public class CooperHandler extends UiHandlerSupport {
 		String ccid = rst.getCooperConfirmId();
 
 		res.setPayload("cooperConfirmId", ccid);//
+	}
+
+	// TODO replace by server notifier to client.
+	@Handle("refreshIncomingCr")
+	public void handleRefreshIncomingCr(HandleContextI hc, RequestI req,
+			ResponseI res) {
+		List<String> crid = (List<String>) req.getPayload(
+				"cooperRequestIdList", true);
+		List<CooperRequest> crL = this.dataService.getNewestListById(
+				CooperRequest.class, crid, true, true);
+		List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
+		res.setPayload("cooperRequestList", ptsL);
 	}
 
 }

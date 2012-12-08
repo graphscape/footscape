@@ -31,7 +31,7 @@ public class ActivitiesControl extends ControlSupport implements
 	 */
 	public ActivitiesControl(String name) {
 		super(name);
-		this.addActionProcessor(ActivitiesModelI.A_REFRESH, new RefreshAP());
+		this.addActionProcessor(ActivitiesModelI.A_ACTIVITES, new ActivitiesAP());
 	}
 
 	/*

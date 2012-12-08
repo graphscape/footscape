@@ -10,9 +10,8 @@ import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.CoperControlI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
-import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
+import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.SimpleValueDeliverI.ValueSourceI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
@@ -30,23 +29,26 @@ public class CooperControl extends ControlSupport implements CoperControlI {
 		super(name);
 		this.addActionProcessor(CooperModelI.A_REQUEST, new CooperRequestAP());
 		this.addActionProcessor(CooperModelI.A_CONFIRM, new CooperConfirmAP());
+		this.addActionProcessor(CooperModelI.A_REFRESH_INCOMING_CR,
+				new RefreshIncomingCrAP());
 
 	}
 
 	public MainControlI getMainControl() {
 		return this.getManager().getControl(MainControlI.class, true);
 	}
+
 	/*
-	 *Dec 7, 2012
+	 * Dec 7, 2012
 	 */
 	@Override
-	protected void doModel(ModelI cm) {
-		// 
-		super.doModel(cm);
+	protected void doAttach() {
+		//
+		super.doAttach();
 		// listen to the snapshot for new exp and cooperrequest.
-		LazyMvcI ussMvc = this.getMainControl().getLazyObject(
+		Mvc uss = this.getMainControl().getLazyObject(
 				MainControlI.LZ_USERSNAPSHOT, true);
-		final UserSnapshotModelI um = ussMvc.get().getModel();
+		final UserSnapshotModelI um = uss.getModel();
 		new SimpleValueDeliver<DateData, DateData>(um,
 				UserSnapshotModelI.L_COMMIT, new ValueSourceI<DateData>() {
 
@@ -74,7 +76,17 @@ public class CooperControl extends ControlSupport implements CoperControlI {
 		// ActivitiesModelI.
 
 		List<String> crIdL = usm.getCooperRequestIdList();
+
+		// save value to model,model will remove the deleted child CR model 
+		this.getModel().setIncomingCooperRequestIdList(crIdL);
 		
+		this.triggerAction(CooperModelI.A_REFRESH_INCOMING_CR);
+
 	}
-	
+
+	@Override
+	public CooperModelI getModel() {
+		return (CooperModelI) this.model;
+	}
+
 }

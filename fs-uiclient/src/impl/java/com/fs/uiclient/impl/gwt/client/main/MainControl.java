@@ -84,7 +84,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_EXP_SEARCH, true));
 		// active user exp list
 		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_UE_LIST, true));
-
+		// active cooper control.
+		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_COOPER, true));
 	}
 
 	protected void activeHeaderItems() {

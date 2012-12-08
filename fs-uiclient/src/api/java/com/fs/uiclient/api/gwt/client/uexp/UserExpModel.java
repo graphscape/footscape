@@ -15,8 +15,6 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class UserExpModel extends ModelSupport {
 
-	public static final Location L_ACTIVITY_ID = Location.valueOf("activityId");
-
 	public static final Location L_EXPID = Location.valueOf("expId");
 
 	public static final Location L_BODY = Location.valueOf("body");//
@@ -27,14 +25,14 @@ public class UserExpModel extends ModelSupport {
 
 	public static final Location L_ISEXPANDED = Location.valueOf("isExpanded");//
 
-	private String cooperReqId;
-	
-	public static final String A_OPEN_ACTIVITY = "activity";
-	
-	public static final String A_SELECT = "select";
-	
-	
+	public static final Location L_INCOMING_CR_ID = Location
+			.valueOf("incomingCrId");
 
+	public static final String A_OPEN_ACTIVITY = "activity";
+
+	public static final String A_SELECT = "select";
+
+	private String activityId;
 	/**
 	 * @param name
 	 */
@@ -44,7 +42,7 @@ public class UserExpModel extends ModelSupport {
 		ControlUtil.addAction(this, A_SELECT);//
 		ControlUtil.addAction(this, A_OPEN_ACTIVITY);//
 		this.setValue(L_EXPID, id);//
-		
+
 	}
 
 	public void setBody(String body) {
@@ -71,37 +69,39 @@ public class UserExpModel extends ModelSupport {
 		return this.getValue(Boolean.class, L_ISSELECTED, Boolean.FALSE);
 	}
 
-	public void setActivityId(String actId) {
-		this.setValue(L_ACTIVITY_ID, actId);
-	}
-
-	public String getActivityId(boolean force) {
-		String rt = this.getValue(String.class, L_ACTIVITY_ID);
-		if (rt == null && force) {
-			throw new UiException("no activity with exp:" + this.getExpId());
-		}
-		return rt;
-
-	}
-	public void setTimestamp(DateData ts){
+	public void setTimestamp(DateData ts) {
 		this.setValue(L_TIMESTAMP, ts);
 	}
-	
+
 	public DateData getTimestamp(boolean force) {
 		return (DateData) this.getValue(L_TIMESTAMP, force);
 	}
 
 	/**
-	 *Dec 4, 2012
+	 * Dec 4, 2012
 	 */
-	public void setCooperReqId(String string) {
-		this.cooperReqId = string;
+	public void setIncomingCrId(String string) {// TODO list
+		this.setValue(L_INCOMING_CR_ID, string);
 	}
 
 	/**
 	 * @return the cooperReqId
 	 */
-	public String getCooperReqId() {
-		return cooperReqId;
+	public String getIncomingCrId() {
+		return (String) this.getValue(L_INCOMING_CR_ID);//
+	}
+
+	/**
+	 * @return the activityId
+	 */
+	public String getActivityId() {
+		return activityId;
+	}
+
+	/**
+	 * @param activityId the activityId to set
+	 */
+	public void setActivityId(String activityId) {
+		this.activityId = activityId;
 	}
 }

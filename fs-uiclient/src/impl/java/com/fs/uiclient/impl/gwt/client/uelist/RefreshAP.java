@@ -50,8 +50,8 @@ public class RefreshAP implements ActionProcessorI {
 			ObjectPropertiesData oi = ld.get(i);
 			StringData expId = (StringData) oi.getProperty("id", true);
 			StringData body = (StringData) oi.getProperty("body", true);
-			StringData actId = (StringData) oi.getProperty("activityId", true);
-			ListData<ObjectPropertiesData> crL = (ListData<ObjectPropertiesData>)oi.getProperty("cooperReqList", true);
+			StringData actId = (StringData) oi.getProperty("activityId", false);//
+			ListData<ObjectPropertiesData> crL = (ListData<ObjectPropertiesData>)oi.getProperty("cooperRequestList", true);
 			
 			DateData dd = (DateData) oi.getProperty("timestamp",true);
 			

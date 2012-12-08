@@ -23,7 +23,7 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 	 */
 	public ActivitiesModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, ActivitiesModelI.A_REFRESH);
+		ControlUtil.addAction(this, ActivitiesModelI.A_ACTIVITES);
 	}
 
 	/*
@@ -34,17 +34,6 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 		//
 		return this.getChild(ItemModel.class, actId, force);
 
-	}
-
-	/*
-	 * Oct 21, 2012
-	 */
-	@Override
-	public ItemModel addItem(String actId, String expId) {
-		//
-		ItemModel rt = new ItemModel(actId, actId, expId);
-		this.child(rt);
-		return rt;
 	}
 
 	/*

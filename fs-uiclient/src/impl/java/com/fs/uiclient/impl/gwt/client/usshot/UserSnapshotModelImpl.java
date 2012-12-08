@@ -65,7 +65,7 @@ public class UserSnapshotModelImpl extends ModelSupport implements
 	@Override
 	public void setActivityIdList(List<String> ls) {
 		//
-
+		this.activityIdList = ls;
 	}
 
 	/*
@@ -74,7 +74,7 @@ public class UserSnapshotModelImpl extends ModelSupport implements
 	@Override
 	public void setExpIdList(List<String> ls) {
 		//
-
+		this.expIdList = ls;
 	}
 
 	/*
@@ -83,7 +83,7 @@ public class UserSnapshotModelImpl extends ModelSupport implements
 	@Override
 	public void setCooperRequestIdList(List<String> ls) {
 		//
-
+		this.cooperRequestIdList = ls;
 	}
 
 }

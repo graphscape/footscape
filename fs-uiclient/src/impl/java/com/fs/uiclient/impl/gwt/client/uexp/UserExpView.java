@@ -27,6 +27,8 @@ public class UserExpView extends SimpleView {
 
 	protected TableWrapper table;
 
+	protected TDWrapper incomingCrExpId1;// incoming cooper request exp id from.
+
 	/**
 	 * @param ctn
 	 */
@@ -64,7 +66,11 @@ public class UserExpView extends SimpleView {
 		this.table = new TableWrapper();
 		this.body.appendChild(this.table.getElement());
 
-		// first line
+		// icon | expbody
+		// icon | timpstamp
+		// icon | expId1,refresh to the body?
+		// icon | activityId
+		// first
 		{
 			// td 0,0-1-2
 			TRWrapper tr0 = this.table.addTr();
@@ -87,7 +93,7 @@ public class UserExpView extends SimpleView {
 			// td1,1
 		}
 
-		{
+		{// timestamp
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();
 			td.addClassName("timestamp");
@@ -96,10 +102,17 @@ public class UserExpView extends SimpleView {
 
 		}
 
-		{
+		{// activity
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
-			td.getElement().setInnerText(t.getActivityId(false));
+			this.incomingCrExpId1 = td;//TODO lazy
+			td.getElement().setInnerText(t.getIncomingCrId());//
+
+		}
+		{// activity
+			TRWrapper tr = this.table.addTr();
+			TDWrapper td = tr.addTd();
+			td.getElement().setInnerText(t.getActivityId());
 
 		}
 

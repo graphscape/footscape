@@ -4,7 +4,9 @@
  */
 package com.fs.dataservice.core.impl.elastic;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -20,7 +22,9 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.OperationI;
+import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.operations.RefreshOperationI;
+import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.support.DataServiceSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.dataservice.core.impl.ElasticTimeFormat;
@@ -40,11 +44,9 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements
 
 	protected MetaInfo metaInfo;
 
-	
-
 	public ElasticDataServiceImpl() {
 		// iso8601
-		
+
 	}
 
 	/*
@@ -160,6 +162,52 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements
 		//
 		return this.getNewest(wpcls, NodeI.PK_ID, id, force);
 
+	}
+
+	/*
+	 * Dec 8, 2012
+	 */
+	@Override
+	public <T extends NodeWrapper> List<T> getNewestListById(Class<T> wpcls,
+			List<String> idL, boolean force, boolean reserveNull) {
+		//
+		List<T> rt = new ArrayList<T>();
+		for (String id : idL) {
+
+			T ti = this.getNewestById(wpcls, id, force);
+			if (ti == null && !reserveNull) {
+				continue;
+			}
+			rt.add(ti);
+		}
+
+		return rt;
+	}
+
+	@Override
+	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls,
+			String field, Object value, int from, int maxSize) {
+		return this.getListNewestFirst(wpcls, new String[] { field },
+				new Object[] { value }, from, maxSize);
+	}
+
+	/*
+	 * Dec 8, 2012
+	 */
+	@Override
+	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls,
+			String[] fields, Object[] values, int from, int maxSize) {
+		//
+		NodeQueryOperationI<T> qo = this.prepareNodeQuery(wpcls);
+		for (int i = 0; i < fields.length; i++) {
+			qo.propertyEq(fields[i], values[i]);
+		}
+		qo.first(from);
+		qo.maxSize(maxSize);
+		qo.sortTimestamp(true);
+		NodeQueryResultI<T> rst = qo.execute().getResult();
+
+		return rst.list();
 	}
 
 }

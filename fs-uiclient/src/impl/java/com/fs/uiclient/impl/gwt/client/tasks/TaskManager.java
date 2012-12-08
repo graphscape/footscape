@@ -55,8 +55,8 @@ public class TaskManager extends UiObjectSupport {
 		int intervalMS = Integer.parseInt(secS) * 1000;// ms
 
 		SchedulerI sc = this.getContainer().get(SchedulerI.class, true);
-		sc.scheduleRepeat("activities-refresh", intervalMS,// 2 sec
-				new ActivitiesRefreshHandler());
+		sc.scheduleRepeat("usshot-refresh", intervalMS,// 2 sec
+				new UserSnapshotHandler());
 		sc.scheduleRepeat("activity-refresh", intervalMS,// 2 sec
 				new ActivityRefreshHandler());
 

@@ -20,9 +20,9 @@ import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
  */
 public class Activity extends NodeWrapper {
 
-	public static final String COOPER_CONFIRM_UID = "cooperConfirmUid";
+	public static final String COOPER_CONFIRM_ID = "cooperConfirmId";
 
-	public static final String[] FNS = new String[] { COOPER_CONFIRM_UID };
+	public static final String[] FNS = new String[] { COOPER_CONFIRM_ID };
 
 	/**
 	 * @param ntype
@@ -34,15 +34,15 @@ public class Activity extends NodeWrapper {
 
 	public static void config(NodeConfigurations cfs) {
 		cfs.addConfig(NodeTypes.ACTIVITY, Activity.class).field(
-				COOPER_CONFIRM_UID);
+				COOPER_CONFIRM_ID);
 	}
 
 	public String getCooperConfirmUid() {
-		return (String) this.getProperty(COOPER_CONFIRM_UID);
+		return (String) this.getProperty(COOPER_CONFIRM_ID);
 	}
 
 	public void setCooperConfirmUid(String uid) {
-		this.setProperty(COOPER_CONFIRM_UID, uid);
+		this.setProperty(COOPER_CONFIRM_ID, uid);
 	}
 
 	public List<Expectation> getExpectationList() {

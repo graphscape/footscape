@@ -13,6 +13,7 @@ import com.fs.uiclient.api.gwt.client.chatroom.PeerModel;
 import com.fs.uiclient.api.gwt.client.chatrooms.ChatRoomsControlI;
 import com.fs.uiclient.api.gwt.client.chatrooms.ChatRoomsModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
+import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -23,6 +24,8 @@ import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
+import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.filter.LocalActionFilter;
 import com.fs.uiclient.impl.gwt.client.filter.SessionFilter;
@@ -396,6 +399,36 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof ExpItemModel;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(UserSnapshotControlI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof UserSnapshotControlI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(UserSnapshotModelI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof UserSnapshotModelI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(CooperRequestModel.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof CooperRequestModel;
 
 			}
 

@@ -4,6 +4,7 @@
 package com.fs.uiserver.impl.handler.support;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fs.commons.api.ActiveContext;
@@ -16,9 +17,12 @@ import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+import com.fs.dataservice.api.expapp.wrapper.Activity;
 import com.fs.dataservice.api.expapp.wrapper.Login;
 import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.engine.api.HandleContextI;
+import com.fs.engine.api.RequestI;
+import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.support.ValidatorHandlerSupport;
 import com.fs.uiserver.Constants;
 
@@ -152,6 +156,21 @@ public class UiHandlerSupport extends ValidatorHandlerSupport {
 		String uid = this.getLoginId(hc);
 		Login rt = this.dataService.getNewestById(Login.class, uid, force);
 		return rt;
+	}
+
+	protected <T extends NodeWrapper> void processGetNewestListById(
+			Class<T> cls, HandleContextI hc) {
+		this.processGetNewestListById(cls, hc, "idList", "nodeList");
+	}
+
+	protected <T extends NodeWrapper> void processGetNewestListById(
+			Class<T> cls, HandleContextI hc, String reqKey, String resKey) {
+		RequestI req = hc.getRequest();
+		ResponseI res = hc.getResponse();
+		List<String> idL = (List<String>) req.getPayload(reqKey);
+		List<T> rtL = this.dataService.getNewestListById(cls, idL, true, true);
+
+		res.setPayload(resKey, rtL);
 	}
 
 }

@@ -22,13 +22,7 @@ public interface CooperModelI extends ModelI {
 
 	public static final String A_CONFIRM = "confirm";
 
-	// Refresh CRs to me.
-
-	// For confirm to me,it is no need to Listen,because activity is created.
-
-	// For reject TODO listen.
-
-	public static final String A_REFRESH = "refresh";
+	public static final String A_REFRESH_INCOMING_CR = "refreshIncomingCr";
 
 	public static final Location L_EXPID1 = Location.valueOf("expId1");
 
@@ -49,5 +43,12 @@ public interface CooperModelI extends ModelI {
 	// another people,no worth to do see it here.may be in "history" message.
 
 	public List<CooperRequestModel> getIncomingCooperRequestModelList();
+
+	public List<String> getIncomingCooperRequestIdList();
+
+	public void setIncomingCooperRequestIdList(List<String> crIdL);
+
+	// return the id list that has no model,for refresh
+	public List<String> getNewIncomingCrIdList();
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.uicore.api.gwt.client.data.ListData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.data.list.ObjectListData;
 
 /**
  * @author wu
@@ -24,6 +25,15 @@ public class ListDataUtil {
 			StringData sd = sdL.get(i);
 			String v = sd.getValue();
 			rt.add(v);
+		}
+
+		return rt;
+	}
+
+	public static ObjectListData toStringDataList(List<String> sl) {
+		ObjectListData rt = new ObjectListData();
+		for (String s : sl) {
+			rt.add(StringData.valueOf(s));
 		}
 
 		return rt;

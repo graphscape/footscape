@@ -168,7 +168,7 @@ public abstract class ActivityTestBase extends TestBase {
 
 	protected void listenToTheActivityIdSettingBeforeCoper() {
 		UserExpModel ue = this.getTheUserExpModel();
-		ue.addValueHandler(UserExpModel.L_ACTIVITY_ID,
+		ue.addValueHandler(null,//TODO UserExpModel.L_ACTIVITY_ID,
 				new HandlerI<ModelValueEvent>() {
 
 					@Override
@@ -194,7 +194,7 @@ public abstract class ActivityTestBase extends TestBase {
 				ue.getExpId());
 
 		// the selected item should have an activity with it.
-		String actId = ue.getActivityId(false);
+		String actId = ue.getActivityId();
 		assertNotNull(
 				"activity id is nulll for the exp model with id:"
 						+ ue.getExpId(), actId);
