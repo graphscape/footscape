@@ -4,6 +4,8 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.core.UiData;
+import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
+import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
@@ -65,6 +67,33 @@ public class UiTransfer extends UiObjectSupport {
 
 	public void setPayload(String key, UiData value) {
 		this.payloads.setProperty(key, value);
+	}
+
+	public String getPayLoadAsString(String key, boolean force) {
+		StringData sd = this.getPayload(key, force);
+		String rt = sd == null ? null : sd.getValue();
+		if (rt == null && force) {
+			throw new UiException("no payload:" + key);
+		}
+		return rt;
+
+	}
+
+	public Boolean getPayLoadAsBoolean(String key, Boolean def) {
+		Boolean rt = this.getPayLoadAsBoolean(key, false);
+		return rt == null ? def : rt;
+	}
+
+	public Boolean getPayLoadAsBoolean(String key, boolean force) {
+		BooleanData sd = this.getPayload(key, false);
+		Boolean rt = sd == null ? null : sd.getValue();
+
+		if (rt == null && force) {
+			throw new UiException("no payload:" + key);
+		}
+
+		return rt;
+
 	}
 
 }

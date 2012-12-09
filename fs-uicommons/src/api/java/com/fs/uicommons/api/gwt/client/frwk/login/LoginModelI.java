@@ -5,24 +5,27 @@ import com.fs.uicore.api.gwt.client.ModelI;
 
 public interface LoginModelI extends ModelI {
 
-	public static final String A_AUTH = "auth";// do auth at client start.
+	public static final String A_ANONYMOUS = "anonymous";// create anonymous
+															// account.
 
-	public static final String A_LOGOUT = "logout";// logout and open login view?.
+	public static final String A_LOGOUT = "logout";// logout and open login
+													// view?.
 
 	public static final String A_SUBMIT = "submit";// submit login form
 
 	public static String HEADER_ITEM_LOGIN = "login";//
-	
-	public static final String L_ACCOUNTID_SAVED = "accountIdSaved";
-
-	public static final String L_PASSWORD_SAVED = "passwordSaved";
 
 	public SessionModelI getSessionModel();// find
+
+	public boolean isSavingAccount();// auto auth for next, save successful
+	// account/password.
+
+	public String getEmail();
+
+	public String getPassword();
 	
-	public void saveAccountAndPassword(String accId,String password);
+	public boolean getIsUsingSavedAccount();
 	
-	public String getAccountIdSaved();
-	
-	public String getPasswordSaved();
+	public void setIsUsingSavedAccout(boolean b);
 
 }

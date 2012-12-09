@@ -26,7 +26,7 @@ public class LoginControl extends ControlSupport implements LoginControlI {
 		// for
 		// open view
 		// TODO
-		this.addActionProcessor(LoginModelI.A_AUTH, new AutoAuthAP());
+		this.addActionProcessor(LoginModelI.A_ANONYMOUS, new AnonymousAP());
 		this.addActionProcessor(LoginModelI.A_SUBMIT, new FormDataAP());
 		this.addActionProcessor(LoginModelI.A_SUBMIT, new SubmitAP());
 
@@ -95,7 +95,7 @@ public class LoginControl extends ControlSupport implements LoginControlI {
 
 	@Override
 	public void addAuthActionProcessor(ActionProcessorI ap) {
-		this.addActionProcessor(LoginModelI.A_AUTH, ap);
+		this.addActionProcessor(LoginModelI.A_SUBMIT, ap);//
 	}
 
 }

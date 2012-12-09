@@ -63,16 +63,11 @@ public class UserExpListHandler extends UiHandlerSupport {
 		NodeQueryResultI<Expectation> rst = finder.execute().getResult()
 				.assertNoError();
 
-		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list(),
-				new String[] { NodeI.PK_ID, Expectation.BODY,
-						NodeI.PK_TIMESTAMP },//
-				new boolean[] { true, true, true }, //
-				new String[] { "id", "body", "timestamp" }//
-				);
+		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list());
 
 		// additional fields;TODO use snapshot
 		for (PropertiesI<Object> pts : el) {
-			String id = (String) pts.getProperty("id", true);//
+			String id = (String) pts.getProperty(NodeI.PK_ID, true);//
 			// act
 			ExpActivity act = this.getExpActivity(id);
 			if (act != null) {
@@ -103,12 +98,7 @@ public class UserExpListHandler extends UiHandlerSupport {
 		crq.propertyEq(CooperRequest.EXP_ID2, expId2);//
 		NodeQueryResultI<CooperRequest> rst = crq.execute().getResult()
 				.assertNoError();
-		List<PropertiesI<Object>> rt = NodeWrapperUtil.convert(rst.list(),
-				new String[] { NodeI.PK_ID, CooperRequest.ACCOUNT_ID,
-						CooperRequest.EXP_ID1, NodeI.PK_TIMESTAMP },//
-				new boolean[] { true, true, true, true }, //
-				new String[] { "id", "accountId", "expId1", "timestamp" }//
-				);
+		List<PropertiesI<Object>> rt = NodeWrapperUtil.convert(rst.list());
 		return rt;
 
 	}

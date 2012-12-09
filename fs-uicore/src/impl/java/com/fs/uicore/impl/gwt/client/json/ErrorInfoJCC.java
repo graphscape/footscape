@@ -18,11 +18,11 @@ import com.fs.uicore.impl.gwt.client.support.PropertiesJCCSupport;
  */
 public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 
+	public static final String CODE = "code";
+
 	public static final String MESSAGE = "message";
 
 	public static final String DETAIL = "detail";
-
-	public static final String SOURCE = "source";
 
 	/** */
 	public ErrorInfoJCC(FactoryI f) {
@@ -33,13 +33,13 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	/* */
 	@Override
 	protected ErrorInfoData convert(ObjectPropertiesData l) {
+		StringData code = (StringData) l.getProperty(CODE);
 		StringData message = (StringData) l.getProperty(MESSAGE);
-		StringData source = (StringData) l.getProperty(SOURCE);
 		ObjectListData dl = (ObjectListData) l.getProperty(DETAIL);
 
-		ErrorInfoData rt = new ErrorInfoData(message == null ? null
-				: message.getValue(), source == null ? null : source.getValue());// TODO
-																					// null
+		ErrorInfoData rt = new ErrorInfoData(code == null ? null
+				: code.getValue(), message == null ? null : message.getValue());// TODO
+																				// null
 		for (int i = 0; i < dl.size(); i++) {
 			StringData sd = (StringData) dl.get(i);
 			rt.getDetail().add(sd.getValue());// TODO null?
@@ -54,7 +54,7 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	protected ObjectPropertiesData convert(ErrorInfoData t) {
 		ObjectPropertiesData rt = new ObjectPropertiesData();
 		rt.setProperty(MESSAGE, StringData.valueOf(t.getMessage()));
-		rt.setProperty(SOURCE, StringData.valueOf(t.getSource()));
+		rt.setProperty(CODE, StringData.valueOf(t.getCode()));
 		ObjectListData ld = new ObjectListData();
 		for (String d : t.getDetail()) {
 			ld.add(StringData.valueOf(d));

@@ -15,6 +15,8 @@ public class UiRequest extends UiTransfer {
 
 	public static final String INIT = "X_FS_INIT";//
 
+	public static final String IS_LOCAL = "_is_local";
+
 	/**
 	 * @param fc
 	 */
@@ -22,8 +24,17 @@ public class UiRequest extends UiTransfer {
 		this(null);
 	}
 
+	public UiRequest(boolean local) {
+		this(null, local);
+	}
+
 	public UiRequest(String name) {
+		this(name, false);
+	}
+
+	public UiRequest(String name, boolean local) {
 		super(name);
+		this.setIsLocal(local);
 	}
 
 	public UiRequest requestPath(String path) {
@@ -39,6 +50,14 @@ public class UiRequest extends UiTransfer {
 		return this.getHeader(PATH);
 	}
 
+	public void setIsLocal(boolean isL) {
+		this.setHeader(IS_LOCAL, Boolean.toString(isL));// filtered
+	}
+	
+	public boolean isLocal(){
+		return Boolean.valueOf(this.getHeader(IS_LOCAL));
+	}
+	
 	public void setInit(boolean init) {
 		this.setHeader(INIT, init + "");
 	}

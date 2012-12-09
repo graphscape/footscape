@@ -58,9 +58,9 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements
 			Element tr = DOM.createTR();
 			DOM.appendChild(this.tbody, tr);
 
-			appendMessageTD(tr, ei.getMessage(), "position-message");
-			appendMessageTD(tr, ei.getSource(), "position-source");
-			appendMessageTD(tr, ei.getDetail().toString(), "position-detail");// TODO
+			appendMessageTD(tr, ei.getCode(), "errorCode");
+			appendMessageTD(tr, ei.getMessage(), "errorMessage");
+			appendMessageTD(tr, ei.getDetail().toString(), "errorDetail");// TODO
 																				// list
 
 		}

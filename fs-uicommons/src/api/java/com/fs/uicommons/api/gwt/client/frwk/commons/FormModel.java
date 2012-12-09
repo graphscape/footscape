@@ -69,6 +69,14 @@ public class FormModel extends ModelSupport {
 
 	}
 
+	public <T> T getFieldValue(String fname, T def) {
+		FieldModel fm = this.getFieldModel(fname, false);
+
+		T rt = (T) fm.getFieldValue();
+
+		return rt == null ? def : rt;
+	}
+
 	public FieldModel getFieldModel(String name, boolean force) {
 
 		List<FieldModel> fmL = this.getChildList(FieldModel.class);
@@ -84,7 +92,7 @@ public class FormModel extends ModelSupport {
 	}
 
 	public void addAction(String... names) {
-		List<String>  actionList = this.getActionList();
+		List<String> actionList = this.getActionList();
 		actionList.addAll(Arrays.asList(names));
 		this.setValue(L_ACTION_LIST, actionList);
 

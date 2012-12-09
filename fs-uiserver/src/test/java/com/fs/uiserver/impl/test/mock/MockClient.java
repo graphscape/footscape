@@ -29,7 +29,7 @@ public class MockClient {
 	private String sessionId;
 
 	private String accountId;
-	
+
 	private ServiceEngineI engine;
 
 	private ContainerI container;
@@ -78,14 +78,21 @@ public class MockClient {
 
 		RequestI req = newRequest("/uiserver/login/submit");
 		// req.setPayload("accountId","");//by accountId or email
-		req.setPayload("accountId", accId);//accountId may be null
-		req.setPayload("email", email);//email may be null
+		if (accId == null) {
+			req.setPayload("isSaved", Boolean.FALSE);
+			req.setPayload("type", "registered");
+			req.setPayload("email", email);// email may be null
+		} else {
+			req.setPayload("isSaved", Boolean.TRUE);
+			req.setPayload("type", "anonymous");//
+			req.setPayload("accountId", accId);// accountId may be null
+		}
 		req.setPayload("password", password);//
 
 		ResponseI res = this.service(req);
 
 		res.assertNoError();
-		String accId2 = (String)res.getPayload("accountId", true);
+		String accId2 = (String) res.getPayload("accountId", true);
 		this.accountId = accId2;//
 		return (String) res.getPayload("loginId", true);
 
@@ -93,9 +100,10 @@ public class MockClient {
 
 	protected String login() {
 
-		RequestI req = newRequest("/uiserver/login/auth");
+		RequestI req = newRequest("/uiserver/login/anonymous");
 		ResponseI res = this.service(req);
 		res.assertNoError();
+
 		String accId = (String) res.getPayload("accountId");// created for
 															// annomymous user.
 		String password = (String) res.getPayload("password");
@@ -187,7 +195,7 @@ public class MockClient {
 		RequestI req = this.newRequest("/uiserver/cooper/confirm");
 
 		req.setPayload("cooperRequestId", cooperId);
-		
+
 		req.setPayload("useNewestActivityId", findAct);
 
 		ResponseI res = this.service(req);
@@ -246,19 +254,21 @@ public class MockClient {
 
 	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
 		RequestI req = this.newRequest("/uiserver/usshot/snapshot");
-		req.setPayload("refresh",forceRefresh);
+		req.setPayload("refresh", forceRefresh);
 		ResponseI res = this.service(req);
-		
+
 		res.assertNoError();
-		
+
 		PropertiesI<Object> pts = res.getPayloads();
-		List<String> activityIds = (List<String>)pts.getProperty("activityIdList",true);
-		List<String> expIds = (List<String>)pts.getProperty("expIdList",true);
-		List<String> corrIds = (List<String>) pts.getProperty("cooperRequestIdList",true);
+		List<String> activityIds = (List<String>) pts.getProperty(
+				"activityIdList", true);
+		List<String> expIds = (List<String>) pts.getProperty("expIdList", true);
+		List<String> corrIds = (List<String>) pts.getProperty(
+				"cooperRequestIdList", true);
 		MockUserSnapshot rt = new MockUserSnapshot(this.accountId);
 		rt.addActivityIdList(activityIds);
 		rt.addExpIdList(expIds);
-		rt.addCooperRequestIdList( corrIds);
+		rt.addCooperRequestIdList(corrIds);
 		return rt;
 	}
 }

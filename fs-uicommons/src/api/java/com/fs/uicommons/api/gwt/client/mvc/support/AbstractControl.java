@@ -210,10 +210,7 @@ public abstract class AbstractControl extends UiObjectSupport implements
 
 	public void processRequest(final ControlI c, final String a) {
 
-		UiRequest req = new UiRequest();
-
-		req.setHeader(Constants.IS_LOCAL,
-				Boolean.toString(this.isLocalAction(a)));// filtered
+		UiRequest req = new UiRequest(this.isLocalAction(a));
 		// at
 		// client
 		// side

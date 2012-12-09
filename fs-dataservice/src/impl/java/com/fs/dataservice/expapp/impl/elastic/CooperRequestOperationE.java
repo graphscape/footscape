@@ -32,7 +32,7 @@ public class CooperRequestOperationE extends
 	protected void executeInternal(Login login, CooperRequestResultI rst)
 			throws Exception {
 		CooperRequest cr = new CooperRequest().forCreate(this.dataService);
-		cr.setAccountId(login.getAccountId());
+		cr.setAccountId1(login.getAccountId());
 		cr.setExpId1((String) this.getParameter(EXPID1, true));
 		//
 		String expId2 = (String) this.getParameter(EXPID2, true);

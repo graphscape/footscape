@@ -4,6 +4,9 @@
  */
 package com.fs.uicommons.api.gwt.client.html5.storage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fs.uicore.api.gwt.client.UiException;
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -53,4 +56,25 @@ public final class LocalStorageJSO extends JavaScriptObject {
 															localStorage[key]=value;
 															}-*/;
 
+	public native void removeValue(String key)/*-{
+												localStorage.removeItem(key);
+												}-*/;
+
+	public native int length()/*-{
+												return localStorage.length;
+												}-*/;
+
+	public native String key(int idx)/*-{
+										return localStorage.key(idx);  
+										
+										}-*/;
+
+	public List<String> keyList() {
+		List<String> rt = new ArrayList<String>();
+		for (int i = 0; i < this.length(); i++) {
+			String key = this.key(i);
+			rt.add(key);
+		}
+		return rt;
+	}
 }

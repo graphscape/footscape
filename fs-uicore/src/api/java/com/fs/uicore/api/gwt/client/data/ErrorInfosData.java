@@ -29,6 +29,21 @@ public class ErrorInfosData extends UiData {
 		return this;
 	}
 
+	public boolean containsErrorCode(String code) {
+		return !this.getErrorInfoListByCode(code).isEmpty();
+
+	}
+
+	public List<ErrorInfoData> getErrorInfoListByCode(String code) {
+		List<ErrorInfoData> rt = new ArrayList<ErrorInfoData>();
+		for (ErrorInfoData eid : this.errorInfoList) {
+			if (eid.isCode(code)) {
+				rt.add(eid);
+			}
+		}
+		return rt;
+	}
+
 	/* */
 	@Override
 	public boolean equals(Object obj) {

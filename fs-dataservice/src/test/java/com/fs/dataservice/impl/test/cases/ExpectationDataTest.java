@@ -145,7 +145,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 			Expectation exp2) {
 
 		CooperRequest rt = new CooperRequest().forCreate(this.datas);
-		rt.setAccountId(login.getAccountId());
+		rt.setAccountId1(login.getAccountId());
 		rt.setExpId1(exp1.getId());
 		rt.setExpId2(exp2.getId());
 		rt.save(true);

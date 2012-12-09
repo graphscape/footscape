@@ -17,41 +17,5 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  */
 public class LoginLogic {
 
-	public static void loginSuccess(LoginModelI lm, UiResponse res) {
-		//
-		SessionModelI sm = lm.getSessionModel();
-		ObjectPropertiesData opd = res.getPayloads();
-		BooleanData isAnony = (BooleanData) opd.getProperty("isAnonymous");
-
-		sm.setIsAnonymous(isAnony.getValue());
-		StringData sid = (StringData) opd.getProperty("loginId");
-		StringData accId = (StringData) opd.getProperty("accountId");
-		sm.setAccount(accId.getValue());
-		sm.setLoginId(sid.getValue());// session id.
-
-		if (isAnony.getValue()) {
-			LoginLogic.loginAnonymousSuccess(sm, opd);
-		} else {
-			LoginLogic.loginNormalSuccess(sm, opd);//
-		}
-		sm.setLoginRequired(false);//
-		sm.setAuthed(true);//
-	}
-
-	protected static void loginAnonymousSuccess(SessionModelI sm,
-			ObjectPropertiesData opd) {
-
-	}
-
-	protected static void loginNormalSuccess(SessionModelI sm,
-			ObjectPropertiesData opd) {
-
-		StringData domain = (StringData) opd.getProperty("xmpp.domain");
-		StringData xuser = (StringData) opd.getProperty("xmpp.user");
-		StringData xpassword = (StringData) opd.getProperty("xmpp.password");
-		sm.setValue(SessionModelI.L_DOMAIN, domain.getValue());
-		sm.setXmppUser(xuser.getValue());
-		sm.setXmppPassword(xpassword.getValue());
-
-	}
+	
 }

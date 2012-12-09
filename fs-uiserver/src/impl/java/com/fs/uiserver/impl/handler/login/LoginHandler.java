@@ -22,6 +22,7 @@ import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.uiserver.ErrorCodes;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**
@@ -49,8 +50,7 @@ public class LoginHandler extends UiHandlerSupport {
 			ValidatorI<RequestI> vl = this.createValidator("submit");
 			vl.addExpression("payloads.property['password']!=null");
 			//
-			vl = this.createValidator("auth");//see handleAuth method's signature.
-			
+
 		}
 
 	}
@@ -82,26 +82,27 @@ public class LoginHandler extends UiHandlerSupport {
 		if (res.getErrorInfos().hasError()) {
 			return;//
 		}
-		
-		String accountId = (String) req.getPayload("accountId");
-		if (accountId == null) {
-			String email = (String) req.getPayload("email");
-			if (email == null) {
-				res.getErrorInfos()
-						.add(new ErrorInfo(
-								"invalid request,no accountId or email provided."));
-				return;
-			}
+		String type = (String) req.getPayload("type");// anonymous/registered
+		boolean isSaved = req.getPayload(Boolean.class, "isSaved",
+				Boolean.FALSE);//
+
+		String accountId;
+		if (type.equals("registered")) {// registered
+
+			String email = (String) req.getPayload("email", true);
+
 			AccountInfo ai = this.dataService.getNewest(AccountInfo.class,
 					AccountInfo.EMAIL, email, false);
-			if (ai == null) {
-				res.getErrorInfos().add(
-						new ErrorInfo("failed.login", "no this email"));// TODO
-																		// no
+			if (ai == null) {// not found account by email.
+				res.getErrorInfos().addError(
+						ErrorCodes.FAILED_LOGIN_NOTFOUND_ACCOUNT_OR_PASSWORD);// TODO
+				// no
 				return;
 			}
 			accountId = ai.getAccountId();
 
+		} else {
+			accountId = (String) req.getPayload("accountId", true);
 		}
 
 		Account acc = this.dataService.getNewestById(Account.class, accountId,
@@ -109,9 +110,9 @@ public class LoginHandler extends UiHandlerSupport {
 
 		if (acc == null) {// no this account or password
 
-			res.getErrorInfos().add(
-					new ErrorInfo("failed.login",
-							"no this account or password error"));// TODO no
+			res.getErrorInfos().addError(
+					ErrorCodes.FAILED_LOGIN_NOTFOUND_ACCOUNT_OR_PASSWORD);// TODO
+																			// no
 			// this
 			// account
 			// of
@@ -121,8 +122,8 @@ public class LoginHandler extends UiHandlerSupport {
 
 			AccountInfo xai = this.dataService.getNewest(AccountInfo.class,
 					AccountInfo.PK_ACCOUNT_ID, acc.getId(), false);
-			if(xai ==null){//anonymous user has no account info?.
-				
+			if (xai == null) {// anonymous user has no account info?.
+
 			}
 			res.setPayload("isAnonymous", acc.getIsAnonymous());
 
@@ -154,34 +155,20 @@ public class LoginHandler extends UiHandlerSupport {
 		return rt;
 	}
 
-	// client try to find the user info in client side for login;
-	// if not found ,it will request a anonymous account by this method;
-	// request a account for anonymous user.
-	@Handle("auth")
-	//
-	public void handleAuth(HandleContextI hc, RequestI req, ResponseI res,
-			ValidateResult<RequestI> vr) {
-		//
-		//
-		//
-		String accId = (String) req.getPayload("accountId");
-		if (accId == null) {// create a anonymous account.
-			String id = UUID.randomUUID().toString();
-			Account an = new Account().forCreate(this.dataService);
+	@Handle("anonymous")
+	// create anonymous account.
+	public void handleAnonymous(HandleContextI hc, RequestI req, ResponseI res) {
+		String id = UUID.randomUUID().toString();
+		Account an = new Account().forCreate(this.dataService);
 
-			an.setId(id);//
-			an.setIsAnonymous(true);
-			an.setPassword(id);//
-			an.setNick(id);
-			an.save(true);
+		an.setId(id);//
+		an.setIsAnonymous(true);
+		an.setPassword(id);//
+		an.setNick(id);
+		an.save(true);
 
-			res.setPayload("accountId", an.getId());
-			res.setPayload("password", an.getPassword());
-			
-		} else {// todo go though the super handler method.
-			// allow forward.
-			this.handleSubmit(hc, req, res, vr);//
-		}
+		res.setPayload("accountId", an.getId());
+		res.setPayload("password", an.getPassword());
 
 	}
 }

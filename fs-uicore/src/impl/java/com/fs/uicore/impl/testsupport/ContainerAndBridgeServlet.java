@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.SPIManagerI;
+import com.fs.uicore.api.gwt.client.UiRequest;
 
 /**
  * @author wu
@@ -100,7 +101,9 @@ public class ContainerAndBridgeServlet extends HttpServlet {
 		}
 
 		String s = new String(bos.toByteArray());
-		LOG.debug(s);//
+		String path = req.getHeader(UiRequest.PATH);
+		String sid = req.getHeader(UiRequest.SESSION_ID);
+		LOG.debug("sid:" + sid + ",path:" + path + ",payloads:" + s);//
 
 	}
 

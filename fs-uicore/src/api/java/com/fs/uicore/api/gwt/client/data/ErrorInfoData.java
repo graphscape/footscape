@@ -17,17 +17,20 @@ public class ErrorInfoData extends UiData {
 
 	private String message;
 
-	private String source;
-	
+	private String code;// error code?
+
 	private List<String> detail;
 
-	public ErrorInfoData(String msg, String source) {
-		this.message = msg;
-		this.source = source;
+	public ErrorInfoData(String code, String message) {
+		this.code = code;
+		this.message = message;
 		this.detail = new ArrayList<String>();
 
 	}
 
+	public boolean isCode(String code){
+		return this.code.equals(code);
+	}
 	/**
 	 * @return the message
 	 */
@@ -55,15 +58,16 @@ public class ErrorInfoData extends UiData {
 	/* */
 	@Override
 	public String toString() {
-		return this.message + ",detail:" + this.detail;
+		return "code:" + this.code + ",msg:" + this.message + ",detail:"
+				+ this.detail;
 
 	}
 
 	/**
 	 * @return the source
 	 */
-	public String getSource() {
-		return source;
+	public String getCode() {
+		return code;
 	}
 
 }

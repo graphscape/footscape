@@ -9,6 +9,7 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
 import com.fs.uiclient.api.gwt.client.util.ListDataUtil;
+import com.fs.uiclient.impl.gwt.client.NodeFields;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicore.api.gwt.client.UiRequest;
@@ -56,10 +57,10 @@ public class RefreshIncomingCrAP implements ActionProcessorI {
 
 		for (int i = 0; i < crL.size(); i++) {
 			ObjectPropertiesData od = crL.get(i);
-			StringData crId = (StringData) od.getProperty("id");
+			StringData crId = (StringData) od.getProperty(NodeFields.PK_ID);
 			StringData expId1 = (StringData) od.getProperty("expId1");
 			StringData expId2 = (StringData) od.getProperty("expId2");
-			StringData accountId1 = (StringData) od.getProperty("accountId1");
+			StringData accountId1 = (StringData) od.getProperty("accountId1");//NOTE TODO 1
 			StringData accountId2 = (StringData) od.getProperty("accountId2");
 
 			CooperRequestModel crm = new CooperRequestModel(crId.getValue());

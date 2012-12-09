@@ -17,18 +17,18 @@ import com.fs.commons.api.lang.ObjectUtil;
  */
 public class ErrorInfo implements ValueI {
 
-	private String source;
+	private String code;
 
 	private String message;
 
 	private List<String> detail;
 
-	public ErrorInfo(String source) {
-		this(source, (String) null);
+	public ErrorInfo(String code) {
+		this(code, (String) null);
 	}
 
-	public ErrorInfo(String source, String msg) {
-		this(source, msg, null);
+	public ErrorInfo(String code, String msg) {
+		this(code, msg, null);
 	}
 
 	public ErrorInfo(Throwable t) {
@@ -39,8 +39,8 @@ public class ErrorInfo implements ValueI {
 		this(source, null, t);
 	}
 
-	public ErrorInfo(String source, String msg, Throwable t) {
-		this.source = source;
+	public ErrorInfo(String code, String msg, Throwable t) {
+		this.code = code == null?"unknown":code;
 		this.message = msg;
 		this.detail = new ArrayList<String>();
 		if (t != null) {
@@ -72,7 +72,7 @@ public class ErrorInfo implements ValueI {
 			return false;
 		}
 		ErrorInfo ei = (ErrorInfo) o;
-		return ObjectUtil.nullSafeEquals(ei.source, this.source)
+		return ObjectUtil.nullSafeEquals(ei.code, this.code)
 				&& ObjectUtil.nullSafeEquals(ei.message, this.message)
 				&& ObjectUtil.nullSafeEquals(ei.detail, ei.detail);
 	}
@@ -82,9 +82,10 @@ public class ErrorInfo implements ValueI {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 
+		sb.append("code:");
+		sb.append(this.code);
+		sb.append(",message:");
 		sb.append(this.message);
-		sb.append(",source:");
-		sb.append(this.source);
 		sb.append(",detail:");
 		sb.append("");
 		for (String line : this.detail) {
@@ -99,8 +100,8 @@ public class ErrorInfo implements ValueI {
 	/**
 	 * @return the source
 	 */
-	public String getSource() {
-		return source;
+	public String getCode() {
+		return code;
 	}
 
 }

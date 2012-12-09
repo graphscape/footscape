@@ -17,7 +17,7 @@ import com.fs.commons.impl.codec.support.PropertiesJCSSupport;
  */
 public class ErrorInfoJCS extends PropertiesJCSSupport<ErrorInfo> implements
 		CodecI {
-	public static final String SOURCE = "source";
+	public static final String CODE = "code";
 	public static final String MESSAGE = "message";
 	public static final String DETAIL = "detail";
 
@@ -30,7 +30,7 @@ public class ErrorInfoJCS extends PropertiesJCSSupport<ErrorInfo> implements
 	/* */
 	@Override
 	protected ErrorInfo convert(PropertiesI<Object> pts) {
-		String source = (String) pts.getProperty(SOURCE);
+		String source = (String) pts.getProperty(CODE);
 		String msg = (String) pts.getProperty(MESSAGE);
 		List<String> detail = (List<String>) pts.getProperty(DETAIL);
 		ErrorInfo rt = new ErrorInfo(source, msg);
@@ -44,7 +44,7 @@ public class ErrorInfoJCS extends PropertiesJCSSupport<ErrorInfo> implements
 	@Override
 	protected PropertiesI<Object> convert(ErrorInfo t) {
 		PropertiesI<Object> rt = new MapProperties<Object>();
-		rt.setProperty(SOURCE, t.getSource());
+		rt.setProperty(CODE, t.getCode());
 		rt.setProperty(MESSAGE, t.getMessage());
 		rt.setProperty(DETAIL, t.getDetail());
 		return rt;

@@ -10,6 +10,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleActionModel;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.UiRequest;
 
 /**
  * @author wu
@@ -51,6 +52,12 @@ public class ControlUtil {
 
 	}
 
+	
+	//
+	public static void triggerAction(UiRequest broken,ModelI model, String action){
+		broken.setIsLocal(true);//
+	}
+	
 	public static void triggerAction(ModelI model, String action) {
 		getAction(model, action, true).trigger();
 	}

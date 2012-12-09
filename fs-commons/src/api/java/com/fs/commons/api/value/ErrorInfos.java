@@ -30,8 +30,12 @@ public class ErrorInfos implements ValueI {
 		return this;
 	}
 
-	public ErrorInfos add(String msg) {
-		return this.add(new ErrorInfo(msg));
+	public ErrorInfos addError(String code) {
+		return this.addError(code, null);
+	}
+
+	public ErrorInfos addError(String code, String msg) {
+		return this.add(new ErrorInfo(code, msg));
 	}
 
 	public ErrorInfos add(ErrorInfo ei) {

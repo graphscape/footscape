@@ -18,15 +18,18 @@ public class UiResponse extends UiTransfer {
 																// in server
 																// side.
 
+	protected UiRequest request;
+
 	/**
 	 * @param fc
 	 */
-	public UiResponse() {
-		this(null);
+	public UiResponse(UiRequest req) {
+		this(null, req);
 	}
 
-	public UiResponse(String name) {
+	public UiResponse(String name, UiRequest req) {
 		super(name);
+		this.request = req;
 		//
 		this.getPayloads().setProperty(ERROR_INFO_S, new ErrorInfosData());
 		//
@@ -36,9 +39,10 @@ public class UiResponse extends UiTransfer {
 		return (ErrorInfosData) this.getPayloads().getProperty(ERROR_INFO_S);
 	}
 
-	public static UiResponse valueOf(UiHeaders header, ObjectPropertiesData pl) {
-		UiResponse rt = new UiResponse("unknow");
-		rt.getPayloads().setProperties(pl);
-		return rt;
+	/**
+	 * @return the request
+	 */
+	public UiRequest getRequest() {
+		return request;
 	}
 }

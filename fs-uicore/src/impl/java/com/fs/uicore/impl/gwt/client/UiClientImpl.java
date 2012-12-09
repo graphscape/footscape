@@ -246,7 +246,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	public void sendRequest(UiRequest req,
 			final UiCallbackI<UiResponse, Object> cb) {
 
-		final UiResponse rt = new UiResponse();
+		final UiResponse rt = new UiResponse(req);
 		UiFilterI.Context fc = new UiFilterI.Context(req, rt, this.filterList);
 		fc.next().filter(fc, cb);// TODO
 

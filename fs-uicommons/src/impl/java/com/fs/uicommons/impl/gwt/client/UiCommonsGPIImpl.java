@@ -224,7 +224,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 					public void handle(ClientStartEvent e) {
 						//
 						ControlUtil.triggerAction(login.get().getModel(),
-								LoginModelI.A_AUTH);//
+								LoginModelI.A_SUBMIT);//
 					}
 				});
 

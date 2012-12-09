@@ -6,15 +6,30 @@ import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.html5.storage.LocalStorageJSO;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
+import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 public class LoginModel extends FormsModel implements LoginModelI {
+
+	public static final String FK_SAVINGACCOUNT = "savingAccount";// save in
+																	// client
+																	// side for
+																	// auto
+																	// auth.
+
+	public static final String FK_EMAIL = "email";
+
+	public static final String FK_PASSWORD = "password";
+	
+	private boolean useSavingAccount = true;//NOTE
 
 	public LoginModel(String name) {
 		super(name);
 
 		// auth is hidden action
-		ControlUtil.addAction(this, LoginModelI.A_AUTH);// trying auto auth when
+		
+		ControlUtil.addAction(this, LoginModelI.A_ANONYMOUS,true);// create anonymous
+		
 		// client start,to login
 		// from cokies or web data
 
@@ -25,8 +40,9 @@ public class LoginModel extends FormsModel implements LoginModelI {
 
 		FormModel def = this.getDefaultForm();
 
-		def.addField("email", StringData.class);//
-		def.addField("password", StringData.class);//
+		def.addField(FK_EMAIL, StringData.class);//
+		def.addField(FK_PASSWORD, StringData.class);//
+		def.addField(FK_SAVINGACCOUNT, BooleanData.class);
 		// actions
 		def.addAction(LoginModelI.A_SUBMIT);//
 	}
@@ -38,47 +54,47 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	}
 
 	/*
-	 * Nov 25, 2012
+	 * Dec 9, 2012
 	 */
 	@Override
-	public String getAccountIdSaved() {// TODO get from client data.
+	public boolean isSavingAccount() {
 		//
-		String rt = (String) this.getValue(LoginModelI.L_ACCOUNTID_SAVED);
-		if (rt != null) {// the saved value already read into model
-			return rt;
-		}
-		//read from client storage
-		LocalStorageJSO lsj = LocalStorageJSO.getInstance();
-		rt = lsj.getValue(LoginModelI.L_ACCOUNTID_SAVED);
-		
-		return rt;
-		
+		BooleanData bd = (BooleanData) this.getDefaultForm()
+				.getFieldModel(FK_SAVINGACCOUNT, true).getFieldValue();
+		return bd == null ? false : bd.getValue();
+
+	}
+
+	@Override
+	public String getPassword() {
+		StringData sd = this.getDefaultForm().getFieldValue(FK_PASSWORD, null);
+		return sd == null ? null : sd.getValue();
 	}
 
 	/*
-	 * Nov 25, 2012
+	 * Dec 9, 2012
 	 */
 	@Override
-	public String getPasswordSaved() {
-		String rt = (String) this.getValue(LoginModelI.L_PASSWORD_SAVED);
+	public String getEmail() {
 		//
-		if (rt != null) {// the saved value already read into model
-			return rt;
-		}
-		LocalStorageJSO lsj = LocalStorageJSO.getInstance();
-		rt = lsj.getValue(LoginModelI.L_PASSWORD_SAVED);
-		
-		return rt;
+		StringData sd = this.getDefaultForm().getFieldValue(FK_EMAIL, null);
+		return sd == null ? null : sd.getValue();
 	}
 
+	/*
+	 *Dec 9, 2012
+	 */
 	@Override
-	public void saveAccountAndPassword(String accId, String password) {
-		LocalStorageJSO lsj = LocalStorageJSO.getInstance();
-		lsj.setValue(LoginModelI.L_ACCOUNTID_SAVED,accId);
-		lsj.setValue(LoginModelI.L_PASSWORD_SAVED,password);
-		
-		this.setValue(LoginModelI.L_ACCOUNTID_SAVED, accId);
-		this.setValue(LoginModelI.L_PASSWORD_SAVED, password);//
-		
+	public boolean getIsUsingSavedAccount() {
+		// 
+		return this.useSavingAccount;
+	}
+
+	/*
+	 *Dec 9, 2012
+	 */
+	@Override
+	public void setIsUsingSavedAccout(boolean b) {
+		this.useSavingAccount = b;
 	}
 }
