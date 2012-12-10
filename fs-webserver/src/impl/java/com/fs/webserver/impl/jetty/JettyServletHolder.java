@@ -10,7 +10,7 @@ package com.fs.webserver.impl.jetty;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;

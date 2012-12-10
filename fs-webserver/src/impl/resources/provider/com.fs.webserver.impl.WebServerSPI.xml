@@ -4,7 +4,7 @@
 	<property name="Object.WEB_SERVER.class" value="com.fs.webserver.impl.jetty.JettyWebServerImpl" />
 
 	<config name="WebApp.ROOT">
-		<context.path value="/ROOT" />
+		<context.path value="ROOT" />
 	</config>
 
 </config>

@@ -3,7 +3,8 @@
  */
 package com.fs.webserver.impl.test;
 
-import org.mortbay.log.Log;
+import org.eclipse.jetty.util.log.Log;
+import org.eclipse.jetty.util.log.Logger;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
@@ -16,7 +17,9 @@ import com.fs.webserver.api.WebServerI;
  * 
  */
 public class WebServerTestSPI extends SPISupport {
-
+	
+	private static Logger LOG = Log.getLog();//
+	
 	/** */
 	public WebServerTestSPI(String id) {
 		super(id);
@@ -41,7 +44,7 @@ public class WebServerTestSPI extends SPISupport {
 					+ ".webResource.testResourceNotFound");
 		} catch (FsException e) {
 			if (e.getMessage().contains("notfound.jar")) {
-				Log.info("expected exception?", e);
+				LOG.info("expected exception?", e);
 
 			} else {
 				throw e;

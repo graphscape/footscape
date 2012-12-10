@@ -5,8 +5,8 @@ package com.fs.webserver.impl.jetty;
 
 import java.io.File;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -135,8 +135,9 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 		ac.activitor().context(ac).container(this.internal).object(wai)
 				.name(name).cfgId(cfgId).active();
 		WebAppContext wac = wai.getJettyWebApp();
-
-		this.server.addHandler(wac);
+		//wac.get
+		//this.server.addHandler(wac);//jetty 6
+		this.server.addBean(wac);//TODO test form jetty6 to 9.0
 		try {
 			this.server.getHandler().start();
 			// NOTE this handler will be a collection handler when the second

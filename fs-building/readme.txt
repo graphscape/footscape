@@ -149,13 +149,6 @@
 		http://ant.apache.org/manual/index.html
 	>>Json:
 	
-	>>>.Neo4j server :
-
-	>>>>.Server guide:
-		http://docs.neo4j.org/chunked/stable/server.html
-	>>>>.Tools:
-		http://docs.neo4j.org/chunked/stable/tools.html
-		
 	>>REST:
 		http://www.vogella.com/articles/REST/article.html
 		http://blogs.steeplesoft.com/2012/01/a-jersey-pojomapping-clientserver-example/
@@ -185,7 +178,16 @@
 			https://github.com/EmiteGWT/emite
 		>>>.Bosh setting
 			http://prosody.im/doc/setting_up_bosh
-		
+	>>.Comet
+		>>>.
+			http://ajaxpatterns.org/HTTP_Streaming
+		>>>.
+			http://jwebsocket.org/
+		>>>.
+			http://code.google.com/p/gwt-comet/wiki/WebSockets
+		>>>.
+			http://www.ape-project.org/demos/
+			
 >.JWChat 
 	>>.
 		http://www.blochberger.de/en_jwchat_how_to.htm

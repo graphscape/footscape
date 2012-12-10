@@ -5,7 +5,7 @@ package com.fs.webserver.impl.jetty;
 
 import java.io.File;
 
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,13 +52,14 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 		this.jettyWebApp = new WebAppContext();
 		String cpath = this.config.getProperty("context.path", true);
+		
 		String war = this.jettyWebServer.getHome().getAbsolutePath()
 				+ File.separator + cpath;
 		this.home = new File(war);
 
 		if (!this.home.exists()) {
 			this.home.mkdirs();// NOTE
-			this.home.deleteOnExit();
+			//this.home.deleteOnExit();
 		}
 		this.jettyWebApp.setWar(war);//
 		this.jettyWebApp.setContextPath(cpath);
@@ -80,6 +81,7 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 				.name(name).active();
 
 		this.jettyWebApp.addServlet(jsh.jettyHolder, jsh.getPath());
+				
 		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name
 				+ ",path:" + jsh.getPath() + ",cfgId:" + cfgId + ",spi:"
 				+ ac.getSpi());//
