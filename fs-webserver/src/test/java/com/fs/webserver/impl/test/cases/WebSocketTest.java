@@ -27,6 +27,7 @@ public class WebSocketTest extends TestBase {
 
 	public void testClient() throws Exception {
 		WebSocketClientFactory cf = new WebSocketClientFactory();
+		cf.start();
 		WebSocketListener wsl = new WebSocketAdapter() {
 
 			@Override
@@ -36,6 +37,7 @@ public class WebSocketTest extends TestBase {
 
 		};
 		WebSocketClient wsc = cf.newWebSocketClient(wsl);
+		
 		//
 		URI uri = new URI("ws://localhost:8080");
 		FutureCallback<UpgradeResponse> fc = wsc.connect(uri);//

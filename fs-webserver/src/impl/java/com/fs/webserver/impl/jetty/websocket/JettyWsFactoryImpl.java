@@ -14,7 +14,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.webserver.api.ServletHolderI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
-import com.fs.webserver.api.websocket.WSFactoryI;
+import com.fs.webserver.api.websocket.WsFactoryI;
 import com.fs.webserver.api.websocket.WSManagerI;
 
 /**
@@ -22,7 +22,7 @@ import com.fs.webserver.api.websocket.WSManagerI;
  * 
  */
 public class JettyWsFactoryImpl extends ConfigurableSupport implements
-		WSFactoryI {
+		WsFactoryI {
 	protected Map<String, JettyWsManagerImpl> managers;
 
 	public JettyWsFactoryImpl() {
@@ -38,12 +38,12 @@ public class JettyWsFactoryImpl extends ConfigurableSupport implements
 	public WSManagerI addManager(ActiveContext ac, String name) {
 		// create a
 		WebServerI wbs = this.container.find(WebServerI.class);
-		WebAppI wap = wbs.getWebApp("socketwebapp");
+		WebAppI wap = wbs.getWebApp("wsa");
 		// NOTE configuration is load and changed here.
 		Configuration cfg = Configuration.properties(this.configId + "."
 				+ "servletHolder.WS_MGR");
 		String path = cfg.getProperty("path", true);
-		path = path.replace("${name}", name);
+		path = path.replace("{name}", name);//NOTE 
 		cfg.setProperty("path", path);//
 
 		ServletHolderI sh = wap.addServlet(ac, name, cfg);

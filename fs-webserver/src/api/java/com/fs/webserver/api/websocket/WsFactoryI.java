@@ -10,7 +10,7 @@ import com.fs.commons.api.ActiveContext;
  * @author wu
  *
  */
-public interface WSFactoryI {
+public interface WsFactoryI {
 	
 	public WSManagerI addManager(ActiveContext ac, String name);
 	
