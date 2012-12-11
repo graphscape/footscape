@@ -22,7 +22,7 @@ import com.fs.webserver.api.ServletHolderI;
  * @author wuzhen
  * 
  */
-public class JettyServletHolder extends ConfigurableSupport implements
+public class JettyWsServletHolder extends ConfigurableSupport implements
 		ServletHolderI {
 
 	private String path;

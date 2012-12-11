@@ -5,6 +5,7 @@ package com.fs.commons.api;
 
 import com.fs.commons.api.config.ConfigurableI;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.lang.FsException;
 
 /**
  * @author wu
@@ -17,6 +18,7 @@ public class ActiveContext {
 		private ActiveContext activeContext;
 		private ContainerI container;
 		private String cfgId;
+		private Configuration configuration;
 		private Object obj;
 
 		/* */
@@ -46,6 +48,7 @@ public class ActiveContext {
 		@Override
 		public ActivitorI cfgId(String cfgId) {
 			this.cfgId = cfgId;
+
 			return this;
 
 		}
@@ -95,11 +98,22 @@ public class ActiveContext {
 
 			}
 			if (this.obj instanceof ConfigurableI) {
-				String cid = this.cfgId;
-				if (this.cfgId == null) {
-					cid = this.obj.getClass().getName();
+				Configuration cfg;
+				if (this.configuration != null) {
+					if (cfgId != null) {
+						throw new FsException(
+								"configuration is present,id not allowed");
+					}
+					cfg = this.configuration;
+				} else {
+
+					String cid = this.cfgId;
+					if (this.cfgId == null) {
+						cid = this.obj.getClass().getName();
+					}
+					cfg = Configuration.properties(cid);
 				}
-				Configuration cfg = Configuration.properties(cid);
+
 				((ConfigurableI) obj).configure(cfg);
 			}
 			if (this.obj instanceof ActivableI) {
@@ -108,6 +122,17 @@ public class ActiveContext {
 
 			return this;
 
+		}
+
+		/*
+		 * Dec 11, 2012
+		 */
+		@Override
+		public ActivitorI configuration(Configuration cfg) {
+			//
+			this.configuration = cfg;
+			this.cfgId = null;//
+			return this;
 		}
 
 	}

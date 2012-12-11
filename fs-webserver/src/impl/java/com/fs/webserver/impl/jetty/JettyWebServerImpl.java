@@ -142,7 +142,7 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 			throw new FsException("not supported while server is running");
 		}
 
-		JettWebAppImpl wai = new JettWebAppImpl(this);
+		JettyWebAppImpl wai = new JettyWebAppImpl(this);
 		ac.activitor().context(ac).container(this.internal).object(wai)
 				.name(name).cfgId(cfgId).active();
 		WebAppContext wac = wai.getJettyWebApp();

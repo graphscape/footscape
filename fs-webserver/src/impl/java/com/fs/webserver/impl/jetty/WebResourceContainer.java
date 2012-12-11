@@ -13,10 +13,10 @@ import com.fs.commons.api.support.ProxyContainerSupport;
  */
 public class WebResourceContainer extends ProxyContainerSupport {
 
-	private JettWebAppImpl jw;
+	private JettyWebAppImpl jw;
 
 	/** */
-	public WebResourceContainer(ContainerI t, JettWebAppImpl jw) {
+	public WebResourceContainer(ContainerI t, JettyWebAppImpl jw) {
 		super(t);
 		this.jw = jw;
 	}

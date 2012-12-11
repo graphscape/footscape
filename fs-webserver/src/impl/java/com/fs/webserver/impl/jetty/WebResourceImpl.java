@@ -21,10 +21,10 @@ import com.fs.webserver.impl.util.ZipUtil;
 public class WebResourceImpl extends ConfigurableSupport implements
 		WebResourceI {
 
-	private JettWebAppImpl jettyWebApp;
+	private JettyWebAppImpl jettyWebApp;
 
 	/** */
-	public WebResourceImpl(JettWebAppImpl jettWebAppImpl) {
+	public WebResourceImpl(JettyWebAppImpl jettWebAppImpl) {
 		this.jettyWebApp = jettWebAppImpl;
 	}
 

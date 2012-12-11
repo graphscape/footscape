@@ -28,7 +28,7 @@ public class ServletContainer extends ProxyContainerSupport {
 	/**
 	 * @param t
 	 */
-	public ServletContainer(ContainerI t, JettWebAppImpl webs) {
+	public ServletContainer(ContainerI t, JettyWebAppImpl webs) {
 		//
 		super(t);
 

@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.ActivitorI;
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.webserver.api.ServletHolderI;
 import com.fs.webserver.api.WebAppI;
@@ -20,10 +22,10 @@ import com.fs.webserver.api.WebResourceI;
  * @author wu
  * 
  */
-public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
+public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(JettWebAppImpl.class);
+			.getLogger(JettyWebAppImpl.class);
 
 	private ServletContainer internal;
 
@@ -36,7 +38,7 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 	private File home;
 
 	/** */
-	public JettWebAppImpl(JettyWebServerImpl jettyWebServerImpl) {
+	public JettyWebAppImpl(JettyWebServerImpl jettyWebServerImpl) {
 		this.jettyWebServer = jettyWebServerImpl;
 	}
 
@@ -52,21 +54,22 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 		this.jettyWebApp = new WebAppContext();
 		String cpath = this.config.getProperty("context.path", true);
-		
+
 		String war = this.jettyWebServer.getHome().getAbsolutePath()
 				+ File.separator + cpath;
 		this.home = new File(war);
 
 		if (!this.home.exists()) {
 			this.home.mkdirs();// NOTE
-			//this.home.deleteOnExit();
+			// this.home.deleteOnExit();
 		}
 		this.jettyWebApp.setWar(war);//
 		this.jettyWebApp.setContextPath(cpath);
 	}
+
 	@Override
-	protected void doAttach(){
-		
+	protected void doAttach() {
+
 	}
 
 	public String getContextPath() {
@@ -77,15 +80,34 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 		return this.home;
 	}
 
+	@Override
+	public ServletHolderI addServlet(ActiveContext ac, String name,
+			Configuration cfg) {
+		return this.addServlet(ac, name, cfg, null);
+	}
+
 	/* */
 	@Override
 	public ServletHolderI addServlet(ActiveContext ac, String name, String cfgId) {
-		JettyServletHolder jsh = new JettyServletHolder();
-		ac.activitor().object(jsh).container(this.internal).cfgId(cfgId)
-				.name(name).active();
+		return this.addServlet(ac, name, null, cfgId);
+	}
+
+	protected ServletHolderI addServlet(ActiveContext ac, String name,
+			Configuration cfg, String cfgId) {
+		JettyWsServletHolder jsh = new JettyWsServletHolder();
+
+		ActivitorI act = ac.activitor().object(jsh).container(this.internal)
+				.name(name);
+		if (cfgId != null) {
+			act.cfgId(cfgId);
+		}
+		if (cfg != null) {
+			act.configuration(cfg);
+		}
+		act.active();
 
 		this.jettyWebApp.addServlet(jsh.jettyHolder, jsh.getPath());
-				
+
 		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name
 				+ ",path:" + jsh.getPath() + ",cfgId:" + cfgId + ",spi:"
 				+ ac.getSpi());//

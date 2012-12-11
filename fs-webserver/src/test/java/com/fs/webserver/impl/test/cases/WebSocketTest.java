@@ -37,7 +37,7 @@ public class WebSocketTest extends TestBase {
 		};
 		WebSocketClient wsc = cf.newWebSocketClient(wsl);
 		//
-		URI uri = new URI("ws://localhost");
+		URI uri = new URI("ws://localhost:8080");
 		FutureCallback<UpgradeResponse> fc = wsc.connect(uri);//
 		UpgradeResponse res = fc.get();
 		res.isSuccess();

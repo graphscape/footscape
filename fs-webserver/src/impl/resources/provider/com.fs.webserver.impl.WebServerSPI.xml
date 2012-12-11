@@ -7,4 +7,18 @@
 		<context.path value="/ROOT" />
 	</config>
 
+	<config name="WebApp.WSA">
+		<context.path value="/wsa" />
+	</config>
+	
+	<config name="servletHolder.WS_MGR">
+		<property name="path" value="${name}" />
+		<prefix name="servlet">
+			<property name="class" value="com.fs.webserver.impl.websocket.JettyWSServletImpl" />
+			<config name="config" property="config">
+
+			</config>
+		</prefix>
+	</config>
+	
 </config>

@@ -3,6 +3,8 @@
  */
 package com.fs.commons.api;
 
+import com.fs.commons.api.config.Configuration;
+
 /**
  * @author wu
  * 
@@ -14,6 +16,8 @@ public interface ActivitorI {
 	public ActivitorI context(ActiveContext ac);
 
 	public ActivitorI cfgId(String cfgId);
+	
+	public ActivitorI configuration(Configuration cfg);
 
 	public ActivitorI container(ContainerI c);
 
