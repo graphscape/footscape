@@ -16,15 +16,10 @@
 	<dependencies>
 
 
-		<dependency org="com.fs" name="commons" rev="1.0.0" force="true"
-			conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 
-		<dependency org="javax.servlet" name="servlet-api" rev="2.4" force="true" conf="api->master" />
 
-		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.1" force="true"
-			conf="test->master(default);test->runtime(*)" />
-
-		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" force="true" conf="runtime->master" />
+		<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1" force="true" conf="api,runtime->master" />
 
 		<dependency org="org.eclipse.jetty" name="jetty-xml" rev="9.0.0.M3" force="true" conf="runtime->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-security" rev="9.0.0.M3" force="true" conf="runtime->master" />
@@ -34,10 +29,11 @@
 		<dependency org="org.eclipse.jetty" name="jetty-servlet" rev="9.0.0.M3" force="true" conf="impl->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-webapp" rev="9.0.0.M3" force="true" conf="impl->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-util" rev="9.0.0.M3" force="true" conf="impl->master" />
-		<dependency org="org.eclipse.jetty.websocket" name="websocket-server" rev="9.0.0.M3" force="true" conf="impl->master" />
 		
-		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
+		<dependency org="org.eclipse.jetty.websocket" name="websocket-server" rev="9.0.0.M3" force="true" conf="impl->master,runtime(*)" />
 
+		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
+		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.1" force="true" conf="test->master(default);test->runtime(*)" />
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="test->master" />
 		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="test->master" />
 

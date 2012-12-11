@@ -155,7 +155,10 @@
 	>>Ant contrib:
 		http://ant-contrib.sourceforge.net/ant-contrib/manual/tasks/
 	>>GWT REST
-		http://restygwt.fusesource.org/documentation/restygwt-user-guide.html		
+		http://restygwt.fusesource.org/documentation/restygwt-user-guide.html	
+	>>GWT Developer Plugin	
+		https://chrome.google.com/webstore/detail/gwt-developer-plugin/jpjpnpmbddbjkfaccnmhnkdgjideieim
+		
 	>>Spring jms:
 		http://static.springsource.org/spring/docs/2.0.7/reference/jms.html	
 	>>.http://www.winslam.com/laramee/jms/index.html
@@ -219,8 +222,9 @@
 		# hdfs dfs -mkdir /testdir
 		# hdfs dfs -put file.txt /testdir/file.txt
 	>>.
->>.gwt related
-webAppCreator -out fooApp -junit $HOME/.ivy2/cache/junit/junit/jars/junit-4.8.2.jar com.example.foo.Foo
+	>>.gwt related
+	webAppCreator -out fooApp -junit $HOME/.ivy2/cache/junit/junit/jars/junit-4.8.2.jar com.example.foo.Foo
+
 >.troubles 
 	>>.eclipse running gwt test:
 		>>>.Detected warnings related to 'com.google.gwt.editor.client.SimpleBeanEditorDriver'.   Are validation-api-<version>.jar and validation-api-<version>-sources.jar on the classpath?
