@@ -44,7 +44,7 @@ public class WebServerTestSPI extends SPISupport {
 					+ ".webResource.testResourceNotFound");
 		} catch (FsException e) {
 			if (e.getMessage().contains("notfound.jar")) {
-				LOG.info("expected exception?", e);
+				LOG.info("just testing,expected exception", e);
 
 			} else {
 				throw e;

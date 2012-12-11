@@ -11,7 +11,7 @@ import com.fs.commons.api.ContainerI;
  * @author wu
  * 
  */
-public class ActivableSupport implements ActivableI {
+public class ActivableSupport extends AttachableSupport implements ActivableI {
 
 	protected ContainerI container;
 
@@ -29,6 +29,14 @@ public class ActivableSupport implements ActivableI {
 
 	public ContainerI getContainer() {
 		return container;
+	}
+
+	/*
+	 * Dec 11, 2012
+	 */
+	@Override
+	protected void doAttach() {
+
 	}
 
 }

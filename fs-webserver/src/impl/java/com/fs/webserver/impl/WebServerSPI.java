@@ -30,7 +30,7 @@ public class WebServerSPI extends SPISupport {
 			ac.activitor().context(ac).spi(this)
 					.cfgId(this.getId() + ".Object.WEB_SERVER").object(ws)
 					.active();
-			ws.start();
+			//ws.start();not start here
 		}
 		//
 		WebServerI ws = ac.getContainer().find(WebServerI.class, true);

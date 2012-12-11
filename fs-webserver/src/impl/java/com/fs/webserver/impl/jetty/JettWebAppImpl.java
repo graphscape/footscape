@@ -64,6 +64,10 @@ public class JettWebAppImpl extends ConfigurableSupport implements WebAppI {
 		this.jettyWebApp.setWar(war);//
 		this.jettyWebApp.setContextPath(cpath);
 	}
+	@Override
+	protected void doAttach(){
+		
+	}
 
 	public String getContextPath() {
 		return this.jettyWebApp.getContextPath();//

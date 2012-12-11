@@ -10,7 +10,8 @@ import com.fs.commons.api.support.ActivableSupport;
 
 /**
  * @author wuzhen
- * 
+ * <p>
+ * TODO move to common.support package
  */
 public class ConfigurableSupport extends ActivableSupport implements
 		ConfigurableI {

@@ -6,25 +6,29 @@ package com.fs.webserver.impl.jetty;
 import java.io.File;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.ServerSupport;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
 import com.fs.webserver.impl.util.DateUtil;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         http://download.eclipse.org/jetty/stable-9/xref/
  */
-// http://docs.codehaus.org/display/JETTY/Embedding+Jetty
-public class JettyWebServerImpl extends ConfigurableSupport implements
-		WebServerI {
+// 9.0:http://www.eclipse.org/jetty/documentation/current/quick-start-configure.html
+
+// 6.1: http://docs.codehaus.org/display/JETTY/Embedding+Jetty
+public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(JettyWebServerImpl.class);
 
@@ -32,28 +36,23 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 
 	private ContainerI internal;
 
+	private boolean backup = true;
+
 	private File home;
 
-	/* */
+	private int port;
+	
+	private HandlerCollection handlers;
+
 	@Override
-	public void start() {
-		Thread t = new Thread() {// TODO ?
-			public void run() {
-				JettyWebServerImpl.this.doStart();
-
-			}
-		};
-		t.setDaemon(true);
-		t.start();
-
-	}
-
 	public void doStart() {
-		LOG.info("doStart,home:" + this.home);
+		LOG.info("starting web server at:" + this.home + " with port:"
+				+ this.port);
 		try {
 			this.server.start();
+
 		} catch (Exception e) {
-			throw new FsException(e);
+			throw FsException.toRtE(e);//
 		}
 
 		/*
@@ -95,7 +94,7 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 			}
 			// backup the history running of web server
 
-			this.backToHistory();
+			this.tryBackup();
 
 		}
 
@@ -103,13 +102,21 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 
 		this.internal = ac.getContainer().find(ContainerI.FactoryI.class, true)
 				.newContainer();//
-		int port = this.config.getPropertyAsInt("port", 8080);//
+		this.port = this.config.getPropertyAsInt("port", 8080);//
 		this.server = new Server(port);
-		this.doStart();//
+		this.handlers = new HandlerList();
+		this.server.setHandler(this.handlers);
+		// not start here
 
 	}
 
-	private void backToHistory() {
+	private void tryBackup() {
+		if (!this.backup) {
+			LOG.info("Web server working directory not backup.");
+			return;
+		}
+		LOG.info("Web server working directory backing up.");
+
 		String fname = DateUtil.getNowFormated();
 		File his = new File(this.home.getAbsoluteFile() + fname);
 		int idx = 0;
@@ -131,13 +138,22 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 	/* */
 	@Override
 	public WebAppI addWebApp(ActiveContext ac, String name, String cfgId) {
+		if (this.started || this.starting) {
+			throw new FsException("not supported while server is running");
+		}
+
 		JettWebAppImpl wai = new JettWebAppImpl(this);
 		ac.activitor().context(ac).container(this.internal).object(wai)
 				.name(name).cfgId(cfgId).active();
 		WebAppContext wac = wai.getJettyWebApp();
-		//wac.get
-		//this.server.addHandler(wac);//jetty 6
-		this.server.addBean(wac);//TODO test form jetty6 to 9.0
+		// wac.get
+		// this.server.addHandler(wac);//jetty 6
+		
+		this.handlers.addHandler(wac);//
+		//this.handlers.start();
+		// this.server.addBean(wac);// TODO test form jetty6 to 9.0
+		/**
+		 * <code>
 		try {
 			this.server.getHandler().start();
 			// NOTE this handler will be a collection handler when the second
@@ -151,7 +167,8 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 			wac.start();
 		} catch (Exception e) {
 			throw new FsException(e);
-		}
+		}</code>
+		 */
 		LOG.info("addWebApp,contextPath:" + wai.getContextPath() + ",spi:"
 				+ ac.getSpi());
 		return wai;
@@ -163,6 +180,15 @@ public class JettyWebServerImpl extends ConfigurableSupport implements
 
 		return this.internal.finder(WebAppI.class).name(name).find(true);
 
+	}
+
+	/*
+	 * Dec 11, 2012
+	 */
+	@Override
+	protected void doShutdown() {
+		//
+		// TODO
 	}
 
 }

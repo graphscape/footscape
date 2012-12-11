@@ -56,6 +56,7 @@ public class SPIManagerImpl implements SPIManagerI {
 
 			this.add(id, cls);
 		}
+		this.container.attach();//
 
 	}
 
@@ -148,6 +149,9 @@ public class SPIManagerImpl implements SPIManagerI {
 			throw new FsException("not support to remove none-last spi.");
 		}
 		this.spiList.remove(lspi);
+		//
+		
+		//
 		ActiveContext ac = new ActiveContext(this.container, lspi);
 		lspi.deactive(ac);
 		this.log("		done remove spi:" + id);
@@ -158,6 +162,14 @@ public class SPIManagerImpl implements SPIManagerI {
 	 */
 	public ContainerI getContainer() {
 		return container;
+	}
+
+	/*
+	 *Dec 11, 2012
+	 */
+	@Override
+	public void destroy() {
+		//TODO not supported for now.
 	}
 
 }

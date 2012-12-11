@@ -28,16 +28,16 @@ public class WebResourceTest extends TestBase {
 	public static final String FILE1 = "file1 content\n";
 	public static final String FILE2 = "file2 content\n";
 
-	public void testWebResourceToBeAddedNotFound() {
+	public void xxtestWebResourceToBeAddedNotFound() {
 		// TODO
 
 	}
 
 	public void testWebResourceAddedByTestSPI() throws Exception {
 		// see com.fs.webserver.impl.test.TestSPI.java
-		String file1 = getHttp("/ROOT/testres/file1.txt");
+		String file1 = getHttp("/testapp/testres/file1.txt");
 		Assert.assertEquals(FILE1, file1);//
-		String file2 = getHttp("/ROOT/testres/folder1/file2.txt");
+		String file2 = getHttp("/testapp/testres/folder1/file2.txt");
 		Assert.assertEquals(FILE2, file2);//
 
 	}

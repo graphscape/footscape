@@ -20,9 +20,17 @@ public class TestBase extends TestCase {
 	/* */
 	@Override
 	protected void setUp() throws Exception {
+		if (this.sm != null) {
+			return;
+		}
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
+	}
+
+	@Override
+	protected void tearDown() {
+
 	}
 
 	/* */

@@ -12,7 +12,7 @@ import com.fs.commons.api.describe.Describe;
  * @author wu
  * 
  */
-public interface ContainerI {
+public interface ContainerI extends AttachableI {
 
 	public interface AwareI {
 
@@ -38,7 +38,7 @@ public interface ContainerI {
 	}
 
 	public ContainerI getParent();
-	
+
 	public ContainerI getTop();
 
 	public void addObject(SPI spi, String name, Object o);

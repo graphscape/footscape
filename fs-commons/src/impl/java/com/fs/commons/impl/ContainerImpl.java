@@ -6,19 +6,21 @@ package com.fs.commons.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.AttachableI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.FinderI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.DescribableI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.support.AttachableSupport;
 import com.fs.commons.api.support.DescribedSupport;
 
 /**
  * @author wu
  * 
  */
-public class ContainerImpl implements ContainerI {
+public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	public static class FactoryImpl implements ContainerI.FactoryI {
 		@Override
@@ -67,6 +69,16 @@ public class ContainerImpl implements ContainerI {
 			return this.describe.toString() + "," + "object:" + this.object;
 		}
 
+		/**
+		 * Dec 11, 2012
+		 */
+		public void tryAttach() {
+			if (!(this.object instanceof AttachableI)) {
+				return;
+			}
+			((AttachableI) this.object).attach();
+		}
+
 	}
 
 	private ContainerI parent;
@@ -88,6 +100,9 @@ public class ContainerImpl implements ContainerI {
 		ObjectEntryImpl oe = new ObjectEntryImpl(o);
 		oe.spi(spi).name(name);// NOTE
 		this.entryList.add(oe);
+		if(this.attached){
+			oe.tryAttach();//
+		}
 	}
 
 	/* */
@@ -164,6 +179,17 @@ public class ContainerImpl implements ContainerI {
 			pr = pr.getParent();
 		}
 		return rt;
+	}
+
+	/*
+	 * Dec 11, 2012
+	 */
+	@Override
+	public void doAttach() {
+		for (ObjectEntryImpl oe : this.entryList) {
+			oe.tryAttach();
+		}
+
 	}
 
 }

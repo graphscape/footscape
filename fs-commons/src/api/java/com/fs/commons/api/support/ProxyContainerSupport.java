@@ -93,4 +93,21 @@ public class ProxyContainerSupport implements ContainerI {
 		return this.target.getTop();
 	}
 
+	/*
+	 *Dec 11, 2012
+	 */
+	@Override
+	public void attach() {
+		this.target.attach();
+	}
+
+	/*
+	 *Dec 11, 2012
+	 */
+	@Override
+	public boolean isAttached() {
+		// 
+		return this.target.isAttached();
+	}
+
 }

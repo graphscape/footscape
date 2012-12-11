@@ -40,5 +40,7 @@ public interface SPIManagerI {
 	public void remove(String id);
 
 	public ContainerI getContainer();
+	
+	public void destroy();//
 
 }
