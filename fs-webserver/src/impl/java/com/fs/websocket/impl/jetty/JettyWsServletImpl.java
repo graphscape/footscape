@@ -1,7 +1,7 @@
 /**
  *  Dec 11, 2012
  */
-package com.fs.webserver.impl.jetty.websocket;
+package com.fs.websocket.impl.jetty;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -136,6 +136,7 @@ public class JettyWsServletImpl extends HttpServlet {
 	 */
 	public JettyWsManagerImpl attachManager(String name) {
 		this.manager = new JettyWsManagerImpl(name);
+		
 		return this.manager;
 	}
 }

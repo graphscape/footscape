@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 11, 2012
  */
-package com.fs.webserver.impl.jetty.websocket;
+package com.fs.websocket.impl.jetty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +14,8 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.webserver.api.ServletHolderI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
-import com.fs.webserver.api.websocket.WsFactoryI;
-import com.fs.webserver.api.websocket.WsManagerI;
+import com.fs.websocket.api.WsFactoryI;
+import com.fs.websocket.api.WsManagerI;
 
 /**
  * @author wu

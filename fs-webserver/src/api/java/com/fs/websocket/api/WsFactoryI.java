@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 11, 2012
  */
-package com.fs.webserver.api.websocket;
+package com.fs.websocket.api;
 
 import com.fs.commons.api.ActiveContext;
 

@@ -11,10 +11,10 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
-import com.fs.webserver.api.websocket.WsListenerI;
-import com.fs.webserver.api.websocket.WebSocketI;
-import com.fs.webserver.api.websocket.WsFactoryI;
-import com.fs.webserver.api.websocket.WsManagerI;
+import com.fs.websocket.api.WebSocketI;
+import com.fs.websocket.api.WsFactoryI;
+import com.fs.websocket.api.WsListenerI;
+import com.fs.websocket.api.WsManagerI;
 
 /**
  * @author wu

@@ -47,11 +47,12 @@ public class MockWSC implements WebSocketListener {
 
 	protected Semaphore connected;
 
-	protected String id;
+	protected Semaphore sessioned;
 
-	public MockWSC(String id, URI uri) {
+	protected String sessionId;
+
+	public MockWSC(URI uri) {
 		this.uri = uri;
-		this.id = id;
 		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
 	}
 
@@ -59,9 +60,11 @@ public class MockWSC implements WebSocketListener {
 		if (this.connection == null) {
 			throw new FsException("not connected");
 		}
-		MockMessage mm = new MockMessage(this.id, to, text);
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
-				.getSession().getRemote();
+		if (this.sessionId == null) {
+			throw new FsException("session not got.");
+		}
+		MockMessage mm = new MockMessage(this.sessionId, to, text);
+		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
 		try {
 			endpoint.sendString(mm.forSending());
 		} catch (IOException e) {
@@ -88,7 +91,21 @@ public class MockWSC implements WebSocketListener {
 	public void onWebSocketText(String message) {
 		LOG.info("msg:" + message);
 		MockMessage ms = MockMessage.parse(message);
+
+		if (this.sessionId == null) {
+			if (!ms.getFrom().equals("server")) {// sessionId got
+				throw new FsException("first message must sessionId from server");
+			}
+
+			this.sessionId = ms.getText();//
+			this.sessioned.release();
+			return;
+		}
+		if (!ms.getTo().equals(this.sessionId)) {
+			throw new FsException("message send to error:" + ms);
+		}
 		this.messageReceived.add(ms);
+
 	}
 
 	@Override
@@ -131,17 +148,36 @@ public class MockWSC implements WebSocketListener {
 	 * @return
 	 */
 	public Future<MockWSC> connect() {
-		FutureTask<MockWSC> rt = new FutureTask<MockWSC>(
-				new Callable<MockWSC>() {
+		FutureTask<MockWSC> rt = new FutureTask<MockWSC>(new Callable<MockWSC>() {
 
-					@Override
-					public MockWSC call() throws Exception {
-						MockWSC.this.syncConnect();
-						return MockWSC.this;
-					}
-				});
+			@Override
+			public MockWSC call() throws Exception {
+				MockWSC.this.syncConnect();
+				return MockWSC.this;
+			}
+		});
 		rt.run();
 		return rt;
+
+	}
+
+	public Future<MockWSC> session() {
+		FutureTask<MockWSC> rt = new FutureTask<MockWSC>(new Callable<MockWSC>() {
+
+			@Override
+			public MockWSC call() throws Exception {
+				MockWSC.this.syncSession();
+				return MockWSC.this;
+			}
+		});
+		rt.run();
+		return rt;
+
+	}
+
+	public void syncSession() {
+		this.sessioned = new Semaphore(0);
+		this.sessioned.acquireUninterruptibly();
 
 	}
 
@@ -150,7 +186,7 @@ public class MockWSC implements WebSocketListener {
 			this.connected = new Semaphore(0);
 			FutureCallback<UpgradeResponse> fc = this.client.connect(this.uri);
 			this.connected.acquireUninterruptibly();
-			
+
 		} catch (IOException e) {
 			throw FsException.toRtE(e);//
 		}
@@ -159,8 +195,19 @@ public class MockWSC implements WebSocketListener {
 	/**
 	 * @return
 	 */
-	public String getId() {
-		return this.id;
+	public String getSessionId() {
+		return this.sessionId;
+	}
+
+	/**
+	 * Dec 12, 2012
+	 */
+	public void close() {
+		try {
+			this.connection.close();
+		} catch (IOException e) {
+			throw new FsException(e);
+		}
 	}
 
 }

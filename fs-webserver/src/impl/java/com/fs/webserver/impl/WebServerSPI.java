@@ -7,9 +7,9 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
-import com.fs.webserver.api.websocket.WsFactoryI;
 import com.fs.webserver.impl.jetty.JettyWebServerImpl;
-import com.fs.webserver.impl.jetty.websocket.JettyWsFactoryImpl;
+import com.fs.websocket.api.WsFactoryI;
+import com.fs.websocket.impl.jetty.JettyWsFactoryImpl;
 
 /**
  * @author wu

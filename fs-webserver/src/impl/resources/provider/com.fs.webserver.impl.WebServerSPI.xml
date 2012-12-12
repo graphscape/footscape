@@ -6,14 +6,14 @@
 
 	</config>
 
-	<property name="Object.WS_FACTORY.class" value="com.fs.webserver.impl.jetty.websocket.JettyWsFactoryImpl" />
+	<property name="Object.WS_FACTORY.class" value="com.fs.websocket.impl.jetty.JettyWsFactoryImpl" />
 	
 	<config name="Object.WS_FACTORY">
 		<!-- This servletHolder will as the template-->
 		<config name="servletHolder.WS_MGR">
 			<property name="path" value="/{name}" />
 			<prefix name="servlet">
-				<property name="class" value="com.fs.webserver.impl.jetty.websocket.JettyWsServletImpl" />
+				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
 				<config name="config" property="config">
 
 				</config>
