@@ -33,24 +33,18 @@ public class WebServerTestSPI extends SPISupport {
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
-		this.activeForTestingWebServer(ac);
-		this.activeForTestingWebSocket(ac);
-	}
 
-	public void activeForTestingWebServer(ActiveContext ac) {
 		WebServerI ws = ac.getContainer().find(WebServerI.class);
 
 		// WebAppI wa = ws.getWebApp("ROOT");
 		WebAppI wa = ws.addWebApp(ac, "TestAPP", this.id + ".WebApp.TESTAPP");
 
-		wa.addServlet(ac, "TEST_HOLDER", this.getId()
-				+ ".servletHolder.TEST_HOLDER");// app
+		wa.addServlet(ac, "TEST_HOLDER", this.getId() + ".servletHolder.TEST_HOLDER");// app
 		//
 		wa.addResource(ac, "testres", this.getId() + ".webResource.test");
 		//
 		try {
-			wa.addResource(ac, "testResourceNotFound", this.id
-					+ ".webResource.testResourceNotFound");
+			wa.addResource(ac, "testResourceNotFound", this.id + ".webResource.testResourceNotFound");
 		} catch (FsException e) {
 			if (e.getMessage().contains("notfound.jar")) {
 				LOG.info("just testing,expected exception:" + e.getMessage());
@@ -59,12 +53,6 @@ public class WebServerTestSPI extends SPISupport {
 				throw e;
 			}
 		}
-	}
-
-	public void activeForTestingWebSocket(ActiveContext ac) {
-		WsFactoryI f = ac.getContainer().find(WsFactoryI.class, true);
-		WsManagerI mnr = f.addManager(ac, "testws");
-
 	}
 
 	/* */

@@ -6,29 +6,8 @@
 
 	</config>
 
-	<property name="Object.WS_FACTORY.class" value="com.fs.websocket.impl.jetty.JettyWsFactoryImpl" />
-	
-	<config name="Object.WS_FACTORY">
-		<!-- This servletHolder will as the template-->
-		<config name="servletHolder.WS_MGR">
-			<property name="path" value="/{name}" />
-			<prefix name="servlet">
-				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
-				<config name="config" property="config">
-
-				</config>
-			</prefix>
-		</config>
-	</config>
-
 	<config name="WebApp.ROOT">
 		<context.path value="/ROOT" />
 	</config>
-
-	<config name="WebApp.WSA">
-		<context.path value="/wsa" />
-	</config>
-
-
 
 </config>

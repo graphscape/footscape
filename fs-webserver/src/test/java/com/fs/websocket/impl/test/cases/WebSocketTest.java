@@ -1,7 +1,7 @@
 /**
  *  Dec 11, 2012
  */
-package com.fs.webserver.impl.test.cases;
+package com.fs.websocket.impl.test.cases;
 
 import java.net.URI;
 import java.util.concurrent.Future;
