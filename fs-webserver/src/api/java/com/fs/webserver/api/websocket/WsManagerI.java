@@ -8,11 +8,11 @@ package com.fs.webserver.api.websocket;
  * @author wu
  * 
  */
-public interface WSManagerI {
+public interface WsManagerI {
 	
 	public String getName();
 	
-	public void addListener(WSListenerI ln);
+	public void addListener(WsListenerI ln);
 
 	public WebSocketI getSocket(String id);
 }

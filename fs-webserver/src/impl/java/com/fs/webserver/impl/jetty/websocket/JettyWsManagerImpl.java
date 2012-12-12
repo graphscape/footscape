@@ -15,8 +15,8 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
-import com.fs.webserver.api.websocket.WSListenerI;
-import com.fs.webserver.api.websocket.WSManagerI;
+import com.fs.webserver.api.websocket.WsListenerI;
+import com.fs.webserver.api.websocket.WsManagerI;
 import com.fs.webserver.api.websocket.WebSocketI;
 
 /**
@@ -25,9 +25,9 @@ import com.fs.webserver.api.websocket.WebSocketI;
  *         1-1 mapping to Servlet
  */
 public class JettyWsManagerImpl extends ConfigurableSupport implements
-		WSManagerI, WebSocketCreator {
+		WsManagerI, WebSocketCreator {
 
-	protected List<WSListenerI> listeners;
+	protected List<WsListenerI> listeners;
 
 	protected String name;
 
@@ -37,11 +37,11 @@ public class JettyWsManagerImpl extends ConfigurableSupport implements
 
 	public JettyWsManagerImpl(String name) {
 		this.name = name;
-		this.listeners = new ArrayList<WSListenerI>();
+		this.listeners = new ArrayList<WsListenerI>();
 	}
 
 	@Override
-	public void addListener(WSListenerI ln) {
+	public void addListener(WsListenerI ln) {
 		//
 		if (this.isAttached()) {
 			throw new FsException("not supported for online add");

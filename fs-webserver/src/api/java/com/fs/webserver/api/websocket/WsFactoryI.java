@@ -12,8 +12,8 @@ import com.fs.commons.api.ActiveContext;
  */
 public interface WsFactoryI {
 	
-	public WSManagerI addManager(ActiveContext ac, String name);
+	public WsManagerI addManager(ActiveContext ac, String name);
 	
-	public WSManagerI getManager(String name, boolean force);
+	public WsManagerI getManager(String name, boolean force);
 	
 }

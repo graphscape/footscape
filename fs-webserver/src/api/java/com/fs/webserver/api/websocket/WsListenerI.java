@@ -8,7 +8,7 @@ package com.fs.webserver.api.websocket;
  * @author wu
  * 
  */
-public interface WSListenerI {
+public interface WsListenerI {
 	
 	public void onSocketOpen(WebSocketI ws);
 	

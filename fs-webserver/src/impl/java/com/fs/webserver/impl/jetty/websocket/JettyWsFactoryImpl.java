@@ -15,7 +15,7 @@ import com.fs.webserver.api.ServletHolderI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
 import com.fs.webserver.api.websocket.WsFactoryI;
-import com.fs.webserver.api.websocket.WSManagerI;
+import com.fs.webserver.api.websocket.WsManagerI;
 
 /**
  * @author wu
@@ -35,7 +35,7 @@ public class JettyWsFactoryImpl extends ConfigurableSupport implements
 	 * Dec 11, 2012
 	 */
 	@Override
-	public WSManagerI addManager(ActiveContext ac, String name) {
+	public WsManagerI addManager(ActiveContext ac, String name) {
 		// create a
 		WebServerI wbs = this.container.find(WebServerI.class);
 		WebAppI wap = wbs.getWebApp("wsa");
@@ -58,9 +58,9 @@ public class JettyWsFactoryImpl extends ConfigurableSupport implements
 	 * Dec 11, 2012
 	 */
 	@Override
-	public WSManagerI getManager(String name, boolean force) {
+	public WsManagerI getManager(String name, boolean force) {
 		//
-		WSManagerI rt = this.managers.get(name);
+		WsManagerI rt = this.managers.get(name);
 		if (rt == null && force) {
 			throw new FsException("no manager found:" + name);
 		}

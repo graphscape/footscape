@@ -11,15 +11,19 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
+import com.fs.webserver.api.websocket.WsListenerI;
+import com.fs.webserver.api.websocket.WebSocketI;
+import com.fs.webserver.api.websocket.WsFactoryI;
+import com.fs.webserver.api.websocket.WsManagerI;
 
 /**
  * @author wu
  * 
  */
 public class WebServerTestSPI extends SPISupport {
-	
+
 	private static Logger LOG = Log.getLog();//
-	
+
 	/** */
 	public WebServerTestSPI(String id) {
 		super(id);
@@ -29,6 +33,11 @@ public class WebServerTestSPI extends SPISupport {
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
+		this.activeForTestingWebServer(ac);
+		this.activeForTestingWebSocket(ac);
+	}
+
+	public void activeForTestingWebServer(ActiveContext ac) {
 		WebServerI ws = ac.getContainer().find(WebServerI.class);
 
 		// WebAppI wa = ws.getWebApp("ROOT");
@@ -44,12 +53,18 @@ public class WebServerTestSPI extends SPISupport {
 					+ ".webResource.testResourceNotFound");
 		} catch (FsException e) {
 			if (e.getMessage().contains("notfound.jar")) {
-				LOG.info("just testing,expected exception", e);
+				LOG.info("just testing,expected exception:" + e.getMessage());
 
 			} else {
 				throw e;
 			}
 		}
+	}
+
+	public void activeForTestingWebSocket(ActiveContext ac) {
+		WsFactoryI f = ac.getContainer().find(WsFactoryI.class, true);
+		WsManagerI mnr = f.addManager(ac, "testws");
+
 	}
 
 	/* */
