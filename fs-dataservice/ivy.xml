@@ -8,18 +8,22 @@
 	</configurations>
 
 	<publications>
-	
+
 		<artifact name="fs-dataservice-api" type="jar" conf="api" ext="jar" />
 		<artifact name="fs-dataservice-impl" type="jar" conf="impl" ext="jar" />
-		
+
 	</publications>
 	<dependencies>
 
 
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
-	
+
 		<dependency org="org.elasticsearch" name="elasticsearch" rev="0.19.10" force="true" conf="impl->master,compile" />
 		
+		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl->master" />
+		
+		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl->master" />
+
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="test->master" />

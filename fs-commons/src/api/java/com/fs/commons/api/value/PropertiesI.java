@@ -20,6 +20,8 @@ public interface PropertiesI<T> extends ValueI {
 	public T getProperty(String key, boolean force);
 
 	public boolean getPropertyAsBoolean(String key, boolean def);
+	
+	public List<String> getPropertyAsCsv(String key);
 
 	public List<String> keyList();
 

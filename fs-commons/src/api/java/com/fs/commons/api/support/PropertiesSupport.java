@@ -3,6 +3,8 @@
  */
 package com.fs.commons.api.support;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,24 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 		}
 		return true;
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#getPropertyAsCsv(java.lang.String)
+	 */
+	@Override
+	public List<String> getPropertyAsCsv(String key) {
+		List<String> rt = new ArrayList<String>();
+		String v = (String) this.getProperty(key);
+		if (v == null || v.length() == 0) {//
+			return rt;
+		}
+		String[] ss = v.split(",");
+		rt.addAll(Arrays.asList(ss));//
+		return rt;
 	}
 
 	/*

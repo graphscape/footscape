@@ -113,4 +113,14 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.value.PropertiesI#getPropertyAsCsv(java.lang.String)
+	 */
+	@Override
+	public List<String> getPropertyAsCsv(String key) {
+		// TODO Auto-generated method stub
+		return this.target.getPropertyAsCsv(key);
+		
+	}
+
 }
