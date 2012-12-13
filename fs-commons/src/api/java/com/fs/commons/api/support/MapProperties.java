@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.value.PropertiesI;
 
@@ -54,20 +53,7 @@ public class MapProperties<T> extends PropertiesSupport<T> {
 
 	@Override
 	public T getProperty(String key) {
-		return this.getProperty(key, false);
-	}
-
-	/* */
-	@Override
-	public T getProperty(String key, boolean force) {
-
-		T rt = this.map.get(key);
-		if (rt == null && force) {
-			throw new FsException("force,no value for key:" + key);
-		}
-
-		return rt;
-
+		return this.map.get(key);
 	}
 
 	public <X> X getProperty(Class<X> cls, String key) {
@@ -120,7 +106,5 @@ public class MapProperties<T> extends PropertiesSupport<T> {
 	public String toString() {
 		return this.map.toString();
 	}
-
-
 
 }

@@ -43,8 +43,17 @@ public class CodecFactorySupport implements CodecI.FactoryI {
 	/* */
 	@Override
 	public CodecI getCodec(Class<?> dataCls) {
+		return this.getCodec(dataCls, false);
+	}
+
+	@Override
+	public CodecI getCodec(Class<?> dataCls, boolean force) {
 		String tc = this.getTypeCode(dataCls, true);
-		return this.getCodec(tc);
+		CodecI rt = this.getCodec(tc);
+		if (rt == null && force) {
+			throw new FsException("no codec for type:" + dataCls);
+		}
+		return rt;
 
 	}
 
@@ -72,8 +81,7 @@ public class CodecFactorySupport implements CodecI.FactoryI {
 		} else if (codeL.size() == 1) {
 			return codeL.get(0);
 		} else {
-			throw new FsException("too much type code:" + codeL
-					+ ", for class:" + dataCls);
+			throw new FsException("too much type code:" + codeL + ", for class:" + dataCls);
 		}
 
 	}
@@ -84,8 +92,7 @@ public class CodecFactorySupport implements CodecI.FactoryI {
 
 		CodecI rt = this.jcMap.get(type);
 		if (rt == null) {
-			throw new FsException("no codec found for type code:" + type
-					+ ",all:" + this.jcMap.keySet());
+			throw new FsException("no codec found for type code:" + type + ",all:" + this.jcMap.keySet());
 		}
 		return rt;
 	}

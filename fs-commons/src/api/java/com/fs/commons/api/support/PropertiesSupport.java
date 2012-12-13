@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.value.PropertiesI;
 
@@ -143,5 +144,18 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 		}
 		return true;
 
+	}
+
+	/*
+	 * Dec 13, 2012
+	 */
+	@Override
+	public T getProperty(String key, boolean force) {
+		//
+		T rt = this.getProperty(key);
+		if (rt == null && force) {
+			throw new FsException("no property value for key:" + key);
+		}
+		return rt;
 	}
 }

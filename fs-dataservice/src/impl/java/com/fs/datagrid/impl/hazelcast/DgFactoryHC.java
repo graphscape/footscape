@@ -6,8 +6,10 @@ package com.fs.datagrid.impl.hazelcast;
 import java.util.List;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.datagrid.api.DataGridI;
 import com.fs.datagrid.api.DgFactoryI;
 import com.hazelcast.client.ClientConfig;
@@ -25,6 +27,8 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 
 	protected DataGridHC instance;
 
+	protected CodecI propertiesCodec;
+
 	@Override
 	public void configure(Configuration cfg) {
 		super.configure(cfg);
@@ -40,7 +44,11 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.addAddress(this.addressList.toArray(new String[] {}));
 		client = HazelcastClient.newHazelcastClient(clientConfig);
-		this.instance = new DataGridHC(client);
+		this.propertiesCodec = this.container.find(CodecI.FactoryI.class, true).getCodec(PropertiesI.class,
+				true);
+
+		this.instance = new DataGridHC(client, this);
+
 	}
 
 	@Override

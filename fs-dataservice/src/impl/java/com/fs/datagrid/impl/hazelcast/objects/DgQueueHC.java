@@ -14,7 +14,7 @@ import com.hazelcast.core.Instance;
  * @author wuzhen
  * 
  */
-public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<T>> implements
+public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> implements
 		DgQueueI<T> {
 
 	/**
@@ -33,7 +33,8 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<T>> implements
 	public T take() {
 		// TODO Auto-generated method stub
 		try {
-			return this.target.take();
+			Object o = this.target.take();
+			return (T)this.decode(o);
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}
@@ -46,7 +47,8 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<T>> implements
 	 */
 	@Override
 	public void offer(T t) {
-		this.target.offer(t);
+		this.target.offer(this.encode(t));
 	}
+
 
 }

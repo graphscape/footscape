@@ -5,20 +5,20 @@ package com.fs.datagrid.impl.hazelcast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.CollectionUtil;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.datagrid.api.DataGridI;
 import com.fs.datagrid.api.DgObjectI;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.api.objects.DgTopicI;
+import com.fs.datagrid.impl.hazelcast.codec.PropertiesData;
 import com.fs.datagrid.impl.hazelcast.objects.DgQueueHC;
 import com.fs.datagrid.impl.hazelcast.objects.DgTopicHC;
 import com.hazelcast.client.HazelcastClient;
@@ -39,11 +39,14 @@ public class DataGridHC implements DataGridI {
 
 	protected Map<Instance.InstanceType, String> prefixMap;
 
+	protected DgFactoryHC factory;
+
 	/**
 	 * @param client
 	 */
-	public DataGridHC(HazelcastClient client) {
+	public DataGridHC(HazelcastClient client, DgFactoryHC df) {
 		this.client = client;
+		this.factory = df;
 		this.objectCache = new HashMap<Instance.InstanceType, Map<String, DgObjectI>>();
 		this.wrapperTypes = new HashMap<Instance.InstanceType, Class<? extends HazelcastObjectWrapper>>();
 		this.prefixMap = new HashMap<Instance.InstanceType, String>();
@@ -53,8 +56,45 @@ public class DataGridHC implements DataGridI {
 
 		this.wrapperTypes.put(Instance.InstanceType.TOPIC, DgTopicHC.class);
 		this.prefixMap.put(Instance.InstanceType.TOPIC, Prefix.TOPIC);
-
+		PropertiesData.CODEC = this.factory.propertiesCodec;// NOTE static ?
 		//
+	}
+
+	/**
+	 * Dec 13, 2012
+	 */
+	protected Object encode(Object t) {
+		//
+		if (t == null) {
+			return t;
+		}
+		Class cls = t.getClass();
+		if (PropertiesI.class.isAssignableFrom(cls)) {
+			PropertiesI pts = (PropertiesI) t;
+			PropertiesData rt = new PropertiesData();
+			rt.setData(pts);//
+			return rt;
+		} else {
+			return t;// remain same.
+		}
+	}
+
+	/**
+	 * Dec 13, 2012
+	 */
+	protected Object decode(Object o) {
+		//
+		if (o == null) {
+			return null;
+		}
+		Class cls = o.getClass();
+		if (PropertiesData.class.equals(cls)) {
+
+			return ((PropertiesData) o).getData();
+
+		} else {
+			return o;
+		}
 	}
 
 	/*
@@ -67,8 +107,7 @@ public class DataGridHC implements DataGridI {
 		return this.getOrCreateDgObject(Instance.InstanceType.QUEUE, name);
 	}
 
-	public Map<String, DgObjectI> getObjectMapByType(
-			Instance.InstanceType prefix) {
+	public Map<String, DgObjectI> getObjectMapByType(Instance.InstanceType prefix) {
 		Map<String, DgObjectI> rt = this.objectCache.get(prefix);
 		if (rt == null) {
 			synchronized (this.objectCache) {
@@ -82,8 +121,7 @@ public class DataGridHC implements DataGridI {
 		return rt;
 	}
 
-	public <T extends DgObjectI> T getOrCreateDgObject(
-			Instance.InstanceType type, String name) {
+	public <T extends DgObjectI> T getOrCreateDgObject(Instance.InstanceType type, String name) {
 		Map<String, DgObjectI> objects = this.getObjectMapByType(type);
 
 		DgObjectI rt = objects.get(name);
@@ -105,17 +143,14 @@ public class DataGridHC implements DataGridI {
 		return (T) rt;
 	}
 
-	protected HazelcastObjectWrapper wrapper(String name,
-			Instance.InstanceType type, Object ins) {
-		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes
-				.get(type);
+	protected HazelcastObjectWrapper wrapper(String name, Instance.InstanceType type, Object ins) {
+		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes.get(type);
 		if (wtype == null) {
 			throw new FsException("no class registered for type:" + type);
 		}
 
-		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] {
-				String.class, Instance.class, DataGridHC.class }, new Object[] {
-				name, ins, this });
+		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] { String.class, Instance.class,
+				DataGridHC.class }, new Object[] { name, ins, this });
 		return rt;
 	}
 
@@ -207,15 +242,13 @@ public class DataGridHC implements DataGridI {
 	 * java.lang.String)
 	 */
 	@Override
-	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls,
-			final String name) {
+	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls, final String name) {
 		final List<T> rt = new ArrayList<T>();
 		this.forEachObject(new CallbackI<DgObjectI, Boolean>() {
 
 			@Override
 			public Boolean execute(DgObjectI i) {
-				if (cls.isInstance(i)
-						&& (name == null || name.equals(i.getName()))) {
+				if (cls.isInstance(i) && (name == null || name.equals(i.getName()))) {
 					rt.add((T) i);
 				}
 
@@ -232,8 +265,7 @@ public class DataGridHC implements DataGridI {
 	 * java.lang.String, boolean)
 	 */
 	@Override
-	public <T extends DgObjectI> T getObject(Class<T> cls, String name,
-			boolean force) {
+	public <T extends DgObjectI> T getObject(Class<T> cls, String name, boolean force) {
 		List<T> rt = this.getObjectList(cls, name);
 		return CollectionUtil.single(rt, force);
 
@@ -266,8 +298,7 @@ public class DataGridHC implements DataGridI {
 		Map<String, DgObjectI> typeM = this.objectCache.get(itype);
 		DgObjectI old = typeM.remove(name);
 		if (old == null) {
-			throw new FsException("no this object,type:" + itype + ",name:"
-					+ name);
+			throw new FsException("no this object,type:" + itype + ",name:" + name);
 
 		}
 	}

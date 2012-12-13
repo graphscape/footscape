@@ -12,6 +12,8 @@ public interface CodecI {
 	public static interface FactoryI {
 		public CodecI getCodec(Class<?> dataCls);
 
+		public CodecI getCodec(Class<?> dataCls, boolean force);
+
 		public CodecI getCodec(String type);
 
 	}
