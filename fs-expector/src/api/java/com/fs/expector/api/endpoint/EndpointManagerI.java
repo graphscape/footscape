@@ -12,4 +12,6 @@ import com.fs.expector.api.ManagerI;
  */
 public interface EndpointManagerI extends ManagerI<EndpointI> {
 
+	public static String NAME = "endpoint-manager";
+
 }

@@ -1,0 +1,15 @@
+<config>
+
+	<config name="sessionManager" class="com.fs.expector.impl.dg.session.SessionManagerImpl">
+
+	</config>
+
+	<config name="endpointManager" class="com.fs.expector.impl.dg.endpoint.EndpointManagerImpl">
+
+	</config>
+
+	<config name="endpointEventQueue" class="com.fs.expector.impl.dg.event.EndpointEventQueue">
+
+	</config>
+
+</config>

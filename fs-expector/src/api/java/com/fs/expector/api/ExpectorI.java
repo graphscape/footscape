@@ -9,5 +9,5 @@ package com.fs.expector.api;
  *
  */
 public interface ExpectorI {
-
+	
 }

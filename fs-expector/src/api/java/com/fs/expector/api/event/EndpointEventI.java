@@ -8,6 +8,6 @@ package com.fs.expector.api.event;
  * @author wu
  * 
  */
-public interface EndPointEventI extends EventI {
+public interface EndpointEventI extends EventI {
 
 }

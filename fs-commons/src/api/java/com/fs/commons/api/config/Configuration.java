@@ -25,6 +25,8 @@ public class Configuration extends PropertiesWrapper {
 
 	protected String id;
 
+	protected String[] names;
+
 	/**
 	 * @param pts
 	 */
@@ -37,8 +39,17 @@ public class Configuration extends PropertiesWrapper {
 		super(id + ".properties");
 		this.id = id;
 		this.provider = provider;
+		if (this.id != null) {
+			this.names = this.id.split("\\.");
+		}
 
 		this.setProperties(pw);
+
+	}
+
+	public String getName() {
+		return (this.names == null || this.names.length == 0) ? null
+				: this.names[this.names.length - 1];
 
 	}
 
@@ -55,7 +66,7 @@ public class Configuration extends PropertiesWrapper {
 		return rt;
 
 	}
-	
+
 	// prefix.1.keySuffix=key
 	// prefix.1.valueSuffix=value
 	// key=value

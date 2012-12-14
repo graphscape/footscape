@@ -20,9 +20,9 @@
 
 		<dependency org="org.elasticsearch" name="elasticsearch" rev="0.19.10" force="true" conf="impl->master,compile" />
 		
-		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl->master" />
+		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl,runtime->master" />
 		
-		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl->master" />
+		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl,runtime->master" />
 
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 

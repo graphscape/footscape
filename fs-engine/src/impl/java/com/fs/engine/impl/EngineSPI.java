@@ -26,7 +26,7 @@ public class EngineSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// Engine instance and interface,RMI client engine interface object
 		ac.getContainer().find(ConfigFactoryI.class).newPopulator().spi(this)
 				.active(ac).type("Object").populate();
@@ -44,7 +44,7 @@ public class EngineSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

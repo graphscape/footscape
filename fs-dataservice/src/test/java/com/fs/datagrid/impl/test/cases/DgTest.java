@@ -56,7 +56,7 @@ public class DgTest extends TestBase {
 		map.put("key1", vw.getTarget());
 
 		DgMapI<String, ValueWrapper> map2 = this.dg.getMap("testMapWrapper",
-				ValueWrapper.class);
+				ValueWrapper.class, ValueWrapper.class);
 		ValueWrapper saved = map2.getValue("key1");
 		assertNotNull("not saved", saved);
 		assertEquals("saved value not same as original", vw, saved);

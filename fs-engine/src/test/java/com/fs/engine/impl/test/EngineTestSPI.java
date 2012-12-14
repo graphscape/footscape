@@ -27,7 +27,7 @@ public class EngineTestSPI extends SPISupport {
 	
 	 */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		DispatcherI dp = ac.getContainer().find(DispatcherI.class, true);
 		PopulatorI pp = dp.populator("handler").active(ac)
 				.cfgId(this.id + ".Object.DISPATCHER");
@@ -50,7 +50,7 @@ public class EngineTestSPI extends SPISupport {
 	
 	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 		// TODO Auto-generated method stub
 
 	}

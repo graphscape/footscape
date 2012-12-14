@@ -24,6 +24,7 @@ import com.fs.datagrid.impl.hazelcast.objects.DgMapHC;
 import com.fs.datagrid.impl.hazelcast.objects.DgQueueHC;
 import com.fs.datagrid.impl.hazelcast.objects.DgTopicHC;
 import com.fs.datagrid.impl.proxy.ProxyWrapperMap;
+import com.fs.datagrid.impl.proxy.ProxyWrapperQueue;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.core.Instance;
 import com.hazelcast.core.Prefix;
@@ -61,7 +62,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		// MAP
 		this.wrapperTypes.put(Instance.InstanceType.MAP, DgMapHC.class);
 		this.prefixMap.put(Instance.InstanceType.MAP, Prefix.MAP);
-		
+
 		// TOPIC
 		this.wrapperTypes.put(Instance.InstanceType.TOPIC, DgTopicHC.class);
 		this.prefixMap.put(Instance.InstanceType.TOPIC, Prefix.TOPIC);
@@ -115,6 +116,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	@Override
 	public <T> DgQueueI<T> getQueue(String name) {
 		return this.getOrCreateDgObject(Instance.InstanceType.QUEUE, name);
+	}
+
+	@Override
+	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1,
+			Class<? extends W> wcls) {
+		DgQueueI<V> t = this.getQueue(name);
+		return new ProxyWrapperQueue(t, wcls);
 	}
 
 	public Map<String, DgObjectI> getObjectMapByType(
@@ -177,7 +185,8 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
-	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wrapperClass) {
+	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1,
+			Class<? extends W> wrapperClass) {
 		DgMapI<K, V> t = this.getMap(name);
 
 		return new ProxyWrapperMap(t, wrapperClass);
@@ -326,8 +335,9 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	@Override
 	protected void doAttach() {
-	
+
 	}
+
 	@Override
 	protected void doDettach() {
 		this.client.shutdown();

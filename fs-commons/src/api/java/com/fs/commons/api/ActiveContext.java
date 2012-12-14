@@ -90,28 +90,43 @@ public class ActiveContext {
 
 		}
 
+		protected Configuration resolveConfiguration() {
+			Configuration cfg;
+			if (this.configuration != null) {
+				if (cfgId != null) {
+					throw new FsException(
+							"configuration is present,id not allowed");
+				}
+				cfg = this.configuration;
+			} else {
+
+				String cid = this.cfgId;
+				if (this.cfgId == null) {
+					cid = this.obj.getClass().getName();
+				}
+				cfg = Configuration.properties(cid);
+			}
+			return cfg;
+		}
+
 		/* */
 		@Override
 		public ActivitorI active() {
+			Configuration cfg = null;
+			if (this.obj == null) {
+				// try to create object
+				cfg = this.resolveConfiguration();
+				this.obj = cfg.getPropertyAsNewInstance("class");
+			}
+
 			if (this.container != null) {
 				this.container.addObject(this.spi, this.name, this.obj);
 
 			}
 			if (this.obj instanceof ConfigurableI) {
-				Configuration cfg;
-				if (this.configuration != null) {
-					if (cfgId != null) {
-						throw new FsException(
-								"configuration is present,id not allowed");
-					}
-					cfg = this.configuration;
-				} else {
 
-					String cid = this.cfgId;
-					if (this.cfgId == null) {
-						cid = this.obj.getClass().getName();
-					}
-					cfg = Configuration.properties(cid);
+				if (cfg == null) {
+					cfg = this.resolveConfiguration();
 				}
 
 				((ConfigurableI) obj).configure(cfg);
@@ -122,6 +137,10 @@ public class ActiveContext {
 
 			return this;
 
+		}
+
+		public <T> T getObject() {
+			return (T) this.obj;
 		}
 
 		/*
@@ -154,6 +173,12 @@ public class ActiveContext {
 	 */
 	public SPI getSpi() {
 		return spi;
+	}
+
+	public <T> T active(String name) {
+		ActivitorI act = this.activitor().container(this.container).name(name);
+		act.active();
+		return act.getObject();
 	}
 
 	public void active(String name, Object o) {

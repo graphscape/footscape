@@ -4,11 +4,13 @@
  */
 package com.fs.expector.api;
 
+import com.fs.commons.api.value.PropertiesI;
+
 /**
  * @author wu
  * 
  */
-public interface MemberI {
+public interface MemberI extends PropertiesI<Object>{
 	
 	public String getId();
 

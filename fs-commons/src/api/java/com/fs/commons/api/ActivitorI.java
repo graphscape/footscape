@@ -28,5 +28,7 @@ public interface ActivitorI {
 	public ActivitorI clazz(Class cls);
 
 	public ActivitorI active();
+	
+	public <T> T getObject();
 
 }

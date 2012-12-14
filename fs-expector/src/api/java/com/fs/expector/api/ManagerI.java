@@ -11,11 +11,15 @@ package com.fs.expector.api;
 public interface ManagerI<T extends MemberI> {
 
 	public String getName();
-	
+
 	public T getMember(String id);
 
 	public T getMember(String id, boolean force);
 
 	public String addMember(T t);
+
+	public T newMember(String id);
+
+	public T newMember();
 
 }

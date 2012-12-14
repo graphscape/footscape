@@ -29,9 +29,13 @@ public interface DataGridI {
 
 	public <T> DgQueueI<T> getQueue(String name);
 
+	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wclass1,
+			Class<? extends W> wrappeClass);
+
 	public <K, V> DgMapI<K, V> getMap(String name);
 
-	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wrapperClass);
+	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wclass1,
+			Class<? extends W> wrapperClass);
 
 	public <T> DgTopicI<T> getTopic(String name);
 
