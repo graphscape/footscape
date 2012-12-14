@@ -12,4 +12,6 @@ import com.fs.expector.api.ManagerI;
  */
 public interface SessionManagerI extends ManagerI<SessionI> {
 
+	public static final String NAME = "SESSION_MANAGER";
+
 }

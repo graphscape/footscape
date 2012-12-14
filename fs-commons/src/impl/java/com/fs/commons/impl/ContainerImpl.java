@@ -13,6 +13,7 @@ import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.DescribableI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.AttachableSupport;
 import com.fs.commons.api.support.DescribedSupport;
 
@@ -79,6 +80,16 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			((AttachableI) this.object).attach();
 		}
 
+		/**
+		 * 
+		 */
+		public void tryDettach() {
+			if (!(this.object instanceof AttachableI)) {
+				return;
+			}
+			((AttachableI) this.object).dettach();
+		}
+
 	}
 
 	private ContainerI parent;
@@ -100,7 +111,7 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		ObjectEntryImpl oe = new ObjectEntryImpl(o);
 		oe.spi(spi).name(name);// NOTE
 		this.entryList.add(oe);
-		if(this.attached){
+		if (this.attached) {
 			oe.tryAttach();//
 		}
 	}
@@ -189,6 +200,40 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		for (ObjectEntryImpl oe : this.entryList) {
 			oe.tryAttach();
 		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.support.AttachableSupport#doDettach()
+	 */
+	@Override
+	protected void doDettach() {
+		for (ObjectEntryImpl oe : this.entryList) {
+			oe.tryDettach();
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.ContainerI#removeObject(java.lang.Object)
+	 */
+	@Override
+	public void removeObject(Object obj) {
+		ObjectEntryImpl rt = null;
+		for (ObjectEntryImpl oe : this.entryList) {
+			if (oe.getObject() == obj) {
+				rt = oe;
+				break;
+			}
+		}
+		if (rt == null) {
+			throw new FsException("no this object :" + obj);
+		}
+		this.entryList.remove(rt);
 
 	}
 

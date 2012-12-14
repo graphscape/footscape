@@ -22,7 +22,7 @@ public class TestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		ContainerI c = ac.getContainer();
 		ConfigFactoryI cf = ac.getContainer().find(ConfigFactoryI.class, true);
 		cf.newPopulator().spi(this).active(ac).type("testobject").force(true)
@@ -32,7 +32,7 @@ public class TestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 
 	}
 

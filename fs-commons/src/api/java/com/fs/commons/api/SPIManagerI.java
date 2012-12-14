@@ -41,6 +41,6 @@ public interface SPIManagerI {
 
 	public ContainerI getContainer();
 	
-	public void destroy();//
+	public void shutdown();//
 
 }

@@ -5,7 +5,9 @@ package com.fs.datagrid.impl.test.cases;
 
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
+import com.fs.datagrid.api.wrapper.PropertiesDW;
 import com.fs.datagrid.impl.test.cases.support.TestBase;
 
 /**
@@ -14,7 +16,54 @@ import com.fs.datagrid.impl.test.cases.support.TestBase;
  */
 public class DgTest extends TestBase {
 
-	public void testDg() {
+	public static class ValueWrapper extends PropertiesDW {
+
+		public ValueWrapper() {
+			super();
+		}
+
+		/**
+		 * @param t
+		 */
+		public ValueWrapper(PropertiesI<Object> t) {
+			super(t);
+		}
+
+		public void setString(String s) {
+			this.setProperty("string", s);
+		}
+
+		public String getString() {
+			return (String) this.getProperty("string");
+		}
+
+		public void setInteger(Integer v) {
+			this.setProperty("integer", v);
+		}
+
+		public Integer getInteger() {
+			return (Integer) this.getProperty("integer");
+		}
+	}
+
+	public void testDgMapWrapper() {
+		ValueWrapper vw = new ValueWrapper();
+		vw.setInteger(1);
+		vw.setString("stringValue");
+
+		DgMapI<String, PropertiesI<Object>> map = this.dg
+				.getMap("testMapWrapper");
+		map.put("key1", vw.getTarget());
+
+		DgMapI<String, ValueWrapper> map2 = this.dg.getMap("testMapWrapper",
+				ValueWrapper.class);
+		ValueWrapper saved = map2.getValue("key1");
+		assertNotNull("not saved", saved);
+		assertEquals("saved value not same as original", vw, saved);
+
+	}
+
+	public void xtestDg() {
 		DgQueueI<String> q = this.dg.getQueue("test1");
 		q.offer("1");
 		String s = q.take();

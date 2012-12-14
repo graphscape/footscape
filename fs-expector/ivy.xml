@@ -17,6 +17,7 @@
 
 
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="dataservice" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 

@@ -9,9 +9,11 @@ package com.fs.commons.api;
  * 
  */
 public interface AttachableI {
-	
+
 	public boolean isAttached();
 
 	public void attach();
+
+	public void dettach();
 
 }

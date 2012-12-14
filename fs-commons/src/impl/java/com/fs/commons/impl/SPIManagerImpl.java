@@ -21,9 +21,19 @@ import com.fs.commons.api.wrapper.PropertiesWrapper;
  */
 public class SPIManagerImpl implements SPIManagerI {
 
+	public static final int S_INIT = 0;
+
+	public static final int S_RUNNING = 1;
+
+	public static final int S_SHUTINGDOWN = 10;
+
+	public static final int S_SHUTDOWN = 20;
+
 	private ContainerI container;
 
 	private List<SPI> spiList;
+
+	private int status = S_INIT;
 
 	public SPIManagerImpl() {
 		ContainerI.FactoryI tf = new ContainerImpl.FactoryImpl();
@@ -39,6 +49,10 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	@Override
 	public void load(String res) {
+		if (this.status != S_INIT) {
+			throw new FsException("status:" + this.status
+					+ " must be init before load.");
+		}
 
 		PropertiesWrapper pw = PropertiesWrapper.load(res, true);
 
@@ -57,10 +71,32 @@ public class SPIManagerImpl implements SPIManagerI {
 			this.add(id, cls);
 		}
 		this.container.attach();//
+		this.status = S_RUNNING;
 
 	}
 
 	private void shutdownHook() {
+		if (this.status == S_SHUTINGDOWN || this.status == S_SHUTDOWN) {
+			return;
+		}
+		this.shutdown();
+	}
+
+	@Override
+	public void shutdown() {
+		if (this.status != S_RUNNING) {
+			throw new FsException("status:" + this.status
+					+ " must be running for shutdown.");
+		}
+		this.status = S_SHUTINGDOWN;
+		try {
+			this.doShutdown();
+		} finally {
+			this.status = S_SHUTDOWN;
+		}
+	}
+
+	public void doShutdown() {
 		this.log("spi manager shutting down...");
 		while (true) {
 			SPI spi = this.getLast(false);
@@ -69,6 +105,7 @@ public class SPIManagerImpl implements SPIManagerI {
 			}
 			this.remove(spi.getId());//
 		}
+		this.container.dettach();
 		this.log("spi manager shut down.");
 	}
 
@@ -95,7 +132,8 @@ public class SPIManagerImpl implements SPIManagerI {
 		this.assertDependenceList(s);
 
 		this.spiList.add(s);// register all this spi.
-		this.container.addObject(s, id, s);
+		// SPI itself should not be in container.
+		// this.container.addObject(s, id, s);
 		ActiveContext ac = new ActiveContext(this.container, s);
 
 		s.active(ac);//
@@ -150,7 +188,7 @@ public class SPIManagerImpl implements SPIManagerI {
 		}
 		this.spiList.remove(lspi);
 		//
-		
+
 		//
 		ActiveContext ac = new ActiveContext(this.container, lspi);
 		lspi.deactive(ac);
@@ -162,14 +200,6 @@ public class SPIManagerImpl implements SPIManagerI {
 	 */
 	public ContainerI getContainer() {
 		return container;
-	}
-
-	/*
-	 *Dec 11, 2012
-	 */
-	@Override
-	public void destroy() {
-		//TODO not supported for now.
 	}
 
 }

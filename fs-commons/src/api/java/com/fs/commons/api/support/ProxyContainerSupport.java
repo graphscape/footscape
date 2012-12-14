@@ -110,4 +110,20 @@ public class ProxyContainerSupport implements ContainerI {
 		return this.target.isAttached();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.AttachableI#dettach()
+	 */
+	@Override
+	public void dettach() {
+		this.target.dettach();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.ContainerI#removeObject(java.lang.Object)
+	 */
+	@Override
+	public void removeObject(Object obj) {
+		this.target.removeObject(obj);
+	}
+
 }

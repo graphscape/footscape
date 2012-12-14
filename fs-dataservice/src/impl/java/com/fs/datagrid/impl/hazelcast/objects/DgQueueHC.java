@@ -4,6 +4,7 @@
 package com.fs.datagrid.impl.hazelcast.objects;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.datagrid.api.DataWrapperI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.impl.hazelcast.DataGridHC;
 import com.fs.datagrid.impl.hazelcast.HazelcastObjectWrapper;
@@ -14,8 +15,8 @@ import com.hazelcast.core.Instance;
  * @author wuzhen
  * 
  */
-public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> implements
-		DgQueueI<T> {
+public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>>
+		implements DgQueueI<T> {
 
 	/**
 	 * @param q
@@ -34,7 +35,7 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 		// TODO Auto-generated method stub
 		try {
 			Object o = this.target.take();
-			return (T)this.decode(o);
+			return (T) this.decode(o);
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}
@@ -49,6 +50,5 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 	public void offer(T t) {
 		this.target.offer(this.encode(t));
 	}
-
 
 }

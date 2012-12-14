@@ -40,6 +40,17 @@ public abstract class AttachableSupport implements AttachableI {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.AttachableI#deattach()
+	 */
+	@Override
+	public void dettach() {
+		
+		this.doDettach();
+		this.attached = false;
+	
+	}
+	protected abstract void doDettach();
 	protected abstract void doAttach();
 
 }

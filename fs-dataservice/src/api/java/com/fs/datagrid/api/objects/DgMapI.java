@@ -11,4 +11,8 @@ import com.fs.datagrid.api.DgCollectionI;
  */
 public interface DgMapI<K, V> extends DgCollectionI {
 
+	public V getValue(K key);
+
+	public V put(K key, V value);
+
 }

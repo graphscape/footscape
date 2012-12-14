@@ -5,7 +5,6 @@ package com.fs.commons.impl.test.cases;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.commons.impl.test.TestSPI;
 import com.fs.commons.impl.test.cases.support.TestBase;
 
 /**
@@ -13,7 +12,13 @@ import com.fs.commons.impl.test.cases.support.TestBase;
  * 
  */
 public class SPITest extends TestBase {
+	
+	public static class ServiceObject {
+		
+	}
+
 	public abstract static class TestingSPI extends SPISupport {
+
 		public boolean active;
 
 		/**
@@ -28,7 +33,7 @@ public class SPITest extends TestBase {
 		
 		 */
 		@Override
-		public void active(ActiveContext ac) {
+		public void doActive(ActiveContext ac) {
 			this.active = true;
 		}
 
@@ -36,7 +41,7 @@ public class SPITest extends TestBase {
 		
 		 */
 		@Override
-		public void deactive(ActiveContext ac) {
+		public void doDeactive(ActiveContext ac) {
 			this.active = false;
 		}
 

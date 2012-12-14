@@ -27,10 +27,10 @@ public class DataGridSPI extends SPISupport {
 	 * com.fs.commons.api.ActivableI#active(com.fs.commons.api.ActiveContext)
 	 */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		DgFactoryHC df = new DgFactoryHC();
 		ac.activitor().name("DG_FACTORY").object(df).active();
-		
+
 	}
 
 	/*
@@ -40,7 +40,7 @@ public class DataGridSPI extends SPISupport {
 	 * com.fs.commons.api.ActivableI#deactive(com.fs.commons.api.ActiveContext)
 	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 		// TODO Auto-generated method stub
 
 	}

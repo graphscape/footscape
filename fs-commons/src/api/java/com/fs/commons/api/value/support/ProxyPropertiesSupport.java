@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -20,6 +21,14 @@ import com.fs.commons.api.value.PropertiesI;
 public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 
 	protected PropertiesI<T> target;
+
+	public ProxyPropertiesSupport() {
+		this(null);
+	}
+
+	public ProxyPropertiesSupport(PropertiesI<T> t) {
+		this.target = t;
+	}
 
 	@Override
 	public void setProperty(String key, T value) {
@@ -104,23 +113,35 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 	}
 
 	/*
-	 *Nov 29, 2012
+	 * Nov 29, 2012
 	 */
 	@Override
 	public PropertiesI<T> convert(String[] from, boolean[] force, String[] to) {
-		// 
+		//
 		return this.target.convert(from, force, to);
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.commons.api.value.PropertiesI#getPropertyAsCsv(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#getPropertyAsCsv(java.lang.String)
 	 */
 	@Override
 	public List<String> getPropertyAsCsv(String key) {
 		// TODO Auto-generated method stub
 		return this.target.getPropertyAsCsv(key);
-		
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj.getClass().equals(this.getClass()))) {
+			return false;
+		}
+		ProxyPropertiesSupport pps = (ProxyPropertiesSupport) obj;
+		return ObjectUtil.nullSafeEquals(this.target, pps.target);
 	}
 
 }

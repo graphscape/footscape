@@ -39,4 +39,14 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.support.AttachableSupport#doDettach()
+	 */
+	@Override
+	protected void doDettach() {
+
+	}
+
 }

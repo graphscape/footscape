@@ -10,7 +10,8 @@ import com.hazelcast.core.Instance;
  * @author wuzhen
  * 
  */
-public abstract class HazelcastObjectWrapper<T extends Instance> implements DgObjectI {
+public abstract class HazelcastObjectWrapper<T extends Instance> implements
+		DgObjectI {
 
 	protected T target;
 
@@ -58,7 +59,7 @@ public abstract class HazelcastObjectWrapper<T extends Instance> implements DgOb
 	/**
 	 * Dec 13, 2012
 	 */
-	protected Object decode(Object o) {
+	protected <X> X decode(Object o) {
 		//
 		return this.dg.decode(o);
 	}

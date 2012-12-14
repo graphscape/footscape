@@ -53,4 +53,6 @@ public interface ContainerI extends AttachableI {
 
 	public <T> FinderI<T> finder(Class<T> cls);
 
+	public void removeObject(Object obj);
+
 }

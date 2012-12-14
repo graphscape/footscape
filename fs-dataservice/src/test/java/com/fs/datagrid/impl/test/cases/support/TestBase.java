@@ -43,7 +43,7 @@ public class TestBase extends TestCase {
 	}
 
 	public void tearDown() throws Exception {
-
+		sm.shutdown();//
 	}
 
 }

@@ -52,7 +52,7 @@ public class DataServiceExpAppSPI extends SPISupport {
 	 * Oct 27, 2012
 	 */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		DataServiceI ds = ac.getContainer().find(DataServiceI.class, true);
 		ds.registerOperation("expapp.cooperconfirm",
 				CooperConfirmOperationI.class, CooperConfirmOperationE.class);
@@ -93,7 +93,7 @@ public class DataServiceExpAppSPI extends SPISupport {
 	 * Oct 27, 2012
 	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 		//
 
 	}

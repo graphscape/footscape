@@ -40,7 +40,7 @@ public class CommonsSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		ConfigFactoryI cf = new ConfigFactoryImpl();
 
 		ac.getContainer().addObject(this, "CONFIG_FACTORY", cf);
@@ -88,7 +88,7 @@ public class CommonsSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

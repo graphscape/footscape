@@ -51,7 +51,7 @@ public class DataServiceCoreSPI extends SPISupport {
 	 * Oct 27, 2012
 	 */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		ElasticDataServiceImpl ds = new ElasticDataServiceImpl();
 		ac.active("DATA_SERVICE", ds);
 		this.activeOperations(ac);
@@ -88,7 +88,7 @@ public class DataServiceCoreSPI extends SPISupport {
 	 * Oct 27, 2012
 	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 		//
 
 	}

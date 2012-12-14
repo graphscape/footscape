@@ -10,6 +10,8 @@ package com.fs.expector.api;
  */
 public interface ManagerI<T extends MemberI> {
 
+	public String getName();
+	
 	public T getMember(String id);
 
 	public T getMember(String id, boolean force);

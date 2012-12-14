@@ -52,6 +52,12 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 	}
 
 	@Override
+	public void deactive(ActiveContext ac) {
+		super.deactive(ac);
+		this.instance.dettach();
+	}
+
+	@Override
 	public DataGridI getInstance() {
 		return this.instance;
 	}
