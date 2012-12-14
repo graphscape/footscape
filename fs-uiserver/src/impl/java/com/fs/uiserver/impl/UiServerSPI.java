@@ -26,7 +26,7 @@ public class UiServerSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// Converter factory
 		this.activeConfirmCodeNotifier(ac);
 		this.activeHandlers(ac);
@@ -63,7 +63,7 @@ public class UiServerSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

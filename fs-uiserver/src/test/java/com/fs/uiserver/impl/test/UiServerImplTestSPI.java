@@ -25,7 +25,7 @@ public class UiServerImplTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// test scenario
 		DispatcherI dis = ac.getContainer().find(DispatcherI.class);
 		SignupHandler sh = dis.getHandlerContainer().find(SignupHandler.class,
@@ -50,7 +50,7 @@ public class UiServerImplTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

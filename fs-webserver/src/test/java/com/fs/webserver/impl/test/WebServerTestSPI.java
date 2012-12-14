@@ -32,7 +32,7 @@ public class WebServerTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 
 		WebServerI ws = ac.getContainer().find(WebServerI.class);
 
@@ -57,7 +57,7 @@ public class WebServerTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

@@ -11,16 +11,16 @@ import com.fs.expector.impl.dg.support.MemberPropertiesDWSupport;
  * @author wuzhen
  * 
  */
-public class EndpointImpl extends MemberPropertiesDWSupport implements
+public class WebSocketEndpointImpl extends MemberPropertiesDWSupport implements
 		EndpointI {
 
 	// for get from DgMapI.
-	public EndpointImpl() {
+	public WebSocketEndpointImpl() {
 
 	}
 
 	// for create new one.
-	public EndpointImpl(String id) {
+	public WebSocketEndpointImpl(String id) {
 		super(id);
 	}
 

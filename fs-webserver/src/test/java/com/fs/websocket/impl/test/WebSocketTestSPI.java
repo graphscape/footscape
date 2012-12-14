@@ -32,7 +32,7 @@ public class WebSocketTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 
 		WsFactoryI f = ac.getContainer().find(WsFactoryI.class, true);
 		WsManagerI mnr = f.addManager(ac, "testws");
@@ -41,7 +41,7 @@ public class WebSocketTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

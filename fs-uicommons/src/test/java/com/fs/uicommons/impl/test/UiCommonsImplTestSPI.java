@@ -29,7 +29,7 @@ public class UiCommonsImplTestSPI extends SPISupport {
 	 * com.fs.commons.api.ActivableI#active(com.fs.commons.api.ActiveContext)
 	 */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac).type("ha")
 		ac.getContainer().find(DispatcherI.class).populator("handler")
 				.active(ac).cfgId(this.getId() + ".Object.DISPATCHER")
@@ -43,7 +43,7 @@ public class UiCommonsImplTestSPI extends SPISupport {
 	 * com.fs.commons.api.ActivableI#deactive(com.fs.commons.api.ActiveContext)
 	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 		// TODO Auto-generated method stub
 
 	}

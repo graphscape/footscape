@@ -25,7 +25,7 @@ public class WebServerSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 
 		{// active web server
 			JettyWebServerImpl ws = new JettyWebServerImpl();
@@ -46,7 +46,7 @@ public class WebServerSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

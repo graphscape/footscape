@@ -21,7 +21,7 @@ public class UiCoreImplTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac).type("ha")
 		ac.getContainer().find(DispatcherI.class).populator("handler")
 				.active(ac).cfgId(this.getId() + ".Object.DISPATCHER")
@@ -31,7 +31,7 @@ public class UiCoreImplTestSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

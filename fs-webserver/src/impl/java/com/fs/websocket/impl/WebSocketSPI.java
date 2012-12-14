@@ -24,7 +24,7 @@ public class WebSocketSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 
 		// ADD default ROOT webapp
 		WebServerI ws = ac.getContainer().find(WebServerI.class, true);
@@ -41,7 +41,7 @@ public class WebSocketSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }

@@ -25,7 +25,7 @@ public class UiCoreImplSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac)
 		// .type("Object").populate();
 		// add a servlet
@@ -53,7 +53,7 @@ public class UiCoreImplSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void deactive(ActiveContext ac) {
+	public void doDeactive(ActiveContext ac) {
 	}
 
 }
