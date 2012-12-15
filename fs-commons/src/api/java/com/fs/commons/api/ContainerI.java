@@ -49,6 +49,10 @@ public interface ContainerI extends AttachableI {
 
 	public <T> T find(Class<T> cls, boolean force);
 
+	public <T> T find(Class<T> cls, String name);
+	
+	public <T> T find(Class<T> cls, String name, boolean force);
+	
 	public <T> List<T> find(Describe des);
 
 	public <T> FinderI<T> finder(Class<T> cls);

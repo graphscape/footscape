@@ -66,34 +66,37 @@ public class EngineImpl extends ServiceSupport implements ServiceEngineI {
 	public EngineImpl() {
 		super();
 		this.populatorFactoryMap = new HashMap<String, CallbackI<EngineImpl, PopulatorI>>();
-		this.populatorFactoryMap.put(FILTER,
-				new CallbackI<EngineImpl, PopulatorI>() {
+		this.populatorFactoryMap.put(FILTER, new CallbackI<EngineImpl, PopulatorI>() {
 
-					@Override
-					public PopulatorI execute(EngineImpl dis) {
+			@Override
+			public PopulatorI execute(EngineImpl dis) {
 
-						PopulatorI rt = EngineImpl.this.chain.newPopulator()
-								.type(FILTER);
+				PopulatorI rt = EngineImpl.this.chain.newPopulator().type(FILTER);
 
-						return rt;
-					}
-				});
+				return rt;
+			}
+		});
 
+	}
+
+	protected String resolveDispatcherName() {
+		return this.config.getProperty("dispatcher", true);
 	}
 
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
+		String dname = this.config.getProperty("dispatcher", true);//
+
 		this.engineContext = new EngineContext(this);//
-		this.dispatcher = this.container.find(DispatcherI.class, true);
+		this.dispatcher = this.container.find(DispatcherI.class, dname, true);//
 		ContainerI c = ac.getContainer();
 		// child container
-		ContainerI c2 = c.finder(ContainerI.FactoryI.class).withParent(true)
-				.find(true).newContainer(c);
+		ContainerI c2 = c.finder(ContainerI.FactoryI.class).withParent(true).find(true).newContainer(c);
 
-		this.chain = this.container.find(ChainI.FactoryI.class).createChain(ac,
-				RequestI.class, ResponseI.class);
+		this.chain = this.container.find(ChainI.FactoryI.class).createChain(ac, RequestI.class,
+				ResponseI.class);
 
 		FilterI<RequestI, ResponseI> lf = new LastFilter(this);
 		this.chain.addFilter(ac.getSpi(), "LAST_FILTER", lf);

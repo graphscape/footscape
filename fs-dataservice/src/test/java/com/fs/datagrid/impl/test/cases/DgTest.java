@@ -3,11 +3,13 @@
  */
 package com.fs.datagrid.impl.test.cases;
 
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
-import com.fs.datagrid.api.wrapper.PropertiesDW;
+import com.fs.datagrid.api.wrapper.MessageDataWrapper;
+import com.fs.datagrid.api.wrapper.PropertiesDataWrapper;
 import com.fs.datagrid.impl.test.cases.support.TestBase;
 
 /**
@@ -16,16 +18,27 @@ import com.fs.datagrid.impl.test.cases.support.TestBase;
  */
 public class DgTest extends TestBase {
 
-	public static class ValueWrapper extends PropertiesDW {
+	public static class MyMessage extends MessageDataWrapper {
+		public MyMessage(){
+			
+		}
+		
+		public MyMessage(MessageI msg){
+			super(msg);
+		}
+		
+		
+	}
+	public static class MyBean extends PropertiesDataWrapper {
 
-		public ValueWrapper() {
+		public MyBean() {
 			super();
 		}
 
 		/**
 		 * @param t
 		 */
-		public ValueWrapper(PropertiesI<Object> t) {
+		public MyBean(PropertiesI<Object> t) {
 			super(t);
 		}
 
@@ -46,8 +59,22 @@ public class DgTest extends TestBase {
 		}
 	}
 
-	public void testDgMapWrapper() {
-		ValueWrapper vw = new ValueWrapper();
+	public void testDgMessageWrapper(){
+		MyMessage msg = new MyMessage();
+		msg.setHeader("h1", "h1value");
+		msg.setHeader("h2", "h2value");
+		
+		DgQueueI<MessageI> mq = this.dg.getQueue("myMessageQueue", MessageI.class, MyMessage.class);
+		mq.offer(msg);
+		
+		MessageI msg2 = mq.take();
+		assertNotNull("",msg2);
+		assertEquals(msg,msg2);
+		
+		
+	}
+	public void testDgBeanWrapper() {
+		MyBean vw = new MyBean();
 		vw.setInteger(1);
 		vw.setString("stringValue");
 
@@ -55,15 +82,15 @@ public class DgTest extends TestBase {
 				.getMap("testMapWrapper");
 		map.put("key1", vw.getTarget());
 
-		DgMapI<String, ValueWrapper> map2 = this.dg.getMap("testMapWrapper",
-				ValueWrapper.class, ValueWrapper.class);
-		ValueWrapper saved = map2.getValue("key1");
+		DgMapI<String, MyBean> map2 = this.dg.getMap("testMapWrapper",
+				MyBean.class, MyBean.class);
+		MyBean saved = map2.getValue("key1");
 		assertNotNull("not saved", saved);
 		assertEquals("saved value not same as original", vw, saved);
 
 	}
 
-	public void xtestDg() {
+	public void testDg() {
 		DgQueueI<String> q = this.dg.getQueue("test1");
 		q.offer("1");
 		String s = q.take();

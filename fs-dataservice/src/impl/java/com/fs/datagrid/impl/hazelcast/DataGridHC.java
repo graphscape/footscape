@@ -11,6 +11,7 @@ import java.util.Map;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.AttachableSupport;
 import com.fs.commons.api.util.CollectionUtil;
 import com.fs.commons.api.value.PropertiesI;
@@ -19,6 +20,7 @@ import com.fs.datagrid.api.DgObjectI;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.api.objects.DgTopicI;
+import com.fs.datagrid.impl.hazelcast.codec.MessageData;
 import com.fs.datagrid.impl.hazelcast.codec.PropertiesData;
 import com.fs.datagrid.impl.hazelcast.objects.DgMapHC;
 import com.fs.datagrid.impl.hazelcast.objects.DgQueueHC;
@@ -68,6 +70,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		this.prefixMap.put(Instance.InstanceType.TOPIC, Prefix.TOPIC);
 
 		PropertiesData.CODEC = this.factory.propertiesCodec;// NOTE static ?
+		MessageData.CODEC = this.factory.messageCodec;
 		//
 	}
 
@@ -85,7 +88,12 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 			PropertiesData rt = new PropertiesData();
 			rt.setData(pts);//
 			return rt;
-		} else {
+		} else if (MessageI.class.isAssignableFrom(cls)) {
+			MessageI msg = (MessageI) t;
+			MessageData rt = new MessageData();
+			rt.setData(msg);
+			return rt;
+		} else {// TODO check the types
 			return t;// remain same.
 		}
 	}
@@ -103,7 +111,9 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 			return (X) ((PropertiesData) o).getData();
 
-		} else {
+		} else if (MessageData.class.equals(cls)) {
+			return (X) ((MessageData) o).getData();//
+		} else {// NOTE todo ensure types
 			return (X) o;
 		}
 	}
@@ -119,14 +129,12 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
-	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1,
-			Class<? extends W> wcls) {
+	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1, Class<? extends W> wcls) {
 		DgQueueI<V> t = this.getQueue(name);
 		return new ProxyWrapperQueue(t, wcls);
 	}
 
-	public Map<String, DgObjectI> getObjectMapByType(
-			Instance.InstanceType prefix) {
+	public Map<String, DgObjectI> getObjectMapByType(Instance.InstanceType prefix) {
 		Map<String, DgObjectI> rt = this.objectCache.get(prefix);
 		if (rt == null) {
 			synchronized (this.objectCache) {
@@ -140,8 +148,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		return rt;
 	}
 
-	public <T extends DgObjectI> T getOrCreateDgObject(
-			Instance.InstanceType type, String name) {
+	public <T extends DgObjectI> T getOrCreateDgObject(Instance.InstanceType type, String name) {
 		Map<String, DgObjectI> objects = this.getObjectMapByType(type);
 
 		DgObjectI rt = objects.get(name);
@@ -163,16 +170,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		return (T) rt;
 	}
 
-	protected HazelcastObjectWrapper objectWrap(String name,
-			Instance.InstanceType type, Object ins) {
-		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes
-				.get(type);
+	protected HazelcastObjectWrapper objectWrap(String name, Instance.InstanceType type, Object ins) {
+		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes.get(type);
 		if (wtype == null) {
 			throw new FsException("no class registered for type:" + type);
 		}
-		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] {
-				String.class, Instance.class, DataGridHC.class }, new Object[] {
-				name, ins, this });
+		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] { String.class, Instance.class,
+				DataGridHC.class }, new Object[] { name, ins, this });
 
 		return rt;
 	}
@@ -185,8 +189,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
-	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1,
-			Class<? extends W> wrapperClass) {
+	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1, Class<? extends W> wrapperClass) {
 		DgMapI<K, V> t = this.getMap(name);
 
 		return new ProxyWrapperMap(t, wrapperClass);
@@ -268,15 +271,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	 * java.lang.String)
 	 */
 	@Override
-	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls,
-			final String name) {
+	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls, final String name) {
 		final List<T> rt = new ArrayList<T>();
 		this.forEachObject(new CallbackI<DgObjectI, Boolean>() {
 
 			@Override
 			public Boolean execute(DgObjectI i) {
-				if (cls.isInstance(i)
-						&& (name == null || name.equals(i.getName()))) {
+				if (cls.isInstance(i) && (name == null || name.equals(i.getName()))) {
 					rt.add((T) i);
 				}
 
@@ -293,8 +294,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	 * java.lang.String, boolean)
 	 */
 	@Override
-	public <T extends DgObjectI> T getObject(Class<T> cls, String name,
-			boolean force) {
+	public <T extends DgObjectI> T getObject(Class<T> cls, String name, boolean force) {
 		List<T> rt = this.getObjectList(cls, name);
 		return CollectionUtil.single(rt, force);
 
@@ -327,8 +327,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		Map<String, DgObjectI> typeM = this.objectCache.get(itype);
 		DgObjectI old = typeM.remove(name);
 		if (old == null) {
-			throw new FsException("no this object,type:" + itype + ",name:"
-					+ name);
+			throw new FsException("no this object,type:" + itype + ",name:" + name);
 
 		}
 	}

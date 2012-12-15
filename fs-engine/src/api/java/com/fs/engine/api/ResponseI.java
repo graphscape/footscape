@@ -3,13 +3,14 @@
  */
 package com.fs.engine.api;
 
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.value.ErrorInfos;
 
 /**
  * @author wuzhen
  * 
  */
-public interface ResponseI extends RRContextI {
+public interface ResponseI extends MessageI {
 
 	public ErrorInfos getErrorInfos();
 

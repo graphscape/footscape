@@ -8,5 +8,5 @@ package com.fs.engine.api;
  * 
  */
 public class EngineAPI {
-	public static final String RMI_CLIENT = "RMI_CLIENT";
+	public static final String engine_0 = "engine-0";
 }

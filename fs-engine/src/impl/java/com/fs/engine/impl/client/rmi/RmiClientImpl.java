@@ -29,7 +29,7 @@ public class RmiClientImpl extends ServiceSupport {
 	@Override
 	public void service(RequestI req, ResponseI res) {
 		ResponseI res2 = this.rmi.service(req);
-		res.setProperties(res2);
+		res.setMessage(res2);
 
 	}
 

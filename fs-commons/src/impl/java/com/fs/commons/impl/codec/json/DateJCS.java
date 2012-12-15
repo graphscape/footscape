@@ -17,7 +17,7 @@ public class DateJCS extends JsonCodecSupport<Date, String> implements CodecI {
 
 	/** */
 	public DateJCS(FactoryI f) {
-		super("D", Date.class, f);
+		super("d", Date.class, f);
 	}
 
 	/* */

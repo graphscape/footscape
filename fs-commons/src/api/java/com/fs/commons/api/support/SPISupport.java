@@ -10,6 +10,7 @@ import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.AttachableI;
 import com.fs.commons.api.SPI;
+import com.fs.commons.api.config.Configuration;
 
 /**
  * @author wu
@@ -24,10 +25,14 @@ public abstract class SPISupport implements SPI {
 	protected String id;
 
 	protected List<String> dependenceList;
+	
+	protected Configuration config;
 
 	public SPISupport(String id) {
 		this.id = id;
+		this.config = Configuration.properties(id);//
 		this.dependenceList = new ArrayList<String>();// TODO
+		
 	}
 
 	/* */

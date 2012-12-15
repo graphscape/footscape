@@ -3,12 +3,9 @@
  */
 package com.fs.engine.api.support;
 
-import com.fs.commons.api.context.support.ContextSupport;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.ErrorInfos;
-import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.RRContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 
@@ -16,7 +13,7 @@ import com.fs.engine.api.ResponseI;
  * @author wuzhen
  * 
  */
-public class RRContext extends ContextSupport implements RRContextI {
+public class RRContext extends MessageSupport {
 
 	public static final String PAYLOAD = "_PAYLOAD";
 
@@ -79,132 +76,7 @@ public class RRContext extends ContextSupport implements RRContextI {
 	}
 
 	public RRContext() {
-		this.setProperty(HEADER, new MapProperties<String>());
-		this.setProperty(PAYLOAD, new MapProperties<Object>());
 
 	}
 
-	/* */
-	@Override
-	public PropertiesI<String> getHeaders() {
-
-		PropertiesI<String> rt = (PropertiesI<String>) this.getProperty(HEADER);
-
-		return rt;
-	}
-
-	/*
-	
-	 */
-	@Override
-	public PropertiesI<Object> getPayloads() {
-		PropertiesI<Object> rt = (PropertiesI<Object>) this
-				.getProperty(PAYLOAD);
-		return rt;
-	}
-
-	/*
-	
-	 */
-	@Override
-	public void setHeaders(PropertiesI<String> pw) {
-		this.getHeaders().setProperties(pw);
-
-	}
-
-	/* */
-	@Override
-	public String getHeader(String key) {
-
-		return this.getHeaders().getProperty(key);
-
-	}/* */
-
-	@Override
-	public String getHeader(String key, String def) {
-
-		String rt = this.getHeaders().getProperty(key);
-		if (rt == null) {
-			return def;
-		}
-		return rt;
-	}
-
-	/* */
-	@Override
-	public void setHeader(String key, String value) {
-		this.getHeaders().setProperty(key, value);
-	}
-
-	/* */
-	@Override
-	public void setPayloads(PropertiesI<Object> pts) {
-		this.getPayloads().setProperties(pts);
-	}
-
-	/* */
-	@Override
-	public Object getPayload() {
-
-		return this.getPayloads().getProperty("_DEFAULT");
-
-	}
-
-	/* */
-	@Override
-	public void setPayload(Object pl) {
-		this.getPayloads().setProperty("_DEFAULT", pl);
-	}
-
-	/* */
-	@Override
-	public Object getPayload(String key) {
-
-		return this.getPayload(key, false);
-	}
-
-	/* */
-	@Override
-	public void setPayload(String key, Object value) {
-		this.getPayloads().setProperty(key, value);
-	}
-
-	/*
-	 * Nov 3, 2012
-	 */
-	@Override
-	public String getHeader(String key, boolean force) {
-		//
-		String rt = this.getHeader(key);
-		if (force && rt == null) {
-			throw new FsException("no header found:" + key);
-		}
-		return rt;
-	}
-
-	/*
-	 * Nov 3, 2012
-	 */
-	@Override
-	public Object getPayload(String key, boolean force) {
-		//
-		Object rt = this.getPayloads().getProperty(key);
-		if (force && rt == null) {
-			throw new FsException("force key:" + key);
-		}
-		return rt;
-	}
-
-	/*
-	 * Nov 3, 2012
-	 */
-	@Override
-	public <T> T getPayload(Class<T> cls, String key, T def) {
-		//
-		Object rt = this.getPayload(key);
-		if (rt == null) {
-			return def;
-		}
-		return (T) rt;
-	}
 }

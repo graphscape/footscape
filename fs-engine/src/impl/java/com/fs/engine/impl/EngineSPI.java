@@ -27,12 +27,16 @@ public class EngineSPI extends SPISupport {
 	/* */
 	@Override
 	public void doActive(ActiveContext ac) {
-		// Engine instance and interface,RMI client engine interface object
-		ac.getContainer().find(ConfigFactoryI.class).newPopulator().spi(this)
-				.active(ac).type("Object").populate();
+
+		int es = this.config.getPropertyAsInt("engines", 6);
+
+		for (int i = 0; i < es; i++) {
+			ac.active("dispatcher-" + i);
+			ac.active("engine-" + i);
+		}
+
 		// add handle context converter
-		ConverterI.FactoryI cf = ac.getContainer().find(
-				ConverterI.FactoryI.class, true);
+		ConverterI.FactoryI cf = ac.getContainer().find(ConverterI.FactoryI.class, true);
 
 		cf.addConverter(new RequestC(cf));
 		cf.addConverter(new ResponseC(cf));//

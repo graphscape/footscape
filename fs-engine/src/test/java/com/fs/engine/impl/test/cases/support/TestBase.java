@@ -28,7 +28,7 @@ public class TestBase extends TestCase {
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.service = this.sm.getContainer().finder(ServiceI.class)
-				.name(EngineAPI.RMI_CLIENT).find(true);
+				.name(EngineAPI.engine_0).find(true);
 
 	}
 

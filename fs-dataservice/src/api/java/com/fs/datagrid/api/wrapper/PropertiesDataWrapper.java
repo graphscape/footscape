@@ -12,17 +12,17 @@ import com.fs.datagrid.api.DataWrapperI;
  * @author wuzhen
  * 
  */
-public class PropertiesDW extends ProxyPropertiesSupport<Object> implements
+public class PropertiesDataWrapper extends ProxyPropertiesSupport<Object> implements
 		DataWrapperI<PropertiesI<Object>> {
 
-	public PropertiesDW() {
+	public PropertiesDataWrapper() {
 		this(new MapProperties<Object>());
 	}
 
 	/**
 	 * @param t
 	 */
-	public PropertiesDW(PropertiesI<Object> t) {
+	public PropertiesDataWrapper(PropertiesI<Object> t) {
 		super(t);
 	}
 

@@ -104,7 +104,7 @@ public class AssertRoundImpl extends ConfigurableSupport implements RoundI{
 		this.path = this.config.getProperty("path",true);
 		this.jsonCodecFactory = this.container.finder(CodecI.FactoryI.class)
 				.name("JSON_CODEC_FACTORY").find(true);
-		this.engine = ac.getContainer().finder(ServiceI.class).name("ENGINE").find(true);//TODO
+		this.engine = ac.getContainer().finder(ServiceI.class).name("engine-0").find(true);//TODO
 		this.tf = ac.getContainer().find(TemplateI.FactoryI.class,true);
 		this.requestFtlId = this.config.getProperty("requestFtl",true);
 		this.responseFtlId = this.config.getProperty("expectedResponseFtl",true);

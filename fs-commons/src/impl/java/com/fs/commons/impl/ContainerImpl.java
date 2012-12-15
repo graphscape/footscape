@@ -36,8 +36,7 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
-	private static class ObjectEntryImpl extends DescribedSupport implements
-			ObjectEntryI {
+	private static class ObjectEntryImpl extends DescribedSupport implements ObjectEntryI {
 
 		private SPI spi;
 
@@ -234,6 +233,26 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			throw new FsException("no this object :" + obj);
 		}
 		this.entryList.remove(rt);
+
+	}
+
+	/*
+	 * Dec 14, 2012
+	 */
+	@Override
+	public <T> T find(Class<T> cls, String name) {
+		//
+		return this.finder(cls).name(name).find(false);
+
+	}
+
+	/*
+	 * Dec 14, 2012
+	 */
+	@Override
+	public <T> T find(Class<T> cls, String name, boolean force) {
+		//
+		return this.finder(cls).name(name).find(force);
 
 	}
 

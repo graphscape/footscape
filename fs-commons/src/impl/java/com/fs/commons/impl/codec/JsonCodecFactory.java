@@ -10,6 +10,7 @@ import com.fs.commons.impl.codec.json.ErrorInfoJCS;
 import com.fs.commons.impl.codec.json.ErrorInfosJCS;
 import com.fs.commons.impl.codec.json.IntegerJCS;
 import com.fs.commons.impl.codec.json.LongJCS;
+import com.fs.commons.impl.codec.json.MessageJCS;
 import com.fs.commons.impl.codec.json.ObjectListJCS;
 import com.fs.commons.impl.codec.json.ObjectPropertiesJCS;
 import com.fs.commons.impl.codec.json.StringJCS;
@@ -31,6 +32,8 @@ public class JsonCodecFactory extends CodecFactorySupport {
 		this.add(new BooleanJCS(this));
 		this.add(new DateJCS(this));
 		this.add(new LongJCS(this));//
+		this.add(new MessageJCS(this));
+
 	}
 
 }

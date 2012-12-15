@@ -94,7 +94,7 @@ public class ProxyContainerSupport implements ContainerI {
 	}
 
 	/*
-	 *Dec 11, 2012
+	 * Dec 11, 2012
 	 */
 	@Override
 	public void attach() {
@@ -102,15 +102,17 @@ public class ProxyContainerSupport implements ContainerI {
 	}
 
 	/*
-	 *Dec 11, 2012
+	 * Dec 11, 2012
 	 */
 	@Override
 	public boolean isAttached() {
-		// 
+		//
 		return this.target.isAttached();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.commons.api.AttachableI#dettach()
 	 */
 	@Override
@@ -118,12 +120,34 @@ public class ProxyContainerSupport implements ContainerI {
 		this.target.dettach();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.commons.api.ContainerI#removeObject(java.lang.Object)
 	 */
 	@Override
 	public void removeObject(Object obj) {
 		this.target.removeObject(obj);
+	}
+
+	/*
+	 * Dec 14, 2012
+	 */
+	@Override
+	public <T> T find(Class<T> cls, String name) {
+		//
+		return this.target.find(cls, name);
+
+	}
+
+	/*
+	 * Dec 14, 2012
+	 */
+	@Override
+	public <T> T find(Class<T> cls, String name, boolean force) {
+		//
+		return this.target.find(cls, null, force);
+
 	}
 
 }
