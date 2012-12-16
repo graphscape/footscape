@@ -16,7 +16,7 @@ import com.fs.expector.api.data.MemberRefGd;
  * @author wu
  * 
  */
-public class GridMemeberImpl extends HasIdConfigurableSupport implements GridMemberI {
+public class GridMemberImpl extends HasIdConfigurableSupport implements GridMemberI {
 
 	protected DataGridI dg;
 	

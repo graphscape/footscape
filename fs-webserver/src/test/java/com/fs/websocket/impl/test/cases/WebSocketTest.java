@@ -7,7 +7,6 @@ import java.net.URI;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

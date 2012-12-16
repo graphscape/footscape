@@ -1,28 +1,28 @@
 /**
  *  Dec 14, 2012
  */
-package com.fs.datagrid.api.wrapper;
+package com.fs.datagrid.api.gdata;
 
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.commons.api.value.support.ProxyPropertiesSupport;
-import com.fs.datagrid.api.DataWrapperI;
+import com.fs.datagrid.api.WrapperGdI;
 
 /**
  * @author wuzhen
  * 
  */
-public class PropertiesDataWrapper extends ProxyPropertiesSupport<Object> implements
-		DataWrapperI<PropertiesI<Object>> {
+public class PropertiesGd extends ProxyPropertiesSupport<Object> implements
+		WrapperGdI<PropertiesI<Object>> {
 
-	public PropertiesDataWrapper() {
+	public PropertiesGd() {
 		this(new MapProperties<Object>());
 	}
 
 	/**
 	 * @param t
 	 */
-	public PropertiesDataWrapper(PropertiesI<Object> t) {
+	public PropertiesGd(PropertiesI<Object> t) {
 		super(t);
 	}
 
@@ -34,7 +34,7 @@ public class PropertiesDataWrapper extends ProxyPropertiesSupport<Object> implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.datagrid.api.DataWrapperI#setTarget(java.lang.Object)
+	 * @see com.fs.datagrid.api.WrapperGdI#setTarget(java.lang.Object)
 	 */
 	@Override
 	public void setTarget(PropertiesI<Object> t) {

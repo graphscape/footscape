@@ -6,10 +6,10 @@ package com.fs.datagrid.impl.test.cases;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.datagrid.api.gdata.MessageGd;
+import com.fs.datagrid.api.gdata.PropertiesGd;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
-import com.fs.datagrid.api.wrapper.MessageDataWrapper;
-import com.fs.datagrid.api.wrapper.PropertiesDataWrapper;
 import com.fs.datagrid.impl.test.cases.support.TestBase;
 
 /**
@@ -18,7 +18,7 @@ import com.fs.datagrid.impl.test.cases.support.TestBase;
  */
 public class DgTest extends TestBase {
 
-	public static class MyMessage extends MessageDataWrapper {
+	public static class MyMessage extends MessageGd {
 		public MyMessage(){
 			
 		}
@@ -29,7 +29,7 @@ public class DgTest extends TestBase {
 		
 		
 	}
-	public static class MyBean extends PropertiesDataWrapper {
+	public static class MyBean extends PropertiesGd {
 
 		public MyBean() {
 			super();

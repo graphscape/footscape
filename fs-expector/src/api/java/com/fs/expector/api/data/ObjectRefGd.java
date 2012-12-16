@@ -4,31 +4,32 @@
  */
 package com.fs.expector.api.data;
 
-import com.fs.datagrid.api.wrapper.PropertiesDataWrapper;
+import com.fs.datagrid.api.gdata.PropertiesGd;
 import com.fs.expector.api.GridedDataI;
 import com.fs.expector.api.GridedObjectI;
-
-
 
 /**
  * @author wu
  * 
  */
-public class ObjectRefGd<T extends GridedObjectI> extends PropertiesDataWrapper implements GridedDataI {
-	public static final String ID = "_id";
-	public static final String MID = "_memberId";
+public class ObjectRefGd<T extends GridedObjectI> extends PropertiesGd implements GridedDataI {
 	
-	public ObjectRefGd(String id, String mid){
-		this.setProperty(ID,id);
+	public static final String ID = "_id";
+	
+	public static final String MID = "_memberId";
+
+	public ObjectRefGd(String id, String mid) {
+		this.setProperty(ID, id);
 		this.setProperty(MID, mid);
 	}
-	public String getId(){
-		return (String)this.getProperty(ID);
+
+	public String getId() {
+		return (String) this.getProperty(ID);
 	}
 
-	public String getGridMemberId(){
-		return (String)this.getProperty(MID);
-			
+	public String getMemberId() {
+		return (String) this.getProperty(MID);
+
 	}
 
 }

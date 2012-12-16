@@ -5,7 +5,9 @@
 package com.fs.expector.api.session;
 
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.expector.api.data.ObjectRefGd;
 import com.fs.expector.api.data.SessionGd;
+import com.fs.expector.api.gobject.WebSocketGoI;
 
 /**
  * @author wu
@@ -14,5 +16,11 @@ import com.fs.expector.api.data.SessionGd;
 public interface SessionManagerI {
 
 	public SessionGd createSession(PropertiesI<Object> pts);
+
+	public SessionGd getSession(String id);
+
+	public ObjectRefGd<WebSocketGoI> bindingWebSocket(String sid, String wsId);
+
+	public ObjectRefGd<WebSocketGoI> getWebSocketRefBySessionId(String sid);
 
 }

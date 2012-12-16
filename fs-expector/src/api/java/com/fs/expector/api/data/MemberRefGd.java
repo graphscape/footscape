@@ -4,11 +4,15 @@
  */
 package com.fs.expector.api.data;
 
+import com.fs.expector.api.GridMemberI;
+
 /**
  * @author wu
  * 
  */
-public class MemberRefGd extends ObjectRefGd {
+public class MemberRefGd extends ObjectRefGd<GridMemberI> {
+
+	public static final String PK_LOCAL_EVENTQUEUE = "localEventQueueName";
 
 	/**
 	 * @param id
@@ -16,6 +20,10 @@ public class MemberRefGd extends ObjectRefGd {
 	 */
 	public MemberRefGd(String mid) {
 		super(mid, mid);
+		this.setProperty(PK_LOCAL_EVENTQUEUE, "local-event-queue." + mid);
 	}
 
+	public String getLocalEventQueueName() {
+		return (String) this.getProperty(PK_LOCAL_EVENTQUEUE, true);
+	}
 }

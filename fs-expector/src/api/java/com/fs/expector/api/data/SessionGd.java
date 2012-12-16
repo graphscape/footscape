@@ -4,11 +4,19 @@
  */
 package com.fs.expector.api.data;
 
+import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wu
  * 
  */
 public class SessionGd extends EntityGd {
+
+	/**
+	 * @param pts
+	 */
+	public SessionGd(PropertiesI<Object> pts) {
+		super(pts);
+	}
 
 }

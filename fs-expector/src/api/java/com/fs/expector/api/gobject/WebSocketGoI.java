@@ -4,6 +4,7 @@
  */
 package com.fs.expector.api.gobject;
 
+import com.fs.commons.api.message.MessageI;
 import com.fs.expector.api.GridedObjectI;
 
 /**
@@ -12,6 +13,8 @@ import com.fs.expector.api.GridedObjectI;
  */
 public interface WebSocketGoI extends GridedObjectI {
 
-	public void sendMessage(String msg);
+	public void sendMessage(MessageI msg);
+
+	public void sendTextMessage(String msg);
 
 }

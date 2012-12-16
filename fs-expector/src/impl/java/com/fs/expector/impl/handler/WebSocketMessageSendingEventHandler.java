@@ -5,38 +5,41 @@
 package com.fs.expector.impl.handler;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.message.MessageI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.engine.api.support.HandlerSupport;
 import com.fs.expector.api.GridedObjectManagerI;
-import com.fs.expector.api.data.EventGd;
-import com.fs.expector.api.data.WebSocketRefGd;
 import com.fs.expector.api.gobject.WebSocketGoI;
 import com.fs.expector.api.session.SessionManagerI;
+import com.fs.expector.api.wrapper.WsMsgReceiveEW;
 
 /**
  * @author wu
  * 
  */
-public class EndpointEventHandler extends HandlerSupport {
+public class WebSocketMessageSendingEventHandler extends HandlerSupport {
 
 	protected SessionManagerI sessionManager;
 
 	protected GridedObjectManagerI<WebSocketGoI> goManager;
 
-	@Handle("consume")
-	public void handleConsume(EventGd evt, RequestI req, ResponseI res) {
-		
+	@Handle("event")
+	// local event
+	public void handleEvent(WsMsgReceiveEW evt, RequestI req, ResponseI res) {
+
 		String to = null;// evt.getToEndpointId();
-		
-		WebSocketRefGd ep = null;
-		
+
 		WebSocketGoI wgo = this.goManager.getGridedObject(to);//
-		
-		if (ep == null) {// closed?
+
+		if (wgo == null) {// closed?
 			return;// ignore?
 		}
+
+		MessageI msg = evt.getMessage();
+
+		wgo.sendMessage(msg);
 		// ep.sendMessage(evt);
 	}
 

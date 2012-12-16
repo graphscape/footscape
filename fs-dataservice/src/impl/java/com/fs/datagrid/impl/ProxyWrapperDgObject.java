@@ -3,16 +3,18 @@
  */
 package com.fs.datagrid.impl;
 
-import com.fs.datagrid.api.DataWrapperI;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fs.datagrid.api.DgObjectI;
+import com.fs.datagrid.api.WrapperGdI;
 import com.fs.datagrid.impl.hazelcast.util.WrapperUtil;
 
 /**
  * @author wuzhen
  * 
  */
-public class ProxyWrapperDgObject<V, VW extends DataWrapperI, T extends DgObjectI>
-		implements DgObjectI {
+public class ProxyWrapperDgObject<V, VW extends WrapperGdI, T extends DgObjectI> implements DgObjectI {
 
 	protected T target;
 
@@ -25,6 +27,16 @@ public class ProxyWrapperDgObject<V, VW extends DataWrapperI, T extends DgObject
 
 	protected VW wrap(V v) {
 		return WrapperUtil.wrapper(v, wcls);
+	}
+
+	protected List<VW> wrap(List<V> vl) {
+		List<VW> rt = new ArrayList<VW>();
+		for (V v : vl) {
+			VW w = WrapperUtil.wrapper(v, wcls);
+			rt.add(w);
+		}
+		return rt;
+
 	}
 
 	public T getTarget() {

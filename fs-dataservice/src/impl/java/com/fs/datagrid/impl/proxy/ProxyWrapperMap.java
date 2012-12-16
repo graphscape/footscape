@@ -3,7 +3,9 @@
  */
 package com.fs.datagrid.impl.proxy;
 
-import com.fs.datagrid.api.DataWrapperI;
+import java.util.List;
+
+import com.fs.datagrid.api.WrapperGdI;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.impl.ProxyWrapperDgObject;
 
@@ -11,7 +13,7 @@ import com.fs.datagrid.impl.ProxyWrapperDgObject;
  * @author wuzhen
  * 
  */
-public class ProxyWrapperMap<K, V, VW extends DataWrapperI<V>> extends
+public class ProxyWrapperMap<K, V, VW extends WrapperGdI<V>> extends
 		ProxyWrapperDgObject<V, VW, DgMapI<K, V>> implements DgMapI<K, VW> {
 
 	/**
@@ -47,13 +49,42 @@ public class ProxyWrapperMap<K, V, VW extends DataWrapperI<V>> extends
 	}
 
 	/*
-	 *Dec 15, 2012
+	 * Dec 15, 2012
 	 */
 	@Override
 	public VW remove(K key) {
-		// 
+		//
 		V rt = this.target.remove(key);
 		return this.wrap(rt);
+	}
+
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public List<K> keyList() {
+		//
+		return this.target.keyList();
+	}
+
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public List<VW> valueList() {
+		//
+		List<V> rt = this.target.valueList();
+		return this.wrap(rt);
+	}
+
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public VW getValue(K key, boolean force) {
+		//
+		return this.wrap(this.target.getValue(key, force));
+
 	}
 
 }

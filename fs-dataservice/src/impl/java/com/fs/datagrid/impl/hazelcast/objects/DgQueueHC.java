@@ -4,7 +4,7 @@
 package com.fs.datagrid.impl.hazelcast.objects;
 
 import com.fs.commons.api.lang.FsException;
-import com.fs.datagrid.api.DataWrapperI;
+import com.fs.datagrid.api.WrapperGdI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.impl.hazelcast.DataGridHC;
 import com.fs.datagrid.impl.hazelcast.HazelcastObjectWrapper;

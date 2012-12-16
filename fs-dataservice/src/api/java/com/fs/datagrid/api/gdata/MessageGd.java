@@ -1,27 +1,27 @@
 /**
  *  Dec 14, 2012
  */
-package com.fs.datagrid.api.wrapper;
+package com.fs.datagrid.api.gdata;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.message.support.ProxyMessageSupport;
-import com.fs.datagrid.api.DataWrapperI;
+import com.fs.datagrid.api.WrapperGdI;
 
 /**
  * @author wuzhen
  * 
  */
-public class MessageDataWrapper extends ProxyMessageSupport implements DataWrapperI<MessageI> {
+public class MessageGd extends ProxyMessageSupport implements WrapperGdI<MessageI> {
 
-	public MessageDataWrapper() {
+	public MessageGd() {
 		this(MessageSupport.newMessage());
 	}
 
 	/**
 	 * @param t
 	 */
-	public MessageDataWrapper(MessageI msg) {
+	public MessageGd(MessageI msg) {
 		super(msg);
 	}
 
@@ -33,7 +33,7 @@ public class MessageDataWrapper extends ProxyMessageSupport implements DataWrapp
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.datagrid.api.DataWrapperI#setTarget(java.lang.Object)
+	 * @see com.fs.datagrid.api.WrapperGdI#setTarget(java.lang.Object)
 	 */
 	@Override
 	public void setTarget(MessageI t) {

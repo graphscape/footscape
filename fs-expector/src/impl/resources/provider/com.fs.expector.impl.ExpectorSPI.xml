@@ -1,15 +1,38 @@
 <config>
 
-	<config name="sessionManager" class="com.fs.expector.impl.dg.session.SessionManagerImpl">
+	<config name="gridMember" class="com.fs.expector.impl.GridMemberImpl">
 
 	</config>
 
-	<config name="endpointManager" class="com.fs.expector.impl.endpoint.EndpointManagerImpl">
+	<config name="gridFacade" class="com.fs.expector.impl.GridFacadeImpl">
 
 	</config>
 
-	<config name="endpointEventQueue" class="com.fs.expector.impl.event.EndpointEventQueue">
+
+	<config name="webSocketFactory" class="com.fs.expector.impl.WebSocketGoFactory">
 
 	</config>
+
+	<config name="sessionManager" class="com.fs.expector.impl.session.SessionManagerImpl">
+
+	</config>
+
+	<config name="webSocketGoManager" class="com.fs.expector.impl.GridedObjectManagerImpl">
+		<goItfClass value="com.fs.expector.api.gobject.WebSocketGoI" />
+	</config>
+
+
+	<config name="eventDispatcher" class="com.fs.expector.impl.EventDispatcherImpl">
+		<!-- engine is created from EngineSPI -->
+		<engine value="engine-1" />
+	</config>
+
+	<prefix name="handler">
+		<wsmre.class value="com.fs.expector.impl.handler.WsMsgReseiveEventHandler" />
+		<config name="wsmre">
+			<pattern value="/events/wsmr/binding" />
+		</config>
+	</prefix>
+
 
 </config>

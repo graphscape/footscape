@@ -4,6 +4,8 @@
  */
 package com.fs.expector.api;
 
+import com.fs.expector.api.data.ObjectRefGd;
+
 /**
  * @author wu
  * 
@@ -18,4 +20,6 @@ public interface GridedObjectManagerI<T extends GridedObjectI> {
 
 	public T getGridedObject(String id);
 
+	public ObjectRefGd<T> getRef(String id);//
+	
 }

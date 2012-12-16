@@ -3,7 +3,7 @@
  */
 package com.fs.datagrid.impl.proxy;
 
-import com.fs.datagrid.api.DataWrapperI;
+import com.fs.datagrid.api.WrapperGdI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.impl.ProxyWrapperDgObject;
 
@@ -11,7 +11,7 @@ import com.fs.datagrid.impl.ProxyWrapperDgObject;
  * @author wuzhen
  * 
  */
-public class ProxyWrapperQueue<K, V, VW extends DataWrapperI<V>> extends
+public class ProxyWrapperQueue<K, V, VW extends WrapperGdI<V>> extends
 		ProxyWrapperDgObject<V, VW, DgQueueI<V>> implements DgQueueI<VW> {
 
 	/**

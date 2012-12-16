@@ -7,7 +7,7 @@ package com.fs.datagrid.api;
  * @author wuzhen
  * 
  */
-public interface DataWrapperI<T> {
+public interface WrapperGdI<T> {
 
 	public T getTarget();
 

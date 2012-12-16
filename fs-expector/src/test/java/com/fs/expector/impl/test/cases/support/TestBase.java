@@ -8,8 +8,7 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.datagrid.api.DataGridI;
-import com.fs.datagrid.api.DgFactoryI;
+import com.fs.expector.api.GridFacadeI;
 
 /**
  * @author wu
@@ -21,24 +20,20 @@ public class TestBase extends TestCase {
 
 	protected ContainerI container;
 	
-	protected DgFactoryI factory;
-
-	protected DataGridI dg;
-
+	protected GridFacadeI facade;
+	
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.factory = sm.getContainer().finder(DgFactoryI.class).find(true);
-
-		this.dg = this.factory.getInstance();
+		this.facade = sm.getContainer().find(GridFacadeI.class,true);
 
 		this.deleteAll();
 	}
 
 	protected void deleteAll() {
-		this.dg.destroyAll();
+		this.facade.getDataGrid().destroyAll();
 	}
 
 	protected void dump() {

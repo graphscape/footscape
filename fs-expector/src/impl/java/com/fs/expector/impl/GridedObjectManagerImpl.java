@@ -7,35 +7,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.expector.api.GridedObjectI;
 import com.fs.expector.api.GridedObjectManagerI;
 import com.fs.expector.api.data.ObjectRefGd;
-import com.fs.expector.impl.support.DataGridAwareSupport;
+import com.fs.expector.impl.support.FacadeAwareConfigurableSupport;
 
 /**
  * @author wuzhen
  * 
  */
-public class GridedObjectManagerImpl<T extends GridedObjectI> extends DataGridAwareSupport implements
-		GridedObjectManagerI<T> {
+public class GridedObjectManagerImpl<T extends GridedObjectI> extends FacadeAwareConfigurableSupport
+		implements GridedObjectManagerI<T> {
 
 	private Map<String, T> goMap;// local container.
 
 	private DgMapI<String, ObjectRefGd> objectRefDgMap;// remote map.
 
-	protected Class<T> gocls;
+	protected Class<T> goItfClass;
 
-	public GridedObjectManagerImpl(Class<T> gocls) {
+	public GridedObjectManagerImpl() {
 		super();
-		this.gocls = gocls;
+	}
+
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public void configure(Configuration cfg) {
+		super.configure(cfg);
+		this.goItfClass = cfg.getPropertyAsClass("goItfClass", true);
+
 	}
 
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
 		this.goMap = new HashMap<String, T>();
-		this.objectRefDgMap = this.dg.getMap("object-ref-map" + "-" + gocls.getName(), ObjectRefGd.class);
+		this.objectRefDgMap = this.facade.getDataGrid().getMap("map-object-ref-" + goItfClass.getName(),
+				ObjectRefGd.class);
 	}
 
 	/*
@@ -66,7 +77,7 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends DataGridAw
 		String id = go.getId();
 		T old = this.goMap.put(go.getId(), go);
 
-		ObjectRefGd<T> ref = new ObjectRefGd<T>(id, this.member.getId());
+		ObjectRefGd<T> ref = new ObjectRefGd<T>(id, this.facade.getLocalMember().getId());
 
 		this.objectRefDgMap.put(id, ref);
 
@@ -86,4 +97,14 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends DataGridAw
 		return old;
 
 	}
+
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public ObjectRefGd<T> getRef(String id) {
+		//
+		return null;
+	}
+
 }
