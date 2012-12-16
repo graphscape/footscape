@@ -129,6 +129,11 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
+	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1) {
+		return this.getQueue(name, wcls1, wcls1);
+	}
+
+	@Override
 	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1, Class<? extends W> wcls) {
 		DgQueueI<V> t = this.getQueue(name);
 		return new ProxyWrapperQueue(t, wcls);
@@ -186,6 +191,11 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 		return this.getOrCreateDgObject(Instance.InstanceType.MAP, name);
 
+	}
+
+	@Override
+	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1) {
+		return this.getMap(name, wcls1, wcls1);
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 /**
  * All right is from Author of the file,to be explained in comming days.
- * Dec 13, 2012
+ * Dec 15, 2012
  */
-package com.fs.expector.impl;
+package com.fs.commons.api;
 
 /**
  * @author wu
- *
+ * 
  */
-public class ExpectorImpl {
-
+public interface HasIdI {
+	public String getId();
 }

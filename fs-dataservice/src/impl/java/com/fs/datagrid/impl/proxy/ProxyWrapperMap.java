@@ -46,4 +46,14 @@ public class ProxyWrapperMap<K, V, VW extends DataWrapperI<V>> extends
 
 	}
 
+	/*
+	 *Dec 15, 2012
+	 */
+	@Override
+	public VW remove(K key) {
+		// 
+		V rt = this.target.remove(key);
+		return this.wrap(rt);
+	}
+
 }

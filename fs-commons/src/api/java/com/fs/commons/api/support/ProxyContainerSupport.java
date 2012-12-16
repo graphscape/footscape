@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.FinderI;
+import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.lang.FsException;
 
 /**
  * @author wuzhen
@@ -147,6 +149,27 @@ public class ProxyContainerSupport implements ContainerI {
 	public <T> T find(Class<T> cls, String name, boolean force) {
 		//
 		return this.target.find(cls, null, force);
+
+	}
+
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public <T extends HasIdI> T find(String id) {
+		//
+		return this.target.find(id);
+
+	}
+
+	@Override
+	public <T extends HasIdI> T find(String id, boolean force) {
+		//
+		T rt = this.target.find(id);
+		if (force && rt == null) {
+			throw new FsException("no object with id:" + id);
+		}
+		return rt;
 
 	}
 

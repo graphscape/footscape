@@ -8,6 +8,8 @@ package com.fs.expector.api;
  * @author wu
  *
  */
-public interface EventProcessorI {
+public interface GridMemberI {
+
+	public String getId();
 
 }

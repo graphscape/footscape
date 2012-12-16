@@ -23,8 +23,8 @@ public class ExpectorSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 
 		ac.active("sessionManager");
-		ac.active("endpointManager");
-		ac.active("endpointEventQueue");
+		ac.active("goManager");
+		ac.active("eventQueue");
 	}
 
 	@Override

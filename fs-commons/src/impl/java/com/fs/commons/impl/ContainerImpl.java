@@ -4,11 +4,14 @@
 package com.fs.commons.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fs.commons.api.AttachableI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.FinderI;
+import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.DescribableI;
@@ -89,11 +92,26 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			((AttachableI) this.object).dettach();
 		}
 
+		/*
+		 * Dec 15, 2012
+		 */
+		@Override
+		public String getId() {
+			//
+			if (!(this.object instanceof HasIdI)) {
+				return null;
+			}
+
+			return ((HasIdI) this.object).getId();
+		}
+
 	}
 
 	private ContainerI parent;
 
 	private List<ObjectEntryImpl> entryList = new ArrayList<ObjectEntryImpl>();
+
+	private Map<String, ObjectEntryImpl> hasIdEntryMap = new HashMap<String, ObjectEntryImpl>();
 
 	private ContainerImpl(ContainerI prt) {
 		this.parent = prt;
@@ -110,9 +128,34 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		ObjectEntryImpl oe = new ObjectEntryImpl(o);
 		oe.spi(spi).name(name);// NOTE
 		this.entryList.add(oe);
+		String id = oe.getId();
+		if (id != null) {
+			this.hasIdEntryMap.put(id, oe);
+		}
+
 		if (this.attached) {
 			oe.tryAttach();//
 		}
+	}
+
+	@Override
+	public void removeObject(Object obj) {
+		ObjectEntryImpl rt = null;
+		for (ObjectEntryImpl oe : this.entryList) {
+			if (oe.getObject() == obj) {
+				rt = oe;
+				break;
+			}
+		}
+		if (rt == null) {
+			throw new FsException("no this object :" + obj);
+		}
+		this.entryList.remove(rt);
+		String id = rt.getId();
+		if (rt != null) {
+			this.hasIdEntryMap.remove(id);
+		}
+
 	}
 
 	/* */
@@ -216,27 +259,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.ContainerI#removeObject(java.lang.Object)
-	 */
-	@Override
-	public void removeObject(Object obj) {
-		ObjectEntryImpl rt = null;
-		for (ObjectEntryImpl oe : this.entryList) {
-			if (oe.getObject() == obj) {
-				rt = oe;
-				break;
-			}
-		}
-		if (rt == null) {
-			throw new FsException("no this object :" + obj);
-		}
-		this.entryList.remove(rt);
-
-	}
-
-	/*
 	 * Dec 14, 2012
 	 */
 	@Override
@@ -254,6 +276,31 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		//
 		return this.finder(cls).name(name).find(force);
 
+	}
+
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public <T extends HasIdI> T find(String id) {
+		//
+		ObjectEntryImpl oe = this.hasIdEntryMap.get(id);
+
+		return oe == null ? null : (T) oe.getObject();
+
+	}
+
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public <T extends HasIdI> T find(String id, boolean force) {
+		//
+		T rt = this.find(id);
+		if (force && rt == null) {
+			throw new FsException("no object with id:" + id);
+		}
+		return rt;
 	}
 
 }

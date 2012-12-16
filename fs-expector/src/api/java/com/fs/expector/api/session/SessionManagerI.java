@@ -4,14 +4,15 @@
  */
 package com.fs.expector.api.session;
 
-import com.fs.expector.api.ManagerI;
+import com.fs.commons.api.value.PropertiesI;
+import com.fs.expector.api.data.SessionGd;
 
 /**
  * @author wu
  * 
  */
-public interface SessionManagerI extends ManagerI<SessionI> {
+public interface SessionManagerI {
 
-	public static final String NAME = "SESSION_MANAGER";
+	public SessionGd createSession(PropertiesI<Object> pts);
 
 }

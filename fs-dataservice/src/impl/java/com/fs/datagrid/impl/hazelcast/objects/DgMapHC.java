@@ -14,8 +14,7 @@ import com.hazelcast.core.MapEntry;
  * @author wuzhen
  * 
  */
-public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
-		DgMapI<K, V> {
+public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements DgMapI<K, V> {
 
 	/**
 	 * @param q
@@ -33,9 +32,8 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	 */
 	@Override
 	public V getValue(K key) {
-		MapEntry<K, ?> se = this.target.getMapEntry(key);
-		Object s = se.getValue();
-		V rt = this.decode(s);
+		MapEntry<K, V> se = this.target.getMapEntry(key);
+		V rt = se.getValue();
 
 		return rt;
 	}
@@ -49,6 +47,17 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	@Override
 	public V put(K key, V value) {
 		return this.target.put(key, value);
+	}
+
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public V remove(K key) {
+		//
+		V v = this.target.remove(key);
+
+		return v;
 	}
 
 }

@@ -4,11 +4,11 @@
 
 	</config>
 
-	<config name="endpointManager" class="com.fs.expector.impl.dg.endpoint.EndpointManagerImpl">
+	<config name="endpointManager" class="com.fs.expector.impl.endpoint.EndpointManagerImpl">
 
 	</config>
 
-	<config name="endpointEventQueue" class="com.fs.expector.impl.dg.event.EndpointEventQueue">
+	<config name="endpointEventQueue" class="com.fs.expector.impl.event.EndpointEventQueue">
 
 	</config>
 

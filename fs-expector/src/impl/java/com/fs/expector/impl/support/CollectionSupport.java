@@ -1,7 +1,7 @@
 /**
  *  Dec 14, 2012
  */
-package com.fs.expector.impl.dg.support;
+package com.fs.expector.impl.support;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
@@ -10,33 +10,31 @@ import com.fs.commons.api.lang.ClassUtil;
 import com.fs.datagrid.api.DataGridI;
 import com.fs.datagrid.api.DgCollectionI;
 import com.fs.datagrid.api.DgFactoryI;
+import com.fs.expector.api.GridedDataI;
 
 /**
  * @author wuzhen
  * 
  */
-public abstract class DgCollectionSupport<I, E extends I, D extends DgCollectionI>
-		extends ConfigurableSupport {
+public abstract class CollectionSupport<E extends GridedDataI, D extends DgCollectionI> extends
+		ConfigurableSupport {
 
 	protected DataGridI dg;
-
-	protected Class<I> wrapperItf;
 
 	protected Class<E> wrapperClass;
 
 	protected String name;
 
 	protected String collectionName;
-	
+
 	protected D target;
 
 	/**
 	 * @param name
 	 */
-	public DgCollectionSupport(Class<I> icls, Class<E> wcls) {
-		this.wrapperItf = icls;
+	public CollectionSupport(Class<E> wcls) {
 		this.wrapperClass = wcls;
-		
+
 	}
 
 	@Override
@@ -54,7 +52,7 @@ public abstract class DgCollectionSupport<I, E extends I, D extends DgCollection
 		this.dg = df.getInstance();//
 		this.target = this.activeTarget();
 	}
-	
+
 	protected abstract D activeTarget();
 
 	public String getName() {
