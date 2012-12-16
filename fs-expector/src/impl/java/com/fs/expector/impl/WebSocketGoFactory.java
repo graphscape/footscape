@@ -4,12 +4,15 @@
  */
 package com.fs.expector.impl;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.expector.api.EventDispatcherI;
+import com.fs.expector.api.data.EventGd;
 import com.fs.expector.api.gobject.WebSocketGoI;
 import com.fs.expector.api.wrapper.WsMsgReceiveEW;
 import com.fs.expector.impl.gobject.WebSoketGoImpl;
@@ -28,6 +31,8 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 	protected EventDispatcherI eventEngine;
 
 	protected CodecI messageCodec;
+	
+	protected DgQueueI<EventGd> global;
 
 	/*
 	 * Dec 15, 2012
@@ -42,7 +47,7 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 		WsFactoryI wf = this.container.find(WsFactoryI.class, true);
 		WsManagerI wsm = wf.getManager("default", true);// TODO new wsm
 		wsm.addListener(this);
-
+		this.global = this.facade.getGlogalEventQueue();//
 	}
 
 	/*
@@ -66,12 +71,13 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 	@Override
 	public void onMessage(WebSocketI ws, String ms) {
 		//
-		JSONValue js = (JSONValue) JSONValue.parse(ms);
+		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
-
-		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(msg);
+		String path = msg.getHeader("path");
+				
+		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path,msg);
 		// send to global event queue
-		this.facade.getGlogalEventQueue().offer(ew.getTarget());
+		this.global.offer(ew.getTarget());
 
 	}
 

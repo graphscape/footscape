@@ -158,4 +158,13 @@ public class EngineImpl extends ServiceSupport implements ServiceEngineI {
 		return rt;
 	}
 
+	/*
+	 * Dec 16, 2012
+	 */
+	@Override
+	public DispatcherI<RequestI, ResponseI> getDispatcher() {
+		//
+		return this.dispatcher;
+	}
+
 }

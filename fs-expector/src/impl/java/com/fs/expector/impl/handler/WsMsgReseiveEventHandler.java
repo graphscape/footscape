@@ -6,6 +6,7 @@ package com.fs.expector.impl.handler;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.engine.api.support.HandlerSupport;
+import com.fs.expector.api.GridFacadeI;
 import com.fs.expector.api.GridedObjectManagerI;
 import com.fs.expector.api.gobject.WebSocketGoI;
 import com.fs.expector.api.session.SessionManagerI;
@@ -15,6 +16,8 @@ import com.fs.expector.api.session.SessionManagerI;
  * 
  */
 public class WsMsgReseiveEventHandler extends HandlerSupport {
+
+	protected GridFacadeI facade;
 
 	protected SessionManagerI sessionManager;
 
@@ -26,7 +29,9 @@ public class WsMsgReseiveEventHandler extends HandlerSupport {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-
+		this.facade = this.container.find(GridFacadeI.class, true);
+		this.sessionManager = this.container.find(SessionManagerI.class, true);
+		this.goManager = this.facade.getWebSocketGridedObjectManager();
 	}
 
 }

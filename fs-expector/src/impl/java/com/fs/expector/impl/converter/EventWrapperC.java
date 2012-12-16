@@ -3,9 +3,11 @@
  */
 package com.fs.expector.impl.converter;
 
+import com.fs.commons.api.lang.ClassUtil;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.support.HandleContextConverterSupport;
 import com.fs.expector.api.EventWrapper;
+import com.fs.expector.api.data.EventGd;
 
 /**
  * @author wu
@@ -22,7 +24,10 @@ public class EventWrapperC<T extends EventWrapper> extends HandleContextConverte
 	@Override
 	public T convert(HandleContextI f) {
 
-		return (T) f.getRequest().getPayload();
+		EventGd evt = (EventGd) f.getRequest().getPayload();
+		EventWrapper rt = ClassUtil.newInstance(this.toClass, new Class[] { EventGd.class },
+				new Object[] { evt });
+		return (T) rt;
 
 	}
 }

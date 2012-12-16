@@ -22,17 +22,31 @@
 	</config>
 
 
-	<config name="eventDispatcher" class="com.fs.expector.impl.EventDispatcherImpl">
+	<config name="globalEventDispatcher" class="com.fs.expector.impl.GlobalEventDispatcher">
 		<!-- engine is created from EngineSPI -->
 		<engine value="engine-1" />
+
+		<prefix name="handler">
+			<wsmre.class value="com.fs.expector.impl.handler.HandshakeEventHandler" />
+			<config name="wsmre">
+				<pattern value="/events/handshake/.*" />
+			</config>
+		</prefix>
+	</config>
+	
+	<config name="localEventDispatcher" class="com.fs.expector.impl.LocalEventDispatcher">
+		<!-- engine is created from EngineSPI -->
+		<engine value="engine-2" />
+
+		<prefix name="handler">
+			<wsmsg.class value="com.fs.expector.impl.handler.local.WsMessageEventHandler" />
+			<config name="wsmsg">
+				<pattern value="/events/wsmsg/.*" />
+			</config>
+		</prefix>
 	</config>
 
-	<prefix name="handler">
-		<wsmre.class value="com.fs.expector.impl.handler.WsMsgReseiveEventHandler" />
-		<config name="wsmre">
-			<pattern value="/events/wsmr/binding" />
-		</config>
-	</prefix>
+
 
 
 </config>

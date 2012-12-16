@@ -16,9 +16,9 @@ public class WsMsgSendEW extends WsMsgEW {
 
 	public static final EventType TYPE = EventType.valueOf("WebSocketMessageSending");
 
-	public static WsMsgSendEW valueOf(MessageI msg) {
+	public static WsMsgSendEW valueOf(String path, MessageI msg) {
 
-		WsMsgSendEW rt = new WsMsgSendEW(new EventGd(TYPE));
+		WsMsgSendEW rt = new WsMsgSendEW(new EventGd(TYPE, path));
 		rt.setMessage(msg);
 		return rt;
 	}

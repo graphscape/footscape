@@ -25,9 +25,9 @@ public class WsMsgReceiveEW extends WsMsgEW {
 
 	}
 
-	public static WsMsgReceiveEW valueOf(MessageI msg) {
+	public static WsMsgReceiveEW valueOf(String path, MessageI msg) {
 
-		WsMsgReceiveEW rt = new WsMsgReceiveEW(new EventGd(TYPE));
+		WsMsgReceiveEW rt = new WsMsgReceiveEW(new EventGd(TYPE, path));
 		rt.setMessage(msg);
 		return rt;
 	}

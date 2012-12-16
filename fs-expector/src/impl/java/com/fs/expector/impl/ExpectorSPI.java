@@ -35,6 +35,9 @@ public class ExpectorSPI extends SPISupport {
 		ac.active("webSocketFactory");
 		ac.active("webSocketGoManager");
 		ac.active("sessionManager");
+		ac.active("globalEventDispatcher");
+		ac.active("localEventDispatcher");
+		
 
 	}
 

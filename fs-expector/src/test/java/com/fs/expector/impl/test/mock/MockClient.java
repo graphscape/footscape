@@ -21,6 +21,7 @@ import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.eclipse.jetty.websocket.client.WebSocketClientFactory;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +76,8 @@ public class MockClient implements WebSocketListener {
 
 		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
 		try {
-			JSONValue jsm = (JSONValue) this.messageCodec.encode(msg);//
-			String code = JSONValue.toJSONString(jsm);
+			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
+			String code = jsm.toJSONString();
 			endpoint.sendString(code);
 		} catch (IOException e) {
 			throw new FsException(e);
@@ -199,17 +200,17 @@ public class MockClient implements WebSocketListener {
 	public void binding(String sid) throws Exception {
 		MessageI msg = new MessageSupport() {
 		};
-		msg.setHeader("type", "action");
-		msg.setHeader("action", "binding");
+		msg.setHeader("path", "/handshake/binding");
+		msg.setPayload("sessionId", sid);
 		this.sendMessage(msg);
 
 		MessageI res = this.receiveMessage().get();
-		String status = res.getHeader("status", true);
-		String reason = res.getHeader("reason", true);
-		if (status.equals("success")) {
+
+		String path = res.getHeader("path", true);
+		if (path.endsWith("binding/success")) {
 			return;
 		} else {
-			throw new FsException("failed binding sessionId:" + sid + "," + reason);
+			throw new FsException("failed binding sessionId:" + sid + ",path:" + path);
 		}
 	}
 
