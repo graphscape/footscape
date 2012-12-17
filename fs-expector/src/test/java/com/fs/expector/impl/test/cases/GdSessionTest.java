@@ -4,6 +4,7 @@
 package com.fs.expector.impl.test.cases;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
@@ -25,6 +26,7 @@ public class GdSessionTest extends TestBase {
 
 	public void testSession() throws Exception {
 		MockClientFactory cf = new MockClientFactory().start();
+
 		SessionManagerI sm = this.container.find(SessionManagerI.class, true);
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		SessionGd s = sm.createSession(pts);
@@ -35,6 +37,7 @@ public class GdSessionTest extends TestBase {
 																// wsManager.
 		MockClient client = cf.newClient(sid, this.container, uri);
 		client = client.connect().get();
+		client.ready(1000, TimeUnit.SECONDS).get();
 		//
 		client.binding(sid);
 
@@ -49,7 +52,8 @@ public class GdSessionTest extends TestBase {
 
 		assertEquals("the web socket grid member not correct.", mid1, mid2);
 		String wsId = wsr.getId();//
-		GridedObjectManagerI<WebSocketGoI> wsgm = this.facade.getWebSocketGridedObjectManager();
+		GridedObjectManagerI<WebSocketGoI> wsgm = this.facade
+				.getWebSocketGridedObjectManager();
 
 		WebSocketGoI wsg = wsgm.getGridedObject(wsId);
 		assertNotNull("web socket go not found in local gomanager.", wsg);

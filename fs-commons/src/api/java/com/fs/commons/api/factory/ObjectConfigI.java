@@ -13,6 +13,8 @@ import com.fs.commons.api.describe.DescribedI;
 public interface ObjectConfigI extends DescribedI {
 
 	public <T> T newInstance();
+	
+	public String getCfgId();
 
 	public Describe getDescribe();
 

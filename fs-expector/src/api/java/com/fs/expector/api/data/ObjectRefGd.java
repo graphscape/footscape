@@ -18,6 +18,10 @@ public class ObjectRefGd<T extends GridedObjectI> extends PropertiesGd implement
 	
 	public static final String MID = "_memberId";
 
+	//for 
+	public ObjectRefGd(){
+		
+	}
 	public ObjectRefGd(String id, String mid) {
 		this.setProperty(ID, id);
 		this.setProperty(MID, mid);

@@ -25,7 +25,8 @@ public class HandshakeEventHandler extends WsMsgReseiveEventHandler {
 	 * Dec 16, 2012
 	 */
 	@Handle("binding")
-	public void handleBinding(WsMsgReceiveEW reqE, WsMsgSendEW resE, RequestI req) {
+	public void handleBinding(WsMsgReceiveEW reqE, WsMsgSendEW resE,
+			RequestI req) {
 		//
 		MessageI msg = reqE.getMessage();
 		String sid = (String) msg.getPayload("sessionId", true);
@@ -33,20 +34,20 @@ public class HandshakeEventHandler extends WsMsgReseiveEventHandler {
 		if (s == null) {// TODO event,code?
 			throw new FsException("TODO");
 		}
-		String wsId = reqE.getWebSocketId();
-		if (wsId == null) {
+		String wsoId = reqE.getWebSocketId();
+		if (wsoId == null) {
 			throw new FsException("TODO");
 		}
-		this.sessionManager.bindingWebSocket(sid, wsId);
+		this.sessionManager.bindingWebSocket(sid, wsoId);
 
 		MessageI m2 = new MessageSupport();
-
+		m2.setHeader("path", "/status/binding/success");//
 		// TODO get the queue of the member that contains the web socket
 		String mid = this.facade.getLocalMember().getId();
 
 		DgQueueI<EventGd> mqueue = this.facade.getMemberEventQueue(mid);
 
-		WsMsgSendEW ok = WsMsgSendEW.valueOf("/wsmessage/send", m2);
+		WsMsgSendEW ok = WsMsgSendEW.valueOf("/wsmsg/send", wsoId, m2);
 
 		mqueue.offer(ok.getTarget());
 

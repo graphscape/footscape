@@ -35,10 +35,12 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 	@Override
 	public void configure(Configuration cfg) {
 		super.configure(cfg);
+
 		this.addressList = this.config.getPropertyAsCsv("addressCsv");
 		if (this.addressList.isEmpty()) {
 			this.addressList.add("127.0.0.1:5701");// add a default to try.
 		}
+
 	}
 
 	@Override

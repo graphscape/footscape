@@ -12,10 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.CollectionInterceptor;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
 
 /**
@@ -41,7 +43,10 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	private int status = S_INIT;
 
+	private CollectionInterceptor interceptors;
+
 	public SPIManagerImpl() {
+		this.interceptors = new CollectionInterceptor();
 		ContainerI.FactoryI tf = new ContainerImpl.FactoryImpl();
 		this.container = tf.newContainer();
 		this.spiList = new ArrayList<SPI>();
@@ -141,6 +146,7 @@ public class SPIManagerImpl implements SPIManagerI {
 		this.log("start	spi:" + id + ",cls:" + cls);
 		SPI s = ClassUtil.newInstance(cls, new Class[] { String.class },
 				new Object[] { id });
+		s.setSPIManager(this);//
 		this.assertDependenceList(s);
 
 		this.spiList.add(s);// register all this spi.
@@ -212,6 +218,27 @@ public class SPIManagerImpl implements SPIManagerI {
 	 */
 	public ContainerI getContainer() {
 		return container;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.SPIManagerI#addInterceptor(com.fs.commons.api.InterceptorI
+	 * )
+	 */
+	@Override
+	public void addInterceptor(InterceptorI ii) {
+		this.interceptors.addInterceptor(ii);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.SPIManagerI#getInterceptor()
+	 */
+	@Override
+	public InterceptorI getInterceptor() {
+		// TODO Auto-generated method stub
+		return this.interceptors;
 	}
 
 }

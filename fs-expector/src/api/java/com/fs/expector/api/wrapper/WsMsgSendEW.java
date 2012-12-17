@@ -14,11 +14,12 @@ import com.fs.expector.api.data.EventGd;
  */
 public class WsMsgSendEW extends WsMsgEW {
 
-	public static final EventType TYPE = EventType.valueOf("WebSocketMessageSending");
+	public static final EventType TYPE = EventType
+			.valueOf("WebSocketMessageSending");
 
-	public static WsMsgSendEW valueOf(String path, MessageI msg) {
+	public static WsMsgSendEW valueOf(String path, String wsId, MessageI msg) {
 
-		WsMsgSendEW rt = new WsMsgSendEW(new EventGd(TYPE, path));
+		WsMsgSendEW rt = new WsMsgSendEW(new EventGd(TYPE, path), wsId);
 		rt.setMessage(msg);
 		return rt;
 	}
@@ -26,7 +27,11 @@ public class WsMsgSendEW extends WsMsgEW {
 	/**
 	 * @param target
 	 */
-	public WsMsgSendEW(EventGd target) {
+	protected WsMsgSendEW(EventGd target, String wsId) {
+		super(target, wsId);
+	}
+	
+	public WsMsgSendEW(EventGd target){
 		super(target);
 	}
 

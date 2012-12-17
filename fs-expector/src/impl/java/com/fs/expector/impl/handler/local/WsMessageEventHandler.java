@@ -8,6 +8,7 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.api.gobject.WebSocketGoI;
 import com.fs.expector.api.wrapper.WsMsgSendEW;
 import com.fs.expector.impl.handler.WsMsgReseiveEventHandler;
 
@@ -21,13 +22,14 @@ public class WsMessageEventHandler extends WsMsgReseiveEventHandler {
 	 * Dec 16, 2012
 	 */
 	@Handle("send")
-	public void handleBinding(WsMsgSendEW reqE, RequestI req) {
+	public void handleSend(WsMsgSendEW reqE, RequestI req) {
 		//
 		MessageI msg = reqE.getMessage();
 
 		String wsId = reqE.getWebSocketId();
-
-		MessageI m2 = new MessageSupport();
+		WebSocketGoI wso = this.facade.getWebSocketGridedObjectManager()
+				.getGridedObject(wsId, true);
+		wso.sendMessage(msg);
 
 	}
 }

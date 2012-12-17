@@ -10,23 +10,25 @@ import org.slf4j.LoggerFactory;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.expector.api.EventDispatcherI;
 import com.fs.expector.api.data.EventGd;
+import com.fs.expector.impl.support.EventDispatcherSupport;
 
 /**
  * @author wu
  * 
  */
-public class GlobalEventDispatcher extends EventDispatcherSupport implements EventDispatcherI {
+public class GlobalEventDispatcher extends EventDispatcherSupport implements
+		EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(GlobalEventDispatcher.class);
+	protected static final Logger LOG = LoggerFactory
+			.getLogger(GlobalEventDispatcher.class);
 
 	/*
-	 *Dec 17, 2012
+	 * Dec 17, 2012
 	 */
 	@Override
 	protected DgQueueI<EventGd> resolveEventQueue() {
-		// 
+		//
 		return this.facade.getGlogalEventQueue();
 	}
-	
 
 }

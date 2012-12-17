@@ -5,7 +5,6 @@ package com.fs.commons.impl.factory;
 
 import java.util.List;
 
-import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.FinderI;
@@ -111,17 +110,12 @@ public class PopulatorImpl implements PopulatorI {
 		if (this.force && ocL.isEmpty()) {
 			throw new FsException("no object config found by finder:" + fd);
 		}
-		ContainerI c = this.container;
 		for (ObjectConfigI oc : ocL) {
 
 			Object o = oc.newInstance();
-			if (ActivableI.class.isInstance(o)) {
-				ActivableI at = (ActivableI) o;
-				at.active(this.activeContext);
-			}
-
-			String name = oc.getName();
-			c.addObject(spi, name, o);
+			this.activeContext.activitor().container(this.container)
+					.cfgId(oc.getCfgId()).spi(this.spi).name(oc.getName())
+					.object(o).active();
 		}
 		return this;
 	}

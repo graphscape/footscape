@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.expector.api.EventDispatcherI;
 import com.fs.expector.api.data.EventGd;
+import com.fs.expector.impl.support.EventDispatcherSupport;
 
 /**
  * @author wu

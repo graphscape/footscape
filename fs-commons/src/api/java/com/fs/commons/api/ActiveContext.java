@@ -132,7 +132,12 @@ public class ActiveContext {
 				((ConfigurableI) obj).configure(cfg);
 			}
 			if (this.obj instanceof ActivableI) {
-				((ActivableI) obj).active(this.activeContext);
+				ActivableI ao = (ActivableI) obj;
+				InterceptorI ii = this.activeContext.getSpi().getSPIManager()
+						.getInterceptor();
+				ii.beforeActive(ao);
+				ao.active(this.activeContext);
+				ii.afterActive(ao);
 			}
 
 			return this;

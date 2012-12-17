@@ -11,6 +11,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.net.websocket.RemoteEndpoint;
 
@@ -31,6 +33,7 @@ import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.expector.api.gobject.WebSocketGoI;
 
 /**
  * @author wuzhen
@@ -57,11 +60,15 @@ public class MockClient implements WebSocketListener {
 
 	protected CodecI messageCodec;
 
-	public MockClient(WebSocketClientFactory f, String sid, ContainerI c, URI uri) {
+	protected boolean ready;
+
+	public MockClient(WebSocketClientFactory f, String sid, ContainerI c,
+			URI uri) {
 		this.sessionId = sid;
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
-		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
+		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
+				MessageI.class);
 		this.client = f.newWebSocketClient(this);
 
 	}
@@ -74,7 +81,8 @@ public class MockClient implements WebSocketListener {
 			throw new FsException("session not got.");
 		}
 
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
+		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
+				.getSession().getRemote();
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
@@ -93,8 +101,8 @@ public class MockClient implements WebSocketListener {
 
 	@Override
 	public void onWebSocketText(String message) {
-		LOG.info("msg:" + message);
-		JSONValue ser = (JSONValue) JSONValue.parse(message);
+		LOG.info("client,onWebSocketText,msg:" + message);
+		JSONArray ser = (JSONArray) JSONValue.parse(message);
 		MessageI msg = (MessageI) this.messageCodec.decode(ser);
 		this.messageReceived.add(msg);
 
@@ -140,17 +148,49 @@ public class MockClient implements WebSocketListener {
 	 * @return
 	 */
 	public Future<MockClient> connect() {
-		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
+		FutureTask<MockClient> rt = new FutureTask<MockClient>(
+				new Callable<MockClient>() {
 
-			@Override
-			public MockClient call() throws Exception {
-				MockClient.this.syncConnect();
-				return MockClient.this;
-			}
-		});
+					@Override
+					public MockClient call() throws Exception {
+						MockClient.this.syncConnect();
+						return MockClient.this;
+					}
+				});
 		rt.run();
 		return rt;
 
+	}
+
+	public Future<MockClient> ready(final long time, final TimeUnit tu) {
+		FutureTask<MockClient> rt = new FutureTask<MockClient>(
+				new Callable<MockClient>() {
+
+					@Override
+					public MockClient call() throws Exception {
+						MockClient.this.syncReady(time, tu);
+						return MockClient.this;
+					}
+				});
+		rt.run();
+		return rt;
+
+	}
+
+	public void syncReady(final long time, final TimeUnit tu) throws Exception {
+
+		MessageI msg = this.messageReceived.poll(time, tu);
+		if (msg == null) {
+			throw new FsException("timeout for waiting server ready.");
+		}
+
+		String path = msg.getHeader("path", true);
+
+		if (!path.equals(WebSocketGoI.P_READY)) {
+			throw new FsException("first message must by"
+					+ WebSocketGoI.P_READY + ", but got:" + path);
+		}
+		this.ready = true;
 	}
 
 	public void syncConnect() {
@@ -183,14 +223,16 @@ public class MockClient implements WebSocketListener {
 	}
 
 	public Future<MessageI> receiveMessage() {
-		FutureTask<MessageI> rt = new FutureTask<MessageI>(new Callable<MessageI>() {
+		FutureTask<MessageI> rt = new FutureTask<MessageI>(
+				new Callable<MessageI>() {
 
-			@Override
-			public MessageI call() throws Exception {
-				return MockClient.this.messageReceived.take();
+					@Override
+					public MessageI call() throws Exception {
+						return MockClient.this.messageReceived.take();
 
-			}
-		});
+					}
+				});
+		rt.run();
 		return rt;
 	}
 
@@ -198,19 +240,26 @@ public class MockClient implements WebSocketListener {
 	 * Dec 16, 2012
 	 */
 	public void binding(String sid) throws Exception {
+		if (!this.ready) {
+			throw new FsException("not ready yet");
+		}
 		MessageI msg = new MessageSupport() {
 		};
 		msg.setHeader("path", "/handshake/binding");
 		msg.setPayload("sessionId", sid);
 		this.sendMessage(msg);
-
-		MessageI res = this.receiveMessage().get();
-
+		MessageI res = null;
+		try {
+			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
+		} catch (TimeoutException e) {
+			throw new FsException("timeout for binding sessionId:" + sid);
+		}
 		String path = res.getHeader("path", true);
 		if (path.endsWith("binding/success")) {
 			return;
 		} else {
-			throw new FsException("failed binding sessionId:" + sid + ",path:" + path);
+			throw new FsException("failed binding sessionId:" + sid + ",path:"
+					+ path);
 		}
 	}
 

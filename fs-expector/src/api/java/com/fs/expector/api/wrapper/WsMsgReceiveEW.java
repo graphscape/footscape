@@ -25,9 +25,9 @@ public class WsMsgReceiveEW extends WsMsgEW {
 
 	}
 
-	public static WsMsgReceiveEW valueOf(String path,String wsId, MessageI msg) {
+	public static WsMsgReceiveEW valueOf(String path,String wsoId, MessageI msg) {
 
-		WsMsgReceiveEW rt = new WsMsgReceiveEW(new EventGd(TYPE, path),wsId);
+		WsMsgReceiveEW rt = new WsMsgReceiveEW(new EventGd(TYPE, path),wsoId);
 		rt.setMessage(msg);
 		return rt;
 	}
@@ -40,7 +40,7 @@ public class WsMsgReceiveEW extends WsMsgEW {
 	/**
 	 * @param target
 	 */
-	public WsMsgReceiveEW(EventGd target,String wsId) {
+	protected WsMsgReceiveEW(EventGd target,String wsId) {
 		super(target,wsId);
 	}
 

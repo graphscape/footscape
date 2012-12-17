@@ -31,6 +31,10 @@ public interface SPIManagerI {
 
 	public static Factory FACTORY = new Factory();
 
+	public void addInterceptor(InterceptorI ii);
+	
+	public InterceptorI getInterceptor();
+	
 	public void load(String res);//
 
 	public void add(String id);

@@ -6,11 +6,12 @@ package com.fs.expector.impl;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
-import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.expector.api.EventDispatcherI;
 import com.fs.expector.api.data.EventGd;
@@ -30,6 +31,8 @@ import com.fs.websocket.api.WsManagerI;
 public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 		implements WsListenerI {
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(WebSocketGoFactory.class);
 	protected static String PK_WSGO = "_webSocketGo";
 	protected EventDispatcherI eventEngine;
 
@@ -51,7 +54,7 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 		WsFactoryI wf = this.container.find(WsFactoryI.class, true);
 		WsManagerI wsm = wf.getManager("default", true);// TODO new wsm
 		wsm.addListener(this);
-		
+
 		this.global = this.facade.getGlogalEventQueue();//
 	}
 
@@ -62,13 +65,20 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 	public void onConnect(WebSocketI ws) {
 		WebSocketGoI wso = new WebSoketGoImpl(ws, this.messageCodec);
 		setWso(ws, wso);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:"
+					+ ws.getId());
+		}
+		String oid = getWso(ws).getId();
+		
+		
 		this.facade.getWebSocketGridedObjectManager().addGridedObject(wso);// register
 																			// the
 																			// web
 																			// socket
 																			// to
 																			// Grid.
-		
+
 		wso.sendReady();//
 	}
 
@@ -89,8 +99,8 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getHeader("path");
-		String wsId = getWso(ws).getId();// assign the ws id.
-		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path, wsId, msg);
+		String wsoId = getWso(ws).getId();// assign the ws id.
+		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path, wsoId, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
 

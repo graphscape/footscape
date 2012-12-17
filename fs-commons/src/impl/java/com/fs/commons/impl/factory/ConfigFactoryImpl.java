@@ -39,12 +39,7 @@ public class ConfigFactoryImpl extends ContainerAwareSupport implements
 			Class oclass = this.getObjectClass();
 			Object rt = ClassUtil.newInstance(oclass, new Class[] {},
 					new Object[] {});
-			if (ConfigurableI.class.isInstance(rt)) {
-				ConfigurableI c = ConfigurableI.class.cast(rt);
-
-				Configuration cfg = Configuration.properties(this.getId());//
-				c.configure(cfg);
-			}
+			
 
 			return (T) rt;
 
@@ -61,6 +56,15 @@ public class ConfigFactoryImpl extends ContainerAwareSupport implements
 
 			return this.describe;
 
+		}
+
+		/* (non-Javadoc)
+		 * @see com.fs.commons.api.factory.ObjectConfigI#getCfgId()
+		 */
+		@Override
+		public String getCfgId() {
+			// TODO Auto-generated method stub
+			return this.getId();
 		}
 
 	}

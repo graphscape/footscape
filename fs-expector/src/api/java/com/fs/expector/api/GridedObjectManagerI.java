@@ -20,6 +20,10 @@ public interface GridedObjectManagerI<T extends GridedObjectI> {
 
 	public T getGridedObject(String id);
 
+	public T getGridedObject(String id, boolean force);
+
 	public ObjectRefGd<T> getRef(String id);//
-	
+
+	public ObjectRefGd<T> getRef(String id, boolean force);//
+
 }

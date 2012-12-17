@@ -11,6 +11,10 @@ import java.util.List;
  */
 public interface SPI extends ActivableI {
 
+	public SPIManagerI getSPIManager();
+	
+	public void setSPIManager(SPIManagerI sm);
+	
 	public String getId();
 
 	public List<String> getDependenceList();

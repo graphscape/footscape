@@ -5,6 +5,7 @@ package com.fs.commons.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.filter.ChainI;
 import com.fs.commons.api.future.FutureMonitorI;

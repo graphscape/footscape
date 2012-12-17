@@ -10,6 +10,7 @@ import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.AttachableI;
 import com.fs.commons.api.SPI;
+import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.config.Configuration;
 
 /**
@@ -25,14 +26,37 @@ public abstract class SPISupport implements SPI {
 	protected String id;
 
 	protected List<String> dependenceList;
-	
+
 	protected Configuration config;
+
+	protected SPIManagerI manager;
 
 	public SPISupport(String id) {
 		this.id = id;
 		this.config = Configuration.properties(id);//
 		this.dependenceList = new ArrayList<String>();// TODO
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.SPI#getSPIManager()
+	 */
+	@Override
+	public SPIManagerI getSPIManager() {
+		// TODO Auto-generated method stub
+		return this.manager;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.SPI#setSPIManager(com.fs.commons.api.SPIManagerI)
+	 */
+	@Override
+	public void setSPIManager(SPIManagerI sm) {
+		this.manager = sm;
 	}
 
 	/* */

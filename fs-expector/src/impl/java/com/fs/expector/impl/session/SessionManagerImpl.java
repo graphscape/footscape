@@ -4,7 +4,6 @@
 package com.fs.expector.impl.session;
 
 import com.fs.commons.api.ActiveContext;
-import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.expector.api.data.ObjectRefGd;
@@ -17,7 +16,8 @@ import com.fs.expector.impl.support.FacadeAwareConfigurableSupport;
  * @author wuzhen
  * 
  */
-public class SessionManagerImpl extends FacadeAwareConfigurableSupport implements SessionManagerI {
+public class SessionManagerImpl extends FacadeAwareConfigurableSupport
+		implements SessionManagerI {
 
 	public SessionManagerImpl() {
 
@@ -53,7 +53,8 @@ public class SessionManagerImpl extends FacadeAwareConfigurableSupport implement
 	public ObjectRefGd<WebSocketGoI> getWebSocketRefBySessionId(String sid) {
 		DgMapI<String, String> map = this.facade.getSessionWebSocketIdMap();
 		String wsId = map.getValue(sid);
-		ObjectRefGd<WebSocketGoI> wsr = this.facade.getWebSocketGridedObjectManager().getRef(wsId);
+		ObjectRefGd<WebSocketGoI> wsr = this.facade
+				.getWebSocketGridedObjectManager().getRef(wsId);
 
 		return wsr;
 	}
@@ -71,13 +72,12 @@ public class SessionManagerImpl extends FacadeAwareConfigurableSupport implement
 	 * Dec 16, 2012
 	 */
 	@Override
-	public ObjectRefGd<WebSocketGoI> bindingWebSocket(String sid, String wsId) {
+	public ObjectRefGd<WebSocketGoI> bindingWebSocket(String sid, String wsoId) {
 		//
-		ObjectRefGd<WebSocketGoI> wso = this.facade.getWebSocketGridedObjectManager().getRef(wsId);
-		if (wso == null) {
-			throw new FsException("No websocket object:" + wsId);
-		}
-		this.facade.getSessionWebSocketIdMap().put(sid, wsId);
+		ObjectRefGd<WebSocketGoI> wso = this.facade
+				.getWebSocketGridedObjectManager().getRef(wsoId, true);
+
+		this.facade.getSessionWebSocketIdMap().put(sid, wsoId);
 
 		return wso;
 	}

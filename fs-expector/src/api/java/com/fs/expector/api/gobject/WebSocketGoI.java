@@ -13,8 +13,10 @@ import com.fs.expector.api.GridedObjectI;
  */
 public interface WebSocketGoI extends GridedObjectI {
 
+	public static final String P_READY = "/control/status/serverIsReady";
+
 	public void sendReady();
-	
+
 	public void sendMessage(MessageI msg);
 
 	public void sendTextMessage(String msg);
