@@ -5,6 +5,8 @@ package com.fs.commons.api;
 
 import com.fs.commons.api.config.ConfigurableI;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.event.AfterActiveEvent;
+import com.fs.commons.api.event.BeforeActiveEvent;
 import com.fs.commons.api.lang.FsException;
 
 /**
@@ -66,8 +68,7 @@ public class ActiveContext {
 		public ActivitorI name(String name) {
 			this.name = name;
 			if (this.cfgId == null) {
-				String cid = this.spi == null ? name
-						: (this.spi.getId() + "." + name);
+				String cid = this.spi == null ? name : (this.spi.getId() + "." + name);
 				this.cfgId(cid);
 			}
 			return this;
@@ -94,8 +95,7 @@ public class ActiveContext {
 			Configuration cfg;
 			if (this.configuration != null) {
 				if (cfgId != null) {
-					throw new FsException(
-							"configuration is present,id not allowed");
+					throw new FsException("configuration is present,id not allowed");
 				}
 				cfg = this.configuration;
 			} else {
@@ -133,11 +133,9 @@ public class ActiveContext {
 			}
 			if (this.obj instanceof ActivableI) {
 				ActivableI ao = (ActivableI) obj;
-				InterceptorI ii = this.activeContext.getSpi().getSPIManager()
-						.getInterceptor();
-				ii.beforeActive(ao);
+				new BeforeActiveEvent(obj).dispatch(this.container);
 				ao.active(this.activeContext);
-				ii.afterActive(ao);
+				new AfterActiveEvent(obj).dispatch(this.container);
 			}
 
 			return this;

@@ -16,9 +16,13 @@ import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.DescribableI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.event.BeforeAttachEvent;
+import com.fs.commons.api.event.BeforeDetachEvent;
+import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.AttachableSupport;
 import com.fs.commons.api.support.DescribedSupport;
+import com.fs.commons.impl.event.EventBusImpl;
 
 /**
  * @author wu
@@ -41,13 +45,12 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	private static class ObjectEntryImpl extends DescribedSupport implements ObjectEntryI {
 
-		private SPI spi;
-
 		private Object object;
 
-		public ObjectEntryImpl(Object o) {
-
-			this.describe = new Describe();
+		public ObjectEntryImpl(SPI spi, String name, Object o, ContainerI c) {
+			this.spi(spi);
+			this.name(name);
+			this.container = c;
 			this.object = o;
 			this.clazz(o.getClass());
 
@@ -79,7 +82,9 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			if (!(this.object instanceof AttachableI)) {
 				return;
 			}
+			new BeforeAttachEvent(this.object).dispatch(this.container);
 			((AttachableI) this.object).attach();
+
 		}
 
 		/**
@@ -89,6 +94,7 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			if (!(this.object instanceof AttachableI)) {
 				return;
 			}
+			new BeforeDetachEvent(this.object).dispatch(this.container);
 			((AttachableI) this.object).dettach();
 		}
 
@@ -107,6 +113,8 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
+	private EventBusI eventBus;
+
 	private ContainerI parent;
 
 	private List<ObjectEntryImpl> entryList = new ArrayList<ObjectEntryImpl>();
@@ -115,6 +123,8 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	private ContainerImpl(ContainerI prt) {
 		this.parent = prt;
+
+		this.eventBus = new EventBusImpl();
 	}
 
 	/* */
@@ -125,8 +135,8 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			ContainerI.AwareI ca = ContainerI.AwareI.class.cast(o);
 			ca.setContainer(this);
 		}
-		ObjectEntryImpl oe = new ObjectEntryImpl(o);
-		oe.spi(spi).name(name);// NOTE
+		ObjectEntryImpl oe = new ObjectEntryImpl(spi, name, o,this);
+
 		this.entryList.add(oe);
 		String id = oe.getId();
 		if (id != null) {
@@ -303,4 +313,12 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		return rt;
 	}
 
+	/*
+	 * Dec 17, 2012
+	 */
+	@Override
+	public EventBusI getEventBus() {
+		//
+		return this.eventBus;
+	}
 }

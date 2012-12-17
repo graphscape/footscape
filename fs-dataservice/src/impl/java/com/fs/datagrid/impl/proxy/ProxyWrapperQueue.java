@@ -3,6 +3,8 @@
  */
 package com.fs.datagrid.impl.proxy;
 
+import java.util.concurrent.TimeUnit;
+
 import com.fs.datagrid.api.WrapperGdI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.impl.ProxyWrapperDgObject;
@@ -41,5 +43,15 @@ public class ProxyWrapperQueue<K, V, VW extends WrapperGdI<V>> extends
 	public void offer(VW t) {
 		V v = t == null ? null : t.getTarget();
 		this.target.offer(v);
+	}
+
+	/*
+	 * Dec 17, 2012
+	 */
+	@Override
+	public VW poll(long time, TimeUnit tu) {
+		//
+		V v = this.target.poll(time, tu);
+		return this.wrap(v);
 	}
 }

@@ -17,6 +17,7 @@ import com.fs.commons.api.util.CollectionUtil;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.datagrid.api.DataGridI;
 import com.fs.datagrid.api.DgObjectI;
+import com.fs.datagrid.api.event.BeforeDgCloseEvent;
 import com.fs.datagrid.api.objects.DgMapI;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.datagrid.api.objects.DgTopicI;
@@ -356,6 +357,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	@Override
 	protected void doDettach() {
+		new BeforeDgCloseEvent(this).dispatch(this.factory.getContainer());
 		this.client.shutdown();
 	}
 

@@ -3,89 +3,38 @@
  */
 package com.fs.commons.impl.test.cases;
 
-import com.fs.commons.api.ActiveContext;
-import com.fs.commons.api.support.SPISupport;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fs.commons.api.Event;
+import com.fs.commons.api.event.AfterActiveEvent;
+import com.fs.commons.api.event.BeforeActiveEvent;
 import com.fs.commons.impl.test.cases.support.TestBase;
+import com.fs.commons.impl.test.config.TestConfigurable;
+import com.fs.commons.impl.test.config.TestConfigurable2;
 
 /**
  * @author wuzhen
  * 
  */
 public class SPITest extends TestBase {
-	
-	public static class ServiceObject {
-		
-	}
+	private Set<Class> eventClass = new HashSet<Class>();
 
-	public abstract static class TestingSPI extends SPISupport {
+	private Set<Class> sourceClass = new HashSet<Class>();
 
-		public boolean active;
+	public void testSPI() throws Exception {
+		assertTrue(sourceClass.contains(TestConfigurable.class));
+		assertTrue(sourceClass.contains(TestConfigurable2.class));
 
-		/**
-		 * @param id
-		 */
-		public TestingSPI(String id) {
-			super(id);
-
-		}
-
-		/*
-		
-		 */
-		@Override
-		public void doActive(ActiveContext ac) {
-			this.active = true;
-		}
-
-		/*
-		
-		 */
-		@Override
-		public void doDeactive(ActiveContext ac) {
-			this.active = false;
-		}
+		assertTrue(eventClass.contains(BeforeActiveEvent.class));
+		assertTrue(eventClass.contains(AfterActiveEvent.class));
 
 	}
 
-	public static class TestSPI1 extends TestingSPI {
-
-		/** */
-		public TestSPI1(String id) {
-			super(id);
-
-		}
+	@Override
+	public void onEvent(Event e) {
+		this.eventClass.add(e.getClass());
+		this.sourceClass.add(e.getSource().getClass());
 
 	}
-
-	public static class TestSPI2 extends TestingSPI {
-
-		/** */
-		public TestSPI2(String id) {
-			super(id);
-
-		}
-
-	}
-
-	public void testSPI() {
-		String spi1 = TestSPI1.class.getName();
-		String spi2 = TestSPI2.class.getName();
-
-		this.sm.add(spi1);
-		this.sm.add(spi2);
-
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				SPITest.this.shutting();
-			}
-
-		});
-		// TODO
-	}
-
-	public void shutting() {
-		System.out.println("shutting down.");
-	}
-
 }

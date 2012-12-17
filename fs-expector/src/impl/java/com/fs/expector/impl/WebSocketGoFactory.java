@@ -28,11 +28,9 @@ import com.fs.websocket.api.WsManagerI;
  * @author wu
  * 
  */
-public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
-		implements WsListenerI {
+public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implements WsListenerI {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(WebSocketGoFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WebSocketGoFactory.class);
 	protected static String PK_WSGO = "_webSocketGo";
 	protected EventDispatcherI eventEngine;
 
@@ -48,8 +46,7 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 		//
 		super.active(ac);
 		//
-		this.messageCodec = this.container.find(CodecI.FactoryI.class, true)
-				.getCodec(MessageI.class);
+		this.messageCodec = this.container.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		// listen to the wsmanagerI
 		WsFactoryI wf = this.container.find(WsFactoryI.class, true);
 		WsManagerI wsm = wf.getManager("default", true);// TODO new wsm
@@ -66,12 +63,10 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 		WebSocketGoI wso = new WebSoketGoImpl(ws, this.messageCodec);
 		setWso(ws, wso);
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:"
-					+ ws.getId());
+			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:" + ws.getId());
 		}
 		String oid = getWso(ws).getId();
-		
-		
+
 		this.facade.getWebSocketGridedObjectManager().addGridedObject(wso);// register
 																			// the
 																			// web
@@ -96,6 +91,10 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
 	@Override
 	public void onMessage(WebSocketI ws, String ms) {
 		//
+		if (LOG.isDebugEnabled()) {
+
+			LOG.debug("onMessage,wsId:" + ws.getId() + ",ms:" + ms);
+		}
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getHeader("path");

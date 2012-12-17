@@ -11,6 +11,7 @@ import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.FsException;
 
 /**
@@ -171,6 +172,15 @@ public class ProxyContainerSupport implements ContainerI {
 		}
 		return rt;
 
+	}
+
+	/*
+	 *Dec 17, 2012
+	 */
+	@Override
+	public EventBusI getEventBus() {
+		// 
+		return this.target.getEventBus();
 	}
 
 }

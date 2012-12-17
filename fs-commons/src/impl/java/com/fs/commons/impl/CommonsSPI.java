@@ -43,7 +43,8 @@ public class CommonsSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 		ConfigFactoryI cf = new ConfigFactoryImpl();
-
+		//
+		
 		ac.getContainer().addObject(this, "CONFIG_FACTORY", cf);
 		//
 

@@ -3,6 +3,7 @@
  */
 package com.fs.commons.api;
 
+import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.Describe;
+import com.fs.commons.api.event.EventBusI;
 
 /**
  * @author wu
@@ -43,6 +44,8 @@ public interface ContainerI extends AttachableI {
 
 	public ContainerI getTop();
 
+	public EventBusI getEventBus();
+	
 	public void addObject(SPI spi, String name, Object o);
 
 	public void forEach(CallbackI<ObjectEntryI, Boolean> cb);

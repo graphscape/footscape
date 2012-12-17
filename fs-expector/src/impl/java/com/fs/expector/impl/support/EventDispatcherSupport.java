@@ -5,15 +5,22 @@
 package com.fs.expector.impl.support;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.factory.PopulatorI;
+import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.support.ServerSupport;
+import com.fs.datagrid.api.event.BeforeDgCloseEvent;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
@@ -27,11 +34,9 @@ import com.fs.expector.api.data.EventGd;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends ServerSupport implements
-		EventDispatcherI {
+public abstract class EventDispatcherSupport extends ServerSupport implements EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory
-			.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
 
 	protected ServiceEngineI engine;
 
@@ -43,6 +48,8 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 
 	protected GridFacadeI facade;
 
+	protected Future<Object> future;
+
 	/*
 	 * Dec 16, 2012
 	 */
@@ -53,8 +60,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 		this.facade = this.container.find(GridFacadeI.class, true);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(ServiceEngineI.class, engineName,
-				true);//
+		this.engine = this.container.find(ServiceEngineI.class, engineName, true);//
 		// handlers
 
 		PopulatorI hp = this.engine.getDispatcher().populator("handler");
@@ -62,8 +68,25 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 		hp.active(ac).cfgId(this.configId).force(true).populate();
 
 		//
+		this.container.getEventBus().addListener(BeforeDgCloseEvent.class,
+				new ListenerI<BeforeDgCloseEvent>() {
 
+					@Override
+					public void handle(BeforeDgCloseEvent t) {
+						EventDispatcherSupport.this.handleBeforeDgCloseEvent(t);
+					}
+				});
 		this.eventQueue = this.resolveEventQueue();
+
+	}
+
+	/**
+	 * Dec 17, 2012
+	 */
+	protected void handleBeforeDgCloseEvent(BeforeDgCloseEvent t) {
+
+		// before close of grid,shutdown now.
+		this.shutdown();//
 
 	}
 
@@ -87,8 +110,12 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 	 */
 	@Override
 	protected void doStart() {
+		if (this.executor != null) {
+			throw new FsException("already started?");
+		}
+
 		this.executor = Executors.newFixedThreadPool(1);// TODO
-		this.executor.submit(new Callable<Object>() {
+		this.future = this.executor.submit(new Callable<Object>() {
 
 			@Override
 			public Object call() throws Exception {
@@ -107,33 +134,98 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 	 */
 	@Override
 	protected void doShutdown() {
+
+		if (this.executor == null) {
+			throw new FsException("already shutdown?");
+		}
+		try {
+			LOG.info("waiting task return.");
+			this.future.get();
+			LOG.info("done of task waiting.");
+
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		} catch (ExecutionException e) {
+			this.onException(e.getCause());
+		}
 		this.executor.shutdown();//
+		this.executor = null;//
+
 	}
 
 	public void run() {
-		while (this.started || this.starting) {
-			try {
+		try {
+			this.runInternal();
+		} catch (Throwable t) {
+			this.onException(t);
 
-				this.eachLoop();
+			if (this.isState(ServerI.RUNNING)) {
+				LOG.warn("shutdown event dispatcher:" + this.getConfiguration().getName()
+						+ " for the task abnormally return");
+			}
+			this.shutdown();
+		}
+
+	}
+
+	public void runInternal() {
+
+		while (this.isState(ServerI.RUNNING, ServerI.STARTING)) {
+
+			EventGd e = this.nextEvent();
+
+			if (e == null) {// shutdown?
+				if (!this.isState(ServerI.SHUTINGDOWN)) {
+
+					throw new FsException("running, but event is null");
+				} else {
+
+					LOG.info("stop event processing loop,since this server is shutdown. ");
+
+					break;//
+				}
+			}
+			try {
+				this.handleEvent(e);
 			} catch (Throwable t) {
-				this.onException(t);
+				this.onException(e, t);
 			} finally {
 				this.eventCounter++;
 			}
 		}
 	}
 
-	protected void onException(Throwable t) {
-		LOG.error("", t);
+	protected EventGd nextEvent() {
+
+		while (true) {
+
+			EventGd rt = this.eventQueue.poll(2000, TimeUnit.MILLISECONDS);
+
+			if (rt != null) {
+				return rt;
+			}
+			if (this.isState(ServerI.SHUTINGDOWN)) {
+				return null;
+
+			}
+		}
 	}
 
-	public void eachLoop() {
-		EventGd e = this.eventQueue.take();
+	protected void onException(Throwable t) {
+		LOG.error("exeception got,eventQueue:" + this.getConfiguration().getName(), t);
+	}
+
+	protected void onException(EventGd evt, Throwable t) {
+		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
+	}
+
+	public void handleEvent(EventGd evt) {
+
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName()
-					+ " is processing event#" + this.eventCounter + "," + e);
+			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
+					+ "," + evt);
 		}
-		String path = e.getPath();
+		String path = evt.getPath();
 
 		if (path.startsWith("/")) {
 			path = "/events" + path;
@@ -143,7 +235,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 
 		RequestI req = RRContext.newRequest();
 		req.setPath(path);//
-		req.setPayload(e);
+		req.setPayload(evt);
 
 		ResponseI res = this.engine.service(req);
 		res.assertNoError();
