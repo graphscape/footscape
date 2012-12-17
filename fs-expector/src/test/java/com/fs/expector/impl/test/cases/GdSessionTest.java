@@ -21,7 +21,7 @@ import com.fs.expector.impl.test.mock.MockClientFactory;
  * @author wuzhen
  * 
  */
-public class SessionTest extends TestBase {
+public class GdSessionTest extends TestBase {
 
 	public void testSession() throws Exception {
 		MockClientFactory cf = new MockClientFactory().start();

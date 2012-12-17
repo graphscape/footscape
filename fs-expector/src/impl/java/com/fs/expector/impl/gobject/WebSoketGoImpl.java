@@ -51,7 +51,21 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	public void sendMessage(MessageI msg) {
 		JSONValue js = (JSONValue) this.messageCodec.encode(msg);
 		String value = JSONValue.toJSONString(js);
+		
 		this.target.sendMessage(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.expector.api.gobject.WebSocketGoI#sendReady()
+	 */
+	@Override
+	public void sendReady() {
+		MessageI msg = new MessageSupport();
+		msg.setHeader("path","/control/status/serverIsReady");
+		this.sendMessage(msg);
+		
 	}
 
 }

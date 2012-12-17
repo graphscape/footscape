@@ -16,15 +16,23 @@ public abstract class WebSocketEW extends EventWrapper {
 
 	public static final EventType TYPE = EventType.valueOf("WebSocket");
 
+	public static final String HK_WSID = "_webSocketId";
+
 	/**
 	 * @param target
 	 */
+	public WebSocketEW(EventGd target, String wsId) {
+		super(target);
+		this.target.setHeader(HK_WSID, wsId);
+	}
+
 	public WebSocketEW(EventGd target) {
 		super(target);
+
 	}
 
 	public String getWebSocketId() {
-		return (String) this.target.getPayload("_webSocketId");
+		return (String) this.target.getHeader(HK_WSID);
 	}
 
 }

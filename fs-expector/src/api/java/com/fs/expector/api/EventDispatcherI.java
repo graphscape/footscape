@@ -4,14 +4,10 @@
  */
 package com.fs.expector.api;
 
-import com.fs.expector.api.data.EventGd;
-
 /**
  * @author wu
- *
+ * 
  */
 public interface EventDispatcherI {
 
-	public void dispatch(EventGd evt);
-	
 }

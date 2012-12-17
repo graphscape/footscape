@@ -29,6 +29,10 @@ public abstract class WsMsgEW extends WebSocketEW {
 		return (MessageI) this.target.getPayload(MESSAGE);
 	}
 
+	public WsMsgEW(EventGd target, String wsId) {
+		super(target, wsId);
+	}
+
 	/**
 	 * @param target
 	 */

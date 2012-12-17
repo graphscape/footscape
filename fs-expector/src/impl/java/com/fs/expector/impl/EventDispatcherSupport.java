@@ -26,10 +26,11 @@ import com.fs.expector.impl.support.FacadeAwareConfigurableSupport;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupport implements
-		EventDispatcherI {
+public abstract class EventDispatcherSupport extends
+		FacadeAwareConfigurableSupport implements EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory
+			.getLogger(EventDispatcherSupport.class);
 
 	protected ServiceEngineI engine;
 
@@ -39,16 +40,7 @@ public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupp
 
 	protected boolean running;
 
-	@Override
-	public void dispatch(EventGd evt) {
-
-		RequestI req = RRContext.newRequest();
-
-		req.setMessage(evt);// convert
-
-		ResponseI res = this.engine.service(req);
-
-	}
+	private int eventCounter;
 
 	/*
 	 * Dec 16, 2012
@@ -59,7 +51,8 @@ public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupp
 		super.active(ac);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(ServiceEngineI.class, engineName, true);//
+		this.engine = this.container.find(ServiceEngineI.class, engineName,
+				true);//
 		// handlers
 
 		PopulatorI hp = this.engine.getDispatcher().populator("handler");
@@ -90,9 +83,12 @@ public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupp
 	public void run() {
 		while (this.running) {
 			try {
+
 				this.eachLoop();
 			} catch (Throwable t) {
 				this.onException(t);
+			} finally {
+				this.eventCounter++;
 			}
 		}
 	}
@@ -103,6 +99,8 @@ public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupp
 
 	public void eachLoop() {
 		EventGd e = this.eventQueue.take();
+		LOG.debug("dispatcher:" + this.config.getName()
+				+ " is processing event#" + this.eventCounter + "," + e);
 		String path = e.getPath();
 		if (path.startsWith("/")) {
 			path = "/events" + path;
@@ -115,6 +113,7 @@ public abstract class EventDispatcherSupport extends FacadeAwareConfigurableSupp
 		req.setPayload(e);
 
 		ResponseI res = this.engine.service(req);
+		res.assertNoError();
 		// TODO? how many event as response?
 
 	}

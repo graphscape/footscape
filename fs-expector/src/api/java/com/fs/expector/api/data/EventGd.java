@@ -63,4 +63,10 @@ public class EventGd extends MessageGd implements GridedDataI {
 
 	}
 
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
+
 }

@@ -7,6 +7,7 @@ package com.fs.websocket.api.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.context.support.ContextSupport;
 import com.fs.websocket.api.WebSocketI;
 import com.fs.websocket.api.WsListenerI;
 
@@ -14,7 +15,7 @@ import com.fs.websocket.api.WsListenerI;
  * @author wu
  * 
  */
-public class CollectionWsListener implements WsListenerI {
+public class CollectionWsListener extends ContextSupport implements WsListenerI {
 
 	protected List<WsListenerI> listeners;
 

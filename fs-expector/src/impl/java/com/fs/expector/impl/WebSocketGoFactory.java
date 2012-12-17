@@ -10,6 +10,7 @@ import org.json.simple.JSONValue;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.datagrid.api.objects.DgQueueI;
 import com.fs.expector.api.EventDispatcherI;
 import com.fs.expector.api.data.EventGd;
@@ -26,12 +27,14 @@ import com.fs.websocket.api.WsManagerI;
  * @author wu
  * 
  */
-public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implements WsListenerI {
+public class WebSocketGoFactory extends FacadeAwareConfigurableSupport
+		implements WsListenerI {
 
+	protected static String PK_WSGO = "_webSocketGo";
 	protected EventDispatcherI eventEngine;
 
 	protected CodecI messageCodec;
-	
+
 	protected DgQueueI<EventGd> global;
 
 	/*
@@ -42,11 +45,13 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 		//
 		super.active(ac);
 		//
-		this.messageCodec = this.container.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
+		this.messageCodec = this.container.find(CodecI.FactoryI.class, true)
+				.getCodec(MessageI.class);
 		// listen to the wsmanagerI
 		WsFactoryI wf = this.container.find(WsFactoryI.class, true);
 		WsManagerI wsm = wf.getManager("default", true);// TODO new wsm
 		wsm.addListener(this);
+		
 		this.global = this.facade.getGlogalEventQueue();//
 	}
 
@@ -56,13 +61,23 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 	@Override
 	public void onConnect(WebSocketI ws) {
 		WebSocketGoI wso = new WebSoketGoImpl(ws, this.messageCodec);
+		setWso(ws, wso);
 		this.facade.getWebSocketGridedObjectManager().addGridedObject(wso);// register
 																			// the
 																			// web
 																			// socket
 																			// to
 																			// Grid.
+		
+		wso.sendReady();//
+	}
 
+	public static void setWso(WebSocketI ws, WebSocketGoI wso) {
+		ws.setProperty(PK_WSGO, wso);
+	}
+
+	public static WebSocketGoI getWso(WebSocketI ws) {
+		return (WebSocketGoI) ws.getProperty(PK_WSGO);
 	}
 
 	/*
@@ -74,8 +89,8 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getHeader("path");
-				
-		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path,msg);
+		String wsId = getWso(ws).getId();// assign the ws id.
+		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path, wsId, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
 

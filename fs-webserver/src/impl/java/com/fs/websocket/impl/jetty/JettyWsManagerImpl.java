@@ -18,6 +18,7 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
 import com.fs.websocket.api.WebSocketI;
+import com.fs.websocket.api.WsCreatingInterceptorI;
 import com.fs.websocket.api.WsListenerI;
 import com.fs.websocket.api.WsManagerI;
 import com.fs.websocket.api.support.CollectionWsListener;
@@ -27,10 +28,12 @@ import com.fs.websocket.api.support.CollectionWsListener;
  *         <p>
  *         1-1 mapping to Servlet
  */
-public class JettyWsManagerImpl extends ConfigurableSupport implements WsManagerI, WebSocketCreator,
-		WsListenerI {
+public class JettyWsManagerImpl extends ConfigurableSupport implements
+		WsManagerI, WebSocketCreator, WsListenerI {
 
 	protected CollectionWsListener listeners;// user listener
+
+	protected List<WsCreatingInterceptorI> interceptors;
 
 	protected String name;
 
@@ -41,8 +44,9 @@ public class JettyWsManagerImpl extends ConfigurableSupport implements WsManager
 	public JettyWsManagerImpl(String name) {
 		this.name = name;
 		this.listeners = new CollectionWsListener();
-		this.socketMap = Collections.synchronizedMap(new HashMap<String, WebSocketI>());
-
+		this.socketMap = Collections
+				.synchronizedMap(new HashMap<String, WebSocketI>());
+		this.interceptors = new ArrayList<WsCreatingInterceptorI>();
 	}
 
 	@Override
@@ -88,13 +92,17 @@ public class JettyWsManagerImpl extends ConfigurableSupport implements WsManager
 
 		rt.addListener(this);//
 		rt.addListener(this.listeners);//
+		for (WsCreatingInterceptorI ci : this.interceptors) {
+			ci.afterWsCreated(rt);
+		}
+
 		return rt;
 
 	}
 
 	protected String nextId() {
 		UUID uuid = UUID.randomUUID();
-		return uuid.getMostSignificantBits() + "-" + uuid.getLeastSignificantBits();
+		return uuid.toString();
 	}
 
 	/**
@@ -156,5 +164,16 @@ public class JettyWsManagerImpl extends ConfigurableSupport implements WsManager
 	@Override
 	public void onConnect(WebSocketI ws) {
 		this.socketMap.put(ws.getId(), ws);//
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.websocket.api.WsManagerI#addInterceptor(com.fs.websocket.api.
+	 * WsCreatingInterceptorI)
+	 */
+	@Override
+	public void addInterceptor(WsCreatingInterceptorI ci) {
+		this.interceptors.add(ci);
 	}
 }

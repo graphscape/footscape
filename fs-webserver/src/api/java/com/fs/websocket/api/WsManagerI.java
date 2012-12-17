@@ -21,5 +21,7 @@ public interface WsManagerI {
 	public WebSocketI getSocket(String id);
 
 	public WebSocketI getSocket(String id, boolean b);
+	
+	public void addInterceptor(WsCreatingInterceptorI ci);
 
 }

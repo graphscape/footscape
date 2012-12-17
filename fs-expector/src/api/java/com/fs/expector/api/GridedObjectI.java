@@ -4,12 +4,12 @@
  */
 package com.fs.expector.api;
 
-import com.fs.commons.api.HasIdentityI;
+import com.fs.commons.api.HasIdI;
 
 /**
  * @author wu
  * 
  */
-public interface GridedObjectI extends HasIdentityI {
+public interface GridedObjectI extends HasIdI {
 
 }

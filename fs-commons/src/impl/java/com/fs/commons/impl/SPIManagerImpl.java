@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPI;
@@ -20,6 +23,9 @@ import com.fs.commons.api.wrapper.PropertiesWrapper;
  * 
  */
 public class SPIManagerImpl implements SPIManagerI {
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(SPIManagerImpl.class);
 
 	public static final int S_INIT = 0;
 
@@ -77,6 +83,12 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	private void shutdownHook() {
 		if (this.status == S_SHUTINGDOWN || this.status == S_SHUTDOWN) {
+			return;
+		}
+
+		if (this.status == S_INIT) {
+
+			LOG.warn("init may failed,cannot shutdown.");
 			return;
 		}
 		this.shutdown();
