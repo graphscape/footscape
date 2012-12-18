@@ -25,25 +25,13 @@ import com.fs.gridservice.commons.impl.test.mock.MockClientFactory;
 public class GdSessionTest extends TestBase {
 
 	public void testSession() throws Exception {
-		MockClientFactory cf = new MockClientFactory().start();
 
-		SessionManagerI sm = this.container.find(SessionManagerI.class, true);
-		PropertiesI<Object> pts = new MapProperties<Object>();
-		SessionGd s = sm.createSession(pts);
-		// assertThe Session is shared with Grid.
-		String sid = s.getId();
-		//
-		URI uri = new URI("ws://localhost:8080/wsa/default");// default
-																// wsManager.
-		MockClient client = cf.newClient(sid, this.container, uri);
-		client = client.connect().get();
-		client.ready(1000, TimeUnit.SECONDS).get();
-		//
-		client.binding(sid);
+		
 
 		// assert websocket is refed.
+		MockClient client = this.newClient("acc1");
 
-		ObjectRefGd<WebSocketGoI> wsr = sm.getWebSocketRefBySessionId(sid);
+		ObjectRefGd<WebSocketGoI> wsr = smanager.getWebSocketRefBySessionId(client.getSessionId());
 
 		assertNotNull("the web socket is not shared to grid", wsr);
 
@@ -52,8 +40,7 @@ public class GdSessionTest extends TestBase {
 
 		assertEquals("the web socket grid member not correct.", mid1, mid2);
 		String wsId = wsr.getId();//
-		GridedObjectManagerI<WebSocketGoI> wsgm = this.facade
-				.getWebSocketGridedObjectManager();
+		GridedObjectManagerI<WebSocketGoI> wsgm = this.facade.getWebSocketGridedObjectManager();
 
 		WebSocketGoI wsg = wsgm.getGridedObject(wsId);
 		assertNotNull("web socket go not found in local gomanager.", wsg);

@@ -56,15 +56,16 @@ public class MockClient implements WebSocketListener {
 
 	protected Semaphore connected;
 
+	protected String accountId;
+	
 	protected String sessionId;
 
 	protected CodecI messageCodec;
 
 	protected boolean ready;
 
-	public MockClient(WebSocketClientFactory f, String sid, ContainerI c,
+	public MockClient(WebSocketClientFactory f, ContainerI c,
 			URI uri) {
-		this.sessionId = sid;
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
 		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
@@ -243,6 +244,7 @@ public class MockClient implements WebSocketListener {
 		if (!this.ready) {
 			throw new FsException("not ready yet");
 		}
+		this.sessionId = sid;
 		MessageI msg = new MessageSupport() {
 		};
 		msg.setHeader("path", "/handshake/binding");
@@ -256,11 +258,19 @@ public class MockClient implements WebSocketListener {
 		}
 		String path = res.getHeader("path", true);
 		if (path.endsWith("binding/success")) {
+			this.sessionId = sid;
 			return;
 		} else {
 			throw new FsException("failed binding sessionId:" + sid + ",path:"
 					+ path);
 		}
+	}
+
+	/**
+	 * @return the accountId
+	 */
+	public String getAccountId() {
+		return accountId;
 	}
 
 }
