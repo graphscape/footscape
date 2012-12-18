@@ -162,7 +162,14 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 	}
 
 	public <T> T getPropertyAsNewInstance(String key) {
-		Class<T> cls = this.getPropertyAsClass(key);
+		return this.getPropertyAsNewInstance(key, false);
+	}
+
+	public <T> T getPropertyAsNewInstance(String key, boolean force) {
+		Class<T> cls = this.getPropertyAsClass(key, force);
+		if (cls == null) {
+			return null;
+		}
 		T rt = ClassUtil.newInstance(cls);
 
 		return rt;
@@ -253,12 +260,12 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 
 			@Override
 			public int compare(String o1, String o2) {
-				
+
 				String m1 = o1.substring(prefix.length());
 				String m2 = o2.substring(prefix.length());
-				m1 = m1.substring(1,m1.length()-1);
-				m2 = m2.substring(1,m2.length()-1);
-				
+				m1 = m1.substring(1, m1.length() - 1);
+				m2 = m2.substring(1, m2.length() - 1);
+
 				int i1 = Integer.parseInt(m1);
 				int i2 = Integer.parseInt(m2);
 

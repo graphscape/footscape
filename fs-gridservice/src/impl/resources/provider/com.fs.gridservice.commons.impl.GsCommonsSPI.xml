@@ -1,0 +1,52 @@
+<config>
+
+	<config name="gridMember" class="com.fs.gridservice.commons.impl.GridMemberImpl">
+
+	</config>
+
+	<config name="gridFacade" class="com.fs.gridservice.commons.impl.GridFacadeImpl">
+
+	</config>
+
+
+	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.WebSocketGoFactory">
+
+	</config>
+
+	<config name="sessionManager" class="com.fs.gridservice.commons.impl.session.SessionManagerImpl">
+
+	</config>
+
+	<config name="webSocketGoManager" class="com.fs.gridservice.commons.impl.GridedObjectManagerImpl">
+		<goItfClass value="com.fs.gridservice.commons.api.gobject.WebSocketGoI" />
+	</config>
+
+
+	<config name="globalEventDispatcher" class="com.fs.gridservice.commons.impl.GlobalEventDispatcher">
+		<!-- engine is created from EngineSPI -->
+		<engine value="engine-1" />
+
+		<prefix name="handler">
+			<wsmre.class value="com.fs.gridservice.commons.impl.handler.HandshakeEventHandler" />
+			<config name="wsmre">
+				<pattern value="/events/handshake/.*" />
+			</config>
+		</prefix>
+	</config>
+	
+	<config name="localEventDispatcher" class="com.fs.gridservice.commons.impl.LocalEventDispatcher">
+		<!-- engine is created from EngineSPI -->
+		<engine value="engine-2" />
+
+		<prefix name="handler">
+			<wsmsg.class value="com.fs.gridservice.commons.impl.handler.local.WsMessageEventHandler" />
+			<config name="wsmsg">
+				<pattern value="/events/wsmsg/.*" />
+			</config>
+		</prefix>
+	</config>
+
+
+
+
+</config>

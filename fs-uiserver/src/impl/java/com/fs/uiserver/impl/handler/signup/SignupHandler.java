@@ -83,7 +83,7 @@ public class SignupHandler extends UiHandlerSupport {
 	@Handle("init")
 	public void handleInit(RequestI req, ResponseI res, HandleContextI hc) {
 
-		req.getProperty("session");
+		
 
 	}
 

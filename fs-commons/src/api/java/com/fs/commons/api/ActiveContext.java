@@ -68,7 +68,8 @@ public class ActiveContext {
 		public ActivitorI name(String name) {
 			this.name = name;
 			if (this.cfgId == null) {
-				String cid = this.spi == null ? name : (this.spi.getId() + "." + name);
+				String cid = this.spi == null ? name
+						: (this.spi.getId() + "." + name);
 				this.cfgId(cid);
 			}
 			return this;
@@ -95,7 +96,8 @@ public class ActiveContext {
 			Configuration cfg;
 			if (this.configuration != null) {
 				if (cfgId != null) {
-					throw new FsException("configuration is present,id not allowed");
+					throw new FsException(
+							"configuration is present,id not allowed");
 				}
 				cfg = this.configuration;
 			} else {
@@ -116,7 +118,7 @@ public class ActiveContext {
 			if (this.obj == null) {
 				// try to create object
 				cfg = this.resolveConfiguration();
-				this.obj = cfg.getPropertyAsNewInstance("class");
+				this.obj = cfg.getPropertyAsNewInstance("class", true);
 			}
 
 			if (this.container != null) {
