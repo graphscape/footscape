@@ -1,18 +1,18 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.impl.handler.chat;
+package com.fs.gridservice.commons.impl.handler.gchat;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
-import com.fs.gridservice.commons.api.chat.ChatRoomI;
-import com.fs.gridservice.commons.api.chat.ChatRoomManagerI;
-import com.fs.gridservice.commons.api.chat.data.ChatMessageGd;
 import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.gchat.ChatGroupI;
+import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
+import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
 import com.fs.gridservice.commons.api.wrapper.WsMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
 import com.fs.gridservice.commons.impl.support.WsMsgReseiveEventHandler;
@@ -22,14 +22,14 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wuzhen
  * 
  */
-public class ChatMessageEventHandler extends WsMsgReseiveEventHandler {
+public class GroupChatMessageEventHandler extends WsMsgReseiveEventHandler {
 
-	protected ChatRoomManagerI chatRoomManager;
+	protected ChatGroupManagerI chatRoomManager;
 
 	/*
 	 * Dec 16, 2012
 	 */
-	@Handle("dispatch")
+	@Handle("send")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
 	public void handleBinding(WsMsgReceiveEW reqE, WsMsgSendEW resE,
@@ -46,8 +46,8 @@ public class ChatMessageEventHandler extends WsMsgReseiveEventHandler {
 			throw new FsException("TODO");
 		}
 
-		String crId = msg.getHeader("chatRoomId", true);
-		ChatRoomI cr = this.chatRoomManager.getChatRoom(crId, true);
+		String crId = msg.getHeader("groupId", true);
+		ChatGroupI cr = this.chatRoomManager.getChatRoom(crId, true);
 
 		ChatMessageGd cm = new ChatMessageGd();// TODO
 

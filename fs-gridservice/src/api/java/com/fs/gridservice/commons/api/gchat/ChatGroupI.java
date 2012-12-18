@@ -1,20 +1,20 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.api.chat;
+package com.fs.gridservice.commons.api.gchat;
 
 import java.util.List;
 
-import com.fs.gridservice.commons.api.chat.data.ChatMessageGd;
-import com.fs.gridservice.commons.api.chat.data.ParticipantGd;
-import com.fs.gridservice.commons.api.chat.data.PresenceGd;
-import com.fs.gridservice.commons.api.chat.data.TerminalGd;
+import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
+import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
+import com.fs.gridservice.commons.api.gchat.data.PresenceGd;
+import com.fs.gridservice.commons.api.gchat.data.TerminalGd;
 
 /**
  * @author wuzhen
  * 
  */
-public interface ChatRoomI {
+public interface ChatGroupI {
 
 	public void dispatch(ChatMessageGd cm);
 

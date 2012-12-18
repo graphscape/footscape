@@ -1,7 +1,7 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.api.chat.data;
+package com.fs.gridservice.commons.api.gchat.data;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.EntityGd;
@@ -10,14 +10,13 @@ import com.fs.gridservice.commons.api.data.EntityGd;
  * @author wuzhen
  * 
  */
-public class ParticipantGd extends EntityGd {
+public class ChatRoomGd extends EntityGd {
 
-	public ParticipantGd() {
+	public ChatRoomGd() {
 
 	}
 
-	public ParticipantGd(PropertiesI<Object> pts) {
+	public ChatRoomGd(PropertiesI<Object> pts) {
 		super(pts);
 	}
-	
 }

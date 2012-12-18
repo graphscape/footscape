@@ -1,35 +1,35 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.impl.chat;
+package com.fs.gridservice.commons.impl.gchat;
 
 import java.util.List;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.gridservice.commons.api.chat.ChatRoomI;
-import com.fs.gridservice.commons.api.chat.data.ChatMessageGd;
-import com.fs.gridservice.commons.api.chat.data.ParticipantGd;
-import com.fs.gridservice.commons.api.chat.data.PresenceGd;
-import com.fs.gridservice.commons.api.chat.data.TerminalGd;
+import com.fs.gridservice.commons.api.gchat.ChatGroupI;
+import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
+import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
+import com.fs.gridservice.commons.api.gchat.data.PresenceGd;
+import com.fs.gridservice.commons.api.gchat.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
 
 /**
  * @author wuzhen
  * 
  */
-public class ChatRoomImpl implements ChatRoomI {
+public class ChatGroupImpl implements ChatGroupI {
 
-	protected String chatRoomId;
+	protected String groupId;
 
-	protected ChatRoomManagerImpl manager;
+	protected ChatGroupManagerImpl manager;
 
 	/**
 	 * @param id
 	 * @param chatRoomManagerImpl
 	 */
-	public ChatRoomImpl(String id, ChatRoomManagerImpl manager) {
-		this.chatRoomId = id;
+	public ChatGroupImpl(String id, ChatGroupManagerImpl manager) {
+		this.groupId = id;
 		this.manager = manager;
 	}
 
@@ -48,11 +48,11 @@ public class ChatRoomImpl implements ChatRoomI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.gridservice.commons.api.chat.ChatRoomI#getParticipantList()
+	 * @see com.fs.gridservice.commons.api.gchat.ChatGroupI#getParticipantList()
 	 */
 	@Override
 	public List<ParticipantGd> getParticipantList() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -60,7 +60,7 @@ public class ChatRoomImpl implements ChatRoomI {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.gridservice.commons.api.chat.ChatRoomI#getTerminalByParticipantId
+	 * com.fs.gridservice.commons.api.gchat.ChatGroupI#getTerminalByParticipantId
 	 * (java.lang.String)
 	 */
 	@Override
@@ -73,26 +73,24 @@ public class ChatRoomImpl implements ChatRoomI {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.gridservice.commons.api.chat.ChatRoomI#addParticipant(java.lang
+	 * com.fs.gridservice.commons.api.gchat.ChatGroupI#addParticipant(java.lang
 	 * .String)
 	 */
 	@Override
 	public void addParticipant(String ptId) {
-		// TODO Auto-generated method stub
-
+		//TODO dispatch 
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.gridservice.commons.api.chat.ChatRoomI#presence(com.fs.gridservice
+	 * com.fs.gridservice.commons.api.gchat.ChatGroupI#presence(com.fs.gridservice
 	 * .commons.api.chat.data.PresenceGd)
 	 */
 	@Override
 	public void presence(PresenceGd pp) {
-		// TODO Auto-generated method stub
-
+		//TODO dispatch
 	}
 
 }

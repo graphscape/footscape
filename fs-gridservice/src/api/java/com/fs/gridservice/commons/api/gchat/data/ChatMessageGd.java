@@ -1,7 +1,7 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.api.chat.data;
+package com.fs.gridservice.commons.api.gchat.data;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.core.api.gdata.MessageGd;
