@@ -12,13 +12,21 @@ import com.fs.gridservice.core.api.WrapperGdI;
  */
 public class WrapperUtil {
 
-	public static <V, W extends WrapperGdI> W wrapper(V v, Class<W> cls) {
+	public static <V, W extends WrapperGdI<V>> W wrapper(V v, Class<W> cls) {
 		if (v == null) {
 			return null;
 		}
 		W rt = ClassUtil.newInstance(cls);
 		rt.setTarget(v);
 		return rt;
+
+	}
+
+	public static <V, W extends WrapperGdI<V>> V unwrap(W w, Class<W> cls) {
+		if (w == null) {
+			return null;
+		}
+		return w.getTarget();
 
 	}
 }

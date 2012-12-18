@@ -11,17 +11,13 @@ import com.fs.gridservice.core.api.DgCollectionI;
  * @author wuzhen
  * 
  */
-public interface DgMapI<K, V> extends DgCollectionI {
+public interface DgSetI<V> extends DgCollectionI {
 
-	public V getValue(K key);
+	public boolean contains(V value);
 
-	public V getValue(K key, boolean force);
+	public boolean remove(V value);
 
-	public V remove(K key);
-
-	public V put(K key, V value);
-
-	public List<K> keyList();
+	public boolean add(V value);
 
 	public List<V> valueList();
 

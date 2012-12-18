@@ -6,15 +6,17 @@ package com.fs.gridservice.commons.api.data;
 
 import java.util.UUID;
 
+import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridedDataI;
 import com.fs.gridservice.core.api.gdata.PropertiesGd;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         Note sub class must provide at least these two constructors.
  */
-public class EntityGd extends PropertiesGd implements GridedDataI {
+public class EntityGd extends PropertiesGd implements GridedDataI, HasIdI {
 
 	public EntityGd() {
 		this.setProperty("_id", UUID.randomUUID().toString());
@@ -28,6 +30,7 @@ public class EntityGd extends PropertiesGd implements GridedDataI {
 		}
 	}
 
+	@Override
 	public String getId() {
 		return this.getId(true);
 	}

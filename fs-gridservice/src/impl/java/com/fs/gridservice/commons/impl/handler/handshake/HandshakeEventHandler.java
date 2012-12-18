@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 16, 2012
  */
-package com.fs.gridservice.commons.impl.handler;
+package com.fs.gridservice.commons.impl.handler.handshake;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
@@ -13,6 +13,7 @@ import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.wrapper.WsMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
+import com.fs.gridservice.commons.impl.support.WsMsgReseiveEventHandler;
 import com.fs.gridservice.core.api.objects.DgQueueI;
 
 /**

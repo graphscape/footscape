@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.core.api.objects.DgMapI;
 import com.fs.gridservice.core.impl.hazelcast.DataGridHC;
@@ -20,7 +21,8 @@ import com.hazelcast.core.MapEntry;
  * @author wuzhen
  * 
  */
-public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements DgMapI<K, V> {
+public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
+		DgMapI<K, V> {
 
 	/**
 	 * @param q
@@ -34,7 +36,8 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.gridservice.core.api.objects.DgMapI#getValue(java.lang.Object)
+	 * @see
+	 * com.fs.gridservice.core.api.objects.DgMapI#getValue(java.lang.Object)
 	 */
 	@Override
 	public V getValue(K key) {
@@ -47,12 +50,6 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 		return rt;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.gridservice.core.api.objects.DgMapI#put(java.lang.Object,
-	 * java.lang.Object)
-	 */
 	@Override
 	public V put(K key, V value) {
 		return this.target.put(key, value);
@@ -99,7 +96,8 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 		//
 		V rt = this.getValue(key);
 		if (rt == null && force) {
-			throw new FsException("no value for key:" + key + " in dgmap:" + this.name);
+			throw new FsException("no value for key:" + key + " in dgmap:"
+					+ this.name);
 		}
 		return rt;
 	}

@@ -20,11 +20,13 @@ import com.fs.gridservice.core.api.DgObjectI;
 import com.fs.gridservice.core.api.event.BeforeDgCloseEvent;
 import com.fs.gridservice.core.api.objects.DgMapI;
 import com.fs.gridservice.core.api.objects.DgQueueI;
+import com.fs.gridservice.core.api.objects.DgSetI;
 import com.fs.gridservice.core.api.objects.DgTopicI;
 import com.fs.gridservice.core.impl.hazelcast.codec.MessageData;
 import com.fs.gridservice.core.impl.hazelcast.codec.PropertiesData;
 import com.fs.gridservice.core.impl.hazelcast.objects.DgMapHC;
 import com.fs.gridservice.core.impl.hazelcast.objects.DgQueueHC;
+import com.fs.gridservice.core.impl.hazelcast.objects.DgSetHC;
 import com.fs.gridservice.core.impl.hazelcast.objects.DgTopicHC;
 import com.fs.gridservice.core.impl.proxy.ProxyWrapperMap;
 import com.fs.gridservice.core.impl.proxy.ProxyWrapperQueue;
@@ -65,6 +67,10 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		// MAP
 		this.wrapperTypes.put(Instance.InstanceType.MAP, DgMapHC.class);
 		this.prefixMap.put(Instance.InstanceType.MAP, Prefix.MAP);
+
+		// Set
+		this.wrapperTypes.put(Instance.InstanceType.SET, DgSetHC.class);
+		this.prefixMap.put(Instance.InstanceType.SET, Prefix.SET);
 
 		// TOPIC
 		this.wrapperTypes.put(Instance.InstanceType.TOPIC, DgTopicHC.class);
@@ -217,6 +223,11 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	@Override
 	public <T> DgTopicI<T> getTopic(String name) {
 		return this.getOrCreateDgObject(Instance.InstanceType.TOPIC, name);
+	}
+	
+	@Override
+	public <T> DgSetI<T> getSet(String name) {
+		return this.getOrCreateDgObject(Instance.InstanceType.SET, name);
 	}
 
 	@Override

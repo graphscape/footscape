@@ -27,7 +27,7 @@
 		<engine value="engine-1" />
 
 		<prefix name="handler">
-			<wsmre.class value="com.fs.gridservice.commons.impl.handler.HandshakeEventHandler" />
+			<wsmre.class value="com.fs.gridservice.commons.impl.handler.handshake.HandshakeEventHandler" />
 			<config name="wsmre">
 				<pattern value="/events/handshake/.*" />
 			</config>

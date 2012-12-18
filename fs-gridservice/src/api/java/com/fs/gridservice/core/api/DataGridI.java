@@ -8,6 +8,7 @@ import java.util.List;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.gridservice.core.api.objects.DgMapI;
 import com.fs.gridservice.core.api.objects.DgQueueI;
+import com.fs.gridservice.core.api.objects.DgSetI;
 import com.fs.gridservice.core.api.objects.DgTopicI;
 
 /**
@@ -40,6 +41,8 @@ public interface DataGridI {
 
 	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wclass1,
 			Class<? extends W> wrapperClass);
+	
+	public <T> DgSetI<T> getSet(String name);
 
 	public <T> DgTopicI<T> getTopic(String name);
 

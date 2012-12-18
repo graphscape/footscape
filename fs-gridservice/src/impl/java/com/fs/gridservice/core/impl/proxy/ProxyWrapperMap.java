@@ -5,6 +5,8 @@ package com.fs.gridservice.core.impl.proxy;
 
 import java.util.List;
 
+import com.fs.commons.api.HasIdI;
+import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.core.api.WrapperGdI;
 import com.fs.gridservice.core.api.objects.DgMapI;
 import com.fs.gridservice.core.impl.ProxyWrapperDgObject;
@@ -26,7 +28,8 @@ public class ProxyWrapperMap<K, V, VW extends WrapperGdI<V>> extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.gridservice.core.api.objects.DgMapI#getValue(java.lang.Object)
+	 * @see
+	 * com.fs.gridservice.core.api.objects.DgMapI#getValue(java.lang.Object)
 	 */
 	@Override
 	public VW getValue(K key) {
@@ -87,4 +90,14 @@ public class ProxyWrapperMap<K, V, VW extends WrapperGdI<V>> extends
 
 	}
 
+	public VW put(VW value) {
+		if (value == null || !(value instanceof HasIdI)) {
+			throw new FsException("please call put(id,value)");
+		}
+		String id = ((HasIdI) value).getId();
+		if (id == null) {
+			throw new FsException("id is null for value:" + value);
+		}
+		return this.put((K) id, value);
+	}
 }

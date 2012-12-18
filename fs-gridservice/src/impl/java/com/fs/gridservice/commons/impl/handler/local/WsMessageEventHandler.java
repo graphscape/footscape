@@ -10,7 +10,7 @@ import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
-import com.fs.gridservice.commons.impl.handler.WsMsgReseiveEventHandler;
+import com.fs.gridservice.commons.impl.support.WsMsgReseiveEventHandler;
 
 /**
  * @author wu

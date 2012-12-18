@@ -14,7 +14,8 @@ import com.fs.gridservice.core.impl.hazelcast.util.WrapperUtil;
  * @author wuzhen
  * 
  */
-public class ProxyWrapperDgObject<V, VW extends WrapperGdI, T extends DgObjectI> implements DgObjectI {
+public class ProxyWrapperDgObject<V, VW extends WrapperGdI<V>, T extends DgObjectI>
+		implements DgObjectI {
 
 	protected T target;
 
@@ -23,6 +24,10 @@ public class ProxyWrapperDgObject<V, VW extends WrapperGdI, T extends DgObjectI>
 	public ProxyWrapperDgObject(T t, Class<VW> wcls) {
 		this.target = t;
 		this.wcls = wcls;
+	}
+
+	protected V unwrap(VW w) {
+		return WrapperUtil.unwrap(w, wcls);
 	}
 
 	protected VW wrap(V v) {

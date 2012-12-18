@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.commons.api.chat.data;
 
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.EntityGd;
 
 /**
@@ -11,4 +12,11 @@ import com.fs.gridservice.commons.api.data.EntityGd;
  */
 public class ChatRoomGd extends EntityGd {
 
+	public ChatRoomGd() {
+
+	}
+
+	public ChatRoomGd(PropertiesI<Object> pts) {
+		super(pts);
+	}
 }
