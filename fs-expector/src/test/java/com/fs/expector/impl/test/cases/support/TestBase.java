@@ -10,9 +10,9 @@ import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.datagrid.api.DataGridI;
-import com.fs.datagrid.api.DgFactoryI;
-import com.fs.expector.api.GridFacadeI;
+import com.fs.gridservice.commons.api.GridFacadeI;
+import com.fs.gridservice.core.api.DataGridI;
+import com.fs.gridservice.core.api.DgFactoryI;
 
 /**
  * @author wu

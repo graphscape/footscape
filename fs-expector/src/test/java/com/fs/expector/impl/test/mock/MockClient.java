@@ -33,7 +33,7 @@ import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.expector.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 
 /**
  * @author wuzhen

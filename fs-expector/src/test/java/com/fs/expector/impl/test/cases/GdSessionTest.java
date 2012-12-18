@@ -9,14 +9,14 @@ import java.util.concurrent.TimeUnit;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.expector.api.GridedObjectManagerI;
-import com.fs.expector.api.data.ObjectRefGd;
-import com.fs.expector.api.data.SessionGd;
-import com.fs.expector.api.gobject.WebSocketGoI;
-import com.fs.expector.api.session.SessionManagerI;
 import com.fs.expector.impl.test.cases.support.TestBase;
 import com.fs.expector.impl.test.mock.MockClient;
 import com.fs.expector.impl.test.mock.MockClientFactory;
+import com.fs.gridservice.commons.api.GridedObjectManagerI;
+import com.fs.gridservice.commons.api.data.ObjectRefGd;
+import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.session.SessionManagerI;
 
 /**
  * @author wuzhen
