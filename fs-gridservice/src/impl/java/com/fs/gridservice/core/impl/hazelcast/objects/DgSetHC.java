@@ -71,5 +71,12 @@ public class DgSetHC<V> extends HazelcastObjectWrapper<ISet<V>> implements
 
 		return new ArrayList<V>(this.target);
 	}
+	@Override
+	public void dump() {
+		System.out.println("set:" + this.name);
+		System.out.println("-Start------------------------");
+		System.out.println("TODO");
+		System.out.println("------------------------End-");
 
+	}
 }

@@ -3,9 +3,12 @@
  */
 package com.fs.gridservice.commons.api.gchat;
 
+import java.util.List;
+
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
+import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
 
 /**
  * @author wuzhen
@@ -13,10 +16,14 @@ import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
  */
 public interface ChatGroupManagerI extends EntityGdManagerI<ChatGroupGd> {
 
-	public ChatGroupI createChatRoom(PropertiesI<Object> pts);
+	public ChatGroupGd createChatRoom(String id, PropertiesI<Object> pts);
 
-	public ChatGroupI getChatGroup(String id);
+	public ChatGroupGd getChatGroup(String id);
 
-	public ChatGroupI getChatRoom(String id, boolean force);
+	public ChatGroupGd getChatGroup(String id, boolean force);
+
+	public List<ParticipantGd> getParticipantList(String gid);
+
+	public void addParticipant(ParticipantGd p);
 
 }

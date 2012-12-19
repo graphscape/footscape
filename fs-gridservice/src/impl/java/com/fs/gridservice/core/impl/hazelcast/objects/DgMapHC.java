@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import com.fs.commons.api.HasIdI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.core.api.objects.DgMapI;
 import com.fs.gridservice.core.impl.hazelcast.DataGridHC;
@@ -21,8 +20,7 @@ import com.hazelcast.core.MapEntry;
  * @author wuzhen
  * 
  */
-public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
-		DgMapI<K, V> {
+public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements DgMapI<K, V> {
 
 	/**
 	 * @param q
@@ -96,10 +94,25 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 		//
 		V rt = this.getValue(key);
 		if (rt == null && force) {
-			throw new FsException("no value for key:" + key + " in dgmap:"
-					+ this.name);
+			throw new FsException("no value for key:" + key + " in dgmap:" + this.name);
 		}
 		return rt;
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public void dump() {
+		System.out.println("map:"+this.name);
+		System.out.println("-Start------------------------");
+		
+		for (K k : this.keyList()) {
+			V v = this.getValue(k);
+			System.out.println(k + "\t=\t" + v);
+		}
+		System.out.println("------------------------End-");
+		
 	}
 
 }

@@ -17,9 +17,9 @@ public class TerminalMsgSendEW extends TerminalMsgEW {
 	public static final EventType TYPE = EventType
 			.valueOf("WebSocketMessageSending");
 
-	public static TerminalMsgSendEW valueOf(String path, String wsId, MessageI msg) {
+	public static TerminalMsgSendEW valueOf(String path, String tid, MessageI msg) {
 
-		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path), wsId);
+		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path), tid);
 		rt.setMessage(msg);
 		return rt;
 	}
@@ -27,8 +27,8 @@ public class TerminalMsgSendEW extends TerminalMsgEW {
 	/**
 	 * @param target
 	 */
-	protected TerminalMsgSendEW(EventGd target, String wsId) {
-		super(target, wsId);
+	protected TerminalMsgSendEW(EventGd target, String tid) {
+		super(target, tid);
 	}
 	
 	public TerminalMsgSendEW(EventGd target){

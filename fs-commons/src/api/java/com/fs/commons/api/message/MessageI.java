@@ -36,8 +36,16 @@ public interface MessageI {
 	public Object getPayload(String key);
 
 	public Object getPayload(String key, boolean force);
+	
+	public Object getPayload(String key, Object def);
 
 	public <T> T getPayload(Class<T> cls, String key, T def);
+	
+	public String getString(String key);
+	
+	public String getString(String key, boolean force);
+	
+	public String getString(String key, String def);
 
 	public void setPayload(String key, Object value);
 

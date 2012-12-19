@@ -3,60 +3,101 @@
  */
 package com.fs.gridservice.commons.impl.gchat;
 
+import java.util.List;
+
 import com.fs.commons.api.ActiveContext;
-import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
+import com.fs.gridservice.commons.api.gchat.ParticipantManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
+import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
-import com.fs.gridservice.core.api.objects.DgMapI;
 
 /**
  * @author wuzhen
  * 
  */
-public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd>
-		implements ChatGroupManagerI {
+public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd> implements ChatGroupManagerI {
+
+	protected ParticipantManagerI participantManager;
+
+	protected TerminalManagerI terminalManager;
 
 	/**
 	 * @param name
 	 * @param wcls
 	 */
-	public ChatGroupManagerImpl(String name, Class<ChatGroupGd> wcls) {
-		super(name, wcls);
-		// TODO Auto-generated constructor stub
+	public ChatGroupManagerImpl() {
+		super("chatgroup", ChatGroupGd.class);
 	}
-
-	private static final String GDMAP_NAME = "map-chat-groups";
-
-	protected DgMapI<String, ChatGroupGd> chatRoomDgMap;
 
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.chatRoomDgMap = this.facade.getDataGrid().getMap(GDMAP_NAME);
+		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
+		this.participantManager = this.facade.getEntityManager(ParticipantManagerI.class);
 	}
 
 	@Override
-	public ChatGroupI createChatRoom(PropertiesI<Object> pts) {
-		ChatGroupGd da = new ChatGroupGd(pts);
-		this.chatRoomDgMap.put(da.getId(), da);
-		ChatGroupI rt = this.getChatGroup(da.getId());
-		return rt;
+	public ChatGroupGd createChatRoom(String id, PropertiesI<Object> pts) {
+		ChatGroupGd da = new ChatGroupGd(id, pts);
+		this.addEntity(da);
+		return da;
 	}
 
 	@Override
-	public ChatGroupI getChatGroup(String id) {
-		return this.getChatRoom(id, false);
+	public ChatGroupGd getChatGroup(String id) {
+		return this.getEntity(id);
+
 	}
 
-	public ChatGroupI getChatRoom(String id, boolean force) {
-		ChatGroupGd cd = this.chatRoomDgMap.getValue(id);
-		if (cd == null && force) {
-			throw new FsException("no chat room with id:" + id);
-		}
-		return new ChatGroupImpl(id, this);
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public ChatGroupGd getChatGroup(String id, boolean force) {
+		//
+		return this.getEntity(id, force);
+
+	}
+
+	/**
+	 * Dec 19, 2012
+	 * <p>
+	 * only for online participants
+	 */
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public List<ParticipantGd> getParticipantList(String gid) {
+		//
+		List<String> rtL = this.getChatGroup(gid).getParticipantIdList();
+
+		return this.participantManager.getEntityList(rtL);
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public void addParticipant(ParticipantGd rt) {
+		//
+		// TODO lock
+		// TODO duplicated check.
+		String gid = rt.getGroupId();
+		String pid = rt.getId();
+		this.participantManager.addEntity(rt);
+
+		ChatGroupGd cg = this.getChatGroup(gid, true);
+		cg.addParticipantId(pid);
+
+		this.addEntity(cg);//
+		// TODO broad cast message
 
 	}
 

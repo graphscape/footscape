@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.lang.FsException;
@@ -19,7 +20,7 @@ import com.fs.commons.api.message.support.MessageSupport;
  * @author wu
  * 
  */
-public class MockClientChatRoom {
+public class MockClientChatGroup {
 
 	protected MockEventDriveClient client;
 
@@ -31,7 +32,7 @@ public class MockClientChatRoom {
 
 	protected BlockingQueue<MessageI> messageQueue;
 
-	public MockClientChatRoom(String groupId, MockEventDriveClient mc) {
+	public MockClientChatGroup(String groupId, MockEventDriveClient mc) {
 		this.client = mc;
 		this.groupId = groupId;
 		this.participantIdSet = new HashSet<String>();
@@ -40,14 +41,14 @@ public class MockClientChatRoom {
 
 			@Override
 			public void handle(MessageI t) {
-				MockClientChatRoom.this.handleJoinMessage(t);
+				MockClientChatGroup.this.handleJoinMessage(t);
 			}
 		});
 		mc.addListener("/gchat/message", new ListenerI<MessageI>() {
 
 			@Override
 			public void handle(MessageI t) {
-				MockClientChatRoom.this.handleMessageMessage(t);
+				MockClientChatGroup.this.handleMessageMessage(t);
 			}
 		});
 
@@ -81,7 +82,7 @@ public class MockClientChatRoom {
 	public void join() throws Exception {
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", "/gchat/join");
-		msg.setPayload("groupId", groupId);
+		msg.setHeader("groupId", groupId);
 
 		this.client.getClient().sendMessage(msg);
 
@@ -90,10 +91,28 @@ public class MockClientChatRoom {
 	public void sendMessage(String text) throws Exception {
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", "/gchat/message");
-		msg.setPayload("groupId", this.groupId);
-		msg.setPayload("text", text);
+		msg.setHeader("format", "message");
+		msg.setHeader("groupId", this.groupId);
+
+		MessageI msg2 = new MessageSupport();
+		msg2.setHeader("format", "text");//
+		msg2.setPayload("text", text);
+
+		msg.setPayload("message", msg2);
+
 		this.client.getClient().sendMessage(msg);
 
+	}
+
+	/**
+	 * Dec 19, 2012
+	 */
+	public MessageI receiveMessage(long timeout, TimeUnit unit) {
+		try {
+			return this.messageQueue.poll(timeout, unit);
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		}
 	}
 
 }

@@ -13,4 +13,6 @@ public interface DgObjectI {
 
 	public void destroy();
 
+	public void dump();
+
 }

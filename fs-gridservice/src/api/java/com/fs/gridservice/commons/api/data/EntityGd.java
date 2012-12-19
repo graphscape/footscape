@@ -18,19 +18,27 @@ import com.fs.gridservice.core.api.gdata.PropertiesGd;
  */
 public class EntityGd extends PropertiesGd implements GridedDataI, HasIdI {
 
+	public static final String PK_ID = "_id";
+
 	public EntityGd() {
-		this(UUID.randomUUID().toString());
+		this(null, null);
 	}
 
 	public EntityGd(String id) {
-		this.setProperty("_id", id);
+		this(id, null);
 	}
 
 	public EntityGd(PropertiesI<Object> pts) {
-		this.setProperties(pts);
-		String id = this.getId(false);
+		this(null, pts);
+	}
+
+	protected EntityGd(String id, PropertiesI<Object> pts) {
 		if (id == null) {
-			this.setProperty("_id", UUID.randomUUID().toString());
+			id = UUID.randomUUID().toString();
+		}
+		this.setProperty(PK_ID, id);//
+		if (pts != null) {
+			this.setProperties(pts);
 		}
 	}
 
@@ -40,7 +48,7 @@ public class EntityGd extends PropertiesGd implements GridedDataI, HasIdI {
 	}
 
 	protected String getId(boolean force) {
-		return (String) this.getProperty("_id", force);
+		return (String) this.getProperty(PK_ID, force);
 	}
 
 }

@@ -29,6 +29,8 @@
 
 	<config name="chatGroupManager" class="com.fs.gridservice.commons.impl.gchat.ChatGroupManagerImpl">
 	</config>
+	
+	<config name="participantManager" class="com.fs.gridservice.commons.impl.gchat.ParticipantManagerImpl"/>
 
 	<config name="globalEventDispatcher" class="com.fs.gridservice.commons.impl.GlobalEventDispatcher">
 		<!-- engine is created from EngineSPI -->

@@ -35,4 +35,12 @@ public class ProxyDgObject<T extends DgObjectI> implements DgObjectI {
 	public void destroy() {
 		this.target.destroy();
 	}
+
+	/*
+	 *Dec 19, 2012
+	 */
+	@Override
+	public void dump() {
+		this.target.dump();
+	}
 }

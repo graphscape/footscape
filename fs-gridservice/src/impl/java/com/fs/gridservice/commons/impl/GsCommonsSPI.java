@@ -32,18 +32,18 @@ public class GsCommonsSPI extends SPISupport {
 
 		ac.active("gridMember");
 		ac.active("gridFacade");
-		
+
 		ac.active("webSocketFactory");
 		ac.active("webSocketGoManager");
-		
+
 		ac.active("terminalManager");
 		ac.active("presenceManager");
+		ac.active("participantManager");
 		ac.active("chatGroupManager");
-		
+
 		ac.active("sessionManager");
 		ac.active("globalEventDispatcher");
 		ac.active("localEventDispatcher");
-		
 
 	}
 

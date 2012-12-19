@@ -13,8 +13,7 @@ import com.hazelcast.core.Instance;
  * @author wuzhen
  * 
  */
-public class DgTopicHC<T> extends HazelcastObjectWrapper<ITopic<T>> implements
-		DgTopicI<T> {
+public class DgTopicHC<T> extends HazelcastObjectWrapper<ITopic<T>> implements DgTopicI<T> {
 
 	/**
 	 * @param q
@@ -23,4 +22,12 @@ public class DgTopicHC<T> extends HazelcastObjectWrapper<ITopic<T>> implements
 		super(name, q, dg);
 	}
 
+	@Override
+	public void dump() {
+		System.out.println("topic:" + this.name);
+		System.out.println("-Start------------------------");
+		System.out.println("TODO");
+		System.out.println("------------------------End-");
+
+	}
 }

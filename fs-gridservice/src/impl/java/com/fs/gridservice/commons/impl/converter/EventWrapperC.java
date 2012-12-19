@@ -25,6 +25,7 @@ public class EventWrapperC<T extends EventWrapper> extends HandleContextConverte
 	public T convert(HandleContextI f) {
 
 		EventGd evt = (EventGd) f.getRequest().getPayload();
+		evt.getType();// //TODO check type
 		EventWrapper rt = ClassUtil.newInstance(this.toClass, new Class[] { EventGd.class },
 				new Object[] { evt });
 		return (T) rt;

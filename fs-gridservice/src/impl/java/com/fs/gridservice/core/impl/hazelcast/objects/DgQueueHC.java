@@ -65,4 +65,12 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 		}
 	}
 
+	@Override
+	public void dump() {
+		System.out.println("queue:" + this.name);
+		System.out.println("-Start------------------------");
+		System.out.println("TODO");
+		System.out.println("------------------------End-");
+
+	}
 }

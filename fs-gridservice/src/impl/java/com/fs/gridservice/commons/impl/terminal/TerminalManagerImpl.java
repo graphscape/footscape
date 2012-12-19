@@ -17,8 +17,7 @@ import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
  * @author wuzhen
  * 
  */
-public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
-		implements TerminalManagerI {
+public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> implements TerminalManagerI {
 
 	public static final String N_WEBSOCKET_GOMANAGER = "webSocketGoManager";
 
@@ -51,8 +50,7 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 	@Override
 	public TerminalGd webSocketTerminal(WebSocketGoI wso) {
 
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade
-				.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		gom.addGridedObject(wso);
 		TerminalGd rt = new TerminalGd();
 		rt.setProperty(TerminalGd.PK_PROTOCAL, "websocket");
@@ -80,9 +78,8 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 		}
 
 		String wsoId = tg.getAddress();
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade
-				.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
-		WebSocketGoI wso = gom.getGridedObject(wsoId);
+		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		WebSocketGoI wso = gom.getGridedObject(wsoId, true);
 		wso.sendMessage(msg);//
 	}
 

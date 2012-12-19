@@ -22,11 +22,10 @@ import com.fs.gridservice.core.api.objects.DgMapI;
  * @author wuzhen
  * 
  */
-public class GridedObjectManagerImpl<T extends GridedObjectI> extends
-		FacadeAwareConfigurableSupport implements GridedObjectManagerI<T> {
+public class GridedObjectManagerImpl<T extends GridedObjectI> extends FacadeAwareConfigurableSupport
+		implements GridedObjectManagerI<T> {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(GridedObjectManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(GridedObjectManagerImpl.class);
 
 	private Map<String, T> goMap;// local container.
 
@@ -52,8 +51,8 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends
 	public void active(ActiveContext ac) {
 		super.active(ac);
 		this.goMap = new HashMap<String, T>();
-		this.objectRefDgMap = this.facade.getDataGrid().getMap(
-				"map-object-ref-" + goItfClass.getName(), ObjectRefGd.class);
+		this.objectRefDgMap = this.facade.getDataGrid().getMap("map-object-ref-" + goItfClass.getName(),
+				ObjectRefGd.class);
 	}
 
 	/*
@@ -84,8 +83,7 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends
 		String id = go.getId();
 		T old = this.goMap.put(id, go);
 
-		ObjectRefGd<T> ref = new ObjectRefGd<T>(id, this.facade
-				.getLocalMember().getId());
+		ObjectRefGd<T> ref = new ObjectRefGd<T>(id, this.facade.getLocalMember().getId());
 
 		this.objectRefDgMap.put(id, ref);
 
@@ -129,8 +127,8 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.gridservice.commons.api.GridedObjectManagerI#getGridedObject(java.lang.String
-	 * , boolean)
+	 * com.fs.gridservice.commons.api.GridedObjectManagerI#getGridedObject(java
+	 * .lang.String , boolean)
 	 */
 	@Override
 	public T getGridedObject(String id, boolean force) {
@@ -138,12 +136,12 @@ public class GridedObjectManagerImpl<T extends GridedObjectI> extends
 		if (force && rt == null) {
 
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("not found id:" + id + "all object:"
-						+ this.goMap.toString());
+				LOG.debug("not found id:" + id + ", all object:" + this.goMap.toString());
+				this.facade.getDataGrid().dump();//
 			}
+			
+			throw new FsException("no grided object found by id:" + id + " in manager:" + this.getName());
 
-			throw new FsException("no grided object found by id:" + id
-					+ " in manager:" + this.getName());
 		}
 		return rt;
 

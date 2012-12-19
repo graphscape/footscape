@@ -129,7 +129,7 @@ public class ProxyMessageSupport implements MessageI {
 	}
 
 	/*
-	 *Dec 15, 2012
+	 * Dec 15, 2012
 	 */
 	@Override
 	public void setMessage(MessageI msg) {
@@ -137,7 +137,7 @@ public class ProxyMessageSupport implements MessageI {
 	}
 
 	/*
-	 *Dec 15, 2012
+	 * Dec 15, 2012
 	 */
 	@Override
 	public void setHeaders(PropertiesI<String> hds) {
@@ -145,17 +145,54 @@ public class ProxyMessageSupport implements MessageI {
 	}
 
 	/*
-	 *Dec 15, 2012
+	 * Dec 15, 2012
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null||!(obj instanceof ProxyMessageSupport)){
+		if (obj == null || !(obj instanceof ProxyMessageSupport)) {
 			return false;
 		}
-		
-		return ObjectUtil.nullSafeEquals(this.target, ((ProxyMessageSupport)obj).target);
-				
+
+		return ObjectUtil.nullSafeEquals(this.target, ((ProxyMessageSupport) obj).target);
+
 	}
-	
-	
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public Object getPayload(String key, Object def) {
+		//
+		return this.target.getPayload(key, def);
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key) {
+		//
+		return this.target.getString(key);
+
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key, boolean force) {
+		//
+		return this.target.getString(key, force);
+
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key, String def) {
+		//
+		return this.target.getString(key, def);
+	}
+
 }

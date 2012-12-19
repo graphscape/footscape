@@ -175,6 +175,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 					Object ins = this.client.getClientProxy(prefix + name);
 
 					rt = this.objectWrap(name, type, ins);
+					objects.put(name, rt);
 				}
 			}
 		}
@@ -370,6 +371,17 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	protected void doDettach() {
 		new BeforeDgCloseEvent(this).dispatch(this.factory.getContainer());
 		this.client.shutdown();
+	}
+
+	/*
+	 *Dec 19, 2012
+	 */
+	@Override
+	public void dump() {
+		List<DgObjectI> rt = this.getObjectList();
+		for (DgObjectI i : rt) {
+			i.dump();
+		}
 	}
 
 }

@@ -3,6 +3,9 @@
  */
 package com.fs.gridservice.commons.impl.support;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.data.EntityGd;
@@ -12,8 +15,8 @@ import com.fs.gridservice.core.api.objects.DgMapI;
  * @author wuzhen
  * 
  */
-public class EntityGdManagerSupport<T extends EntityGd> extends
-		FacadeAwareConfigurableSupport implements EntityGdManagerI<T> {
+public class EntityGdManagerSupport<T extends EntityGd> extends FacadeAwareConfigurableSupport implements
+		EntityGdManagerI<T> {
 
 	protected DgMapI<String, T> dgMap;
 
@@ -30,8 +33,7 @@ public class EntityGdManagerSupport<T extends EntityGd> extends
 	public void active(ActiveContext ac) {
 		// TODO Auto-generated method stub
 		super.active(ac);
-		this.dgMap = this.facade.getDataGrid().getMap(
-				"entities-" + this.entityName, this.wrapperClass);
+		this.dgMap = this.facade.getDataGrid().getMap("entities-" + this.entityName, this.wrapperClass);
 
 	}
 
@@ -67,14 +69,32 @@ public class EntityGdManagerSupport<T extends EntityGd> extends
 		return this.dgMap.getValue(id, force);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.gridservice.commons.api.EntityGdManagerI#removeEntity(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.EntityGdManagerI#removeEntity(java.lang
+	 * .String)
 	 */
 	@Override
 	public T removeEntity(String id) {
 		// TODO Auto-generated method stub
 		return this.dgMap.remove(id);
-		
+
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public List<T> getEntityList(List<String> idL) {
+		//
+		List<T> rt = new ArrayList<T>();
+		for (String id : idL) {
+			T t = this.getEntity(id);
+			rt.add(t);
+		}
+		return rt;
 	}
 
 }

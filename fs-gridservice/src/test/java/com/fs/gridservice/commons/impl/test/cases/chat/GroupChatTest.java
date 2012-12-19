@@ -4,8 +4,11 @@
  */
 package com.fs.gridservice.commons.impl.test.cases.chat;
 
+import java.util.concurrent.TimeUnit;
+
+import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
-import com.fs.gridservice.commons.impl.test.mock.MockClientChatRoom;
+import com.fs.gridservice.commons.impl.test.mock.MockClientChatGroup;
 import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
 
 /**
@@ -14,23 +17,23 @@ import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
  */
 public class GroupChatTest extends TestBase {
 
-	public void testGroupChat()throws Exception{
-		
+	public void testGroupChat() throws Exception {
+
 		MockEventDriveClient c1 = this.newEventDriveClient("acc1");
 		MockEventDriveClient c2 = this.newEventDriveClient("acc2");
-		
-		MockClientChatRoom gc1 = joinChatRoom("gc1",c1);
-		MockClientChatRoom gc2 = joinChatRoom("gc1",c2);
-		
+
+		MockClientChatGroup gc1 = joinChatRoom("gc1", c1);
+		MockClientChatGroup gc2 = joinChatRoom("gc1", c2);
+
 		gc1.sendMessage("from c1");
-		
+		MessageI msg = gc2.receiveMessage(5000, TimeUnit.MILLISECONDS);
 	}
-	
-	protected MockClientChatRoom joinChatRoom(String gcid, MockEventDriveClient mc) throws Exception {
-		MockClientChatRoom rt =	new MockClientChatRoom(gcid,mc);
+
+	protected MockClientChatGroup joinChatRoom(String gcid, MockEventDriveClient mc) throws Exception {
+		MockClientChatGroup rt = new MockClientChatGroup(gcid, mc);
 		rt.join();
 		return rt;
-		
+
 	}
-	
+
 }

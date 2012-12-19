@@ -207,4 +207,39 @@ public class MessageSupport implements MessageI {
 		return rt;
 	}
 
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key) {
+		//
+		return (String) this.getPayload(key);
+
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key, boolean force) {
+		//
+		return (String) this.getPayload(key, force);
+	}
+
+	@Override
+	public Object getPayload(String key, Object def) {
+		Object rt = this.getPayload(key);
+		return rt == null ? def : rt;
+
+	}
+
+	/*
+	 * Dec 19, 2012
+	 */
+	@Override
+	public String getString(String key, String def) {
+		//
+		return (String) this.getPayload(key, def);
+	}
+
 }

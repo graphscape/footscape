@@ -4,6 +4,8 @@
  */
 package com.fs.gridservice.commons.impl.handler.global.gchat;
 
+import java.util.List;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
@@ -12,16 +14,14 @@ import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
-import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
-import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
-import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
+import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
+import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
-import com.fs.gridservice.core.api.objects.DgQueueI;
 
 /**
  * @author wu
@@ -34,8 +34,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.chatGroupManager = this.facade
-				.getEntityManager(ChatGroupManagerI.class);
+		this.chatGroupManager = this.facade.getEntityManager(ChatGroupManagerI.class);
 	}
 
 	/*
@@ -44,8 +43,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	@Handle("join")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
-	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE,
-			RequestI req) {
+	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
 		//
 		String tid = reqE.getTerminalId();
 		TerminalGd t = this.terminalManager.getTerminal(tid, true);
@@ -57,13 +55,23 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 		}
 
 		MessageI msg = reqE.getMessage();
-		String gId = (String) msg.getPayload("groupId", true);
+		String gId = msg.getHeader("groupId", true);
 
-		ChatGroupI cr = this.chatGroupManager.getChatGroup(gId);
+		// create group
+		ChatGroupGd cr = this.chatGroupManager.getChatGroup(gId);
 		if (cr == null) {
 			PropertiesI<Object> pts = new MapProperties<Object>();// TODO
-			cr = this.chatGroupManager.createChatRoom(pts);
+			cr = this.chatGroupManager.createChatRoom(gId, pts);
 		}
+
+		// add participant
+		ParticipantGd rt = new ParticipantGd();
+		rt.setProperty(ParticipantGd.PK_GROUPID, gId);
+		rt.setProperty(ParticipantGd.PK_ACCID, s.getAccountId());
+		rt.setProperty(ParticipantGd.PK_ROLE, "TODO");//
+		rt.setProperty(ParticipantGd.PK_TERMINALID, tid);//
+
+		this.chatGroupManager.addParticipant(rt);
 
 		this.sendResponseSuccessMessage(reqE);//
 
@@ -72,11 +80,18 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	@Handle("message")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
-	public void handleBinding(TerminalMsgReceiveEW reqE,
-			TerminalMsgSendEW resE, RequestI req) {
+	public void handleMessage(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
 		//
 		MessageI msg = reqE.getMessage();
-		String sid = (String) msg.getPayload("sessionId", true);
+
+		String tid = reqE.getTerminalId();
+		TerminalGd td = this.terminalManager.getTerminal(tid);
+		String sid = td.getSessionId();
+
+		if (sid == null) {
+			throw new FsException("TODO,terminal" + tid + " not auth");
+		}
+
 		SessionGd s = this.sessionManager.getSession(sid);
 		if (s == null) {// TODO event,code?
 			throw new FsException("TODO");
@@ -87,23 +102,26 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 		}
 
 		String crId = msg.getHeader("groupId", true);
-		ChatGroupI cr = this.chatGroupManager.getChatRoom(crId, true);
+		String format = msg.getHeader("format", true);
+		if (!format.equals("message")) {
+			throw new FsException("format:" + format + " not support");
+		}
 
-		ChatMessageGd cm = new ChatMessageGd();// TODO
+		MessageI msg2 = (MessageI) msg.getPayload("message");
+		this.broadcast(crId, msg2);//
 
-		cr.dispatch(cm);
-		// TODO move to uper class.
-		MessageI m2 = new MessageSupport();
-		m2.setHeader("path", "/chat/dispatch/success");//
-		// TODO get the queue of the member that contains the web socket
-		String mid = this.facade.getLocalMember().getId();
+		this.sendResponseSuccessMessage(reqE);
 
-		DgQueueI<EventGd> mqueue = this.facade.getMemberEventQueue(mid);
+	}
 
-		TerminalMsgSendEW ok = TerminalMsgSendEW
-				.valueOf("/wsmsg/send", tId, m2);
-
-		mqueue.offer(ok.getTarget());
-
+	public void broadcast(String gid, MessageI msg) {
+		List<ParticipantGd> pL = this.chatGroupManager.getParticipantList(gid);
+		for (ParticipantGd p : pL) {
+			MessageI msg0 = new MessageSupport();
+			msg0.setHeader("path", "/gchat/message");//
+			msg0.setPayload("message", msg);// NOTE nested message
+			String tid = p.getTerminalId();//
+			this.terminalManager.sendMessage(tid, msg0);
+		}
 	}
 }
