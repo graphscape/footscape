@@ -12,14 +12,14 @@ import com.fs.gridservice.commons.api.data.EventGd;
  * @author wu
  * 
  */
-public class WsMsgSendEW extends WsMsgEW {
+public class TerminalMsgSendEW extends TerminalMsgEW {
 
 	public static final EventType TYPE = EventType
 			.valueOf("WebSocketMessageSending");
 
-	public static WsMsgSendEW valueOf(String path, String wsId, MessageI msg) {
+	public static TerminalMsgSendEW valueOf(String path, String wsId, MessageI msg) {
 
-		WsMsgSendEW rt = new WsMsgSendEW(new EventGd(TYPE, path), wsId);
+		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path), wsId);
 		rt.setMessage(msg);
 		return rt;
 	}
@@ -27,11 +27,11 @@ public class WsMsgSendEW extends WsMsgEW {
 	/**
 	 * @param target
 	 */
-	protected WsMsgSendEW(EventGd target, String wsId) {
+	protected TerminalMsgSendEW(EventGd target, String wsId) {
 		super(target, wsId);
 	}
 	
-	public WsMsgSendEW(EventGd target){
+	public TerminalMsgSendEW(EventGd target){
 		super(target);
 	}
 

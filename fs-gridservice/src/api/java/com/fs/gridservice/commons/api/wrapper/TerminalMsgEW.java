@@ -12,9 +12,9 @@ import com.fs.gridservice.commons.api.data.EventGd;
  * @author wu
  * 
  */
-public abstract class WsMsgEW extends WebSocketEW {
+public abstract class TerminalMsgEW extends TerminalEW {
 
-	public static final EventType TYPE = EventType.valueOf("WebSocketMessage");
+	public static final EventType TYPE = EventType.valueOf("TerminalMessage");
 
 	public static final String MESSAGE = "_message";
 
@@ -29,14 +29,14 @@ public abstract class WsMsgEW extends WebSocketEW {
 		return (MessageI) this.target.getPayload(MESSAGE);
 	}
 
-	protected WsMsgEW(EventGd target, String wsId) {
-		super(target, wsId);
+	protected TerminalMsgEW(EventGd target, String tid) {
+		super(target, tid);
 	}
 
 	/**
 	 * @param target
 	 */
-	public WsMsgEW(EventGd target) {
+	public TerminalMsgEW(EventGd target) {
 		super(target);
 	}
 

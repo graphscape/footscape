@@ -10,11 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.codec.CodecI;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.support.GridedObjectSupport;
-import com.fs.gridservice.commons.impl.WebSocketGoFactory;
 import com.fs.websocket.api.WebSocketI;
 
 /**
@@ -27,6 +27,8 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	protected WebSocketI target;
 
 	protected CodecI messageCodec;
+
+	protected String terminalId;
 
 	/**
 	 * @param ws
@@ -69,11 +71,32 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	 * @see com.fs.gridservice.commons.api.gobject.WebSocketGoI#sendReady()
 	 */
 	@Override
-	public void sendReady() {
+	public void sendReady(String termId) {
+		
+		this.terminalId = termId;
+		
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", P_READY);
+		msg.setPayload("terminalId", termId);
+
 		this.sendMessage(msg);
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.gobject.WebSocketGoI#getTerminalId(boolean
+	 * )
+	 */
+	@Override
+	public String getTerminalId(boolean b) {
+		if (this.terminalId == null) {
+			throw new FsException("no terminal binding for websocket:"
+					+ this.getId());
+		}
+		return this.terminalId;
 	}
 
 }

@@ -9,7 +9,7 @@
 	</config>
 
 
-	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.WebSocketGoFactory">
+	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.terminal.WebSocketTerminalFactory">
 
 	</config>
 
@@ -21,34 +21,47 @@
 		<goItfClass value="com.fs.gridservice.commons.api.gobject.WebSocketGoI" />
 	</config>
 
+	<config name="terminalManager" class="com.fs.gridservice.commons.impl.terminal.TerminalManagerImpl">
+	</config>
+
+	<config name="presenceManager" class="com.fs.gridservice.commons.impl.presence.PresenceManagerImpl">
+	</config>
+
+	<config name="chatGroupManager" class="com.fs.gridservice.commons.impl.gchat.ChatGroupManagerImpl">
+	</config>
 
 	<config name="globalEventDispatcher" class="com.fs.gridservice.commons.impl.GlobalEventDispatcher">
 		<!-- engine is created from EngineSPI -->
 		<engine value="engine-1" />
 
 		<prefix name="handler">
-			<wsmre.class value="com.fs.gridservice.commons.impl.handler.handshake.HandshakeEventHandler" />
+			<wsmre.class value="com.fs.gridservice.commons.impl.handler.global.terminal.TerminalAuthHandler" />
 			<config name="wsmre">
-				<pattern value="/events/handshake/.*" />
+				<pattern value="/events/terminal/.*" />
 			</config>
-			
-			<wsgchatmsg.class value="com.fs.gridservice.commons.impl.handler.gchat.GroupChatMessageEventHandler" />
+
+			<wsgchatjoin.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatJoinEventHandler" />
+			<config name="wsgchatjoin">
+				<pattern value="/events/gchat/join/.*" />
+			</config>
+
+			<wsgchatmsg.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatMessageEventHandler" />
 			<config name="wsgchatmsg">
 				<pattern value="/events/gchat/message/.*" />
 			</config>
-			
-			
+
+
 		</prefix>
 	</config>
-	
+
 	<config name="localEventDispatcher" class="com.fs.gridservice.commons.impl.LocalEventDispatcher">
 		<!-- engine is created from EngineSPI -->
 		<engine value="engine-2" />
 
 		<prefix name="handler">
-			<wsmsg.class value="com.fs.gridservice.commons.impl.handler.local.WsMessageEventHandler" />
+			<wsmsg.class value="com.fs.gridservice.commons.impl.handler.local.terminal.TermialMessageSendEventHandler" />
 			<config name="wsmsg">
-				<pattern value="/events/wsmsg/.*" />
+				<pattern value="/events/terminal/.*" />
 			</config>
 		</prefix>
 	</config>

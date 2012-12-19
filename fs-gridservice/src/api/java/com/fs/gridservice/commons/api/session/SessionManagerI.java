@@ -4,23 +4,17 @@
  */
 package com.fs.gridservice.commons.api.session;
 
-import com.fs.commons.api.value.PropertiesI;
-import com.fs.gridservice.commons.api.data.ObjectRefGd;
+import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.data.SessionGd;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 
 /**
  * @author wu
  * 
  */
-public interface SessionManagerI {
+public interface SessionManagerI extends EntityGdManagerI<SessionGd> {
 
-	public SessionGd createSession(PropertiesI<Object> pts);
+	public String createSession(SessionGd gd);
 
 	public SessionGd getSession(String id);
-
-	public ObjectRefGd<WebSocketGoI> bindingWebSocket(String sid, String wsId);
-
-	public ObjectRefGd<WebSocketGoI> getWebSocketRefBySessionId(String sid);
 
 }

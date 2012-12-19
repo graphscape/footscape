@@ -80,6 +80,20 @@ public class DispatcherImpl extends ConfigurableSupport implements
 		this.internal = new HandlerContainer(c);
 	}
 
+	@Override
+	public void doAttach() {
+		// TODO Auto-generated method stub
+		super.doAttach();
+		this.internal.attach();// NOTE
+	}
+
+	@Override
+	public void doDettach() {
+		// TODO Auto-generated method stub
+		super.doDettach();
+		this.internal.dettach();// NOTE
+	}
+
 	/*
 	
 	 */

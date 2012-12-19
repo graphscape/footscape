@@ -10,13 +10,13 @@ import com.fs.gridservice.commons.api.data.EntityGd;
  * @author wuzhen
  * 
  */
-public class ChatRoomGd extends EntityGd {
+public class ChatGroupGd extends EntityGd {
 
-	public ChatRoomGd() {
+	public ChatGroupGd() {
 
 	}
 
-	public ChatRoomGd(PropertiesI<Object> pts) {
+	public ChatGroupGd(PropertiesI<Object> pts) {
 		super(pts);
 	}
 }

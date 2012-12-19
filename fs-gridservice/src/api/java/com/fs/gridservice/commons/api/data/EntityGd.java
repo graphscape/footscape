@@ -19,7 +19,11 @@ import com.fs.gridservice.core.api.gdata.PropertiesGd;
 public class EntityGd extends PropertiesGd implements GridedDataI, HasIdI {
 
 	public EntityGd() {
-		this.setProperty("_id", UUID.randomUUID().toString());
+		this(UUID.randomUUID().toString());
+	}
+
+	public EntityGd(String id) {
+		this.setProperty("_id", id);
 	}
 
 	public EntityGd(PropertiesI<Object> pts) {

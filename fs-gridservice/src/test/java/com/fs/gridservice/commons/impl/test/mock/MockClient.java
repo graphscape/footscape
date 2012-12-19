@@ -57,15 +57,14 @@ public class MockClient implements WebSocketListener {
 	protected Semaphore connected;
 
 	protected String accountId;
-	
+
 	protected String sessionId;
 
 	protected CodecI messageCodec;
 
 	protected boolean ready;
 
-	public MockClient(WebSocketClientFactory f, ContainerI c,
-			URI uri) {
+	public MockClient(WebSocketClientFactory f, ContainerI c, URI uri) {
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
 		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
@@ -73,13 +72,10 @@ public class MockClient implements WebSocketListener {
 		this.client = f.newWebSocketClient(this);
 
 	}
-
+	
 	public void sendMessage(MessageI msg) {
 		if (this.connection == null) {
 			throw new FsException("not connected");
-		}
-		if (this.sessionId == null) {
-			throw new FsException("session not got.");
 		}
 
 		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
@@ -240,28 +236,31 @@ public class MockClient implements WebSocketListener {
 	/**
 	 * Dec 16, 2012
 	 */
-	public void binding(String sid) throws Exception {
+	public void binding(String accId) throws Exception {
 		if (!this.ready) {
 			throw new FsException("not ready yet");
 		}
-		this.sessionId = sid;
+
 		MessageI msg = new MessageSupport() {
 		};
-		msg.setHeader("path", "/handshake/binding");
-		msg.setPayload("sessionId", sid);
+		msg.setHeader("path", "/terminal/auth");
+		msg.setPayload("accountId", accId);
+		msg.setPayload("password", "TODO");
 		this.sendMessage(msg);
 		MessageI res = null;
 		try {
 			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
 		} catch (TimeoutException e) {
-			throw new FsException("timeout for binding sessionId:" + sid);
+			throw new FsException("timeout for auth :" + accountId);
 		}
 		String path = res.getHeader("path", true);
-		if (path.endsWith("binding/success")) {
+		if (path.endsWith("terminal/auth/success")) {
+			String sid = (String) res.getPayload("sessionId", true);
 			this.sessionId = sid;
+			this.accountId = accId;//
 			return;
 		} else {
-			throw new FsException("failed binding sessionId:" + sid + ",path:"
+			throw new FsException("failed binding accId:" + accId + ",path:"
 					+ path);
 		}
 	}

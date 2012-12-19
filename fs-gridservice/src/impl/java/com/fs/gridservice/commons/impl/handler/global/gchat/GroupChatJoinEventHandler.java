@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 18, 2012
  */
-package com.fs.gridservice.commons.impl.handler.gchat;
+package com.fs.gridservice.commons.impl.handler.global.gchat;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
@@ -15,16 +15,16 @@ import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
-import com.fs.gridservice.commons.api.wrapper.WsMsgReceiveEW;
-import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
-import com.fs.gridservice.commons.impl.support.WsMsgReseiveEventHandler;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
+import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.core.api.objects.DgQueueI;
 
 /**
  * @author wu
- *
+ * 
  */
-public class GroupChatJoinEventHandler  extends WsMsgReseiveEventHandler {
+public class GroupChatJoinEventHandler extends TerminalMsgReseiveEventHandler {
 
 	protected ChatGroupManagerI chatGroupManager;
 
@@ -34,8 +34,7 @@ public class GroupChatJoinEventHandler  extends WsMsgReseiveEventHandler {
 	@Handle("join")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
-	public void handleJoin(WsMsgReceiveEW reqE, WsMsgSendEW resE,
-			RequestI req) {
+	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
 		//
 		MessageI msg = reqE.getMessage();
 		String sid = (String) msg.getPayload("sessionId", true);
@@ -43,19 +42,19 @@ public class GroupChatJoinEventHandler  extends WsMsgReseiveEventHandler {
 		if (s == null) {// TODO event,code?
 			throw new FsException("TODO");
 		}
-		String wsoId = reqE.getWebSocketId();
-		if (wsoId == null) {
+		String termId = reqE.getTerminalId();
+		if (termId == null) {
 			throw new FsException("TODO");
 		}
 
-		String gId = (String)msg.getPayload("groupId",true);
-		
+		String gId = (String) msg.getPayload("groupId", true);
+
 		ChatGroupI cr = this.chatGroupManager.getChatGroup(gId);
-		if(cr == null){
-			PropertiesI<Object> pts = new MapProperties<Object>();//TODO
+		if (cr == null) {
+			PropertiesI<Object> pts = new MapProperties<Object>();// TODO
 			cr = this.chatGroupManager.createChatRoom(pts);
 		}
-		
+
 		// TODO move to uper class.
 		MessageI m2 = new MessageSupport();
 		m2.setHeader("path", "/gchat/status/join");//
@@ -64,7 +63,7 @@ public class GroupChatJoinEventHandler  extends WsMsgReseiveEventHandler {
 
 		DgQueueI<EventGd> mqueue = this.facade.getMemberEventQueue(mid);
 
-		WsMsgSendEW ok = WsMsgSendEW.valueOf("/wsmsg/send", wsoId, m2);
+		TerminalMsgSendEW ok = TerminalMsgSendEW.valueOf("/wsmsg/send", termId, m2);
 
 		mqueue.offer(ok.getTarget());
 

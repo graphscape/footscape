@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 15, 2012
  */
-package com.fs.gridservice.commons.impl;
+package com.fs.gridservice.commons.impl.terminal;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -15,7 +15,9 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.EventDispatcherI;
 import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
-import com.fs.gridservice.commons.api.wrapper.WsMsgReceiveEW;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.impl.gobject.WebSoketGoImpl;
 import com.fs.gridservice.commons.impl.support.FacadeAwareConfigurableSupport;
 import com.fs.gridservice.core.api.objects.DgQueueI;
@@ -28,9 +30,11 @@ import com.fs.websocket.api.WsManagerI;
  * @author wu
  * 
  */
-public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implements WsListenerI {
+public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
+		implements WsListenerI {
 
-	private static final Logger LOG = LoggerFactory.getLogger(WebSocketGoFactory.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(WebSocketTerminalFactory.class);
 	protected static String PK_WSGO = "_webSocketGo";
 	protected EventDispatcherI eventEngine;
 
@@ -46,7 +50,8 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 		//
 		super.active(ac);
 		//
-		this.messageCodec = this.container.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
+		this.messageCodec = this.container.find(CodecI.FactoryI.class, true)
+				.getCodec(MessageI.class);
 		// listen to the wsmanagerI
 		WsFactoryI wf = this.container.find(WsFactoryI.class, true);
 		WsManagerI wsm = wf.getManager("default", true);// TODO new wsm
@@ -61,20 +66,22 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 	@Override
 	public void onConnect(WebSocketI ws) {
 		WebSocketGoI wso = new WebSoketGoImpl(ws, this.messageCodec);
+
 		setWso(ws, wso);
+
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:" + ws.getId());
+			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:"
+					+ ws.getId());
 		}
-		String oid = getWso(ws).getId();
 
-		this.facade.getWebSocketGridedObjectManager().addGridedObject(wso);// register
-																			// the
-																			// web
-																			// socket
-																			// to
-																			// Grid.
+		String wsoId = getWso(ws).getId();
 
-		wso.sendReady();//
+		TerminalManagerI tm = this.facade
+				.getEntityManager(TerminalManagerI.class);
+		TerminalGd t = tm.webSocketTerminal(wso);
+		
+		wso.sendReady(t.getId());//
+
 	}
 
 	public static void setWso(WebSocketI ws, WebSocketGoI wso) {
@@ -98,8 +105,10 @@ public class WebSocketGoFactory extends FacadeAwareConfigurableSupport implement
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getHeader("path");
-		String wsoId = getWso(ws).getId();// assign the ws id.
-		WsMsgReceiveEW ew = WsMsgReceiveEW.valueOf(path, wsoId, msg);
+		String tId = getWso(ws).getTerminalId(true);// assign the ws id.
+		
+		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW
+				.valueOf(path, tId, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
 

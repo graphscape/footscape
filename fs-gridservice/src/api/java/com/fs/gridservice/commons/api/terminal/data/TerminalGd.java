@@ -1,7 +1,7 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.api.gchat.data;
+package com.fs.gridservice.commons.api.terminal.data;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.EntityGd;
@@ -19,7 +19,7 @@ public class TerminalGd extends EntityGd {
 	public TerminalGd() {
 
 	}
-
+	
 	public TerminalGd(PropertiesI<Object> pts) {
 		super(pts);
 	}

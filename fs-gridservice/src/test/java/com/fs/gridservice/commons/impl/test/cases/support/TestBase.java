@@ -10,10 +10,7 @@ import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.support.MapProperties;
-import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
-import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.impl.test.mock.MockClient;
 import com.fs.gridservice.commons.impl.test.mock.MockClientFactory;
@@ -65,9 +62,9 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockClient newClient(String accId) throws Exception {
-		SessionGd s = this.newSession(accId);
-		return this.factory.newClient(s.getId());
+	protected MockClient newClientAndAuth(String accId) throws Exception {
+
+		return this.factory.newClientAndAuth(accId);
 
 	}
 
@@ -76,20 +73,12 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockEventDriveClient newEventDriveClient(String accId) throws Exception {
-		MockClient mc = this.newClient(accId);
+	protected MockEventDriveClient newEventDriveClient(String accId)
+			throws Exception {
+		MockClient mc = this.newClientAndAuth(accId);
 
 		return new MockEventDriveClient(mc);
 
-	}
-
-	protected SessionGd newSession(String accId) {
-		PropertiesI<Object> pts = new MapProperties<Object>();
-		pts.setProperty("accountId", accId);
-		SessionGd s = smanager.createSession(pts);
-		// assertThe Session is shared with Grid.
-		String sid = s.getId();
-		return s;
 	}
 
 	public void tearDown() throws Exception {

@@ -35,7 +35,7 @@ public class MockClientFactory {
 		return this;
 	}
 	
-	public MockClient newClient(String sid) throws Exception {
+	public MockClient newClientAndAuth(String accId) throws Exception {
 		//
 
 		URI uri = new URI("ws://localhost:8080/wsa/default");// default
@@ -44,7 +44,7 @@ public class MockClientFactory {
 		client = client.connect().get();
 		client.ready(1000, TimeUnit.SECONDS).get();
 		//
-		client.binding(sid);
+		client.binding(accId);
 
 		return client;
 	}

@@ -1,7 +1,7 @@
 /**
  *  Dec 18, 2012
  */
-package com.fs.gridservice.commons.impl.handler.gchat;
+package com.fs.gridservice.commons.impl.handler.global.gchat;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
@@ -13,16 +13,16 @@ import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
-import com.fs.gridservice.commons.api.wrapper.WsMsgReceiveEW;
-import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
-import com.fs.gridservice.commons.impl.support.WsMsgReseiveEventHandler;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
+import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.core.api.objects.DgQueueI;
 
 /**
  * @author wuzhen
  * 
  */
-public class GroupChatMessageEventHandler extends WsMsgReseiveEventHandler {
+public class GroupChatMessageEventHandler extends TerminalMsgReseiveEventHandler {
 
 	protected ChatGroupManagerI chatRoomManager;
 
@@ -32,7 +32,7 @@ public class GroupChatMessageEventHandler extends WsMsgReseiveEventHandler {
 	@Handle("send")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
-	public void handleBinding(WsMsgReceiveEW reqE, WsMsgSendEW resE,
+	public void handleBinding(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE,
 			RequestI req) {
 		//
 		MessageI msg = reqE.getMessage();
@@ -41,8 +41,8 @@ public class GroupChatMessageEventHandler extends WsMsgReseiveEventHandler {
 		if (s == null) {// TODO event,code?
 			throw new FsException("TODO");
 		}
-		String wsoId = reqE.getWebSocketId();
-		if (wsoId == null) {
+		String tId = reqE.getTerminalId();
+		if (tId == null) {
 			throw new FsException("TODO");
 		}
 
@@ -60,7 +60,7 @@ public class GroupChatMessageEventHandler extends WsMsgReseiveEventHandler {
 
 		DgQueueI<EventGd> mqueue = this.facade.getMemberEventQueue(mid);
 
-		WsMsgSendEW ok = WsMsgSendEW.valueOf("/wsmsg/send", wsoId, m2);
+		TerminalMsgSendEW ok = TerminalMsgSendEW.valueOf("/wsmsg/send", tId, m2);
 
 		mqueue.offer(ok.getTarget());
 

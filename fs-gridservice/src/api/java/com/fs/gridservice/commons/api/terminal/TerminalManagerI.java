@@ -1,0 +1,27 @@
+/**
+ *  Dec 19, 2012
+ */
+package com.fs.gridservice.commons.api.terminal;
+
+import com.fs.commons.api.message.MessageI;
+import com.fs.gridservice.commons.api.EntityGdManagerI;
+import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
+
+/**
+ * @author wuzhen
+ * 
+ */
+public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
+
+	public TerminalGd getTerminal(String tid);
+
+	public TerminalGd webSocketTerminal(WebSocketGoI wso);
+
+	public void sendMessage(String termId, MessageI msg);
+
+	public void sendMessage(MessageI msg);
+
+	public void sendTextMessage(String tId, String text);
+
+}

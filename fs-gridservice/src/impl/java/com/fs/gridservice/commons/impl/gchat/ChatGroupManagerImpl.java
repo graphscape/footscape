@@ -10,8 +10,8 @@ import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
-import com.fs.gridservice.commons.api.gchat.data.ChatRoomGd;
-import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
+import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 import com.fs.gridservice.commons.impl.support.FacadeAwareConfigurableSupport;
 import com.fs.gridservice.core.api.objects.DgMapI;
 
@@ -22,9 +22,9 @@ import com.fs.gridservice.core.api.objects.DgMapI;
 public class ChatGroupManagerImpl extends FacadeAwareConfigurableSupport
 		implements ChatGroupManagerI {
 
-	private static final String GDMAP_NAME = "map-chat-rooms";
+	private static final String GDMAP_NAME = "map-chat-groups";
 
-	protected DgMapI<String, ChatRoomGd> chatRoomDgMap;
+	protected DgMapI<String, ChatGroupGd> chatRoomDgMap;
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -34,7 +34,7 @@ public class ChatGroupManagerImpl extends FacadeAwareConfigurableSupport
 
 	@Override
 	public ChatGroupI createChatRoom(PropertiesI<Object> pts) {
-		ChatRoomGd da = new ChatRoomGd(pts);
+		ChatGroupGd da = new ChatGroupGd(pts);
 		this.chatRoomDgMap.put(da.getId(), da);
 		ChatGroupI rt = this.getChatGroup(da.getId());
 		return rt;
@@ -46,7 +46,7 @@ public class ChatGroupManagerImpl extends FacadeAwareConfigurableSupport
 	}
 
 	public ChatGroupI getChatRoom(String id, boolean force) {
-		ChatRoomGd cd = this.chatRoomDgMap.getValue(id);
+		ChatGroupGd cd = this.chatRoomDgMap.getValue(id);
 		if (cd == null && force) {
 			throw new FsException("no chat room with id:" + id);
 		}

@@ -12,27 +12,27 @@ import com.fs.gridservice.commons.api.data.EventGd;
  * @author wu
  * 
  */
-public abstract class WebSocketEW extends EventWrapper {
+public abstract class TerminalEW extends EventWrapper {
 
-	public static final EventType TYPE = EventType.valueOf("WebSocket");
+	public static final EventType TYPE = EventType.valueOf("TermianlEvent");
 
-	public static final String HK_WSOID = "_webSocketObjectId";
+	public static final String HK_TID = "_terminalId";
 
 	/**
 	 * @param target
 	 */
-	public WebSocketEW(EventGd target, String wsoId) {
+	public TerminalEW(EventGd target, String tid) {
 		super(target);
-		this.target.setHeader(HK_WSOID, wsoId);
+		this.target.setHeader(HK_TID, tid);
 	}
 
-	public WebSocketEW(EventGd target) {
+	public TerminalEW(EventGd target) {
 		super(target);
 
 	}
 
-	public String getWebSocketId() {
-		return (String) this.target.getHeader(HK_WSOID);
+	public String getTerminalId() {
+		return (String) this.target.getHeader(HK_TID);
 	}
 
 }

@@ -10,9 +10,9 @@ import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
 import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
-import com.fs.gridservice.commons.api.gchat.data.PresenceGd;
-import com.fs.gridservice.commons.api.gchat.data.TerminalGd;
-import com.fs.gridservice.commons.api.wrapper.WsMsgSendEW;
+import com.fs.gridservice.commons.api.presence.data.PresenceGd;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 
 /**
  * @author wuzhen
@@ -41,7 +41,7 @@ public class ChatGroupImpl implements ChatGroupI {
 
 		MessageI msg = cm.getTarget();//
 
-		WsMsgSendEW wsm = WsMsgSendEW.valueOf("", wsId, msg);
+		TerminalMsgSendEW wsm = TerminalMsgSendEW.valueOf("", wsId, msg);
 
 	}
 

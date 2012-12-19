@@ -4,20 +4,20 @@
  */
 package com.fs.gridservice.commons.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
+import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.GridMemberI;
 import com.fs.gridservice.commons.api.GridedObjectI;
 import com.fs.gridservice.commons.api.GridedObjectManagerI;
+import com.fs.gridservice.commons.api.data.EntityGd;
 import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.data.MemberRefGd;
-import com.fs.gridservice.commons.api.data.SessionGd;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.session.AuthProviderI;
+import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.core.api.DataGridI;
 import com.fs.gridservice.core.api.DgFactoryI;
 import com.fs.gridservice.core.api.objects.DgMapI;
@@ -29,25 +29,19 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  */
 public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 
-	public static final String N_WEBSOCKET_GOMANAGER = "webSocketGoManager";
-
 	public static final String N_GLOBAL_EVENT_QUEUE = "event-queue-global";
 
 	public static final String N_MEMBER_EVENT_QUEUE = "event-queue-member-";
 
 	public static final String N_MAP_MEMBERS = "member-ref-map";
 
-	public static final String N_MAP_SESSIONS = "map-id-session";
-
-	public static final String N_MAP_SESSIONID_WEBSOCKETID = "map-sessionid-websocketid";
-
 	protected DgFactoryI factory;
 
 	protected DataGridI dg;
 
 	protected DgMapI<String, MemberRefGd> memberRefDgMap;
-	
-	//protected Map<String,GridedObjectManagerI> goManagerMap;
+
+	// protected Map<String,GridedObjectManagerI> goManagerMap;
 
 	/*
 	 * Dec 16, 2012
@@ -58,7 +52,7 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 		this.factory = container.find(DgFactoryI.class, true);
 		this.dg = this.factory.getInstance();
 		this.memberRefDgMap = this.dg.getMap(N_MAP_MEMBERS, MemberRefGd.class);
-		//this.goManagerMap = new HashMap<String,GridedObjectManagerI>();
+		// this.goManagerMap = new HashMap<String,GridedObjectManagerI>();
 	}
 
 	public DgQueueI<EventGd> getGlogalEventQueue() {
@@ -78,7 +72,8 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	}
 
 	@Override
-	public <T extends GridedObjectI> GridedObjectManagerI<T> getGridedObjectManager(String name) {
+	public <T extends GridedObjectI> GridedObjectManagerI<T> getGridedObjectManager(
+			String name) {
 		return container.find(GridedObjectManagerI.class, name, true);
 	}
 
@@ -117,26 +112,6 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	 * Dec 16, 2012
 	 */
 	@Override
-	public DgMapI<String, SessionGd> getSessionMap() {
-		//
-		return this.dg.getMap(N_MAP_SESSIONS);
-
-	}
-
-	/*
-	 * Dec 16, 2012
-	 */
-	@Override
-	public DgMapI<String, String> getSessionWebSocketIdMap() {
-		//
-		return this.dg.getMap(N_MAP_SESSIONID_WEBSOCKETID);
-
-	}
-
-	/*
-	 * Dec 16, 2012
-	 */
-	@Override
 	public DataGridI getDataGrid() {
 		//
 		return this.dg;
@@ -153,11 +128,34 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	}
 
 	/*
-	 * Dec 16, 2012
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.GridFacadeI#getEntityManager(java.lang
+	 * .Class)
 	 */
 	@Override
-	public GridedObjectManagerI<WebSocketGoI> getWebSocketGridedObjectManager() {
-		return getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+	public <E extends EntityGd, T extends EntityGdManagerI<E>> T getEntityManager(
+			Class<T> emcls) {
+
+		return this.container.find(emcls, true);
+	}
+
+	@Override
+	public AuthProviderI getAuthProvider() {
+		return this.container.find(AuthProviderI.class, true);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.gridservice.commons.api.GridFacadeI#getSessionManager()
+	 */
+	@Override
+	public SessionManagerI getSessionManager() {
+		// TODO Auto-generated method stub
+		return this.container.find(SessionManagerI.class, true);
+
 	}
 
 }

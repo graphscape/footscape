@@ -41,5 +41,12 @@ public class PropertiesGd extends ProxyPropertiesSupport<Object> implements
 		this.target = t;
 	}
 
-	
+	public String getString(String key) {
+		return this.getString(key, false);
+	}
+
+	public String getString(String key, boolean force) {
+		return (String) this.getProperty(key, force);
+	}
+
 }

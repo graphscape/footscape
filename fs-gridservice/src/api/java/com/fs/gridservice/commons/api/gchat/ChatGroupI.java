@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
 import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
-import com.fs.gridservice.commons.api.gchat.data.PresenceGd;
-import com.fs.gridservice.commons.api.gchat.data.TerminalGd;
+import com.fs.gridservice.commons.api.presence.data.PresenceGd;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 
 /**
  * @author wuzhen
