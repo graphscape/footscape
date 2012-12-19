@@ -12,7 +12,7 @@ import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
  * @author wu
  * 
  */
-public class ChatRoomTest extends TestBase {
+public class GroupChatTest extends TestBase {
 
 	public void testGroupChat()throws Exception{
 		

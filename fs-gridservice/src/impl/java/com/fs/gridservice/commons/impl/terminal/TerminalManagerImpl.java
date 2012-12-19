@@ -114,4 +114,32 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 		this.sendMessage(tId, msg);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.terminal.TerminalManagerI#getTerminal(
+	 * java.lang.String, boolean)
+	 */
+	@Override
+	public TerminalGd getTerminal(String id, boolean force) {
+
+		return this.getEntity(id, force);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.terminal.TerminalManagerI#bindingSession
+	 * (java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void bindingSession(String tid, String sid) {
+		TerminalGd t = this.getTerminal(tid, true);
+		t.setProperty(TerminalGd.PK_SESSIONID, sid);
+		this.addEntity(t);
+		return;
+	}
+
 }

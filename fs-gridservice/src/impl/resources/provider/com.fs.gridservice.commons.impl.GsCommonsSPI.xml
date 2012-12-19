@@ -40,14 +40,9 @@
 				<pattern value="/events/terminal/.*" />
 			</config>
 
-			<wsgchatjoin.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatJoinEventHandler" />
-			<config name="wsgchatjoin">
-				<pattern value="/events/gchat/join/.*" />
-			</config>
-
-			<wsgchatmsg.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatMessageEventHandler" />
-			<config name="wsgchatmsg">
-				<pattern value="/events/gchat/message/.*" />
+			<gchat.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatEventHandler" />
+			<config name="gchat">
+				<pattern value="/events/gchat/.*" />
 			</config>
 
 

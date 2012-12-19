@@ -5,22 +5,28 @@ package com.fs.gridservice.commons.impl.gchat;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupI;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
-import com.fs.gridservice.commons.api.gchat.data.ChatMessageGd;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
-import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
-import com.fs.gridservice.commons.impl.support.FacadeAwareConfigurableSupport;
+import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
 import com.fs.gridservice.core.api.objects.DgMapI;
 
 /**
  * @author wuzhen
  * 
  */
-public class ChatGroupManagerImpl extends FacadeAwareConfigurableSupport
+public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd>
 		implements ChatGroupManagerI {
+
+	/**
+	 * @param name
+	 * @param wcls
+	 */
+	public ChatGroupManagerImpl(String name, Class<ChatGroupGd> wcls) {
+		super(name, wcls);
+		// TODO Auto-generated constructor stub
+	}
 
 	private static final String GDMAP_NAME = "map-chat-groups";
 
@@ -53,7 +59,5 @@ public class ChatGroupManagerImpl extends FacadeAwareConfigurableSupport
 		return new ChatGroupImpl(id, this);
 
 	}
-	
-
 
 }

@@ -81,7 +81,7 @@ public class MockClientChatRoom {
 	public void join() throws Exception {
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", "/gchat/join");
-		msg.setPayload("chatGroupId", groupId);
+		msg.setPayload("groupId", groupId);
 
 		this.client.getClient().sendMessage(msg);
 

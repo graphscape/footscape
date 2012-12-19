@@ -4,12 +4,14 @@
 package com.fs.gridservice.commons.api.gchat;
 
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.gridservice.commons.api.EntityGdManagerI;
+import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
 
 /**
  * @author wuzhen
  * 
  */
-public interface ChatGroupManagerI {
+public interface ChatGroupManagerI extends EntityGdManagerI<ChatGroupGd> {
 
 	public ChatGroupI createChatRoom(PropertiesI<Object> pts);
 

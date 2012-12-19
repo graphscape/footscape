@@ -42,13 +42,16 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 		String pass = (String) reqE.getMessage().getPayload("password", true);
 
 		boolean ok = this.authProvider.auth(accId, pass);
-		SessionGd s = new SessionGd();
-		s.setProperty(SessionGd.ACCID, accId);
-		s.setProperty(SessionGd.TERMIANAlID, reqE.getTerminalId());
-
-		String sid = this.sessionManager.createSession(s);
 
 		if (ok) {
+			String tid = reqE.getTerminalId();
+			// create a session,
+			SessionGd s = new SessionGd();
+			s.setProperty(SessionGd.ACCID, accId);
+			s.setProperty(SessionGd.TERMIANAlID, tid);// binding tid;
+			String sid = this.sessionManager.createSession(s);
+			// binding session with tid:
+			this.terminalManager.bindingSession(tid, sid);
 			MessageI msg = this.newResponseSuccessMessage(reqE);
 			msg.setPayload("sessionId", sid);
 			this.sendMessage(msg);
