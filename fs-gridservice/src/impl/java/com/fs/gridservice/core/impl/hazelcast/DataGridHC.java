@@ -4,6 +4,7 @@
 package com.fs.gridservice.core.impl.hazelcast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	public DataGridHC(HazelcastClient client, DgFactoryHC df) {
 		this.client = client;
 		this.factory = df;
-		this.objectCache = new HashMap<Instance.InstanceType, Map<String, DgObjectI>>();
+		this.objectCache = Collections.synchronizedMap(new HashMap<Instance.InstanceType, Map<String, DgObjectI>>());
 
 		this.wrapperTypes = new HashMap<Instance.InstanceType, Class<? extends HazelcastObjectWrapper>>();
 		this.prefixMap = new HashMap<Instance.InstanceType, String>();
@@ -133,6 +134,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	@Override
 	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1) {
+
 		return this.getQueue(name, wcls1, wcls1);
 	}
 
@@ -160,6 +162,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	public <T extends DgObjectI> T getOrCreateDgObject(
 			Instance.InstanceType type, String name) {
+
 		Map<String, DgObjectI> objects = this.getObjectMapByType(type);
 
 		DgObjectI rt = objects.get(name);
@@ -180,6 +183,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 			}
 		}
 		return (T) rt;
+		// end of sync
 	}
 
 	protected HazelcastObjectWrapper objectWrap(String name,
@@ -225,7 +229,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	public <T> DgTopicI<T> getTopic(String name) {
 		return this.getOrCreateDgObject(Instance.InstanceType.TOPIC, name);
 	}
-	
+
 	@Override
 	public <T> DgSetI<T> getSet(String name) {
 		return this.getOrCreateDgObject(Instance.InstanceType.SET, name);
@@ -353,11 +357,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	public void remove(HazelcastObjectWrapper ow) {
 		Instance.InstanceType itype = ow.getTarget().getInstanceType();
 		String name = ow.getName();
-		Map<String, DgObjectI> typeM = this.objectCache.get(itype);
-		DgObjectI old = typeM.remove(name);
-		if (old == null) {
-			throw new FsException("no this object,type:" + itype + ",name:"
-					+ name);
+		synchronized (this.objectCache) {
+			Map<String, DgObjectI> typeM = this.objectCache.get(itype);
+			DgObjectI old = typeM.remove(name);
+			if (old == null) {
+				throw new FsException("no this object,type:" + itype + ",name:"
+						+ name);
+			}
 
 		}
 	}
@@ -374,7 +380,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	/*
-	 *Dec 19, 2012
+	 * Dec 19, 2012
 	 */
 	@Override
 	public void dump() {

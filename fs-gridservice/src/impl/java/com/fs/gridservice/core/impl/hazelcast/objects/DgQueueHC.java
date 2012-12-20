@@ -16,7 +16,8 @@ import com.hazelcast.core.Instance;
  * @author wuzhen
  * 
  */
-public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> implements DgQueueI<T> {
+public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>>
+		implements DgQueueI<T> {
 
 	/**
 	 * @param q
@@ -32,7 +33,7 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 	 */
 	@Override
 	public T take() {
-		// TODO Auto-generated method stub
+		this.assertNotDestroied();
 		try {
 			Object o = this.target.take();
 			return (T) this.decode(o);
@@ -48,6 +49,7 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 	 */
 	@Override
 	public void offer(T t) {
+		this.assertNotDestroied();
 		this.target.offer(this.encode(t));
 	}
 
@@ -57,6 +59,7 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 	@Override
 	public T poll(long time, TimeUnit tu) {
 		//
+		this.assertNotDestroied();
 		try {
 			Object obj = this.target.poll(time, tu);
 			return (T) this.decode(obj);
@@ -67,6 +70,7 @@ public class DgQueueHC<T> extends HazelcastObjectWrapper<IQueue<Object>> impleme
 
 	@Override
 	public void dump() {
+		this.assertNotDestroied();
 		System.out.println("queue:" + this.name);
 		System.out.println("-Start------------------------");
 		System.out.println("TODO");

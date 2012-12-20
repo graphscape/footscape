@@ -28,6 +28,14 @@ public abstract class ServerSupport extends ConfigurableSupport implements Serve
 
 	}
 
+	@Override
+	protected void doDettach() {
+		super.doDettach();
+
+		this.shutdown();//
+
+	}
+
 	public void start() {
 		this.start(false);
 	}
@@ -107,7 +115,7 @@ public abstract class ServerSupport extends ConfigurableSupport implements Serve
 	@Override
 	public State getState() {
 		//
-		return null;
+		return this.statue;
 	}
 
 	/*

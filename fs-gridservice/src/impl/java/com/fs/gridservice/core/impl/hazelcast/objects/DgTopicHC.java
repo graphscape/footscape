@@ -24,6 +24,7 @@ public class DgTopicHC<T> extends HazelcastObjectWrapper<ITopic<T>> implements D
 
 	@Override
 	public void dump() {
+		this.assertNotDestroied();
 		System.out.println("topic:" + this.name);
 		System.out.println("-Start------------------------");
 		System.out.println("TODO");

@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.core.impl.hazelcast;
 
+import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.core.api.DgObjectI;
 import com.hazelcast.core.Instance;
 
@@ -46,6 +47,12 @@ public abstract class HazelcastObjectWrapper<T extends Instance> implements
 	@Override
 	public String getName() {
 		return this.name;
+	}
+
+	protected void assertNotDestroied() {
+		if (this.detroyed) {
+			throw new FsException("already destroyed:" + this.name);
+		}
 	}
 
 	/**

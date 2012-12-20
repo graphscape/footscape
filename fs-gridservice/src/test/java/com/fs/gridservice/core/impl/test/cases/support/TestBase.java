@@ -6,6 +6,8 @@ package com.fs.gridservice.core.impl.test.cases.support;
 
 import junit.framework.TestCase;
 
+import com.fs.commons.api.ActivableI;
+import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.gridservice.core.api.DataGridI;
 import com.fs.gridservice.core.api.DgFactoryI;
@@ -24,17 +26,31 @@ public class TestBase extends TestCase {
 
 	@Override
 	public void setUp() {
+
 		sm = SPIManagerI.FACTORY.get();
-		sm.load("/boot/test-spim.dg.properties");
+
+		sm.addInterceptor(new InterceptorI() {
+
+			@Override
+			public void beforeActive(ActivableI obj) {
+
+			}
+
+			@Override
+			public void afterActive(ActivableI obj) {
+				if (obj instanceof DgFactoryI) {
+					DataGridI dg = ((DgFactoryI) obj).getInstance();
+					dg.destroyAll();// NOTE clean
+									// memory.
+				}
+			}
+		});
+
+		sm.load("/boot/test-spim.properties");
 		this.factory = sm.getContainer().finder(DgFactoryI.class).find(true);
 
 		this.dg = this.factory.getInstance();
 
-		this.deleteAll();
-	}
-
-	protected void deleteAll() {
-		this.dg.destroyAll();
 	}
 
 	protected void dump() {

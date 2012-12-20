@@ -36,7 +36,7 @@ public class DgSetHC<V> extends HazelcastObjectWrapper<ISet<V>> implements
 	 */
 	@Override
 	public boolean contains(V value) {
-		// TODO Auto-generated method stub
+		this.assertNotDestroied();
 		return this.target.contains(value);
 
 	}

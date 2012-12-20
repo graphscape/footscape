@@ -30,7 +30,8 @@ import com.fs.webserver.impl.util.DateUtil;
 
 // 6.1: http://docs.codehaus.org/display/JETTY/Embedding+Jetty
 public class JettyWebServerImpl extends ServerSupport implements WebServerI {
-	private static final Logger LOG = LoggerFactory.getLogger(JettyWebServerImpl.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(JettyWebServerImpl.class);
 
 	private Server server;
 
@@ -46,7 +47,8 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 	@Override
 	public void doStart() {
-		LOG.info("starting web server at:" + this.home + " with port:" + this.port);
+		LOG.info("starting web server at:" + this.home + " with port:"
+				+ this.port);
 		try {
 			this.server.start();
 
@@ -67,12 +69,6 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 	/* */
 	@Override
-	public void shutdown() {
-		this.server.destroy();
-	}
-
-	/* */
-	@Override
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
@@ -81,13 +77,15 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 		if (home == null) {// create a temp dir
 			String uhome = System.getProperty("user.home");
-			home = uhome + File.separator + ".fs" + File.separator + "webserver";// TODO
+			home = uhome + File.separator + ".fs" + File.separator
+					+ "webserver";// TODO
 		}
 		this.home = new File(home);
 
 		if (this.home.exists()) {
 			if (!this.home.isDirectory()) {
-				throw new FsException("home:" + this.home + " is not a directory.");
+				throw new FsException("home:" + this.home
+						+ " is not a directory.");
 			}
 			// backup the history running of web server
 
@@ -97,7 +95,8 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 		this.home.mkdirs();
 
-		this.internal = ac.getContainer().find(ContainerI.FactoryI.class, true).newContainer();//
+		this.internal = ac.getContainer().find(ContainerI.FactoryI.class, true)
+				.newContainer();//
 		this.port = this.config.getPropertyAsInt("port", 8080);//
 		this.server = new Server(port);
 		this.handlers = new HandlerList();
@@ -122,7 +121,8 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 		}
 		boolean rn = this.home.renameTo(his);
 		if (!rn) {
-			throw new FsException("backup history failed:" + his.getAbsolutePath());
+			throw new FsException("backup history failed:"
+					+ his.getAbsolutePath());
 		}
 	}
 
@@ -136,11 +136,12 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 		if (this.isState(ServerI.STARTING, ServerI.RUNNING)) {
 
 			throw new FsException("not supported while server is running");
-			
+
 		}
 
 		JettyWebAppImpl wai = new JettyWebAppImpl(this);
-		ac.activitor().context(ac).container(this.internal).object(wai).name(name).cfgId(cfgId).active();
+		ac.activitor().context(ac).container(this.internal).object(wai)
+				.name(name).cfgId(cfgId).active();
 		WebAppContext wac = wai.getJettyWebApp();
 		// wac.get
 		// this.server.addHandler(wac);//jetty 6
@@ -165,7 +166,8 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 			throw new FsException(e);
 		}</code>
 		 */
-		LOG.info("addWebApp,contextPath:" + wai.getContextPath() + ",spi:" + ac.getSpi());
+		LOG.info("addWebApp,contextPath:" + wai.getContextPath() + ",spi:"
+				+ ac.getSpi());
 		return wai;
 	}
 
@@ -183,7 +185,11 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 	@Override
 	protected void doShutdown() {
 		//
-		// TODO
+		try {
+			this.server.stop();
+		} catch (Exception e) {
+			throw FsException.toRtE(e);
+		}//
 	}
 
 }

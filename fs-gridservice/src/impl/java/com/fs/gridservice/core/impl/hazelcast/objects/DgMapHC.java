@@ -39,6 +39,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	 */
 	@Override
 	public V getValue(K key) {
+		this.assertNotDestroied();
 		MapEntry<K, V> se = this.target.getMapEntry(key);
 		if (se == null) {
 			return null;
@@ -50,6 +51,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 
 	@Override
 	public V put(K key, V value) {
+		this.assertNotDestroied();
 		return this.target.put(key, value);
 	}
 
@@ -59,6 +61,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	@Override
 	public V remove(K key) {
 		//
+		this.assertNotDestroied();
 		V v = this.target.remove(key);
 
 		return v;
@@ -70,6 +73,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	@Override
 	public List<K> keyList() {
 		//
+		this.assertNotDestroied();
 		Set<K> ks = this.target.keySet();
 
 		return new ArrayList<K>(ks);
@@ -81,6 +85,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	@Override
 	public List<V> valueList() {
 		//
+		this.assertNotDestroied();
 		Collection<V> vs = this.target.values();
 
 		return new ArrayList<V>(vs);
@@ -92,6 +97,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	@Override
 	public V getValue(K key, boolean force) {
 		//
+		this.assertNotDestroied();
 		V rt = this.getValue(key);
 		if (rt == null && force) {
 			throw new FsException("no value for key:" + key + " in dgmap:" + this.name);
@@ -104,6 +110,7 @@ public class DgMapHC<K, V> extends HazelcastObjectWrapper<IMap<K, V>> implements
 	 */
 	@Override
 	public void dump() {
+		this.assertNotDestroied();
 		System.out.println("map:"+this.name);
 		System.out.println("-Start------------------------");
 		
