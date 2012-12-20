@@ -43,7 +43,8 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
-	private static class ObjectEntryImpl extends DescribedSupport implements ObjectEntryI {
+	private static class ObjectEntryImpl extends DescribedSupport implements
+			ObjectEntryI {
 
 		private Object object;
 
@@ -135,7 +136,7 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			ContainerI.AwareI ca = ContainerI.AwareI.class.cast(o);
 			ca.setContainer(this);
 		}
-		ObjectEntryImpl oe = new ObjectEntryImpl(spi, name, o,this);
+		ObjectEntryImpl oe = new ObjectEntryImpl(spi, name, o, this);
 
 		this.entryList.add(oe);
 		String id = oe.getId();
@@ -213,7 +214,8 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 	 */
 	@Override
 	public void forEach(CallbackI<ObjectEntryI, Boolean> cb) {
-		for (ObjectEntryImpl oe : this.entryList) {
+
+		for (ObjectEntryImpl oe : new ArrayList<ObjectEntryImpl>(this.entryList)) {
 			if (cb.execute(oe)) {
 				break;
 			}

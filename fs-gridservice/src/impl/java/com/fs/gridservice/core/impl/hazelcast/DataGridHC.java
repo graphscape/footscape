@@ -4,6 +4,7 @@
 package com.fs.gridservice.core.impl.hazelcast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +58,8 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	public DataGridHC(HazelcastClient client, DgFactoryHC df) {
 		this.client = client;
 		this.factory = df;
-		this.objectCache = Collections.synchronizedMap(new HashMap<Instance.InstanceType, Map<String, DgObjectI>>());
+		this.objectCache = Collections
+				.synchronizedMap(new HashMap<Instance.InstanceType, Map<String, DgObjectI>>());
 
 		this.wrapperTypes = new HashMap<Instance.InstanceType, Class<? extends HazelcastObjectWrapper>>();
 		this.prefixMap = new HashMap<Instance.InstanceType, String>();
@@ -235,29 +237,6 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		return this.getOrCreateDgObject(Instance.InstanceType.SET, name);
 	}
 
-	@Override
-	public void destroyAll() {
-		//
-		// clean none cached
-
-		// clean cached.
-		// Set<Instance> insSet = new HashSet<Instance>();
-
-		List<DgObjectI> rt = this.getObjectList();
-		for (DgObjectI i : rt) {
-			i.destroy();
-			// HazelcastObjectWrapper iw = (HazelcastObjectWrapper)rt;
-			// insSet.add(iw.target);//destroied?
-		}
-
-		// clean remains
-		for (Instance ins : this.client.getInstances()) {
-
-			ins.destroy();
-
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -388,6 +367,43 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		for (DgObjectI i : rt) {
 			i.dump();
 		}
+	}
+
+	@Override
+	public void destroyAll() {
+		//
+		// clean none cached
+
+		// clean cached.
+		// Set<Instance> insSet = new HashSet<Instance>();
+
+		List<DgObjectI> rt = this.getObjectList();
+		for (DgObjectI i : rt) {
+			i.destroy();
+			// HazelcastObjectWrapper iw = (HazelcastObjectWrapper)rt;
+			// insSet.add(iw.target);//destroied?
+		}
+
+		// clean remains
+		Collection<Instance> is = this.client.getInstances();
+		for (Instance ins : is) {
+
+			ins.destroy();
+
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.gridservice.core.api.DataGridI#isEmpty()
+	 */
+	@Override
+	public boolean isEmpty() {
+		// clean remains
+		Collection<Instance> is = this.client.getInstances();
+
+		return is.isEmpty();
 	}
 
 }

@@ -12,16 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.event.BeforeActiveEvent;
-import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.CollectionInterceptor;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
-import com.fs.commons.impl.event.EventBusImpl;
 
 /**
  * @author wu
@@ -29,7 +26,8 @@ import com.fs.commons.impl.event.EventBusImpl;
  */
 public class SPIManagerImpl implements SPIManagerI {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SPIManagerImpl.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(SPIManagerImpl.class);
 
 	public static final int S_INIT = 0;
 
@@ -45,14 +43,10 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	private int status = S_INIT;
 
-	private CollectionInterceptor interceptors;
-
-
 	public SPIManagerImpl() {
-		this.interceptors = new CollectionInterceptor();
 		ContainerI.FactoryI tf = new ContainerImpl.FactoryImpl();
 		this.container = tf.newContainer();
-		
+
 		this.spiList = new ArrayList<SPI>();
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -65,7 +59,8 @@ public class SPIManagerImpl implements SPIManagerI {
 	@Override
 	public void load(String res) {
 		if (this.status != S_INIT) {
-			throw new FsException("status:" + this.status + " must be init before load.");
+			throw new FsException("status:" + this.status
+					+ " must be init before load.");
 		}
 
 		PropertiesWrapper pw = PropertiesWrapper.load(res, true);
@@ -105,7 +100,8 @@ public class SPIManagerImpl implements SPIManagerI {
 	@Override
 	public void shutdown() {
 		if (this.status != S_RUNNING) {
-			throw new FsException("status:" + this.status + " must be running for shutdown.");
+			throw new FsException("status:" + this.status
+					+ " must be running for shutdown.");
 		}
 		this.status = S_SHUTINGDOWN;
 		try {
@@ -129,7 +125,8 @@ public class SPIManagerImpl implements SPIManagerI {
 	}
 
 	public void log(String msg) {
-		System.out.println("INFO " + new Date() + SPIManagerImpl.class.getName() + " " + "" + msg);
+		System.out.println("INFO " + new Date()
+				+ SPIManagerImpl.class.getName() + " " + "" + msg);
 	}
 
 	@Override
@@ -145,7 +142,8 @@ public class SPIManagerImpl implements SPIManagerI {
 			throw new FsException("duplicated spi:" + id + ",cls:" + cls);
 		}
 		this.log("start	spi:" + id + ",cls:" + cls);
-		SPI s = ClassUtil.newInstance(cls, new Class[] { String.class }, new Object[] { id });
+		SPI s = ClassUtil.newInstance(cls, new Class[] { String.class },
+				new Object[] { id });
 		s.setSPIManager(this);//
 		this.assertDependenceList(s);
 
@@ -169,8 +167,8 @@ public class SPIManagerImpl implements SPIManagerI {
 		}
 
 		if (!missing.isEmpty()) {
-			throw new FsException("spi:" + spi.getId() + " cannot active for not founding dependence:"
-					+ missing);
+			throw new FsException("spi:" + spi.getId()
+					+ " cannot active for not founding dependence:" + missing);
 		}
 	}
 
@@ -219,29 +217,5 @@ public class SPIManagerImpl implements SPIManagerI {
 	public ContainerI getContainer() {
 		return container;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.commons.api.SPIManagerI#addInterceptor(com.fs.commons.api.InterceptorI
-	 * )
-	 */
-	@Override
-	public void addInterceptor(InterceptorI ii) {
-		this.interceptors.addInterceptor(ii);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.SPIManagerI#getInterceptor()
-	 */
-	@Override
-	public InterceptorI getInterceptor() {
-		// TODO Auto-generated method stub
-		return this.interceptors;
-	}
-
 
 }

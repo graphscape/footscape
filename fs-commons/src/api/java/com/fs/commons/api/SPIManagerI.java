@@ -3,7 +3,6 @@
  */
 package com.fs.commons.api;
 
-import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
 
@@ -32,10 +31,6 @@ public interface SPIManagerI {
 
 	public static Factory FACTORY = new Factory();
 
-	public void addInterceptor(InterceptorI ii);
-	
-	public InterceptorI getInterceptor();
-	
 	public void load(String res);//
 
 	public void add(String id);
@@ -45,7 +40,7 @@ public interface SPIManagerI {
 	public void remove(String id);
 
 	public ContainerI getContainer();
-	
+
 	public void shutdown();//
 
 }

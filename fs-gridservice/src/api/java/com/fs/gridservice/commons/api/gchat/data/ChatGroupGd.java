@@ -43,6 +43,11 @@ public class ChatGroupGd extends EntityGd {
 		l.add(pId);
 		this.setProperty(PK_PIDLIST, l);
 	}
+	public void removeParticipantId(String pId) {
+		List<String> l = this.getParticipantIdList();
+		l.remove(pId);
+		this.setProperty(PK_PIDLIST, l);
+	}
 
 	/**
 	 * Dec 19, 2012

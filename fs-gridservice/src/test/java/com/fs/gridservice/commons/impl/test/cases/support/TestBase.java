@@ -6,10 +6,10 @@ package com.fs.gridservice.commons.impl.test.cases.support;
 
 import junit.framework.TestCase;
 
-import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.event.AfterActiveEvent;
+import com.fs.commons.api.event.ListenerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.impl.test.mock.MockClient;
@@ -37,28 +37,34 @@ public class TestBase extends TestCase {
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
-		sm.addInterceptor(new InterceptorI() {
+		sm.getContainer()
+				.getEventBus()
+				.addListener(AfterActiveEvent.class,
+						new ListenerI<AfterActiveEvent>() {
 
-			@Override
-			public void beforeActive(ActivableI obj) {
+							@Override
+							public void handle(AfterActiveEvent t) {
+								Object obj = t.getSource();//
+								if (obj instanceof DgFactoryI) {
+									DataGridI dg = ((DgFactoryI) obj)
+											.getInstance();
+									dg.destroyAll();// NOTE clean
+													// memory.
+								}
 
-			}
+							}
+						});
 
-			@Override
-			public void afterActive(ActivableI obj) {
-				if (obj instanceof DgFactoryI) {
-					DataGridI dg = ((DgFactoryI) obj).getInstance();
-					dg.destroyAll();// NOTE clean
-									// memory.
-				}
-			}
-		});
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
 		factory = new MockClientFactory(this.container).start();
 		smanager = this.container.find(SessionManagerI.class, true);
+
+		//
+		// assertTrue("data grid should empty by destroyALl.", this.facade
+		// .getDataGrid().isEmpty());
 
 	}
 
@@ -73,11 +79,15 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockEventDriveClient newEventDriveClient(String accId)
-			throws Exception {
+	protected MockEventDriveClient newEventDriveClient(String accId,
+			boolean start) throws Exception {
 		MockClient mc = this.newClientAndAuth(accId);
 
-		return new MockEventDriveClient(mc);
+		MockEventDriveClient rt = new MockEventDriveClient(mc);
+		if (start) {
+			rt.start();
+		}
+		return rt;
 
 	}
 

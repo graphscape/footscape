@@ -11,6 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.CollectionListener;
@@ -20,6 +23,10 @@ import com.fs.commons.api.support.CollectionListener;
  * 
  */
 public class MockEventDriveClient {
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(MockEventDriveClient.class);
+
 	private MockClient client;
 
 	protected Map<String, CollectionListener<MessageI>> messageHandler;
@@ -36,7 +43,7 @@ public class MockEventDriveClient {
 
 			@Override
 			public void handle(MessageI t) {
-				System.out.println("default listener,message:" + t);
+				LOG.info("default listener,message:" + t);
 			}
 
 		};
@@ -63,15 +70,29 @@ public class MockEventDriveClient {
 		cl.addListener(ml);
 	}
 
-	public void run() throws Exception {
+	public void eachLoop(MessageI msg) throws Exception {
+		String path = msg.getHeader("path");
+		ListenerI<MessageI> l = this.messageHandler.get(path);
+		if (l == null) {
+			this.defaultListener.handle(msg);
+		} else {
+			l.handle(msg);
+		}
+	}
+
+	public void run() {
+		try {
+			this.runInternal();
+		} catch (Throwable t) {
+			LOG.error("exit loop with exception", t);
+		}
+	}
+
+	public void runInternal() throws Exception {
 
 		while (true) {
 			MessageI msg = this.client.receiveMessage().get();
-			String path = msg.getHeader("path");
-			ListenerI<MessageI> l = this.messageHandler.get(path);
-			if (l == null) {
-				this.defaultListener.handle(msg);
-			}
+			this.eachLoop(msg);
 		}
 	}
 

@@ -50,4 +50,6 @@ public interface DataGridI {
 	
 	public void dump();
 
+	public boolean isEmpty();
+
 }

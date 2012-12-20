@@ -20,7 +20,8 @@ import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
  * @author wuzhen
  * 
  */
-public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd> implements ChatGroupManagerI {
+public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd>
+		implements ChatGroupManagerI {
 
 	protected ParticipantManagerI participantManager;
 
@@ -37,8 +38,10 @@ public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd> im
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
-		this.participantManager = this.facade.getEntityManager(ParticipantManagerI.class);
+		this.terminalManager = this.facade
+				.getEntityManager(TerminalManagerI.class);
+		this.participantManager = this.facade
+				.getEntityManager(ParticipantManagerI.class);
 	}
 
 	@Override
@@ -97,8 +100,39 @@ public class ChatGroupManagerImpl extends EntityGdManagerSupport<ChatGroupGd> im
 		cg.addParticipantId(pid);
 
 		this.addEntity(cg);//
-		// TODO broad cast message
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.gchat.ChatGroupManagerI#removeParticipant
+	 * (java.lang.String)
+	 */
+	@Override
+	public ParticipantGd removeParticipant(String gid, String pid) {
+		ChatGroupGd cg = this.getChatGroup(gid, true);
+		cg.removeParticipantId(pid);
+
+		this.addEntity(cg);// save update.
+
+		ParticipantGd rt = this.participantManager.removeEntity(pid);
+
+		return rt;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.gchat.ChatGroupManagerI#getParticipantManager
+	 * ()
+	 */
+	@Override
+	public ParticipantManagerI getParticipantManager() {
+
+		return this.participantManager;
 	}
 
 }

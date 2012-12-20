@@ -26,4 +26,8 @@ public interface ChatGroupManagerI extends EntityGdManagerI<ChatGroupGd> {
 
 	public void addParticipant(ParticipantGd p);
 
+	public ParticipantGd removeParticipant(String gid, String pid);
+
+	public ParticipantManagerI getParticipantManager();
+
 }

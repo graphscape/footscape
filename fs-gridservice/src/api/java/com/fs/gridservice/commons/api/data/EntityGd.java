@@ -42,6 +42,11 @@ public class EntityGd extends PropertiesGd implements GridedDataI, HasIdI {
 		}
 	}
 
+	public boolean isIdEquals(EntityGd e) {
+		return this.getId().endsWith(e.getId());
+
+	}
+
 	@Override
 	public String getId() {
 		return this.getId(true);
