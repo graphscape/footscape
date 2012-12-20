@@ -24,7 +24,7 @@ public interface UiClientI extends UiObjectI {
 	public void addFilter(UiFilterI f);
 
 	public String getSessionId();
-	
+
 	public RootI getRoot();
 
 	public ModelI getRootModel();
@@ -32,5 +32,7 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, String def);
 
 	public String getParameter(String key, boolean force);
+
+	public CodecI.FactoryI getCodecFactory();
 
 }

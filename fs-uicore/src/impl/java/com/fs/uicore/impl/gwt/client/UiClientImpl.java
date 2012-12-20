@@ -6,11 +6,8 @@ package com.fs.uicore.impl.gwt.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.fusesource.restygwt.client.JsonCallback;
-import org.fusesource.restygwt.client.Method;
-import org.fusesource.restygwt.client.Resource;
-
 import com.fs.uicore.api.gwt.client.CodecI;
+import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -25,13 +22,11 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ErrorEvent;
-import com.fs.uicore.api.gwt.client.event.ResponseEvent;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 import com.fs.uicore.impl.gwt.client.filter.ErrorResponseFilter;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.json.client.JSONValue;
 
 /**
@@ -41,87 +36,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		UiClientI {
 	private String sessionId;
 
-	private static class LasterFilter implements UiFilterI {
-
-		private UiClientImpl client;
-
-		public LasterFilter(UiClientImpl c) {
-			this.client = c;
-		}
-
-		@Override
-		public void filter(final Context fc,
-				final UiCallbackI<UiResponse, Object> cb) {
-			//
-
-			UiRequest req = fc.getRequest();
-			if (!req.isInit()) {
-				// sessionid
-				if (this.client.sessionId == null) {
-					throw new UiException(
-							"sessionId is null,cannot continue,please re init to get a sessionId");
-				}
-				req.setHeader(UiRequest.SESSION_ID, this.client.sessionId);
-			}
-
-			// if the path is relative,it will be explained to prefix with
-			// context path:
-			// for instance relative: x/y will be full path: /uiserver/x/y
-			// for instance full path: /x/y will not change.
-			String path = req.getRequestPath();
-			if (!path.startsWith("/")) {// is full path
-				//
-				path = "/uiserver/" + path;// TODO configurable.
-				req.setRequestPath(path);//
-			}
-			String url = this.client.getUrl();
-
-			Resource res = new Resource(url);
-			ObjectPropertiesData ds = req.getPayloads();
-			CodecI codec = this.client.cf.getCodec(ds.getClass());
-			JSONValue json = (JSONValue) codec.encode(ds);//
-
-			Method m = res.post().json(json);
-
-			// String path = req.getPath();
-			// m.header(UiRequest.PATH, path);
-			for (String key : req.getHeaders().keyList()) {
-				String value = req.getHeader(key);
-				m.header(key, value);
-			}
-
-			JsonCallback jcb = new JsonCallback() {
-
-				@Override
-				public void onFailure(Method method, Throwable exception) {
-					//
-					// TODO
-					LasterFilter.this.onFailure(exception); //
-				}
-
-				@Override
-				public void onSuccess(Method method, JSONValue response) {
-					//
-					LasterFilter.this.onSuccess(fc, response, cb);
-					//
-				}
-			};
-			m.send(jcb);
-			//
-		}
-
-		private void onFailure(Throwable t) {
-			new ErrorEvent(this.client, t).dispatch();
-		}
-
-		private void onSuccess(UiFilterI.Context fc, JSONValue res,
-				UiCallbackI<UiResponse, Object> cb) {
-
-			new ResponseEvent(this.client).dispatch();
-			this.client.processResponse(fc.getResponse(), res, cb);
-		}
-
-	}
+	
 
 	private CodecI.FactoryI cf;
 
@@ -133,7 +48,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	public UiClientImpl(RootI root) {
 		this.root = root;
-		this.filterList.add(new LasterFilter(this));
+		this.filterList.add(new LastFilter(this));
 
 	}
 
@@ -234,7 +149,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	}
 
-	private String getUrl() {
+	public String getUrl() {
 
 		return (String) this.getProperty(UiClientI.ROOT_URi, true);
 	}
@@ -294,6 +209,15 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	public String getSessionId() {
 		//
 		return this.sessionId;
+	}
+
+	/*
+	 *Dec 20, 2012
+	 */
+	@Override
+	public FactoryI getCodecFactory() {
+		// 
+		return this.cf;
 	}
 
 }

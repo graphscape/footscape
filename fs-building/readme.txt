@@ -190,7 +190,9 @@
 			http://code.google.com/p/gwt-comet/wiki/WebSockets
 		>>>.
 			http://www.ape-project.org/demos/
-			
+		>>>.WebSocket
+	
+			http://www.ibm.com/developerworks/cn/web/1112_huangxa_websocket/		
 >.JWChat 
 	>>.
 		http://www.blochberger.de/en_jwchat_how_to.htm

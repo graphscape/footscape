@@ -26,13 +26,12 @@ import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.config.ConfigurableI;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.ConfigurationProviderI;
-import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.service.ServiceI;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.EngineAPI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
+import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.support.RRContext;
 
 /**
@@ -40,13 +39,11 @@ import com.fs.engine.api.support.RRContext;
  *         <p>
  *         this servlet used for product env,embedded in jetty web server.
  */
-public class UiDataTransferServlet extends HttpServlet implements
-		ConfigurableI, ActivableI {
+public class UiDataTransferServlet extends HttpServlet implements ConfigurableI, ActivableI {
 
 	public static final String PATH = "X_FS_PATH";
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(UiDataTransferServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(UiDataTransferServlet.class);
 
 	protected CodecI.FactoryI cf;
 
@@ -65,8 +62,8 @@ public class UiDataTransferServlet extends HttpServlet implements
 
 	/* */
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
+	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException,
+			IOException {
 		//
 		Reader rd = arg0.getReader();
 		Object obj = JSONValue.parse(rd);
@@ -118,12 +115,13 @@ public class UiDataTransferServlet extends HttpServlet implements
 	public void active(ActiveContext ac) {
 		//
 		ContainerI ctn = ac.getContainer();
-		this.engine = ctn.finder(ServiceI.class).name(EngineAPI.RMI_CLIENT)
-				.find(true);// TODO not rmi.
+		this.engine = ctn.finder(ServiceEngineI.class).name("engine-0")// TODO
+				.find(true);// TODO
+							// not
+							// rmi.
 		this.cf = ctn.find(CodecI.FactoryI.class, true);//
 
-		this.traceMsg = Boolean.getBoolean(this.config.getProperty("traceMsg",
-				"true"));
+		this.traceMsg = Boolean.getBoolean(this.config.getProperty("traceMsg", "true"));
 		//
 	}
 

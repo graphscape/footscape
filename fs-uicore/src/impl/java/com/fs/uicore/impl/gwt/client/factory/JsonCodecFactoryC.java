@@ -10,6 +10,7 @@ import com.fs.uicore.impl.gwt.client.json.ErrorInfoJCC;
 import com.fs.uicore.impl.gwt.client.json.ErrorInfosJCC;
 import com.fs.uicore.impl.gwt.client.json.IntegerJCC;
 import com.fs.uicore.impl.gwt.client.json.LongJCC;
+import com.fs.uicore.impl.gwt.client.json.MessageJCC;
 import com.fs.uicore.impl.gwt.client.json.ObjectListJCC;
 import com.fs.uicore.impl.gwt.client.json.ObjectPropertiesJCC;
 import com.fs.uicore.impl.gwt.client.json.StringJCC;
@@ -25,11 +26,13 @@ public class JsonCodecFactoryC extends CodecFactorySupport {
 		this.add(new ErrorInfoJCC(this));
 		this.add(new ErrorInfosJCC(this));
 		this.add(new ObjectListJCC(this));
+		this.add(new MessageJCC(this));
 		this.add(new IntegerJCC(this));
 		this.add(new StringJCC(this));
 		this.add(new BooleanJCC(this));
 		this.add(new DateJCC(this));
 		this.add(new LongJCC(this));
+
 	}
 
 }

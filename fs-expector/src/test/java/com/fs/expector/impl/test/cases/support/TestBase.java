@@ -8,8 +8,9 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.InterceptorI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.event.AfterActiveEvent;
+import com.fs.commons.api.event.ListenerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.core.api.DataGridI;
 import com.fs.gridservice.core.api.DgFactoryI;
@@ -29,22 +30,21 @@ public class TestBase extends TestCase {
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
-		sm.addInterceptor(new InterceptorI() {
+		sm.getContainer().getEventBus()
+				.addListener(AfterActiveEvent.class, new ListenerI<AfterActiveEvent>() {
 
-			@Override
-			public void beforeActive(ActivableI obj) {
+					@Override
+					public void handle(AfterActiveEvent t) {
+						//
+						Object obj = t.getSource();
+						if (obj instanceof DgFactoryI) {
+							DataGridI dg = ((DgFactoryI) obj).getInstance();
+							dg.destroyAll();// NOTE clean
+											// memory.
+						}
+					}
+				});
 
-			}
-
-			@Override
-			public void afterActive(ActivableI obj) {
-				if (obj instanceof DgFactoryI) {
-					DataGridI dg = ((DgFactoryI) obj).getInstance();
-					dg.destroyAll();// NOTE clean
-									// memory.
-				}
-			}
-		});
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
