@@ -21,16 +21,6 @@ public class DateData extends BasicData<Long> {
 		return v == null ? null : new DateData(v);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof DateData)) {
-			return false;
-		}
-
-		return super.isEquals((DateData) obj);
-
-	}
-
 	public String getFormated() {
 		return this.value + "";// TODO
 	}

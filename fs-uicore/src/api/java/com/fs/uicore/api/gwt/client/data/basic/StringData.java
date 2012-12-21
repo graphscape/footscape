@@ -27,14 +27,4 @@ public class StringData extends BasicData<String> {
 
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof StringData)) {
-			return false;
-		}
-
-		return super.isEquals((StringData) obj);
-
-	}
-
 }

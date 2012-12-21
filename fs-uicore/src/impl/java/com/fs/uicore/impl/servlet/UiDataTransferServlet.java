@@ -39,11 +39,13 @@ import com.fs.engine.api.support.RRContext;
  *         <p>
  *         this servlet used for product env,embedded in jetty web server.
  */
-public class UiDataTransferServlet extends HttpServlet implements ConfigurableI, ActivableI {
+public class UiDataTransferServlet extends HttpServlet implements
+		ConfigurableI, ActivableI {
 
 	public static final String PATH = "X_FS_PATH";
 
-	private static final Logger LOG = LoggerFactory.getLogger(UiDataTransferServlet.class);
+	private static final Logger LOG = LoggerFactory
+			.getLogger(UiDataTransferServlet.class);
 
 	protected CodecI.FactoryI cf;
 
@@ -62,8 +64,8 @@ public class UiDataTransferServlet extends HttpServlet implements ConfigurableI,
 
 	/* */
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException,
-			IOException {
+	protected void service(HttpServletRequest arg0, HttpServletResponse arg1)
+			throws ServletException, IOException {
 		//
 		Reader rd = arg0.getReader();
 		Object obj = JSONValue.parse(rd);
@@ -93,6 +95,11 @@ public class UiDataTransferServlet extends HttpServlet implements ConfigurableI,
 
 		PropertiesI<Object> resPl = res.getPayloads();
 
+		if (!res.getErrorInfos().hasError()) {// not need to encode this
+												// properties.
+			resPl.removeProperty(ResponseI.ERROR_INFO_S);
+		}
+
 		//
 		Object jo = c.encode(resPl);
 		if (this.traceMsg) {
@@ -121,7 +128,8 @@ public class UiDataTransferServlet extends HttpServlet implements ConfigurableI,
 							// rmi.
 		this.cf = ctn.find(CodecI.FactoryI.class, true);//
 
-		this.traceMsg = Boolean.getBoolean(this.config.getProperty("traceMsg", "true"));
+		this.traceMsg = Boolean.getBoolean(this.config.getProperty("traceMsg",
+				"true"));
 		//
 	}
 

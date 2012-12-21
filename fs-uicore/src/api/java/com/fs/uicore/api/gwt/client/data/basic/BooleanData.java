@@ -21,13 +21,4 @@ public class BooleanData extends BasicData<Boolean> {
 		return new BooleanData(v);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof BooleanData)) {
-			return false;
-		}
-
-		return super.isEquals((BooleanData) obj);
-
-	}
 }

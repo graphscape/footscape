@@ -4,13 +4,12 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.FilterI;
 import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.Type;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
@@ -18,8 +17,6 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  * 
  */
 public class EventBusImpl extends UiObjectSupport implements EventBusI {
-
-	
 
 	/*
 	 * (non-Javadoc)
@@ -31,17 +28,20 @@ public class EventBusImpl extends UiObjectSupport implements EventBusI {
 		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicore.api.gwt.client.EventBusI#andHandler(com.fs.uicore.api.gwt
-	 * .client.core.Event.FilterI,
-	 * com.fs.uicore.api.gwt.client.core.Event.HandlerI)
-	 */
+	@Override
+	public <E extends Event> void addHandler(HandlerI<E> l) {
+		this.eventDispatcher.addHandler((UiObjectI) null, l);
+	}
+
+	/* */
+	@Override
+	public <E extends Event> void addHandler(Type<E> ec, HandlerI<E> l) {
+		this.eventDispatcher.addHandler(null, ec, l);
+	}
+
 	@Override
 	public <E extends Event> void addHandler(FilterI ef, HandlerI<E> eh) {
-		this.eventDispatcher.addHandler(ef,eh);
+		this.eventDispatcher.addHandler(ef, eh);
 	}
 
 }

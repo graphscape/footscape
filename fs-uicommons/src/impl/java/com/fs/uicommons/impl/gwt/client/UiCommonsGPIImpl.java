@@ -58,6 +58,7 @@ import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.wpanel.WindowPanelWI;
+import com.fs.uicommons.impl.gwt.client.channel.ChannelImpl;
 import com.fs.uicommons.impl.gwt.client.drag.DraggerImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.BooleanEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.EnumEditorImpl;
@@ -106,6 +107,7 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -116,13 +118,15 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	/* */
 	@Override
 	public void active(ContainerI c) {
-		UiClientI client = c.get(UiClientI.class, true);
+		final UiClientI client = c.get(UiClientI.class, true);
 		ModelI rootM = client.getRootModel();
 
 		this.activeInstaneOf(c);
 
 		this.activeWidgetCreater(c);
 
+		ChannelImpl ti = new ChannelImpl();
+		client.child(ti);//
 		// scheduler
 
 		c.add(new SchedulerImpl());

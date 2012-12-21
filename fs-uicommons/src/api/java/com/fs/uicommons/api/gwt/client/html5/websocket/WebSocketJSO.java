@@ -9,9 +9,15 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         http://dev.w3.org/html5/websockets/#the-websocket-interface
  */
 public final class WebSocketJSO extends JavaScriptObject {
+
+	public static final short CONNECTING = 0;
+	public static final short OPEN = 1;
+	public static final short CLOSING = 2;
+	public static final short CLOSED = 3;
 
 	protected WebSocketJSO() {
 
@@ -50,9 +56,22 @@ public final class WebSocketJSO extends JavaScriptObject {
 			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/String;)(evt.data);
 		}
 	}-*/;
-	
-	public native void send(String msg)/*-{
-		this.send(msg);
+
+	public native void send(String msg)
+	/*-{
+										this.send(msg);
+										}-*/;
+
+	public native short getReadyState()
+	/*-{
+		return this.readyState;
 	}-*/;
 
+	/**
+	 * @return
+	 */
+	public boolean isOpen() {
+		// TODO Auto-generated method stub
+		return this.getReadyState() == OPEN;
+	}
 }

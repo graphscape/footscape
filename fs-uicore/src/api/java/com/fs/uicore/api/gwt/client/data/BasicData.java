@@ -32,7 +32,17 @@ public class BasicData<T> extends UiData {
 		this.value = value;
 	}
 
-	protected boolean isEquals(BasicData<T> bd) {
-		return ObjectUtil.nullSafeEquals(this.value, bd.value);
+	@Override
+	public String toString() {
+		return this.getClass() + "," + this.value;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !obj.getClass().equals(this.getClass())) {
+			return false;
+		}
+		T v2 = (T) ((BasicData) obj).value;
+		return ObjectUtil.nullSafeEquals(this.value, v2);
 	}
 }

@@ -219,11 +219,11 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		}
 
 	}
-	
+
 	@Override
-	public <T extends UiObjectI> void clean(Class<T> cls){
+	public <T extends UiObjectI> void clean(Class<T> cls) {
 		List<T> cL = this.getChildList(cls);
-		for(UiObjectI c: cL){
+		for (UiObjectI c : cL) {
 			c.parent(null);
 		}
 	}
@@ -491,7 +491,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 			}
 			return null;
 		}
-		return c.get(EventBusI.class, force);
+		return c.getEventBus();//
 
 	}
 

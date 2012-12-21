@@ -5,7 +5,6 @@ package com.fs.engine.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.converter.ConverterI;
-import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.engine.impl.converter.HandleContextC;
 import com.fs.engine.impl.converter.RequestC;
@@ -28,15 +27,10 @@ public class EngineSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 
-		int es = this.config.getPropertyAsInt("engines", 6);
-
-		for (int i = 0; i < es; i++) {
-			ac.active("dispatcher-" + i);
-			ac.active("engine-" + i);
-		}
-
+		ac.active("engineFactory");
 		// add handle context converter
-		ConverterI.FactoryI cf = ac.getContainer().find(ConverterI.FactoryI.class, true);
+		ConverterI.FactoryI cf = ac.getContainer().find(
+				ConverterI.FactoryI.class, true);
 
 		cf.addConverter(new RequestC(cf));
 		cf.addConverter(new ResponseC(cf));//

@@ -69,6 +69,10 @@ public class HandlerContainer extends ProxyContainerSupport {
 		return rt;
 	}
 
+	public List<HandlerEntry> getAllEntryList() {
+		return this.patternEntryList;
+	}
+
 	/**
 	 * @return the defaultEntryList
 	 */

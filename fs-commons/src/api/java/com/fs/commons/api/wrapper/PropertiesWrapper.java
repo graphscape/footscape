@@ -288,4 +288,17 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 		return rt;
 
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#removeProperty(java.lang.String)
+	 */
+	@Override
+	public String removeProperty(String key) {
+		// TODO Auto-generated method stub
+		return this.properties.remove(key);
+
+	}
 }

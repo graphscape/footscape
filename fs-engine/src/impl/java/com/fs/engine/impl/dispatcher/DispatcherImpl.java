@@ -108,10 +108,14 @@ public class DispatcherImpl extends ConfigurableSupport implements
 			heL = this.internal.getDefaultEntryList();// NOTE
 		}
 		if (heL.isEmpty()) {
+			List<HandlerEntry> all = this.internal.getAllEntryList();
 			fc.getResponse()
 					.getErrorInfos()
 					.add(new ErrorInfo(this.toString(),
-							"there is no handler found for:" + path));
+							"there is no handler found for:" + path
+									+ ",all handlers:" + all
+									+ ",default handlers:"
+									+ this.internal.getDefaultEntryList()));
 
 			return;
 		}

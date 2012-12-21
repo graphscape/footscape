@@ -27,7 +27,7 @@ public class IntegerData extends BasicData<Integer> {
 			return false;
 		}
 
-		return super.isEquals((IntegerData) obj);
+		return super.equals((IntegerData) obj);
 
 	}
 }

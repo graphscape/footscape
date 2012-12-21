@@ -107,4 +107,16 @@ public class MapProperties<T> extends PropertiesSupport<T> {
 		return this.map.toString();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#removeProperty(java.lang.String)
+	 */
+	@Override
+	public T removeProperty(String key) {
+		return this.map.remove(key);
+
+	}
+
 }

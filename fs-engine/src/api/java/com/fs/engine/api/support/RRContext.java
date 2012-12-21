@@ -38,7 +38,7 @@ public class RRContext extends MessageSupport {
 	}
 
 	private static class ResponseImpl extends RRContext implements ResponseI {
-		public static final String ERROR_INFO_S = "_ERROR_INFO_S";
+		
 
 		public ResponseImpl() {
 			ErrorInfos eis = new ErrorInfos();

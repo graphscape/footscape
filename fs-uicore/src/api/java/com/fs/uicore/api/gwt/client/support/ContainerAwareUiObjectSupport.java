@@ -51,7 +51,7 @@ public class ContainerAwareUiObjectSupport extends StatefulUiObjectSupport
 	 */
 	@Override
 	public EventBusI getEventBus(boolean force) {
-		return this.container.get(EventBusI.class, force);//
+		return this.container.getEventBus();
 	}
 
 }

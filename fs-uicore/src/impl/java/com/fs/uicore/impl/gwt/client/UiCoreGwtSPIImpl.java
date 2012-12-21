@@ -31,9 +31,6 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 
 		this.activeInstanceOfChecker();
 
-		// event bus
-		EventBusI eb = new EventBusImpl();
-		c.add(eb);
 		// window
 		WindowI window = new WindowImpl();
 		c.add(window);

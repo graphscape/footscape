@@ -15,6 +15,7 @@ import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
 import com.fs.uicore.api.gwt.client.support.UiFilterSupport;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 
@@ -31,7 +32,14 @@ public class FilterTest extends TestBase {
 
 	@Test
 	public void test() {
+		this.delayTestFinish(1000000);
 
+	}
+
+	@Override
+	protected void onClientStart(ClientStartEvent e) {
+		// TODO Auto-generated method stub
+		super.onClientStart(e);
 		final UiRequest req = new UiRequest();
 		req.setRequestPath("/handler1/echo");
 		req.setPayload("string1", StringData.valueOf("stringValue"));
@@ -67,7 +75,7 @@ public class FilterTest extends TestBase {
 
 			}
 		});
-		this.delayTestFinish(3);
+
 		// delayTestFinish(10000);// wait the callback
 	}
 

@@ -1,5 +1,7 @@
 <config>
 
+	<config name="engineFactory" class="com.fs.engine.impl.EngineFactoryImpl" engines="6"/>
+
 	<config name="dispatcher-0" class="com.fs.engine.impl.dispatcher.DispatcherImpl" />
 
 	<config name="dispatcher-1" class="com.fs.engine.impl.dispatcher.DispatcherImpl" />

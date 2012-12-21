@@ -21,4 +21,6 @@ public interface ContainerI {
 
 	public void add(Object obj);
 
+	public EventBusI getEventBus();
+
 }

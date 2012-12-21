@@ -24,6 +24,11 @@ public class ErrorInfosData extends UiData {
 		return !this.errorInfoList.isEmpty();
 	}
 
+	public ErrorInfosData addAll(ErrorInfosData ei) {
+		this.errorInfoList.addAll(ei.errorInfoList);
+		return this;
+	}
+
 	public ErrorInfosData add(ErrorInfoData ei) {
 		this.errorInfoList.add(ei);
 		return this;

@@ -9,6 +9,7 @@ import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.service.ServiceI;
 import com.fs.engine.api.EngineAPI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 
@@ -27,8 +28,8 @@ public class TestBase extends TestCase {
 
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.service = this.sm.getContainer().finder(ServiceI.class)
-				.name(EngineAPI.engine_0).find(true);
+		this.service = this.sm.getContainer().find(EngineFactoryI.class, true)
+				.getEngine(0);//
 
 	}
 

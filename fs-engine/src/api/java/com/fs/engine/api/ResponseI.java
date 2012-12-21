@@ -11,7 +11,9 @@ import com.fs.commons.api.value.ErrorInfos;
  * 
  */
 public interface ResponseI extends MessageI {
-
+	
+	public static final String ERROR_INFO_S = "_ERROR_INFO_S";
+	
 	public ErrorInfos getErrorInfos();
 
 	public void assertNoError();

@@ -21,13 +21,4 @@ public class LongData extends BasicData<Long> {
 		return new LongData(v);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof LongData)) {
-			return false;
-		}
-
-		return super.isEquals((LongData) obj);
-
-	}
 }

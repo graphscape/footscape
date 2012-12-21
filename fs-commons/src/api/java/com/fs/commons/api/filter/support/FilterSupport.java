@@ -3,8 +3,10 @@
  */
 package com.fs.commons.api.filter.support;
 
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.filter.FilterI;
+import com.fs.commons.api.lang.FsException;
 
 /**
  * @author wu
@@ -24,6 +26,21 @@ public abstract class FilterSupport<REQ, RES> extends ConfigurableSupport
 	public FilterSupport(int priority) {
 		super();
 		this.priority = priority;
+	}
+
+	@Override
+	public void configure(Configuration cfg) {
+		super.configure(cfg);
+
+		int pre = this.config.getPropertyAsInt("priority", 0);
+		if (pre == 0) {
+			if (this.priority == 0) {
+				throw new FsException("filter's priority should not be zero:0");
+			}
+		} else {
+			// override by config
+			this.priority = pre;
+		}
 	}
 
 	/*

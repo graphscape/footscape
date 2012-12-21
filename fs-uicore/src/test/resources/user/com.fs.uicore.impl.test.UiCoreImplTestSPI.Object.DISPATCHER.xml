@@ -1,9 +1,20 @@
 
 <config>
+	
+	<prefix name="handler.client">
+		<class value="com.fs.uicore.impl.test.handler.ClientHandler" />
+	</prefix>
+	
+	<config name="handler.client">
+		<pattern value="/uiserver/client/.*" />
+		<client.parameters value="com.fs.uicore.impl.test.ClientParameters" />
+	</config>
+
 	<prefix name="handler.echo">
 		<class value="com.fs.uicore.impl.test.handler.EchoHandler" />
 
 	</prefix>
+	
 	<config name="handler.echo">
 		<property name="pattern" value="/handler1/.*" />
 		<property name="priority" value="2" />

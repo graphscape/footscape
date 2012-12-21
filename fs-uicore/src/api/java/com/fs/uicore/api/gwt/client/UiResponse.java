@@ -20,6 +20,8 @@ public class UiResponse extends UiTransfer {
 
 	protected UiRequest request;
 
+	protected ErrorInfosData errorInfoData;
+
 	/**
 	 * @param fc
 	 */
@@ -29,14 +31,22 @@ public class UiResponse extends UiTransfer {
 
 	public UiResponse(String name, UiRequest req) {
 		super(name);
+		this.errorInfoData = new ErrorInfosData();
 		this.request = req;
 		//
 		this.getPayloads().setProperty(ERROR_INFO_S, new ErrorInfosData());
 		//
 	}
 
+	public void onResponse(ObjectPropertiesData pls, ErrorInfosData eis) {
+		this.setPayloads(pls);
+		if (eis != null) {
+			this.errorInfoData.addAll(eis);
+		}
+	}
+
 	public ErrorInfosData getErrorInfos() {
-		return (ErrorInfosData) this.getPayloads().getProperty(ERROR_INFO_S);
+		return this.errorInfoData;
 	}
 
 	/**

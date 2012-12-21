@@ -40,6 +40,13 @@ public class HandlerEntry {
 		this.priority = c.getPropertyAsInt("priority", 0);// TODO
 	}
 
+	@Override
+	public String toString() {
+		return this.priority + ":" + this.priority + ",pattern:" + this.pattern
+				+ ",exclude:" + exclude + ",isDefault:" + this.isDefault
+				+ ",handler:" + this.handler;
+	}
+
 	public boolean isMatch(String path) {
 		boolean include = this.pattern == null ? true : this.pattern.matcher(
 				path).matches();

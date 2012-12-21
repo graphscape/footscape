@@ -11,6 +11,9 @@ import java.util.Map;
  * 
  */
 public interface PropertiesI<T> extends ValueI {
+	
+	public T removeProperty(String key);
+	
 	public void setProperty(String key, T value);
 
 	public void setProperty(Map.Entry<String, T> entry);

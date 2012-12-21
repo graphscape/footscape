@@ -144,4 +144,17 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 		return ObjectUtil.nullSafeEquals(this.target, pps.target);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#removeProperty(java.lang.String)
+	 */
+	@Override
+	public T removeProperty(String key) {
+		// TODO Auto-generated method stub
+		return this.target.removeProperty(key);
+
+	}
+
 }

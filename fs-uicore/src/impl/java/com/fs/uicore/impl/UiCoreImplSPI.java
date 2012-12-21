@@ -7,6 +7,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.engine.api.DispatcherI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.ServiceEngineI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
@@ -42,12 +43,13 @@ public class UiCoreImplSPI extends SPISupport {
 	}
 
 	private void activeHandlers(ActiveContext ac) {
-		PopulatorI fp = ac.getContainer().find(ServiceEngineI.class)
-				.populator("filter");
+		ServiceEngineI engine0 = ac.getContainer()
+				.find(EngineFactoryI.class, true).getEngine(0);
+		PopulatorI fp = engine0.populator("filter");
+
 		fp.spi(this).active(ac).force(false).populate();
 		// TODO remove if no handler?
-		PopulatorI hp = ac.getContainer().find(DispatcherI.class)
-				.populator("handler");
+		PopulatorI hp = engine0.getDispatcher().populator("handler");
 		hp.active(ac).force(true).populate();
 	}
 

@@ -55,17 +55,16 @@ public class ClientLoader {
 
 		GwtSPI.Factory factory = GwtSPI.Factory.create();
 
-		factory.active(spis);
-
 		ContainerI container = factory.getContainer();
+		EventBusI eb = container.getEventBus();
+		eb.addHandler(l);
+
+		factory.active(spis);
 
 		UiClientI client = container.get(UiClientI.class, true);
 
 		client.setProperty(UiClientI.ROOT_URi, rootUri);
 		//
-		EventBusI eb = container.get(EventBusI.class, true);
-
-		eb.addHandler(l);
 
 		client.attach();// NOTE
 

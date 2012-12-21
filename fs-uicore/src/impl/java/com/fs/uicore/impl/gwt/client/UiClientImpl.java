@@ -18,6 +18,7 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiFilterI;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
@@ -35,8 +36,6 @@ import com.google.gwt.json.client.JSONValue;
 public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		UiClientI {
 	private String sessionId;
-
-	
 
 	private CodecI.FactoryI cf;
 
@@ -57,7 +56,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		try {
 			CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
 			ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
-			res.setPayloads(dt);//
+
+			ErrorInfosData eis = (ErrorInfosData) dt
+					.removeProperty(UiResponse.ERROR_INFO_S);
+			
+			res.onResponse(dt, eis);
+
 			// TODO header?
 			cb.execute(res);
 		} catch (Throwable t) {
@@ -99,8 +103,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		});
 
 	}
-	
-	protected String getPreferedLocale(){
+
+	protected String getPreferedLocale() {
 		return null;//
 	}
 
@@ -212,11 +216,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	}
 
 	/*
-	 *Dec 20, 2012
+	 * Dec 20, 2012
 	 */
 	@Override
 	public FactoryI getCodecFactory() {
-		// 
+		//
 		return this.cf;
 	}
 

@@ -37,6 +37,10 @@ public class PropertiesData<T> extends UiData {
 		this.map.put(key, value);
 	}
 
+	public T removeProperty(String key) {
+		return this.map.remove(key);
+	}
+
 	public T getProperty(String key, boolean force) {
 		T rt = this.getProperty(key, null);
 		if (rt == null && force) {
@@ -51,6 +55,11 @@ public class PropertiesData<T> extends UiData {
 			return def;
 		}
 		return rt;
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass() + "," + this.map.toString();
 	}
 
 	protected boolean isEquals(PropertiesData<T> pts) {

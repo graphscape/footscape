@@ -37,6 +37,7 @@ public class EngineImpl extends ServiceSupport implements ServiceEngineI {
 
 		public LastFilter(EngineImpl ei) {
 			super();
+			this.priority = Integer.MAX_VALUE;//
 			this.engineImpl = ei;
 		}
 

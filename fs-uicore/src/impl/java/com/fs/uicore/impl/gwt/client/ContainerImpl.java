@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.util.CollectionUtil;
 
@@ -17,6 +18,12 @@ import com.fs.uicore.api.gwt.client.util.CollectionUtil;
 public class ContainerImpl implements ContainerI {
 
 	protected List<Object> objects = new ArrayList<Object>();
+
+	protected EventBusI eventBus;
+
+	public ContainerImpl() {
+		this.eventBus = new EventBusImpl();
+	}
 
 	/* */
 	@Override
@@ -46,6 +53,16 @@ public class ContainerImpl implements ContainerI {
 		if (obj instanceof ContainerI.AwareI) {
 			((ContainerI.AwareI) obj).setContainer(this);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uicore.api.gwt.client.ContainerI#getEventBus()
+	 */
+	@Override
+	public EventBusI getEventBus() {
+		return this.eventBus;
 	}
 
 }
