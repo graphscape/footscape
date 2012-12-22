@@ -188,8 +188,7 @@ public class LoginTest extends TestBase {
 		String account = this.sessionModel.getAccount();
 
 		assertNotNull("account is null", account);
-		String domain = this.sessionModel.getDomain();
-		assertEquals("domain error", "domain-001", domain);
+		
 		this.tryFinish("loginSuccess");
 	}
 

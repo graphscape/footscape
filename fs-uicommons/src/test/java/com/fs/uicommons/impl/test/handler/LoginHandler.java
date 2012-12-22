@@ -3,10 +3,13 @@
  */
 package com.fs.uicommons.impl.test.handler;
 
+import java.util.UUID;
+
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
+import com.fs.engine.api.annotation.Handle;
 import com.fs.engine.api.support.HandlerSupport;
 
 /**
@@ -23,17 +26,21 @@ public class LoginHandler extends HandlerSupport {
 
 	}
 
+	@Handle("submit")
 	public void handleSubmit(RequestI req, ResponseI res) {
 		PropertiesI<Object> pts = req.getPayloads();
-
-		String username = (String) pts.getProperty("username");
-		String password = (String) pts.getProperty("password");
-		//
-		res.getPayloads().setProperty("sessionId", "session-001");//
-		res.getPayloads().setProperty("account", "account-001");
-		res.getPayloads().setProperty("domain", "domain-001");
-	
+		res.setPayload("isAnonymous", false);
+		res.setPayload("loginId", "login-001");//
+		res.setPayload("accountId", "acc-001");// account?
 	}
-	
 
+	@Handle("anonymous")
+	// create anonymous account.
+	public void handleAnonymous(HandleContextI hc, RequestI req, ResponseI res) {
+		String id = UUID.randomUUID().toString();
+
+		res.setPayload("accountId", "acc-001");
+		res.setPayload("password", "acc-001");
+
+	}
 }

@@ -105,7 +105,7 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 			act.configuration(cfg);
 		}
 		act.active();
-
+		
 		this.jettyWebApp.addServlet(jsh.jettyHolder, jsh.getPath());
 
 		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name

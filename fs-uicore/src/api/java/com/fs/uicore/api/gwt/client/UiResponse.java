@@ -33,9 +33,7 @@ public class UiResponse extends UiTransfer {
 		super(name);
 		this.errorInfoData = new ErrorInfosData();
 		this.request = req;
-		//
-		this.getPayloads().setProperty(ERROR_INFO_S, new ErrorInfosData());
-		//
+
 	}
 
 	public void onResponse(ObjectPropertiesData pls, ErrorInfosData eis) {

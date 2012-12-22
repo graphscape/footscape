@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  */
 public class ChannelMessageEvent extends ChannelEvent {
 
-	public static final Type<ChannelMessageEvent> TYPE = new Type<ChannelMessageEvent>();
+	public static final Type<ChannelMessageEvent> TYPE = new Type<ChannelMessageEvent>(ChannelEvent.TYPE);
 
 	protected MessageData message;
 

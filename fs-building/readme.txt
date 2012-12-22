@@ -159,6 +159,7 @@
 	>>GWT Developer Plugin	
 		https://chrome.google.com/webstore/detail/gwt-developer-plugin/jpjpnpmbddbjkfaccnmhnkdgjideieim
 		
+		http://comments.gmane.org/gmane.org.google.gwt/46773
 	>>Spring jms:
 		http://static.springsource.org/spring/docs/2.0.7/reference/jms.html	
 	>>.http://www.winslam.com/laramee/jms/index.html

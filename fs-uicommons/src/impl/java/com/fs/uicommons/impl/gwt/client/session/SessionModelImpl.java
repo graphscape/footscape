@@ -70,60 +70,6 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	}
 
 	/*
-	 * Oct 23, 2012
-	 */
-	@Override
-	public String getDomain() {
-		//
-		return this.getValue(String.class, SessionModelI.L_DOMAIN);
-
-	}
-
-	/*
-	 * Oct 23, 2012
-	 */
-	@Override
-	public String getMucDomain() {
-		//
-		return "muc." + this.getDomain();
-	}
-
-	/*
-	 * Oct 24, 2012
-	 */
-	@Override
-	public String getXmppUser() {
-		//
-		return this.getValue(String.class, L_XMPP_USER);
-	}
-
-	/*
-	 * Oct 24, 2012
-	 */
-	@Override
-	public String getXmppPassword() {
-		//
-		return this.getValue(String.class, L_XMPP_PASSWORD);
-
-	}
-
-	/*
-	 * Nov 14, 2012
-	 */
-	@Override
-	public void setXmppUser(String xuser) {
-		this.setValue(L_XMPP_USER, xuser);
-	}
-
-	/*
-	 * Nov 14, 2012
-	 */
-	@Override
-	public void setXmppPassword(String xpass) {
-		this.setValue(L_XMPP_PASSWORD, xpass);
-	}
-
-	/*
 	 * Nov 24, 2012
 	 */
 	@Override
@@ -150,7 +96,7 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	}
 
 	/*
-	 *Nov 25, 2012
+	 * Nov 25, 2012
 	 */
 	@Override
 	public void setIsAnonymous(boolean an) {

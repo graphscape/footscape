@@ -29,6 +29,14 @@ public class Event {
 
 	}
 
+	public static interface SyncHandlerI<E extends Event> extends HandlerI<E>, SynchronizedI {
+
+	}
+
+	public static interface AsyncHandlerI<E extends Event> extends HandlerI<E> {
+
+	}
+
 	public static interface HandlerI<E extends Event> {
 
 		public void handle(E e);
@@ -51,8 +59,7 @@ public class Event {
 		this(type, src, new PropertiesData<Object>());
 	}
 
-	public Event(Type<? extends Event> type, UiObjectI src,
-			PropertiesData<Object> pts) {
+	public Event(Type<? extends Event> type, UiObjectI src, PropertiesData<Object> pts) {
 		this.source = src;
 		this.type = type;
 		this.properties = pts;
@@ -92,9 +99,7 @@ public class Event {
 	}
 
 	public boolean isMatch(Type type, Class<? extends UiObjectI> srcCls) {
-		return this.type.equals(type)
-				&& (this.source != null && InstanceOf.isInstance(srcCls,
-						this.source));
+		return this.type.equals(type) && (this.source != null && InstanceOf.isInstance(srcCls, this.source));
 
 	}
 
@@ -105,8 +110,7 @@ public class Event {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass().getName() + ",src:"
-				+ this.source;
+		return "Event,class:" + this.getClass().getName() + ",src:" + this.source;
 	}
 
 }

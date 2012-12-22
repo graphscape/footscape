@@ -4,19 +4,18 @@
 package com.fs.uicore.api.gwt.client.event;
 
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.core.Event;
 
 /**
  * @author wu
  * 
  */
-public class ClientStartEvent extends Event {
-	public static Type<ClientStartEvent> TYPE = new Type<ClientStartEvent>();
+public class AfterClientStartEvent extends ClientEvent {
+	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(ClientEvent.TYPE);
 
 	private String sessionId;
-	
+
 	/** */
-	public ClientStartEvent(UiClientI client, String sessionId) {
+	public AfterClientStartEvent(UiClientI client, String sessionId) {
 		super(TYPE, client);
 		this.sessionId = sessionId;
 	}
@@ -27,6 +26,5 @@ public class ClientStartEvent extends Event {
 	public String getSessionId() {
 		return sessionId;
 	}
-	
 
 }

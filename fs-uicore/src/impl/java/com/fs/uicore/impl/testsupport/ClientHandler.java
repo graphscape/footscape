@@ -1,7 +1,7 @@
 /**
  * Jun 24, 2012
  */
-package com.fs.uicore.impl.test.handler;
+package com.fs.uicore.impl.testsupport;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;

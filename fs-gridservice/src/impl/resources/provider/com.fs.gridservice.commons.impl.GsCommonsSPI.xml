@@ -37,6 +37,12 @@
 		<engine value="engine-1" />
 
 		<prefix name="handler">
+
+			<ping.class value="com.fs.gridservice.commons.impl.handler.global.ping.PingHandler" />
+			<config name="ping">
+				<pattern value="/events/ping/.*" />
+			</config>
+
 			<wsmre.class value="com.fs.gridservice.commons.impl.handler.global.terminal.TerminalAuthHandler" />
 			<config name="wsmre">
 				<pattern value="/events/terminal/.*" />
@@ -46,8 +52,6 @@
 			<config name="gchat">
 				<pattern value="/events/gchat/.*" />
 			</config>
-
-
 		</prefix>
 	</config>
 

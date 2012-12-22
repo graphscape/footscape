@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
@@ -22,8 +23,7 @@ import com.fs.webserver.api.ServletHolderI;
  * @author wuzhen
  * 
  */
-public class JettyWsServletHolder extends ConfigurableSupport implements
-		ServletHolderI {
+public class JettyWsServletHolder extends ConfigurableSupport implements ServletHolderI {
 
 	private String path;
 
@@ -53,9 +53,13 @@ public class JettyWsServletHolder extends ConfigurableSupport implements
 		Class cls = this.config.getPropertyAsClass("servlet.class");
 		Servlet obj = (Servlet) ClassUtil.newInstance(cls);
 		String cfgId = this.config.getProperty("servlet.config");
-		ac.activitor().object(obj).cfgId(this.config.getId() + "." + cfgId)
-				.active();
+		ac.activitor().object(obj).cfgId(this.config.getId() + "." + cfgId).active();
 		this.jettyHolder = new ServletHolder(obj);//
+
+		Configuration icfg = Configuration.properties(this.configId + ".init-parameters");
+
+		this.jettyHolder.setInitParameters(icfg.getAsMap());
+
 		//
 	}
 }

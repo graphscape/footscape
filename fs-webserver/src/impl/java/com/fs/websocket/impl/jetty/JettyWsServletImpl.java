@@ -41,20 +41,25 @@ public class JettyWsServletImpl extends HttpServlet {
 		factory.cleanup();
 	}
 
+	public String getInitParameter(String key, boolean force) {
+		String v = this.getInitParameter(key);
+		if (v == null && force) {
+			throw new FsException("parameter:" + key + " not found for servlet:" + this);
+		}
+		return v;
+	}
+
 	@Override
 	public void init() throws ServletException {
 		try {
 			String bs = getInitParameter("bufferSize");
-			WebSocketPolicy policy = new WebSocketPolicy(
-					WebSocketBehavior.SERVER);
+			WebSocketPolicy policy = new WebSocketPolicy(WebSocketBehavior.SERVER);
 			if (bs != null) {
 				policy.setBufferSize(Integer.parseInt(bs));
 			}
 
-			String max = getInitParameter("maxIdleTime");
-			if (max != null) {
-				policy.setIdleTimeout(Integer.parseInt(max));
-			}
+			String max = getInitParameter("maxIdleTime", true);
+			policy.setIdleTimeout(Integer.parseInt(max));
 
 			max = getInitParameter("maxTextMessageSize");
 			if (max != null) {
@@ -77,12 +82,11 @@ public class JettyWsServletImpl extends HttpServlet {
 	}
 
 	protected WebSocketServletFactory getBaseFactory() throws Exception {
-		ClassLoader loader = this.getServletContext().getClass()
-				.getClassLoader();
+		ClassLoader loader = this.getServletContext().getClass().getClassLoader();
 
 		WebSocketServletFactory baseFactory;
-		Iterator<WebSocketServletFactory> factories = ServiceLoader.load(
-				WebSocketServletFactory.class, loader).iterator();
+		Iterator<WebSocketServletFactory> factories = ServiceLoader.load(WebSocketServletFactory.class,
+				loader).iterator();
 
 		if (factories.hasNext())
 			baseFactory = factories.next();
@@ -99,8 +103,8 @@ public class JettyWsServletImpl extends HttpServlet {
 	 *      javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void service(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		if (factory.isUpgradeRequest(request, response)) {
 			// We have an upgrade request
 			if (factory.acceptWebSocket(request, response)) {
@@ -136,7 +140,7 @@ public class JettyWsServletImpl extends HttpServlet {
 	 */
 	public JettyWsManagerImpl attachManager(String name) {
 		this.manager = new JettyWsManagerImpl(name);
-		
+
 		return this.manager;
 	}
 }

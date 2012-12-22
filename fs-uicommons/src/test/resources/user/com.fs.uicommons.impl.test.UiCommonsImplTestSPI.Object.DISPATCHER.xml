@@ -1,5 +1,16 @@
 
 <config>
+	
+	<prefix name="handler.client">
+		<class value="com.fs.uicommons.impl.test.handler.ClientHandler" />
+	</prefix>
+	
+	<config name="handler.client">
+		<pattern value="/uiserver/client/.*" />
+		<client.parameters value="com.fs.uicommons.impl.test.ClientParameters" />
+	</config>
+	
+
 	<prefix name="handler.echo">
 		<class value="com.fs.uicommons.impl.test.handler.EchoHandler" />
 

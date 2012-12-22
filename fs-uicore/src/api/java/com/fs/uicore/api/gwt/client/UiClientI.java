@@ -34,5 +34,7 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, boolean force);
 
 	public CodecI.FactoryI getCodecFactory();
+	
+	public void start();//
 
 }

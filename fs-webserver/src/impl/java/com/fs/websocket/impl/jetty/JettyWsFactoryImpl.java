@@ -47,7 +47,9 @@ public class JettyWsFactoryImpl extends ConfigurableSupport implements
 		cfg.setProperty("path", path);//
 
 		ServletHolderI sh = wap.addServlet(ac, name, cfg);
+		
 		JettyWsServletImpl sev = (JettyWsServletImpl) sh.getServlet();//
+		
 		JettyWsManagerImpl rt = sev.attachManager(name);
 		this.managers.put(name, rt);
 

@@ -9,12 +9,6 @@ public interface SessionModelI extends ModelI{
 	
 	public static final Location L_ACCOUNT = Location.valueOf("_account");
 
-	public static final Location L_XMPP_USER = Location.valueOf("_xmppUser");
-
-	public static final Location L_XMPP_PASSWORD = Location.valueOf("_xmppPassword");
-
-	public static final Location L_DOMAIN = Location.valueOf("_domain");
-
 	public static final Location L_LOGIN_REQUIRED = Location
 			.valueOf("_loginRequired");
 
@@ -30,14 +24,6 @@ public interface SessionModelI extends ModelI{
 
 	public String getAccount();
 	
-	public String getDomain();
-	
-	public String getMucDomain();
-	
-	public String getXmppUser();
-	
-	public String getXmppPassword();
-
 	public boolean isLoginRequired();
 	
 	public boolean isAuthed();
@@ -46,10 +32,6 @@ public interface SessionModelI extends ModelI{
 
 	public void setLoginRequired(boolean b);
 
-	public void setXmppUser(String xuser);
-
-	public void setXmppPassword(String xpass);
-	
 	public void addAuthedHandler(HandlerI<ModelValueEvent> eh);
 	
 	public <T> void addAuthedProcessor(LazyI<T> lazy);

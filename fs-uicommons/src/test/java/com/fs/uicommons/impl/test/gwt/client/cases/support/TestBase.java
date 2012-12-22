@@ -8,7 +8,6 @@ import java.util.Set;
 
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -17,7 +16,9 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.SyncHandlerI;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
@@ -63,16 +64,16 @@ public class TestBase extends GWTTestCase {
 
 		super.gwtSetUp();
 
-		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
-				GWT.create(UiCommonsGPI.class) };
+		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), GWT.create(UiCommonsGPI.class) };
 
-		factory = ClientLoader.getOrLoadClient(spis, new HandlerI<Event>() {
+		factory = ClientLoader.getOrLoadClient(spis, new SyncHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {
 				TestBase.this.onEvent(e);
 			}
 		});
+
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
 
@@ -83,10 +84,25 @@ public class TestBase extends GWTTestCase {
 		this.framework = this.rootModel.getChild(FrwkModelI.class, true);
 		// xxxSPI.active
 		// this.client.attach();//
+
+		this.client.start();//
 	}
 
 	protected void onEvent(Event e) {
 		System.out.println(this.getClass().getName() + ":" + e);
+		if (e instanceof AfterClientStartEvent) {
+			this.onClientStart((AfterClientStartEvent) e);
+		} else if (e instanceof BeforeClientStartEvent) {
+			this.beforeClientStart((BeforeClientStartEvent) e);
+		}
+	}
+
+	protected void beforeClientStart(BeforeClientStartEvent e) {
+
+	}
+
+	protected void onClientStart(AfterClientStartEvent e) {
+
 	}
 
 	/* */

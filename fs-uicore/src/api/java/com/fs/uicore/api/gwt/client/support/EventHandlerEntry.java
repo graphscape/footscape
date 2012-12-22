@@ -6,6 +6,7 @@ package com.fs.uicore.api.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.SynchronizedI;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 
@@ -17,8 +18,7 @@ public class EventHandlerEntry {
 
 	private Event.FilterI filter;
 	private Event.HandlerI handler;
-	private static final UiLoggerI LOG = UiLoggerFactory
-			.getLogger(EventHandlerEntry.class);
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EventHandlerEntry.class);
 
 	public EventHandlerEntry(Event.FilterI f, Event.HandlerI<?> h) {
 		this.filter = f;
@@ -43,8 +43,8 @@ public class EventHandlerEntry {
 
 		try {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("tryHandle event:" + evt + " by filter:"
-						+ this.filter + " and handler:" + this.handler);
+				LOG.debug("tryHandle event:" + evt + " by filter:" + this.filter + " and handler:"
+						+ this.handler);
 			}
 
 			Event ef = this.filter.filter(evt);
@@ -59,9 +59,17 @@ public class EventHandlerEntry {
 			this.handler.handle(ef);
 
 		} catch (RuntimeException e) {
-			throw new UiException("handler exception,event:" + evt
-					+ ",handler:" + this.handler + ",filter:" + filter, e);
+			throw new UiException("handler exception,event:" + evt + ",handler:" + this.handler + ",filter:"
+					+ filter, e);
 		}
+	}
+
+	/**
+	 * Dec 21, 2012
+	 */
+	public boolean isSynchronized() {
+		//
+		return this.handler instanceof SynchronizedI;
 	}
 
 }

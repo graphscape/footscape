@@ -118,30 +118,10 @@ public class SubmitAP extends APSupport {
 		sm.setAccount(accId.getValue());
 		sm.setLoginId(sid.getValue());// session id.
 
-		if (isAnony.getValue()) {
-			loginAnonymousSuccess(sm, opd);
-		} else {
-			loginNormalSuccess(sm, opd);//
-		}
 		sm.setLoginRequired(false);//
 		sm.setAuthed(true);//
 	}
 
-	protected void loginAnonymousSuccess(SessionModelI sm,
-			ObjectPropertiesData opd) {
-
-	}
-
-	protected void loginNormalSuccess(SessionModelI sm, ObjectPropertiesData opd) {
-
-		StringData domain = (StringData) opd.getProperty("xmpp.domain");
-		StringData xuser = (StringData) opd.getProperty("xmpp.user");
-		StringData xpassword = (StringData) opd.getProperty("xmpp.password");
-		sm.setValue(SessionModelI.L_DOMAIN, domain.getValue());
-		sm.setXmppUser(xuser.getValue());
-		sm.setXmppPassword(xpassword.getValue());
-
-	}
 
 	@Override
 	protected void processResponseWithError(final ControlI c, final String a,

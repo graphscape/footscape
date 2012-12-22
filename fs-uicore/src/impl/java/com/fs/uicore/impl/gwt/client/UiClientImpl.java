@@ -21,7 +21,8 @@ import com.fs.uicore.api.gwt.client.core.UiFilterI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ErrorEvent;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
@@ -33,8 +34,7 @@ import com.google.gwt.json.client.JSONValue;
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareUiObjectSupport implements
-		UiClientI {
+public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
 	private String sessionId;
 
 	private CodecI.FactoryI cf;
@@ -51,15 +51,13 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	}
 
-	protected void processResponse(UiResponse res, JSONValue resJson,
-			UiCallbackI<UiResponse, Object> cb) {
+	protected void processResponse(UiResponse res, JSONValue resJson, UiCallbackI<UiResponse, Object> cb) {
 		try {
 			CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
 			ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
 
-			ErrorInfosData eis = (ErrorInfosData) dt
-					.removeProperty(UiResponse.ERROR_INFO_S);
-			
+			ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
+
 			res.onResponse(dt, eis);
 
 			// TODO header?
@@ -81,6 +79,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		this.addHandler(ErrorEvent.TYPE, new DefaultErrorListener());
 		new StateChangeEvent(this).dispatch();// TODO
 
+	}
+
+	@Override
+	public void start() {
+		new BeforeClientStartEvent(this).dispatch();//
 		UiRequest req = new UiRequest();
 		req.setRequestPath("client/init");
 		req.setInit(true);//
@@ -128,7 +131,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 		}
 
-		new ClientStartEvent(this, this.sessionId).dispatch();
+		new AfterClientStartEvent(this, this.sessionId).dispatch();
 	}
 
 	public String getParameter(String key, String def) {
@@ -162,8 +165,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	
 	 */
 	@Override
-	public void sendRequest(UiRequest req,
-			final UiCallbackI<UiResponse, Object> cb) {
+	public void sendRequest(UiRequest req, final UiCallbackI<UiResponse, Object> cb) {
 
 		final UiResponse rt = new UiResponse(req);
 		UiFilterI.Context fc = new UiFilterI.Context(req, rt, this.filterList);

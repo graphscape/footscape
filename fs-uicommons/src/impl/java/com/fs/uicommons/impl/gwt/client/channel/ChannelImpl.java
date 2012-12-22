@@ -5,7 +5,10 @@
 package com.fs.uicommons.impl.gwt.client.channel;
 
 import com.fs.uicommons.api.gwt.client.channel.ChannelI;
+import com.fs.uicommons.api.gwt.client.channel.event.ChannelCloseEvent;
+import com.fs.uicommons.api.gwt.client.channel.event.ChannelErrorEvent;
 import com.fs.uicommons.api.gwt.client.channel.event.ChannelMessageEvent;
+import com.fs.uicommons.api.gwt.client.channel.event.ChannelOpenEvent;
 import com.fs.uicommons.api.gwt.client.html5.websocket.WebSocketJSO;
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -13,7 +16,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -44,33 +47,39 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 
 		UiClientI client = this.getClient(true);// .addh
 
-		client.addHandler(ClientStartEvent.TYPE,
-				new HandlerI<ClientStartEvent>() {
+		client.addHandler(AfterClientStartEvent.TYPE, new HandlerI<AfterClientStartEvent>() {
 
-					@Override
-					public void handle(ClientStartEvent e) {
-						// terminai
-						ChannelImpl.this.onClientStart(e);
-					}
-				});
+			@Override
+			public void handle(AfterClientStartEvent e) {
+				// terminai
+				ChannelImpl.this.onClientStart(e);
+			}
+		});
 	}
 
-	protected void onClientStart(ClientStartEvent e) {
+	protected void onClientStart(AfterClientStartEvent e) {
 		UiClientI client = (UiClientI) e.getSource();
 
 		String sid = client.getSessionId();
 
-		String host = Window.Location.getHost();
+		String host = Window.Location.getHostName();
 		String port = Window.Location.getPort();
 		port = "8080";// for testing.
 		this.uri = "ws://" + host + ":" + port + "/wsa/default";
 
-		this.messageCodec = this.getClient(true).getCodecFactory()
-				.getCodec(MessageData.class);
+		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
-		String url = (String) this.getClient(true).getProperty(
-				UiClientI.ROOT_URi);
-		this.socket = WebSocketJSO.newInstance(uri);
+		String url = (String) this.getClient(true).getProperty(UiClientI.ROOT_URi);
+		this.socket = WebSocketJSO.newInstance(uri, true);
+		this.socket.onOpen(new UiCallbackI<Object, Object>() {
+
+			@Override
+			public Object execute(Object t) {
+				//
+				ChannelImpl.this.onOpen(t);
+				return null;
+			}
+		});
 		this.socket.onMessage(new UiCallbackI<String, Object>() {
 
 			@Override
@@ -80,6 +89,25 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 				return null;
 			}
 		});
+		this.socket.onClose(new UiCallbackI<Object, Object>() {
+
+			@Override
+			public Object execute(Object t) {
+				//
+				ChannelImpl.this.onClose(t);
+				return null;
+			}
+		});
+		this.socket.onError(new UiCallbackI<String, Object>() {
+
+			@Override
+			public Object execute(String t) {
+				//
+				ChannelImpl.this.onError(t);
+				return null;
+			}
+		});
+
 	}
 
 	protected void assertSocketOpen() {
@@ -99,6 +127,20 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.socket.send(jsS);
+	}
+
+	protected void onOpen(Object evt) {
+		new ChannelOpenEvent(this).dispatch();
+	}
+
+	protected void onClose(Object evt) {
+		new ChannelCloseEvent(this).dispatch();
+
+	}
+
+	protected void onError(String jsonS) {
+		new ChannelErrorEvent(this, jsonS).dispatch();
+
 	}
 
 	protected void onMessage(String jsonS) {

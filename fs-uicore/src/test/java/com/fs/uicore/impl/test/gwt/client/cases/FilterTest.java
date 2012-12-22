@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.support.UiFilterSupport;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 
@@ -37,7 +37,7 @@ public class FilterTest extends TestBase {
 	}
 
 	@Override
-	protected void onClientStart(ClientStartEvent e) {
+	protected void onClientStart(AfterClientStartEvent e) {
 		// TODO Auto-generated method stub
 		super.onClientStart(e);
 		final UiRequest req = new UiRequest();

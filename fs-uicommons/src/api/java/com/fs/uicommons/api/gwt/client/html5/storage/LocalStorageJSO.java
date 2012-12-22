@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.uicore.api.gwt.client.UiException;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -26,28 +27,35 @@ public final class LocalStorageJSO extends JavaScriptObject {
 	}
 
 	public static LocalStorageJSO getInstance(boolean force) {
-		LocalStorageJSO rt = getInstanceInternal();
-		if (rt == null && force) {
-			throw new UiException("not support Storage ");
+		if (!isSupport()) {
+			String agent = Window.Navigator.getUserAgent();
+
+			throw new UiException("browser not support Storage,agent: " + agent);
 		}
+		LocalStorageJSO rt = getInstanceInternal();
+
 		return rt;
 	}
 
-	private native static LocalStorageJSO getInstanceInternal()/*-{
-																
-																if(typeof(Storage)!=="undefined")
-																{
-																return localStorage;								
-																
-																}else{
-																return null;
-																}
-																
-																}-*/;
+	public static native boolean isSupport()
+	/*-{
+	
+		if(!("localStorage" in window)){
+			return false;
+		}
+		return true;
+	
+	}-*/;
 
-	public native String getValue(String key)/*-{
-												return localStorage[key];																		
-												}-*/;
+	private native static LocalStorageJSO getInstanceInternal()
+	/*-{
+		return localStorage;															
+	}-*/;
+
+	public native String getValue(String key)
+	/*-{
+			return localStorage[key];																		
+	}-*/;
 
 	/**
 	 * Dec 1, 2012

@@ -4,8 +4,10 @@
  */
 package com.fs.uicommons.api.gwt.client.html5.websocket;
 
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -13,21 +15,39 @@ import com.google.gwt.core.client.JavaScriptObject;
  *         http://dev.w3.org/html5/websockets/#the-websocket-interface
  */
 public final class WebSocketJSO extends JavaScriptObject {
-
-	public static final short CONNECTING = 0;
-	public static final short OPEN = 1;
-	public static final short CLOSING = 2;
-	public static final short CLOSED = 3;
+	//
+	// public static final short CONNECTING = 0;
+	// public static final short OPEN = 1;
+	// public static final short CLOSING = 2;
+	// public static final short CLOSED = 3;
 
 	protected WebSocketJSO() {
 
 	}
 
-	public static native WebSocketJSO newInstance(String uri)
-	/*-{
-		var  rt = new WebSocket(uri); 		 
+	public static WebSocketJSO newInstance(String uri,boolean force) {
+		
+		WebSocketJSO rt = tryCreate(uri);
+		if (force && rt == null) {
+			String agent = Window.Navigator.getUserAgent();
+			throw new UiException("browser not support web socket,agent:" + agent);
+		}
 		return rt;
+	}
+
+	private static native WebSocketJSO tryCreate(String uri)
+	/*-{
+	    if($wnd.WebSocket){
+			var  rt = new WebSocket(uri); 		 
+			return rt;
+		}
+		if($wnd.MozWebSocket){
+			var  rt = new MozWebSocket(uri); 		 
+			return rt;
+		}
+		return null;
 	}-*/;
+
 
 	public native void onOpen(UiCallbackI<Object, Object> handler)
 	/*-{
@@ -46,14 +66,14 @@ public final class WebSocketJSO extends JavaScriptObject {
 	public native void onMessage(UiCallbackI<String, Object> handler)
 	/*-{
 		this.onmessage = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/String;)(evt.data);
+			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt.data);
 		}
 	}-*/;
 
 	public native void onError(UiCallbackI<String, Object> handler)
 	/*-{
 		this.onerror = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/String;)(evt.data);
+			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt.data);
 		}
 	}-*/;
 
@@ -70,8 +90,8 @@ public final class WebSocketJSO extends JavaScriptObject {
 	/**
 	 * @return
 	 */
-	public boolean isOpen() {
+	public final boolean isOpen() {
 		// TODO Auto-generated method stub
-		return this.getReadyState() == OPEN;
+		return this.getReadyState() == 1;
 	}
 }

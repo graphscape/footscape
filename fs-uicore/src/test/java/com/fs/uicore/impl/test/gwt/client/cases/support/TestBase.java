@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
-import com.fs.uicore.api.gwt.client.event.ClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.fs.uicore.impl.test.gwt.client.UiCoreTestGPI;
@@ -52,19 +52,20 @@ public abstract class TestBase extends GWTTestCase {
 		});
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
+		this.client.start();//
 	}
 
 	protected void onEvent(Event e) {
 		System.out.println(this.getClass() + ":" + e);
-		if (e instanceof ClientStartEvent) {
-			this.onClientStart((ClientStartEvent) e);
+		if (e instanceof AfterClientStartEvent) {
+			this.onClientStart((AfterClientStartEvent) e);
 		}
 	}
 
 	/**
 	 * @param e
 	 */
-	protected void onClientStart(ClientStartEvent e) {
+	protected void onClientStart(AfterClientStartEvent e) {
 
 	}
 }

@@ -5,17 +5,18 @@
 	<config name="WebApp.WSA">
 		<context.path value="/wsa" />
 	</config>
-	
+
 	<config name="Object.WS_FACTORY">
-		<!-- This servletHolder will as the template-->
+		<!-- This servletHolder will as the template -->
 		<config name="servletHolder.WS_MGR">
 			<property name="path" value="/{name}" />
 			<prefix name="servlet">
 				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
-				<config name="config" property="config">
-
-				</config>
 			</prefix>
+			<config name="init-parameters">
+				<maxIdleTime value="36000000" />
+			</config>
+
 		</config>
 	</config>
 

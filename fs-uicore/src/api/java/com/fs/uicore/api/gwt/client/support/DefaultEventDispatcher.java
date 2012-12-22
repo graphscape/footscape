@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.EventDispatcherI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.FilterI;
 import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
@@ -48,8 +49,7 @@ public class DefaultEventDispatcher implements EventDispatcherI {
 	 * if ec is null,the listener will interesting any event.
 	 */
 	@Override
-	public <E extends Event> void addHandler(UiObjectI src, Type<E> ec,
-			HandlerI<E> eh) {
+	public <E extends Event> void addHandler(UiObjectI src, Type<E> ec, HandlerI<E> eh) {
 		FilterI ef = SimpleEventFilter.valueOf(ec, src);
 		this.addHandler(ef, eh);
 	}
@@ -96,21 +96,31 @@ public class DefaultEventDispatcher implements EventDispatcherI {
 			log.debug("total handlers:" + hL.size());
 		}
 		for (final EventHandlerEntry he : hL) {
+			if (he.isSynchronized()) {//
 
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+				this.tryHandle(true, he, evt);
 
-				@Override
-				public void execute() {
-					//
-					try {
-						he.tryHandle(evt);
-					} catch (Throwable t) {
-						log.error("event handle error ", t);
+			} else {// async
+				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
+					@Override
+					public void execute() {
+						DefaultEventDispatcher.this.tryHandle(false, he, evt);
 					}
-				}
-			});
+				});
+			}
+		}
+	}
 
+	protected void tryHandle(boolean sync, EventHandlerEntry he, Event evt) {
+		//
+		try {
+			he.tryHandle(evt);
+		} catch (Throwable t) {
+			log.error((sync ? "sync" : "async") + "event handle error ", t);
+			if (sync) {
+				throw UiException.toRtE(t);
+			}
 		}
 	}
 
