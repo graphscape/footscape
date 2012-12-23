@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wuzhen
@@ -65,12 +65,11 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 	public void removeChild(UiObjectI c);
 
 	// use EventBusI.addHandler
-	public <E extends Event> void addHandler(Event.Type<E> ec, HandlerI<E> l);
+	public <E extends Event> void addHandler(Event.Type<E> ec, EventHandlerI<E> l);
 
-	public <E extends Event> void addHandler(HandlerI<E> l);
+	public <E extends Event> void addHandler(EventHandlerI<E> l);
 
-	public <E extends Event> void addHandler(Event.FilterI ef,
-			Event.HandlerI<E> eh);
+	public <E extends Event> void addHandler(Event.FilterI ef, Event.EventHandlerI<E> eh);
 
 	public <E extends Event> void dispatch(E evt);
 
@@ -82,8 +81,7 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 
 	public String getId();
 
-	public <T extends UiObjectI> T getChild(Class<T> cls, String name,
-			boolean force);
+	public <T extends UiObjectI> T getChild(Class<T> cls, String name, boolean force);
 
 	public <T extends UiObjectI> T getChild(Class<T> cls, boolean force);
 

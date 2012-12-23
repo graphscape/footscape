@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
-import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.efilter.SimpleEventFilter;
@@ -86,7 +86,7 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 
 		this.addHandler(SimpleEventFilter.valueOf(ClickEvent.TYPE,
 				MenuItemWI.class, rt), //
-				new Event.HandlerI<ClickEvent>() {
+				new EventHandlerI<ClickEvent>() {
 
 					@Override
 					public void handle(ClickEvent e) {

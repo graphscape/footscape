@@ -3,14 +3,14 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ErrorEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class DefaultErrorListener implements HandlerI<ErrorEvent> {
+public class DefaultErrorListener implements EventHandlerI<ErrorEvent> {
 	/**
 	 * @param uiClientImpl
 	 */

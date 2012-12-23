@@ -8,8 +8,12 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- *
+ * 
  */
-public interface GroupChatControlI extends ControlI{
-	
+public interface GChatControlI extends ControlI {
+
+	public void join();
+
+	public GChatModel getChatModel();
+
 }

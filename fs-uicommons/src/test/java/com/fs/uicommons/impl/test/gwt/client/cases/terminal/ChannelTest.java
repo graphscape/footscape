@@ -3,14 +3,14 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.terminal;
 
-import com.fs.uicommons.api.gwt.client.channel.ChannelI;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelCloseEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelErrorEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelMessageEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelOpenEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointCloseEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointErrorEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointMessageEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointOpenEvent;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
@@ -34,11 +34,11 @@ public class ChannelTest extends TestBase {
 
 	@Override
 	protected void beforeClientStart(BeforeClientStartEvent e) {
-		ChannelI ti = this.client.getChild(ChannelI.class, true);
-		ti.addHandler(ChannelEvent.TYPE, new HandlerI<ChannelEvent>() {
+		EndPointI ti = this.client.getChild(EndPointI.class, true);
+		ti.addHandler(EndpointEvent.TYPE, new EventHandlerI<EndpointEvent>() {
 
 			@Override
-			public void handle(ChannelEvent e) {
+			public void handle(EndpointEvent e) {
 				ChannelTest.this.onChannelEvent(e);
 			}
 		});
@@ -61,30 +61,30 @@ public class ChannelTest extends TestBase {
 
 	}
 
-	public void onChannelEvent(ChannelEvent e) {
-		if (e instanceof ChannelOpenEvent) {
-			this.onOpen((ChannelOpenEvent) e);
-		} else if (e instanceof ChannelCloseEvent) {
-			this.onClose((ChannelCloseEvent) e);
-		} else if (e instanceof ChannelMessageEvent) {
+	public void onChannelEvent(EndpointEvent e) {
+		if (e instanceof EndpointOpenEvent) {
+			this.onOpen((EndpointOpenEvent) e);
+		} else if (e instanceof EndpointCloseEvent) {
+			this.onClose((EndpointCloseEvent) e);
+		} else if (e instanceof EndpointMessageEvent) {
 
-			this.onMessage((ChannelMessageEvent) e);
+			this.onMessage((EndpointMessageEvent) e);
 
-		} else if (e instanceof ChannelErrorEvent) {
-			this.onError((ChannelErrorEvent) e);
+		} else if (e instanceof EndpointErrorEvent) {
+			this.onError((EndpointErrorEvent) e);
 		}
 	}
 
 	/**
 	 * Dec 22, 2012
 	 */
-	private void onError(ChannelErrorEvent e) {
+	private void onError(EndpointErrorEvent e) {
 		//
 		System.out.println("channelerror:" + e);
 	}
 
-	public void onOpen(ChannelOpenEvent ce) {
-		ChannelI c = ce.getChannel();
+	public void onOpen(EndpointOpenEvent ce) {
+		EndPointI c = ce.getChannel();
 		System.out.println("channel opened:" + c.getUri());
 		opens++;
 		this.tryFinish("open-" + opens);
@@ -94,7 +94,7 @@ public class ChannelTest extends TestBase {
 	/**
 	 * Dec 22, 2012
 	 */
-	private void onMessage(ChannelMessageEvent e) {
+	private void onMessage(EndpointMessageEvent e) {
 		//
 		MessageData md = e.getMessage();
 		System.out.println("channel msg:" + md);
@@ -120,7 +120,7 @@ public class ChannelTest extends TestBase {
 	/**
 	 * Dec 22, 2012
 	 */
-	private void onClose(ChannelCloseEvent e) {
+	private void onClose(EndpointCloseEvent e) {
 		//
 		System.out.println("channel close,e:" + e);
 	

@@ -7,10 +7,9 @@ package com.fs.uicore.api.gwt.client.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.FilterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
@@ -22,10 +21,10 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
 public class EventHandlers {
 	public static class Entry {
 		private FilterI filter;
-		private HandlerI handler;
+		private EventHandlerI handler;
 		private boolean attached;
 
-		Entry(FilterI f, HandlerI h, boolean attached) {
+		Entry(FilterI f, EventHandlerI h, boolean attached) {
 			this.filter = f;
 			this.handler = h;
 			this.attached = attached;
@@ -40,7 +39,7 @@ public class EventHandlers {
 		this.owner = owner;
 	}
 
-	public <E extends Event> void addHandler(FilterI ef, HandlerI<E> eh) {
+	public <E extends Event> void addHandler(FilterI ef, EventHandlerI<E> eh) {
 		boolean attached = this.owner.isAttached();
 		Entry e = new Entry(ef, eh, attached);
 		this.entryList.add(e);

@@ -10,17 +10,11 @@ import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiFilterI.Context;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ModelEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -55,7 +49,7 @@ public abstract class WidgetBase extends ElementObjectSupport implements
 	public WidgetI model(ModelI txt) {
 		this.model = txt;
 		this.factory = this.model.getWidgetFactory();
-		this.model.addHandler(ModelEvent.TYPE, new HandlerI<ModelEvent>() {
+		this.model.addHandler(ModelEvent.TYPE, new EventHandlerI<ModelEvent>() {
 
 			@Override
 			public void handle(ModelEvent e) {

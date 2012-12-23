@@ -9,7 +9,7 @@ import com.fs.uicommons.api.gwt.client.drag.event.DraggingEvent;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.Size;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.DataEvent;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtClickHandler;
@@ -69,14 +69,14 @@ public class ImageCroper extends ElementObjectSupport {
 		this.elementWrapper.append(this.editingImageWrapper);
 
 		this.box = new ImageBox(this.editingImageWrapper.getElement());
-		this.box.addHandler(DragEndEvent.TYPE, new HandlerI<DragEndEvent>() {
+		this.box.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
 			@Override
 			public void handle(DragEndEvent e) {
 				ImageCroper.this.onDragEnd(e);
 			}
 		});
-		this.box.addHandler(DraggingEvent.TYPE, new HandlerI<DraggingEvent>() {
+		this.box.addHandler(DraggingEvent.TYPE, new EventHandlerI<DraggingEvent>() {
 
 			@Override
 			public void handle(DraggingEvent e) {

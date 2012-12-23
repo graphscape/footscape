@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.simple.SyncValueDeliver;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
@@ -46,7 +46,7 @@ public class ValueDeliverTest extends TestBase {
 
 		// add handler for furture value change.
 
-		HandlerI<ModelValueEvent> eh = new HandlerI<ModelValueEvent>() {
+		EventHandlerI<ModelValueEvent> eh = new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

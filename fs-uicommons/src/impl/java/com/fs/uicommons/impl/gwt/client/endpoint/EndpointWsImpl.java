@@ -2,18 +2,19 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 20, 2012
  */
-package com.fs.uicommons.impl.gwt.client.channel;
+package com.fs.uicommons.impl.gwt.client.endpoint;
 
-import com.fs.uicommons.api.gwt.client.channel.ChannelI;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelCloseEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelErrorEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelMessageEvent;
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelOpenEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointCloseEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointErrorEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointMessageEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointOpenEvent;
 import com.fs.uicommons.api.gwt.client.html5.websocket.WebSocketJSO;
+import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
@@ -26,7 +27,7 @@ import com.google.gwt.user.client.Window;
  * @author wu
  * 
  */
-public class ChannelImpl extends UiObjectSupport implements ChannelI {
+public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private WebSocketJSO socket;
 
@@ -34,7 +35,9 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 
 	private String uri;
 
-	public ChannelImpl() {
+	private MessageDispatcherI dispatcher0;
+
+	public EndpointWsImpl() {
 
 	}
 
@@ -47,14 +50,18 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 
 		UiClientI client = this.getClient(true);// .addh
 
-		client.addHandler(AfterClientStartEvent.TYPE, new HandlerI<AfterClientStartEvent>() {
+		client.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
 
 			@Override
 			public void handle(AfterClientStartEvent e) {
 				// terminai
-				ChannelImpl.this.onClientStart(e);
+				EndpointWsImpl.this.onClientStart(e);
 			}
 		});
+		// message dispatcher
+		MessageDispatcherI.FactoryI df = client.find(MessageDispatcherI.FactoryI.class, true);
+		this.dispatcher0 = df.get(0);// for end point
+
 	}
 
 	protected void onClientStart(AfterClientStartEvent e) {
@@ -76,7 +83,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 			@Override
 			public Object execute(Object t) {
 				//
-				ChannelImpl.this.onOpen(t);
+				EndpointWsImpl.this.onOpen(t);
 				return null;
 			}
 		});
@@ -85,7 +92,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 			@Override
 			public Object execute(String t) {
 				//
-				ChannelImpl.this.onMessage(t);
+				EndpointWsImpl.this.onMessage(t);
 				return null;
 			}
 		});
@@ -94,7 +101,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 			@Override
 			public Object execute(Object t) {
 				//
-				ChannelImpl.this.onClose(t);
+				EndpointWsImpl.this.onClose(t);
 				return null;
 			}
 		});
@@ -103,7 +110,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 			@Override
 			public Object execute(String t) {
 				//
-				ChannelImpl.this.onError(t);
+				EndpointWsImpl.this.onError(t);
 				return null;
 			}
 		});
@@ -130,30 +137,34 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 	}
 
 	protected void onOpen(Object evt) {
-		new ChannelOpenEvent(this).dispatch();
+		new EndpointOpenEvent(this).dispatch();
 	}
 
 	protected void onClose(Object evt) {
-		new ChannelCloseEvent(this).dispatch();
+		new EndpointCloseEvent(this).dispatch();
 
 	}
 
 	protected void onError(String jsonS) {
-		new ChannelErrorEvent(this, jsonS).dispatch();
+		new EndpointErrorEvent(this, jsonS).dispatch();
 
 	}
 
 	protected void onMessage(String jsonS) {
 		JSONValue jsonV = JSONParser.parseStrict(jsonS);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
-		new ChannelMessageEvent(this, md).dispatch();
+		// dispatch to #0 dispatcher.
+		this.dispatcher0.handle(md);// handler
+		// and event
+		new EndpointMessageEvent(this, md).dispatch();
+
 	}
 
 	/*
 	 * Dec 20, 2012
 	 */
 	@Override
-	public void addMessageHandler(String path, HandlerI<ChannelMessageEvent> hdl) {
+	public void addMessageHandler(String path, EventHandlerI<EndpointMessageEvent> hdl) {
 		//
 		this.addHandler(new MessageEventFilter(path), hdl);
 	}
@@ -161,7 +172,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.uicommons.api.gwt.client.channel.ChannelI#isOpen()
+	 * @see com.fs.uicommons.api.gwt.client.endpoint.EndPointI#isOpen()
 	 */
 	@Override
 	public boolean isOpen() {
@@ -172,7 +183,7 @@ public class ChannelImpl extends UiObjectSupport implements ChannelI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.uicommons.api.gwt.client.channel.ChannelI#getUri()
+	 * @see com.fs.uicommons.api.gwt.client.endpoint.EndPointI#getUri()
 	 */
 	@Override
 	public String getUri() {

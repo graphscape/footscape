@@ -7,7 +7,7 @@
 package com.fs.uicommons.api.gwt.client.widget.support;
 
 import com.fs.uicommons.api.gwt.client.AdjusterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.ElementObjectSupport;
@@ -53,7 +53,7 @@ public class AdjusterImpl extends ElementObjectSupport implements AdjusterI {
 	 * .api.gwt.client.core.Event.HandlerI)
 	 */
 	@Override
-	public void addClickHandler(HandlerI<ClickEvent> eh) {
+	public void addClickHandler(EventHandlerI<ClickEvent> eh) {
 		this.addHandler(ClickEvent.TYPE, eh);//
 
 	}

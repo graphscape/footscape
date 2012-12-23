@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -57,7 +57,7 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	protected void processChildActionModelAdd(final ActionModelI amodel) {
 		amodel.addHandler(new ModelValueEventFilter(ActionModelI.L_STATE),
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

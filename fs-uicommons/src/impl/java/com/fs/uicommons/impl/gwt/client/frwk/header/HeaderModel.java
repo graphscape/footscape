@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -35,7 +35,7 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	public ItemModel addItem(String name, Position pos, final ManagedModelI mgd) {
 		final ItemModel rt = new ItemModel(name);
 		rt.setPosition(pos);
-		rt.addTriggerHandler(new HandlerI<ModelValueEvent>() {
+		rt.addTriggerHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -45,7 +45,7 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 		rt.parent(this).cast();
 
 		// exclusive trigger
-		rt.addSelectHandler(new HandlerI<ModelValueEvent>() {
+		rt.addSelectHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

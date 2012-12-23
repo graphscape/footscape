@@ -10,7 +10,7 @@ import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.commons.Holder;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
@@ -41,7 +41,7 @@ public class PropertiesEditorTest extends TestBase {
 		assertTrue("should be attached.",edt.isAttached());
 		final Holder<ObjectPropertiesData> holder = new Holder<ObjectPropertiesData>();
 
-		edt.addHandler(ChangeEvent.TYPE, new HandlerI<ChangeEvent<?>>() {
+		edt.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
 
 			@Override
 			public void handle(ChangeEvent<?> e) {

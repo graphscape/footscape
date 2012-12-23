@@ -7,7 +7,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
@@ -43,7 +43,7 @@ public abstract class TestBase extends GWTTestCase {
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
 				new UiCoreTestGPI() };
 
-		factory = ClientLoader.getOrLoadClient(spis, new HandlerI<Event>() {
+		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {

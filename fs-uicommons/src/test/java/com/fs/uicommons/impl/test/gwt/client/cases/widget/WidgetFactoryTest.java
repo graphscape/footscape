@@ -11,7 +11,7 @@ import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.commons.Holder;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -39,7 +39,7 @@ public class WidgetFactoryTest extends TestBase {
 	public void testStringEditor() {
 		StringEditorI se = wf.create(StringEditorI.class);
 		final Holder<StringData> sdH = new Holder<StringData>();
-		se.addHandler(ChangeEvent.TYPE, new HandlerI<ChangeEvent<?>>() {
+		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
 
 			@Override
 			public void handle(ChangeEvent<?> e) {
@@ -55,7 +55,7 @@ public class WidgetFactoryTest extends TestBase {
 	public void testIntegerEditor() {
 		IntegerEditorI se = wf.create(IntegerEditorI.class);
 		final Holder<IntegerData> sdH = new Holder<IntegerData>();
-		se.addHandler(ChangeEvent.TYPE, new HandlerI<ChangeEvent<?>>() {
+		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
 
 			@Override
 			public void handle(ChangeEvent<?> e) {
@@ -73,7 +73,7 @@ public class WidgetFactoryTest extends TestBase {
 		ButtonI b = wf.create(ButtonI.class);
 		final Holder<Boolean> clicked = new Holder<Boolean>();
 		clicked.setTarget(false);
-		b.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		b.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

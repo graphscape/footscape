@@ -5,7 +5,7 @@ package com.fs.uicore.impl.test.gwt.client.cases;
 
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
@@ -28,7 +28,7 @@ public class ModelReplayerTest extends TestBase {
 		String key = "001";
 
 		root.addHandler(new ModelValueEventFilter(Location.valueOf("string1"),
-				key), new HandlerI<ModelValueEvent>() {
+				key), new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -40,7 +40,7 @@ public class ModelReplayerTest extends TestBase {
 		
 		
 		root.addHandler(new ModelValueEventFilter(Location.valueOf("list2"),
-				key), new HandlerI<ModelValueEvent>() {
+				key), new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -51,7 +51,7 @@ public class ModelReplayerTest extends TestBase {
 		root.createReplayer(key).replay();//replay for the handlers added before.
 
 		root.addHandler(new ModelValueEventFilter(Location.valueOf("list3")),
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

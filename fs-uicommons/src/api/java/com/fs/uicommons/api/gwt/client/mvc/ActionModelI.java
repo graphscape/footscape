@@ -5,7 +5,7 @@
 package com.fs.uicommons.api.gwt.client.mvc;
 
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.state.State;
@@ -38,9 +38,9 @@ public interface ActionModelI extends ModelI {
 
 	public ModelI getControlModel();
 
-	public void addTriggerHandler(HandlerI<ModelValueEvent> ah);
+	public void addTriggerHandler(EventHandlerI<ModelValueEvent> ah);
 
-	public void addProcessedHandler(HandlerI<ModelValueEvent> ah);
+	public void addProcessedHandler(EventHandlerI<ModelValueEvent> ah);
 
 	public void processed(ErrorInfosData eis);
 

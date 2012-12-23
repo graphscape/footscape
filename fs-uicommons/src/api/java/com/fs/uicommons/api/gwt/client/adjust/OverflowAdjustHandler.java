@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.AdjusterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -19,7 +19,7 @@ import com.fs.uicore.api.gwt.client.event.ClickEvent;
  * @author wuzhen
  * 
  */
-public class OverflowAdjustHandler implements HandlerI<ClickEvent> {
+public class OverflowAdjustHandler implements EventHandlerI<ClickEvent> {
 
 	@Override
 	public void handle(ClickEvent e) {

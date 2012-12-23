@@ -4,7 +4,7 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -218,12 +218,12 @@ public interface ModelI extends UiObjectI {
 
 	public String getName();
 
-	public void addDefaultValueHandler(HandlerI<ModelValueEvent> eh);
+	public void addDefaultValueHandler(EventHandlerI<ModelValueEvent> eh);
 
-	public void addValueHandler(Location loc, HandlerI<ModelValueEvent> eh);
+	public void addValueHandler(Location loc, EventHandlerI<ModelValueEvent> eh);
 
 	public void addValueHandler(Location loc, Object value,
-			HandlerI<ModelValueEvent> eh);
+			EventHandlerI<ModelValueEvent> eh);
 
 	public void handleValueWhenAvailable(Location loc,
 			UiCallbackI<Object, Object> callback);

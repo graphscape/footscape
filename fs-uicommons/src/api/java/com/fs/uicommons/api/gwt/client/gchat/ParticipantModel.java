@@ -1,0 +1,77 @@
+/**
+ * All right is from Author of the file,to be explained in comming days.
+ * Dec 23, 2012
+ */
+package com.fs.uicommons.api.gwt.client.gchat;
+
+import com.fs.uicore.api.gwt.client.support.ModelSupport;
+
+/**
+ * @author wu
+ * 
+ */
+public class ParticipantModel extends ModelSupport {
+
+	protected String accountId;
+
+	protected String nick;
+
+	protected String role;
+
+	/**
+	 * @param name
+	 */
+	public ParticipantModel(String name) {
+		super(name);
+	}
+
+	public String getId() {
+		return this.getName();
+	}
+
+	/**
+	 * @return the accountId
+	 */
+	public String getAccountId() {
+		return accountId;
+	}
+
+	/**
+	 * @param accountId
+	 *            the accountId to set
+	 */
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+
+	/**
+	 * @return the nick
+	 */
+	public String getNick() {
+		return nick;
+	}
+
+	/**
+	 * @param nick
+	 *            the nick to set
+	 */
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public String getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role
+	 *            the role to set
+	 */
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+}

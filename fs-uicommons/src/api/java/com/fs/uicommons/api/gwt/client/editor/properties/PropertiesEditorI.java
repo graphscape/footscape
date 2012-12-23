@@ -6,11 +6,7 @@ package com.fs.uicommons.api.gwt.client.editor.properties;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**

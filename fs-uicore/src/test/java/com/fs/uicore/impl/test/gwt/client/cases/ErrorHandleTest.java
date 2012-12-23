@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfoData;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
@@ -31,7 +31,7 @@ public class ErrorHandleTest extends TestBase {
 		this.eeList = new ArrayList<ErrorEvent>();
 		UiRequest req = new UiRequest();
 		req.setRequestPath("/handler2/testThrowable");
-		this.client.addHandler(ErrorEvent.TYPE, new HandlerI<ErrorEvent>() {
+		this.client.addHandler(ErrorEvent.TYPE, new EventHandlerI<ErrorEvent>() {
 
 			@Override
 			public void handle(ErrorEvent e) {

@@ -7,7 +7,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
@@ -26,7 +26,7 @@ public class ModelTest extends TestBase {
 		ModelI root = this.container.get(ModelI.class, true);
 
 		root.addHandler(new ModelValueEventFilter(Location.valueOf("string1")),
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -34,7 +34,7 @@ public class ModelTest extends TestBase {
 					}
 				});
 		root.addHandler(new ModelValueEventFilter(Location.valueOf("list2")),
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

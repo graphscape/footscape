@@ -14,7 +14,7 @@ import com.fs.uicommons.api.gwt.client.widget.table.TableI.CellI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.SimpleValueDeliverI.ValueConverterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -135,7 +135,7 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 	protected void syncWithPropertyModel(final String key,
 			final PropertyModel pm) {
 		pm.addValueHandler(PropertyModel.L_DEFAULT,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

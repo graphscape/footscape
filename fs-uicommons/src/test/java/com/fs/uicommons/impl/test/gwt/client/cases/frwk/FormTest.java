@@ -12,7 +12,7 @@ import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -37,7 +37,7 @@ public class FormTest extends TestBase {
 		System.out.println(this.root.dump());
 
 		FormModel fm = new FormModel("");
-		fm.addDefaultValueHandler(new HandlerI<ModelValueEvent>() {
+		fm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -54,7 +54,7 @@ public class FormTest extends TestBase {
 		this.delayTestFinish(timeoutMillis);
 		FieldModel f1m = fm.addField("field1", StringData.class);
 
-		f1m.addDefaultValueHandler(new HandlerI<ModelValueEvent>() {
+		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

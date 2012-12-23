@@ -7,7 +7,7 @@
 package com.fs.uicommons.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 
@@ -19,5 +19,5 @@ public interface AdjusterI extends ElementObjectI {
 
 	public WidgetI getOwner();
 
-	public void addClickHandler(HandlerI<ClickEvent> eh);
+	public void addClickHandler(EventHandlerI<ClickEvent> eh);
 }

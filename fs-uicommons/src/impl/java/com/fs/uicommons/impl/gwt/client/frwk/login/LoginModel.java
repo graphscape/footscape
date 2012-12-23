@@ -3,7 +3,6 @@ package com.fs.uicommons.impl.gwt.client.frwk.login;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.html5.storage.LocalStorageJSO;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;

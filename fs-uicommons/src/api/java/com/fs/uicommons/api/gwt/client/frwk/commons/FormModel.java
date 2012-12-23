@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -50,7 +50,7 @@ public class FormModel extends ModelSupport {
 		if (editorCallback != null) {// this should be some thing like
 										// "EditorInitializer".
 			rt.addValueHandler(FieldModel.L_EDITOR,
-					new HandlerI<ModelValueEvent>() {
+					new EventHandlerI<ModelValueEvent>() {
 
 						@Override
 						public void handle(ModelValueEvent e) {

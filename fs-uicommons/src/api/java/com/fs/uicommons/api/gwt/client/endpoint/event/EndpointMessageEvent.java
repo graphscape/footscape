@@ -2,18 +2,18 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 20, 2012
  */
-package com.fs.uicommons.api.gwt.client.channel.event;
+package com.fs.uicommons.api.gwt.client.endpoint.event;
 
-import com.fs.uicommons.api.gwt.client.channel.ChannelI;
+import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
  * @author wu
  * 
  */
-public class ChannelMessageEvent extends ChannelEvent {
+public class EndpointMessageEvent extends EndpointEvent {
 
-	public static final Type<ChannelMessageEvent> TYPE = new Type<ChannelMessageEvent>(ChannelEvent.TYPE);
+	public static final Type<EndpointMessageEvent> TYPE = new Type<EndpointMessageEvent>(EndpointEvent.TYPE);
 
 	protected MessageData message;
 
@@ -21,7 +21,7 @@ public class ChannelMessageEvent extends ChannelEvent {
 	 * @param tem
 	 * @param type
 	 */
-	public ChannelMessageEvent(ChannelI tem, MessageData msg) {
+	public EndpointMessageEvent(EndPointI tem, MessageData msg) {
 		super(TYPE, tem);
 		this.message = msg;
 	}

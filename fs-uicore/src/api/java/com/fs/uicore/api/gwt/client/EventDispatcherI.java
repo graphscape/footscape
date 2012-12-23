@@ -5,8 +5,8 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.FilterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
@@ -16,12 +16,12 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public interface EventDispatcherI {
 
-	public <E extends Event> void addHandler(UiObjectI src, HandlerI<E> l);
+	public <E extends Event> void addHandler(UiObjectI src, EventHandlerI<E> l);
 
 	public <E extends Event> void addHandler(UiObjectI src, Type<E> ec,
-			HandlerI<E> l);
+			EventHandlerI<E> l);
 
-	public <E extends Event> void addHandler(FilterI ef, HandlerI<E> eh);
+	public <E extends Event> void addHandler(FilterI ef, EventHandlerI<E> eh);
 
 	public void dispatch(Event e);
 }

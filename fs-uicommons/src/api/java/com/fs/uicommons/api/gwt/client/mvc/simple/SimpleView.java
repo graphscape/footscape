@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ClickEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -91,7 +91,7 @@ public class SimpleView extends ViewSupport {
 
 		b.parent(this.actionList);
 		// click event is raised in button,not button's model
-		b.addHandler(new ClickEventFilter(b), new HandlerI<ClickEvent>() {
+		b.addHandler(new ClickEventFilter(b), new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

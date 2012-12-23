@@ -9,7 +9,7 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.SimpleValueDeliverI.ValueConverterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
 import com.fs.uicore.api.gwt.client.state.State;
@@ -29,13 +29,13 @@ public class ControlSupport extends AbstractControl {
 	}
 
 	@Override
-	public void addActionEventHandler(String a, HandlerI<ActionEvent> eh) {
+	public void addActionEventHandler(String a, EventHandlerI<ActionEvent> eh) {
 		this.addHandler(new ActionEventFilter(a), eh);
 	}
 
 	@Override
 	public <T extends ActionEvent> void addActionEventHandler(Type<T> type,
-			String action, HandlerI<T> eh) {
+			String action, EventHandlerI<T> eh) {
 		this.addHandler(new ActionEventFilter(type, action), eh);
 	}
 

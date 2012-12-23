@@ -6,7 +6,7 @@ package com.fs.uicommons.api.gwt.client.mvc.support;
 
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -59,7 +59,7 @@ public class ActionModelSupport extends ModelSupport implements ActionModelI {
 	}
 
 	@Override
-	public void addTriggerHandler(HandlerI<ModelValueEvent> eh) {
+	public void addTriggerHandler(EventHandlerI<ModelValueEvent> eh) {
 		this.addHandler(new ModelValueEventFilter(L_STATE, TRIGGERED), eh);
 	}
 
@@ -71,7 +71,7 @@ public class ActionModelSupport extends ModelSupport implements ActionModelI {
 	 * fs.uicore.api.gwt.client.core.Event.HandlerI)
 	 */
 	@Override
-	public void addProcessedHandler(HandlerI<ModelValueEvent> ah) {
+	public void addProcessedHandler(EventHandlerI<ModelValueEvent> ah) {
 		this.addHandler(new ModelValueEventFilter(L_STATE, PROCESSED), ah);
 	}
 

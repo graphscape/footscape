@@ -30,11 +30,15 @@ public class Mvc {
 	}
 
 	public Mvc(ModelI m) {
-		this(m, null);
+		this(m, null, null);
 	}
 
 	public Mvc(ModelI m, ViewI v) {
 		this(m, v, null);
+	}
+
+	public Mvc(ModelI m, ControlI c) {
+		this(m, null, c);
 	}
 
 	public Mvc(ModelI m, ViewI v, ControlI c) {
@@ -53,8 +57,8 @@ public class Mvc {
 
 	public Mvc start(ModelI parent, WidgetI pview) {
 		if (this.model != null) {
-			if(this.model.getParent()==null){
-				this.model.parent(parent);				
+			if (this.model.getParent() == null) {
+				this.model.parent(parent);
 			}
 		}
 		if (this.view != null) {
@@ -67,8 +71,7 @@ public class Mvc {
 				this.managed = BossUtil.manage(this.model, this.view);
 
 				SimpleValueDeliver<Boolean, Boolean> sd = new SimpleValueDeliver<Boolean, Boolean>(
-						this.managed, ManagedModelI.L_SELECTED, this.model,
-						Mvc.L_VIEW_OPENED);
+						this.managed, ManagedModelI.L_SELECTED, this.model, Mvc.L_VIEW_OPENED);
 				sd.mapDefaultDirect();
 				sd.start();
 			}

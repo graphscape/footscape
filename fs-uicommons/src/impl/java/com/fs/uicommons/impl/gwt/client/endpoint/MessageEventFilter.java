@@ -2,9 +2,9 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 20, 2012
  */
-package com.fs.uicommons.impl.gwt.client.channel;
+package com.fs.uicommons.impl.gwt.client.endpoint;
 
-import com.fs.uicommons.api.gwt.client.channel.event.ChannelMessageEvent;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.core.Event;
 
 /**
@@ -24,10 +24,10 @@ public class MessageEventFilter implements Event.FilterI {
 	 */
 	@Override
 	public <T extends Event> T filter(Event e) {
-		if (!(e instanceof ChannelMessageEvent)) {
+		if (!(e instanceof EndpointMessageEvent)) {
 			return null;
 		}
-		ChannelMessageEvent me = (ChannelMessageEvent) e;
+		EndpointMessageEvent me = (EndpointMessageEvent) e;
 		String path = me.getPath();
 		if (this.path != null) {
 			if (!path.startsWith(this.path)) {// TODO arry path[]

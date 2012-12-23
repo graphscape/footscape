@@ -5,7 +5,7 @@
 package com.fs.uicommons.api.gwt.client.schedule;
 
 import com.fs.uicommons.api.gwt.client.schedule.event.ScheduleEvent;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
@@ -25,6 +25,6 @@ public interface SchedulerI extends UiObjectI {
 	}
 
 	public TaskI scheduleRepeat(String name, int intervelMS,
-			HandlerI<ScheduleEvent> eh);
+			EventHandlerI<ScheduleEvent> eh);
 
 }

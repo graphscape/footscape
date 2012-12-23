@@ -9,7 +9,7 @@ import com.fs.uicommons.impl.gwt.client.widget.panel.AbstractPanelWImpl;
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Size;
-import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.SimpleEventFilter;
 import com.fs.uicore.api.gwt.client.event.SizeChangeEvent;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -51,7 +51,7 @@ public class WindowPanelWImpl extends AbstractPanelWImpl implements
 		WindowI w = this.getContainer().get(WindowI.class, true);
 		//
 		this.addHandler(SimpleEventFilter.valueOf(SizeChangeEvent.TYPE,
-				WindowI.class, w), new Event.HandlerI<SizeChangeEvent>() {
+				WindowI.class, w), new EventHandlerI<SizeChangeEvent>() {
 
 			@Override
 			public void handle(SizeChangeEvent e) {

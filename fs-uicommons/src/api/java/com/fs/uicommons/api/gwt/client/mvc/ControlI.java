@@ -9,7 +9,7 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
@@ -33,9 +33,9 @@ public interface ControlI extends UiObjectI {
 
 	public void addActionProcessor(String a, ActionProcessorI ap);
 
-	public void addActionEventHandler(String a, HandlerI<ActionEvent> eh);
+	public void addActionEventHandler(String a, EventHandlerI<ActionEvent> eh);
 
 	public <T extends ActionEvent> void addActionEventHandler(
-			Event.Type<T> type, String action, HandlerI<T> eh);
+			Event.Type<T> type, String action, EventHandlerI<T> eh);
 
 }

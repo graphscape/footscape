@@ -20,6 +20,14 @@ public class MessageData extends UiData {
 
 	private ObjectPropertiesData payloads = new ObjectPropertiesData();
 
+	public MessageData() {
+
+	}
+
+	public MessageData(String path) {
+		this.setHeader("path", path);
+	}
+
 	public StringPropertiesData getHeaders() {
 		return headers;
 	}
@@ -41,6 +49,14 @@ public class MessageData extends UiData {
 
 	public void setHeader(String key, String value) {
 		this.headers.setProperty(key, value);
+	}
+
+	public String getString(String key, boolean force) {
+		return this.payloads.getString(key, force);
+	}
+
+	public String getString(String key) {
+		return this.payloads.getString(key);
 	}
 
 	public UiData getPayload(String key) {

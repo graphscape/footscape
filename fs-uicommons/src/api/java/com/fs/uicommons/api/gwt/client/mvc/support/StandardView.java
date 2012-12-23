@@ -11,7 +11,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.DOM;
@@ -68,7 +68,7 @@ public class StandardView extends ViewSupport {
 		// TODO model
 		rt = factory.create(ButtonI.class,
 				SimpleModel.valueOf("unknown", a.getName()));// TODO title i18n
-		rt.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

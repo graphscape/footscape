@@ -8,7 +8,7 @@ package com.fs.uicommons.impl.gwt.client.editor.image;
 
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.FileUrlDataEditorSupport;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.DataEvent;
@@ -67,7 +67,7 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements
 		imageCroper = new ImageCroper();
 
 		imageCroper.parent(this);//
-		imageCroper.addHandler(DataEvent.TYPE, new HandlerI<DataEvent>() {
+		imageCroper.addHandler(DataEvent.TYPE, new EventHandlerI<DataEvent>() {
 
 			@Override
 			public void handle(DataEvent e) {

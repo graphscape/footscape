@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
@@ -77,7 +77,7 @@ public class OffspringValueDeliverTest extends TestBase {
 		assertEquals("m2 's value should be updated to m111's loc1 value",
 				"value1", m2.getDefaultValue());
 
-		HandlerI<ModelValueEvent> eh = new HandlerI<ModelValueEvent>() {
+		EventHandlerI<ModelValueEvent> eh = new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

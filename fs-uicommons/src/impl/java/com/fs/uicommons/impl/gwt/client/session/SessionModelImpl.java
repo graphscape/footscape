@@ -2,7 +2,7 @@ package com.fs.uicommons.impl.gwt.client.session;
 
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.LazyI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -73,7 +73,7 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	 * Nov 24, 2012
 	 */
 	@Override
-	public void addAuthedHandler(HandlerI<ModelValueEvent> eh) {
+	public void addAuthedHandler(EventHandlerI<ModelValueEvent> eh) {
 		this.addValueHandler(L_IS_AUTHED, Boolean.TRUE, eh);
 	}
 

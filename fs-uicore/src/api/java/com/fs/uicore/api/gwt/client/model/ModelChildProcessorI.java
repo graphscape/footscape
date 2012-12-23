@@ -7,7 +7,7 @@ package com.fs.uicore.api.gwt.client.model;
 import java.util.List;
 
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.ModelChildEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 
@@ -32,7 +32,7 @@ public interface ModelChildProcessorI {
 			}
 			// for child adding event
 			model.addHandler(new ModelChildEventFilter(ModelI.class,null),
-			new HandlerI<ModelChildEvent>() {
+			new EventHandlerI<ModelChildEvent>() {
 
 				@Override
 				public void handle(ModelChildEvent e) {

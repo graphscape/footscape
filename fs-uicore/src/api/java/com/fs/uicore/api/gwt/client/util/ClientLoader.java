@@ -12,8 +12,7 @@ import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.consts.UiConstants;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
-import com.fs.uicore.api.gwt.client.core.ListenerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 
 /**
@@ -24,12 +23,12 @@ public class ClientLoader {
 	private static Map<String, GwtSPI.Factory> CACHE = new HashMap<String, GwtSPI.Factory>();
 
 	public static GwtSPI.Factory getOrLoadClient(GwtSPI[] spis,
-			HandlerI<Event> l) {
+			EventHandlerI<Event> l) {
 		return getOrLoadClient(spis, UiConstants.ROOTURI, l);
 	}
 
 	public static GwtSPI.Factory getOrLoadClient(GwtSPI[] spis, String rootUri,
-			HandlerI<Event> l) {
+			EventHandlerI<Event> l) {
 		String key = "";
 		for (int i = 0; i < spis.length; i++) {
 			key += spis[i] + ",";
@@ -46,12 +45,12 @@ public class ClientLoader {
 		return rt;
 	}
 
-	public static GwtSPI.Factory loadClient(GwtSPI[] spis, HandlerI<Event> l) {
+	public static GwtSPI.Factory loadClient(GwtSPI[] spis, EventHandlerI<Event> l) {
 		return loadClient(spis, UiConstants.ROOTURI, l);
 	}
 
 	public static GwtSPI.Factory loadClient(GwtSPI[] spis, String rootUri,
-			HandlerI<Event> l) {
+			EventHandlerI<Event> l) {
 
 		GwtSPI.Factory factory = GwtSPI.Factory.create();
 

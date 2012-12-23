@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -327,20 +327,20 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	 * .api.gwt.client.core.Event.HandlerI)
 	 */
 	@Override
-	public void addDefaultValueHandler(HandlerI<ModelValueEvent> eh) {
+	public void addDefaultValueHandler(EventHandlerI<ModelValueEvent> eh) {
 		this.addHandler(new ModelValueEventFilter(ModelI.L_DEFAULT), eh);
 
 	}
 
 	@Override
-	public void addValueHandler(Location loc, HandlerI<ModelValueEvent> eh) {
+	public void addValueHandler(Location loc, EventHandlerI<ModelValueEvent> eh) {
 		this.addHandler(new ModelValueEventFilter(loc), eh);
 
 	}
 
 	@Override
 	public void addValueHandler(Location loc, Object value,
-			HandlerI<ModelValueEvent> eh) {
+			EventHandlerI<ModelValueEvent> eh) {
 		this.addHandler(new ModelValueEventFilter(loc, value), eh);
 
 	}
@@ -394,7 +394,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 		Object value = this.getValue(loc);
 		if (value == null) {
 			// wait for available.
-			this.addHandler(new HandlerI<ModelValueEvent>() {
+			this.addHandler(new EventHandlerI<ModelValueEvent>() {
 
 				@Override
 				public void handle(ModelValueEvent e) {
@@ -420,7 +420,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 		// for child adding event
 		this.addHandler(new ModelChildEventFilter(cls, true, name),
 
-		new HandlerI<ModelChildEvent>() {
+		new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {
@@ -443,7 +443,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 			lazy.get();//
 		}
 
-		this.addValueHandler(loc, value, new HandlerI<ModelValueEvent>() {
+		this.addValueHandler(loc, value, new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -463,7 +463,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 			cb.execute((X) this);
 		}
 
-		this.addValueHandler(L_COMMIT, new HandlerI<ModelValueEvent>() {
+		this.addValueHandler(L_COMMIT, new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

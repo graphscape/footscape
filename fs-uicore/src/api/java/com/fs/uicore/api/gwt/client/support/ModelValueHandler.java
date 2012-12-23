@@ -4,14 +4,14 @@
  */
 package com.fs.uicore.api.gwt.client.support;
 
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wu
  * 
  */
-public abstract class ModelValueHandler<T> implements HandlerI<ModelValueEvent> {
+public abstract class ModelValueHandler<T> implements EventHandlerI<ModelValueEvent> {
 
 	private T defValue;
 

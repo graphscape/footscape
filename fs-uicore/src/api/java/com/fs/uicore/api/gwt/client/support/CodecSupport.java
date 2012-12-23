@@ -5,7 +5,6 @@ package com.fs.uicore.api.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.core.UiData;
-import com.google.gwt.json.client.JSONNull;
 
 /**
  * @author wu

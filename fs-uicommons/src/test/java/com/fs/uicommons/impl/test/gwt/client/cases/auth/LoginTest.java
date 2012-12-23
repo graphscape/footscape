@@ -20,7 +20,7 @@ import com.fs.uicommons.impl.gwt.client.frwk.header.ItemView;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -61,7 +61,7 @@ public class LoginTest extends TestBase {
 		this.loginControl = this.manager.getControl(LoginControlI.class, true);
 
 		this.loginControl.addActionEventHandler("submit",
-				new HandlerI<ActionEvent>() {
+				new EventHandlerI<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent e) {
@@ -102,7 +102,7 @@ public class LoginTest extends TestBase {
 				});
 
 		this.loginControl.addActionEventHandler(ActionFailedEvent.TYPE,
-				"submit", new HandlerI<ActionFailedEvent>() {
+				"submit", new EventHandlerI<ActionFailedEvent>() {
 
 					@Override
 					public void handle(ActionFailedEvent e) {
@@ -111,7 +111,7 @@ public class LoginTest extends TestBase {
 				});
 
 		ActionModelI submitA = ControlUtil.getAction(loginModel, "submit");
-		submitA.addProcessedHandler(new HandlerI<ModelValueEvent>() {
+		submitA.addProcessedHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -136,7 +136,7 @@ public class LoginTest extends TestBase {
 		if (iv == null) {
 
 			imLogin.addValueHandler(ModelI.L_LAST_WIDGET,
-					new HandlerI<ModelValueEvent>() {
+					new EventHandlerI<ModelValueEvent>() {
 
 						@Override
 						public void handle(ModelValueEvent e) {

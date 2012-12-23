@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ClickEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -44,7 +44,7 @@ public class ItemView extends LightWeightView {
 		this.menu.setVisible(false);// init is not shown.
 		this.menu.parent(this);
 
-		this.anchor.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		this.anchor.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
@@ -53,7 +53,7 @@ public class ItemView extends LightWeightView {
 		});
 
 		this.model.addValueHandler(ItemModel.L_ISSELECTED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -113,7 +113,7 @@ public class ItemView extends LightWeightView {
 	protected void processChildAdd(final ItemModel iw) {// second depth
 
 		MenuItemWI mi = this.menu.addItem(iw.getName());
-		mi.addHandler(new ClickEventFilter(mi), new HandlerI<ClickEvent>() {
+		mi.addHandler(new ClickEventFilter(mi), new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

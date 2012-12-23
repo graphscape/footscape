@@ -7,14 +7,14 @@ import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.util.FrwkUtil;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class LogoutHeaderItemHandler implements HandlerI<ModelValueEvent> {
+public class LogoutHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 
 	public LogoutHeaderItemHandler() {
 

@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -44,11 +44,11 @@ public interface HeaderModelI extends ModelI {
 			this.name = name;
 		}
 
-		public void addTriggerHandler(HandlerI<ModelValueEvent> eh) {
+		public void addTriggerHandler(EventHandlerI<ModelValueEvent> eh) {
 			this.addValueHandler(L_TRIGGERED_MS, eh);
 		}
 
-		public void addSelectHandler(HandlerI<ModelValueEvent> eh) {
+		public void addSelectHandler(EventHandlerI<ModelValueEvent> eh) {
 			this.addValueHandler(L_ISSELECTED, eh);
 		}
 
@@ -58,6 +58,11 @@ public interface HeaderModelI extends ModelI {
 
 		public String getName() {
 			return name;
+		}
+		
+		public ItemModel getItem(String name, boolean force){
+			ItemModel rt = this.getChild(ItemModel.class, name,force);
+			return rt;
 		}
 
 		public ItemModel addItem(String name) {
@@ -75,7 +80,7 @@ public interface HeaderModelI extends ModelI {
 
 		public ItemModel addItem(String name, final ManagedModelI mgd) {
 			final ItemModel rt = this.addItem(name);
-			rt.addTriggerHandler(new HandlerI<ModelValueEvent>() {
+			rt.addTriggerHandler(new EventHandlerI<ModelValueEvent>() {
 
 				@Override
 				public void handle(ModelValueEvent e) {

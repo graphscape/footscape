@@ -5,13 +5,13 @@
 package com.fs.uicore.api.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wu
  * 
  */
-public class FilterListenerSupport<E extends Event> implements HandlerI<E> {
+public class FilterListenerSupport<E extends Event> implements EventHandlerI<E> {
 
 	protected Event.Type<?> type;
 	protected Class sourceClass;

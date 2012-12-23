@@ -19,7 +19,7 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
@@ -90,7 +90,7 @@ public class FormView extends ViewSupport {
 
 		PropertyModel pm = this.propertiesEditor.addFieldModel(cm.getName(),
 				etype);
-		pm.addDefaultValueHandler(new HandlerI<ModelValueEvent>() {
+		pm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

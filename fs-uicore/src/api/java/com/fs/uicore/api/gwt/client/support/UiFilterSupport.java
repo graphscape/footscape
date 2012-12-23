@@ -3,7 +3,6 @@
  */
 package com.fs.uicore.api.gwt.client.support;
 
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiFilterI;

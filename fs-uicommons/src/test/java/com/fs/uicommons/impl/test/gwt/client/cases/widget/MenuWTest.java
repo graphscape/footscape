@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuWI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.SimpleEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.google.gwt.core.client.Scheduler;
@@ -43,7 +44,7 @@ public class MenuWTest extends TestBase {
 
 		// handler to listen the menu item click event.
 
-		Event.HandlerI<ClickEvent> eh = new Event.HandlerI<ClickEvent>() {
+		EventHandlerI<ClickEvent> eh = new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

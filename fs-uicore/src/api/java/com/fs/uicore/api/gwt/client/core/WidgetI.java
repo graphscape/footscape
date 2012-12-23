@@ -43,7 +43,7 @@ public interface WidgetI extends ElementObjectI {
 
 	// public AdjusterI addAdjuster(String name);//
 
-	// public AdjusterI addAdjuster(String name, HandlerI<ClickEvent> eh);
+	// public AdjusterI addAdjuster(String name, EventHandlerI<ClickEvent> eh);
 
 	@Deprecated
 	// use ElementWrapper.click()

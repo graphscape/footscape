@@ -16,7 +16,7 @@ import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoControl;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoModel;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -45,7 +45,7 @@ public class EchoTest extends TestBase {
 
 		EchoModel fm = new EchoModel("");// is a form model
 		// listen the form data
-		fm.addDefaultValueHandler(new HandlerI<ModelValueEvent>() {
+		fm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -57,7 +57,7 @@ public class EchoTest extends TestBase {
 		control.model(fm);//
 		control.parent(this.manager);// for attach
 		// listen to the control event
-		control.addActionEventHandler("echo", new HandlerI<ActionEvent>() {
+		control.addActionEventHandler("echo", new EventHandlerI<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
@@ -76,7 +76,7 @@ public class EchoTest extends TestBase {
 		this.delayTestFinish(timeoutMillis);
 		FieldModel f1m = fm.getDefaultForm().addField("field1", StringData.class);
 
-		f1m.addDefaultValueHandler(new HandlerI<ModelValueEvent>() {
+		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

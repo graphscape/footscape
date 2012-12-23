@@ -6,7 +6,7 @@ package com.fs.uicommons.api.gwt.client.widget.support;
 import com.fs.uicommons.api.gwt.client.AdjusterI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -97,7 +97,7 @@ public class WidgetSupport extends WidgetBase implements ModelChildProcessorI {
 
 
 	//@Override
-	public AdjusterI addAdjuster(String name, HandlerI<ClickEvent> eh) {
+	public AdjusterI addAdjuster(String name, EventHandlerI<ClickEvent> eh) {
 		AdjusterI rt = this.addAdjuster(name);
 		rt.addClickHandler(eh);
 		return rt;

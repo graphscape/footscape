@@ -18,7 +18,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.Size;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtClickHandler;
 import com.fs.uicore.api.gwt.client.support.ElementObjectSupport;
@@ -32,7 +32,7 @@ import com.google.gwt.user.client.Element;
  * 
  */
 public class ImageBox extends ElementObjectSupport implements DragableI {
-	HandlerI<DragEndEvent> eh;
+	EventHandlerI<DragEndEvent> eh;
 
 	public static final String DK_TOP = "top";
 	public static final String DK_LEFT = "left";
@@ -96,21 +96,21 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 		UiClientI c = this.getClient(true);//
 		DraggerI drag = c.getChild(DraggerI.class, true);
 		drag.addDragable(this);
-		this.addHandler(DragStartEvent.TYPE, new HandlerI<DragStartEvent>() {
+		this.addHandler(DragStartEvent.TYPE, new EventHandlerI<DragStartEvent>() {
 
 			@Override
 			public void handle(DragStartEvent e) {
 				ImageBox.this.onStart(e);
 			}
 		});
-		this.addHandler(DragEndEvent.TYPE, new HandlerI<DragEndEvent>() {
+		this.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
 			@Override
 			public void handle(DragEndEvent e) {
 				ImageBox.this.onEnd(e);
 			}
 		});
-		this.addHandler(DraggingEvent.TYPE, new HandlerI<DraggingEvent>() {
+		this.addHandler(DraggingEvent.TYPE, new EventHandlerI<DraggingEvent>() {
 
 			@Override
 			public void handle(DraggingEvent e) {
@@ -121,15 +121,13 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	}
 
 	protected void onPlus() {
-		Size size = this.elementWrapper.getAbsoluteRectangle().getSize()
-				.multiple(1.1);
+		Size size = this.elementWrapper.getAbsoluteRectangle().getSize().multiple(1.1);
 		this.elementWrapper.resize(size);
 		this.updateDecos();
 	}
 
 	protected void onMinus() {
-		Size size = this.elementWrapper.getAbsoluteRectangle().getSize()
-				.multiple(0.9);
+		Size size = this.elementWrapper.getAbsoluteRectangle().getSize().multiple(0.9);
 		this.elementWrapper.resize(size);
 		this.updateDecos();
 	}
@@ -172,21 +170,19 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 
 		log(e);
 	}
-	protected void updateDecos(){
+
+	protected void updateDecos() {
 		// assuming boxRect and outerRect is in the same position context.
 
 		// the follwing 4 decorator must transform to the same position context
 		// as the box and outer.
-		Rectangle boxRect = skipThisPositionContext(this.elementWrapper
-				.getAbsoluteRectangle());
+		Rectangle boxRect = skipThisPositionContext(this.elementWrapper.getAbsoluteRectangle());
 
-		Rectangle outerRect = skipThisPositionContext(this.outer
-				.getAbsoluteRectangle());
+		Rectangle outerRect = skipThisPositionContext(this.outer.getAbsoluteRectangle());
 		// left deco
 		{// left margin
 			Point tl = outerRect.getTopLeft();
-			Point br = Point.valueOf(boxRect.getTopLeft().getX(), outerRect
-					.getBottomLeft().getY());
+			Point br = Point.valueOf(boxRect.getTopLeft().getX(), outerRect.getBottomLeft().getY());
 
 			Rectangle rect = new Rectangle(tl, br);
 			this.getDeco(DK_LEFT, true).moveAndResize(rect);
@@ -211,8 +207,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 		}
 		{// bottom margin
 			Point tl = boxRect.getBottomLeft();
-			Point br = Point.valueOf(boxRect.getRightX(),
-					outerRect.getBottomY());
+			Point br = Point.valueOf(boxRect.getRightX(), outerRect.getBottomY());
 			Rectangle rect = new Rectangle(tl, br);
 			this.getDeco(DK_BOTTOM, true).moveAndResize(rect);
 
@@ -254,11 +249,11 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	}
 
 	/*
-	 *Nov 24, 2012
+	 * Nov 24, 2012
 	 */
 	@Override
 	public Element getDragedElement() {
-		// 
+		//
 		return this.element;
 	}
 

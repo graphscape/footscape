@@ -11,8 +11,8 @@ import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.EventDispatcherI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.FilterI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.efilter.SimpleEventFilter;
@@ -41,7 +41,7 @@ public class DefaultEventDispatcher implements EventDispatcherI {
 	}
 
 	@Override
-	public <E extends Event> void addHandler(UiObjectI src, HandlerI<E> l) {
+	public <E extends Event> void addHandler(UiObjectI src, EventHandlerI<E> l) {
 		this.addHandler(src, null, l);
 	}
 
@@ -49,13 +49,13 @@ public class DefaultEventDispatcher implements EventDispatcherI {
 	 * if ec is null,the listener will interesting any event.
 	 */
 	@Override
-	public <E extends Event> void addHandler(UiObjectI src, Type<E> ec, HandlerI<E> eh) {
+	public <E extends Event> void addHandler(UiObjectI src, Type<E> ec, EventHandlerI<E> eh) {
 		FilterI ef = SimpleEventFilter.valueOf(ec, src);
 		this.addHandler(ef, eh);
 	}
 
 	@Override
-	public <E extends Event> void addHandler(FilterI ef, HandlerI<E> eh) {
+	public <E extends Event> void addHandler(FilterI ef, EventHandlerI<E> eh) {
 		this.handlerList.add(new EventHandlerEntry(ef, eh));
 	}
 

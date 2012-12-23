@@ -54,7 +54,7 @@ public class LoginControl extends ControlSupport implements LoginControlI {
 		super.doAttach();
 		UiClientI c = this.getClient(true);
 		// listen client start event,trigger auth action,
-		// c.addHandler(ClientStartEvent.TYPE, new HandlerI<ClientStartEvent>()
+		// c.addHandler(ClientStartEvent.TYPE, new EventHandlerI<ClientStartEvent>()
 		// {
 		//
 		// @Override

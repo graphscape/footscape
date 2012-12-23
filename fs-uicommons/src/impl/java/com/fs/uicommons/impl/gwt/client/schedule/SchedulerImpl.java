@@ -7,7 +7,7 @@ package com.fs.uicommons.impl.gwt.client.schedule;
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
 import com.fs.uicommons.api.gwt.client.schedule.event.ScheduleEvent;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.core.client.Scheduler;
 
@@ -25,7 +25,7 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI,
 	 */
 	@Override
 	public TaskI scheduleRepeat(String name, int intervalMS,
-			HandlerI<ScheduleEvent> eh) {
+			EventHandlerI<ScheduleEvent> eh) {
 		TaskI rt = this.getTask(name, false);
 		if (rt == null) {
 			TaskImpl rti = new TaskImpl(name, intervalMS);

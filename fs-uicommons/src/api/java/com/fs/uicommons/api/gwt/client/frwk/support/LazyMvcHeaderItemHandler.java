@@ -9,15 +9,14 @@ import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
-import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wuzhen
  * 
  */
-public class LazyMvcHeaderItemHandler implements HandlerI<ModelValueEvent> {
+public class LazyMvcHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 
 	protected ItemModel headerItem;
 
@@ -45,10 +44,11 @@ public class LazyMvcHeaderItemHandler implements HandlerI<ModelValueEvent> {
 
 		HeaderModelI hm = this.getFrwkModel(parent).getChild(
 				HeaderModelI.class, true);
-		if (this.menuItem == null) {
+		if (this.menuItem == null) {//top menu item
 			this.headerItem = hm.addItem(this.lazyMvc.getName(),
 					HeaderModelI.ItemModel.P_RIGHT);
 		} else {
+			//second level menu item.
 			this.headerItem = hm.addItem(new String[] { this.menuItem,
 					this.lazyMvc.getName() }, HeaderModelI.ItemModel.P_RIGHT);
 		}

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
-import com.fs.uicommons.api.gwt.client.mvc.Constants;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
@@ -24,7 +23,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -35,8 +34,7 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  * @author wuzhen
  * 
  */
-public abstract class AbstractControl extends UiObjectSupport implements
-		ControlI, ModelChildProcessorI {
+public abstract class AbstractControl extends UiObjectSupport implements ControlI, ModelChildProcessorI {
 
 	protected String name;
 
@@ -87,8 +85,8 @@ public abstract class AbstractControl extends UiObjectSupport implements
 	 * @see com.fs.uicommons.api.gwt.client.mvc.ControlI#getModel()
 	 */
 	@Override
-	public ModelI getModel() {
-		return this.model;
+	public <T extends ModelI> T getModel() {
+		return (T) this.model;
 	}
 
 	@Override
@@ -107,7 +105,7 @@ public abstract class AbstractControl extends UiObjectSupport implements
 
 	protected void processChildAModelAdd(ActionModelI amodel) {
 		amodel.addHandler(new ModelValueEventFilter(ActionModelI.L_STATE),
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -256,7 +254,7 @@ public abstract class AbstractControl extends UiObjectSupport implements
 	 * .lang.String, com.fs.uicore.api.gwt.client.core.Event.HandlerI)
 	 */
 	@Override
-	public void addActionEventHandler(String a, HandlerI<ActionEvent> eh) {
+	public void addActionEventHandler(String a, EventHandlerI<ActionEvent> eh) {
 		// TODO Auto-generated method stub
 
 	}

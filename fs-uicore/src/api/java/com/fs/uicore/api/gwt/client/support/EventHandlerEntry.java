@@ -17,10 +17,10 @@ import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 public class EventHandlerEntry {
 
 	private Event.FilterI filter;
-	private Event.HandlerI handler;
+	private Event.EventHandlerI handler;
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EventHandlerEntry.class);
 
-	public EventHandlerEntry(Event.FilterI f, Event.HandlerI<?> h) {
+	public EventHandlerEntry(Event.FilterI f, Event.EventHandlerI<?> h) {
 		this.filter = f;
 		this.handler = h;
 	}
@@ -35,7 +35,7 @@ public class EventHandlerEntry {
 	/**
 	 * @return the handler
 	 */
-	public Event.HandlerI<?> getHandler() {
+	public Event.EventHandlerI<?> getHandler() {
 		return handler;
 	}
 

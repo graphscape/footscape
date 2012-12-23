@@ -6,7 +6,7 @@ package com.fs.uicore.impl.test.gwt.client.cases;
 
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Size;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.SizeChangeEvent;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.impl.test.gwt.client.helper.WindowResizeHelper;
@@ -28,7 +28,7 @@ public class WindowTest extends TestBase {
 	public void _testResize() {
 
 		final WindowI w = this.container.get(WindowI.class, true);
-		w.addHandler(SizeChangeEvent.TYPE, new HandlerI<SizeChangeEvent>() {
+		w.addHandler(SizeChangeEvent.TYPE, new EventHandlerI<SizeChangeEvent>() {
 
 			@Override
 			public void handle(SizeChangeEvent e) {

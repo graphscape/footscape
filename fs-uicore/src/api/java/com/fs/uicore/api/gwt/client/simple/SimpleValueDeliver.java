@@ -6,7 +6,7 @@ package com.fs.uicore.api.gwt.client.simple;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueDeliverI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.SimpleValueDeliverSupport;
 
@@ -32,7 +32,7 @@ public class SimpleValueDeliver<S, T> extends SimpleValueDeliverSupport<S, T> {
 	@Override
 	public ValueDeliverI start() {
 
-		HandlerI<ModelValueEvent> eh = new HandlerI<ModelValueEvent>() {
+		EventHandlerI<ModelValueEvent> eh = new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {

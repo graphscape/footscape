@@ -3,6 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client.core;
 
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 
@@ -29,17 +30,15 @@ public class Event {
 
 	}
 
-	public static interface SyncHandlerI<E extends Event> extends HandlerI<E>, SynchronizedI {
+	public static interface SyncHandlerI<E extends Event> extends EventHandlerI<E>, SynchronizedI {
 
 	}
 
-	public static interface AsyncHandlerI<E extends Event> extends HandlerI<E> {
+	public static interface AsyncHandlerI<E extends Event> extends EventHandlerI<E> {
 
 	}
 
-	public static interface HandlerI<E extends Event> {
-
-		public void handle(E e);
+	public static interface EventHandlerI<E extends Event> extends HandlerI<E> {
 
 	}
 

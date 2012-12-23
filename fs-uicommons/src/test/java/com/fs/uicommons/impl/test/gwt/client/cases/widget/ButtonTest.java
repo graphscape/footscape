@@ -5,7 +5,7 @@ package com.fs.uicommons.impl.test.gwt.client.cases.widget;
 
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.google.gwt.dom.client.Node;
@@ -23,7 +23,7 @@ public class ButtonTest extends TestBase {
 		final ButtonI b = wf.create(ButtonI.class);
 		// hope this handler is called after the button's own handler for
 		// setting the element innerText.
-		b.getModel().addHandler(ModelValueEvent.TYPE, new HandlerI<ModelValueEvent>() {
+		b.getModel().addHandler(ModelValueEvent.TYPE, new EventHandlerI<ModelValueEvent>() {
 
 			@Override
 			public void handle(ModelValueEvent e) {
@@ -46,7 +46,7 @@ public class ButtonTest extends TestBase {
 	public void testButton() {
 		//
 		ButtonI b = wf.create(ButtonI.class);
-		b.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		b.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

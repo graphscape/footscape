@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI.TaskI;
 import com.fs.uicommons.api.gwt.client.schedule.event.ScheduleEvent;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wu
@@ -23,7 +23,7 @@ public class SchedulerTest extends TestBase {
 	public void testScheduler() {
 		SchedulerI sc = this.container.get(SchedulerI.class, true);
 		sc.scheduleRepeat("test", this.intervalMs,
-				new HandlerI<ScheduleEvent>() {
+				new EventHandlerI<ScheduleEvent>() {
 
 					@Override
 					public void handle(ScheduleEvent e) {
