@@ -20,6 +20,10 @@ public interface EndPointI extends UiObjectI {
 	public void addMessageHandler(String path, EventHandlerI<EndpointMessageEvent> hdl);
 
 	public boolean isOpen();
+	
+	public boolean isBond();
+	
+	public String getSessionId();
 
 	public String getUri();
 

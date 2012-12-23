@@ -45,8 +45,7 @@ public class ChannelTest extends TestBase {
 	}
 
 	@Override
-	protected void onClientStart(AfterClientStartEvent e) {
-		String sid = this.client.getSessionId();
+	protected void afterClientStart(AfterClientStartEvent e) {
 
 	}
 
@@ -55,7 +54,6 @@ public class ChannelTest extends TestBase {
 		this.finishing.add("open-1");
 		this.finishing.add("serverIsReady");
 		this.finishing.add("ping/success");
-		
 
 		this.delayTestFinish(this.timeoutMillis * 10);
 
@@ -106,8 +104,8 @@ public class ChannelTest extends TestBase {
 			req.setPayload("text", StringData.valueOf("hello"));
 			e.getChannel().sendMessage(req);
 			this.tryFinish("serverIsReady");
-		} 
-		
+		}
+
 		if (path.endsWith("ping/success")) {
 			StringData textD = (StringData) md.getPayload("text", true);
 			System.out.println(textD);
@@ -123,7 +121,7 @@ public class ChannelTest extends TestBase {
 	private void onClose(EndpointCloseEvent e) {
 		//
 		System.out.println("channel close,e:" + e);
-	
+
 		closes++;
 
 		this.tryFinish("close-" + closes);//
@@ -131,7 +129,7 @@ public class ChannelTest extends TestBase {
 			MessageData req = new MessageData();
 			req.setHeader("path", "/ping/ping");
 			req.setPayload("text", StringData.valueOf("hello2"));
-			
+
 			e.getChannel().sendMessage(req);
 		}
 

@@ -21,8 +21,8 @@ import com.fs.uicore.api.gwt.client.core.UiFilterI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ErrorEvent;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
@@ -35,8 +35,9 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu TOTO rename to UiCoreI and impl.
  */
 public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
-	private String sessionId;
-
+	
+	private String clientId;
+	
 	private CodecI.FactoryI cf;
 
 	private RootI root;
@@ -47,16 +48,23 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	public UiClientImpl(RootI root) {
 		this.root = root;
-		this.filterList.add(new LastFilter(this));
+
+		this.filterList.add(new LocalRequestFilter());
+		this.filterList.add(new RemoteRequestFilter(this));
 
 	}
 
 	protected void processResponse(UiResponse res, JSONValue resJson, UiCallbackI<UiResponse, Object> cb) {
-		try {
-			CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
-			ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
+		CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
+		ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
 
-			ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
+		ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
+		this.processResponse(res, dt, eis, cb);
+	}
+
+	protected void processResponse(UiResponse res, ObjectPropertiesData dt, ErrorInfosData eis,
+			UiCallbackI<UiResponse, Object> cb) {
+		try {
 
 			res.onResponse(dt, eis);
 
@@ -75,7 +83,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		// um.setDefaultProperty(this);// TODO//
 
-		this.addFilter(new ErrorResponseFilter(this));
+		this.addFilter(0, new ErrorResponseFilter(this));
 		this.addHandler(ErrorEvent.TYPE, new DefaultErrorListener());
 		new StateChangeEvent(this).dispatch();// TODO
 
@@ -115,12 +123,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	 * Client got the sessionId from server,client stared on. Nov 14, 2012
 	 */
 	protected void onInitResponse(UiResponse t) {
-		StringData sd = (StringData) t.getPayloads().getProperty("sessionId");
+		StringData sd = (StringData) t.getPayloads().getProperty("clientId",true);
 		String sid = sd.getValue();
 		if (sid == null) {
 			throw new UiException("got a null sessionId");
 		}
-		this.sessionId = sd.getValue();
+		this.clientId = sd.getValue();
 		ObjectPropertiesData opd = t.getPayload("parameters", true);//
 		// parameters:
 		this.parameters = new MapProperties<String>();
@@ -131,7 +139,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		}
 
-		new AfterClientStartEvent(this, this.sessionId).dispatch();
+		new AfterClientStartEvent(this, this.clientId).dispatch();
 	}
 
 	public String getParameter(String key, String def) {
@@ -149,10 +157,15 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	@Override
 	public void addFilter(UiFilterI f) {
+		this.addFilter(0, f);//
+	}
+
+	@Override
+	public void addFilter(int idx, UiFilterI f) {
 		// NOTE this may be called at the spi active time,there is no
 		// LasterFilter added at that time.
 
-		this.filterList.add(this.filterList.size() - 1, f);
+		this.filterList.add(idx, f);
 
 	}
 
@@ -212,9 +225,9 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	 * Nov 26, 2012
 	 */
 	@Override
-	public String getSessionId() {
+	public String getClientId() {
 		//
-		return this.sessionId;
+		return this.clientId;
 	}
 
 	/*

@@ -5,19 +5,21 @@
 package com.fs.uicommons.impl.gwt.client.endpoint;
 
 import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointBondEvent;
 import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointCloseEvent;
 import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointErrorEvent;
 import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointMessageEvent;
 import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointOpenEvent;
+import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicommons.api.gwt.client.html5.websocket.WebSocketJSO;
 import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -35,6 +37,10 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private String uri;
 
+	private String sessionId;
+
+	private boolean bond;
+
 	private MessageDispatcherI dispatcher0;
 
 	public EndpointWsImpl() {
@@ -47,28 +53,39 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-
-		UiClientI client = this.getClient(true);// .addh
-
-		client.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
+		this.getEventBus(true).addHandler(AfterAuthEvent.TYPE, new EventHandlerI<AfterAuthEvent>() {
 
 			@Override
-			public void handle(AfterClientStartEvent e) {
-				// terminai
-				EndpointWsImpl.this.onClientStart(e);
+			public void handle(AfterAuthEvent t) {
+				EndpointWsImpl.this.afterAuth(t);
 			}
 		});
+		UiClientI client = this.getClient(true);// .addh
+
 		// message dispatcher
 		MessageDispatcherI.FactoryI df = client.find(MessageDispatcherI.FactoryI.class, true);
 		this.dispatcher0 = df.get(0);// for end point
+		this.dispatcher0.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new ServerIsReadyMH(
+				this));
 
+		this.dispatcher0.addHandler(Path.valueOf("/terminal/binding/success", '/'),
+				new BIndingSuccessMH(this));
 	}
 
-	protected void onClientStart(AfterClientStartEvent e) {
-		UiClientI client = (UiClientI) e.getSource();
+	/**
+	 * Dec 23, 2012
+	 */
+	protected void afterAuth(AfterAuthEvent t) {
+		this.sessionId = t.getSessionId();// session id is got from
+											// LoginControlI.
+		// now start connect and bond session with channel/terminal
+		this.start();
+	}
 
-		String sid = client.getSessionId();
+	protected void start() {
+		UiClientI client = this.getClient(true);//
 
+		String clientId = client.getClientId();//
 		String host = Window.Location.getHostName();
 		String port = Window.Location.getPort();
 		port = "8080";// for testing.
@@ -131,6 +148,9 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	public void sendMessage(MessageData req) {
 		//
 		this.assertSocketOpen();
+		if (this.sessionId != null) {
+			req.setHeader("sessionId", this.sessionId);//
+		}
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.socket.send(jsS);
@@ -155,7 +175,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
 		// dispatch to #0 dispatcher.
 		this.dispatcher0.handle(md);// handler
-		// and event
+		// and raise a event
 		new EndpointMessageEvent(this, md).dispatch();
 
 	}
@@ -188,6 +208,32 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public String getUri() {
 		return this.uri;
+	}
+
+	/*
+	 * Dec 23, 2012
+	 */
+	@Override
+	public boolean isBond() {
+		//
+		return this.bond;
+	}
+
+	/*
+	 * Dec 23, 2012
+	 */
+	@Override
+	public String getSessionId() {
+		//
+		return this.sessionId;
+	}
+
+	/**
+	 * Dec 23, 2012
+	 */
+	public void bindingSuccess() {
+		this.bond = true;
+		new EndpointBondEvent(this, this.sessionId).dispatch();
 	}
 
 }

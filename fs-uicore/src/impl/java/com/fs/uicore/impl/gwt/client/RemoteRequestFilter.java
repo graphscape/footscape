@@ -23,11 +23,11 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public class LastFilter implements UiFilterI {
+public class RemoteRequestFilter implements UiFilterI {
 
 	private UiClientImpl client;
 
-	public LastFilter(UiClientImpl c) {
+	public RemoteRequestFilter(UiClientImpl c) {
 		this.client = c;
 	}
 
@@ -38,10 +38,10 @@ public class LastFilter implements UiFilterI {
 		UiRequest req = fc.getRequest();
 		if (!req.isInit()) {
 			// sessionid
-			if (this.client.getSessionId() == null) {
-				throw new UiException("sessionId is null,cannot continue,please re init to get a sessionId");
+			if (this.client.getClientId() == null) {
+				throw new UiException("clientId is null,cannot continue,please re init to get a sessionId");
 			}
-			req.setHeader(UiRequest.SESSION_ID, this.client.getSessionId());
+			req.setHeader(UiRequest.SESSION_ID, this.client.getClientId());
 		}
 
 		// if the path is relative,it will be explained to prefix with
@@ -55,6 +55,11 @@ public class LastFilter implements UiFilterI {
 			req.setRequestPath(path);//
 		}
 		String url = this.client.getUrl();
+
+		this.send(req, url, fc, cb);
+	}
+
+	protected void send(UiRequest req, String url, final Context fc, final UiCallbackI<UiResponse, Object> cb) {
 
 		Resource res = new Resource(url);
 		ObjectPropertiesData ds = req.getPayloads();
@@ -76,13 +81,13 @@ public class LastFilter implements UiFilterI {
 			public void onFailure(Method method, Throwable exception) {
 				//
 				// TODO
-				LastFilter.this.onFailure(exception); //
+				RemoteRequestFilter.this.onFailure(exception); //
 			}
 
 			@Override
 			public void onSuccess(Method method, JSONValue response) {
 				//
-				LastFilter.this.onSuccess(fc, response, cb);
+				RemoteRequestFilter.this.onSuccess(fc, response, cb);
 				//
 			}
 		};

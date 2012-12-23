@@ -4,6 +4,7 @@
 package com.fs.gridservice.commons.impl.handler.global.terminal;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
@@ -36,8 +37,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 	}
 
 	@Handle("auth")
-	public void handleAuth(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE,
-			RequestI req) {
+	public void handleAuth(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
 		String accId = (String) reqE.getMessage().getPayload("accountId", true);
 		String pass = (String) reqE.getMessage().getPayload("password", true);
 
@@ -51,12 +51,29 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 			s.setProperty(SessionGd.TERMIANAlID, tid);// binding tid;
 			String sid = this.sessionManager.createSession(s);
 			// binding session with tid:
-			this.terminalManager.bindingSession(tid, sid);
-			MessageI msg = this.newResponseSuccessMessage(reqE);
-			msg.setPayload("sessionId", sid);
-			this.sendMessage(msg);
+			this.binding(reqE, tid, s);
 		} else {
 
 		}
+	}
+
+	@Handle("binding")
+	public void handleBinding(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
+		String sid = reqE.getMessage().getString("sessionId");
+		SessionGd s = this.sessionManager.getSession(sid);
+		if (s == null) {
+			throw new FsException("todo error process");
+		}
+		String tid = reqE.getTerminalId();
+		this.binding(reqE, tid, s);
+	}
+
+	protected void binding(TerminalMsgReceiveEW reqE, String tid, SessionGd session) {
+		String sid = session.getId();
+		this.terminalManager.bindingSession(tid, sid);
+		MessageI msg = this.newResponseSuccessMessage(reqE);
+		msg.setPayload("sessionId", sid);
+		this.sendMessage(msg);
+
 	}
 }

@@ -15,10 +15,10 @@ public interface SessionModelI extends ModelI {
 
 	public static final Location L_IS_ANONYMOUS = Location.valueOf("_isAnonymous");
 
-	public void setLoginId(String sid);
+	public void setSessionId(String sid);
 
 	public String getSessionId();
-
+	
 	public void setAccount(String acc);
 
 	public String getAccount();

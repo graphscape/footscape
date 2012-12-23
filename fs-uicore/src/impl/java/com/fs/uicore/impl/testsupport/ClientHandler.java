@@ -43,9 +43,9 @@ public class ClientHandler extends HandlerSupport {
 	@Handle("init")
 	public void handleInit(HandleContextI hc, RequestI req, ResponseI res) {
 
-		String sid = "test-session-001";
+		String cid = "test-client-001";
 
-		hc.getResponse().setPayload("sessionId", sid);// TODO
+		hc.getResponse().setPayload("clientId", cid);// TODO
 
 		hc.getResponse().setPayload("parameters", this.clientParameters);
 	}

@@ -5,16 +5,16 @@
 package com.fs.uicommons.api.gwt.client.gchat.event;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatEvent;
+import com.fs.uicommons.api.gwt.client.gchat.GChatGroupEvent;
 import com.fs.uicore.api.gwt.client.core.Event;
 
 /**
  * @author wu
  * 
  */
-public class GChatJoinEvent extends GChatEvent {
+public class GChatJoinEvent extends GChatGroupEvent {
 
-	public static final Event.Type<GChatJoinEvent> TYPE = new Event.Type<GChatJoinEvent>(GChatEvent.TYPE);
+	public static final Event.Type<GChatJoinEvent> TYPE = new Event.Type<GChatJoinEvent>(GChatGroupEvent.TYPE);
 
 	protected String participantId;
 	

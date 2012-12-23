@@ -14,7 +14,7 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	}
 
 	@Override
-	public void setLoginId(String sid) {
+	public void setSessionId(String sid) {
 		this.setDefaultValue(sid);
 	}
 

@@ -14,25 +14,15 @@ public abstract class GChatEvent extends Event {
 
 	public static final Event.Type<GChatEvent> TYPE = new Event.Type<GChatEvent>();
 
-	protected String groupId;
-
 	/**
 	 * @param type
 	 */
-	public GChatEvent(Type<? extends GChatEvent> type, GChatControlI gc, String gid) {
+	public GChatEvent(Type<? extends GChatEvent> type, GChatControlI gc) {
 		super(type, gc);
-		this.groupId = gid;
 	}
 
 	public GChatControlI getGChat() {
 		return this.getSource(GChatControlI.class);
-	}
-
-	/**
-	 * @return the groupId
-	 */
-	public String getGroupId() {
-		return groupId;
 	}
 
 }

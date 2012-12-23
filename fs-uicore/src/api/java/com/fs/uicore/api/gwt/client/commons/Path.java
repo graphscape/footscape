@@ -106,7 +106,9 @@ public class Path {
 			return false;
 		}
 		Path p2 = (Path) obj;
-
+		if (p2.size() != this.size()) {
+			return false;
+		}
 		for (int i = 0; i < this.nameList.size(); i++) {
 			String o1 = this.nameList.get(i);
 			String o2 = p2.nameList.get(i);
@@ -126,6 +128,15 @@ public class Path {
 	public String toString() {
 		//
 		return "class:" + this.getClass() + ",names:" + this.nameList;
+	}
+
+	/*
+	 * Dec 23, 2012
+	 */
+	@Override
+	public int hashCode() {
+		//
+		return this.nameList.hashCode();
 	}
 
 }

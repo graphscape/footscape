@@ -49,7 +49,7 @@ public class FilterTest extends TestBase {
 		opd.setProperty("integer2", IntegerData.valueOf(2));
 		req.setPayload("objectProperties", opd);
 		final ObjectPropertiesData exp = req.getPayloads();
-		this.client.addFilter(new UiFilterSupport() {
+		this.client.addFilter(0, new UiFilterSupport() {
 
 			@Override
 			protected void filterRequest(Context fc) {
@@ -79,8 +79,7 @@ public class FilterTest extends TestBase {
 		// delayTestFinish(10000);// wait the callback
 	}
 
-	private void onResponseEcho(UiRequest req, ObjectPropertiesData expected,
-			UiResponse res) {
+	private void onResponseEcho(UiRequest req, ObjectPropertiesData expected, UiResponse res) {
 		//
 		String freq = req.getHeader(K_FILTER_TEST);
 		assertEquals("filter request check failed.", this.EXPECTED1, freq);

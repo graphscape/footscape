@@ -1,7 +1,9 @@
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
 import com.fs.uicommons.api.gwt.client.ErrorCodes;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
+import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -36,8 +38,7 @@ public class SubmitAP extends APSupport {
 				req.setPayload("isSaved", BooleanData.valueOf(true));
 				req.setPayload("type", StringData.valueOf("registered"));
 				req.setPayload("email", StringData.valueOf(acc1.getEmail()));
-				req.setPayload("password",
-						StringData.valueOf(acc1.getPassword()));
+				req.setPayload("password", StringData.valueOf(acc1.getPassword()));
 			} else if (acc2.isValid()) {
 				req.setPayload("isSaved", BooleanData.valueOf(true));
 				req.setPayload("type", StringData.valueOf("anonymous"));
@@ -77,8 +78,7 @@ public class SubmitAP extends APSupport {
 		}
 		LoginModelI lm = c.getModel();
 
-		boolean isSaved = res.getRequest().getPayLoadAsBoolean("isSaved",
-				Boolean.FALSE);//
+		boolean isSaved = res.getRequest().getPayLoadAsBoolean("isSaved", Boolean.FALSE);//
 		if (isSaved) {// successed for saved,do nothing,remain the same
 
 			lm.setIsUsingSavedAccout(false);// allow user to input with view
@@ -100,11 +100,11 @@ public class SubmitAP extends APSupport {
 				acc.invalid();//
 			}
 		}
-		this.doLoginSuccess(lm, res);
+		this.doLoginSuccess((LoginControlI) c, lm, res);
 
 	}
 
-	private void doLoginSuccess(LoginModelI lm, UiResponse res) {
+	private void doLoginSuccess(LoginControlI c, LoginModelI lm, UiResponse res) {
 
 		SessionModelI sm = lm.getSessionModel();
 
@@ -113,19 +113,19 @@ public class SubmitAP extends APSupport {
 		BooleanData isAnony = (BooleanData) opd.getProperty("isAnonymous");
 
 		sm.setIsAnonymous(isAnony.getValue());
-		StringData sid = (StringData) opd.getProperty("loginId");
+		StringData sidD = (StringData) opd.getProperty("sessionId");
 		StringData accId = (StringData) opd.getProperty("accountId");
 		sm.setAccount(accId.getValue());
-		sm.setLoginId(sid.getValue());// session id.
+		sm.setSessionId(sidD.getValue());// session id.
 
 		sm.setLoginRequired(false);//
 		sm.setAuthed(true);//
+		new AfterAuthEvent(c, sidD.getValue()).dispatch();
 	}
 
-
 	@Override
-	protected void processResponseWithError(final ControlI c, final String a,
-			UiResponse res, ErrorInfosData eis) {
+	protected void processResponseWithError(final ControlI c, final String a, UiResponse res,
+			ErrorInfosData eis) {
 		UiRequest req = res.getRequest();
 		AccountsLDW accs = AccountsLDW.getInstance();
 
@@ -139,7 +139,7 @@ public class SubmitAP extends APSupport {
 			LoginModelI lm = (LoginModelI) c.getModel();
 			Boolean isSaved = req.getPayLoadAsBoolean("isSaved", true);
 			String type = req.getPayLoadAsString("type", true);
-			
+
 			if (isSaved) {// only process auto auth
 				if (type.equals("registered")) {//
 					RegisteredAccountLDW acc1 = accs.getRegistered();

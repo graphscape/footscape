@@ -21,9 +21,11 @@ public interface UiClientI extends UiObjectI {
 
 	public void sendRequest(UiRequest req, UiCallbackI<UiResponse, Object> res);
 
+	public void addFilter(int idx, UiFilterI f);
+	
 	public void addFilter(UiFilterI f);
 
-	public String getSessionId();
+	public String getClientId();
 
 	public RootI getRoot();
 
@@ -34,7 +36,7 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, boolean force);
 
 	public CodecI.FactoryI getCodecFactory();
-	
+
 	public void start();//
 
 }

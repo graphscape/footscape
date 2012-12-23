@@ -5,12 +5,15 @@ package com.fs.uicommons.impl.test.handler;
 
 import java.util.UUID;
 
+import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.engine.api.support.HandlerSupport;
+import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.session.SessionManagerI;
 
 /**
  * @author wu
@@ -18,6 +21,19 @@ import com.fs.engine.api.support.HandlerSupport;
  */
 public class LoginHandler extends HandlerSupport {
 
+	protected SessionManagerI smanager;
+
+
+	/*
+	 *Dec 23, 2012
+	 */
+	@Override
+	public void active(ActiveContext ac) {
+		// 
+		super.active(ac);
+		this.smanager = this.container.find(SessionManagerI.class,true);
+		
+	}
 	/* */
 	@Override
 	public void handle(HandleContextI sc) {
@@ -28,9 +44,13 @@ public class LoginHandler extends HandlerSupport {
 
 	@Handle("submit")
 	public void handleSubmit(RequestI req, ResponseI res) {
+		SessionGd s = new SessionGd();
+		
+		String sid = this.smanager.createSession(s);
+		
 		PropertiesI<Object> pts = req.getPayloads();
 		res.setPayload("isAnonymous", false);
-		res.setPayload("loginId", "login-001");//
+		res.setPayload("sessionId", sid);//
 		res.setPayload("accountId", "acc-001");// account?
 	}
 

@@ -7,8 +7,6 @@ package com.fs.uicommons.impl.gwt.client.message;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.mortbay.log.Log;
-
 import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicommons.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicommons.api.gwt.client.message.support.CollectionHandler;
@@ -38,13 +36,14 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 */
 	@Override
 	public void handle(MessageData t) {
+		logger.debug("msg:" + t);
 		String path = t.getHeader("path", true);
-		Path p = Path.valueOf(path);
+		Path p = Path.valueOf(path, '/');
 		boolean match = false;
 		for (Map.Entry<Path, CollectionHandler<MessageData>> en : this.handlers.entrySet()) {
 			Path pi = en.getKey();
 
-			if (pi.isSubPath(p)) {
+			if (pi.isSubPath(p, true)) {
 				match = true;
 				CollectionHandler<MessageData> h = en.getValue();
 				h.handle(t);
@@ -56,7 +55,8 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				Log.warn("msg:" + t + " has no handler match it.");
+				logger.info("path:" + path + " with msg:" + t + " has no handler match it in dispatcher:"
+						+ this.getName() + ",all handlers:" + this.handlers);
 			}
 		}
 

@@ -91,7 +91,7 @@ public class TestBase extends GWTTestCase {
 	protected void onEvent(Event e) {
 		System.out.println(this.getClass().getName() + ":" + e);
 		if (e instanceof AfterClientStartEvent) {
-			this.onClientStart((AfterClientStartEvent) e);
+			this.afterClientStart((AfterClientStartEvent) e);
 		} else if (e instanceof BeforeClientStartEvent) {
 			this.beforeClientStart((BeforeClientStartEvent) e);
 		}
@@ -101,7 +101,7 @@ public class TestBase extends GWTTestCase {
 
 	}
 
-	protected void onClientStart(AfterClientStartEvent e) {
+	protected void afterClientStart(AfterClientStartEvent e) {
 
 	}
 

@@ -25,8 +25,8 @@ public final class WebSocketJSO extends JavaScriptObject {
 
 	}
 
-	public static WebSocketJSO newInstance(String uri,boolean force) {
-		
+	public static WebSocketJSO newInstance(String uri, boolean force) {
+
 		WebSocketJSO rt = tryCreate(uri);
 		if (force && rt == null) {
 			String agent = Window.Navigator.getUserAgent();
@@ -47,7 +47,6 @@ public final class WebSocketJSO extends JavaScriptObject {
 		}
 		return null;
 	}-*/;
-
 
 	public native void onOpen(UiCallbackI<Object, Object> handler)
 	/*-{
@@ -84,7 +83,15 @@ public final class WebSocketJSO extends JavaScriptObject {
 
 	public native short getReadyState()
 	/*-{
-		return this.readyState;
+		var rt = this.readyState;
+		//FOR:Caused by: com.google.gwt.dev.shell.HostedModeException: 
+		//Something other than a short was returned from JSNI method 
+		//'@com.fs.uicommons.api.gwt.client.html5.websocket.WebSocketJSO::getReadyState()': 
+		//JS value of type undefined, expected short
+		if(rt == undefined){
+			rt = -1;
+		}
+		return rt;
 	}-*/;
 
 	/**
