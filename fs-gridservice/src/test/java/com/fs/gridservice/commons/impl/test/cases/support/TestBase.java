@@ -8,15 +8,11 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.event.AfterActiveEvent;
-import com.fs.commons.api.event.ListenerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.impl.test.mock.MockClient;
 import com.fs.gridservice.commons.impl.test.mock.MockClientFactory;
 import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
-import com.fs.gridservice.core.api.DataGridI;
-import com.fs.gridservice.core.api.DgFactoryI;
 
 /**
  * @author wu
@@ -37,23 +33,6 @@ public class TestBase extends TestCase {
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
-		sm.getContainer()
-				.getEventBus()
-				.addListener(AfterActiveEvent.class,
-						new ListenerI<AfterActiveEvent>() {
-
-							@Override
-							public void handle(AfterActiveEvent t) {
-								Object obj = t.getSource();//
-								if (obj instanceof DgFactoryI) {
-									DataGridI dg = ((DgFactoryI) obj)
-											.getInstance();
-									dg.destroyAll();// NOTE clean
-													// memory.
-								}
-
-							}
-						});
 
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
@@ -79,8 +58,7 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockEventDriveClient newEventDriveClient(String accId,
-			boolean start) throws Exception {
+	protected MockEventDriveClient newEventDriveClient(String accId, boolean start) throws Exception {
 		MockClient mc = this.newClientAndAuth(accId);
 
 		MockEventDriveClient rt = new MockEventDriveClient(mc);

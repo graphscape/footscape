@@ -76,7 +76,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 						EventDispatcherSupport.this.handleBeforeDgCloseEvent(t);
 					}
 				});
-		this.eventQueue = this.resolveEventQueue();
+	
 
 	}
 
@@ -113,7 +113,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		if (this.executor != null) {
 			throw new FsException("already started?");
 		}
-
+		this.eventQueue = this.resolveEventQueue();
 		this.executor = Executors.newFixedThreadPool(1);// TODO
 		this.future = this.executor.submit(new Callable<Object>() {
 

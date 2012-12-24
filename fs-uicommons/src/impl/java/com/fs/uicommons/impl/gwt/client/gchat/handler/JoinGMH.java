@@ -35,7 +35,7 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 		String pid = mw.getJoinParticipantId();
 
 		GChatModel cm = this.control.getChatModel();
-		ChatGroupModel group = cm.createGroup(gid);
+		ChatGroupModel group = cm.getGroup(gid, true);//
 		ParticipantModel p = new ParticipantModel(pid);
 		p.setAccountId(mw.getAccountId());
 		p.setNick(mw.getAccountId());

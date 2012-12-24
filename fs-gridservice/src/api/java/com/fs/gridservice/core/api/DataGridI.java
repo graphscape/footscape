@@ -45,8 +45,6 @@ public interface DataGridI {
 	public <T> DgSetI<T> getSet(String name);
 
 	public <T> DgTopicI<T> getTopic(String name);
-
-	public void destroyAll();
 	
 	public void dump();
 

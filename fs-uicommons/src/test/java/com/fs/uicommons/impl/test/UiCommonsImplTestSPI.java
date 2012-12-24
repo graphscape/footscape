@@ -37,6 +37,7 @@ public class UiCommonsImplTestSPI extends SPISupport {
 		//
 		MockAuthProvider ap = new MockAuthProvider();
 		ac.getContainer().addObject(this, "MOCK_AP", ap);
+
 	}
 
 	/*

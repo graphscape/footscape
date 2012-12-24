@@ -83,6 +83,7 @@ import com.fs.uicommons.impl.gwt.client.frwk.login.LoginControl;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginModel;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
+import com.fs.uicommons.impl.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.impl.gwt.client.manage.BossControlImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossModelImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossView;
@@ -923,7 +924,16 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ChatGroupModel;
 			}
 		});
+		InstanceOf.addChecker(new CheckerSupport(MessageModel.class) {
 
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof MessageModel;
+			}
+		});
+		
+		
 	}
 
 }

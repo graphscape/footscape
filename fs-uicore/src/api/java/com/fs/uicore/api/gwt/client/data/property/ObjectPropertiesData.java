@@ -22,7 +22,7 @@ public class ObjectPropertiesData extends PropertiesData<UiData> {
 		String rt = this.getString(key);
 
 		if (rt == null && force) {
-			throw new UiException("no value for key:" + key);
+			throw new UiException("no value for key:" + key + " in properties data:" + this);
 		}
 		return rt;
 	}

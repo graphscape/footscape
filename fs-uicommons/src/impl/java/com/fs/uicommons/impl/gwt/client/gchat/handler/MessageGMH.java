@@ -7,6 +7,7 @@ package com.fs.uicommons.impl.gwt.client.gchat.handler;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
 import com.fs.uicommons.impl.gwt.client.gchat.MessageModel;
@@ -38,6 +39,7 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 		MessageModel mm = new MessageModel("message", mw.getTarget());//
 
 		group.addMessage(mm);
+		new GChatMessageEvent(this.control, gid, mw).dispatch();
 	}
 
 	/*

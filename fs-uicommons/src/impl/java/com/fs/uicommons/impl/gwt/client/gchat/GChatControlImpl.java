@@ -64,40 +64,37 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		this.endpoint = this.getClient(true).getChild(EndPointI.class, true);
 		//
 
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE,
-				new EventHandlerI<EndpointOpenEvent>() {
+		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
 
-					@Override
-					public void handle(EndpointOpenEvent t) {
-						GChatControlImpl.this.onEndpointOpen(t);
-					}
-				});
+			@Override
+			public void handle(EndpointOpenEvent t) {
+				GChatControlImpl.this.onEndpointOpen(t);
+			}
+		});
 
-		this.endpoint.addHandler(EndpointCloseEvent.TYPE,
-				new EventHandlerI<EndpointCloseEvent>() {
+		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
 
-					@Override
-					public void handle(EndpointCloseEvent t) {
-						GChatControlImpl.this.onEndpointClose(t);
-					}
-				});
+			@Override
+			public void handle(EndpointCloseEvent t) {
+				GChatControlImpl.this.onEndpointClose(t);
+			}
+		});
 
-		this.endpoint.addHandler(EndpointBondEvent.TYPE,
-				new EventHandlerI<EndpointBondEvent>() {
+		this.endpoint.addHandler(EndpointBondEvent.TYPE, new EventHandlerI<EndpointBondEvent>() {
 
-					@Override
-					public void handle(EndpointBondEvent t) {
-						GChatControlImpl.this.onEndpointAuth(t);
-					}
-				});
+			@Override
+			public void handle(EndpointBondEvent t) {
+				GChatControlImpl.this.onEndpointAuth(t);
+			}
+		});
 
 		if (this.endpoint.isBond()) {
 			this.setConnected(true);//
 		}
 		//
 
-		MessageDispatcherI.FactoryI df = this.getClient(true).getChild(
-				MessageDispatcherI.FactoryI.class, true);
+		MessageDispatcherI.FactoryI df = this.getClient(true).getChild(MessageDispatcherI.FactoryI.class,
+				true);
 		this.dispatcher0 = df.get(0);// this is endpoint message from server
 										// side
 		this.dispatcher1 = df.get(1);// this is for gchat sub message type.
@@ -105,11 +102,9 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		this.dispatcher0.addHandler(Path.valueOf("gchat"), this.dispatcher1);
 
 		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), true,
-				new JoinGMH(this));
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), true, new JoinGMH(this));
 		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"), true,
-				new MessageGMH(this));
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"), true, new MessageGMH(this));
 
 	}
 
@@ -146,7 +141,10 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		//
 		GChatModel m = this.getModel();
 		String gid = m.getGroupIdToJoin(true);
-		ChatGroupModel gm = m.createGroup(gid);
+		ChatGroupModel gm = m.getGroup(gid, false);
+		if (gm == null) {//
+			gm = m.createGroup(gid);
+		}
 		MessageData req = new MessageData();
 		req.setHeader("path", "/gchat/join");
 		req.setHeader("groupId", gid);
@@ -229,8 +227,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	public void send() {
 		String cid = this.getChatModel().getCurrentGroupId();
 		if (cid == null) {
-			throw new UiException(
-					"please setCurrentGroupId() before send message");
+			throw new UiException("please setCurrentGroupId() before send message");
 		}
 		ChatGroupModel gm = this.getChatModel().getGroup(cid, true);
 		String text = gm.getMessageToSend();
@@ -240,7 +237,8 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		MessageData req = new MessageData();
 		req.setHeader("path", "/gchat/message");
 		req.setHeader("groupId", cid);
-		MessageData msg = new MessageData("text");
+		req.setHeader("format", "message");//
+		MessageData msg = new MessageData("plain-text");
 		msg.setHeader("format", "text");
 		msg.setPayload("text", StringData.valueOf(text));
 		req.setPayload("message", msg);

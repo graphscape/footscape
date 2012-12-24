@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.ClassUtil;
@@ -52,10 +53,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	protected DgFactoryHC factory;
 
+	protected final ReentrantLock factoryLock = new ReentrantLock();
+
 	/**
 	 * @param client
 	 */
 	public DataGridHC(HazelcastClient client, DgFactoryHC df) {
+		
 		this.client = client;
 		this.factory = df;
 		this.objectCache = Collections
@@ -141,14 +145,12 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
-	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1,
-			Class<? extends W> wcls) {
+	public <V, W> DgQueueI<W> getQueue(String name, Class<W> wcls1, Class<? extends W> wcls) {
 		DgQueueI<V> t = this.getQueue(name);
 		return new ProxyWrapperQueue(t, wcls);
 	}
 
-	public Map<String, DgObjectI> getObjectMapByType(
-			Instance.InstanceType prefix) {
+	public Map<String, DgObjectI> getObjectMapByType(Instance.InstanceType prefix) {
 		Map<String, DgObjectI> rt = this.objectCache.get(prefix);
 		if (rt == null) {
 			synchronized (this.objectCache) {
@@ -162,8 +164,16 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		return rt;
 	}
 
-	public <T extends DgObjectI> T getOrCreateDgObject(
-			Instance.InstanceType type, String name) {
+	public <T extends DgObjectI> T getOrCreateDgObject(final Instance.InstanceType type, final String name) {
+		this.factoryLock.lock();
+		try {
+			return DataGridHC.this.getOrCreateDgObjectInternal(type, name);
+		} finally {
+			this.factoryLock.unlock();
+		}
+	}
+
+	protected <T extends DgObjectI> T getOrCreateDgObjectInternal(Instance.InstanceType type, String name) {
 
 		Map<String, DgObjectI> objects = this.getObjectMapByType(type);
 
@@ -188,16 +198,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		// end of sync
 	}
 
-	protected HazelcastObjectWrapper objectWrap(String name,
-			Instance.InstanceType type, Object ins) {
-		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes
-				.get(type);
+	protected HazelcastObjectWrapper objectWrap(String name, Instance.InstanceType type, Object ins) {
+		Class<? extends HazelcastObjectWrapper> wtype = this.wrapperTypes.get(type);
 		if (wtype == null) {
 			throw new FsException("no class registered for type:" + type);
 		}
-		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] {
-				String.class, Instance.class, DataGridHC.class }, new Object[] {
-				name, ins, this });
+		HazelcastObjectWrapper rt = ClassUtil.newInstance(wtype, new Class[] { String.class, Instance.class,
+				DataGridHC.class }, new Object[] { name, ins, this });
 
 		return rt;
 	}
@@ -215,8 +222,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	}
 
 	@Override
-	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1,
-			Class<? extends W> wrapperClass) {
+	public <K, V, W> DgMapI<K, W> getMap(String name, Class<W> wcls1, Class<? extends W> wrapperClass) {
 		DgMapI<K, V> t = this.getMap(name);
 
 		return new ProxyWrapperMap(t, wrapperClass);
@@ -280,15 +286,13 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	 * java.lang.String)
 	 */
 	@Override
-	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls,
-			final String name) {
+	public <T extends DgObjectI> List<T> getObjectList(final Class<T> cls, final String name) {
 		final List<T> rt = new ArrayList<T>();
 		this.forEachObject(new CallbackI<DgObjectI, Boolean>() {
 
 			@Override
 			public Boolean execute(DgObjectI i) {
-				if (cls.isInstance(i)
-						&& (name == null || name.equals(i.getName()))) {
+				if (cls.isInstance(i) && (name == null || name.equals(i.getName()))) {
 					rt.add((T) i);
 				}
 
@@ -305,8 +309,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	 * java.lang.String, boolean)
 	 */
 	@Override
-	public <T extends DgObjectI> T getObject(Class<T> cls, String name,
-			boolean force) {
+	public <T extends DgObjectI> T getObject(Class<T> cls, String name, boolean force) {
 		List<T> rt = this.getObjectList(cls, name);
 		return CollectionUtil.single(rt, force);
 
@@ -336,14 +339,16 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	public void remove(HazelcastObjectWrapper ow) {
 		Instance.InstanceType itype = ow.getTarget().getInstanceType();
 		String name = ow.getName();
-		synchronized (this.objectCache) {
+		this.factoryLock.lock();
+		try {
 			Map<String, DgObjectI> typeM = this.objectCache.get(itype);
 			DgObjectI old = typeM.remove(name);
 			if (old == null) {
-				throw new FsException("no this object,type:" + itype + ",name:"
-						+ name);
+				throw new FsException("no this object,type:" + itype + ",name:" + name);
 			}
 
+		} finally {
+			this.factoryLock.unlock();
 		}
 	}
 
@@ -369,29 +374,6 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		}
 	}
 
-	@Override
-	public void destroyAll() {
-		//
-		// clean none cached
-
-		// clean cached.
-		// Set<Instance> insSet = new HashSet<Instance>();
-
-		List<DgObjectI> rt = this.getObjectList();
-		for (DgObjectI i : rt) {
-			i.destroy();
-			// HazelcastObjectWrapper iw = (HazelcastObjectWrapper)rt;
-			// insSet.add(iw.target);//destroied?
-		}
-
-		// clean remains
-		Collection<Instance> is = this.client.getInstances();
-		for (Instance ins : is) {
-
-			ins.destroy();
-
-		}
-	}
 
 	/*
 	 * (non-Javadoc)

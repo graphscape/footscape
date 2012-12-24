@@ -3,7 +3,11 @@
  */
 package com.fs.gridservice.core.impl.hazelcast;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
@@ -15,6 +19,7 @@ import com.fs.gridservice.core.api.DataGridI;
 import com.fs.gridservice.core.api.DgFactoryI;
 import com.hazelcast.client.ClientConfig;
 import com.hazelcast.client.HazelcastClient;
+import com.hazelcast.core.Instance;
 
 /**
  * @author wuzhen
@@ -22,6 +27,8 @@ import com.hazelcast.client.HazelcastClient;
  */
 public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 
+	private static final Logger LOG = LoggerFactory.getLogger(DgFactoryHC.class);
+	
 	protected List<String> addressList;
 
 	protected HazelcastClient client;
@@ -31,6 +38,8 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 	protected CodecI propertiesCodec;
 
 	protected CodecI messageCodec;
+	
+	protected boolean cleanGridAtInit;
 
 	@Override
 	public void configure(Configuration cfg) {
@@ -40,7 +49,7 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 		if (this.addressList.isEmpty()) {
 			this.addressList.add("127.0.0.1:5701");// add a default to try.
 		}
-
+		this.cleanGridAtInit = this.config.getPropertyAsBoolean("cleanGridAtInit", false);//
 	}
 
 	@Override
@@ -52,8 +61,24 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 		CodecI.FactoryI cf = this.container.find(CodecI.FactoryI.class, true);
 		this.propertiesCodec = cf.getCodec(PropertiesI.class, true);
 		this.messageCodec = cf.getCodec(MessageI.class, true);
+	
+		//
+		if(this.cleanGridAtInit){
+			this.destroyAll(client);//
+		}
 		this.instance = new DataGridHC(client, this);
 
+	}
+	
+
+	public void destroyAll(HazelcastClient client) {
+		LOG.warn("clean grid,detroy all the grid object.");
+		// clean remains
+		Collection<Instance> is = client.getInstances();
+		for (Instance ins : is) {
+			ins.destroy();
+		}
+		
 	}
 
 	@Override
@@ -64,6 +89,16 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 
 	@Override
 	public DataGridI getInstance() {
+		
 		return this.instance;
+	}
+
+	/*
+	 *Dec 24, 2012
+	 */
+	@Override
+	protected void doAttach() {
+		super.doAttach();
+		
 	}
 }

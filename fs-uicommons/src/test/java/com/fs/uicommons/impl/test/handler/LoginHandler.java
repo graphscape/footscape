@@ -45,13 +45,15 @@ public class LoginHandler extends HandlerSupport {
 	@Handle("submit")
 	public void handleSubmit(RequestI req, ResponseI res) {
 		SessionGd s = new SessionGd();
+		String accId = "acc-001";
+		s.setProperty(SessionGd.ACCID, accId);//
 		
 		String sid = this.smanager.createSession(s);
 		
 		PropertiesI<Object> pts = req.getPayloads();
 		res.setPayload("isAnonymous", false);
 		res.setPayload("sessionId", sid);//
-		res.setPayload("accountId", "acc-001");// account?
+		res.setPayload("accountId", accId);// account?
 	}
 
 	@Handle("anonymous")
