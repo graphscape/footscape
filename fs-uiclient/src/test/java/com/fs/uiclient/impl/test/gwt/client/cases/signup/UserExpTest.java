@@ -17,7 +17,7 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -55,7 +55,7 @@ public class UserExpTest extends TestBase {
 		// this editor can be open from the other view.
 
 		eem.addValueHandler(ExpEditModelI.L_ISOPEN, Boolean.TRUE,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -66,7 +66,7 @@ public class UserExpTest extends TestBase {
 
 		// create action success listener
 		control.addActionEventHandler(ActionSuccessEvent.TYPE, "submit",
-				new HandlerI<ActionSuccessEvent>() {
+				new EventHandlerI<ActionSuccessEvent>() {
 
 					@Override
 					public void handle(ActionSuccessEvent e) {
@@ -85,7 +85,7 @@ public class UserExpTest extends TestBase {
 		UserExpListModelI uem = this.rootModel.find(UserExpListModelI.class,
 				true);
 		//
-		uem.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		uem.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {
@@ -133,7 +133,7 @@ public class UserExpTest extends TestBase {
 	public void onNewExpItemAdd(ModelChildEvent e) {
 		UserExpModel im = (UserExpModel) e.getChild();
 		im.addValueHandler(UserExpModel.L_BODY,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

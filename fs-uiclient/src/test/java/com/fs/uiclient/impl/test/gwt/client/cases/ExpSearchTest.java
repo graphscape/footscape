@@ -20,7 +20,7 @@ import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
@@ -55,7 +55,7 @@ public class ExpSearchTest extends TestBase {
 		this.caseIdFilter.setCaseId("testSearch");
 		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -81,7 +81,7 @@ public class ExpSearchTest extends TestBase {
 		UserExpListControlI uec = this.manager.getControl(
 				UserExpListControlI.class, true);
 		uec.addActionEventHandler(ActionSuccessEvent.TYPE,
-				UserExpListModelI.A_REFRESH, new HandlerI<ActionSuccessEvent>() {
+				UserExpListModelI.A_REFRESH, new EventHandlerI<ActionSuccessEvent>() {
 
 					@Override
 					public void handle(ActionSuccessEvent e) {
@@ -106,7 +106,7 @@ public class ExpSearchTest extends TestBase {
 		// will be the main model's children
 		//
 		MainModelI mm = this.rootModel.find(MainModelI.class, true);
-		mm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		mm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {
@@ -124,7 +124,7 @@ public class ExpSearchTest extends TestBase {
 
 	protected void listenToTheSearchItemBeforeSelect() {
 		ExpSearchModelI esm = this.rootModel.find(ExpSearchModelI.class, true);
-		esm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		esm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {
@@ -179,7 +179,7 @@ public class ExpSearchTest extends TestBase {
 	protected void listenToTheActivityIdSettingBeforeCoper() {
 		UserExpModel ue = this.getTheUserExpModel();
 		ue.addValueHandler(null,//TODO UserExpModel.L_ACTIVITY_ID,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -227,7 +227,7 @@ public class ExpSearchTest extends TestBase {
 	protected void listenToTheActivityOpen() {
 		ActivitiesModelI asm = this.rootModel
 				.find(ActivitiesModelI.class, true);
-		asm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		asm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {

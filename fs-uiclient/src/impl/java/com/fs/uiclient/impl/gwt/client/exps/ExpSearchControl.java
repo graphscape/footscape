@@ -13,7 +13,7 @@ import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemControl;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -46,7 +46,7 @@ public class ExpSearchControl extends ControlSupport implements
 
 		UserExpListModelI uelM = uel.getModel();
 		uelM.addValueHandler(UserExpListModelI.L_SELECTED_EXP_ID,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -55,7 +55,7 @@ public class ExpSearchControl extends ControlSupport implements
 				});
 		// listen to the page number
 		this.getModel().addValueHandler(ExpSearchModelI.L_PAGENUMBER,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

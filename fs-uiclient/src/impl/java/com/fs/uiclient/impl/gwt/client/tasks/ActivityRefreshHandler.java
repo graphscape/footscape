@@ -10,13 +10,13 @@ import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.schedule.event.ScheduleEvent;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wuzhen
  * 
  */
-public class ActivityRefreshHandler implements HandlerI<ScheduleEvent> {
+public class ActivityRefreshHandler implements EventHandlerI<ScheduleEvent> {
 
 	@Override
 	public void handle(ScheduleEvent e) {

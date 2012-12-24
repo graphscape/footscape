@@ -14,7 +14,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiResponse;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -38,7 +38,7 @@ public class ProfileControl extends ControlSupport {
 	public void doModel(ModelI cm) {
 		super.doModel(cm);
 		this.model.addValueHandler(Mvc.L_VIEW_OPENED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -34,7 +34,7 @@ public class UserSimulator implements UserSimulatorI {
 	public void start() {
 		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

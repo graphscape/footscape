@@ -17,7 +17,7 @@ import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
 
@@ -57,7 +57,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 				SimpleModel.valueOf("", "<<"));
 		this.previousPage.parent(this);
 		this.previousPage.addHandler(ClickEvent.TYPE,
-				new HandlerI<ClickEvent>() {
+				new EventHandlerI<ClickEvent>() {
 
 					@Override
 					public void handle(ClickEvent e) {
@@ -68,7 +68,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 		this.nextPage = this.factory.create(ButtonI.class,
 				SimpleModel.valueOf("", ">>"));
 		this.nextPage.parent(this);
-		this.nextPage.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		this.nextPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
@@ -97,7 +97,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 	public void doAttach() {
 		super.doAttach();
 
-		this.statement.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		this.statement.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

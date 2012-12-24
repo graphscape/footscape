@@ -21,7 +21,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
@@ -74,7 +74,7 @@ public class UserExpListControl extends ControlSupport implements
 
 		//
 		this.model.addValueHandler(UserExpListModelI.L_EXP_ID_GET_REQUIRED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -88,7 +88,7 @@ public class UserExpListControl extends ControlSupport implements
 		// listen to the MainModelI for new exp created by user self.
 		MainModelI mm = this.getModel().getParent().cast();
 		mm.addValueHandler(MainModelI.L_EXPID_CREATED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -214,7 +214,7 @@ public class UserExpListControl extends ControlSupport implements
 				.addControl(new UserExpControl(cm.getName()).model(cm));
 		// listening to the exp model's select
 		cm.addValueHandler(UserExpModel.L_ISSELECTED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

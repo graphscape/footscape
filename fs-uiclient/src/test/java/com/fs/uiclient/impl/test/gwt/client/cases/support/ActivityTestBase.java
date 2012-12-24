@@ -17,7 +17,7 @@ import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
@@ -52,7 +52,7 @@ public abstract class ActivityTestBase extends TestBase {
 		this.caseIdFilter.setCaseId("testSearch");
 		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -83,7 +83,7 @@ public abstract class ActivityTestBase extends TestBase {
 		UserExpListControlI uec = this.manager.getControl(
 				UserExpListControlI.class, true);
 		uec.addActionEventHandler(ActionSuccessEvent.TYPE,
-				UserExpListModelI.A_REFRESH, new HandlerI<ActionSuccessEvent>() {
+				UserExpListModelI.A_REFRESH, new EventHandlerI<ActionSuccessEvent>() {
 
 					@Override
 					public void handle(ActionSuccessEvent e) {
@@ -109,7 +109,7 @@ public abstract class ActivityTestBase extends TestBase {
 			ExpSearchModelI esm = this.rootModel.find(ExpSearchModelI.class,
 					true);
 			esm.addHandler(ModelChildEvent.TYPE,
-					new HandlerI<ModelChildEvent>() {
+					new EventHandlerI<ModelChildEvent>() {
 
 						@Override
 						public void handle(ModelChildEvent e) {
@@ -169,7 +169,7 @@ public abstract class ActivityTestBase extends TestBase {
 	protected void listenToTheActivityIdSettingBeforeCoper() {
 		UserExpModel ue = this.getTheUserExpModel();
 		ue.addValueHandler(null,//TODO UserExpModel.L_ACTIVITY_ID,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {
@@ -218,7 +218,7 @@ public abstract class ActivityTestBase extends TestBase {
 	protected void listenToTheActivityOpen() {
 		ActivitiesModelI asm = this.rootModel
 				.find(ActivitiesModelI.class, true);
-		asm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		asm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {

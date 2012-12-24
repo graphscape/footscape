@@ -12,7 +12,7 @@ import com.fs.uiclient.api.gwt.client.chatroom.PeerModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
 import com.fs.uixmpp.groupchat.api.gwt.client.room.MessageModel;
@@ -133,7 +133,7 @@ public class ChatRoomControl extends ControlSupport implements ChatRoomControlI 
 			final OccupantModel om) {
 		if (add) {// TODO remove this when remove is affective.
 			om.addValueHandler(OccupantModel.L_ISEXIT,
-					new HandlerI<ModelValueEvent>() {
+					new EventHandlerI<ModelValueEvent>() {
 
 						@Override
 						public void handle(ModelValueEvent e) {

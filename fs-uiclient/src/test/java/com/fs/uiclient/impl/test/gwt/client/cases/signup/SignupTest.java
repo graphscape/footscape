@@ -14,7 +14,7 @@ import com.fs.uicommons.api.gwt.client.mvc.event.AfterActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
@@ -39,7 +39,7 @@ public class SignupTest extends TestBase {
 
 		SignupControl mc = this.manager.getChild(SignupControl.class, true);
 		mc.addActionEventHandler(ActionSuccessEvent.TYPE, "submit",
-				new HandlerI<ActionSuccessEvent>() {
+				new EventHandlerI<ActionSuccessEvent>() {
 
 					@Override
 					public void handle(ActionSuccessEvent e) {
@@ -47,7 +47,7 @@ public class SignupTest extends TestBase {
 					}
 				});
 		mc.addActionEventHandler(ActionSuccessEvent.TYPE, "confirm",
-				new HandlerI<ActionSuccessEvent>() {
+				new EventHandlerI<ActionSuccessEvent>() {
 
 					@Override
 					public void handle(ActionSuccessEvent e) {

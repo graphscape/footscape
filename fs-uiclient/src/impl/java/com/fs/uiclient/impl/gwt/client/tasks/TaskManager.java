@@ -7,7 +7,7 @@ package com.fs.uiclient.impl.gwt.client.tasks;
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
@@ -30,7 +30,7 @@ public class TaskManager extends UiObjectSupport {
 		// TODO this may by missed,if here the authed event already raised.
 
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new HandlerI<ModelValueEvent>() {
+				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
 					public void handle(ModelValueEvent e) {

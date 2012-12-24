@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
@@ -44,7 +44,7 @@ public class UiClientTestEntryPoint implements EntryPoint {
 				(UiGroupChatGPI) GWT.create(UiGroupChatGPI.class),
 				(UiClientGwtSPI) GWT.create(UiClientGwtSPI.class) };
 		GwtSPI.Factory sf = ClientLoader.getOrLoadClient(spis,
-				new HandlerI<Event>() {
+				new EventHandlerI<Event>() {
 
 					@Override
 					public void handle(Event e) {

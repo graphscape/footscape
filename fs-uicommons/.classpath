@@ -8,6 +8,5 @@
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=fs-uicommons&amp;ivyXmlPath=ivy.xml&amp;confs=*"/>
-	<classpathentry kind="lib" path="/home/wu/Downloads/gwt-web-sockets-1.0.0.jar"/>
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

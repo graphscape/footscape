@@ -12,7 +12,7 @@ import com.fs.uiclient.impl.gwt.client.chatroom.ChatRoomControl;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uixmpp.groupchat.api.gwt.client.room.RoomModelI;
 import com.fs.uixmpp.groupchat.api.gwt.client.rooms.RoomsModelI;
@@ -45,7 +45,7 @@ public class ChatRoomsControl extends ControlSupport implements
 		RoomsModelI rsm = cm.getTopObject().find(RoomsModelI.class, true);
 		// listen to the room created,it must be open from activity.
 		// then here to attach the activity with the chat room.
-		rsm.addHandler(ModelChildEvent.TYPE, new HandlerI<ModelChildEvent>() {
+		rsm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
 			public void handle(ModelChildEvent e) {

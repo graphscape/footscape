@@ -7,13 +7,13 @@ import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.schedule.event.ScheduleEvent;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wuzhen
  * 
  */
-public class UserSnapshotHandler implements HandlerI<ScheduleEvent> {
+public class UserSnapshotHandler implements EventHandlerI<ScheduleEvent> {
 
 	@Override
 	public void handle(ScheduleEvent e) {

@@ -13,14 +13,14 @@ import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMcSupport;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wu
  * 
  */
-public class AnonymusAuthedHandler implements HandlerI<ModelValueEvent> {
+public class AnonymusAuthedHandler implements EventHandlerI<ModelValueEvent> {
 
 	MainControl mc;
 
