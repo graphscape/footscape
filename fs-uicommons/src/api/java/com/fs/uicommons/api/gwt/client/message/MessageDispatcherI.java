@@ -16,9 +16,12 @@ public interface MessageDispatcherI extends MessageHandlerI, UiObjectI {
 	public static interface FactoryI extends UiObjectI {
 		public MessageDispatcherI get(int idx);
 	}
-
+	
 	public void addHandler(Path path, MessageHandlerI mh);
+	
+	public void addHandler(Path path, boolean strict, MessageHandlerI mh);
 
 	public void addDefaultHandler(MessageHandlerI mh);
 
+	public void addExceptionHandler(MessageExceptionHandlerI eh);
 }

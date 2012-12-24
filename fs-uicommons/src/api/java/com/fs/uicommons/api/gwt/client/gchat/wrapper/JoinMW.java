@@ -12,27 +12,30 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  */
 public class JoinMW extends GChatMW {
 
+	protected MessageData nested;
+
 	/**
 	 * @param md
 	 */
 	public JoinMW(MessageData md) {
 		super(md);
+		this.nested = (MessageData) md.getPayload("message", true);
 	}
 
 	public String getAccountId() {
-		return this.target.getString("accountId", true);
+		return this.nested.getString("accountId", true);
 	}
 
 	public String getJoinParticipantId() {
-		return this.target.getString("participantId", true);
+		return this.nested.getString("participantId", true);
 	}
 
 	public String getRole() {
-		return this.target.getString("role", true);
+		return this.nested.getString("role", true);
 	}
 
 	public String getNick() {
-		return this.target.getString("nick", true);
+		return this.nested.getString("nick", true);
 	}
 
 }

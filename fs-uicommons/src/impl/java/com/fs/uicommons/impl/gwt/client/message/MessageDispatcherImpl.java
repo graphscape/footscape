@@ -4,10 +4,12 @@
  */
 package com.fs.uicommons.impl.gwt.client.message;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
+import com.fs.uicommons.api.gwt.client.message.MessageException;
+import com.fs.uicommons.api.gwt.client.message.MessageExceptionHandlerI;
 import com.fs.uicommons.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicommons.api.gwt.client.message.support.CollectionHandler;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -21,13 +23,16 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 public class MessageDispatcherImpl extends UiObjectSupport implements
 		MessageDispatcherI {
 
-	protected Map<Path, CollectionHandler<MessageData>> handlers;
+	protected List<HandlerEntry> handlers;
 
 	protected CollectionHandler<MessageData> defaultHandlers;
 
+	protected CollectionHandler<MessageException> exceptionHandlers;
+
 	public MessageDispatcherImpl(String name) {
 		super(name);
-		this.handlers = new HashMap<Path, CollectionHandler<MessageData>>();
+		this.exceptionHandlers = new CollectionHandler<MessageException>();
+		this.handlers = new ArrayList<HandlerEntry>();
 		this.defaultHandlers = new CollectionHandler<MessageData>();
 
 	}
@@ -36,21 +41,34 @@ public class MessageDispatcherImpl extends UiObjectSupport implements
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void handle(MessageData t) {
+	public void handle(MessageData msg) {
+		try {
+			this.handleInternal(msg);
+		} catch (Throwable t) {
+
+			MessageException me = new MessageException(t, msg);
+			if (this.exceptionHandlers.size() == 0) {
+				logger.error("exception got when dispatch message:" + msg, t);
+			} else {
+				try {
+					this.exceptionHandlers.handle(me);
+
+				} catch (Throwable e2) {
+					logger.error("exception's exception", e2);
+				} finally {
+
+				}
+			}
+		}
+	}
+
+	protected void handleInternal(MessageData t) {
 		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
 		String path = t.getHeader("path", true);
 		Path p = Path.valueOf(path, '/');
 		boolean match = false;
-		for (Map.Entry<Path, CollectionHandler<MessageData>> en : this.handlers
-				.entrySet()) {
-			Path pi = en.getKey();
-
-			if (pi.isSubPath(p, true)) {
-				match = true;
-				CollectionHandler<MessageData> h = en.getValue();
-				h.handle(t);
-			}
-
+		for (HandlerEntry he : this.handlers) {
+			match = he.tryHandle(p, t);
 		}
 
 		if (!match) {
@@ -70,13 +88,16 @@ public class MessageDispatcherImpl extends UiObjectSupport implements
 	 */
 	@Override
 	public void addHandler(Path path, MessageHandlerI mh) {
-		CollectionHandler<MessageData> hs = this.handlers.get(path);
-		if (hs == null) {
-			hs = new CollectionHandler<MessageData>();
-			this.handlers.put(path, hs);
-		}
+		this.addHandler(path, false, mh);
+	}
 
-		hs.addHandler(mh);
+	@Override
+	public void addHandler(Path path, boolean strict, MessageHandlerI mh) {
+
+		HandlerEntry he = new HandlerEntry(path, strict, mh);
+
+		this.handlers.add(he);
+
 	}
 
 	/*
@@ -85,6 +106,18 @@ public class MessageDispatcherImpl extends UiObjectSupport implements
 	@Override
 	public void addDefaultHandler(MessageHandlerI mh) {
 		this.defaultHandlers.addHandler(mh);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uicommons.api.gwt.client.message.MessageDispatcherI#
+	 * addExceptionHandler
+	 * (com.fs.uicommons.api.gwt.client.message.MessageExceptionHandlerI)
+	 */
+	@Override
+	public void addExceptionHandler(MessageExceptionHandlerI eh) {
+		this.exceptionHandlers.addHandler(eh);
 	}
 
 }

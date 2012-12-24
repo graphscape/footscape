@@ -101,11 +101,14 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		this.dispatcher0 = df.get(0);// this is endpoint message from server
 										// side
 		this.dispatcher1 = df.get(1);// this is for gchat sub message type.
+		// dispatcher another:
 		this.dispatcher0.addHandler(Path.valueOf("gchat"), this.dispatcher1);
 
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), new JoinGMH(
-				this));
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"),
+		// strict mode
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), true,
+				new JoinGMH(this));
+		// strict mode
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"), true,
 				new MessageGMH(this));
 
 	}
