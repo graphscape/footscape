@@ -46,13 +46,14 @@ public class GChatView extends SimpleView implements ManagableI {
 		this.groupIdEditor.setName(TESTING_ROOM_NAME_EDITOR);// FOR testing to
 																// find this
 																// widget.
-		this.groupIdEditor.getModel().addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
+		this.groupIdEditor.getModel().addDefaultValueHandler(
+				new EventHandlerI<ModelValueEvent>() {
 
-			@Override
-			public void handle(ModelValueEvent e) {
-				GChatView.this.onGroupIdChange(e);
-			}
-		});
+					@Override
+					public void handle(ModelValueEvent e) {
+						GChatView.this.onGroupIdChange(e);
+					}
+				});
 		this.child(this.groupIdEditor);
 	}
 
@@ -65,10 +66,15 @@ public class GChatView extends SimpleView implements ManagableI {
 
 	}
 
+	@Override
+	public GChatModel getModel() {
+		return (GChatModel) this.model;
+	}
+
 	protected void onGroupIdChange(ModelValueEvent e) {
 		StringData sd = (StringData) e.getValueWrapper().getValue();
-
-		this.model.setValue(GChatModel.L_ROOMNAME_EDITING, sd.getValue());
+		String gid = sd == null ? null : sd.getValue();
+		this.getModel().setCurrentGroupId(gid);
 	}
 
 	/*

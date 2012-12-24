@@ -18,7 +18,8 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  * @author wu
  * 
  */
-public class MessageDispatcherImpl extends UiObjectSupport implements MessageDispatcherI {
+public class MessageDispatcherImpl extends UiObjectSupport implements
+		MessageDispatcherI {
 
 	protected Map<Path, CollectionHandler<MessageData>> handlers;
 
@@ -36,11 +37,12 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 */
 	@Override
 	public void handle(MessageData t) {
-		logger.debug("msg:" + t);
+		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
 		String path = t.getHeader("path", true);
 		Path p = Path.valueOf(path, '/');
 		boolean match = false;
-		for (Map.Entry<Path, CollectionHandler<MessageData>> en : this.handlers.entrySet()) {
+		for (Map.Entry<Path, CollectionHandler<MessageData>> en : this.handlers
+				.entrySet()) {
 			Path pi = en.getKey();
 
 			if (pi.isSubPath(p, true)) {
@@ -55,7 +57,8 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.info("path:" + path + " with msg:" + t + " has no handler match it in dispatcher:"
+				logger.info("path:" + path + " with msg:" + t
+						+ " has no handler match it in dispatcher:"
 						+ this.getName() + ",all handlers:" + this.handlers);
 			}
 		}

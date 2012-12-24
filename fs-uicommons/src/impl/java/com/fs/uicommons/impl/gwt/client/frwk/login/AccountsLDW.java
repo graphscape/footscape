@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
+import com.fs.uicommons.api.gwt.client.ldata.LocalData;
 import com.fs.uicommons.api.gwt.client.ldata.LocalDataWrapper;
 
 /**
@@ -18,11 +19,15 @@ public class AccountsLDW extends LocalDataWrapper {
 		return ME;
 	}
 
+	protected AccountsLDW() {
+		super("accounts");
+	}
+
 	/**
 	 * @param ld
 	 */
-	protected AccountsLDW() {
-		super("accounts");
+	protected AccountsLDW(LocalData ld) {
+		super(ld);
 	}
 
 	public AnonymousAccountLDW getAnonymous() {

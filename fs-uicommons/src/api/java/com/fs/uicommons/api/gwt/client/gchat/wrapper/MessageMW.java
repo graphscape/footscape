@@ -10,18 +10,13 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  * @author wu
  * 
  */
-public class TextMW extends GChatMW {
+public class MessageMW extends GChatMW {
 
 	/**
 	 * @param md
 	 */
-	public TextMW(MessageData md) {
+	public MessageMW(MessageData md) {
 		super(md);
-	}
-
-
-	public String getText() {
-		return this.target.getString("text", true);
 	}
 
 }

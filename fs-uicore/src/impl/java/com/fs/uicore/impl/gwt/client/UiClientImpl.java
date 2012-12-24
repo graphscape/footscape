@@ -48,7 +48,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	public UiClientImpl(RootI root) {
 		this.root = root;
-
+		this.parameters = new MapProperties<String>();
 		this.filterList.add(new LocalRequestFilter());
 		this.filterList.add(new RemoteRequestFilter(this));
 
@@ -131,7 +131,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		this.clientId = sd.getValue();
 		ObjectPropertiesData opd = t.getPayload("parameters", true);//
 		// parameters:
-		this.parameters = new MapProperties<String>();
+		
 		for (String key : opd.keyList()) {
 			StringData valueS = (StringData) opd.getProperty(key);
 
@@ -237,6 +237,14 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	public FactoryI getCodecFactory() {
 		//
 		return this.cf;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uicore.api.gwt.client.UiClientI#setParameter(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void setParameter(String key, String value) {
+		this.parameters.setProperty(key, value);
 	}
 
 }

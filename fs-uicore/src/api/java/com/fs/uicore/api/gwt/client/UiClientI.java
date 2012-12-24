@@ -31,6 +31,8 @@ public interface UiClientI extends UiObjectI {
 
 	public ModelI getRootModel();
 
+	public void setParameter(String key, String value);
+	
 	public String getParameter(String key, String def);
 
 	public String getParameter(String key, boolean force);

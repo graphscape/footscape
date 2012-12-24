@@ -18,8 +18,8 @@ public class GChatModel extends ModelSupport {
 
 	public static final String A_SEND = "send";
 
-	public static final String L_ROOMNAME_EDITING = "groupIdEditing";
-
+	private String currentGroupId;
+	
 	private String groupIdToJoin;
 
 	/**
@@ -40,6 +40,14 @@ public class GChatModel extends ModelSupport {
 
 	public ChatGroupModel getGroup(String id, boolean force) {
 		return this.getChild(ChatGroupModel.class, id, force);
+	}
+
+	public String getCurrentGroupId() {
+		return currentGroupId;
+	}
+
+	public void setCurrentGroupId(String currentGroupId) {
+		this.currentGroupId = currentGroupId;
 	}
 
 	public void setGroupIdToJoin(String gid) {

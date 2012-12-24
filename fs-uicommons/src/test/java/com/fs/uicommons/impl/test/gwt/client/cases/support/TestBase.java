@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
+import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -47,9 +48,8 @@ public class TestBase extends GWTTestCase {
 
 	protected int timeoutMillis = 10 * 1000;
 
-	/*
+	protected boolean disableWebSocket;
 	
-	 */
 	protected Set<String> finishing = new HashSet<String>();
 
 	@Override
@@ -84,7 +84,9 @@ public class TestBase extends GWTTestCase {
 		this.framework = this.rootModel.getChild(FrwkModelI.class, true);
 		// xxxSPI.active
 		// this.client.attach();//
-
+		if(this.disableWebSocket){
+			this.client.setParameter(EndPointI.CP_WEBSOCKET_DISABLE, "true");
+		}
 		this.client.start();//
 	}
 

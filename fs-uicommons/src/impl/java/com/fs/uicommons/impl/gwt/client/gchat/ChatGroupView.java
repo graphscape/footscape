@@ -9,7 +9,6 @@ import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
-import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -43,13 +42,14 @@ public class ChatGroupView extends SimpleView {
 
 		this.messageEditor = factory.create(StringEditorI.class);
 		this.child(this.messageEditor);//
-		messageEditor.getModel().addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
+		messageEditor.getModel().addDefaultValueHandler(
+				new EventHandlerI<ModelValueEvent>() {
 
-			@Override
-			public void handle(ModelValueEvent e) {
-				ChatGroupView.this.onMessageEditorValue(e);
-			}
-		});
+					@Override
+					public void handle(ModelValueEvent e) {
+						ChatGroupView.this.onMessageEditorValue(e);
+					}
+				});
 
 	}
 
@@ -63,14 +63,9 @@ public class ChatGroupView extends SimpleView {
 	protected void onMessageEditorValue(ModelValueEvent e) {
 		StringData sd = (StringData) e.getValueWrapper().getValue();
 
-		this.getModel().setMessageEditing(sd == null ? null : (String) sd.getValue());
+		this.getModel().setMessageToSend(
+				sd == null ? null : (String) sd.getValue());
 
-	}
-
-	protected void onMessageEditingChange(ChangeEvent<?> e) {
-		StringData sd = (StringData) e.getData();
-		// this.getModel().setProperty(RoomControl.MESSGE_EDITING,
-		// sd.getValue());//
 	}
 
 	/*
@@ -106,7 +101,12 @@ public class ChatGroupView extends SimpleView {
 	protected void processChildMessageModelAdd(MessageModel mm) {
 
 		LabelI msgW = this.factory.create(LabelI.class);
-		msgW.getModel().setDefaultValue(mm.getDefaultValue());//
+		String format = mm.getFormat();
+		if ("text".equals(format)) {
+			msgW.getModel().setDefaultValue(mm.getText());//
+		} else {
+			msgW.getModel().setDefaultValue("format:" + format);//
+		}
 		this.messageList.child(msgW);
 
 	}
@@ -115,7 +115,8 @@ public class ChatGroupView extends SimpleView {
 		// show a message in list.
 		LabelI msgW = this.factory.create(LabelI.class);
 		String accId = om.getAccountId();
-		msgW.getModel().setDefaultValue(om.getNick() + " is joined  with accId:" + accId);//
+		msgW.getModel().setDefaultValue(
+				om.getNick() + " is joined  with accId:" + accId);//
 
 		this.messageList.child(msgW);
 	}

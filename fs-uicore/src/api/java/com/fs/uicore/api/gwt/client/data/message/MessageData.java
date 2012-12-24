@@ -86,4 +86,10 @@ public class MessageData extends UiData {
 		this.payloads.setProperty(key, value);
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getName() + ",headers:"
+				+ this.headers.toString() + ",payloads:" + this.payloads;
+	}
+
 }

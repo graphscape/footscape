@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.gchat;
 
+import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
 import com.fs.uicore.api.gwt.client.UiRequest;
@@ -19,7 +20,10 @@ public class SendAP extends APSupport {
 	 */
 	@Override
 	public void processRequest(ControlI c, String a, UiRequest req) {
-
+		
+		((GChatControlI) c).send();
+		
+		
 	}
 
 }

@@ -4,6 +4,9 @@
  */
 package com.fs.uicommons.api.gwt.client.gchat;
 
+import java.util.List;
+
+import com.fs.uicommons.impl.gwt.client.gchat.MessageModel;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
@@ -12,6 +15,8 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class ChatGroupModel extends ModelSupport {
 
+	private String messageToSend;
+
 	/**
 	 * @param name
 	 */
@@ -19,6 +24,13 @@ public class ChatGroupModel extends ModelSupport {
 		super(name);
 	}
 
+	public void addMessage(MessageModel mm) {
+		this.child(mm);
+	}
+
+	public List<MessageModel> getMessageModelList(){
+		return this.getChildList(MessageModel.class);
+	}
 	/**
 	 * Dec 23, 2012
 	 */
@@ -26,11 +38,12 @@ public class ChatGroupModel extends ModelSupport {
 		this.child(p);
 	}
 
-	/**
-	 * Dec 23, 2012
-	 */
-	public void setMessageEditing(String string) {
+	public String getMessageToSend() {
+		return messageToSend;
+	}
 
+	public void setMessageToSend(String messageToSend) {
+		this.messageToSend = messageToSend;
 	}
 
 }

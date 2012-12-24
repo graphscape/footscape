@@ -121,6 +121,15 @@ public class Path {
 		return true;
 	}
 
+	public String toString(char sep) {
+		String rt = "";
+		for (String n : this.nameList) {
+			rt += sep;
+			rt += n;
+		}
+		return rt;
+	}
+
 	/*
 	 * Nov 8, 2012
 	 */

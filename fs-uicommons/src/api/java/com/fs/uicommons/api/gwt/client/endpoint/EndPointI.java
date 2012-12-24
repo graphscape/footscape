@@ -14,15 +14,18 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  * 
  */
 public interface EndPointI extends UiObjectI {
+	
+	public static final String CP_WEBSOCKET_DISABLE = "websocket.enable";
 
 	public void sendMessage(MessageData req);
 
-	public void addMessageHandler(String path, EventHandlerI<EndpointMessageEvent> hdl);
+	public void addMessageHandler(String path,
+			EventHandlerI<EndpointMessageEvent> hdl);
 
 	public boolean isOpen();
-	
+
 	public boolean isBond();
-	
+
 	public String getSessionId();
 
 	public String getUri();

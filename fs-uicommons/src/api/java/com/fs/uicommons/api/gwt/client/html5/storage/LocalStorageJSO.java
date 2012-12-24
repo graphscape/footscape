@@ -22,16 +22,17 @@ public final class LocalStorageJSO extends JavaScriptObject {
 
 	}
 
-	public static LocalStorageJSO getInstance() {
-		return getInstance(false);
-	}
-
 	public static LocalStorageJSO getInstance(boolean force) {
 		if (!isSupport()) {
-			String agent = Window.Navigator.getUserAgent();
+			if (force) {
+				String agent = Window.Navigator.getUserAgent();
+				throw new UiException("browser not support Storage,agent: "
+						+ agent);
+			}
+			return null;
 
-			throw new UiException("browser not support Storage,agent: " + agent);
 		}
+
 		LocalStorageJSO rt = getInstanceInternal();
 
 		return rt;

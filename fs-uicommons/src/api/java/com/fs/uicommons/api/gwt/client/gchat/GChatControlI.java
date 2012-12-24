@@ -14,8 +14,11 @@ public interface GChatControlI extends ControlI {
 
 	public void join();
 
+	public void send();
+
 	public GChatModel getChatModel();
 	
 	public boolean isConnected();
+
 
 }

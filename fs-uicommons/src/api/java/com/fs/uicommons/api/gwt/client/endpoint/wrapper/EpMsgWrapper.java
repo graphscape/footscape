@@ -18,4 +18,8 @@ public class EpMsgWrapper {
 		this.target = md;
 	}
 
+	public MessageData getTarget() {
+		return target;
+	}
+
 }

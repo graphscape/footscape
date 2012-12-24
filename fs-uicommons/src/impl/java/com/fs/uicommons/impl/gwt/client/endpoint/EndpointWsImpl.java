@@ -53,22 +53,26 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-		this.getEventBus(true).addHandler(AfterAuthEvent.TYPE, new EventHandlerI<AfterAuthEvent>() {
+		this.getEventBus(true).addHandler(AfterAuthEvent.TYPE,
+				new EventHandlerI<AfterAuthEvent>() {
 
-			@Override
-			public void handle(AfterAuthEvent t) {
-				EndpointWsImpl.this.afterAuth(t);
-			}
-		});
+					@Override
+					public void handle(AfterAuthEvent t) {
+						EndpointWsImpl.this.afterAuth(t);
+					}
+				});
 		UiClientI client = this.getClient(true);// .addh
 
 		// message dispatcher
-		MessageDispatcherI.FactoryI df = client.find(MessageDispatcherI.FactoryI.class, true);
+		MessageDispatcherI.FactoryI df = client.find(
+				MessageDispatcherI.FactoryI.class, true);
 		this.dispatcher0 = df.get(0);// for end point
-		this.dispatcher0.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new ServerIsReadyMH(
-				this));
+		this.dispatcher0.addHandler(
+				Path.valueOf("/control/status/serverIsReady", '/'),
+				new ServerIsReadyMH(this));
 
-		this.dispatcher0.addHandler(Path.valueOf("/terminal/binding/success", '/'),
+		this.dispatcher0.addHandler(
+				Path.valueOf("/terminal/binding/success", '/'),
 				new BIndingSuccessMH(this));
 	}
 
@@ -79,6 +83,12 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		this.sessionId = t.getSessionId();// session id is got from
 											// LoginControlI.
 		// now start connect and bond session with channel/terminal
+		if (Boolean.valueOf(this.getClient(true).getParameter(
+				CP_WEBSOCKET_DISABLE, "false"))) {
+			logger.info("websocket disabled by client parameter:"
+					+ CP_WEBSOCKET_DISABLE);
+			return;
+		}
 		this.start();
 	}
 
@@ -91,9 +101,11 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		port = "8080";// for testing.
 		this.uri = "ws://" + host + ":" + port + "/wsa/default";
 
-		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
+		this.messageCodec = this.getClient(true).getCodecFactory()
+				.getCodec(MessageData.class);
 
-		String url = (String) this.getClient(true).getProperty(UiClientI.ROOT_URi);
+		String url = (String) this.getClient(true).getProperty(
+				UiClientI.ROOT_URi);
 		this.socket = WebSocketJSO.newInstance(uri, true);
 		this.socket.onOpen(new UiCallbackI<Object, Object>() {
 
@@ -184,7 +196,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	 * Dec 20, 2012
 	 */
 	@Override
-	public void addMessageHandler(String path, EventHandlerI<EndpointMessageEvent> hdl) {
+	public void addMessageHandler(String path,
+			EventHandlerI<EndpointMessageEvent> hdl) {
 		//
 		this.addHandler(new MessageEventFilter(path), hdl);
 	}

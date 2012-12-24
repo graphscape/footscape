@@ -9,10 +9,13 @@ package com.fs.uicommons.api.gwt.client.ldata;
  * 
  */
 public class LocalDataWrapper {
+
 	protected LocalData target;
 
-	public LocalDataWrapper(String key) {
-		this(LocalStore.getInstance().getData(key));
+	public LocalDataWrapper(String name) {
+		LocalStore ls = LocalStore.getInstance();
+
+		this.target = ls.getData(name);
 	}
 
 	public LocalDataWrapper(LocalData ld) {
@@ -62,7 +65,7 @@ public class LocalDataWrapper {
 		this.getChild(name).setValue(value);
 	}
 
-	public String getKey(){
+	public String getKey() {
 		return this.target.getKey();
 	}
 }
