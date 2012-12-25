@@ -4,14 +4,13 @@
 package com.fs.uiclient.impl.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
+import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
+import com.fs.uiclient.api.gwt.client.achat.AChatModel;
+import com.fs.uiclient.api.gwt.client.achat.ChatActivityModel;
+import com.fs.uiclient.api.gwt.client.achat.PeerModel;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.activity.ParticipantModel;
-import com.fs.uiclient.api.gwt.client.chatroom.ChatRoomControlI;
-import com.fs.uiclient.api.gwt.client.chatroom.ChatRoomModelI;
-import com.fs.uiclient.api.gwt.client.chatroom.PeerModel;
-import com.fs.uiclient.api.gwt.client.chatrooms.ChatRoomsControlI;
-import com.fs.uiclient.api.gwt.client.chatrooms.ChatRoomsModelI;
+import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
@@ -302,8 +301,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(
-				ActivitiesModelI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(ActivitiesModelI.ItemModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
@@ -323,32 +321,32 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ChatRoomModelI.class) {
+		InstanceOf.addChecker(new CheckerSupport(ChatActivityModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof ChatRoomModelI;
+				return o instanceof ChatActivityModel;
 
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ChatRoomsModelI.class) {
+		InstanceOf.addChecker(new CheckerSupport(AChatModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof ChatRoomsModelI;
+				return o instanceof AChatModel;
 
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ParticipantModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(PartnerModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof ParticipantModel;
+				return o instanceof PartnerModel;
 
 			}
 
@@ -363,22 +361,12 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ChatRoomControlI.class) {
+		InstanceOf.addChecker(new CheckerSupport(AChatControlI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof ChatRoomControlI;
-
-			}
-
-		});
-		InstanceOf.addChecker(new CheckerSupport(ChatRoomsControlI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof ChatRoomsControlI;
+				return o instanceof AChatControlI;
 
 			}
 

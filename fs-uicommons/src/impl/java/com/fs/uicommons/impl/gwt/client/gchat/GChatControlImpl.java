@@ -137,6 +137,13 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	 * Dec 23, 2012
 	 */
 	@Override
+	public void join(String gid) {
+		GChatModel m = this.getModel();
+		m.setGroupIdToJoin(gid);
+		this.join();
+	}
+
+	@Override
 	public void join() {
 		//
 		GChatModel m = this.getModel();
@@ -218,11 +225,15 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		return this.connected;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicommons.api.gwt.client.gchat.GChatControlI#send()
-	 */
+	@Override
+	public void send(String gid, String text) {
+		GChatModel m = this.getChatModel();
+		m.setCurrentGroupId(gid);
+		ChatGroupModel gm = this.getChatModel().getGroup(gid, true);
+		gm.setMessageToSend(text);
+		this.send();
+	}
+
 	@Override
 	public void send() {
 		String cid = this.getChatModel().getCurrentGroupId();

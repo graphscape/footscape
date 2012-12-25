@@ -7,10 +7,10 @@ package com.fs.uicommons.impl.gwt.client.gchat.handler;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
+import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
-import com.fs.uicommons.impl.gwt.client.gchat.MessageModel;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**

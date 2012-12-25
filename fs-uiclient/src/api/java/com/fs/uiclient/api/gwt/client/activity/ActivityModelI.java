@@ -29,11 +29,11 @@ public interface ActivityModelI extends ModelI {
 
 	public String getActivityId();
 
-	public ParticipantModel addParticipant(String expId, String accId);
+	public PartnerModel addParticipant(String expId, String accId);
 	
-	public ParticipantModel getParticipantByExpId(String expId);
+	public PartnerModel getParticipantByExpId(String expId);
 
-	public List<ParticipantModel> getParticipantList();
+	public List<PartnerModel> getParticipantList();
 
 	public boolean isSelected();
 

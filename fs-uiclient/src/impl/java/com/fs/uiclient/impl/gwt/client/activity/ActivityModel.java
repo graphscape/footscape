@@ -7,7 +7,7 @@ package com.fs.uiclient.impl.gwt.client.activity;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.activity.ParticipantModel;
+import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -42,10 +42,10 @@ public class ActivityModel extends ModelSupport implements ActivityModelI {
 	 * Oct 20, 2012
 	 */
 	@Override
-	public List<ParticipantModel> getParticipantList() {
+	public List<PartnerModel> getParticipantList() {
 
 		//
-		return this.getChildList(ParticipantModel.class);
+		return this.getChildList(PartnerModel.class);
 
 	}
 
@@ -79,10 +79,10 @@ public class ActivityModel extends ModelSupport implements ActivityModelI {
 	 * Oct 24, 2012
 	 */
 	@Override
-	public ParticipantModel getParticipantByExpId(String expId) {
+	public PartnerModel getParticipantByExpId(String expId) {
 		//
-		List<ParticipantModel> pl = this.getParticipantList();
-		for (ParticipantModel pi : pl) {
+		List<PartnerModel> pl = this.getParticipantList();
+		for (PartnerModel pi : pl) {
 			if (pi.isExpId(expId)) {
 				return pi;
 			}
@@ -98,8 +98,8 @@ public class ActivityModel extends ModelSupport implements ActivityModelI {
 	 * (java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ParticipantModel addParticipant(String expId, String accId) {
-		ParticipantModel rt = new ParticipantModel(expId, expId, accId);
+	public PartnerModel addParticipant(String expId, String accId) {
+		PartnerModel rt = new PartnerModel(expId, expId, accId);
 		this.child(rt);
 		return rt;
 	}

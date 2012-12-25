@@ -6,7 +6,7 @@ package com.fs.uiclient.impl.gwt.client.activity;
 
 import com.fs.uiclient.api.gwt.client.activity.ActivityControlI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.activity.ParticipantModel;
+import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 
@@ -34,15 +34,15 @@ public class ActivityControl extends ControlSupport implements ActivityControlI 
 	@Override
 	public void processChildModelAdd(ModelI parent, ModelI cm) {
 		super.processChildModelAdd(parent, cm);
-		if(cm instanceof ParticipantModel){
-			this.processChildParticipantModelAdd((ParticipantModel)cm);
+		if(cm instanceof PartnerModel){
+			this.processChildParticipantModelAdd((PartnerModel)cm);
 		}
 	}
 
 	/**
 	 * @param cm
 	 */
-	private void processChildParticipantModelAdd(ParticipantModel cm) {
+	private void processChildParticipantModelAdd(PartnerModel cm) {
 		//
 		
 	}

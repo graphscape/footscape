@@ -2,9 +2,9 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 24, 2012
  */
-package com.fs.uiclient.api.gwt.client.chatroom;
+package com.fs.uiclient.api.gwt.client.achat;
 
-import com.fs.uiclient.api.gwt.client.activity.ParticipantModel;
+import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
@@ -40,11 +40,11 @@ public class PeerModel extends ModelSupport {
 		return this.getValue(String.class, L_XMPP_USER);
 	}
 
-	public ChatRoomModelI getChatRoom() {
-		return (ChatRoomModelI) this.parent;
+	public ChatActivityModel getChatRoom() {
+		return (ChatActivityModel) this.parent;
 	}
 
-	public ParticipantModel getParticipant() {// Not child,reference to
+	public PartnerModel getParticipant() {// Not child,reference to
 												// activity's child by exp.
 		String expId = this.getExpId();
 		return this.getChatRoom().getActivityModel()

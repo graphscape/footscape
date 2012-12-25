@@ -13,12 +13,15 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 public interface GChatControlI extends ControlI {
 
 	public void join();
+	
+	public void join(String gid);
 
 	public void send();
 
-	public GChatModel getChatModel();
-	
-	public boolean isConnected();
+	public void send(String gid, String text);
 
+	public GChatModel getChatModel();
+
+	public boolean isConnected();
 
 }

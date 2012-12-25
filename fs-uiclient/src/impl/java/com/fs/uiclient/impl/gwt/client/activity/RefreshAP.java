@@ -5,7 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.activity;
 
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.activity.ParticipantModel;
+import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicore.api.gwt.client.UiRequest;
@@ -52,7 +52,7 @@ public class RefreshAP implements ActionProcessorI {
 			StringData expIdD = (StringData) oi.getProperty("expId");
 			String expId = expIdD.getValue();
 
-			ParticipantModel pm = asm.getParticipantByExpId(expId);
+			PartnerModel pm = asm.getParticipantByExpId(expId);
 
 			if (pm == null) {// only refresh when not added yet.
 				pm = asm.addParticipant(expId, accId);

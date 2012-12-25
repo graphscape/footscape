@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 23, 2012
  */
-package com.fs.uicommons.impl.gwt.client.gchat;
+package com.fs.uicommons.api.gwt.client.gchat;
 
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;

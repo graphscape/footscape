@@ -31,7 +31,7 @@ public class UiCommonsImplTestSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac).type("ha")
-		ac.getContainer().find(EngineFactoryI.class, true).getEngine(0).getDispatcher().populator("handler")
+		ac.getContainer().find(EngineFactoryI.class, true).getEngine("uiserver").getDispatcher().populator("handler")
 				.active(ac).cfgId(this.getId() + ".Object.DISPATCHER").populate();
 
 		//

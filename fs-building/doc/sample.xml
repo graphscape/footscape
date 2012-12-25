@@ -1,0 +1,9 @@
+<config>
+
+        <grid.cleanAtInit value="true"/>
+        <elastic.host value="localhost"/>
+        <elastic.port value="9300" />
+        <email.admin value="admin@thinkpad" />
+        <testing value="true" />
+
+</config>

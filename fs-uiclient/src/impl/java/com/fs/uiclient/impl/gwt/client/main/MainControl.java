@@ -4,12 +4,12 @@
  */
 package com.fs.uiclient.impl.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.HeaderNames;
+import com.fs.uiclient.impl.gwt.client.achat.AChatControlImpl;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesControl;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
-import com.fs.uiclient.impl.gwt.client.chatrooms.ChatRoomsControl;
-import com.fs.uiclient.impl.gwt.client.chatrooms.ChatRoomsModel;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperControl;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditControl;
@@ -31,6 +31,7 @@ import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotControlImpl;
 import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotModelImpl;
 import com.fs.uicommons.api.gwt.client.frwk.support.LazyMvcHeaderItemHandler;
+import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -42,7 +43,6 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
-import com.fs.uixmpp.groupchat.api.gwt.client.rooms.RoomsModelI;
 
 /**
  * @author wu
@@ -95,7 +95,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	protected void activeRooms() {
 		ModelI rootM = this.getClient(true).getRootModel();
-		rootM.childProcessor(RoomsModelI.class, "rooms",
+		rootM.childProcessor(GChatModel.class, "rooms",
 				new ModelChildProcessorI() {
 
 					@Override
@@ -299,13 +299,13 @@ public class MainControl extends ControlSupport implements MainControlI {
 			@Override
 			protected ModelI createModel(String name) {
 				//
-				return new ChatRoomsModel(name);
+				return new AChatModel(name);
 			}
 
 			@Override
 			protected ControlI createControl(String name) {
 				//
-				return new ChatRoomsControl(name);
+				return new AChatControlImpl(name);
 			}
 		});
 

@@ -21,8 +21,6 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.support.UiFilterSupport;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
-import com.fs.uixmpp.core.api.gwt.client.UiXmppCoreGPI;
-import com.fs.uixmpp.groupchat.api.gwt.client.UiGroupChatGPI;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -109,8 +107,6 @@ public class TestBase extends GWTTestCase {
 
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
 				GWT.create(UiCommonsGPI.class),
-				GWT.create(UiXmppCoreGPI.class),
-				GWT.create(UiGroupChatGPI.class),
 				GWT.create(UiClientGwtSPI.class),
 				};
 
@@ -134,7 +130,7 @@ public class TestBase extends GWTTestCase {
 	}
 
 	public void onEvent(Event e) {
-
+		
 	}
 
 	/*

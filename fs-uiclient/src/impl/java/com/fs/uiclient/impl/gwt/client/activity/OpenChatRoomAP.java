@@ -4,8 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.activity;
 
+import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.chatrooms.ChatRoomsModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -34,15 +34,15 @@ public class OpenChatRoomAP implements ActionProcessorI {
 		// //
 		//
 		// }});
-		ChatRoomsModelI cm = (ChatRoomsModelI) c.getModel().getTopObject()
-				.find(ChatRoomsModelI.class, true);
+		AChatModel cm = (AChatModel) c.getModel().getTopObject()
+				.find(AChatModel.class, true);
 		// this AP service for activity.
 		// open a chat room for the activity.
 		ActivityModelI am = (ActivityModelI) c.getModel();
 
-		cm.setValue(ChatRoomsModelI.L_ACTIVITY_ID, am.getActivityId());
+		cm.setValue(AChatModel.L_ACTIVITY_ID, am.getActivityId());
 
-		ControlUtil.triggerAction(cm, ChatRoomsModelI.A_OPEN);//
+		ControlUtil.triggerAction(cm, AChatModel.A_OPEN);//
 
 	}
 

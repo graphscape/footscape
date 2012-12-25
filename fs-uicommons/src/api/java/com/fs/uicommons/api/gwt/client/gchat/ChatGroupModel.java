@@ -6,7 +6,6 @@ package com.fs.uicommons.api.gwt.client.gchat;
 
 import java.util.List;
 
-import com.fs.uicommons.impl.gwt.client.gchat.MessageModel;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**

@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
+import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;

@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * @author wu
  * 
  */
-public class ParticipantModel extends ModelSupport {
+public class PartnerModel extends ModelSupport {
 
 	public static final Location L_EXP_ID = Location.valueOf("expId");
 
@@ -19,7 +19,7 @@ public class ParticipantModel extends ModelSupport {
 	/**
 	 * @param name
 	 */
-	public ParticipantModel(String name, String expId, String accId) {
+	public PartnerModel(String name, String expId, String accId) {
 		super(name);
 		this.setValue(L_EXP_ID, expId);
 		this.setValue(L_ACCOUNT_ID, accId);
