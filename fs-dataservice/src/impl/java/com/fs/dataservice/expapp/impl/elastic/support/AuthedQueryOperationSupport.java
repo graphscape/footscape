@@ -10,7 +10,7 @@ import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.expapp.operations.AuthedOperationI;
 import com.fs.dataservice.api.expapp.operations.AuthedQueryOperationI;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.core.impl.elastic.operations.NodeQueryOperationE;
 import com.fs.dataservice.expapp.impl.elastic.util.AuthedUtil;
 
@@ -36,7 +36,7 @@ public class AuthedQueryOperationSupport extends NodeQueryOperationE implements
 
 	protected void beforeQuery() {
 
-		Login login = AuthedUtil.beforeAuthedOperation(this, this.dataService,
+		Session login = AuthedUtil.beforeAuthedOperation(this, this.dataService,
 				this.getResult());
 		if (login == null) {
 			return;
@@ -50,7 +50,7 @@ public class AuthedQueryOperationSupport extends NodeQueryOperationE implements
 	@Override
 	public AuthedQueryOperationI loginId(String id) {
 		//
-		this.parameter(AuthedOperationI.PK_LOGIN_ID, id);
+		this.parameter(AuthedOperationI.PK_SESSION_ID, id);
 		return this;
 	}
 

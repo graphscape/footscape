@@ -55,14 +55,14 @@ public class MockClient implements WebSocketListener {
 	protected WebSocketConnection connection;
 
 	protected Semaphore connected;
+	
+	protected String clientId;
 
 	protected String accountId;
 
 	protected String sessionId;
 
 	protected CodecI messageCodec;
-
-	protected boolean ready;
 
 	public MockClient(WebSocketClientFactory f, ContainerI c, URI uri) {
 		this.uri = uri;
@@ -187,7 +187,7 @@ public class MockClient implements WebSocketListener {
 			throw new FsException("first message must by"
 					+ WebSocketGoI.P_READY + ", but got:" + path);
 		}
-		this.ready = true;
+		this.clientId = msg.getString("clientId");
 	}
 
 	public void syncConnect() {
@@ -237,7 +237,7 @@ public class MockClient implements WebSocketListener {
 	 * Dec 16, 2012
 	 */
 	public void binding(String accId) throws Exception {
-		if (!this.ready) {
+		if (this.clientId == null) {
 			throw new FsException("not ready yet");
 		}
 

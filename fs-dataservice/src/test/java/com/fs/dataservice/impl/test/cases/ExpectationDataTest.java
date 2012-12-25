@@ -16,7 +16,7 @@ import com.fs.dataservice.api.expapp.wrapper.Activity;
 import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.dataservice.impl.test.cases.support.AuthedTestBase;
 
@@ -46,7 +46,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 		String password3 = "password3";
 		String nick3 = "nick3";
 
-		Login login1 = super.createAccountAndLogin(email1, password1, nick1);
+		Session login1 = super.createAccountAndLogin(email1, password1, nick1);
 
 		Expectation e11 = this.addExp(login1,
 				"user1 has expectation1 key1 key2");
@@ -54,14 +54,14 @@ public class ExpectationDataTest extends AuthedTestBase {
 				"user1 has expectation2 key3 key4");
 
 		// this.dump();
-		Login login2 = super.createAccountAndLogin(email2, password2, nick2);
+		Session login2 = super.createAccountAndLogin(email2, password2, nick2);
 		Expectation e21 = this.addExp(login2,
 				"user2 has expectation1 key1 key2");
 		Expectation e22 = this.addExp(login2,
 				"user2 has expectation2 key3 key4");
 
 		// this.dump();
-		Login login3 = super.createAccountAndLogin(email3, password3, nick3);
+		Session login3 = super.createAccountAndLogin(email3, password3, nick3);
 		Expectation e31 = this.addExp(login2,
 				"user3 has expectation1 key1 key2");
 		Expectation e32 = this.addExp(login2,
@@ -122,7 +122,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 		return rt;
 	}
 
-	protected CooperConfirm cooperConfirm(Login login, String requestUid,
+	protected CooperConfirm cooperConfirm(Session login, String requestUid,
 			String actId) {
 		CooperConfirmOperationI cc = this.datas
 				.prepareOperation(CooperConfirmOperationI.class);
@@ -130,7 +130,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 
 		cc.exp2ActivityId(actId);
 		cc.createNewActivity(actId == null);//
-		cc.loginId(login.getId());
+		cc.sessionId(login.getId());
 		CooperConfirmResultI cr = cc.execute().getResult().assertNoError()
 				.cast();
 
@@ -141,7 +141,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 
 	}
 
-	protected CooperRequest coperRequest(Login login, Expectation exp1,
+	protected CooperRequest coperRequest(Session login, Expectation exp1,
 			Expectation exp2) {
 
 		CooperRequest rt = new CooperRequest().forCreate(this.datas);
@@ -153,7 +153,7 @@ public class ExpectationDataTest extends AuthedTestBase {
 		return rt;
 	}
 
-	protected Expectation addExp(Login login, String expBody) {
+	protected Expectation addExp(Session login, String expBody) {
 
 		Expectation rt = new Expectation().forCreate(this.datas);
 		rt.setAccountId(login.getAccountId());

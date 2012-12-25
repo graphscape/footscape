@@ -6,6 +6,7 @@ package com.fs.commons.api.support;
 import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.SPI;
 
 /**
  * @author wu
@@ -15,10 +16,17 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 
 	protected ContainerI container;
 
+	protected SPI spi;
+
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
 		this.container = ac.getContainer();
+		this.spi = ac.getSpi();
+	}
+
+	protected ActiveContext newActiveContext() {
+		return new ActiveContext(this.container, this.spi);
 	}
 
 	/* */

@@ -9,7 +9,7 @@ import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.expapp.operations.ExpCreateOperationI;
 import com.fs.dataservice.api.expapp.result.ExpCreateResultI;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.expapp.impl.elastic.support.AuthedOperationSupport;
 import com.fs.dataservice.expapp.impl.result.ExpCreateResultImpl;
 
@@ -48,7 +48,7 @@ public class ExpCreateOperationE extends
 	 * Nov 4, 2012
 	 */
 	@Override
-	protected void executeInternal(Login login, ExpCreateResultI rst) throws Exception {
+	protected void executeInternal(Session login, ExpCreateResultI rst) throws Exception {
 		//
 		super.executeInternal(login, rst);
 

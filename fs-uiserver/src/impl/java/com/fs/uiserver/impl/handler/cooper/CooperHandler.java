@@ -7,7 +7,6 @@ package com.fs.uiserver.impl.handler.cooper;
 import java.util.List;
 
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.dataservice.api.expapp.operations.CooperConfirmOperationI;
 import com.fs.dataservice.api.expapp.operations.CooperRequestOperationI;
@@ -37,7 +36,7 @@ public class CooperHandler extends UiHandlerSupport {
 		String expId1 = (String) req.getPayload("expId1", true);
 		String expId2 = (String) req.getPayload("expId2", true);
 
-		ro.loginId(this.getLoginId(hc));
+		ro.sessionId(this.getSessionId(hc));
 		ro.expId1(expId1);
 		ro.expId2(expId2);
 
@@ -70,7 +69,7 @@ public class CooperHandler extends UiHandlerSupport {
 		CooperConfirmOperationI ro = this.dataService
 				.prepareOperation(CooperConfirmOperationI.class);
 
-		ro.loginId(this.getLoginId(hc));
+		ro.sessionId(this.getSessionId(hc));
 		ro.cooperRequestId(crid);
 		ro.createNewActivity(exp2ActId == null);//
 		ro.exp2ActivityId(exp2ActId);//

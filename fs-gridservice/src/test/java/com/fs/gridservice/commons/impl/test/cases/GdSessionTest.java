@@ -4,6 +4,7 @@
 package com.fs.gridservice.commons.impl.test.cases;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
@@ -25,16 +26,19 @@ public class GdSessionTest extends TestBase {
 		SessionManagerI sm = this.facade.getSessionManager();
 		String sid = client.getSessionId();
 		SessionGd s = sm.getSession(sid);
+		
 		assertNotNull("session is not in manager", s);
-
 		TerminalManagerI tm = this.facade
 				.getEntityManager(TerminalManagerI.class);
-		String tId = s.getTerminalId();
 
-		TerminalGd t = tm.getTerminal(tId);
+		String cid = s.getClientId();
+		ClientGd c = this.cmanager.getEntity(cid, true);
+		String tid = c.getTerminalId();
+				
+		TerminalGd t = tm.getTerminal(tid);
 		assertNotNull("terminal is not in manager", t);
 		String text = "this is a text message from server.";
-		tm.sendTextMessage(tId, text);
+		tm.sendTextMessage(tid, text);
 
 		// assert the client received.
 		MessageI msg = client.receiveMessage().get();

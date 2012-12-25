@@ -15,8 +15,10 @@ import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.scenario.ScenarioI;
+import com.fs.uiserver.impl.UiServerSPI;
 
 /**
  * @author wu
@@ -36,7 +38,8 @@ public class TestBase extends TestCase {
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.dataService = this.container.find(DataServiceI.class, true);
-		this.engine = this.container.find(ServiceEngineI.class, true);
+		this.engine = this.container.find(EngineFactoryI.class, true)
+				.getEngine(UiServerSPI.ENAME_UISERVER);
 		this.cleanDb();
 	}
 
@@ -46,9 +49,10 @@ public class TestBase extends TestCase {
 		dao.execute().getResult().assertNoError();
 
 	}
-	
-	protected void dumpDb(){
-		DumpOperationI op = this.dataService.prepareOperation(DumpOperationI.class);
+
+	protected void dumpDb() {
+		DumpOperationI op = this.dataService
+				.prepareOperation(DumpOperationI.class);
 		op.execute().getResult().assertNoError();
 	}
 

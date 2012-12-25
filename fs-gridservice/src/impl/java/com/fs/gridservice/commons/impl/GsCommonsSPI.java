@@ -37,6 +37,7 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("webSocketGoManager");
 
 		ac.active("terminalManager");
+		ac.active("clientManager");
 		ac.active("presenceManager");
 		ac.active("participantManager");
 		ac.active("chatGroupManager");

@@ -19,7 +19,6 @@ import com.fs.dataservice.api.expapp.wrapper.Activity;
 import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
 import com.fs.dataservice.api.expapp.wrapper.Profile;
 import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.api.expapp.wrapper.SignupConfirm;
@@ -60,23 +59,22 @@ public class DataServiceExpAppSPI extends SPISupport {
 				ExpCreateOperationE.class);
 		ds.registerOperation("expapp.cooperrequest",
 				CooperRequestOperationI.class, CooperRequestOperationE.class);
-		ds.registerOperation("expapp.expsearch1",
-				ExpSearchOperationI.class, RandomExpSearchOperationE.class);
-		ds.registerOperation("expapp.usersnap",
-				UserSnapshotOperationI.class, UserSnapshotOperationE.class);
-		
+		ds.registerOperation("expapp.expsearch1", ExpSearchOperationI.class,
+				RandomExpSearchOperationE.class);
+		ds.registerOperation("expapp.usersnap", UserSnapshotOperationI.class,
+				UserSnapshotOperationE.class);
+
 		//
-		
 
 		ElasticClientI ec = ac.getContainer().find(ElasticClientI.class, true);
 
 		// Configurations
 		NodeConfigurations cfs = ds.getConfigurations();
-		Session.config(cfs);
+
 		Account.config(cfs);
 		SignupRequest.config(cfs);
 		SignupConfirm.config(cfs);
-		Login.config(cfs);
+		Session.config(cfs);
 		Activity.config(cfs);
 		CooperRequest.config(cfs);
 		CooperConfirm.config(cfs);

@@ -7,9 +7,9 @@ package com.fs.uiserver.impl.test.cases;
 import java.util.List;
 
 import com.fs.uiserver.impl.test.cases.support.AuthedTestBase;
-import com.fs.uiserver.impl.test.mock.MockUserActivity;
 import com.fs.uiserver.impl.test.mock.MockActivityDetail;
 import com.fs.uiserver.impl.test.mock.MockClient;
+import com.fs.uiserver.impl.test.mock.MockUserActivity;
 
 /**
  * @author wu

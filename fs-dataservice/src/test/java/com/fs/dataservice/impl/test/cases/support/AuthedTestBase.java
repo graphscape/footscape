@@ -10,7 +10,7 @@ import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.expapp.NodeTypes;
 import com.fs.dataservice.api.expapp.wrapper.Account;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.api.expapp.wrapper.SignupConfirm;
 import com.fs.dataservice.api.expapp.wrapper.SignupRequest;
 
@@ -21,12 +21,12 @@ import com.fs.dataservice.api.expapp.wrapper.SignupRequest;
 public class AuthedTestBase extends TestBase {
 	public static String confirmcode = "confirmcode1";
 
-	protected Login createAccountAndLogin(String email, String password,
+	protected Session createAccountAndLogin(String email, String password,
 			String nick) {
 		SignupRequest sr = this.signupRequest(email, password, nick);
 		SignupConfirm sc = this.signupConfirm(sr);
 		Account acc = this.account(sc);
-		Login rt = this.login(acc);
+		Session rt = this.login(acc);
 
 		return rt;
 	}
@@ -94,7 +94,7 @@ public class AuthedTestBase extends TestBase {
 		return acc;
 	}
 
-	protected Login login(Account acc) {
+	protected Session login(Account acc) {
 
 		// query account
 		// this.dump();
@@ -121,9 +121,9 @@ public class AuthedTestBase extends TestBase {
 		NodeCreateOperationI co = this.datas.prepareOperation(
 				NodeCreateOperationI.class).refreshAfterCreate(true);
 
-		Login rt = new Login().forCreate(datas);
-		rt.setProperty(Login.PK_IS_ANONYMOUS, false);
-		rt.setSessionId("todo");//
+		Session rt = new Session().forCreate(datas);
+		rt.setProperty(Session.PK_IS_ANONYMOUS, false);
+		rt.setClientId("todo");//
 		rt.setAccountId(acc.getId());//
 		rt.save(true);
 		return rt;

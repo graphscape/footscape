@@ -8,15 +8,16 @@ import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.engine.api.DispatcherI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.ServiceEngineI;
-import com.fs.engine.impl.dispatcher.DispatcherImpl;
 
 /**
  * @author wu
  * 
  */
 public class UiServerSPI extends SPISupport {
+
+	public static final String ENAME_UISERVER = "uiserver";
 
 	/** */
 	public UiServerSPI(String id) {
@@ -27,6 +28,7 @@ public class UiServerSPI extends SPISupport {
 	/* */
 	@Override
 	public void doActive(ActiveContext ac) {
+		ac.active("authProvider");
 		// Converter factory
 		this.activeConfirmCodeNotifier(ac);
 		this.activeHandlers(ac);
@@ -38,13 +40,13 @@ public class UiServerSPI extends SPISupport {
 				ConverterI.FactoryI.class, true);
 		// addConverter.
 		// filter provide the connection intercept.
-		PopulatorI fp = ac.getContainer().find(ServiceEngineI.class)
-				.populator("filter");
+		ServiceEngineI se = ac.getContainer().find(EngineFactoryI.class)
+				.getEngine(ENAME_UISERVER);
+		PopulatorI fp = se.populator("filter");
 		fp.spi(this).active(ac).force(false).populate();
-		
+
 		// TODO remove if no handler?
-		PopulatorI hp = ac.getContainer().find(DispatcherI.class)
-				.populator("handler");
+		PopulatorI hp = se.getDispatcher().populator("handler");
 		hp.active(ac).force(true).populate();
 		// add node type
 	}

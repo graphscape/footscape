@@ -14,6 +14,14 @@ import com.fs.commons.api.describe.DescribedI;
  */
 public interface FinderI<T> extends DescribedI<FinderI<T>> {
 
+	public static interface NotFoundI<X> {
+		public void notFound(FinderI<X> f);
+	}
+
+	public static interface OverFlowI<X> {
+		public void overflow(FinderI<X> f);
+	}
+
 	public T find(boolean force);
 
 	public FinderI<T> withParent(boolean wp);

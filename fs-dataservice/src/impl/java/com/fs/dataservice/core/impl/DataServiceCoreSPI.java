@@ -19,7 +19,7 @@ import com.fs.dataservice.api.expapp.wrapper.Activity;
 import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.api.expapp.wrapper.SignupConfirm;
 import com.fs.dataservice.api.expapp.wrapper.SignupRequest;
 import com.fs.dataservice.api.expapp.wrapper.User;

@@ -14,7 +14,7 @@ public class SessionGd extends EntityGd {
 
 	public static final String ACCID = "accountId";
 
-	public static final String TERMIANAlID = "terminalId";
+	public static final String CLIENTID = "clientId";//
 
 	public SessionGd() {
 
@@ -27,12 +27,12 @@ public class SessionGd extends EntityGd {
 		super(pts);
 	}
 
-	public String getAccountId() {
-		return (String) this.getProperty(ACCID);
+	public String getClientId() {
+		return this.getString(CLIENTID);
 	}
 
-	public String getTerminalId() {
-		return (String) this.getString(TERMIANAlID);
+	public String getAccountId() {
+		return (String) this.getProperty(ACCID);
 	}
 
 }

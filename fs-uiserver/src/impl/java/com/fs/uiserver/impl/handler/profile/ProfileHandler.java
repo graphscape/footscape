@@ -11,12 +11,12 @@ import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.expapp.wrapper.Login;
 import com.fs.dataservice.api.expapp.wrapper.Profile;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**
@@ -62,10 +62,10 @@ public class ProfileHandler extends UiHandlerSupport {
 	@Handle("init")
 	public void handleInit(HandleContextI hc, ResponseI res) {
 
-Login login =		this.getLogin(hc,true);
+		SessionGd login = this.getSession(hc, true);
 
-		Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID,
-				login.getAccountId(), false);
+		Profile pf = this.dataService.getNewest(Profile.class,
+				Profile.ACCOUNTID, login.getAccountId(), false);
 
 		PropertiesI<Object> pts = null;
 		if (pf != null) {
@@ -85,7 +85,7 @@ Login login =		this.getLogin(hc,true);
 			// if has error such as validate error,then not continue.
 			return;
 		}
-		Login login = this.getLogin(hc, true);//
+		SessionGd login = this.getSession(hc, true);//
 		// here the data is valid for save processing.
 		Integer age = (Integer) req.getPayload("age");// just for display.
 		String gender = (String) req.getPayload("gender");

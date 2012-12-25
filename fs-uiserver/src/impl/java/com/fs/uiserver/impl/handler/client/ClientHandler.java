@@ -3,15 +3,14 @@
  */
 package com.fs.uiserver.impl.handler.client;
 
-import java.util.UUID;
-
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.gridservice.commons.api.data.ClientGd;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.uiserver.impl.filter.SessionFilter;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
@@ -23,20 +22,31 @@ public class ClientHandler extends UiHandlerSupport {
 
 	protected PropertiesI<String> clientParameters;
 
+	@Override
+	public void active(ActiveContext ac) {
+		super.active(ac);
+		Configuration cfg = this.config.getPropertyAsConfiguration(
+				"client.parameters", true);
+		this.clientParameters = MapProperties.valueOf(cfg.getAsMap());// encode
+																		// as
+																		// PropertiesI
+
+	}
+
 	@Handle("init")
 	public void handleInit(HandleContextI hc) {
 		// create session for client init.
 		// PropertiesI<Object> session = new MapProperties<Object>();
+		TerminalGd t = this.terminalManager.web20Terminal("todo",
+				new MapProperties<Object>());
 
-		String sid = UUID.randomUUID().toString();
-		Session s = new Session().forCreate(this.dataService);
+		PropertiesI<Object> pts = new MapProperties<Object>();
 		String locale = this.resolveLocale(hc);
-		s.setLocale(locale);
-		s.save(true);
+		pts.setProperty("locale", locale);
+		ClientGd c = this.clientManager.createClient(t.getId(), pts);
 
-		sid = s.getId();//
-
-		hc.getResponse().setPayload("sessionId", sid);// TODO
+		String cid = c.getId();
+		hc.getResponse().setPayload("clientId", cid);// TODO
 
 		hc.getResponse().setPayload("parameters", this.clientParameters);
 
@@ -59,20 +69,6 @@ public class ClientHandler extends UiHandlerSupport {
 		rt = new AcceptLanguage(al).getLocale();
 
 		return rt;
-	}
-
-	/*
-	 * Nov 18, 2012
-	 */
-	@Override
-	public void active(ActiveContext ac) {
-		//
-		super.active(ac);
-		Configuration cfg = this.config.getPropertyAsConfiguration(
-				"client.parameters", true);
-		this.clientParameters = MapProperties.valueOf(cfg.getAsMap());// encode
-																		// as
-																		// PropertiesI
 	}
 
 }

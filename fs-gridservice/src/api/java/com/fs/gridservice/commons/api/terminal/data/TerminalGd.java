@@ -16,6 +16,8 @@ public class TerminalGd extends EntityGd {
 
 	public static final String PK_ADDRESS = "_address";
 
+	public static final String PK_CLIENTID = "_clientId";
+
 	public static final String PK_SESSIONID = "_sessionId";
 
 	public TerminalGd() {
@@ -26,12 +28,12 @@ public class TerminalGd extends EntityGd {
 		super(pts);
 	}
 
-	public String getSessionId() {
-		return this.getSessionId(false);
+	public String getSessionId(boolean force) {
+		return this.getString(PK_SESSIONID, force);
 	}
 
-	public String getSessionId(boolean force) {
-		return (String) this.getProperty(PK_SESSIONID, force);
+	public String getClientId(boolean force) {
+		return (String) this.getProperty(PK_CLIENTID, force);
 
 	}
 

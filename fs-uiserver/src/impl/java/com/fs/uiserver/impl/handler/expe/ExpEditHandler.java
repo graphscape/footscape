@@ -27,7 +27,7 @@ public class ExpEditHandler extends UiHandlerSupport {
 		String body = (String) req.getPayload("body", true);
 
 		eo.expBody(body);
-		eo.loginId(this.getLoginId(hc));
+		eo.sessionId(this.getSessionId(hc));
 
 		ExpCreateResultI rst = eo.execute().getResult()
 				.assertNoError();

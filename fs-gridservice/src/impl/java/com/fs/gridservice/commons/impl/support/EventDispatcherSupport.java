@@ -20,6 +20,7 @@ import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.support.ServerSupport;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.ServiceEngineI;
@@ -34,9 +35,11 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends ServerSupport implements EventDispatcherI {
+public abstract class EventDispatcherSupport extends ServerSupport implements
+		EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory
+			.getLogger(EventDispatcherSupport.class);
 
 	protected ServiceEngineI engine;
 
@@ -60,7 +63,9 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		this.facade = this.container.find(GridFacadeI.class, true);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(ServiceEngineI.class, engineName, true);//
+		this.engine = this.container.find(EngineFactoryI.class, true)
+				.getEngine(engineName);//
+
 		// handlers
 
 		PopulatorI hp = this.engine.getDispatcher().populator("handler");
@@ -76,7 +81,6 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 						EventDispatcherSupport.this.handleBeforeDgCloseEvent(t);
 					}
 				});
-	
 
 	}
 
@@ -160,7 +164,8 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 			this.onException(t);
 
 			if (this.isState(ServerI.RUNNING)) {
-				LOG.warn("shutdown event dispatcher:" + this.getConfiguration().getName()
+				LOG.warn("shutdown event dispatcher:"
+						+ this.getConfiguration().getName()
 						+ " for the task abnormally return");
 			}
 			this.shutdown();
@@ -212,18 +217,20 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	}
 
 	protected void onException(Throwable t) {
-		LOG.error("exeception got,eventQueue:" + this.getConfiguration().getName(), t);
+		LOG.error("exeception got,eventQueue:"
+				+ this.getConfiguration().getName(), t);
 	}
 
 	protected void onException(EventGd evt, Throwable t) {
-		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
+		LOG.error("exception got,eventQueue:"
+				+ this.getConfiguration().getName() + ", event:" + evt, t);
 	}
 
 	public void handleEvent(EventGd evt) {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
-					+ "," + evt);
+			LOG.debug("dispatcher:" + this.config.getName()
+					+ " is processing event#" + this.eventCounter + "," + evt);
 		}
 		String path = evt.getPath();
 

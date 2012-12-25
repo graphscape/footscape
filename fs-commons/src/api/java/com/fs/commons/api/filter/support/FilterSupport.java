@@ -35,7 +35,9 @@ public abstract class FilterSupport<REQ, RES> extends ConfigurableSupport
 		int pre = this.config.getPropertyAsInt("priority", 0);
 		if (pre == 0) {
 			if (this.priority == 0) {
-				throw new FsException("filter's priority should not be zero:0");
+				throw new FsException(
+						"filter's priority should not be zero:0 from config:"
+								+ cfg);
 			}
 		} else {
 			// override by config

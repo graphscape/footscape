@@ -27,7 +27,7 @@ public class ActivitiesHandler extends UiHandlerSupport {
 	// query activities by account.
 	@Handle("activities")
 	public void handleActivities(HandleContextI hc, RequestI req, ResponseI res) {
-		List<String> idL = (List<String>) req.getPayload("idList");
+		List<String> idL = (List<String>) req.getPayload("idList", true);
 
 		// TODO parttern of data retrieving.
 		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();

@@ -1,5 +1,8 @@
 <config>
 
+	<!-- AuthProviderI for grid service -->
+	<config name="authProvider" class="com.fs.uiserver.impl.AuthProviderImpl"/>
+	
 	<!-- When signup,how to notify the confirm code -->
 	<prefix name="confirmCodeNotifier">
 		<email.class value="com.fs.uiserver.impl.signup.EmailConfirmCodeNotifier" />
@@ -18,8 +21,11 @@
 	</prefix>
 
 	<prefix name="filter">
-		<property name="session.class" value="com.fs.uiserver.impl.filter.SessionFilter" />
-
+		<property name="session.class" value="com.fs.uiserver.impl.filter.SessionFilter">
+		</property>
+		<config name="session">
+			<property name="priority" value="1" />
+		</config>
 	</prefix>
 
 	<prefix name="handler">
@@ -55,8 +61,6 @@
 		<login.class value="com.fs.uiserver.impl.handler.login.LoginHandler" />
 		<config name="login">
 			<pattern value="/uiserver/login/.*" />
-			<property name="xmpp.domain" value="$xmpp.domain" />
-
 		</config>
 
 		<expe.class value="com.fs.uiserver.impl.handler.expe.ExpEditHandler" />

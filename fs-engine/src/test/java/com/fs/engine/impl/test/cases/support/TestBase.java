@@ -29,7 +29,7 @@ public class TestBase extends TestCase {
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.service = this.sm.getContainer().find(EngineFactoryI.class, true)
-				.getEngine(0);//
+				.getEngine("0");//
 
 	}
 

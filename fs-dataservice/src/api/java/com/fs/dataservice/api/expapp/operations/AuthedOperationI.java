@@ -15,8 +15,8 @@ import com.fs.dataservice.api.core.ResultI;
 public interface AuthedOperationI<O extends OperationI<O, T>, T extends ResultI<T, ?>>
 		extends OperationI<O, T> {
 
-	public static final String PK_LOGIN_ID = "loginId";
+	public static final String PK_SESSION_ID = "sessionId";
 
-	public O loginId(String id);
+	public O sessionId(String id);
 
 }

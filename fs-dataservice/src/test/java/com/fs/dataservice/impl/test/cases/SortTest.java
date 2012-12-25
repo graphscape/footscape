@@ -21,6 +21,7 @@ public class SortTest extends TestBase {
 		// p.setEmail("email");
 		p.setGender("gender1");
 		p.setIcon("icon1");
+		p.setAccountId("acc1");
 		p.save();
 
 		p = new Profile().forCreate(this.datas);
@@ -28,14 +29,15 @@ public class SortTest extends TestBase {
 		// p.setEmail("email");
 		p.setGender("gender2");
 		p.setIcon("icon2");
+		p.setAccountId("acc2");
 		p.save(true);
 
 		Profile p2 = this.datas.getNewest(Profile.class, Profile.ACCOUNTID,
-				"email", false);
+				"acc2", false);
 		Map m1 = p.getTarget().getAsMap();
 		Map m2 = p2.getTarget().getAsMap();
 
-		assertEquals("p:" + m1 + ",p2:" + p2, p, p2);
+		assertEquals("p:" + m1 + ",p2:" + m2, p.getUniqueId(), p2.getUniqueId());
 
 	}
 }

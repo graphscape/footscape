@@ -9,7 +9,7 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.expapp.operations.AuthedOperationI;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 
 /**
  * @author wu
@@ -17,18 +17,18 @@ import com.fs.dataservice.api.expapp.wrapper.Login;
  */
 public class AuthedUtil {
 
-	public static Login beforeAuthedOperation(OperationI op, DataServiceI ds,
+	public static Session beforeAuthedOperation(OperationI op, DataServiceI ds,
 			ResultI rst) {
 		String id = (String) op
-				.getParameter(AuthedOperationI.PK_LOGIN_ID, true);
+				.getParameter(AuthedOperationI.PK_SESSION_ID, true);
 
-		Login login = ds.getNewestById(Login.class, id, false);
+		Session se = ds.getNewestById(Session.class, id, false);
 
-		if (login == null) {
+		if (se == null) {
 			rst.getErrorInfo().add(
-					new ErrorInfo("no login record with login id:" + id));
+					new ErrorInfo("no session record with id:" + id));
 			return null;// not login
 		}
-		return login;
+		return se;
 	}
 }

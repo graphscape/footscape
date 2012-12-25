@@ -17,13 +17,16 @@ import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.dataservice.api.expapp.wrapper.Activity;
-import com.fs.dataservice.api.expapp.wrapper.Login;
-import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.support.ValidatorHandlerSupport;
+import com.fs.gridservice.commons.api.GridFacadeI;
+import com.fs.gridservice.commons.api.client.ClientManagerI;
+import com.fs.gridservice.commons.api.data.ClientGd;
+import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.session.SessionManagerI;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.uiserver.Constants;
 
 /**
@@ -34,6 +37,13 @@ public class UiHandlerSupport extends ValidatorHandlerSupport {
 
 	protected DataServiceI dataService;
 	protected JexlEngineI jexl;
+	protected GridFacadeI facade;
+
+	protected ClientManagerI clientManager;
+
+	protected TerminalManagerI terminalManager;
+
+	protected SessionManagerI sessionManager;
 
 	/* */
 	@Override
@@ -44,6 +54,12 @@ public class UiHandlerSupport extends ValidatorHandlerSupport {
 
 		jexl = this.container.find(JexlEngineI.class, true);
 
+		this.facade = this.container.find(GridFacadeI.class, true);
+
+		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
+		this.terminalManager = this.facade
+				.getEntityManager(TerminalManagerI.class);
+		this.sessionManager = this.facade.getSessionManager();
 	}
 
 	protected <T extends NodeWrapper> T createNode(String expPrefix,
@@ -108,43 +124,34 @@ public class UiHandlerSupport extends ValidatorHandlerSupport {
 	 * <p>
 	 * Nov 29, 2012
 	 */
-	protected String getLoginId(HandleContextI hc) {
+	protected String getSessionId(HandleContextI hc) {
 
-		String sid = this.getSessionId(hc);
-
-		Login li = this.dataService.getNewest(Login.class, Login.PK_SESSION_ID,
-				sid, false);
-
-		if (li == null) {
-			throw new FsException("session" + sid + " not login");
-		}
-		String rt = li.getId();
-
-		return rt;
+		ClientGd c = this.getClient(hc);
+		return c.getSessionId(true);
 
 	}
 
 	protected String getLocale(HandleContextI hc) {
-		Session s = this.getSession(hc);
-		return s.getLocale();
+		ClientGd s = this.getClient(hc);
+		return s.getString("locale", true);
 	}
 
-	protected String getSessionId(HandleContextI hc) {
-		String rt = hc.getRequest().getHeader(Constants.HK_SESSION_ID, true);
+	// from header
+	protected String getClientId(HandleContextI hc) {
+		String rt = hc.getRequest().getHeader(Constants.HK_CLIENT_ID, true);
 		return rt;
 
 	}
 
-	protected Session getSession(HandleContextI hc) {
-		String sid = this.getSessionId(hc);
-
-		return this.dataService.getNewestById(Session.class, sid, true);
+	protected ClientGd getClient(HandleContextI hc) {
+		String sid = this.getClientId(hc);
+		return this.clientManager.getEntity(sid);// client from grid.
 
 	}
 
 	//
 	// protected String getLoginEmail(HandleContextI hc, boolean force) {
-	// Login li = this.getLogin(hc, force);
+	// Session li = this.getLogin(hc, force);
 	//
 	// if (li == null) {
 	// return null;
@@ -152,10 +159,25 @@ public class UiHandlerSupport extends ValidatorHandlerSupport {
 	// return (String) li.getPropertyAsString(Login.PK_EMAIL);
 	// }
 
-	protected Login getLogin(HandleContextI hc, boolean force) {
-		String uid = this.getLoginId(hc);
-		Login rt = this.dataService.getNewestById(Login.class, uid, force);
+	protected SessionGd getSession(HandleContextI hc, boolean force) {
+		ClientGd c = this.getClient(hc);
+		String sid = c.getSessionId(false);
+		if (sid == null) {
+			if (force) {
+				throw new FsException("no session binding to client:"
+						+ c.getId());
+			}
+			return null;
+		}
+
+		SessionGd rt = this.sessionManager.getSession(sid);
+
+		if (rt == null && force) {
+			throw new FsException("no session found by id:" + sid
+					+ " from clientId:" + c.getId());
+		}
 		return rt;
+
 	}
 
 	protected <T extends NodeWrapper> void processGetNewestListById(

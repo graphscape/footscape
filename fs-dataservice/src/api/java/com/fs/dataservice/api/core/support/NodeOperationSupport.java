@@ -28,6 +28,7 @@ public abstract class NodeOperationSupport<O extends NodeOperationI<O, T>, T ext
 															// propertiesKey
 
 	protected NodeConfig nodeConfig;
+
 	/**
 	 * @param ds
 	 */
@@ -78,11 +79,20 @@ public abstract class NodeOperationSupport<O extends NodeOperationI<O, T>, T ext
 	}
 
 	public String getId(boolean force) {
-		return (String) this.getParameter(NodeI.PK_ID, force);
+		return (String) this.properties().getProperty(NodeI.PK_ID, force);
+	}
+
+	protected <T> T getProperty(String key) {
+		return (T) this.properties().getProperty(key);
+	}
+
+	protected PropertiesI<Object> properties() {
+		return (PropertiesI<Object>) this.parameters.getProperty(PK_PROPERTIES,
+				true);
 	}
 
 	public void setId(String id) {
-		this.parameter(NodeI.PK_ID, id);
+		this.properties().setProperty(NodeI.PK_ID, id);
 	}
 
 	/*

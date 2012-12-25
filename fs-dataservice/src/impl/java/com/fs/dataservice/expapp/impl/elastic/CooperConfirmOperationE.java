@@ -11,7 +11,7 @@ import com.fs.dataservice.api.expapp.wrapper.Activity;
 import com.fs.dataservice.api.expapp.wrapper.CooperConfirm;
 import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.dataservice.api.expapp.wrapper2.UserActivity;
 import com.fs.dataservice.expapp.impl.elastic.support.AuthedOperationSupport;
@@ -36,7 +36,7 @@ public class CooperConfirmOperationE extends
 	}
 
 	@Override
-	protected void executeInternal(Login login, CooperConfirmResultI rst)
+	protected void executeInternal(Session login, CooperConfirmResultI rst)
 			throws Exception {
 
 		String id = (String) this.getParameter(PK_COOPER_REQUEST_ID, true);

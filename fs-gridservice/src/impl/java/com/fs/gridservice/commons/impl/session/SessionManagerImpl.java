@@ -37,6 +37,7 @@ public class SessionManagerImpl extends EntityGdManagerSupport<SessionGd>
 	public String createSession(SessionGd s) {
 		//
 		this.addEntity(s);
+		
 		return s.getId();
 
 	}

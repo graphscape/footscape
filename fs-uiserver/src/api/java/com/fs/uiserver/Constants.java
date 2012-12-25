@@ -10,6 +10,6 @@ package com.fs.uiserver;
  */
 public interface Constants {
 
-	public static final String HK_SESSION_ID = "X_FS" + "_session_id";
+	public static final String HK_CLIENT_ID = "X_FS" + "_session_id";
 
 }

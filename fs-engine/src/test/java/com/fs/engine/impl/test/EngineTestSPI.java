@@ -30,7 +30,7 @@ public class EngineTestSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 		DispatcherI dp = ac.getContainer().find(EngineFactoryI.class, true)
-				.getDispatcher(0);
+				.getDispatcher("0");
 
 		PopulatorI pp = dp.populator("handler").active(ac)
 				.cfgId(this.id + ".Object.DISPATCHER");

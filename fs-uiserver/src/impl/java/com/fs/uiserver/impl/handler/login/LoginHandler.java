@@ -3,25 +3,23 @@
  */
 package com.fs.uiserver.impl.handler.login;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
-import com.fs.commons.api.value.ErrorInfo;
-import com.fs.dataservice.api.core.NodeI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.dataservice.api.expapp.NodeTypes;
 import com.fs.dataservice.api.expapp.wrapper.Account;
 import com.fs.dataservice.api.expapp.wrapper.AccountInfo;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.uiserver.ErrorCodes;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
@@ -31,7 +29,8 @@ import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
  */
 public class LoginHandler extends UiHandlerSupport {
 
-	private String domain;
+	private static final Logger LOG = LoggerFactory
+			.getLogger(LoginHandler.class);
 
 	/*
 	 * Nov 14, 2012
@@ -39,13 +38,13 @@ public class LoginHandler extends UiHandlerSupport {
 	@Override
 	public void configure(Configuration cfg) {
 		super.configure(cfg);
-		this.domain = cfg.getProperty("xmpp.domain", true);//
 	}
 
 	@Override
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
+
 		{
 			ValidatorI<RequestI> vl = this.createValidator("submit");
 			vl.addExpression("payloads.property['password']!=null");
@@ -118,40 +117,48 @@ public class LoginHandler extends UiHandlerSupport {
 			// of
 			// password
 			// error.
-		} else {
-
-			AccountInfo xai = this.dataService.getNewest(AccountInfo.class,
-					AccountInfo.PK_ACCOUNT_ID, acc.getId(), false);
-			if (xai == null) {// anonymous user has no account info?.
-
-			}
-			res.setPayload("isAnonymous", acc.getIsAnonymous());
-
-			Login li = this.loginSuccess(acc, hc);
-			res.setPayload("loginId", li.getUniqueId());//
-			res.setPayload("accountId", acc.getId());// account?
-			res.setPayload("xmpp.domain", this.domain);// for xmpp domain
-			res.setPayload("xmpp.user", xai == null ? null : xai.getId());// TODO
-																			// allow
-																			// null
-			// pass
-			res.setPayload("xmpp.password",
-					xai == null ? null : xai.getPassword());// TODO allow
-			// null pass
-			// encode
-			// decode.
+			return;
+		}
+		// login success for the account found.
+		AccountInfo xai = this.dataService.getNewest(AccountInfo.class,
+				AccountInfo.PK_ACCOUNT_ID, acc.getId(), false);
+		if (xai == null) {// anonymous user has no account info?.
 
 		}
+		res.setPayload("isAnonymous", acc.getIsAnonymous());
+
+		SessionGd li = this.loginSuccess(acc, hc);
+		res.setPayload("sessionId", li.getId());//
+		res.setPayload("accountId", acc.getId());// account?
+		// decode.
+
 	}
 
 	// create login record
-	protected Login loginSuccess(Account acc, HandleContextI hc) {
+	protected SessionGd loginSuccess(Account acc, HandleContextI hc) {
+		String cid = this.getClientId(hc);
 
-		Login rt = new Login().forCreate(this.dataService);
-		rt.setSessionId(this.getSessionId(hc));
-		rt.setAccountId(acc.getId());
-		rt.setProperty(Login.PK_IS_ANONYMOUS, acc.getIsAnonymous());//
-		rt.save(true);
+		SessionGd rt = new SessionGd();
+		rt.setProperty(SessionGd.CLIENTID, cid);
+		rt.setProperty(SessionGd.ACCID, acc.getId());
+		rt.setProperty("isAnonymous", acc.getIsAnonymous());//
+
+		this.sessionManager.createSession(rt);
+		String sid = rt.getId();
+		this.clientManager.bindingSession(cid, sid);
+		LOG.debug("binding,clientId:" + cid + ",sessionId:" + sid);
+
+		this.save(acc.getIsAnonymous(), rt);
+		return rt;
+	}
+
+	protected Session save(boolean ano, SessionGd sgd) {
+		Session rt = new Session().forCreate(this.dataService);
+		rt.setAccountId(sgd.getAccountId());
+		rt.setId(sgd.getId());
+		rt.setClientId(sgd.getClientId());//
+		rt.setProperty(Session.PK_IS_ANONYMOUS, ano);
+		rt.save(true);//
 		return rt;
 	}
 

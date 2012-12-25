@@ -9,8 +9,8 @@ package com.fs.engine.api;
  */
 public interface EngineFactoryI {
 
-	public ServiceEngineI getEngine(int idx);
+	public ServiceEngineI getEngine(String name);
 
-	public DispatcherI<RequestI, ResponseI> getDispatcher(int idx);
+	public DispatcherI<RequestI, ResponseI> getDispatcher(String name);
 
 }

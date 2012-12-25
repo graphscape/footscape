@@ -13,6 +13,8 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.EventDispatcherI;
+import com.fs.gridservice.commons.api.client.ClientManagerI;
+import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
@@ -35,7 +37,9 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(WebSocketTerminalFactory.class);
+
 	protected static String PK_WSGO = "_webSocketGo";
+
 	protected EventDispatcherI eventEngine;
 
 	protected CodecI messageCodec;
@@ -58,6 +62,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 		wsm.addListener(this);
 
 		this.global = this.facade.getGlogalEventQueue();//
+
 	}
 
 	/*
@@ -76,11 +81,19 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 
 		String wsoId = getWso(ws).getId();
 
+		// create client
+
 		TerminalManagerI tm = this.facade
 				.getEntityManager(TerminalManagerI.class);
 		TerminalGd t = tm.webSocketTerminal(wso);
-		
-		wso.sendReady(t.getId());//
+		// cannot get this manager in active();it not available at that time.
+		ClientManagerI cm = this.facade.getEntityManager(ClientManagerI.class);
+
+		ClientGd cg = cm.createClient(t.getId());
+		String cid = cg.getId();
+		tm.bindingClient(t.getId(), cid);//
+
+		wso.sendReady(t.getId(), cid);//
 
 	}
 
@@ -106,9 +119,8 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getHeader("path");
 		String tId = getWso(ws).getTerminalId(true);// assign the ws id.
-		
-		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW
-				.valueOf(path, tId, msg);
+
+		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
 

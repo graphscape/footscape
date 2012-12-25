@@ -4,9 +4,9 @@
  */
 package com.fs.dataservice.api.expapp.wrapper;
 
-import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.conf.NodeConfigurations;
 import com.fs.dataservice.api.expapp.AuthedNode;
+import com.fs.dataservice.api.expapp.NodeTypes;
 
 /**
  * @author wu
@@ -14,28 +14,29 @@ import com.fs.dataservice.api.expapp.AuthedNode;
  */
 public class Session extends AuthedNode {
 
-	public static final NodeType TYPE = NodeType.valueOf("SESSION");
+	public static final String PK_CLIENTID = "clientId";
 
-	public static final String PK_LOCALE = "locale";
+	public static final String PK_IS_ANONYMOUS = "isAnonymous";
 
 	public Session() {
-		super(TYPE);
+		super(NodeTypes.SESSION);
+	}
+
+	public String getClientId() {
+		return this.getPropertyAsString(PK_CLIENTID);
+	}
+
+	public void setClientId(String sid) {
+		this.setProperty(PK_CLIENTID, sid);
 	}
 
 	/**
 	 * Nov 2, 2012
 	 */
 	public static void config(NodeConfigurations cfs) {
-		cfs.addConfig(TYPE, Session.class).addField(PK_LOCALE);
-
-	}
-
-	public String getLocale() {
-		return (String) this.getProperty(PK_LOCALE);
-	}
-
-	public void setLocale(String lc) {
-		this.setProperty(PK_LOCALE, lc);
+		AuthedNode.config(cfs.addConfig(NodeTypes.SESSION, Session.class)
+				.field(PK_CLIENTID)
+				.field(PK_IS_ANONYMOUS));
 	}
 
 }

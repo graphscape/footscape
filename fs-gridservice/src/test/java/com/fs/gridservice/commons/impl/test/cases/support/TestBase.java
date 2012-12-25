@@ -9,7 +9,9 @@ import junit.framework.TestCase;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
+import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.impl.test.mock.MockClient;
 import com.fs.gridservice.commons.impl.test.mock.MockClientFactory;
 import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
@@ -29,7 +31,10 @@ public class TestBase extends TestCase {
 	protected MockClientFactory factory;
 
 	protected SessionManagerI smanager;
+	
+	protected ClientManagerI cmanager;
 
+	protected TerminalManagerI tmanager;
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
@@ -39,8 +44,9 @@ public class TestBase extends TestCase {
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
 		factory = new MockClientFactory(this.container).start();
-		smanager = this.container.find(SessionManagerI.class, true);
-
+		this.smanager = this.container.find(SessionManagerI.class, true);
+		this.cmanager = facade.getEntityManager(ClientManagerI.class);
+		this.tmanager = facade.getEntityManager(TerminalManagerI.class);
 		//
 		// assertTrue("data grid should empty by destroyALl.", this.facade
 		// .getDataGrid().isEmpty());

@@ -194,6 +194,11 @@ public class ActiveContext {
 		this.activitor().object(o).name(name).container(c).active();
 	}
 
+	public void active(Configuration cfg, Object o) {
+		this.activitor().object(o).name(cfg.getName()).configuration(cfg)
+				.active();
+	}
+
 	public ActivitorI activitor() {
 		return new Activitor().context(this);
 

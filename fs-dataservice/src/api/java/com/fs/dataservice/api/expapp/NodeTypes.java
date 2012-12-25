@@ -20,10 +20,7 @@ public class NodeTypes {
 
 	public static final NodeType ACCOUNT = NodeType.valueOf("account");
 
-	public static final NodeType LOGIN = NodeType.valueOf("login");
-
-	public static final NodeType LOGIN_SUCCESS = NodeType
-			.valueOf("login-success");
+	public static final NodeType SESSION = NodeType.valueOf("session");
 
 	public static final NodeType USER = NodeType.valueOf("user");
 

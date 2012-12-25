@@ -26,7 +26,6 @@ import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.uiserver.api.signup.ConfirmCodeNotifierI;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
-import com.fs.xmpps.api.XmppI;
 
 /**
  * @author wu
@@ -54,7 +53,7 @@ public class SignupHandler extends UiHandlerSupport {
 			vl.addExpression("payloads.property['nick']!=null");
 			vl.addExpression("payloads.property['isAgree']");
 			// passcode in session .
-			vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
+			//vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
 		{
 			ValidatorI<RequestI> vl = this.createValidator("confirm");
@@ -82,8 +81,6 @@ public class SignupHandler extends UiHandlerSupport {
 
 	@Handle("init")
 	public void handleInit(RequestI req, ResponseI res, HandleContextI hc) {
-
-		
 
 	}
 
@@ -158,9 +155,7 @@ public class SignupHandler extends UiHandlerSupport {
 		SignupRequest sp = srl.get(0);//
 
 		String password = (String) sp.getProperty("password");
-		String xmppUname = email.replace("@", "_");//
-		String xmppPass = password;// password
-		this.registerXmpp(xmppUname, xmppPass);//
+
 		// do really create account.
 		Account an = new Account().forCreate(this.dataService);
 		an.setId(email);// email as the id?
@@ -170,21 +165,11 @@ public class SignupHandler extends UiHandlerSupport {
 		an.save(true);
 		//
 		AccountInfo xai = new AccountInfo().forCreate(this.dataService);
-		xai.setId(xmppUname);
+		xai.setId(email);
 		xai.setEmail(email);//
 		xai.setAccountId(an.getId());
-		xai.setPassword(xmppPass);//
+		xai.setPassword(password);//
 		xai.save(true);//
-	}
-
-	protected void registerXmpp(String uname, String password) {
-		// TODO backend process.
-		XmppI xmpp = this.getContainer().find(XmppI.class, true);
-
-		xmpp.register(uname, password);// the same as
-
-		// TODO send mail to user
-
 	}
 
 }

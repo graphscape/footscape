@@ -20,12 +20,12 @@ public class UserExpHandler extends UiHandlerSupport {
 	@Handle("submit")
 	public void handleSubmit(HandleContextI hc, RequestI req, ResponseI res) {
 		// create new user exp
-		String loginUid = this.getLoginId(hc);// TODO Converter.
+		String sid = this.getSessionId(hc);// TODO Converter.
 		// (String) req.getPayload("accountId");
 
 		ExpCreateOperationI eco = this.dataService
 				.prepareOperation(ExpCreateOperationI.class);
-		eco.loginId(loginUid);
+		eco.sessionId(sid);
 	}
 
 }

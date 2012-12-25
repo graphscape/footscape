@@ -179,11 +179,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 
 		String tid = reqE.getTerminalId();
 		TerminalGd td = this.terminalManager.getTerminal(tid);
-		String sid = td.getSessionId();
-
-		if (sid == null) {
-			throw new FsException("TODO,terminal" + tid + " not auth");
-		}
+		String sid = td.getSessionId(true);
 
 		SessionGd s = this.sessionManager.getSession(sid);
 		if (s == null) {// TODO event,code?

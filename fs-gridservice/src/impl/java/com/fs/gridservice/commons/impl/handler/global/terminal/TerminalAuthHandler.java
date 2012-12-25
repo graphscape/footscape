@@ -10,6 +10,7 @@ import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
@@ -45,10 +46,12 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 
 		if (ok) {
 			String tid = reqE.getTerminalId();
+			TerminalGd tg = this.terminalManager.getTerminal(tid);
+			String cid = tg.getClientId(true);//terminal must be bind to client.
 			// create a session,
 			SessionGd s = new SessionGd();
 			s.setProperty(SessionGd.ACCID, accId);
-			s.setProperty(SessionGd.TERMIANAlID, tid);// binding tid;
+			s.setProperty(SessionGd.CLIENTID, cid);// binding tid;
 			String sid = this.sessionManager.createSession(s);
 			// binding session with tid:
 			this.binding(reqE, tid, s);

@@ -24,13 +24,16 @@
 	<config name="terminalManager" class="com.fs.gridservice.commons.impl.terminal.TerminalManagerImpl">
 	</config>
 
+	<config name="clientManager" class="com.fs.gridservice.commons.impl.client.ClientManagerImpl">
+	</config>
+
 	<config name="presenceManager" class="com.fs.gridservice.commons.impl.presence.PresenceManagerImpl">
 	</config>
 
 	<config name="chatGroupManager" class="com.fs.gridservice.commons.impl.gchat.ChatGroupManagerImpl">
 	</config>
-	
-	<config name="participantManager" class="com.fs.gridservice.commons.impl.gchat.ParticipantManagerImpl"/>
+
+	<config name="participantManager" class="com.fs.gridservice.commons.impl.gchat.ParticipantManagerImpl" />
 
 	<config name="globalEventDispatcher" class="com.fs.gridservice.commons.impl.GlobalEventDispatcher">
 		<!-- engine is created from EngineSPI -->

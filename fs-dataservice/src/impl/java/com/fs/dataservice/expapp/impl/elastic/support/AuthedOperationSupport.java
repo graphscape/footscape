@@ -4,11 +4,10 @@
  */
 package com.fs.dataservice.expapp.impl.elastic.support;
 
-import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.expapp.operations.AuthedOperationI;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.expapp.impl.elastic.util.AuthedUtil;
 
 /**
@@ -31,7 +30,7 @@ public class AuthedOperationSupport<O extends OperationI<O, T>, T extends Result
 	 */
 	@Override
 	protected void executeInternal(T rst) throws Exception {
-		Login login = AuthedUtil.beforeAuthedOperation(this, this.dataService,
+		Session login = AuthedUtil.beforeAuthedOperation(this, this.dataService,
 				rst);
 		if (login == null) {
 			return;
@@ -42,7 +41,7 @@ public class AuthedOperationSupport<O extends OperationI<O, T>, T extends Result
 	/**
 	 * Oct 30, 2012
 	 */
-	protected void executeInternal(Login login, T rst) throws Exception {
+	protected void executeInternal(Session login, T rst) throws Exception {
 
 	}
 
@@ -50,9 +49,9 @@ public class AuthedOperationSupport<O extends OperationI<O, T>, T extends Result
 	 * Oct 30, 2012
 	 */
 	@Override
-	public O loginId(String id) {
+	public O sessionId(String id) {
 		//
-		this.parameter(AuthedOperationI.PK_LOGIN_ID, id);
+		this.parameter(AuthedOperationI.PK_SESSION_ID, id);
 		return (O) this;
 	}
 

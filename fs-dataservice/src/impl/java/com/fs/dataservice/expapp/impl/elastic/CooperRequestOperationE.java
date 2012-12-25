@@ -9,7 +9,7 @@ import com.fs.dataservice.api.expapp.operations.CooperRequestOperationI;
 import com.fs.dataservice.api.expapp.result.CooperRequestResultI;
 import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
 import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Login;
+import com.fs.dataservice.api.expapp.wrapper.Session;
 import com.fs.dataservice.expapp.impl.elastic.support.AuthedOperationSupport;
 import com.fs.dataservice.expapp.impl.result.CooperRequestResultImpl;
 
@@ -29,7 +29,7 @@ public class CooperRequestOperationE extends
 	}
 
 	@Override
-	protected void executeInternal(Login login, CooperRequestResultI rst)
+	protected void executeInternal(Session login, CooperRequestResultI rst)
 			throws Exception {
 		CooperRequest cr = new CooperRequest().forCreate(this.dataService);
 		cr.setAccountId1(login.getAccountId());

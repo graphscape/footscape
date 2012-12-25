@@ -15,7 +15,7 @@ public interface WebSocketGoI extends GridedObjectI {
 
 	public static final String P_READY = "/control/status/serverIsReady";
 
-	public void sendReady(String termId);
+	public void sendReady(String termId, String clientId);
 
 	public void sendMessage(MessageI msg);
 

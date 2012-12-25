@@ -9,6 +9,8 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.engine.api.support.HandlerSupport;
 import com.fs.gridservice.commons.api.GridFacadeI;
+import com.fs.gridservice.commons.api.client.ClientManagerI;
+import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 
@@ -24,6 +26,8 @@ public class TerminalEventHandlerSupport extends HandlerSupport {
 
 	protected TerminalManagerI terminalManager;
 
+	protected ClientManagerI clientManager;
+
 	/*
 	 * Dec 14, 2012
 	 */
@@ -34,8 +38,9 @@ public class TerminalEventHandlerSupport extends HandlerSupport {
 		this.sessionManager = this.container.find(SessionManagerI.class, true);
 		this.terminalManager = this.facade
 				.getEntityManager(TerminalManagerI.class);
+		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
 	}
-
+	
 	protected void sendTextMessage(String termId, String path, String text) {
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", path);

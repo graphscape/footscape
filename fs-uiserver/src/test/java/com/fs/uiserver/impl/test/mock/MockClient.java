@@ -11,12 +11,14 @@ import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.support.RRContext;
 import com.fs.uiserver.Constants;
 import com.fs.uiserver.TestHelperI;
+import com.fs.uiserver.impl.UiServerSPI;
 
 /**
  * @author wu
@@ -24,9 +26,9 @@ import com.fs.uiserver.TestHelperI;
  */
 public class MockClient {
 
-	private String loginId;
-
 	private String sessionId;
+
+	private String clientId;
 
 	private String accountId;
 
@@ -42,14 +44,16 @@ public class MockClient {
 
 	public MockClient(ContainerI c) {
 		this.container = c;
-		this.engine = c.find(ServiceEngineI.class, true);
+		this.engine = c.find(EngineFactoryI.class, true).getEngine(
+				UiServerSPI.ENAME_UISERVER);
+
 		this.dataService = c.find(DataServiceI.class, true);
 	}
 
 	public void start() {
 
-		this.sessionId = this.clientInit();//
-		this.loginId = this.login();
+		this.clientId = this.clientInit();//
+		this.sessionId = this.login();
 	}
 
 	public String signupAndLogin(String email, String nick) {
@@ -58,7 +62,7 @@ public class MockClient {
 		this.signupConfirm(email, ccode);
 
 		String rt = this.login(null, email, nick);
-		this.loginId = rt;
+		this.sessionId = rt;
 		return rt;
 	}
 
@@ -69,7 +73,7 @@ public class MockClient {
 		ResponseI res = this.service(req);
 		res.assertNoError();
 
-		return (String) res.getPayload("sessionId", true);
+		return (String) res.getPayload("clientId", true);
 
 	}
 
@@ -94,7 +98,7 @@ public class MockClient {
 		res.assertNoError();
 		String accId2 = (String) res.getPayload("accountId", true);
 		this.accountId = accId2;//
-		return (String) res.getPayload("loginId", true);
+		return (String) res.getPayload("sessionId", true);
 
 	}
 
@@ -124,7 +128,7 @@ public class MockClient {
 
 	protected RequestI newRequest(String path) {
 		RequestI rt = RRContext.newRequest();
-		rt.setHeader(Constants.HK_SESSION_ID, this.sessionId);
+		rt.setHeader(Constants.HK_CLIENT_ID, this.clientId);
 		rt.setPath(path);
 		return rt;
 
@@ -207,7 +211,8 @@ public class MockClient {
 	 * Nov 3, 2012
 	 */
 	public List<MockUserActivity> refreshActivity() {
-		RequestI req = this.newRequest("/uiserver/activities/refresh");
+		//ActivitiesHandler
+		RequestI req = this.newRequest("/uiserver/activities/activities");
 		ResponseI res = this.service(req);
 		res.assertNoError();
 		PropertiesI pts = res.getPayloads();

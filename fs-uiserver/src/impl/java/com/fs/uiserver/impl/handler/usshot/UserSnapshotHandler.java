@@ -25,7 +25,7 @@ public class UserSnapshotHandler extends UiHandlerSupport {
 		// create new user exp
 		boolean refresh = req.getPayload(Boolean.class, "refresh",
 				Boolean.FALSE);
-		String accId = this.getLogin(hc, true).getAccountId();//
+		String accId = this.getSession(hc, true).getAccountId();//
 
 		if (refresh) {
 			this.snapshot(accId);

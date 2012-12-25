@@ -71,14 +71,14 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	 * @see com.fs.gridservice.commons.api.gobject.WebSocketGoI#sendReady()
 	 */
 	@Override
-	public void sendReady(String termId) {
-		
+	public void sendReady(String termId, String clientId) {
+
 		this.terminalId = termId;
-		
+
 		MessageI msg = new MessageSupport();
 		msg.setHeader("path", P_READY);
 		msg.setPayload("terminalId", termId);
-
+		msg.setPayload("clientId", clientId);
 		this.sendMessage(msg);
 
 	}
