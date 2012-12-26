@@ -32,6 +32,10 @@ public class UiTransfer extends UiObjectSupport {
 		return headers;
 	}
 
+	public String getHeader(String key, boolean force) {
+		return this.headers.getProperty(key, force);
+	}
+
 	public String getHeader(String key) {
 		return this.headers.getProperty(key);
 	}

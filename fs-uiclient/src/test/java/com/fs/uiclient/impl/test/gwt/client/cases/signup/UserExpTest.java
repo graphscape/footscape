@@ -6,19 +6,21 @@ package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
-import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
+import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uiclient.impl.test.gwt.client.cases.support.LoginTestBase;
+import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
-import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
@@ -26,9 +28,13 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
  * @author wuzhen
  * 
  */
-public class UserExpTest extends TestBase {
+public class UserExpTest extends LoginTestBase {
 
 	private static String BODY = "I expecting ...";
+
+	protected UserExpListView ueListView;
+
+	protected UserExpView ueView;
 
 	@Before
 	protected void gwtSetUp() throws Exception {
@@ -42,113 +48,90 @@ public class UserExpTest extends TestBase {
 
 	@Test
 	public void testDefaultCase() {
-		this.dump();
-
-		//
-		// edit a new exp
-		ExpEditControlI control = this.manager.getChild(ExpEditControlI.class,
-				true);
-		ExpEditModelI eem = this.rootModel.find(ExpEditModelI.class, true);
-
-		// this editor can be open from the other view.
-
-		eem.addValueHandler(ExpEditModelI.L_ISOPEN, Boolean.TRUE,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						UserExpTest.this.onExpEditOpen(e);// next to submit the
-															// exp.
-					}
-				});
-
-		// create action success listener
-		control.addActionEventHandler(ActionSuccessEvent.TYPE, "submit",
-				new EventHandlerI<ActionSuccessEvent>() {
-
-					@Override
-					public void handle(ActionSuccessEvent e) {
-						UserExpTest.this.onSubmitActionSuccessEvent(e);
-					}
-				});
-
-		//
 
 		//
 		this.delayTestFinish(10 * 1000);
-		// listen new exp after edit submit,the list view should add a new item
-		// exp
-		UserExpListControlI uec = this.manager.getChild(
-				UserExpListControlI.class, true);
-		UserExpListModelI uem = this.rootModel.find(UserExpListModelI.class,
-				true);
-		//
-		uem.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
-
-			@Override
-			public void handle(ModelChildEvent e) {
-				UserExpTest.this.onNewExpItemAdd(e);
-			}
-
-		});//
-
-		// click the new button in UserExpListView
-		UserExpListView lv = this.root.find(UserExpListView.class, true);
-
-		lv.clickAction(UserExpListModelI.A_CREATE);// open ths edit view
 
 	}
 
-	public void onExpEditOpen(ModelValueEvent e) {
+	@Override
+	public void onEvent(Event e) {
+		super.onEvent(e);
+		if (e instanceof ModelChildEvent) {
+			this.onModelChildEvent((ModelChildEvent) e);
+		}
+		if (e instanceof ModelValueEvent) {
+			this.onModelValueEvent((ModelValueEvent) e);
+		}
 
+	}
+
+	@Override
+	protected void onAfterAuthEvent(AfterAuthEvent e) {
+		this.ueListView.clickAction(UserExpListModelI.A_CREATE);// open ths edit
+	}
+
+	@Override
+	public void onAttachedEvent(AttachedEvent ae) {
+		super.onAttachedEvent(ae);
+		UiObjectI obj = ae.getSource();
+		if (ae.getSource() instanceof UserExpListView) {
+			this.onUserExpListViewAttached((UserExpListView) ae.getSource());
+		}
+		if (obj instanceof UserExpView) {
+			this.onUserExpViewAttached((UserExpView) obj);
+		}
+	}
+
+	public void onUserExpListViewAttached(UserExpListView v) {
+		this.ueListView = v;
+		// view
+	}
+
+	public void onUserExpViewAttached(UserExpView v) {
+		this.ueView = v;
 		this.tryFinish("edit.open");
 
-		FormsView fsv = this.root.find(FormsView.class, "expEdit", true);
-		FormView fv = fsv.find(FormView.class, "default", true);
+		FormView fv = v.find(FormView.class, "default", true);
 
 		EditorI bodyE = fv.find(EditorI.class, ExpEditModelI.F_BODY, true);
 		bodyE.input(StringData.valueOf(BODY));//
 
-		fsv.clickAction(ExpEditModelI.A_SUBMIT);// after submit action
+		v.clickAction(ExpEditModelI.A_SUBMIT);// after submit action
 												// success,the user's exp
 		// list will add a new item.
+
+	}
+
+	@Override
+	protected void onSuccessResposne(String path, UiResponse sre) {
+		super.onSuccessResposne(path, sre);
+		if (path.endsWith("expe/" + ExpEditModelI.A_SUBMIT)) {
+			this.tryFinish("edit.submit");
+
+		}
 
 	}
 
 	/**
 	 * @param e
 	 */
-	protected void onSubmitActionSuccessEvent(ActionSuccessEvent e) {
-		System.out.println("e:" + e);
-		// no need to do anything,the user's exp control should listen to the
-		// edit
-		// event,and get the new item from backend.
-
-		this.tryFinish("edit.submit");
-
+	protected void onModelChildEvent(ModelChildEvent e) {
+		ModelI cm = e.getChild();
+		if (cm instanceof UserExpModel) {
+			this.tryFinish("list.newitem");
+		}
 	}
 
-	public void onNewExpItemAdd(ModelChildEvent e) {
-		UserExpModel im = (UserExpModel) e.getChild();
-		im.addValueHandler(UserExpModel.L_BODY,
-				new EventHandlerI<ModelValueEvent>() {
+	protected void onModelValueEvent(ModelValueEvent e) {
+		if (e.getModel() instanceof UserExpModel) {
+			UserExpModel uem = (UserExpModel) e.getModel();
+			String body = uem.getBody();
+			assertEquals("body should be correct", BODY, body);
 
-					@Override
-					public void handle(ModelValueEvent e) {
-						UserExpTest.this.onExpBodyChanging(e);
-					}
-				});
+			this.tryFinish("list.newitem.body");
+		}
 
-		this.tryFinish("list.newitem");
-	}
-
-	protected void onExpBodyChanging(ModelValueEvent e) {
-		UserExpModel im = (UserExpModel) e.getModel();
-
-		String body = im.getBody();
-
-		assertEquals("body should be correct", BODY, body);
-		this.tryFinish("list.newitem.body");
 	}
 
 }

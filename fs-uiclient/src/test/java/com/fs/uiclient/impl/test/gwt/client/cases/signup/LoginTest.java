@@ -3,13 +3,14 @@
  */
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
-import com.fs.uiclient.impl.test.gwt.client.cases.support.SignupTestBase;
+import com.fs.uiclient.impl.test.gwt.client.cases.support.LoginTestBase;
+import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class SignupTest extends SignupTestBase {
+public class LoginTest extends LoginTestBase {
 
 	/*
 	 * (non-Javadoc)
@@ -19,13 +20,13 @@ public class SignupTest extends SignupTestBase {
 	 * (java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected void onSignup(String email, String pass) {
-		this.tryFinish("signup.ok");
+	protected void onAfterAuthEvent(AfterAuthEvent e) {
+		this.tryFinish("login.ok");
 	}
 
 	public void testSignup() {
 
-		this.finishing.add("signup.ok");
+		this.finishing.add("login.ok");
 		this.delayTestFinish(timeoutMillis);
 		super.start();
 
