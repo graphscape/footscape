@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.core.UiFilterI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
@@ -36,8 +37,7 @@ import com.google.gwt.json.client.JSONValue;
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareUiObjectSupport implements
-		UiClientI {
+public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
 
 	private String clientId;
 
@@ -57,18 +57,19 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	}
 
-	protected void processResponse(UiResponse res, JSONValue resJson,
-			UiCallbackI<UiResponse, Object> cb) {
+	protected void processResponse(UiResponse res, JSONValue resJson, UiCallbackI<UiResponse, Object> cb) {
 		CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
-		ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
 
-		ErrorInfosData eis = (ErrorInfosData) dt
-				.removeProperty(UiResponse.ERROR_INFO_S);
+		UiData uid = cd.decode(resJson);
+
+		ObjectPropertiesData dt = (ObjectPropertiesData) uid;
+
+		ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
 		this.processResponse(res, dt, eis, cb);
 	}
 
-	protected void processResponse(UiResponse res, ObjectPropertiesData dt,
-			ErrorInfosData eis, UiCallbackI<UiResponse, Object> cb) {
+	protected void processResponse(UiResponse res, ObjectPropertiesData dt, ErrorInfosData eis,
+			UiCallbackI<UiResponse, Object> cb) {
 		try {
 
 			res.onResponse(dt, eis);
@@ -133,8 +134,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	 * Client got the sessionId from server,client stared on. Nov 14, 2012
 	 */
 	protected void onInitResponse(UiResponse t) {
-		StringData sd = (StringData) t.getPayloads().getProperty("clientId",
-				true);
+		StringData sd = (StringData) t.getPayloads().getProperty("clientId", true);
 		String sid = sd.getValue();
 		if (sid == null) {
 			throw new UiException("got a null sessionId");
@@ -189,8 +189,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 	
 	 */
 	@Override
-	public void sendRequest(UiRequest req,
-			final UiCallbackI<UiResponse, Object> cb) {
+	public void sendRequest(UiRequest req, final UiCallbackI<UiResponse, Object> cb) {
 
 		final UiResponse rt = new UiResponse(req);
 		UiFilterI.Context fc = new UiFilterI.Context(req, rt, this.filterList);

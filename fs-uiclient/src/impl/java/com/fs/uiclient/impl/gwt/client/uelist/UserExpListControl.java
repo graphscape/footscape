@@ -4,27 +4,21 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
-import java.util.List;
-
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
+import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
-import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
@@ -33,8 +27,7 @@ import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
  * @author wu
  * 
  */
-public class UserExpListControl extends ControlSupport implements
-		UserExpListControlI {
+public class UserExpListControl extends ControlSupport implements UserExpListControlI {
 
 	/**
 	 * @param name
@@ -67,10 +60,9 @@ public class UserExpListControl extends ControlSupport implements
 																	// content.
 
 		// listen to the Exp edit model for the new created exp
-		new SimpleValueDeliver<String, String>((MainModelI) this.getModel()
-				.getParent(), MainModelI.L_EXPID_CREATED, this.model,
-				UserExpListModelI.L_EXP_ID_GET_REQUIRED).mapDefaultDirect()
-				.start();
+		new SimpleValueDeliver<String, String>((MainModelI) this.getModel().getParent(),
+				MainModelI.L_EXPID_CREATED, this.model, UserExpListModelI.L_EXP_ID_GET_REQUIRED)
+				.mapDefaultDirect().start();
 
 		//
 		this.model.addValueHandler(UserExpListModelI.L_EXP_ID_GET_REQUIRED,
@@ -78,27 +70,23 @@ public class UserExpListControl extends ControlSupport implements
 
 					@Override
 					public void handle(ModelValueEvent e) {
-						UserExpListControl.this
-								.triggerAction(UserExpListModelI.A_GET);
+						UserExpListControl.this.triggerAction(UserExpListModelI.A_GET);
 
 					}
 				});
 		// TODO listen to the SnapshotModelI ,retrieve activity id by expId;
 
 		// listen to the MainModelI for new exp created by user self.
-		MainModelI mm = this.getModel().getParent().cast();
-		mm.addValueHandler(MainModelI.L_EXPID_CREATED,
-				new EventHandlerI<ModelValueEvent>() {
+		this.getEventBus(true).addHandler(ExpCreatedEvent.TYPE, new EventHandlerI<ExpCreatedEvent>() {
 
-					@Override
-					public void handle(ModelValueEvent e) {
-						String expId = e.getValue((String) null);
-						UserExpListControl.this.onExpCreated(expId);
-					}
-				});
+			@Override
+			public void handle(ExpCreatedEvent e) {
+				String expId = e.getExpId();
+				UserExpListControl.this.onExpCreated(e);
+			}
+		});
 		// listen to the cooper model for incoming cooperrequest.
-		MainControlI mc = this.getManager()
-				.getControl(MainControlI.class, true);
+		MainControlI mc = this.getManager().getControl(MainControlI.class, true);
 		Mvc mvc = mc.getLazyObject(MainControlI.LZ_COOPER, true);
 		CooperModelI cpm = mvc.getModel();
 		ModelChildProcessorI mcp = new ModelChildProcessorI() {
@@ -106,8 +94,7 @@ public class UserExpListControl extends ControlSupport implements
 			@Override
 			public void processChildModelRemove(ModelI parent, ModelI child) {
 				if (child instanceof CooperRequestModel) {
-					UserExpListControl.this
-							.onIncomingCooperRequestRemove((CooperRequestModel) child);
+					UserExpListControl.this.onIncomingCooperRequestRemove((CooperRequestModel) child);
 				}
 
 			}
@@ -115,8 +102,7 @@ public class UserExpListControl extends ControlSupport implements
 			@Override
 			public void processChildModelAdd(ModelI parent, ModelI child) {
 				if (child instanceof CooperRequestModel) {
-					UserExpListControl.this
-							.onIncomingCooperRequestAdd((CooperRequestModel) child);
+					UserExpListControl.this.onIncomingCooperRequestAdd((CooperRequestModel) child);
 				}
 
 			}
@@ -150,7 +136,7 @@ public class UserExpListControl extends ControlSupport implements
 	/**
 	 * Nov 29, 2012
 	 */
-	protected void onExpCreated(String expId) {
+	protected void onExpCreated(ExpCreatedEvent e) {
 		// refresh whole list of the user.
 		this.triggerAction(UserExpListModelI.A_REFRESH);//
 	}
@@ -210,18 +196,16 @@ public class UserExpListControl extends ControlSupport implements
 		// one should be selected.
 		// control it
 
-		this.getManager()
-				.addControl(new UserExpControl(cm.getName()).model(cm));
+		this.getManager().addControl(new UserExpControl(cm.getName()).model(cm));
 		// listening to the exp model's select
-		cm.addValueHandler(UserExpModel.L_ISSELECTED,
-				new EventHandlerI<ModelValueEvent>() {
+		cm.addValueHandler(UserExpModel.L_ISSELECTED, new EventHandlerI<ModelValueEvent>() {
 
-					@Override
-					public void handle(ModelValueEvent e) {
-						// set selected exp id
-						UserExpListControl.this.onUserExpModelSelectChanging(e);
-					}
-				});
+			@Override
+			public void handle(ModelValueEvent e) {
+				// set selected exp id
+				UserExpListControl.this.onUserExpModelSelectChanging(e);
+			}
+		});
 	}
 
 	/**

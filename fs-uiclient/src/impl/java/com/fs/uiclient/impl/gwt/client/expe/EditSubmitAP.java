@@ -6,6 +6,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.expe;
 
+import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
 import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
@@ -23,12 +24,13 @@ public class EditSubmitAP extends APSupport {
 		// TODO Auto-generated method stub
 		super.processResponseSuccess(c, a, res);
 		// refresh list view
-		MainModelI fm = c.getModel().getTopObject()
-				.find(MainModelI.class, true);
+		MainModelI fm = c.getModel().getTopObject().find(MainModelI.class, true);
 		StringData sd = res.getPayload("expId", true);
 
 		fm.setValue(MainModelI.L_EXPID_CREATED, sd.getValue());// listen by
 																// list control?
+		String expId = sd.getValue();
+		new ExpCreatedEvent(c, expId).dispatch();//
 	}
 
 }

@@ -7,15 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.LoginTestBase;
 import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
+import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
@@ -35,12 +37,13 @@ public class UserExpTest extends LoginTestBase {
 	protected UserExpListView ueListView;
 
 	protected UserExpView ueView;
+	protected ExpEditView eeView;
 
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		this.finishing.add("edit.open");// 1
-		this.finishing.add("edit.submit");// 2
+		this.finishing.add("editview");// 1
+		this.finishing.add("editok");// 2
 		this.finishing.add("list.newitem");// 3 the new item child event
 		this.finishing.add("list.newitem.body");// the new item's value event.
 
@@ -50,25 +53,19 @@ public class UserExpTest extends LoginTestBase {
 	public void testDefaultCase() {
 
 		//
-		this.delayTestFinish(10 * 1000);
+		this.delayTestFinish(60 * 1000);
 
 	}
 
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
-		if (e instanceof ModelChildEvent) {
-			this.onModelChildEvent((ModelChildEvent) e);
-		}
-		if (e instanceof ModelValueEvent) {
-			this.onModelValueEvent((ModelValueEvent) e);
-		}
-
+	
 	}
 
 	@Override
 	protected void onAfterAuthEvent(AfterAuthEvent e) {
-		this.ueListView.clickAction(UserExpListModelI.A_CREATE);// open ths edit
+		Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_UE_LIST, true);
 	}
 
 	@Override
@@ -78,6 +75,9 @@ public class UserExpTest extends LoginTestBase {
 		if (ae.getSource() instanceof UserExpListView) {
 			this.onUserExpListViewAttached((UserExpListView) ae.getSource());
 		}
+		if (obj instanceof ExpEditView) {
+			this.onExpEditViewAttached((ExpEditView) obj);
+		}
 		if (obj instanceof UserExpView) {
 			this.onUserExpViewAttached((UserExpView) obj);
 		}
@@ -85,12 +85,18 @@ public class UserExpTest extends LoginTestBase {
 
 	public void onUserExpListViewAttached(UserExpListView v) {
 		this.ueListView = v;
+		this.ueListView.clickAction(UserExpListModelI.A_CREATE);// open ths edit
 		// view
 	}
 
-	public void onUserExpViewAttached(UserExpView v) {
-		this.ueView = v;
-		this.tryFinish("edit.open");
+	/**
+	 * Dec 26, 2012
+	 */
+	private void onExpEditViewAttached(ExpEditView v) {
+		//
+
+		this.eeView = v;
+		this.tryFinish("editview");
 
 		FormView fv = v.find(FormView.class, "default", true);
 
@@ -107,31 +113,20 @@ public class UserExpTest extends LoginTestBase {
 	protected void onSuccessResposne(String path, UiResponse sre) {
 		super.onSuccessResposne(path, sre);
 		if (path.endsWith("expe/" + ExpEditModelI.A_SUBMIT)) {
-			this.tryFinish("edit.submit");
+			this.tryFinish("editok");
 
 		}
 
 	}
 
-	/**
-	 * @param e
-	 */
-	protected void onModelChildEvent(ModelChildEvent e) {
-		ModelI cm = e.getChild();
-		if (cm instanceof UserExpModel) {
-			this.tryFinish("list.newitem");
-		}
-	}
+	public void onUserExpViewAttached(UserExpView v) {
 
-	protected void onModelValueEvent(ModelValueEvent e) {
-		if (e.getModel() instanceof UserExpModel) {
-			UserExpModel uem = (UserExpModel) e.getModel();
-			String body = uem.getBody();
-			assertEquals("body should be correct", BODY, body);
+		UserExpModel uem = v.getModel();
+		this.tryFinish("list.newitem");
+		String body = uem.getBody();
+		assertEquals("body should be correct", BODY, body);
 
-			this.tryFinish("list.newitem.body");
-		}
-
+		this.tryFinish("list.newitem.body");
 	}
 
 }

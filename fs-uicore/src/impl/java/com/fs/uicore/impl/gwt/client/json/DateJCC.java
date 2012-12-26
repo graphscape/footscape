@@ -19,7 +19,7 @@ public class DateJCC extends JsonCodecCSupport<DateData> implements CodecI {
 
 	/** */
 	public DateJCC(FactoryI f) {
-		super("D", DateData.class, f);
+		super("d", DateData.class, f);
 	}
 
 	/* */

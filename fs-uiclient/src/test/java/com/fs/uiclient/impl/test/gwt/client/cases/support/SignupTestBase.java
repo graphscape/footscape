@@ -13,7 +13,6 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
-import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
@@ -35,8 +34,7 @@ public abstract class SignupTestBase extends TestBase {
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		this.finishing.add("submit");
-		this.finishing.add("confirm");
+
 	}
 
 	public void start() {
