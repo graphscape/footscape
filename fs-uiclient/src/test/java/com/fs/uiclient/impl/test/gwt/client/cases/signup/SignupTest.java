@@ -8,9 +8,7 @@ import org.junit.Test;
 
 import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
-import com.fs.uicommons.api.gwt.client.mvc.event.AfterActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
@@ -33,9 +31,6 @@ public class SignupTest extends TestBase {
 
 	@Test
 	public void testDefaultCase() {
-		this.caseIdFilter.setCaseId("default");//
-
-		this.dump();
 
 		SignupControl mc = this.manager.getChild(SignupControl.class, true);
 		mc.addActionEventHandler(ActionSuccessEvent.TYPE, "submit",

@@ -9,8 +9,6 @@
 
 	<inherits name='com.fs.uicommons.impl.gwt.UiCommonsImpl' />
 
-	<inherits name='com.fs.uixmpp.groupchat.impl.gwt.UiGroupChatImpl' />
-
 	<inherits name='com.fs.uiclient.api.gwt.UiClientApi' />
 
 	<source path='client' />

@@ -29,7 +29,7 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  *         ar-act-001@muc.thinkpad
  * 
  */
-public class ChatRoomTest extends ActivityTestBase {
+public class AChatTest extends ActivityTestBase {
 
 	private ActivityModelI activityModel;
 
@@ -45,7 +45,11 @@ public class ChatRoomTest extends ActivityTestBase {
 		this.finishing.add("done");//
 
 	}
-
+	public void testAChat(){
+		
+		this.delayTestFinish(this.timeoutMillis*100);
+	
+	}
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
@@ -60,7 +64,7 @@ public class ChatRoomTest extends ActivityTestBase {
 		e.getGChat();
 
 		this.tryFinish("gchat.ready");
-		this.tryOpenChatRoom();
+		this.tryOpenChatGroup();
 
 		// listen to the anthed and activity open
 		super.start();
@@ -77,7 +81,7 @@ public class ChatRoomTest extends ActivityTestBase {
 
 	}
 
-	protected void tryOpenChatRoom() {
+	protected void tryOpenChatGroup() {
 		if (this.finishing.contains("activity.open")
 				|| this.finishing.contains("gchat.ready")) {
 			// wait the two event ,both the activity is open and the xmpp is
@@ -99,7 +103,7 @@ public class ChatRoomTest extends ActivityTestBase {
 					@Override
 					public void handle(GChatGroupCreatedEvent e) {
 
-						ChatRoomTest.this.onChatGroupCreated(e);
+						AChatTest.this.onChatGroupCreated(e);
 					}
 				});
 
@@ -127,7 +131,7 @@ public class ChatRoomTest extends ActivityTestBase {
 
 					@Override
 					public void handle(GChatMessageEvent t) {
-						ChatRoomTest.this.onMessage(t);
+						AChatTest.this.onMessage(t);
 					}
 				});
 	}

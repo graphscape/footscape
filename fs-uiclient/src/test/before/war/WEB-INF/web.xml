@@ -11,30 +11,8 @@
 		<init-param>
 			<param-name>container</param-name>
 			<!-- -->
-			<param-value>/boot/test-spim2.properties</param-value>
+			<param-value>/boot/test-spim.properties</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>bosh-proxy</servlet-name>
-		<servlet-class>com.fs.uixmpp.core.impl.testsupport.BoshProxyServlet</servlet-class>
-		<init-param>
-			<param-name>remoteServer</param-name>
-			<param-value>localhost</param-value>
-		</init-param>
-		<init-param>
-			<param-name>remotePort</param-name>
-			<param-value>5280</param-value>
-		</init-param>
-		<init-param>
-			<param-name>remotePath</param-name>
-			<param-value>/http-bind</param-value>
-		</init-param>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>true</param-value>
-		</init-param>
-
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
@@ -43,8 +21,5 @@
 		<servlet-name>test</servlet-name>
 		<url-pattern>/uicore/*</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>bosh-proxy</servlet-name>
-		<url-pattern>/http-bind</url-pattern>
-	</servlet-mapping>
+	
 </web-app>

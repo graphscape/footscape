@@ -52,7 +52,6 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	public void testSearch() {
-		this.caseIdFilter.setCaseId("testSearch");
 		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
 				new EventHandlerI<ModelValueEvent>() {

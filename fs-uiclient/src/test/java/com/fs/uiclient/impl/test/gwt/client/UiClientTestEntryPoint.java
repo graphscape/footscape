@@ -46,7 +46,7 @@ public class UiClientTestEntryPoint implements EntryPoint {
 
 		this.container = sf.getContainer();
 		client = this.container.get(UiClientI.class, true);
-
+		client.start();
 		RootI root = client.getRoot();
 
 	}

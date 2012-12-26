@@ -49,7 +49,6 @@ public abstract class ActivityTestBase extends TestBase {
 	}
 
 	public void start() {
-		this.caseIdFilter.setCaseId("testSearch");
 		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
 		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
 				new EventHandlerI<ModelValueEvent>() {

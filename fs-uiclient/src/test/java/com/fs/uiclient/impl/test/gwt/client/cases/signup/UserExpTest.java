@@ -42,8 +42,6 @@ public class UserExpTest extends TestBase {
 
 	@Test
 	public void testDefaultCase() {
-		this.caseIdFilter.setCaseId("default");//
-
 		this.dump();
 
 		//

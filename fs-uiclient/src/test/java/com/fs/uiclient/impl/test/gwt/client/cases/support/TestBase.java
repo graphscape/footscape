@@ -30,42 +30,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public class TestBase extends GWTTestCase {
 	public static final int timeoutMillis = 100000;
-	
-	public static class CaseIdFilter extends UiFilterSupport {
-		protected String caseId;
 
-		protected boolean useOnce;
-
-		@Override
-		protected void filterRequest(Context fc) {
-			//
-			if (this.caseId == null) {
-				return;//
-			}
-			fc.getRequest().setHeader(Constants.X_FS_TEST_CASE, this.caseId);
-			if (this.useOnce) {
-				this.caseId = null;// reset the case id//only use once.
-			}
-			//
-
-		}
-
-		@Override
-		protected void filterResponse(Context fc) {
-			//
-			//
-		}
-
-		public void setCaseId(String cid) {
-			this.setCaseId(cid, false);//
-		}
-
-		public void setCaseId(String cid, boolean once) {
-			this.caseId = cid;
-			this.useOnce = once;
-		}
-
-	}
 
 	protected GwtSPI.Factory factory;
 
@@ -80,8 +45,6 @@ public class TestBase extends GWTTestCase {
 	protected ControlManagerI manager;
 
 	protected ModelI rootModel;
-
-	protected static CaseIdFilter caseIdFilter;
 
 	protected Set<String> finishing = new HashSet<String>();
 
@@ -107,30 +70,29 @@ public class TestBase extends GWTTestCase {
 
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
 				GWT.create(UiCommonsGPI.class),
-				GWT.create(UiClientGwtSPI.class),
-				};
+				GWT.create(UiClientGwtSPI.class), };
 
-		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
+		factory = ClientLoader.getOrLoadClient(spis,
+				new EventHandlerI<Event>() {
 
-			@Override
-			public void handle(Event e) {
-				TestBase.this.onEvent(e);
-			}
-		});
+					@Override
+					public void handle(Event e) {
+						TestBase.this.onEvent(e);
+					}
+				});
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
-		this.caseIdFilter = new CaseIdFilter();
-		this.client.addFilter(this.caseIdFilter);
 
 		this.wf = this.container.get(WidgetFactoryI.class, true);
 		this.root = this.container.get(UiClientI.class, true).getRoot();
 		this.rootModel = this.client.getRootModel();//
 		this.manager = this.client.getChild(ControlManagerI.class, true);
 		this.dump();
+		this.client.start();//
 	}
 
 	public void onEvent(Event e) {
-		
+		System.out.println(this.getClass().getName() + ",onEvent:" + e);
 	}
 
 	/*
