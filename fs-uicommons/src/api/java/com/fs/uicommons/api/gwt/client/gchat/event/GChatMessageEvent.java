@@ -13,10 +13,10 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * @author wu
  * 
  */
-public class GChatMessageEvent extends GChatGroupEvent {
+public class GChatMessageEvent extends GChatParticipantEvent {
 
 	public static final Event.Type<GChatMessageEvent> TYPE = new Event.Type<GChatMessageEvent>(
-			GChatGroupEvent.TYPE);
+			GChatParticipantEvent.TYPE);
 
 	protected MessageMW message;
 
@@ -25,8 +25,9 @@ public class GChatMessageEvent extends GChatGroupEvent {
 	 * @param gc
 	 * @param gid
 	 */
-	public GChatMessageEvent(GChatControlI gc, String gid, MessageMW md) {
-		super(TYPE, gc, gid);
+	public GChatMessageEvent(GChatControlI gc, String gid, String pid,
+			MessageMW md) {
+		super(TYPE, gc, gid, pid);
 		this.message = md;
 
 	}

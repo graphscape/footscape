@@ -1,12 +1,17 @@
 package com.fs.uicommons.impl.gwt.client.session;
 
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
+import com.fs.uicommons.api.gwt.client.session.event.AccountUpdateEvent;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 public class SessionModelImpl extends ModelSupport implements SessionModelI {
+
+	private String accountId;
+
+	private boolean isAnonymous;
 
 	public SessionModelImpl(String name) {
 		super(name);
@@ -26,12 +31,16 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 
 	@Override
 	public void setAccount(String acc) {
-		this.setValue(L_ACCOUNT, acc);
+		if (this.accountId == acc) {
+			return;
+		}
+		this.accountId = acc;
+		new AccountUpdateEvent(this, this.accountId).dispatch();
 	}
 
 	@Override
 	public String getAccount() {
-		return (String) this.getValue(L_ACCOUNT);
+		return this.accountId;
 
 	}
 
@@ -91,7 +100,7 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	@Override
 	public boolean isAnonymous() {
 		//
-		return this.getValue(Boolean.class, L_IS_ANONYMOUS, Boolean.FALSE);
+		return this.isAnonymous;
 
 	}
 
@@ -100,7 +109,19 @@ public class SessionModelImpl extends ModelSupport implements SessionModelI {
 	 */
 	@Override
 	public void setIsAnonymous(boolean an) {
-		this.setValue(L_IS_ANONYMOUS, an);
+		this.isAnonymous = an;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.session.SessionModelI#isAccount(java.
+	 * lang.String)
+	 */
+	@Override
+	public boolean isAccount(String accId) {
+		return accId.equals(this.accountId);
 	}
 
 }

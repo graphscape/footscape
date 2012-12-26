@@ -66,7 +66,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		// message dispatcher
 		MessageDispatcherI.FactoryI df = client.find(
 				MessageDispatcherI.FactoryI.class, true);
-		this.dispatcher0 = df.get(0);// for end point
+		this.dispatcher0 = df.get(D_NAME);// for end point
 		this.dispatcher0.addHandler(
 				Path.valueOf("/control/status/serverIsReady", '/'),
 				new ServerIsReadyMH(this));

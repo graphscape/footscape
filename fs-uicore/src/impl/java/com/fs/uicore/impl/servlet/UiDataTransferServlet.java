@@ -29,9 +29,9 @@ import com.fs.commons.api.config.ConfigurationProviderI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.service.ServiceI;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.support.RRContext;
 
 /**
@@ -43,6 +43,8 @@ public class UiDataTransferServlet extends HttpServlet implements
 		ConfigurableI, ActivableI {
 
 	public static final String PATH = "X_FS_PATH";
+
+	public static final String E_NAME = "uiserver";
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(UiDataTransferServlet.class);
@@ -122,10 +124,7 @@ public class UiDataTransferServlet extends HttpServlet implements
 	public void active(ActiveContext ac) {
 		//
 		ContainerI ctn = ac.getContainer();
-		this.engine = ctn.finder(ServiceEngineI.class).name("engine-0")// TODO
-				.find(true);// TODO
-							// not
-							// rmi.
+		this.engine = ctn.find(EngineFactoryI.class).getEngine(E_NAME);
 		this.cf = ctn.find(CodecI.FactoryI.class, true);//
 
 		this.traceMsg = Boolean.getBoolean(this.config.getProperty("traceMsg",

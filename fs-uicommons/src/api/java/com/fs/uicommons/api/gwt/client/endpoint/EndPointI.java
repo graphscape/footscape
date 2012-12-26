@@ -16,6 +16,8 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 public interface EndPointI extends UiObjectI {
 	
 	public static final String CP_WEBSOCKET_DISABLE = "websocket.enable";
+	
+	public static final String D_NAME = "endpoint";
 
 	public void sendMessage(MessageData req);
 

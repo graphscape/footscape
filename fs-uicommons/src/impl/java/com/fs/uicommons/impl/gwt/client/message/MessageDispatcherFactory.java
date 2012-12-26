@@ -26,12 +26,12 @@ public class MessageDispatcherFactory extends UiObjectSupport implements Message
 	 * Dec 23, 2012
 	 */
 	@Override
-	public MessageDispatcherI get(int idx) {
+	public MessageDispatcherI get(String name) {
 		//
-		String name = "dispatcher-" + idx;
-		MessageDispatcherI rt = this.find(MessageDispatcherI.class, name, false);
+		String rname = "dispatcher-" + name;
+		MessageDispatcherI rt = this.find(MessageDispatcherI.class, rname, false);
 		if (rt == null) {
-			rt = new MessageDispatcherImpl(name);
+			rt = new MessageDispatcherImpl(rname);
 			rt.parent(this);
 		}
 		return rt;

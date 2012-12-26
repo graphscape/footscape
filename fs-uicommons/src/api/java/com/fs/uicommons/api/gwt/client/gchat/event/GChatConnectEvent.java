@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * @author wu
  * 
  */
-public class GChatConnectEvent extends GChatEvent {
+public abstract class GChatConnectEvent extends GChatEvent {
 
 	public static final Event.Type<GChatConnectEvent> TYPE = new Event.Type<GChatConnectEvent>(
 			GChatEvent.TYPE);
@@ -22,8 +22,9 @@ public class GChatConnectEvent extends GChatEvent {
 	/**
 	 * @param type
 	 */
-	public GChatConnectEvent(GChatControlI gc, boolean connected) {
-		super(TYPE, gc);
+	public GChatConnectEvent(Event.Type<? extends GChatConnectEvent> type,
+			GChatControlI gc, boolean connected) {
+		super(type, gc);
 		this.connected = connected;
 	}
 

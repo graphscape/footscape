@@ -25,7 +25,7 @@ public class UiCoreImplTestSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac).type("ha")
 		ServiceEngineI e0 = ac.getContainer().find(EngineFactoryI.class, true)
-				.getEngine(0);
+				.getEngine("uiserver");
 
 		e0.getDispatcher().populator("handler").active(ac)
 				.cfgId(this.getId() + ".Object.DISPATCHER").populate();

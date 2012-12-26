@@ -4,11 +4,9 @@
  */
 package com.fs.uiclient.impl.gwt.client.achat;
 
-import com.fs.uiclient.api.gwt.client.achat.AChatModel;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
+import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
 
@@ -24,24 +22,8 @@ public class OpenAP implements ActionProcessorI {
 	@Override
 	public void processRequest(ControlI c, String a, UiRequest req) {
 
-		AChatModel csm = (AChatModel) c.getModel();
-		GChatModel rsm = c.getClient(true).getRootModel().find(GChatModel.class, true);
-
-		String actId = csm.getValue(String.class, AChatModel.L_ACTIVITY_ID);
-
-		String rname = ((AChatControlImpl) c).convertActivityId2RoomName(actId);// convert
-																				// to
-																				// room
-																				// name
-		rsm.setGroupIdToJoin(rname);
-		// open the view of the room in the right of the frwk.
-		// rsm.setManagerForNewRoom(BossModelI.M_RIGHT);
-		// TODO add method RoomsModelI.addRoom();
-		// listen to the room
-
-		// and join
-
-		ControlUtil.triggerAction(rsm, GChatModel.A_JOIN);
+		AChatControlI ac = (AChatControlI) c;
+		ac.join();//
 
 	}
 

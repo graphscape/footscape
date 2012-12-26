@@ -42,8 +42,7 @@ public class ControlSupport extends AbstractControl {
 	// the action will be triggered after auth success event.
 	protected void addAuthProcessorAction(final String action) {
 
-		SessionModelI sm = this.model.getTopObject().find(SessionModelI.class,
-				true);
+		SessionModelI sm = this.getSessionModel(true);
 		final ActionModelI am = ControlUtil.getAction(ControlSupport.this.model,
 				action, true);
 		new SimpleValueDeliver<Boolean, State>(sm, SessionModelI.L_IS_AUTHED,
@@ -59,6 +58,12 @@ public class ControlSupport extends AbstractControl {
 						return null;
 					}
 				}).start();
+
+	}
+
+	@Override
+	public SessionModelI getSessionModel(boolean force) {
+		return this.model.getTopObject().find(SessionModelI.class, force);
 
 	}
 

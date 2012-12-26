@@ -8,19 +8,20 @@ import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uiclient.api.gwt.client.achat.AChatModel;
-import com.fs.uiclient.api.gwt.client.achat.ChatActivityModel;
-import com.fs.uiclient.api.gwt.client.achat.PeerModel;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.impl.gwt.client.achat.AChatControlImpl;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.ActivityTestBase;
-import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
+import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
+import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
+import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
+import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
  * @author wu This test not automatic,start test,wait 20-30sec,login in xmpp
@@ -38,10 +39,9 @@ public class ChatRoomTest extends ActivityTestBase {
 
 		this.finishing.add("activity.open");
 		this.finishing.add("gchat.ready");
-		this.finishing.add("chat.room");
-		this.finishing.add("exp2.online");
+		this.finishing.add("group.created");
+		this.finishing.add("group.youjoin");
 		this.finishing.add("hello.exp2");
-		this.finishing.add("exp2.offline");
 		this.finishing.add("done");//
 
 	}
@@ -78,7 +78,8 @@ public class ChatRoomTest extends ActivityTestBase {
 	}
 
 	protected void tryOpenChatRoom() {
-		if (this.finishing.contains("activity.open") || this.finishing.contains("gchat.ready")) {
+		if (this.finishing.contains("activity.open")
+				|| this.finishing.contains("gchat.ready")) {
 			// wait the two event ,both the activity is open and the xmpp is
 			// ready.
 			return;
@@ -87,74 +88,73 @@ public class ChatRoomTest extends ActivityTestBase {
 		// open chat room
 		// wait the occupant join.
 
-		AChatModel csm = this.rootModel.find(AChatModel.class, true);
-		csm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
+		// AChatModel csm = this.rootModel.find(AChatModel.class, true);
+		GChatControlI gcc = this.rootModel.getClient(true)
+				.getChild(ControlManagerI.class, true)
+				.getControl(GChatControlI.class, true);
+		
+		gcc.addHandler(GChatGroupCreatedEvent.TYPE,
+				new EventHandlerI<GChatGroupCreatedEvent>() {
 
-			@Override
-			public void handle(ModelChildEvent e) {
-				//
-				if (!e.isAdd() || !(e.getChild() instanceof ChatActivityModel)) {
-					return;
-				}
-				ChatActivityModel cm = (ChatActivityModel) e.getChild();
+					@Override
+					public void handle(GChatGroupCreatedEvent e) {
 
-				ChatRoomTest.this.onChatRoomAdded(ChatRoomTest.this.activityModel.getActivityId(), cm);
-			}
-		});
+						ChatRoomTest.this.onChatGroupCreated(e);
+					}
+				});
 
 		// click the open chat button to join into or create the room for the
 		// activity.
 
-		ControlUtil.triggerAction(this.activityModel, ActivityModelI.A_OPEN_CHAT_ROOM);
+		ControlUtil.triggerAction(this.activityModel,
+				ActivityModelI.A_OPEN_CHAT_ROOM);
 
 	}
 
 	/**
 	 * Oct 22, 2012
 	 */
-	protected void onChatRoomAdded(String expectedActId, final ChatActivityModel cm) {
-		String rnameActural = cm.getGroupId();
-		String rnameExpected = AChatControlImpl.convertActivityId2RoomName(expectedActId);
-		assertEquals("room name not correct", rnameExpected, rnameActural);
-		this.tryFinish("chat.room");
-		// cm.addValueHandler(ChatActivityModel.L_LAST_PEER_MODEL_OF_PRESENCE_CHANGED,
-		// new EventHandlerI<ModelValueEvent>() {
-		//
-		// @Override
-		// public void handle(ModelValueEvent e) {
-		// ChatRoomTest.this.onPeerPresence(e);
-		// }
-		// });
-		// cm.addValueHandler(ChatActivityModel.L_LAST_MESSAGE_MODEL, new
-		// EventHandlerI<ModelValueEvent>() {
-		//
-		// @Override
-		// public void handle(ModelValueEvent e) {
-		// ChatRoomTest.this.onMessage(cm, e);
-		// }
-		// });
+	protected void onChatGroupCreated(GChatGroupCreatedEvent e) {
+		GChatControlI gc = e.getGChat();
+
+		String gid = e.getGroupId();
+		String actId = this.activityModel.getActivityId();
+		assertEquals("room name not correct", actId, gid);//
+
+		this.tryFinish("group.created");
+		gc.addHandler(GChatMessageEvent.TYPE,
+				new EventHandlerI<GChatMessageEvent>() {
+
+					@Override
+					public void handle(GChatMessageEvent t) {
+						ChatRoomTest.this.onMessage(t);
+					}
+				});
 	}
 
-	protected void onMessage(ChatActivityModel cm, ModelValueEvent e) {
+	protected void onMessage(GChatMessageEvent e) {
 		// echo to message
-		MessageModel mm = (MessageModel) e.getValue();
+		MessageMW mw = e.getMessage();
+		MessageData md = (MessageData) mw.getTarget().getPayload("message");
 
-		String body = mm.getText();
+		String body = md.getString("text", true);
 
 		if (body.startsWith("autoresponse:")) {
 			// ignore,for loop
 		} else {
-			String actId = cm.getActivityId();
+			String actId = this.activityModel.getActivityId();
 
-			String msg = "autoresponse:" + "hello,message got:(" + body + "),from:" + mm.getParticipantId()
-					+ ",actId:" + actId + ",waiting:" + this.finishing;
+			String msg = "autoresponse:" + "hello,message got:(" + body
+					+ "),from:" + e.getParticipantId() + ",actId:" + actId
+					+ ",waiting:" + this.finishing;
 
 			this.send(actId, msg);
 			//
 			if (body.startsWith("finish:")) {
 				String f = body.substring("finish:".length());
 				this.tryFinish(f);
-				this.send(actId, "autoresponse:finish:" + f + ",waiting:" + this.finishing);
+				this.send(actId, "autoresponse:finish:" + f + ",waiting:"
+						+ this.finishing);
 			}
 
 		}
@@ -163,30 +163,7 @@ public class ChatRoomTest extends ActivityTestBase {
 
 	private void send(String actId, String msg) {
 		AChatControlI cms = this.manager.getControl(AChatControlI.class, true);
-		cms.send(actId,msg);//
-	}
-
-	protected void onPeerPresence(ModelValueEvent e) {
-		PeerModel pm = (PeerModel) e.getValue();
-
-		String actId = pm.getChatRoom().getActivityId();
-
-		String msg = "hi,xmppUser:" + pm.getXmppUser() + ",expId:" + pm.getExpId() + ",pre:"
-				+ pm.getPresence();
-		msg += "\n this is testing, waiting:" + this.finishing;
-		this.send(actId, msg);
-
-		// TODO sendd message
-		if ("online".equals(pm.getPresence())) {
-			this.tryFinish("exp2.online");
-			// todo message
-
-			this.tryFinish("hello.exp2");
-		} else if ("offline".equals(pm.getPresence())) {
-			this.tryFinish("exp2.offline");
-		} else {
-			System.out.println("TODO presence:" + pm.getPresence());
-		}
+		cms.send(actId, msg);//
 	}
 
 	/*

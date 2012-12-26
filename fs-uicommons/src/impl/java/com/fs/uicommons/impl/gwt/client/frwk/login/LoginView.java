@@ -6,6 +6,7 @@ import com.fs.uicommons.api.gwt.client.manage.BossModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagableI;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicommons.api.gwt.client.session.SessionModelI;
+import com.fs.uicommons.api.gwt.client.session.event.AccountUpdateEvent;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -52,11 +53,11 @@ public class LoginView extends FormsView implements ManagableI {
 	protected void doModel(ModelI model) {
 		super.doModel(model);
 		SessionModelI sm = this.getModel().getSessionModel();
-		sm.addValueHandler(SessionModelI.L_ACCOUNT,
-				new EventHandlerI<ModelValueEvent>() {
+		sm.addHandler(AccountUpdateEvent.TYPE,
+				new EventHandlerI<AccountUpdateEvent>() {
 
 					@Override
-					public void handle(ModelValueEvent e) {
+					public void handle(AccountUpdateEvent e) {
 						LoginView.this.onAccount(e);
 					}
 				});
@@ -87,10 +88,9 @@ public class LoginView extends FormsView implements ManagableI {
 	}
 
 	// account set to the model
-	protected void onAccount(ModelValueEvent e) {
+	protected void onAccount(AccountUpdateEvent e) {
 		// TODO model connector.
-		this.accountLabel.getModel().setDefaultValue(
-				e.getValueWrapper().getValue());//
+		this.accountLabel.getModel().setDefaultValue(e.getAccountId());//
 	}
 
 	/*

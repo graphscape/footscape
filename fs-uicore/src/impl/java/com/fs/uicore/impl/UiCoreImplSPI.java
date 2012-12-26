@@ -44,7 +44,7 @@ public class UiCoreImplSPI extends SPISupport {
 
 	private void activeHandlers(ActiveContext ac) {
 		ServiceEngineI engine0 = ac.getContainer()
-				.find(EngineFactoryI.class, true).getEngine(0);
+				.find(EngineFactoryI.class, true).getEngine("uiserver");
 		PopulatorI fp = engine0.populator("filter");
 
 		fp.spi(this).active(ac).force(false).populate();

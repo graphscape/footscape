@@ -11,18 +11,16 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * @author wu
  * 
  */
-public class GChatJoinEvent extends GChatParticipantEvent {
+public class GChatConnectedEvent extends GChatConnectEvent {
 
-	public static final Event.Type<GChatJoinEvent> TYPE = new Event.Type<GChatJoinEvent>(
-			GChatParticipantEvent.TYPE);
+	public static final Event.Type<GChatConnectedEvent> TYPE = new Event.Type<GChatConnectedEvent>(
+			GChatConnectEvent.TYPE);
 
 	/**
 	 * @param type
-	 * @param gc
-	 * @param gid
 	 */
-	public GChatJoinEvent(GChatControlI gc, String gid, String pid) {
-		super(TYPE, gc, gid, pid);
+	public GChatConnectedEvent(GChatControlI gc) {
+		super(TYPE, gc, true);
 	}
 
 }

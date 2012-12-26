@@ -32,6 +32,7 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 	@Override
 	protected void handle(MessageMW mw) {
 		String gid = mw.getGroupId();
+		String pid = mw.getParticipantId();
 
 		GChatModel cm = this.control.getChatModel();
 		ChatGroupModel group = cm.getGroup(gid, true);
@@ -39,7 +40,7 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 		MessageModel mm = new MessageModel("message", mw.getTarget());//
 
 		group.addMessage(mm);
-		new GChatMessageEvent(this.control, gid, mw).dispatch();
+		new GChatMessageEvent(this.control, gid, pid, mw).dispatch();
 	}
 
 	/*

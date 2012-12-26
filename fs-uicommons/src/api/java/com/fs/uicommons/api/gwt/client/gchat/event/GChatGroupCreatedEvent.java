@@ -5,24 +5,25 @@
 package com.fs.uicommons.api.gwt.client.gchat.event;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
+import com.fs.uicommons.api.gwt.client.gchat.GChatGroupEvent;
 import com.fs.uicore.api.gwt.client.core.Event;
 
 /**
  * @author wu
  * 
  */
-public class GChatJoinEvent extends GChatParticipantEvent {
+public class GChatGroupCreatedEvent extends GChatGroupEvent {
 
-	public static final Event.Type<GChatJoinEvent> TYPE = new Event.Type<GChatJoinEvent>(
-			GChatParticipantEvent.TYPE);
+	public static final Event.Type<GChatGroupCreatedEvent> TYPE = new Event.Type<GChatGroupCreatedEvent>(
+			GChatGroupEvent.TYPE);
 
 	/**
 	 * @param type
 	 * @param gc
 	 * @param gid
 	 */
-	public GChatJoinEvent(GChatControlI gc, String gid, String pid) {
-		super(TYPE, gc, gid, pid);
+	public GChatGroupCreatedEvent(GChatControlI gc, String gid) {
+		super(TYPE, gc, gid);
 	}
 
 }

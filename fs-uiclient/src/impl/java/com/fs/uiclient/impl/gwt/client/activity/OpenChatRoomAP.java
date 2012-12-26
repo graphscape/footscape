@@ -40,7 +40,7 @@ public class OpenChatRoomAP implements ActionProcessorI {
 		// open a chat room for the activity.
 		ActivityModelI am = (ActivityModelI) c.getModel();
 
-		cm.setValue(AChatModel.L_ACTIVITY_ID, am.getActivityId());
+		cm.setActivityIdToJoin(am.getActivityId());
 
 		ControlUtil.triggerAction(cm, AChatModel.A_OPEN);//
 

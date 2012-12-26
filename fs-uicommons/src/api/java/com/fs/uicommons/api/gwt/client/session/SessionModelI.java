@@ -7,13 +7,9 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 public interface SessionModelI extends ModelI {
 
-	public static final Location L_ACCOUNT = Location.valueOf("_account");
-
 	public static final Location L_LOGIN_REQUIRED = Location.valueOf("_loginRequired");
 
 	public static final Location L_IS_AUTHED = Location.valueOf("_isAuthed");
-
-	public static final Location L_IS_ANONYMOUS = Location.valueOf("_isAnonymous");
 
 	public void setSessionId(String sid);
 
@@ -38,5 +34,7 @@ public interface SessionModelI extends ModelI {
 	public boolean isAnonymous();
 
 	public void setIsAnonymous(boolean an);
+	
+	public boolean isAccount(String accId);
 
 }

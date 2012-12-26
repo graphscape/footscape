@@ -41,8 +41,8 @@ public class DispatcherTest extends TestBase {
 
 		MessageDispatcherI.FactoryI df = this.client.find(
 				MessageDispatcherI.FactoryI.class, true);
-		final MessageDispatcherI d0 = df.get(100);
-		final MessageDispatcherI d1 = df.get(101);
+		final MessageDispatcherI d0 = df.get("test0");
+		final MessageDispatcherI d1 = df.get("test1");
 
 		final Path p0 = Path.valueOf("p0", "p0-1");
 		final Path p1 = Path.valueOf("p1", "p1-1");

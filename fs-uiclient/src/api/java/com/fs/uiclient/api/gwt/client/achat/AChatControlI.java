@@ -11,6 +11,10 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  * 
  */
 public interface AChatControlI extends ControlI {
-
+	
+	public void join();
+	
+	public void join(String actId);
+	
 	public void send(String actId, String message);//
 }

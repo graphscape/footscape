@@ -6,8 +6,6 @@ package com.fs.uiclient.impl.gwt.client;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uiclient.api.gwt.client.achat.AChatModel;
-import com.fs.uiclient.api.gwt.client.achat.ChatActivityModel;
-import com.fs.uiclient.api.gwt.client.achat.PeerModel;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
@@ -301,7 +299,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ActivitiesModelI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(
+				ActivitiesModelI.ItemModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
@@ -317,16 +316,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof UserExpView;
-
-			}
-
-		});
-		InstanceOf.addChecker(new CheckerSupport(ChatActivityModel.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof ChatActivityModel;
 
 			}
 
@@ -351,16 +340,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(PeerModel.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof PeerModel;
-
-			}
-
-		});
 		InstanceOf.addChecker(new CheckerSupport(AChatControlI.class) {
 
 			@Override

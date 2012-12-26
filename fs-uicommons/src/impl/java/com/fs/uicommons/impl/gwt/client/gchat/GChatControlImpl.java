@@ -11,7 +11,9 @@ import com.fs.uicommons.api.gwt.client.endpoint.event.EndpointOpenEvent;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectedEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatDisconnectedEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
 import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
@@ -64,47 +66,54 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		this.endpoint = this.getClient(true).getChild(EndPointI.class, true);
 		//
 
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
+		this.endpoint.addHandler(EndpointOpenEvent.TYPE,
+				new EventHandlerI<EndpointOpenEvent>() {
 
-			@Override
-			public void handle(EndpointOpenEvent t) {
-				GChatControlImpl.this.onEndpointOpen(t);
-			}
-		});
+					@Override
+					public void handle(EndpointOpenEvent t) {
+						GChatControlImpl.this.onEndpointOpen(t);
+					}
+				});
 
-		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
+		this.endpoint.addHandler(EndpointCloseEvent.TYPE,
+				new EventHandlerI<EndpointCloseEvent>() {
 
-			@Override
-			public void handle(EndpointCloseEvent t) {
-				GChatControlImpl.this.onEndpointClose(t);
-			}
-		});
+					@Override
+					public void handle(EndpointCloseEvent t) {
+						GChatControlImpl.this.onEndpointClose(t);
+					}
+				});
 
-		this.endpoint.addHandler(EndpointBondEvent.TYPE, new EventHandlerI<EndpointBondEvent>() {
+		this.endpoint.addHandler(EndpointBondEvent.TYPE,
+				new EventHandlerI<EndpointBondEvent>() {
 
-			@Override
-			public void handle(EndpointBondEvent t) {
-				GChatControlImpl.this.onEndpointAuth(t);
-			}
-		});
+					@Override
+					public void handle(EndpointBondEvent t) {
+						GChatControlImpl.this.onEndpointAuth(t);
+					}
+				});
 
 		if (this.endpoint.isBond()) {
 			this.setConnected(true);//
 		}
 		//
 
-		MessageDispatcherI.FactoryI df = this.getClient(true).getChild(MessageDispatcherI.FactoryI.class,
-				true);
-		this.dispatcher0 = df.get(0);// this is endpoint message from server
-										// side
-		this.dispatcher1 = df.get(1);// this is for gchat sub message type.
+		MessageDispatcherI.FactoryI df = this.getClient(true).getChild(
+				MessageDispatcherI.FactoryI.class, true);
+		this.dispatcher0 = df.get(EndPointI.D_NAME);// this is endpoint message
+													// from server
+		// side
+		this.dispatcher1 = df.get(GChatControlI.D_NAME);// this is for gchat sub
+														// message type.
 		// dispatcher another:
 		this.dispatcher0.addHandler(Path.valueOf("gchat"), this.dispatcher1);
 
 		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), true, new JoinGMH(this));
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "join"), true,
+				new JoinGMH(this));
 		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"), true, new MessageGMH(this));
+		this.dispatcher1.addHandler(Path.valueOf("gchat", "message"), true,
+				new MessageGMH(this));
 
 	}
 
@@ -113,7 +122,13 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 			return;
 		}
 		this.connected = c;
-		new GChatConnectEvent(this, this.connected).dispatch();
+		if (this.connected) {
+
+			new GChatConnectedEvent(this).dispatch();
+		} else {
+			new GChatDisconnectedEvent(this).dispatch();
+
+		}
 
 	}
 
@@ -148,14 +163,21 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		//
 		GChatModel m = this.getModel();
 		String gid = m.getGroupIdToJoin(true);
-		ChatGroupModel gm = m.getGroup(gid, false);
-		if (gm == null) {//
-			gm = m.createGroup(gid);
-		}
+		ChatGroupModel gm = this.getOrCreateGroup(gid);
 		MessageData req = new MessageData();
 		req.setHeader("path", "/gchat/join");
 		req.setHeader("groupId", gid);
 		this.endpoint.sendMessage(req);
+	}
+	
+	public ChatGroupModel getOrCreateGroup(String gid){
+		GChatModel m = this.getModel();
+		ChatGroupModel gm = m.getGroup(gid, false);
+		if (gm == null) {//
+			gm = m.createGroup(gid);
+			new GChatGroupCreatedEvent(this,gid).dispatch();
+		}
+		return gm;
 	}
 
 	public static LazyMvcI createLazyMvc(ModelI parent, String name) {
@@ -238,7 +260,8 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	public void send() {
 		String cid = this.getChatModel().getCurrentGroupId();
 		if (cid == null) {
-			throw new UiException("please setCurrentGroupId() before send message");
+			throw new UiException(
+					"please setCurrentGroupId() before send message");
 		}
 		ChatGroupModel gm = this.getChatModel().getGroup(cid, true);
 		String text = gm.getMessageToSend();

@@ -6,6 +6,7 @@ package com.fs.uicommons.api.gwt.client.mvc;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event;
@@ -22,7 +23,7 @@ public interface ControlI extends UiObjectI {
 	public String getName();
 
 	public <T extends ModelI> T getModel();
-	
+
 	public ControlI model(ModelI model);
 
 	public ControlManagerI getManager();
@@ -37,5 +38,7 @@ public interface ControlI extends UiObjectI {
 
 	public <T extends ActionEvent> void addActionEventHandler(
 			Event.Type<T> type, String action, EventHandlerI<T> eh);
+
+	public SessionModelI getSessionModel(boolean force);
 
 }

@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
 public interface MessageDispatcherI extends MessageHandlerI, UiObjectI {
 
 	public static interface FactoryI extends UiObjectI {
-		public MessageDispatcherI get(int idx);
+		public MessageDispatcherI get(String name);
 	}
 	
 	public void addHandler(Path path, MessageHandlerI mh);

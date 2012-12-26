@@ -12,8 +12,10 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public interface GChatControlI extends ControlI {
 
+	public static final String D_NAME = "gchat";//
+
 	public void join();
-	
+
 	public void join(String gid);
 
 	public void send();
