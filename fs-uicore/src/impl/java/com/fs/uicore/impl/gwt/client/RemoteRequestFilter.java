@@ -32,14 +32,16 @@ public class RemoteRequestFilter implements UiFilterI {
 	}
 
 	@Override
-	public void filter(final Context fc, final UiCallbackI<UiResponse, Object> cb) {
+	public void filter(final Context fc,
+			final UiCallbackI<UiResponse, Object> cb) {
 		//
 
 		UiRequest req = fc.getRequest();
 		if (!req.isInit()) {
 			// sessionid
 			if (this.client.getClientId() == null) {
-				throw new UiException("clientId is null,cannot continue,please re init to get a sessionId");
+				throw new UiException(
+						"clientId is null,cannot continue,please re init to get a sessionId");
 			}
 			req.setHeader(UiRequest.SESSION_ID, this.client.getClientId());
 		}
@@ -59,7 +61,8 @@ public class RemoteRequestFilter implements UiFilterI {
 		this.send(req, url, fc, cb);
 	}
 
-	protected void send(UiRequest req, String url, final Context fc, final UiCallbackI<UiResponse, Object> cb) {
+	protected void send(UiRequest req, String url, final Context fc,
+			final UiCallbackI<UiResponse, Object> cb) {
 
 		Resource res = new Resource(url);
 		ObjectPropertiesData ds = req.getPayloads();
@@ -99,9 +102,9 @@ public class RemoteRequestFilter implements UiFilterI {
 		new ErrorEvent(this.client, t).dispatch();
 	}
 
-	private void onSuccess(UiFilterI.Context fc, JSONValue res, UiCallbackI<UiResponse, Object> cb) {
+	private void onSuccess(UiFilterI.Context fc, JSONValue res,
+			UiCallbackI<UiResponse, Object> cb) {
 
-		new ResponseEvent(this.client).dispatch();
 		this.client.processResponse(fc.getResponse(), res, cb);
 	}
 

@@ -129,4 +129,5 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 
 	public <T> T findById(String id, boolean force);
 
+	public String toDebugString();
 }

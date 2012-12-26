@@ -4,22 +4,31 @@
  */
 package com.fs.uicore.api.gwt.client.event;
 
+import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
  * @author wu
  * 
  */
-public class ResponseEvent extends Event {
+public abstract class ResponseEvent extends Event {
 
 	public static final Event.Type<ResponseEvent> TYPE = new Event.Type<ResponseEvent>();
+
+	protected UiResponse response;
 
 	/**
 	 * @param type
 	 */
-	public ResponseEvent(UiObjectI src) {
-		super(TYPE, src);
+	public ResponseEvent(Event.Type<? extends ResponseEvent> type,
+			UiClientI src, UiResponse res) {
+		super(type, src);
+		this.response = res;
+	}
+
+	public UiResponse getResponse() {
+		return response;
 	}
 
 }

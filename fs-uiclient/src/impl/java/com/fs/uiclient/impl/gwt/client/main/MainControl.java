@@ -31,7 +31,6 @@ import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotControlImpl;
 import com.fs.uiclient.impl.gwt.client.usshot.UserSnapshotModelImpl;
 import com.fs.uicommons.api.gwt.client.frwk.support.LazyMvcHeaderItemHandler;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -42,7 +41,6 @@ import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
 
 /**
  * @author wu
@@ -64,8 +62,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 		this.activeLazyMvcs();//
 		this.activeAuthProcessors();
 		this.activeHeaderItems();//
-		this.activeRooms();// connect rooms in xmpp module to chat rooms in this
-							// module.
 
 		this.activeTasks();
 
@@ -86,30 +82,14 @@ public class MainControl extends ControlSupport implements MainControlI {
 		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_UE_LIST, true));
 		// active cooper control.
 		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_COOPER, true));
+
+		sm.addAuthedProcessor(this.getLazy(MainControlI.LZ_ACHAT, true));
+
 	}
 
 	protected void activeHeaderItems() {
 		this.addHeaderForLazy(MainControlI.LZ_SIGNUP, HeaderNames.H1_USER);
 		this.addHeaderForLazy(MainControlI.LZ_PROFILE, HeaderNames.H1_USER);
-	}
-
-	protected void activeRooms() {
-		ModelI rootM = this.getClient(true).getRootModel();
-		rootM.childProcessor(GChatModel.class, "rooms",
-				new ModelChildProcessorI() {
-
-					@Override
-					public void processChildModelRemove(ModelI parent,
-							ModelI child) {
-
-					}
-
-					@Override
-					public void processChildModelAdd(ModelI parent, ModelI child) {
-						MainControl.this.getModel()
-								.getLazy(MainControlI.LZ_CHATROOMS, true).get();//
-					}
-				});
 	}
 
 	protected void addHeaderForLazy(String lazyName) {
@@ -293,7 +273,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			}
 		});
 
-		this.addLazyMvc(MainControlI.LZ_CHATROOMS, new LazyMcSupport(rootM,
+		this.addLazyMvc(MainControlI.LZ_ACHAT, new LazyMcSupport(rootM,
 				"chatrooms") {
 
 			@Override

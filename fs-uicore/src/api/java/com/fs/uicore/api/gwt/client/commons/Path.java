@@ -136,7 +136,7 @@ public class Path {
 	@Override
 	public String toString() {
 		//
-		return "class:" + this.getClass() + ",names:" + this.nameList;
+		return toString('/');
 	}
 
 	/*

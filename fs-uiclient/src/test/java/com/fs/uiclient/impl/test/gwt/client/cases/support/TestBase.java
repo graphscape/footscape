@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
-import com.fs.uiclient.impl.gwt.client.Constants;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -18,8 +18,8 @@ import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.event.ErrorResponseEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.api.gwt.client.support.UiFilterSupport;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
@@ -30,7 +30,6 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public class TestBase extends GWTTestCase {
 	public static final int timeoutMillis = 100000;
-
 
 	protected GwtSPI.Factory factory;
 
@@ -45,6 +44,8 @@ public class TestBase extends GWTTestCase {
 	protected ControlManagerI manager;
 
 	protected ModelI rootModel;
+
+	protected MainControlI mcontrol;
 
 	protected Set<String> finishing = new HashSet<String>();
 
@@ -89,10 +90,22 @@ public class TestBase extends GWTTestCase {
 		this.manager = this.client.getChild(ControlManagerI.class, true);
 		this.dump();
 		this.client.start();//
+		this.mcontrol = this.manager.getControl(MainControlI.class, true);
 	}
 
 	public void onEvent(Event e) {
 		System.out.println(this.getClass().getName() + ",onEvent:" + e);
+		if (e instanceof ErrorResponseEvent) {
+			this.onErrorResponseEvent((ErrorResponseEvent) e);
+		}
+	}
+
+	/**
+	 * @param e
+	 */
+	protected void onErrorResponseEvent(ErrorResponseEvent e) {
+		fail("error response,req:" + e.getResponse().getRequest()
+				+ ",errorInfos:" + e.getResponse().getErrorInfos());
 	}
 
 	/*

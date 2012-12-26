@@ -84,6 +84,16 @@ public class UiTransfer extends UiObjectSupport {
 		return rt == null ? def : rt;
 	}
 
+	@Override
+	public String toDebugString() {
+		String rt = super.toDebugString();
+		rt += "\nheaders:" + this.headers;
+		rt += "\npayloads:" + this.payloads;
+
+		return rt;
+
+	}
+
 	public Boolean getPayLoadAsBoolean(String key, boolean force) {
 		BooleanData sd = this.getPayload(key, false);
 		Boolean rt = sd == null ? null : sd.getValue();

@@ -29,6 +29,7 @@ public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements
 				.getPayload("confirmCodeNotifier");
 		ConfirmCodeNotifierI ccn = this.container
 				.finder(ConfirmCodeNotifierI.class).name(ccnN).find(false);
+		
 		if (ccn == null) {
 			hc.getResponse()
 					.getErrorInfos()

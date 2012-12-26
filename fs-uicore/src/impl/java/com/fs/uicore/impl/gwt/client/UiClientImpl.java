@@ -24,7 +24,9 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ErrorEvent;
+import com.fs.uicore.api.gwt.client.event.ErrorResponseEvent;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
+import com.fs.uicore.api.gwt.client.event.SuccessResponseEvent;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
@@ -34,10 +36,11 @@ import com.google.gwt.json.client.JSONValue;
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
-	
+public class UiClientImpl extends ContainerAwareUiObjectSupport implements
+		UiClientI {
+
 	private String clientId;
-	
+
 	private CodecI.FactoryI cf;
 
 	private RootI root;
@@ -54,22 +57,29 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	}
 
-	protected void processResponse(UiResponse res, JSONValue resJson, UiCallbackI<UiResponse, Object> cb) {
+	protected void processResponse(UiResponse res, JSONValue resJson,
+			UiCallbackI<UiResponse, Object> cb) {
 		CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
 		ObjectPropertiesData dt = (ObjectPropertiesData) cd.decode(resJson);
 
-		ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
+		ErrorInfosData eis = (ErrorInfosData) dt
+				.removeProperty(UiResponse.ERROR_INFO_S);
 		this.processResponse(res, dt, eis, cb);
 	}
 
-	protected void processResponse(UiResponse res, ObjectPropertiesData dt, ErrorInfosData eis,
-			UiCallbackI<UiResponse, Object> cb) {
+	protected void processResponse(UiResponse res, ObjectPropertiesData dt,
+			ErrorInfosData eis, UiCallbackI<UiResponse, Object> cb) {
 		try {
 
 			res.onResponse(dt, eis);
-
 			// TODO header?
 			cb.execute(res);
+
+			if (eis != null && eis.hasError()) {
+				new ErrorResponseEvent(this, res).dispatch();
+			} else {
+				new SuccessResponseEvent(this, res).dispatch();
+			}
 		} catch (Throwable t) {
 			new ErrorEvent(this, t).dispatch();
 		}
@@ -123,7 +133,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	 * Client got the sessionId from server,client stared on. Nov 14, 2012
 	 */
 	protected void onInitResponse(UiResponse t) {
-		StringData sd = (StringData) t.getPayloads().getProperty("clientId",true);
+		StringData sd = (StringData) t.getPayloads().getProperty("clientId",
+				true);
 		String sid = sd.getValue();
 		if (sid == null) {
 			throw new UiException("got a null sessionId");
@@ -131,7 +142,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		this.clientId = sd.getValue();
 		ObjectPropertiesData opd = t.getPayload("parameters", true);//
 		// parameters:
-		
+
 		for (String key : opd.keyList()) {
 			StringData valueS = (StringData) opd.getProperty(key);
 
@@ -178,7 +189,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	
 	 */
 	@Override
-	public void sendRequest(UiRequest req, final UiCallbackI<UiResponse, Object> cb) {
+	public void sendRequest(UiRequest req,
+			final UiCallbackI<UiResponse, Object> cb) {
 
 		final UiResponse rt = new UiResponse(req);
 		UiFilterI.Context fc = new UiFilterI.Context(req, rt, this.filterList);
@@ -239,8 +251,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		return this.cf;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.uicore.api.gwt.client.UiClientI#setParameter(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicore.api.gwt.client.UiClientI#setParameter(java.lang.String,
+	 * java.lang.String)
 	 */
 	@Override
 	public void setParameter(String key, String value) {
