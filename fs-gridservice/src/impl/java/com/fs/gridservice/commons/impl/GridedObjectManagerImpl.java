@@ -15,7 +15,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.commons.api.GridedObjectI;
 import com.fs.gridservice.commons.api.GridedObjectManagerI;
 import com.fs.gridservice.commons.api.data.ObjectRefGd;
-import com.fs.gridservice.commons.impl.support.FacadeAwareConfigurableSupport;
+import com.fs.gridservice.commons.api.support.FacadeAwareConfigurableSupport;
 import com.fs.gridservice.core.api.objects.DgMapI;
 
 /**

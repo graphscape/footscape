@@ -8,10 +8,10 @@
 	</configurations>
 
 	<publications>
-	
+
 		<artifact name="fs-gridservice-api" type="jar" conf="api" ext="jar" />
 		<artifact name="fs-gridservice-impl" type="jar" conf="impl" ext="jar" />
-		
+
 	</publications>
 	<dependencies>
 
@@ -19,13 +19,13 @@
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="engine" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="webserver" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
-		
-		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl,runtime->master" />
-		
-		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl,runtime->master" />
-		
-		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 
+		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl,runtime->master" />
+
+		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl,runtime->master" />
+
+		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
+		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.1" force="true" conf="test->master(default);test->runtime(*)" />
 		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="test->master" />
 		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="test->master" />
 

@@ -7,8 +7,8 @@ package com.fs.gridservice.commons.impl.handler.global.ping;
 import com.fs.commons.api.message.MessageI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
-import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
 
 /**
  * @author wu

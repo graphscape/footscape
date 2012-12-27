@@ -13,8 +13,8 @@ import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
 import com.fs.gridservice.commons.api.gchat.ParticipantManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
 import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen

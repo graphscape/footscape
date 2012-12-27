@@ -1,6 +1,0 @@
-<config>
-	<key1 value="value1" />
-	<config name="Xmpp">
-		<key2 value="value1" />
-	</config>
-</config>

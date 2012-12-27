@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.gridservice.commons.api.EventDispatcherI;
 import com.fs.gridservice.commons.api.data.EventGd;
-import com.fs.gridservice.commons.impl.support.EventDispatcherSupport;
+import com.fs.gridservice.commons.api.support.EventDispatcherSupport;
 import com.fs.gridservice.core.api.objects.DgQueueI;
 
 /**

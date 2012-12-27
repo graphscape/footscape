@@ -7,7 +7,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen

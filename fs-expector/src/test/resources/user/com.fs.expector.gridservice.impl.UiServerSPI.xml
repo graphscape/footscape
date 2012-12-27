@@ -1,0 +1,12 @@
+<config>
+
+	<prefix name="confirmCodeNotifier">
+		<test.class value="com.fs.expector.gridservice.impl.test.signup.TestConfirmCodeNotifier" />
+		<config name="test">
+			
+		</config>
+
+
+	</prefix>
+
+</config>

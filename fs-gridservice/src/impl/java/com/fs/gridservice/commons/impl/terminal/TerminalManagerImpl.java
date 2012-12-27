@@ -10,9 +10,9 @@ import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridedObjectManagerI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen

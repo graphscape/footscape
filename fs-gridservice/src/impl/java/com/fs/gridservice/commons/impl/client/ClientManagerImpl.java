@@ -6,7 +6,7 @@ package com.fs.gridservice.commons.impl.client;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.ClientGd;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen

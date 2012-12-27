@@ -5,7 +5,7 @@ package com.fs.gridservice.commons.impl.presence;
 
 import com.fs.gridservice.commons.api.presence.PresenceManagerI;
 import com.fs.gridservice.commons.api.presence.data.PresenceGd;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen

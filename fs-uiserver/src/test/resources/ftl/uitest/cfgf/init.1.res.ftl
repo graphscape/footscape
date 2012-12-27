@@ -1,1 +1,0 @@
-["_O",{"_DEFAULT":["_O",{"com.fs.uiserver.CfgFactory.UiXmpp":["_O",{}],"com.fs.uiserver.CfgFactory":["_O",{"xmpp.domain":["_S","fstest.com"],"key1":["_S","value1"]}]}],"_ERROR_INFO_S":["_ES",[]]}]

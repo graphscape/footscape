@@ -18,10 +18,10 @@ import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
 import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
+import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
-import com.fs.gridservice.commons.impl.support.TerminalMsgReseiveEventHandler;
 
 /**
  * @author wu

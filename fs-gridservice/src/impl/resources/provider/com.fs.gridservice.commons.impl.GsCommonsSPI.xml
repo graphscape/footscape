@@ -9,7 +9,7 @@
 	</config>
 
 
-	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.terminal.WebSocketTerminalFactory">
+	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.terminal.websocket.WebSocketTerminalFactory">
 
 	</config>
 
@@ -70,6 +70,19 @@
 		</prefix>
 	</config>
 
+	<config name="webApp.GS">
+		<context.path value="/gs" />
+	</config>
+
+	<config name="servletHolder.terminal">
+		<property name="path" value="/terminal/*" />
+		<prefix name="servlet">
+			<property name="class" value="com.fs.gridservice.commons.impl.terminal.web20.Web20TerminalFactoryServlet" />
+			<config name="config" property="config">
+
+			</config>
+		</prefix>
+	</config>
 
 
 

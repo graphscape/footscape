@@ -7,8 +7,8 @@ package com.fs.gridservice.commons.impl.handler.local.terminal;
 import com.fs.commons.api.message.MessageI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.gridservice.commons.api.support.TerminalEventHandlerSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
-import com.fs.gridservice.commons.impl.support.TerminalEventHandlerSupport;
 
 /**
  * @author wu

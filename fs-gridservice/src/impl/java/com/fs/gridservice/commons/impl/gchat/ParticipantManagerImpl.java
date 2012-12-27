@@ -6,7 +6,7 @@ package com.fs.gridservice.commons.impl.gchat;
 import com.fs.commons.api.ActiveContext;
 import com.fs.gridservice.commons.api.gchat.ParticipantManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ParticipantGd;
-import com.fs.gridservice.commons.impl.support.EntityGdManagerSupport;
+import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 
 /**
  * @author wuzhen
