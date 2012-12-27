@@ -4,6 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps;
 
+import java.util.List;
+
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -106,6 +108,16 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 		}
 		this.pageNumber(pg - 1);
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#getExpItemList()
+	 */
+	@Override
+	public List<ExpItemModel> getExpItemList() {
+		return this.getChildList(ExpItemModel.class);
 	}
 
 }

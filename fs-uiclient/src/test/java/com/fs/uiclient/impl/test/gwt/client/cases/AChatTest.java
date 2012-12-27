@@ -7,18 +7,16 @@ package com.fs.uiclient.impl.test.gwt.client.cases;
 import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
-import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
+import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.ActivityTestBase;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
@@ -45,11 +43,13 @@ public class AChatTest extends ActivityTestBase {
 		this.finishing.add("done");//
 
 	}
-	public void testAChat(){
-		
-		this.delayTestFinish(this.timeoutMillis*100);
-	
+
+	public void testAChat() {
+
+		this.delayTestFinish(this.timeoutMillis * 100);
+
 	}
+
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
@@ -75,8 +75,9 @@ public class AChatTest extends ActivityTestBase {
 	 * Oct 22, 2012
 	 */
 	@Override
-	protected void onActivityOpen(final ActivityModelI am) {
-		this.activityModel = am;// for chat room to be open.
+	protected void onActivityViewAttached(ActivityView src) {
+		this.activityModel = (ActivityModelI) src.getModel();// for chat room to
+																// be open.
 		this.tryFinish("activity.open");
 
 	}
@@ -96,7 +97,7 @@ public class AChatTest extends ActivityTestBase {
 		GChatControlI gcc = this.rootModel.getClient(true)
 				.getChild(ControlManagerI.class, true)
 				.getControl(GChatControlI.class, true);
-		
+
 		gcc.addHandler(GChatGroupCreatedEvent.TYPE,
 				new EventHandlerI<GChatGroupCreatedEvent>() {
 
@@ -168,15 +169,6 @@ public class AChatTest extends ActivityTestBase {
 	private void send(String actId, String msg) {
 		AChatControlI cms = this.manager.getControl(AChatControlI.class, true);
 		cms.send(actId, msg);//
-	}
-
-	/*
-	 * Dec 25, 2012
-	 */
-	@Override
-	protected void beforeAuth(SessionModelI sm) {
-		//
-
 	}
 
 }

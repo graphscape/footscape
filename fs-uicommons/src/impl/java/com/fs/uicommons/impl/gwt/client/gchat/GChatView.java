@@ -12,6 +12,7 @@ import com.fs.uicommons.api.gwt.client.manage.ManagableI;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicommons.api.gwt.client.manage.util.BossUtil;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
+import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -74,7 +75,7 @@ public class GChatView extends SimpleView implements ManagableI {
 	protected void onGroupIdChange(ModelValueEvent e) {
 		StringData sd = (StringData) e.getValueWrapper().getValue();
 		String gid = sd == null ? null : sd.getValue();
-		this.getModel().setCurrentGroupId(gid);
+		this.getModel().setGroupIdToJoin(gid);//
 	}
 
 	/*
@@ -114,6 +115,7 @@ public class GChatView extends SimpleView implements ManagableI {
 		ChatGroupView rv = new ChatGroupView(this.getContainer());
 		rv.setName(cm.getName());
 		rv.model(cm);//
+		final String gid = cm.getName();
 		// TODO use the uniform manager,for instance to register manager in
 		// framework.
 		// and the manager actually is maintained by the roomsview.
@@ -122,6 +124,16 @@ public class GChatView extends SimpleView implements ManagableI {
 			String rname = cm.getName();
 			// TODO managed by FrwkModelI
 			TabWI tab = this.groups.addTab(rname, rv);
+			this.getModel().setCurrentGroupId(gid);//
+			tab.addSelectEventHandler(new EventHandlerI<SelectEvent>() {
+
+				@Override
+				public void handle(SelectEvent t) {
+					if(t.isSelected()){
+						GChatView.this.getModel().setCurrentGroupId(gid);//
+					}
+				}
+			});
 		} else {
 			BossUtil.manage(cm, rv);
 		}

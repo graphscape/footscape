@@ -13,7 +13,8 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
  * @author wu
- * 
+ *         <p>
+ * @deprecated by server side message event.
  */
 public class TaskManager extends UiObjectSupport {
 

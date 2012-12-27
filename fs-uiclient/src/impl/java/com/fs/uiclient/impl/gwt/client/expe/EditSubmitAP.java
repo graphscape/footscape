@@ -27,6 +27,7 @@ public class EditSubmitAP extends APSupport {
 		MainModelI fm = c.getModel().getTopObject().find(MainModelI.class, true);
 		StringData sd = res.getPayload("expId", true);
 
+		//TODO remove this,by event  
 		fm.setValue(MainModelI.L_EXPID_CREATED, sd.getValue());// listen by
 																// list control?
 		String expId = sd.getValue();

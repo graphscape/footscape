@@ -7,7 +7,7 @@ package com.fs.uiclient.impl.gwt.client.cooper;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.coper.CoperControlI;
+import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
@@ -20,7 +20,7 @@ import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
  * @author wu
  * 
  */
-public class CooperControl extends ControlSupport implements CoperControlI {
+public class CooperControl extends ControlSupport implements CooperControlI {
 
 	/**
 	 * @param name

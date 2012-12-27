@@ -4,7 +4,9 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.event.AfterExpSearchEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
@@ -30,12 +32,12 @@ public class SearchAP implements ActionProcessorI {
 		//
 		ExpSearchModelI sm = (ExpSearchModelI) c.getModel();
 		String expId = sm.getExpId(true);
-		
+
 		int pg = sm.getPageNumber();
-		
+
 		req.setPayload("pageNumber", IntegerData.valueOf(pg));
 		req.setPayload("pageSize", IntegerData.valueOf(sm.getPageSize()));
-		
+
 		// the selected expId for matching.
 		req.getPayloads().setProperty("expId", StringData.valueOf(expId));
 
@@ -56,12 +58,12 @@ public class SearchAP implements ActionProcessorI {
 			return;// ignore when error
 		}
 		ExpSearchModelI sm = (ExpSearchModelI) c.getModel();
-		
-		sm.clean(ExpItemModel.class);//clean items.listen by the view.
-		
+
+		sm.clean(ExpItemModel.class);// clean items.listen by the view.
+
 		ListData<ObjectPropertiesData> expL = (ListData<ObjectPropertiesData>) res
 				.getPayloads().getProperty("expectations", true);
-		
+
 		for (int i = 0; i < expL.size(); i++) {
 			ObjectPropertiesData oi = expL.get(i);
 			StringData expId = (StringData) oi.getProperty("id");
@@ -69,10 +71,9 @@ public class SearchAP implements ActionProcessorI {
 			DateData timestamp = (DateData) oi.getProperty("timestamp");
 			StringData actId = (StringData) oi.getProperty("activityId");
 			StringData accId = (StringData) oi.getProperty("accountId");
-			StringData nick = (StringData) oi.getProperty("nick");		
+			StringData nick = (StringData) oi.getProperty("nick");
 			StringData icon = (StringData) oi.getProperty("iconDataUrl");
 
-			
 			ExpItemModel ei = sm.addExpItem(expId.getValue());
 			ei.setActivityId(actId == null ? null : actId.getValue());
 			ei.setTimestamp(timestamp);
@@ -81,6 +82,8 @@ public class SearchAP implements ActionProcessorI {
 			ei.setIconDataUrl(icon.getValue());
 			ei.commit();
 		}
+
+		new AfterExpSearchEvent((ExpSearchControlI)c, null).dispatch();
 
 	}
 

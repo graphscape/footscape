@@ -7,8 +7,10 @@ package com.fs.uiclient.impl.gwt.client.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
+import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.api.gwt.client.util.ListDataUtil;
@@ -64,6 +66,7 @@ public class ActivitiesAP implements ActionProcessorI {
 			ItemModel im = asm.getItem(actId, false);
 			if (im == null) {
 				im = new ItemModel(actId, expL);//
+				new ActivityCreatedEvent((ActivitiesControlI) c, actId);
 			}
 			// TODO other properties?
 

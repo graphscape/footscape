@@ -4,11 +4,13 @@
  */
 package com.fs.uicommons.impl.gwt.client.widget.tab;
 
+import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
 
@@ -57,6 +59,8 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 
 		this.getElementWrapper().addAndRemoveClassName(sel,
 				"position-selected", "position-unselected");
+		
+		new SelectEvent(this, sel).dispatch();//
 	}
 
 	/*
@@ -68,6 +72,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	public void select() {
 
 		this.tabber._select(this.name);
+		
 	}
 
 	/*
@@ -127,6 +132,11 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	 */
 	public StackWI.ItemModel getStackItem() {
 		return stackItem;
+	}
+
+	@Override
+	public void addSelectEventHandler(EventHandlerI<SelectEvent> eh) {
+		this.addHandler(SelectEvent.TYPE, eh);
 	}
 
 }

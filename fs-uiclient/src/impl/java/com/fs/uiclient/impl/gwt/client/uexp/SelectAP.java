@@ -4,10 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
-import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.api.gwt.client.main.MainModelI;
+import com.fs.uiclient.api.gwt.client.event.AfterExpSelectedEvent;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
@@ -27,6 +24,8 @@ public class SelectAP implements ActionProcessorI {
 	public void processRequest(ControlI c, String a, UiRequest req) {
 		UserExpModel uem = (UserExpModel) c.getModel();
 		uem.select(true);
+		
+		new AfterExpSelectedEvent(c, uem.getExpId()).dispatch();
 	}
 
 	/*

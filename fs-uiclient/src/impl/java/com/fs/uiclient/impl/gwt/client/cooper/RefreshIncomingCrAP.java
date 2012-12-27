@@ -6,8 +6,10 @@ package com.fs.uiclient.impl.gwt.client.cooper;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
+import com.fs.uiclient.api.gwt.client.event.CooperRequestRefreshEvent;
 import com.fs.uiclient.api.gwt.client.util.ListDataUtil;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
 import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
@@ -60,7 +62,9 @@ public class RefreshIncomingCrAP implements ActionProcessorI {
 			StringData crId = (StringData) od.getProperty(NodeFields.PK_ID);
 			StringData expId1 = (StringData) od.getProperty("expId1");
 			StringData expId2 = (StringData) od.getProperty("expId2");
-			StringData accountId1 = (StringData) od.getProperty("accountId1");//NOTE TODO 1
+			StringData accountId1 = (StringData) od.getProperty("accountId1");// NOTE
+																				// TODO
+																				// 1
 			StringData accountId2 = (StringData) od.getProperty("accountId2");
 
 			CooperRequestModel crm = new CooperRequestModel(crId.getValue());
@@ -71,7 +75,8 @@ public class RefreshIncomingCrAP implements ActionProcessorI {
 			crm.commit();
 			cm.child(crm);// add as the child,this is monitored by uelist
 							// control.
-
+			new CooperRequestRefreshEvent((CooperControlI) c, crId.getValue())
+					.dispatch();
 		}
 	}
 

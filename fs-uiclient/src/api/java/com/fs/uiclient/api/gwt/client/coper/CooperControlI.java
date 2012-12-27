@@ -10,6 +10,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  * @author wu
  * 
  */
-public interface CoperControlI extends ControlI {
+public interface CooperControlI extends ControlI {
 	
 }

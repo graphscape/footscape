@@ -4,6 +4,8 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import java.util.List;
+
 import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
@@ -25,6 +27,8 @@ public interface ExpSearchModelI extends ModelI {
 	public String getExpId(boolean force);
 
 	public ExpItemModel addExpItem(String id);
+	
+	public List<ExpItemModel> getExpItemList();
 	
 	public int getPageNumber();
 	

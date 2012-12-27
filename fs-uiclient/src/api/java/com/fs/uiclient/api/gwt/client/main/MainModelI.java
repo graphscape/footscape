@@ -13,6 +13,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 public interface MainModelI extends ModelI {
 
 	//
+	@Deprecated //using ExpCreatedEvent
 	public static final Location L_EXPID_CREATED = Location
 			.valueOf("expIdCreated");
 }

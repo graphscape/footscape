@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.tab;
 
+import com.fs.uicommons.api.gwt.client.widget.SelectableI;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -12,16 +13,13 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  * @author wu
  * 
  */
-public interface TabWI extends WidgetI {
+public interface TabWI extends WidgetI, SelectableI {
 
 	public static final Location MK_SELECTED = Location.valueOf("SELECTED");
 
 	public String getName();
 
-	public void select();
-
 	public PanelWI getPanel();
 
-	public boolean isSelected();
 
 }

@@ -43,7 +43,7 @@ public class CooperAP implements ActionProcessorI {
 		// this is just forward to CoperContorl's submit action
 		ControlUtil.triggerAction(cm, CooperModelI.A_REQUEST);
 
-		// CoperControlI cc= c.getManager().find(CoperControlI.class, true);
+		// CooperControlI cc= c.getManager().find(CooperControlI.class, true);
 
 	}
 
