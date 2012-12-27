@@ -6,7 +6,7 @@ package com.fs.uiserver.impl.handler.uelist;
 
 import com.fs.dataservice.api.core.InterceptorI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.expapp.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
 
 /**
  * @author wu

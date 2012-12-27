@@ -9,13 +9,13 @@ import java.util.List;
 
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.expapp.wrapper.Activity;
-import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.wrapper.Activity;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**

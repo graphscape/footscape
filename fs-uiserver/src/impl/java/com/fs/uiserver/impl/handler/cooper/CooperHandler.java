@@ -8,16 +8,16 @@ import java.util.List;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.dataservice.api.expapp.operations.CooperConfirmOperationI;
-import com.fs.dataservice.api.expapp.operations.CooperRequestOperationI;
-import com.fs.dataservice.api.expapp.result.CooperConfirmResultI;
-import com.fs.dataservice.api.expapp.result.CooperRequestResultI;
-import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
-import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.operations.CooperConfirmOperationI;
+import com.fs.expector.dataservice.api.operations.CooperRequestOperationI;
+import com.fs.expector.dataservice.api.result.CooperConfirmResultI;
+import com.fs.expector.dataservice.api.result.CooperRequestResultI;
+import com.fs.expector.dataservice.api.wrapper.CooperRequest;
+import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**

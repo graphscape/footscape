@@ -11,11 +11,11 @@ import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.expapp.wrapper.Profile;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 

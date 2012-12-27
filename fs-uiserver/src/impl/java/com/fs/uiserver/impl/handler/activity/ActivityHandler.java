@@ -11,10 +11,10 @@ import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
+import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**

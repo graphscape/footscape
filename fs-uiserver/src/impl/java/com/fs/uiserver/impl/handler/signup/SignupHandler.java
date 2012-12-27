@@ -16,14 +16,14 @@ import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.dataservice.api.expapp.NodeTypes;
-import com.fs.dataservice.api.expapp.wrapper.Account;
-import com.fs.dataservice.api.expapp.wrapper.AccountInfo;
-import com.fs.dataservice.api.expapp.wrapper.SignupRequest;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.NodeTypes;
+import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.AccountInfo;
+import com.fs.expector.dataservice.api.wrapper.SignupRequest;
 import com.fs.uiserver.api.signup.ConfirmCodeNotifierI;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 

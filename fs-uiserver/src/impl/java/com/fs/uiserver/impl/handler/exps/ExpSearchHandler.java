@@ -10,14 +10,14 @@ import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.dataservice.api.expapp.operations.ExpSearchOperationI;
-import com.fs.dataservice.api.expapp.wrapper.Account;
-import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper.Profile;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.operations.ExpSearchOperationI;
+import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**

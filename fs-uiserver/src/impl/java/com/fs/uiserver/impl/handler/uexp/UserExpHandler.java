@@ -4,11 +4,11 @@
  */
 package com.fs.uiserver.impl.handler.uexp;
 
-import com.fs.dataservice.api.expapp.operations.ExpCreateOperationI;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.operations.ExpCreateOperationI;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**

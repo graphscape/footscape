@@ -11,13 +11,13 @@ import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.dataservice.api.expapp.wrapper.CooperRequest;
-import com.fs.dataservice.api.expapp.wrapper.Expectation;
-import com.fs.dataservice.api.expapp.wrapper2.ExpActivity;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.wrapper.CooperRequest;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 

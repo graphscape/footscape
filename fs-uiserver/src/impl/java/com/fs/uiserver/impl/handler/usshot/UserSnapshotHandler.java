@@ -4,13 +4,13 @@
  */
 package com.fs.uiserver.impl.handler.usshot;
 
-import com.fs.dataservice.api.expapp.operations.UserSnapshotOperationI;
-import com.fs.dataservice.api.expapp.result.UserSnapshotResultI;
-import com.fs.dataservice.api.expapp.wrapper2.UserSnapshot;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
+import com.fs.expector.dataservice.api.operations.UserSnapshotOperationI;
+import com.fs.expector.dataservice.api.result.UserSnapshotResultI;
+import com.fs.expector.dataservice.api.wrapper2.UserSnapshot;
 import com.fs.uiserver.impl.handler.support.UiHandlerSupport;
 
 /**
