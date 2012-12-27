@@ -13,12 +13,10 @@ import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
-import com.fs.uixmpp.core.api.gwt.client.UiXmppCoreGPI;
-import com.fs.uixmpp.groupchat.api.gwt.client.UiGroupChatGPI;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
@@ -37,11 +35,9 @@ public class IntegratedEntryPoint implements EntryPoint {
 		GwtSPI[] spis = new GwtSPI[] {
 				(UiCoreGwtSPI) GWT.create(UiCoreGwtSPI.class),
 				(UiCommonsGPI) GWT.create(UiCommonsGPI.class),
-				(UiXmppCoreGPI) GWT.create(UiXmppCoreGPI.class),
-				(UiGroupChatGPI) GWT.create(UiGroupChatGPI.class),
 				(UiClientGwtSPI) GWT.create(UiClientGwtSPI.class) };
 		GwtSPI.Factory sf = ClientLoader.getOrLoadClient(spis,
-				new HandlerI<Event>() {
+				new EventHandlerI<Event>() {
 
 					@Override
 					public void handle(Event e) {
@@ -57,7 +53,7 @@ public class IntegratedEntryPoint implements EntryPoint {
 		final Holder<Integer> ih = new Holder<Integer>();
 		ih.setTarget(0);
 
-		bt.addHandler(ClickEvent.TYPE, new HandlerI<ClickEvent>() {
+		bt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {

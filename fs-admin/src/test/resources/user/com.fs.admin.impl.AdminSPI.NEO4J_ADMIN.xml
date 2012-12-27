@@ -1,5 +1,0 @@
-<config>
-<!--  -->
-	<neo4j.home value="this.should.be.configed.in.yourhome/.fs/env/...xml" />
-
-</config>

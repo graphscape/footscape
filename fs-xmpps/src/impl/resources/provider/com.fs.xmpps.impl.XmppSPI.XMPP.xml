@@ -1,9 +1,0 @@
-<config>
-
-	<xmpp.domain value="$xmpp.domain" />
-
-	<xmpp.adminUser value="$xmpp.adminUser" />
-
-	<xmpp.adminPassword value="$xmpp.adminPassword" />
-
-</config>

@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.HandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +49,7 @@ public class TestBase extends GWTTestCase {
 				GWT.create(UiCommonsGPI.class),
 				GWT.create(UiClientGwtSPI.class) };
 
-		factory = ClientLoader.getOrLoadClient(spis, new HandlerI<Event>() {
+		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {

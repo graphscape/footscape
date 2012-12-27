@@ -1,6 +1,0 @@
-
-
-<message to="room1@muc.thinkpad" xmlns="jabber:client" id="aabfa" type="groupchat">
-	<body>yes</body>
-	<nick xmlns="http://jabber.org/protocol/nick">user2inthinkpad</nick>
-</message>

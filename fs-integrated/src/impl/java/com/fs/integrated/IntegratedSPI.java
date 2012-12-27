@@ -22,7 +22,7 @@ public class IntegratedSPI extends SPISupport {
 
 	/* */
 	@Override
-	public void active(ActiveContext ac) {
+	public void doActive(ActiveContext ac) {
 		// add the compiled gwt js to web server
 		// WebAppI wa = ac.getContainer().find(WebServerI.class, true)
 		// .getWebApp("UICORE");
@@ -34,9 +34,16 @@ public class IntegratedSPI extends SPISupport {
 
 	}
 
-	/* */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.support.SPISupport#doDeactive(com.fs.commons.api.
+	 * ActiveContext)
+	 */
 	@Override
-	public void deactive(ActiveContext ac) {
+	protected void doDeactive(ActiveContext ac) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

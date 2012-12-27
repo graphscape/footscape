@@ -20,7 +20,6 @@
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="uicore" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="uicommons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
-		<dependency org="com.fs" name="uixmpp" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="uiclient" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="uiserver" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="webserver" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
