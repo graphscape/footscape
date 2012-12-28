@@ -24,7 +24,8 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
+import com.fs.gridservice.commons.api.mock.MockClient;
+import com.fs.gridservice.commons.impl.mock.MockClientImpl;
 
 /**
  * @author wu
@@ -35,7 +36,7 @@ public class MockClientChatGroup {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(MockClientChatGroup.class);
 
-	protected MockEventDriveClient client;
+	protected MockClient client;
 
 	protected String groupId;
 
@@ -53,7 +54,7 @@ public class MockClientChatGroup {
 
 	protected Semaphore exitWait;
 
-	public MockClientChatGroup(String groupId, MockEventDriveClient mc) {
+	public MockClientChatGroup(String groupId, MockClient mc) {
 		this.client = mc;
 		this.groupId = groupId;
 		this.participantMap = new HashMap<String, MockParticipant>();
@@ -115,7 +116,7 @@ public class MockClientChatGroup {
 	}
 
 	public String getAccId() {
-		return this.client.getClient().getAccountId();//
+		return this.client.getAccountId();//
 	}
 
 	protected void handleJoinMessage(MessageI msg0) {
@@ -137,8 +138,7 @@ public class MockClientChatGroup {
 		LOG.info(this.getAccId() + ",participant join:" + mp
 				+ ",now all participants:" + this.participantMap);
 		// is me?
-		if (ObjectUtil.nullSafeEquals(aid, this.client.getClient()
-				.getAccountId())) {
+		if (ObjectUtil.nullSafeEquals(aid, this.client.getAccountId())) {
 			this.myParticipantId = pid;
 			this.joinWait.release();
 		}
@@ -179,7 +179,7 @@ public class MockClientChatGroup {
 
 	protected void handleExitMessage(MessageI msg0) {
 		// nested.
-		String path = msg0.getHeader("path");
+		String path = msg0.getHeader(MessageI.HK_PATH);
 		if (path.endsWith("exit/success")) {
 			// is me?
 			this.myParticipantId = null;//
@@ -195,8 +195,8 @@ public class MockClientChatGroup {
 		MockParticipant mp = this.participantMap.remove(pid);//
 		if (mp == null) {
 			throw new FsException("no this participant:" + pid + " for client:"
-					+ this.client.getClient().getAccountId()
-					+ " all participant:" + this.participantMap);
+					+ this.client.getAccountId() + " all participant:"
+					+ this.participantMap);
 		}
 		this.exitQueue.add(mp);//
 	}
@@ -205,7 +205,7 @@ public class MockClientChatGroup {
 		//
 		String gid = msg0.getHeader("groupId", true);
 		String pid = msg0.getHeader("participantId");
-		if(pid == null){
+		if (pid == null) {
 			throw new FsException("BUG.");
 		}
 		MessageI msg = (MessageI) msg0.getPayload("message", true);//
@@ -223,7 +223,7 @@ public class MockClientChatGroup {
 	public Future<Boolean> join() throws Exception {
 
 		MessageI msg = new MessageSupport();
-		msg.setHeader("path", "/gchat/join");
+		msg.setHeader(MessageI.HK_PATH, "/gchat/join");
 		msg.setHeader("groupId", groupId);
 
 		this.joinWait = new Semaphore(0);
@@ -244,7 +244,7 @@ public class MockClientChatGroup {
 			}
 		}.start();
 
-		this.client.getClient().sendMessage(msg);
+		this.client.sendMessage(msg);
 		return rt;
 
 	}
@@ -252,7 +252,7 @@ public class MockClientChatGroup {
 	public Future<Boolean> exit() throws Exception {
 
 		MessageI msg = new MessageSupport();
-		msg.setHeader("path", "/gchat/exit");
+		msg.setHeader(MessageI.HK_PATH, "/gchat/exit");
 		msg.setHeader("groupId", groupId);
 
 		this.exitWait = new Semaphore(0);
@@ -273,7 +273,7 @@ public class MockClientChatGroup {
 			}
 		}.start();
 
-		this.client.getClient().sendMessage(msg);
+		this.client.sendMessage(msg);
 		return rt;
 
 	}
@@ -283,7 +283,7 @@ public class MockClientChatGroup {
 			throw new FsException("you have not join the group:" + this.groupId);
 		}
 		MessageI msg = new MessageSupport();
-		msg.setHeader("path", "/gchat/message");
+		msg.setHeader(MessageI.HK_PATH, "/gchat/message");
 		msg.setHeader("format", "message");
 		msg.setHeader("groupId", this.groupId);
 
@@ -293,7 +293,7 @@ public class MockClientChatGroup {
 
 		msg.setPayload("message", msg2);
 
-		this.client.getClient().sendMessage(msg);
+		this.client.sendMessage(msg);
 
 	}
 

@@ -10,11 +10,10 @@ import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
+import com.fs.gridservice.commons.api.mock.MockClient;
+import com.fs.gridservice.commons.api.mock.MockClientFactory;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
-import com.fs.gridservice.commons.impl.test.mock.MockClient;
-import com.fs.gridservice.commons.impl.test.mock.MockClientFactory;
-import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
 
 /**
  * @author wu
@@ -31,10 +30,11 @@ public class TestBase extends TestCase {
 	protected MockClientFactory factory;
 
 	protected SessionManagerI smanager;
-	
+
 	protected ClientManagerI cmanager;
 
 	protected TerminalManagerI tmanager;
+
 	@Override
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
@@ -43,7 +43,7 @@ public class TestBase extends TestCase {
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
-		factory = new MockClientFactory(this.container).start();
+		factory = MockClientFactory.getInstance(this.container);
 		this.smanager = this.container.find(SessionManagerI.class, true);
 		this.cmanager = facade.getEntityManager(ClientManagerI.class);
 		this.tmanager = facade.getEntityManager(TerminalManagerI.class);
@@ -55,7 +55,7 @@ public class TestBase extends TestCase {
 
 	protected MockClient newClientAndAuth(String accId) throws Exception {
 
-		return this.factory.newClientAndAuth(accId);
+		return this.factory.newClient().auth(accId);
 
 	}
 
@@ -64,14 +64,14 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockEventDriveClient newEventDriveClient(String accId, boolean start) throws Exception {
+	protected MockClient newEventDriveClient(String accId, boolean start)
+			throws Exception {
 		MockClient mc = this.newClientAndAuth(accId);
 
-		MockEventDriveClient rt = new MockEventDriveClient(mc);
 		if (start) {
-			rt.start();
+			mc.startEventDrive();
 		}
-		return rt;
+		return mc;
 
 	}
 

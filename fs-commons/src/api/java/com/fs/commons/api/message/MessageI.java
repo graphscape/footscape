@@ -15,7 +15,28 @@ import com.fs.commons.api.value.PropertiesI;
  */
 public interface MessageI {
 
+	public static final String HK_PATH = "_path";
+
+	public static final String HK_ID = "_id";
+
+	public static final String HK_SOURCE = "_source";
+
+	public static final String HK_ERROR_PROCESSOR = "_eprocessor";
+
+	// when this message is processed, the result send to this address.
+	public static final String HK_RESPONSE_ADDRESS = "_resonse_address";
+
 	public static final String PK_DEFAULT = "_default";
+
+	public String getErrorProcessor();
+
+	public String getSource();
+
+	public String getPath();
+
+	public String getId();
+
+	public String getResponseAddress();
 
 	public PropertiesI<String> getHeaders();
 
@@ -36,15 +57,15 @@ public interface MessageI {
 	public Object getPayload(String key);
 
 	public Object getPayload(String key, boolean force);
-	
+
 	public Object getPayload(String key, Object def);
 
 	public <T> T getPayload(Class<T> cls, String key, T def);
-	
+
 	public String getString(String key);
-	
+
 	public String getString(String key, boolean force);
-	
+
 	public String getString(String key, String def);
 
 	public void setPayload(String key, Object value);

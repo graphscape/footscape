@@ -200,7 +200,8 @@ public class MessageSupport implements MessageI {
 	/**
 	 * Dec 15, 2012
 	 */
-	public static MessageI newMessage(PropertiesI<String> hds, PropertiesI<Object> pls) {
+	public static MessageI newMessage(PropertiesI<String> hds,
+			PropertiesI<Object> pls) {
 		MessageI rt = newMessage();
 		rt.setHeaders(hds);
 		rt.setPayloads(pls);
@@ -240,6 +241,35 @@ public class MessageSupport implements MessageI {
 	public String getString(String key, String def) {
 		//
 		return (String) this.getPayload(key, def);
+	}
+	
+	@Override
+	public String getId() {
+		return this.getHeader(HK_ID);
+	}
+	
+	@Override
+	public String getPath() {
+		return this.getHeader(HK_PATH);
+	}
+
+	@Override
+	public String getErrorProcessor() {
+		// TODO Auto-generated method stub
+		return this.getHeader(HK_ERROR_PROCESSOR);
+	}
+
+	@Override
+	public String getSource() {
+		return this.getHeader(HK_SOURCE);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.message.MessageI#getResponseAddress()
+	 */
+	@Override
+	public String getResponseAddress() {
+		return this.getHeader(HK_RESPONSE_ADDRESS);
 	}
 
 }

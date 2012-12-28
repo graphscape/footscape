@@ -26,7 +26,7 @@ public class TerminalMsgReseiveEventHandler extends TerminalEventHandlerSupport 
 
 	protected void sendResponseFailureMessage(TerminalMsgReceiveEW source) {
 		String tId = source.getTerminalId();
-		String path = source.getMessage().getHeader("path", true);
+		String path = source.getMessage().getPath();
 		path += "/failure";
 		this.sendTextMessage(tId, path, null);
 
@@ -38,10 +38,10 @@ public class TerminalMsgReseiveEventHandler extends TerminalEventHandlerSupport 
 
 	protected MessageI newResponseSuccessMessage(TerminalMsgReceiveEW source) {
 		String tId = source.getTerminalId();
-		String path = source.getMessage().getHeader("path", true);
+		String path = source.getMessage().getPath();
 		path += "/success";
 		MessageI msg = new MessageSupport();
-		msg.setHeader("path", path);
+		msg.setHeader(MessageI.HK_PATH, path);
 		msg.setHeader("terminalId", tId);
 
 		return msg;

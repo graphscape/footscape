@@ -16,13 +16,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.fs.gridservice.commons.impl.mock.MockClientBase;
+
 /**
  * @author wu
- * 
+ *         <p>
+ *         TODO
  */
 public class MockWeb20Client {
 
-	protected MockClient websocket;
+	protected MockClientBase websocket;
 
 	public String connect() {
 		// todo
@@ -32,8 +35,8 @@ public class MockWeb20Client {
 	public void test() throws Exception {
 		URIBuilder builder = new URIBuilder();
 		String host = "localhost";
-		builder.setScheme("http").setHost(host).setPort(8080).setPath("/ROOT/testsevlet/do")
-				.setParameter("q", "httpclient");
+		builder.setScheme("http").setHost(host).setPort(8080)
+				.setPath("/ROOT/testsevlet/do").setParameter("q", "httpclient");
 		URI uri = builder.build();
 		uri = new URI("http://localhost:8080/testapp/testsevlet/do");
 		HttpGet httpget = new HttpGet(uri);

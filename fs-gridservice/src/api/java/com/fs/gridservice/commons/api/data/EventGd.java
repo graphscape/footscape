@@ -26,6 +26,8 @@ public class EventGd extends MessageGd implements GridedDataI {
 	public static final String HK_ORIGIN_EVENT_ID = "_originEventId";
 
 	public static final String HK_CAUSE_EVENT_ID = "_causeEventId";
+	
+	public static final String HK_SOURCE_TERMINAL_ID = "_source_terminal_id";
 
 	public EventGd() {
 
@@ -49,7 +51,11 @@ public class EventGd extends MessageGd implements GridedDataI {
 		String ts = this.getHeader(HK_TYPE, true);
 		return EventType.valueOf(ts);
 	}
-
+	
+	public String getSourceTerminalId(){
+		return this.getHeader(HK_SOURCE_TERMINAL_ID);
+	}
+	
 	public String getId() {
 		return this.getHeader(HK_ID, true);
 	}

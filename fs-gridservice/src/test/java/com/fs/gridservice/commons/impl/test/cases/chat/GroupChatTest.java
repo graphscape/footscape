@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.gridservice.commons.api.mock.MockClient;
+import com.fs.gridservice.commons.impl.mock.MockClientImpl;
 import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
-import com.fs.gridservice.commons.impl.test.mock.MockEventDriveClient;
 import com.fs.gridservice.commons.impl.test.mock.chat.MockClientChatGroup;
 import com.fs.gridservice.commons.impl.test.mock.chat.MockParticipant;
 
@@ -25,9 +26,9 @@ public class GroupChatTest extends TestBase {
 		String accId2 = "acc2";
 		String accId3 = "acc3";
 
-		MockEventDriveClient c1 = this.newEventDriveClient(accId1, true);
-		MockEventDriveClient c2 = this.newEventDriveClient(accId2, true);
-		MockEventDriveClient c3 = this.newEventDriveClient(accId3, true);
+		MockClient c1 = this.newEventDriveClient(accId1, true);
+		MockClient c2 = this.newEventDriveClient(accId2, true);
+		MockClient c3 = this.newEventDriveClient(accId3, true);
 		MockClientChatGroup gc1 = newChatRoom("group1", c1);
 
 		MockClientChatGroup gc2 = newChatRoom("group1", c2);
@@ -155,7 +156,7 @@ public class GroupChatTest extends TestBase {
 	}
 
 	protected MockClientChatGroup newChatRoom(String gcid,
-			MockEventDriveClient mc) throws Exception {
+			MockClient mc) throws Exception {
 		MockClientChatGroup rt = new MockClientChatGroup(gcid, mc);
 		return rt;
 

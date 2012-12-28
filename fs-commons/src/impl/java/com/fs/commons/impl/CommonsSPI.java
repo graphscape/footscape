@@ -5,12 +5,12 @@ package com.fs.commons.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.filter.ChainI;
 import com.fs.commons.api.future.FutureMonitorI;
 import com.fs.commons.api.jexl.JexlEngineI;
 import com.fs.commons.api.mail.MailReceiverI;
+import com.fs.commons.api.mock.MockFactoryI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.impl.codec.JsonCodecFactory;
@@ -25,6 +25,7 @@ import com.fs.commons.impl.mail.MailReceiverFactory;
 import com.fs.commons.impl.mail.MailSenderImpl;
 import com.fs.commons.impl.ssh.client.SshClientFactory;
 import com.fs.commons.impl.ssh.shell.SshShellFactory;
+import com.fs.commons.impl.testing.MockFactoryImpl;
 import com.fs.commons.impl.validator.ValidatorFactoryImpl;
 
 /**
@@ -44,7 +45,7 @@ public class CommonsSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 		ConfigFactoryI cf = new ConfigFactoryImpl();
 		//
-		
+
 		ac.getContainer().addObject(this, "CONFIG_FACTORY", cf);
 		//
 
@@ -86,6 +87,9 @@ public class CommonsSPI extends SPISupport {
 		// executor factory
 		ExecutorFactory ef = new ExecutorFactory();
 		ac.active("EXECUTOR_FACTORY", ef);
+		// testing factory
+		MockFactoryI tstf = new MockFactoryImpl();
+		ac.active("MOCK_FACTORY", tstf);
 	}
 
 	/* */

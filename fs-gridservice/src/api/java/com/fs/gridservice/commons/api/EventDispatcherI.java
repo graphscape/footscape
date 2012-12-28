@@ -9,5 +9,4 @@ package com.fs.gridservice.commons.api;
  * 
  */
 public interface EventDispatcherI {
-
 }

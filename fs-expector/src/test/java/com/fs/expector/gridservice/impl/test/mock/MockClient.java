@@ -68,8 +68,7 @@ public class MockClient {
 
 	protected String clientInit() {// get sessionUid
 
-		RequestI req = RRContext.newRequest();
-		req.setPath("/uiserver/client/init");
+		RequestI req = RRContext.newRequest("/uiserver/client/init");
 		ResponseI res = this.service(req);
 		res.assertNoError();
 
@@ -127,9 +126,8 @@ public class MockClient {
 	}
 
 	protected RequestI newRequest(String path) {
-		RequestI rt = RRContext.newRequest();
+		RequestI rt = RRContext.newRequest(path);
 		rt.setHeader(Constants.HK_CLIENT_ID, this.clientId);
-		rt.setPath(path);
 		return rt;
 
 	}

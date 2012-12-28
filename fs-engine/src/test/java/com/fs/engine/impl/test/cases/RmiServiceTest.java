@@ -20,9 +20,8 @@ import com.fs.engine.impl.test.handler.TestHandler2;
 public class RmiServiceTest extends TestBase {
 
 	public void testHandler1() {
-		RequestI req = RRContext.newRequest();
+		RequestI req = RRContext.newRequest("/handler1/hello");
 
-		req.setPath("/handler1/hello");
 		TestHandler1.ReqBean reqb = TestHandler1.newRequest();
 		req.setPayload(reqb);// request
 
@@ -52,8 +51,7 @@ public class RmiServiceTest extends TestBase {
 	}
 
 	public void testHandler2Normal() {
-		RequestI req = RRContext.newRequest();
-		req.setPath("/handler2/hello");
+		RequestI req = RRContext.newRequest("/handler2/hello");
 		ResponseI res = service.service(req);
 
 		assertFalse("exception check failed.", res.getHeaders()
@@ -65,8 +63,7 @@ public class RmiServiceTest extends TestBase {
 	}
 
 	public void testHandler2ThrowException() {
-		RequestI req = RRContext.newRequest();
-		req.setPath("/handler2/hello");
+		RequestI req = RRContext.newRequest("/handler2/hello");
 		req.getHeaders().setProperty(TestHandler2.HD_ISTHROW, "true");
 		ResponseI res = service.service(req);
 		boolean exp = res.getHeaders().getPropertyAsBoolean("EXCEPTION", false);

@@ -244,7 +244,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 				.getEntity(toPid);
 
 		MessageI msg0 = new MessageSupport();
-		msg0.setHeader("path", path);//
+		msg0.setHeader(MessageI.HK_PATH, path);//
 		msg0.setHeader("groupId", gid);
 		msg0.setHeader("participantId", fromPid);
 

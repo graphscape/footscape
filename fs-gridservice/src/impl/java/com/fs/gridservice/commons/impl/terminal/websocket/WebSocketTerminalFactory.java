@@ -115,10 +115,17 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 		}
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
-		String path = msg.getHeader("path");
+		String path = msg.getPath();
 		String tId = getWso(ws).getTerminalId(true);// assign the ws id.
 
 		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId, msg);
+
+		// eventWrapper->target:EventGd->payload:Message
+		// RequestI->payload:EventGd->payload:Message
+		//
+		ew.getTarget().setHeader(MessageI.HK_RESPONSE_ADDRESS,
+				msg.getHeader(MessageI.HK_RESPONSE_ADDRESS));
+
 		// send to global event queue
 		this.global.offer(ew.getTarget());
 

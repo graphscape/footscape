@@ -3,21 +3,18 @@
  */
 package com.fs.expector.gridservice.impl.test.cases.support;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Before;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.ServiceEngineI;
-import com.fs.engine.api.scenario.ScenarioI;
+import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
 import com.fs.expector.gridservice.impl.ExpectorGridServiceSPI;
 
 /**
@@ -32,6 +29,8 @@ public class TestBase extends TestCase {
 
 	protected ServiceEngineI engine;
 
+	protected MockExpectorClientFactory cfactory;
+	
 	@Before
 	public void setUp() {
 		this.sm = SPIManagerI.FACTORY.get();
@@ -40,6 +39,7 @@ public class TestBase extends TestCase {
 		this.dataService = this.container.find(DataServiceI.class, true);
 		this.engine = this.container.find(EngineFactoryI.class, true)
 				.getEngine(ExpectorGridServiceSPI.ENAME_UISERVER);
+		this.cfactory = MockExpectorClientFactory.getInstance(this.container);//
 		this.cleanDb();
 	}
 
@@ -49,6 +49,7 @@ public class TestBase extends TestCase {
 		dao.execute().getResult().assertNoError();
 
 	}
+	
 
 	protected void dumpDb() {
 		DumpOperationI op = this.dataService
@@ -56,20 +57,4 @@ public class TestBase extends TestCase {
 		op.execute().getResult().assertNoError();
 	}
 
-	public void runScenario(String cfgId) {
-		ScenarioI.FactoryI sf = this.container.find(ScenarioI.FactoryI.class,
-				true);
-		ScenarioI s = sf.getScenario(cfgId);
-		if (s == null) {
-			throw new FsException("no scenario is configured:" + cfgId);
-		}
-		ScenarioI.ContextI sc = s.run();
-		ErrorInfos eis = sc.getAllErrorInfos();
-		if (eis.hasError()) {
-			System.out.println(eis.toString());
-			Assert.assertTrue(
-					"scenario failed:" + cfgId + ",eis:" + eis.toString() + "",
-					false);
-		}
-	}
 }

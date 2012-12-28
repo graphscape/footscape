@@ -9,7 +9,6 @@ import com.fs.commons.api.support.SPISupport;
 import com.fs.engine.impl.converter.HandleContextC;
 import com.fs.engine.impl.converter.RequestC;
 import com.fs.engine.impl.converter.ResponseC;
-import com.fs.engine.impl.scenario.ScenarioFactory;
 
 /**
  * @author wuzhen
@@ -36,8 +35,7 @@ public class EngineSPI extends SPISupport {
 		cf.addConverter(new ResponseC(cf));//
 		cf.addConverter(new HandleContextC(cf));//
 		// add scenario facotry
-		ScenarioFactory sf = new ScenarioFactory();
-		ac.active("SCENARIO_FACTORY", sf);
+
 	}
 
 	/* */

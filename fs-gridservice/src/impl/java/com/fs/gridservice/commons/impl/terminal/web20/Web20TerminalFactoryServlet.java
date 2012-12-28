@@ -87,7 +87,7 @@ public class Web20TerminalFactoryServlet extends ConfigurableServletSupport {
 		Reader rd = arg0.getReader();
 		Object obj = JSONValue.parse(rd);
 		MessageI msg = (MessageI)this.messageCodec.decode(obj);
-		String path = msg.getHeader("path");
+		String path = msg.getHeader(MessageI.HK_PATH);
 		
 		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tid, msg);
 		// send to global event queue

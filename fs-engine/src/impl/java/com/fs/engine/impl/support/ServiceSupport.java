@@ -24,9 +24,9 @@ public abstract class ServiceSupport extends
 
 	/* */
 	@Override
-	protected ResponseI newResponse() {
+	protected ResponseI newResponse(RequestI req) {
 
-		return RRContext.newResponse();
+		return RRContext.newResponse(req);
 
 	}
 

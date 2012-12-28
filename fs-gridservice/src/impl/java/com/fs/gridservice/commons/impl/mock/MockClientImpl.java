@@ -2,8 +2,9 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 18, 2012
  */
-package com.fs.gridservice.commons.impl.test.mock;
+package com.fs.gridservice.commons.impl.mock;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -11,9 +12,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.eclipse.jetty.websocket.client.WebSocketClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.CollectionListener;
@@ -22,12 +25,10 @@ import com.fs.commons.api.support.CollectionListener;
  * @author wu
  * 
  */
-public class MockEventDriveClient {
+public class MockClientImpl extends MockClientBase {
 
 	private static final Logger LOG = LoggerFactory
-			.getLogger(MockEventDriveClient.class);
-
-	private MockClient client;
+			.getLogger(MockClientImpl.class);
 
 	protected Map<String, CollectionListener<MessageI>> messageHandler;
 
@@ -35,8 +36,8 @@ public class MockEventDriveClient {
 
 	protected ExecutorService executor;
 
-	public MockEventDriveClient(MockClient mc) {
-		this.client = mc;
+	public MockClientImpl(WebSocketClientFactory f, ContainerI c, URI uri) {
+		super(f, c, uri);
 		this.executor = Executors.newFixedThreadPool(1);// TODO
 		this.messageHandler = new HashMap<String, CollectionListener<MessageI>>();
 		this.defaultListener = new ListenerI<MessageI>() {
@@ -49,18 +50,19 @@ public class MockEventDriveClient {
 		};
 	}
 
-	public Future<Object> start() {
+	public Future<Object> startEventDrive() {
 		return this.executor.submit(new Callable<Object>() {
 
 			@Override
 			public Object call() throws Exception {
 				//
-				MockEventDriveClient.this.run();
+				MockClientImpl.this.run();
 				return "stoped";
 			}
 		});
 	}
 
+	@Override
 	public void addListener(String path, ListenerI<MessageI> ml) {
 		CollectionListener<MessageI> cl = this.messageHandler.get(path);
 		if (cl == null) {
@@ -71,7 +73,7 @@ public class MockEventDriveClient {
 	}
 
 	public void eachLoop(MessageI msg) throws Exception {
-		String path = msg.getHeader("path");
+		String path = msg.getHeader(MessageI.HK_PATH);
 		ListenerI<MessageI> l = this.messageHandler.get(path);
 		if (l == null) {
 			this.defaultListener.handle(msg);
@@ -91,15 +93,9 @@ public class MockEventDriveClient {
 	public void runInternal() throws Exception {
 
 		while (true) {
-			MessageI msg = this.client.receiveMessage().get();
+			MessageI msg = this.receiveMessage().get();
 			this.eachLoop(msg);
 		}
 	}
 
-	/**
-	 * @return the client
-	 */
-	public MockClient getClient() {
-		return client;
-	}
 }

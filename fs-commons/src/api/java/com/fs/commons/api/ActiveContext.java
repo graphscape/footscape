@@ -121,10 +121,7 @@ public class ActiveContext {
 				this.obj = cfg.getPropertyAsNewInstance("class", true);
 			}
 
-			if (this.container != null) {
-				this.container.addObject(this.spi, this.name, this.obj);
-
-			}
+			
 			if (this.obj instanceof ConfigurableI) {
 
 				if (cfg == null) {
@@ -139,7 +136,10 @@ public class ActiveContext {
 				ao.active(this.activeContext);
 				new AfterActiveEvent(obj).dispatch(this.container);
 			}
+			if (this.container != null) {
+				this.container.addObject(this.spi, this.name, this.obj);
 
+			}
 			return this;
 
 		}

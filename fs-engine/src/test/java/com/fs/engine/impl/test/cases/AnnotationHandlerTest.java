@@ -17,16 +17,14 @@ public class AnnotationHandlerTest extends TestBase {
 	public void test() {
 		{
 			String path = "/handler3/path1";
-			RequestI req = RRContext.newRequest();
-			req.setPath(path);
+			RequestI req = RRContext.newRequest(path);
 			ResponseI res = this.service.service(req);
 			String pl = (String) res.getPayload();
 			assertEquals(path, pl);
 		}
 		{
 			String path = "/handler3/path2";
-			RequestI req = RRContext.newRequest();
-			req.setPath(path);
+			RequestI req = RRContext.newRequest(path);
 			ResponseI res = this.service.service(req);
 			String pl = (String) res.getPayload();
 			assertEquals(path, pl);

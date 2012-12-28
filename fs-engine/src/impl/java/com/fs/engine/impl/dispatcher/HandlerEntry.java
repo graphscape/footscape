@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.lang.FsException;
-import com.fs.engine.api.HandlerI;
+import com.fs.engine.api.RequestHandlerI;
 
 /**
  * @author wu
@@ -23,9 +23,9 @@ public class HandlerEntry {
 
 	private boolean isDefault;
 
-	private HandlerI handler;
+	private RequestHandlerI handler;
 
-	public HandlerEntry(HandlerI h) {
+	public HandlerEntry(RequestHandlerI h) {
 		this.handler = h;
 		Configuration c = h.getConfiguration();//
 		String ptS = c.getProperty("pattern");
@@ -65,7 +65,7 @@ public class HandlerEntry {
 	/**
 	 * @return the handler
 	 */
-	public HandlerI getHandler() {
+	public RequestHandlerI getHandler() {
 		if (this.handler != null) {
 			return this.handler;
 		}

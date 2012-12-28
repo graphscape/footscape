@@ -35,13 +35,13 @@ public abstract class ServiceSupport<REQ, RES> extends ConfigurableSupport
 
 	@Override
 	public void service(REQ req, CallbackI<RES, Object> res) {
-		RES r = this.newResponse();
+		RES r = this.newResponse(req);
 		this.service(req, r);
 		res.execute(r);
 	}
 
 	protected abstract REQ newRequest();
 
-	protected abstract RES newResponse();
+	protected abstract RES newResponse(REQ req);
 
 }

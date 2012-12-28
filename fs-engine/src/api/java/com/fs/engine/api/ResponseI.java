@@ -14,6 +14,8 @@ public interface ResponseI extends MessageI {
 	
 	public static final String ERROR_INFO_S = "_ERROR_INFO_S";
 	
+	public RequestI getRequest();
+	
 	public ErrorInfos getErrorInfos();
 
 	public void assertNoError();

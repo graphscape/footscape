@@ -153,7 +153,8 @@ public class ProxyMessageSupport implements MessageI {
 			return false;
 		}
 
-		return ObjectUtil.nullSafeEquals(this.target, ((ProxyMessageSupport) obj).target);
+		return ObjectUtil.nullSafeEquals(this.target,
+				((ProxyMessageSupport) obj).target);
 
 	}
 
@@ -193,6 +194,36 @@ public class ProxyMessageSupport implements MessageI {
 	public String getString(String key, String def) {
 		//
 		return this.target.getString(key, def);
+	}
+
+	@Override
+	public String getErrorProcessor() {
+		// TODO Auto-generated method stub
+		return this.target.getErrorProcessor();
+	}
+
+	@Override
+	public String getSource() {
+		// TODO Auto-generated method stub
+		return this.target.getSource();
+	}
+
+	@Override
+	public String getPath() {
+		// TODO Auto-generated method stub
+		return this.target.getPath();
+	}
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return this.target.getId();
+	}
+
+	@Override
+	public String getResponseAddress() {
+		// TODO Auto-generated method stub
+		return this.target.getResponseAddress();
 	}
 
 }

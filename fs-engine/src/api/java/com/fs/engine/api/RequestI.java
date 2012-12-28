@@ -11,9 +11,4 @@ import com.fs.commons.api.message.MessageI;
  */
 public interface RequestI extends MessageI {
 
-	public static final String PATH = "__path";
-
-	public void setPath(String path);
-
-	public String getPath();
 }

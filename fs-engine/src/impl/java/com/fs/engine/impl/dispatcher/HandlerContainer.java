@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.support.ProxyContainerSupport;
-import com.fs.engine.api.HandlerI;
+import com.fs.engine.api.RequestHandlerI;
 
 /**
  * @author wuzhen
@@ -39,10 +39,10 @@ public class HandlerContainer extends ProxyContainerSupport {
 			return;
 		}
 		synchronized (this.dirty) {
-			List<HandlerI> hL = this.finder(HandlerI.class).find();
+			List<RequestHandlerI> hL = this.finder(RequestHandlerI.class).find();
 			this.defaultEntryList = new ArrayList<HandlerEntry>();
 			this.patternEntryList = new ArrayList<HandlerEntry>();
-			for (HandlerI h : hL) {
+			for (RequestHandlerI h : hL) {
 				HandlerEntry he = new HandlerEntry(h);
 				if (he.isDefault()) {
 					this.defaultEntryList.add(he);
@@ -87,7 +87,7 @@ public class HandlerContainer extends ProxyContainerSupport {
 	public void addObject(SPI spi, String name, Object o) {
 		synchronized (this.dirty) {
 			super.addObject(spi, name, o);
-			HandlerI h = (HandlerI) o;
+			RequestHandlerI h = (RequestHandlerI) o;
 			this.dirty = true;
 			LOG.info("add handler:" + name + ",cfg:" + h.getConfiguration());
 		}

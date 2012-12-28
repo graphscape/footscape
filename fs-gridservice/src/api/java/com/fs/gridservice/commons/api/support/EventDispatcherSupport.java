@@ -20,6 +20,7 @@ import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.support.ServerSupport;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
@@ -28,6 +29,7 @@ import com.fs.engine.api.support.RRContext;
 import com.fs.gridservice.commons.api.EventDispatcherI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.data.EventGd;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.core.api.event.BeforeDgCloseEvent;
 import com.fs.gridservice.core.api.objects.DgQueueI;
 
@@ -233,20 +235,46 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 					+ " is processing event#" + this.eventCounter + "," + evt);
 		}
 		String path = evt.getPath();
-
+		
 		if (path.startsWith("/")) {
 			path = "/events" + path;
 		} else {
 			path = "/events/" + path;
 		}
 
-		RequestI req = RRContext.newRequest();
-		req.setPath(path);//
+		RequestI req = RRContext.newRequest(path);
+		req.setHeaders(evt.getHeaders());//
 		req.setPayload(evt);
 
 		ResponseI res = this.engine.service(req);
-		res.assertNoError();
-	
+		this.onResponse(req, res);
+	}
+
+	protected void onResponse(RequestI req, ResponseI res) {
+
+		ErrorInfos eis = res.getErrorInfos();
+
+		// process error
+		if (!eis.hasError()) {
+			LOG.error("response contains error for request:" + req, res);
+		}
+
+		String ra = req.getResponseAddress();
+		if (ra == null) {//
+			LOG.warn("no response address for request:" + req);
+		} else {
+			if (!ra.startsWith("tid://")) {
+				throw new FsException("address not supported:" + ra
+						+ ", only 'tid://' is supported for now");
+			}
+			String tid = ra.substring("tid://".length());
+
+			TerminalManagerI tm = this.facade
+					.getEntityManager(TerminalManagerI.class);
+
+			tm.sendMessage(tid, res);
+
+		}
 
 	}
 

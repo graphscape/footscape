@@ -23,17 +23,15 @@ public class ErrorResponseTest extends TestBase {
 
 		String path = "/handler5/throw";
 
-		RequestI req = RRContext.newRequest();
-		req.setPath(path);
+		RequestI req = RRContext.newRequest(path);
 		ResponseI res = this.service.service(req);
 		String pl = (String) res.getPayload();
 		ErrorInfos eis = res.getErrorInfos();
-		assertTrue("should report exception in handler",
-				eis.hasError());
+		assertTrue("should report exception in handler", eis.hasError());
 		List<ErrorInfo> eL = eis.getErrorInfoList();
 		assertEquals("should only one error info,but:" + eL, 1, eL.size());
 		ErrorInfo ei = eL.get(0);
 		System.out.println(ei);
-		
+
 	}
 }

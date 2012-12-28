@@ -42,7 +42,7 @@ public class TerminalEventHandlerSupport extends ValidatorHandlerSupport {
 	
 	protected void sendTextMessage(String termId, String path, String text) {
 		MessageI msg = new MessageSupport();
-		msg.setHeader("path", path);
+		msg.setHeader(MessageI.HK_PATH, path);
 		msg.setHeader("terminalId", termId);
 		msg.setPayload("text", text);//
 		this.sendMessage(termId, msg);

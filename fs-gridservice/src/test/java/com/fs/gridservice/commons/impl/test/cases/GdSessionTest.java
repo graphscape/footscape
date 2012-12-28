@@ -6,11 +6,11 @@ package com.fs.gridservice.commons.impl.test.cases;
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.mock.MockClient;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
-import com.fs.gridservice.commons.impl.test.mock.MockClient;
 
 /**
  * @author wuzhen

@@ -14,7 +14,7 @@ import com.fs.commons.api.context.support.ContextSupport;
 import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.HandlerI;
+import com.fs.engine.api.RequestHandlerI;
 import com.fs.engine.api.annotation.Handle;
 
 /**
@@ -22,7 +22,7 @@ import com.fs.engine.api.annotation.Handle;
  * 
  */
 public abstract class HandlerSupport extends ConfigurableSupport implements
-		HandlerI {
+		RequestHandlerI {
 
 	protected static class MethodWrapper extends ContextSupport {
 		public Method method;

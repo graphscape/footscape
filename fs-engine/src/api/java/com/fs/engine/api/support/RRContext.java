@@ -4,6 +4,7 @@
 package com.fs.engine.api.support;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.ErrorInfos;
 import com.fs.engine.api.RequestI;
@@ -15,32 +16,16 @@ import com.fs.engine.api.ResponseI;
  */
 public class RRContext extends MessageSupport {
 
-	public static final String PAYLOAD = "_PAYLOAD";
-
-	public static final String HEADER = "_HEADER";
-
 	private static class RequestImpl extends RRContext implements RequestI {
-
-		/* */
-		@Override
-		public void setPath(String path) {
-			this.setHeader(RequestI.PATH, path);
-		}
-
-		/* */
-		@Override
-		public String getPath() {
-
-			return this.getHeader(RequestI.PATH);
-
-		}
 
 	}
 
 	private static class ResponseImpl extends RRContext implements ResponseI {
-		
 
-		public ResponseImpl() {
+		private RequestI request;
+
+		public ResponseImpl(RequestI req) {
+			this.request = req;
 			ErrorInfos eis = new ErrorInfos();
 			this.setPayload(ERROR_INFO_S, eis);
 		}
@@ -65,14 +50,32 @@ public class RRContext extends MessageSupport {
 			}
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.fs.engine.api.ResponseI#getRequest()
+		 */
+		@Override
+		public RequestI getRequest() {
+			// TODO Auto-generated method stub
+			return this.request;
+		}
+
+	}
+
+	public static RequestI newRequest(String path) {
+		RequestI rt = newRequest();
+
+		rt.setHeader(MessageI.HK_PATH, path);
+		return rt;
 	}
 
 	public static RequestI newRequest() {
 		return new RequestImpl();
 	}
 
-	public static ResponseI newResponse() {
-		return new ResponseImpl();
+	public static ResponseI newResponse(RequestI req) {
+		return new ResponseImpl(req);
 	}
 
 	public RRContext() {
