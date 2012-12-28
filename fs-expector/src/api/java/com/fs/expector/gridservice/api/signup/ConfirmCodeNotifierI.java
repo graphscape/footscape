@@ -4,6 +4,7 @@
 package com.fs.expector.gridservice.api.signup;
 
 import com.fs.engine.api.HandleContextI;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wuzhen
@@ -11,6 +12,6 @@ import com.fs.engine.api.HandleContextI;
  */
 public interface ConfirmCodeNotifierI {
 
-	public void notify(HandleContextI hc, String email, String confirmCode);
+	public void notify(TerminalMsgReceiveEW req,HandleContextI hc, String email, String confirmCode);
 
 }

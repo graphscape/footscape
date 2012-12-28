@@ -49,18 +49,16 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("isAgree", Boolean.TRUE);//
 		req.setPayload("confirmCodeNotifier", "test");//
 		this.sendMessage(req);
-		String rt = this
-				.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
+		String rt = this.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
 
-					@Override
-					public String execute(MessageI i) {
-						TestHelperI th = MockExpectorClientImpl.this.container
-								.find(TestHelperI.class);
-						String rt = th.getConfirmCode(email, true);
+			@Override
+			public String execute(MessageI i) {
+				TestHelperI th = MockExpectorClientImpl.this.container.find(TestHelperI.class);
+				String rt = th.getConfirmCode(email, true);
 
-						return rt;
-					}
-				});
+				return rt;
+			}
+		});
 
 		return rt;
 	}
@@ -71,38 +69,34 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("email", email);
 		req.setPayload("confirmCode", ccode);
 		this.sendMessage(req);
-		String rt = this
-				.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
+		String rt = this.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
 
-					@Override
-					public String execute(MessageI i) {
-						String rt = i.getString("accountId", true);
+			@Override
+			public String execute(MessageI i) {
+				//String rt = i.getString("accountId", true);
 
-						return rt;
-					}
-				});
+				return null;
+			}
+		});
 		return rt;
 	}
 
-	public <T> T receiveAndProcessMessageAndGetResult(
-			final CallbackI<MessageI, T> cb) {
+	public <T> T receiveAndProcessMessageAndGetResult(final CallbackI<MessageI, T> cb) {
 		Future<T> rtF = this.receiveAndProcessMessage(cb);
 
 		try {
 			return rtF.get();
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (Exception e) {
 			throw new FsException(e);
 		}
 	}
 
-	public <T> Future<T> receiveAndProcessMessage(
-			final CallbackI<MessageI, T> cb) {
+	public <T> Future<T> receiveAndProcessMessage(final CallbackI<MessageI, T> cb) {
 		FutureTask<T> rt = new FutureTask<T>(new Callable<T>() {
 
 			@Override
 			public T call() throws Exception {
-				MessageI msg = MockExpectorClientImpl.this
-						.receiveAndGetMessage();
+				MessageI msg = MockExpectorClientImpl.this.receiveAndGetMessage();
 
 				return cb.execute(msg);
 			}
@@ -126,6 +120,8 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 	protected MessageI newRequest(String path) {
 		MessageI rt = new MessageSupport();
 		rt.setHeader(MessageI.HK_PATH, path);
+		String tid = this.getTerminalId();//
+		rt.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + tid);
 		return rt;
 	}
 

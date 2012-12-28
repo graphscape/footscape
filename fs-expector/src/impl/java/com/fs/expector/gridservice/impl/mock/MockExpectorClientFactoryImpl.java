@@ -25,10 +25,9 @@ public class MockExpectorClientFactoryImpl extends MockExpectorClientFactory {
 	@Override
 	public MockExpectorClientFactory start(ContainerI c) {
 		MockClientFactory f = MockClientFactory.getInstance(c);
-		MockExpectorClientFactoryImpl rt = new MockExpectorClientFactoryImpl();
-		rt.factory = f;
-		rt.container = c;
-		return rt;
+		this.factory = f;
+		this.container = c;
+		return this;
 
 	}
 

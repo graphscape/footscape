@@ -8,13 +8,13 @@ import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.value.ErrorInfo;
 import com.fs.engine.api.HandleContextI;
 import com.fs.expector.gridservice.api.signup.ConfirmCodeNotifierI;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wuzhen
  * 
  */
-public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements
-		ConfirmCodeNotifierI {
+public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements ConfirmCodeNotifierI {
 
 	@Override
 	public void configure(Configuration cfg) {
@@ -23,13 +23,11 @@ public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements
 	}
 
 	@Override
-	public void notify(HandleContextI hc, String email, String confirmCode) {
+	public void notify(TerminalMsgReceiveEW req, HandleContextI hc, String email, String confirmCode) {
 
-		String ccnN = (String) hc.getRequest()
-				.getPayload("confirmCodeNotifier");
-		ConfirmCodeNotifierI ccn = this.container
-				.finder(ConfirmCodeNotifierI.class).name(ccnN).find(false);
-		
+		String ccnN = (String) req.getMessage().getPayload("confirmCodeNotifier");
+		ConfirmCodeNotifierI ccn = this.container.finder(ConfirmCodeNotifierI.class).name(ccnN).find(false);
+
 		if (ccn == null) {
 			hc.getResponse()
 					.getErrorInfos()
@@ -37,7 +35,7 @@ public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements
 							"no this confirm code notifier:" + ccnN));
 			return;
 		}
-		ccn.notify(hc, email, confirmCode);
+		ccn.notify(req, hc, email, confirmCode);
 
 	}
 

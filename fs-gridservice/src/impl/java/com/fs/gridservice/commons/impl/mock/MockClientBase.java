@@ -45,10 +45,8 @@ import com.fs.gridservice.commons.api.mock.MockClient;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public abstract class MockClientBase extends MockClient implements
-		WebSocketListener {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(MockClientBase.class);
+public abstract class MockClientBase extends MockClient implements WebSocketListener {
+	private static final Logger LOG = LoggerFactory.getLogger(MockClientBase.class);
 
 	protected URI uri;
 
@@ -73,8 +71,7 @@ public abstract class MockClientBase extends MockClient implements
 	public MockClientBase(WebSocketClientFactory f, ContainerI c, URI uri) {
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
-		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
-				MessageI.class);
+		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		this.client = f.newWebSocketClient(this);
 
 	}
@@ -83,14 +80,12 @@ public abstract class MockClientBase extends MockClient implements
 	public MockClient auth(String accId) {
 		try {
 			this.connect().get();
-			this.ready(1000, TimeUnit.SECONDS).get();
+			this.ready(10 * 1000).get();
 			//
 			this.binding(accId);
 
-		} catch (InterruptedException | ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+		} catch (Exception e) {
+			throw FsException.toRtE(e);
 		}
 
 		return this;
@@ -102,8 +97,7 @@ public abstract class MockClientBase extends MockClient implements
 			throw new FsException("not connected");
 		}
 
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
-				.getSession().getRemote();
+		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
@@ -165,34 +159,31 @@ public abstract class MockClientBase extends MockClient implements
 		LOG.error("", error);
 	}
 
-	/**
-	 * @return
-	 */
-	public Future<MockClientBase> connect() {
-		FutureTask<MockClientBase> rt = new FutureTask<MockClientBase>(
-				new Callable<MockClientBase>() {
+	@Override
+	public Future<MockClient> connect() {
+		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
 
-					@Override
-					public MockClientBase call() throws Exception {
-						MockClientBase.this.syncConnect();
-						return MockClientBase.this;
-					}
-				});
+			@Override
+			public MockClient call() throws Exception {
+				MockClientBase.this.syncConnect();
+				return MockClientBase.this;
+			}
+		});
 		rt.run();
 		return rt;
 
 	}
 
-	public Future<MockClientBase> ready(final long time, final TimeUnit tu) {
-		FutureTask<MockClientBase> rt = new FutureTask<MockClientBase>(
-				new Callable<MockClientBase>() {
+	@Override
+	public Future<MockClient> ready(final long time) {
+		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
 
-					@Override
-					public MockClientBase call() throws Exception {
-						MockClientBase.this.syncReady(time, tu);
-						return MockClientBase.this;
-					}
-				});
+			@Override
+			public MockClient call() throws Exception {
+				MockClientBase.this.syncReady(time, TimeUnit.MILLISECONDS);
+				return MockClientBase.this;
+			}
+		});
 		rt.run();
 		return rt;
 
@@ -208,8 +199,7 @@ public abstract class MockClientBase extends MockClient implements
 		String path = msg.getPath();
 
 		if (!path.equals(WebSocketGoI.P_READY)) {
-			throw new FsException("first message must by"
-					+ WebSocketGoI.P_READY + ", but got:" + path);
+			throw new FsException("first message must by" + WebSocketGoI.P_READY + ", but got:" + path);
 		}
 		this.terminalId = msg.getString("terminalId", true);
 		this.clientId = msg.getString("clientId", true);
@@ -249,15 +239,14 @@ public abstract class MockClientBase extends MockClient implements
 
 	@Override
 	public Future<MessageI> receiveMessage() {
-		FutureTask<MessageI> rt = new FutureTask<MessageI>(
-				new Callable<MessageI>() {
+		FutureTask<MessageI> rt = new FutureTask<MessageI>(new Callable<MessageI>() {
 
-					@Override
-					public MessageI call() throws Exception {
-						return MockClientBase.this.messageReceived.take();
+			@Override
+			public MessageI call() throws Exception {
+				return MockClientBase.this.messageReceived.take();
 
-					}
-				});
+			}
+		});
 		rt.run();
 		return rt;
 	}
@@ -277,10 +266,11 @@ public abstract class MockClientBase extends MockClient implements
 
 		try {
 			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException | ExecutionException e) {
-			throw new FsException(e);
 		} catch (TimeoutException e) {
 			throw new FsException("timeout for auth :" + accountId);
+		} catch (Exception e) {
+			throw FsException.toRtE(e);
+
 		}
 		String path = res.getPath();
 		if (path.endsWith("terminal/auth/success")) {
@@ -289,8 +279,7 @@ public abstract class MockClientBase extends MockClient implements
 			this.accountId = accId;//
 			return;
 		} else {
-			throw new FsException("failed binding accId:" + accId + ",path:"
-					+ path);
+			throw new FsException("failed binding accId:" + accId + ",path:" + path);
 		}
 	}
 

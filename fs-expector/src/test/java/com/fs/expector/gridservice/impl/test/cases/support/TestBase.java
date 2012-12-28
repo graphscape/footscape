@@ -15,7 +15,7 @@ import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.engine.api.EngineFactoryI;
 import com.fs.engine.api.ServiceEngineI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
-import com.fs.expector.gridservice.impl.ExpectorGridServiceSPI;
+import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
  * @author wu
@@ -30,30 +30,26 @@ public class TestBase extends TestCase {
 	protected ServiceEngineI engine;
 
 	protected MockExpectorClientFactory cfactory;
-	
+
 	@Before
 	public void setUp() {
 		this.sm = SPIManagerI.FACTORY.get();
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
 		this.dataService = this.container.find(DataServiceI.class, true);
-		this.engine = this.container.find(EngineFactoryI.class, true)
-				.getEngine(ExpectorGridServiceSPI.ENAME_UISERVER);
+
 		this.cfactory = MockExpectorClientFactory.getInstance(this.container);//
 		this.cleanDb();
 	}
 
 	protected void cleanDb() {
-		DeleteAllOperationI dao = this.dataService
-				.prepareOperation(DeleteAllOperationI.class);
+		DeleteAllOperationI dao = this.dataService.prepareOperation(DeleteAllOperationI.class);
 		dao.execute().getResult().assertNoError();
 
 	}
-	
 
 	protected void dumpDb() {
-		DumpOperationI op = this.dataService
-				.prepareOperation(DumpOperationI.class);
+		DumpOperationI op = this.dataService.prepareOperation(DumpOperationI.class);
 		op.execute().getResult().assertNoError();
 	}
 

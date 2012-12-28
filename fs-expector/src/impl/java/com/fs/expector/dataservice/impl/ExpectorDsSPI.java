@@ -38,12 +38,12 @@ import com.fs.expector.dataservice.impl.elastic.UserSnapshotOperationE;
  * @author wu
  * 
  */
-public class ExpectorDataServiceSPI extends SPISupport {
+public class ExpectorDsSPI extends SPISupport {
 
 	/**
 	 * @param id
 	 */
-	public ExpectorDataServiceSPI(String id) {
+	public ExpectorDsSPI(String id) {
 		super(id);
 	}
 

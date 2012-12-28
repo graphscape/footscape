@@ -12,7 +12,7 @@ import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
-import com.fs.expector.gridservice.impl.ExpectorGridServiceSPI;
+import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
  * @author wuzhen
@@ -57,7 +57,7 @@ public class I18nHandler extends ExpectorTMREHSupport {
 	protected PropertiesI<String> loadResource(String locale) {
 		PropertiesI<String> rt = new MapProperties<String>();
 
-		String id = ExpectorGridServiceSPI.class.getName();
+		String id = ExpectorGsSPI.class.getName();
 		id += ".I18n";
 		if (locale != null) {// default configuration.
 			id += "." + locale;

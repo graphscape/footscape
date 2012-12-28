@@ -14,6 +14,10 @@ import com.fs.commons.api.message.MessageI;
  */
 public abstract class MockClient {
 
+	public abstract Future<MockClient> connect() ;
+	
+	public abstract Future<MockClient> ready(long milis) ;
+	
 	public abstract Future<Object> startEventDrive();
 
 	public abstract void addListener(String path, ListenerI<MessageI> ml);

@@ -7,18 +7,18 @@ import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.engine.api.HandleContextI;
 import com.fs.expector.gridservice.api.TestHelperI;
 import com.fs.expector.gridservice.api.signup.ConfirmCodeNotifierI;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wuzhen
  * 
  */
-public class TestConfirmCodeNotifier extends ConfigurableSupport implements
-		ConfirmCodeNotifierI {
+public class TestConfirmCodeNotifier extends ConfigurableSupport implements ConfirmCodeNotifierI {
 
 	@Override
-	public void notify(HandleContextI hc, String email, String confirmCode) {
-		System.out.println(TestConfirmCodeNotifier.class.getName()
-				+ ".notify,email:" + email + ",confirmCode:" + confirmCode);
+	public void notify(TerminalMsgReceiveEW mr, HandleContextI hc, String email, String confirmCode) {
+		System.out.println(TestConfirmCodeNotifier.class.getName() + ".notify,email:" + email
+				+ ",confirmCode:" + confirmCode);
 		TestHelperI th = this.container.find(TestHelperI.class);
 		th.sendConfirmCode(email, confirmCode);
 

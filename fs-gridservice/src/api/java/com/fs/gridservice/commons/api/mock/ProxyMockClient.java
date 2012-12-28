@@ -53,4 +53,23 @@ public class ProxyMockClient extends MockClient {
 		return this.target.getAccountId();
 	}
 
+	/*
+	 * Dec 28, 2012
+	 */
+	@Override
+	public Future<MockClient> connect() {
+		//
+		return this.target.connect();
+	}
+
+	/*
+	 * Dec 28, 2012
+	 */
+	@Override
+	public Future<MockClient> ready(long timeout) {
+		//
+		return this.target.ready(timeout);
+
+	}
+
 }

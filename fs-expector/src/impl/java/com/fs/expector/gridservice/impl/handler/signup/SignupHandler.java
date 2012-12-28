@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
@@ -26,6 +27,7 @@ import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.SignupRequest;
 import com.fs.expector.gridservice.api.signup.ConfirmCodeNotifierI;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -46,23 +48,23 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
+		String prefix = "payloads.property['_default'].payloads.property['_message'].payloads.property";
 		{
 			ValidatorI<RequestI> vl = this.createValidator("submit");
-			vl.addExpression("payloads.property['email']!=null");
-			vl.addExpression("payloads.property['password']!=null");
-			vl.addExpression("payloads.property['nick']!=null");
-			vl.addExpression("payloads.property['isAgree']");
+			vl.addExpression(prefix + "['email']!=null");
+			vl.addExpression(prefix + "['password']!=null");
+			vl.addExpression(prefix + "['nick']!=null");
+			vl.addExpression(prefix + "['isAgree']");
 			// passcode in session .
-			//vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
+			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
 		{
 			ValidatorI<RequestI> vl = this.createValidator("confirm");
-			vl.addExpression("payloads.property['email']!=null");
-			vl.addExpression("payloads.property['confirmCode']!=null");
+			vl.addExpression(prefix + "['email']!=null");
+			vl.addExpression(prefix + "['confirmCode']!=null");
 		}
 
-		this.confirmCodeNotifier = this.container
-				.finder(ConfirmCodeNotifierI.class).name("main").find(true);
+		this.confirmCodeNotifier = this.container.finder(ConfirmCodeNotifierI.class).name("main").find(true);
 
 	}
 
@@ -94,9 +96,9 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	 * @param vr
 	 */
 	@Handle("submit")
-	public void handleSubmit(RequestI req, ResponseI res, HandleContextI hc,
+	public void handleSubmit(TerminalMsgReceiveEW mw, ResponseI res, HandleContextI hc,
 			ValidatorI<RequestI> vl, ValidateResult<RequestI> vr) {
-
+		MessageI req = mw.getMessage();
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
 			return;
@@ -119,7 +121,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		pts.setNick(nick);
 		pts.setConfirmCode(confirmCode);//
 		pts.save(true);
-		this.confirmCodeNotifier.notify(hc, email, confirmCode);
+		this.confirmCodeNotifier.notify(mw, hc, email, confirmCode);
 
 	}
 
@@ -132,24 +134,22 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	 * @param res
 	 */
 	@Handle("confirm")
-	public void handleConfirm(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleConfirm(TerminalMsgReceiveEW mw, HandleContextI hc, ResponseI res) {
+		MessageI req = mw.getMessage();//
 		String email = (String) req.getPayload("email");
 		email = email.toLowerCase();
 		String confirmCode = (String) req.getPayload("confirmCode");
-		NodeQueryOperationI<SignupRequest> qo = this.dataService
-				.prepareNodeQuery(NodeTypes.SIGNUP_REQUEST);
+		NodeQueryOperationI<SignupRequest> qo = this.dataService.prepareNodeQuery(NodeTypes.SIGNUP_REQUEST);
 
 		qo.propertyEq(SignupRequest.PK_CONFIRM_CODE, confirmCode);
 		qo.propertyEq(SignupRequest.PK_EMAIL, email);// query by email and the
 		// confirm code.
 
-		NodeQueryResultI<SignupRequest> rst = qo.execute().getResult()
-				.assertNoError().cast();
+		NodeQueryResultI<SignupRequest> rst = qo.execute().getResult().assertNoError().cast();
 		List<SignupRequest> srl = rst.list();
 		if (srl.isEmpty()) {
-			res.getErrorInfos()
-					.add(new ErrorInfo(null,
-							"confirmCode or username error,or already confirmed."));// TODO
+			res.getErrorInfos().add(
+					new ErrorInfo(null, "confirmCode or username error,or already confirmed."));// TODO
 			return;
 		}
 		SignupRequest sp = srl.get(0);//

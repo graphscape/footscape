@@ -5,28 +5,25 @@
 package com.fs.expector.gridservice.impl;
 
 import com.fs.commons.api.ActiveContext;
-import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.engine.api.EngineFactoryI;
-import com.fs.engine.api.ServiceEngineI;
+import com.fs.gridservice.commons.api.EventDispatcherI;
+import com.fs.gridservice.commons.api.GlobalEventDispatcherI;
 
 /**
  * @author wu
  * 
  */
-public class ExpectorGridServiceSPI extends SPISupport {
+public class ExpectorGsSPI extends SPISupport {
 
 	/**
 	 * @param id
 	 */
-	public ExpectorGridServiceSPI(String id) {
+	public ExpectorGsSPI(String id) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
-
-	public static final String ENAME_UISERVER = "uiserver";
 
 	/* */
 	@Override
@@ -39,22 +36,14 @@ public class ExpectorGridServiceSPI extends SPISupport {
 	}
 
 	protected void activeHandlers(ActiveContext ac) {
-		ConverterI.FactoryI cf = ac.getContainer().find(ConverterI.FactoryI.class, true);
-		// addConverter.
-		// filter provide the connection intercept.
-		ServiceEngineI se = ac.getContainer().find(EngineFactoryI.class).getEngine(ENAME_UISERVER);
-		PopulatorI fp = se.populator("filter");
-		fp.spi(this).active(ac).force(false).populate();
+		EventDispatcherI ged = ac.getContainer().find(GlobalEventDispatcherI.class, true);
 
-		// TODO remove if no handler?
-		PopulatorI hp = se.getDispatcher().populator("handler");
-		hp.active(ac).force(true).populate();
-		// add node type
+		PopulatorI hp = ged.getEngine().getDispatcher().populator("handler");
+
+		hp.active(ac).cfgId(this.id + ".globalEventDispatcher").force(true).populate();
 	}
 
 	protected void activeConfirmCodeNotifier(ActiveContext ac) {
-
-		// TODO move to ActiveContext or Container?
 
 		ConfigFactoryI cf = ac.getContainer().find(ConfigFactoryI.class, true);
 

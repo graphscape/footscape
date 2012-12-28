@@ -37,11 +37,9 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends ServerSupport implements
-		EventDispatcherI {
+public abstract class EventDispatcherSupport extends ServerSupport implements EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory
-			.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
 
 	protected ServiceEngineI engine;
 
@@ -65,8 +63,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 		this.facade = this.container.find(GridFacadeI.class, true);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(EngineFactoryI.class, true)
-				.getEngine(engineName);//
+		this.engine = this.container.find(EngineFactoryI.class, true).getEngine(engineName);//
 
 		// handlers
 
@@ -84,6 +81,15 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 					}
 				});
 
+	}
+
+	/*
+	 * Dec 28, 2012
+	 */
+	@Override
+	public ServiceEngineI getEngine() {
+		//
+		return this.engine;
 	}
 
 	/**
@@ -166,8 +172,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 			this.onException(t);
 
 			if (this.isState(ServerI.RUNNING)) {
-				LOG.warn("shutdown event dispatcher:"
-						+ this.getConfiguration().getName()
+				LOG.warn("shutdown event dispatcher:" + this.getConfiguration().getName()
 						+ " for the task abnormally return");
 			}
 			this.shutdown();
@@ -219,23 +224,21 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 	}
 
 	protected void onException(Throwable t) {
-		LOG.error("exeception got,eventQueue:"
-				+ this.getConfiguration().getName(), t);
+		LOG.error("exeception got,eventQueue:" + this.getConfiguration().getName(), t);
 	}
 
 	protected void onException(EventGd evt, Throwable t) {
-		LOG.error("exception got,eventQueue:"
-				+ this.getConfiguration().getName() + ", event:" + evt, t);
+		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
 	}
 
 	public void handleEvent(EventGd evt) {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName()
-					+ " is processing event#" + this.eventCounter + "," + evt);
+			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
+					+ "," + evt);
 		}
 		String path = evt.getPath();
-		
+
 		if (path.startsWith("/")) {
 			path = "/events" + path;
 		} else {
@@ -264,13 +267,11 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 			LOG.warn("no response address for request:" + req);
 		} else {
 			if (!ra.startsWith("tid://")) {
-				throw new FsException("address not supported:" + ra
-						+ ", only 'tid://' is supported for now");
+				throw new FsException("address not supported:" + ra + ", only 'tid://' is supported for now");
 			}
 			String tid = ra.substring("tid://".length());
 
-			TerminalManagerI tm = this.facade
-					.getEntityManager(TerminalManagerI.class);
+			TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
 
 			tm.sendMessage(tid, res);
 

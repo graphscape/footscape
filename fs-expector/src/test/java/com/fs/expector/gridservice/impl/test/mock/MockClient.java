@@ -18,7 +18,7 @@ import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.support.RRContext;
 import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.TestHelperI;
-import com.fs.expector.gridservice.impl.ExpectorGridServiceSPI;
+import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
  * @author wu
@@ -44,8 +44,7 @@ public class MockClient {
 
 	public MockClient(ContainerI c) {
 		this.container = c;
-		this.engine = c.find(EngineFactoryI.class, true).getEngine(
-				ExpectorGridServiceSPI.ENAME_UISERVER);
+		this.engine = null;//
 
 		this.dataService = c.find(DataServiceI.class, true);
 	}

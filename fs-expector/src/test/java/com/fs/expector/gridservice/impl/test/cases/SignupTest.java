@@ -14,7 +14,11 @@ public class SignupTest extends TestBase {
 
 	public void testSignup() throws Exception {
 		MockExpectorClient client = this.cfactory.newClient();
-		String accId = client.signup("user1@domain.com", "user1");
+		client.connect().get();
+		client.ready(100000).get();
+		String nick = "user1";
+		String email = nick + "@domain.com";
+		client.signup(email, nick);
 
 	}
 }

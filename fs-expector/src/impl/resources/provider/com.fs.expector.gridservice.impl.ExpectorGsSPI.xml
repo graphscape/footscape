@@ -1,0 +1,98 @@
+<config>
+
+	<!-- AuthProviderI for grid service -->
+	<config name="authProvider" class="com.fs.expector.gridservice.impl.AuthProviderImpl" />
+
+	<!-- When signup,how to notify the confirm code -->
+	<prefix name="confirmCodeNotifier">
+		<email.class value="com.fs.expector.gridservice.impl.signup.EmailConfirmCodeNotifier" />
+		<config name="email">
+			<property name="mailfrom" value="$email.admin" />
+		</config>
+
+		<!-- Set directly to response,should disable in production env. -->
+		<resp.class value="com.fs.expector.gridservice.impl.signup.ResponseConfirmCodeNotifier" />
+
+		<!-- Main notifier is the entry point for dispatching confirm code -->
+		<main.class value="com.fs.expector.gridservice.impl.signup.CompositeConfirmCodeNotifier" />
+		<config name="main">
+		</config>
+
+	</prefix>
+	<config name="globalEventDispatcher">
+		<prefix name="handler">
+
+			<activities.class value="com.fs.expector.gridservice.impl.handler.activities.ActivitiesHandler" />
+			<config name="activities">
+				<pattern value="/events/activities/.*" />
+			</config>
+
+			<activity.class value="com.fs.expector.gridservice.impl.handler.activity.ActivityHandler" />
+			<config name="activity">
+				<pattern value="/events/activity/.*" />
+			</config>
+
+			<signup.class value="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
+			<config name="signup">
+				<pattern value="/events/signup/.*" />
+			</config>
+
+			<client.class value="com.fs.expector.gridservice.impl.handler.client.ClientHandler" />
+			<config name="client">
+				<pattern value="/events/client/.*" />
+				<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
+			</config>
+
+			<i18n.class value="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
+			<config name="i18n">
+				<pattern value="/events/i18n/.*" />
+			</config>
+
+
+			<login.class value="com.fs.expector.gridservice.impl.handler.login.LoginHandler" />
+			<config name="login">
+				<pattern value="/events/login/.*" />
+			</config>
+
+			<expe.class value="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />
+			<config name="expe">
+				<pattern value="/events/expe/.*" />
+			</config>
+
+			<exps.class value="com.fs.expector.gridservice.impl.handler.exps.ExpSearchHandler" />
+			<config name="exps">
+				<pattern value="/events/exps/.*" />
+				<!-- If account has no icon,use this one -->
+				<defaultIconDataUrl
+					value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==" />
+			</config>
+
+
+			<cooper.class value="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
+			<config name="cooper">
+				<pattern value="/events/cooper/.*" />
+			</config>
+
+			<profile.class value="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
+			<config name="profile">
+				<pattern value="/events/profile/.*" />
+			</config>
+
+			<uexp.class value="com.fs.expector.gridservice.impl.handler.uexp.UserExpHandler" />
+			<config name="uexp">
+				<pattern value="/events/uexp/.*" />
+			</config>
+
+			<uelist.class value="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />
+			<config name="uelist">
+				<pattern value="/events/uelist/.*" />
+			</config>
+
+			<usshot.class value="com.fs.expector.gridservice.impl.handler.usshot.UserSnapshotHandler" />
+			<config name="usshot">
+				<pattern value="/events/usshot/.*" />
+			</config>
+
+		</prefix>
+	</config>
+</config>

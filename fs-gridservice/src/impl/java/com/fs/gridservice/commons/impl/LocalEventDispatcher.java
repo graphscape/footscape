@@ -7,7 +7,7 @@ package com.fs.gridservice.commons.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.gridservice.commons.api.EventDispatcherI;
+import com.fs.gridservice.commons.api.MemberEventDispatcherI;
 import com.fs.gridservice.commons.api.data.EventGd;
 import com.fs.gridservice.commons.api.support.EventDispatcherSupport;
 import com.fs.gridservice.core.api.objects.DgQueueI;
@@ -16,7 +16,7 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wu
  * 
  */
-public class LocalEventDispatcher extends EventDispatcherSupport implements EventDispatcherI {
+public class LocalEventDispatcher extends EventDispatcherSupport implements MemberEventDispatcherI {
 
 	protected static final Logger LOG = LoggerFactory.getLogger(LocalEventDispatcher.class);
 
