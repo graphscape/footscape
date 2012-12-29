@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -34,6 +33,7 @@ import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.mock.MockClient;
 
@@ -77,15 +77,34 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 	}
 
 	@Override
-	public MockClient auth(String accId) {
-		try {
-			this.connect().get();
-			this.ready(10 * 1000).get();
-			//
-			this.binding(accId);
+	public MockClient auth(PropertiesI<Object> cre) {
+		if (this.clientId == null) {
+			throw new FsException("not ready yet");
+		}
 
+		MessageI msg = new MessageSupport() {
+		};
+		msg.setHeader(MessageI.HK_PATH, "/terminal/auth");
+		msg.setPayloads(cre);//
+		this.sendMessage(msg);
+		MessageI res = null;
+
+		try {
+			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
+		} catch (TimeoutException e) {
+			throw new FsException("timeout for auth :" + accountId);
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
+
+		}
+		String path = res.getPath();
+		if (path.endsWith("terminal/auth/success")) {
+			String sid = (String) res.getPayload("sessionId", true);
+			String accId = res.getString("accountId", true);
+			this.sessionId = sid;
+			this.accountId = accId;//
+		} else {
+			throw new FsException("failed binding credentical:" + cre + ",path:" + path);
 		}
 
 		return this;
@@ -161,11 +180,13 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 
 	@Override
 	public Future<MockClient> connect() {
+		this.connected = new Semaphore(0);
+
 		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
 
 			@Override
 			public MockClient call() throws Exception {
-				MockClientBase.this.syncConnect();
+				MockClientBase.this.connectSync();
 				return MockClientBase.this;
 			}
 		});
@@ -174,24 +195,12 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 
 	}
 
-	@Override
-	public Future<MockClient> ready(final long time) {
-		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
+	public void connectSync() throws Exception {
 
-			@Override
-			public MockClient call() throws Exception {
-				MockClientBase.this.syncReady(time, TimeUnit.MILLISECONDS);
-				return MockClientBase.this;
-			}
-		});
-		rt.run();
-		return rt;
+		FutureCallback<UpgradeResponse> fc = MockClientBase.this.client.connect(MockClientBase.this.uri);
+		MockClientBase.this.connected.acquireUninterruptibly();
 
-	}
-
-	public void syncReady(final long time, final TimeUnit tu) throws Exception {
-
-		MessageI msg = this.messageReceived.poll(time, tu);
+		MessageI msg = this.messageReceived.poll(10, TimeUnit.SECONDS);//
 		if (msg == null) {
 			throw new FsException("timeout for waiting server ready.");
 		}
@@ -203,17 +212,6 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 		}
 		this.terminalId = msg.getString("terminalId", true);
 		this.clientId = msg.getString("clientId", true);
-	}
-
-	public void syncConnect() {
-		try {
-			this.connected = new Semaphore(0);
-			FutureCallback<UpgradeResponse> fc = this.client.connect(this.uri);
-			this.connected.acquireUninterruptibly();
-
-		} catch (IOException e) {
-			throw FsException.toRtE(e);//
-		}
 	}
 
 	@Override
@@ -249,38 +247,6 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 		});
 		rt.run();
 		return rt;
-	}
-
-	public void binding(String accId) {
-		if (this.clientId == null) {
-			throw new FsException("not ready yet");
-		}
-
-		MessageI msg = new MessageSupport() {
-		};
-		msg.setHeader(MessageI.HK_PATH, "/terminal/auth");
-		msg.setPayload("accountId", accId);
-		msg.setPayload("password", "TODO");
-		this.sendMessage(msg);
-		MessageI res = null;
-
-		try {
-			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
-		} catch (TimeoutException e) {
-			throw new FsException("timeout for auth :" + accountId);
-		} catch (Exception e) {
-			throw FsException.toRtE(e);
-
-		}
-		String path = res.getPath();
-		if (path.endsWith("terminal/auth/success")) {
-			String sid = (String) res.getPayload("sessionId", true);
-			this.sessionId = sid;
-			this.accountId = accId;//
-			return;
-		} else {
-			throw new FsException("failed binding accId:" + accId + ",path:" + path);
-		}
 	}
 
 	/**

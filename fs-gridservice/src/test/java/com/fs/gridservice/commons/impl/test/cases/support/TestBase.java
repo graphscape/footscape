@@ -8,8 +8,11 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
+import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.mock.MockClient;
 import com.fs.gridservice.commons.api.mock.MockClientFactory;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
@@ -54,8 +57,12 @@ public class TestBase extends TestCase {
 	}
 
 	protected MockClient newClientAndAuth(String accId) throws Exception {
-
-		return this.factory.newClient().auth(accId);
+		PropertiesI<Object> cre = new MapProperties<Object>();
+		cre.setProperty(SessionGd.ACCID, accId);//
+		MockClient rt = this.factory.newClient();
+		rt.connect().get();
+		rt.auth(cre);
+		return rt;
 
 	}
 
@@ -64,8 +71,7 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockClient newEventDriveClient(String accId, boolean start)
-			throws Exception {
+	protected MockClient newEventDriveClient(String accId, boolean start) throws Exception {
 		MockClient mc = this.newClientAndAuth(accId);
 
 		if (start) {

@@ -28,11 +28,11 @@ public class SessionGd extends EntityGd {
 	}
 
 	public String getClientId() {
-		return this.getString(CLIENTID);
+		return this.getString(CLIENTID, true);
 	}
 
 	public String getAccountId() {
-		return (String) this.getProperty(ACCID);
+		return (String) this.getProperty(ACCID, true);
 	}
 
 }

@@ -48,7 +48,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
-		String prefix = "payloads.property['_default'].payloads.property['_message'].payloads.property";
+
 		{
 			ValidatorI<RequestI> vl = this.createValidator("submit");
 			vl.addExpression(prefix + "['email']!=null");
@@ -172,4 +172,20 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		xai.save(true);//
 	}
 
+	@Handle("anonymous")
+	// create anonymous account.
+	public void handleAnonymous(HandleContextI hc, RequestI req, ResponseI res) {
+		String id = UUID.randomUUID().toString();
+		Account an = new Account().forCreate(this.dataService);
+
+		an.setId(id);//
+		an.setIsAnonymous(true);
+		an.setPassword(id);//
+		an.setNick(id);
+		an.save(true);
+
+		res.setPayload("accountId", an.getId());
+		res.setPayload("password", an.getPassword());
+
+	}
 }

@@ -19,6 +19,6 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 		super(mc);
 	}
 
-	public abstract String signup(String email, String nick);
-	
+	public abstract String signup(String email, String nick, String pass);
+
 }

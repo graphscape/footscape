@@ -34,18 +34,18 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 	}
 
 	@Override
-	public String signup(final String email, String nick) {
-		String ccode = this.signupRequest(email, nick);
+	public String signup(final String email, String nick, String pass) {
+		String ccode = this.signupRequest(email, nick, pass);
 		String rt = this.signupConfirm(email, ccode);
 		return rt;
 	}
 
-	protected String signupRequest(final String email, String nick) {
+	protected String signupRequest(final String email, String nick, String pass) {
 
 		MessageI req = newRequest("/signup/submit");
 		req.setPayload("email", email);
 		req.setPayload("nick", nick);
-		req.setPayload("password", nick);//
+		req.setPayload("password", pass);//
 		req.setPayload("isAgree", Boolean.TRUE);//
 		req.setPayload("confirmCodeNotifier", "test");//
 		this.sendMessage(req);
@@ -73,7 +73,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 
 			@Override
 			public String execute(MessageI i) {
-				//String rt = i.getString("accountId", true);
+				// String rt = i.getString("accountId", true);
 
 				return null;
 			}

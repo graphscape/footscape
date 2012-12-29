@@ -46,6 +46,9 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	protected TerminalManagerI terminalManager;
 
 	protected SessionManagerI sessionManager;
+	
+	protected String prefix = "payloads.property['_default'].payloads.property['_message'].payloads.property";
+	
 
 	/* */
 	@Override

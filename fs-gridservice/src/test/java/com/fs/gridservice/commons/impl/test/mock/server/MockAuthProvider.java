@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.commons.impl.test.mock.server;
 
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
 
 /**
@@ -12,15 +13,13 @@ import com.fs.gridservice.commons.api.session.AuthProviderI;
 public class MockAuthProvider implements AuthProviderI {
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.gridservice.commons.api.session.AuthProviderI#auth(java.lang.String
-	 * , java.lang.String)
+	 * Dec 29, 2012
 	 */
 	@Override
-	public boolean auth(String accId, String pass) {
-		return true;
+	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
+		//
+		
+		return credential;
 	}
 
 }

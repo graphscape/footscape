@@ -12,6 +12,7 @@ import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
+import com.fs.gridservice.commons.api.wrapper.internal.InternalMsgEW;
 
 /**
  * @author wu
@@ -35,11 +36,10 @@ public class TerminalEventHandlerSupport extends ValidatorHandlerSupport {
 		super.active(ac);
 		this.facade = this.container.find(GridFacadeI.class, true);
 		this.sessionManager = this.container.find(SessionManagerI.class, true);
-		this.terminalManager = this.facade
-				.getEntityManager(TerminalManagerI.class);
+		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
 	}
-	
+
 	protected void sendTextMessage(String termId, String path, String text) {
 		MessageI msg = new MessageSupport();
 		msg.setHeader(MessageI.HK_PATH, path);
@@ -54,6 +54,13 @@ public class TerminalEventHandlerSupport extends ValidatorHandlerSupport {
 
 	protected void sendMessage(String termId, MessageI msg) {
 		this.terminalManager.sendMessage(termId, msg);
+	}
+
+	/**
+	 * Dec 29, 2012
+	 */
+	protected void raiseEvent(InternalMsgEW sb) {
+		this.facade.getGlogalEventQueue().offer(sb.getTarget());//
 	}
 
 }

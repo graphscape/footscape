@@ -48,10 +48,9 @@
 				<pattern value="/events/i18n/.*" />
 			</config>
 
-
-			<login.class value="com.fs.expector.gridservice.impl.handler.login.LoginHandler" />
-			<config name="login">
-				<pattern value="/events/login/.*" />
+			<imsg.class value="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />
+			<config name="imsg">
+				<pattern value="/events/internal/.*" />
 			</config>
 
 			<expe.class value="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />

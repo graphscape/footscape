@@ -22,4 +22,8 @@ public abstract class EventWrapper {
 		return target;
 	}
 
+	public void setPayload(String key, Object value) {
+		this.target.setPayload(key, value);
+	}
+
 }

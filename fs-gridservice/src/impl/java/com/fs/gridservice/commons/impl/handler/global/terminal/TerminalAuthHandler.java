@@ -6,6 +6,7 @@ package com.fs.gridservice.commons.impl.handler.global.terminal;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -14,6 +15,7 @@ import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
+import com.fs.gridservice.commons.api.wrapper.internal.InternalMsgEW;
 
 /**
  * @author wuzhen
@@ -39,44 +41,55 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 
 	@Handle("auth")
 	public void handleAuth(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
-		String accId = (String) reqE.getMessage().getPayload("accountId", true);
-		String pass = (String) reqE.getMessage().getPayload("password", true);
+		PropertiesI<Object> cre = reqE.getMessage().getPayloads();
 
-		boolean ok = this.authProvider.auth(accId, pass);
+		PropertiesI<Object> ok = this.authProvider.auth(cre);
 
-		if (ok) {
+		if (ok != null) {
 			String tid = reqE.getTerminalId();
 			TerminalGd tg = this.terminalManager.getTerminal(tid);
-			String cid = tg.getClientId(true);//terminal must be bind to client.
+			String cid = tg.getClientId(true);// terminal must be bind to
+												// client.
 			// create a session,
 			SessionGd s = new SessionGd();
-			s.setProperty(SessionGd.ACCID, accId);
+
+			String accId = (String) ok.getProperty(SessionGd.ACCID, true);
+			s.setProperties(ok);
 			s.setProperty(SessionGd.CLIENTID, cid);// binding tid;
 			String sid = this.sessionManager.createSession(s);
 			// binding session with tid:
-			this.binding(reqE, tid, s);
+			this.binding(ok, reqE, tid, s);
 		} else {
 
 		}
 	}
 
 	@Handle("binding")
+	// directly binding session with terminal
 	public void handleBinding(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
-		String sid = reqE.getMessage().getString("sessionId");
+		String sid = reqE.getMessage().getString("sessionId", true);//
 		SessionGd s = this.sessionManager.getSession(sid);
 		if (s == null) {
 			throw new FsException("todo error process");
 		}
 		String tid = reqE.getTerminalId();
-		this.binding(reqE, tid, s);
+		this.binding(null, reqE, tid, s);
 	}
 
-	protected void binding(TerminalMsgReceiveEW reqE, String tid, SessionGd session) {
+	protected void binding(PropertiesI<Object> res, TerminalMsgReceiveEW reqE, String tid, SessionGd session) {
 		String sid = session.getId();
+		String aid = session.getAccountId();
 		this.terminalManager.bindingSession(tid, sid);
 		MessageI msg = this.newResponseSuccessMessage(reqE);
+		if (res != null) {
+			msg.setPayloads(res);
+		}
 		msg.setPayload("sessionId", sid);
+		msg.setPayload("accountId", aid);
 		this.sendMessage(msg);
+		InternalMsgEW sb = InternalMsgEW.valueOf("/internal/after-session-binding", msg);
+		this.raiseEvent(sb);
 
 	}
+
 }

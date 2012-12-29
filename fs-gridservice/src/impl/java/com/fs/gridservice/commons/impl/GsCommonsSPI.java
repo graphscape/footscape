@@ -8,6 +8,7 @@ import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
+import com.fs.gridservice.commons.api.wrapper.internal.InternalMsgEW;
 import com.fs.gridservice.commons.impl.converter.EventWrapperC;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
@@ -32,6 +33,7 @@ public class GsCommonsSPI extends SPISupport {
 
 		cf.addConverter(new EventWrapperC(TerminalMsgReceiveEW.class, cf));
 		cf.addConverter(new EventWrapperC(TerminalMsgSendEW.class, cf));
+		cf.addConverter(new EventWrapperC(InternalMsgEW.class, cf));
 
 		// objects
 		ac.active("gridMember");

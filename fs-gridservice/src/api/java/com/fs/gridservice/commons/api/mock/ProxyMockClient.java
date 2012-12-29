@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wuzhen
@@ -28,7 +29,7 @@ public class ProxyMockClient extends MockClient {
 		this.target.addListener(path, ml);
 	}
 
-	public MockClient auth(String accId) {
+	public MockClient auth(PropertiesI<Object> accId) {
 		this.target.auth(accId);
 		return this;
 	}
@@ -60,16 +61,6 @@ public class ProxyMockClient extends MockClient {
 	public Future<MockClient> connect() {
 		//
 		return this.target.connect();
-	}
-
-	/*
-	 * Dec 28, 2012
-	 */
-	@Override
-	public Future<MockClient> ready(long timeout) {
-		//
-		return this.target.ready(timeout);
-
 	}
 
 }
