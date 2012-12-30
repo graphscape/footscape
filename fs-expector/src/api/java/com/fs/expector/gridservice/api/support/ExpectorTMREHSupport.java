@@ -20,7 +20,6 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
-import com.fs.expector.gridservice.api.Constants;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.ClientGd;
@@ -28,6 +27,7 @@ import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgEW;
 
 /**
  * @author wu
@@ -129,28 +129,24 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	 * <p>
 	 * Nov 29, 2012
 	 */
-	protected String getSessionId(HandleContextI hc) {
+	protected String getSessionId(TerminalMsgEW hc) {
 
 		ClientGd c = this.getClient(hc);
 		return c.getSessionId(true);
 
 	}
 
-	protected String getLocale(HandleContextI hc) {
-		ClientGd s = this.getClient(hc);
+	protected String getLocale(TerminalMsgEW ew) {
+		ClientGd s = this.getClient(ew);
 		return s.getString("locale", true);
 	}
 
-	// from header
-	protected String getClientId(HandleContextI hc) {
-		String rt = hc.getRequest().getHeader(Constants.HK_CLIENT_ID, true);
-		return rt;
-
-	}
-
-	protected ClientGd getClient(HandleContextI hc) {
-		String sid = this.getClientId(hc);
-		return this.clientManager.getEntity(sid);// client from grid.
+	protected ClientGd getClient(TerminalMsgEW ew) {
+		String cid = ew.getClientId();
+		if(cid == null){
+			return null;
+		}
+		return this.clientManager.getEntity(cid);// client from grid.
 
 	}
 
@@ -164,7 +160,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	// return (String) li.getPropertyAsString(Login.PK_EMAIL);
 	// }
 
-	protected SessionGd getSession(HandleContextI hc, boolean force) {
+	protected SessionGd getSession(TerminalMsgEW hc, boolean force) {
 		ClientGd c = this.getClient(hc);
 		String sid = c.getSessionId(false);
 		if (sid == null) {

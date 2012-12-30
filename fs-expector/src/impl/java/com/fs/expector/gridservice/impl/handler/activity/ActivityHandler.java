@@ -7,15 +7,16 @@ package com.fs.expector.gridservice.impl.handler.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -24,12 +25,11 @@ import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 public class ActivityHandler extends ExpectorTMREHSupport {
 
 	//
-	public void handleDetail(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleDetail(HandleContextI hc, TerminalMsgReceiveEW ew, ResponseI res) {
 
 		// the relation between activity and user.
-
-		NodeQueryOperationI<ExpActivity> qo = this.dataService
-				.prepareNodeQuery(ExpActivity.TYPE);//
+		MessageI req = ew.getMessage();//
+		NodeQueryOperationI<ExpActivity> qo = this.dataService.prepareNodeQuery(ExpActivity.TYPE);//
 
 		String actId = (String) req.getPayload("actId", true);
 
@@ -42,10 +42,8 @@ public class ActivityHandler extends ExpectorTMREHSupport {
 		List<ExpActivity> uaL = rst.list();
 		for (ExpActivity ua : uaL) {
 			PropertiesI pts = new MapProperties();
-			pts.setProperty("accountId",
-					ua.getPropertyAsString(ExpActivity.PK_ACCOUNT_ID));
-			pts.setProperty("expId",
-					ua.getPropertyAsString(ExpActivity.PK_EXP_ID));
+			pts.setProperty("accountId", ua.getPropertyAsString(ExpActivity.PK_ACCOUNT_ID));
+			pts.setProperty("expId", ua.getPropertyAsString(ExpActivity.PK_EXP_ID));
 
 			// pts.setProperty("actId",
 			// ua.getPropertyAsString(ExpActivity.PK_ACTIVITY_UID));

@@ -29,8 +29,8 @@ public abstract class TerminalMsgEW extends TerminalEW {
 		return (MessageI) this.target.getPayload(MESSAGE);
 	}
 
-	protected TerminalMsgEW(EventGd target, String tid) {
-		super(target, tid);
+	protected TerminalMsgEW(EventGd target, String tid, String cid) {
+		super(target, tid,cid);
 	}
 
 	/**

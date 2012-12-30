@@ -22,5 +22,7 @@ public interface WebSocketGoI extends GridedObjectI {
 	public void sendTextMessage(String msg);
 
 	public String getTerminalId(boolean b);
+	
+	public String getClientId(boolean b);
 
 }

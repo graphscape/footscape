@@ -79,7 +79,9 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 	protected void binding(PropertiesI<Object> res, TerminalMsgReceiveEW reqE, String tid, SessionGd session) {
 		String sid = session.getId();
 		String aid = session.getAccountId();
+		String cid = reqE.getClientId();
 		this.terminalManager.bindingSession(tid, sid);
+		this.clientManager.bindingSession(cid, sid);
 		MessageI msg = this.newResponseSuccessMessage(reqE);
 		if (res != null) {
 			msg.setPayloads(res);

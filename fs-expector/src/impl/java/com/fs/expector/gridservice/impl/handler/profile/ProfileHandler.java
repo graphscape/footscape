@@ -18,6 +18,7 @@ import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -60,12 +61,12 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("init")
-	public void handleInit(HandleContextI hc, ResponseI res) {
+	public void handleInit(TerminalMsgReceiveEW ew, HandleContextI hc, ResponseI res) {
 
-		SessionGd login = this.getSession(hc, true);
+		SessionGd login = this.getSession(ew, true);
 
-		Profile pf = this.dataService.getNewest(Profile.class,
-				Profile.ACCOUNTID, login.getAccountId(), false);
+		Profile pf = this.dataService
+				.getNewest(Profile.class, Profile.ACCOUNTID, login.getAccountId(), false);
 
 		PropertiesI<Object> pts = null;
 		if (pf != null) {
@@ -78,14 +79,14 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("submit")
-	public void handleSubmit(RequestI req, ResponseI res, HandleContextI hc,
+	public void handleSubmit(TerminalMsgReceiveEW ew, RequestI req, ResponseI res, HandleContextI hc,
 			ValidatorI<RequestI> vl, ValidateResult<RequestI> vr) {
 
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
 			return;
 		}
-		SessionGd login = this.getSession(hc, true);//
+		SessionGd login = this.getSession(ew, true);//
 		// here the data is valid for save processing.
 		Integer age = (Integer) req.getPayload("age");// just for display.
 		String gender = (String) req.getPayload("gender");

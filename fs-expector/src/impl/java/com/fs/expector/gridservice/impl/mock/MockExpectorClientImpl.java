@@ -3,6 +3,8 @@
  */
 package com.fs.expector.gridservice.impl.mock;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -13,7 +15,12 @@ import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.gridservice.api.TestHelperI;
+import com.fs.expector.gridservice.api.mock.MockActivity;
+import com.fs.expector.gridservice.api.mock.MockActivityDetail;
+import com.fs.expector.gridservice.api.mock.MockExpInfo;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.gridservice.commons.api.mock.MockClient;
 
@@ -122,6 +129,183 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		rt.setHeader(MessageI.HK_PATH, path);
 		String tid = this.getTerminalId();//
 		rt.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + tid);
+		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public void start(String email, String nick, String pass) {
+		//
+		try {
+			this.connect().get();
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		} catch (ExecutionException e) {
+			throw new FsException(e);
+		}
+		this.signup(email, nick, pass);
+		PropertiesI<Object> cre = new MapProperties<Object>();
+		cre.setProperty("type", "registered");
+		cre.setProperty("email", email);
+		cre.setProperty("password", pass);
+
+		this.auth(cre);
+	}
+
+	public <T> T sendMessageAndGetResult(MessageI msg, CallbackI<MessageI, T> cb) {
+		this.sendMessage(msg);
+		return this.receiveAndProcessMessageAndGetResult(cb);
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public String newExp(String body) {
+		MessageI req = this.newRequest("/expe/submit");
+		req.setPayload("body", body);
+
+		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
+
+			@Override
+			public String execute(MessageI i) {
+				//
+				String rt = (String) i.getPayload("expId", true);
+				return rt;
+			}
+		});
+
+		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public String cooperRequest(String expId1, String expId2) {
+		//
+		MessageI req = this.newRequest("/cooper/request");
+		req.setPayload("expId1", expId1);
+
+		req.setPayload("expId2", expId2);
+
+		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
+
+			@Override
+			public String execute(MessageI i) {
+				//
+				String rt = (String) i.getPayload("cooperRequestId", true);
+				return rt;
+			}
+		});
+
+		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public void cooperConfirm(String crid, boolean findAct) {
+		//
+		MessageI req = this.newRequest("/cooper/confirm");
+
+		req.setPayload("cooperRequestId", crid);
+
+		req.setPayload("useNewestActivityId", findAct);
+
+		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
+
+			@Override
+			public String execute(MessageI i) {
+				//
+
+				return null;
+			}
+		});
+
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public List<MockActivity> refreshActivity() {
+		//
+		// ActivitiesHandler
+		MessageI req = this.newRequest("/activities/activities");
+
+		List<MockActivity> rt = this.sendMessageAndGetResult(req,
+				new CallbackI<MessageI, List<MockActivity>>() {
+
+					@Override
+					public List<MockActivity> execute(MessageI i) {
+						String path = i.getPath();
+
+						PropertiesI pts = i.getPayloads();
+						List<PropertiesI> actList = (List<PropertiesI>) pts.getProperty("activities", true);
+						List<MockActivity> rt = new ArrayList<MockActivity>();
+						for (PropertiesI apt : actList) {
+							MockActivity ma = new MockActivity();
+							ma.actId = (String) apt.getProperty("id", true);
+							List<MockExpInfo> expList = new ArrayList<MockExpInfo>();
+							List<PropertiesI<Object>> eL = (List<PropertiesI<Object>>) apt.getProperty(
+									"expectations", true);
+							for (PropertiesI<Object> pt : eL) {
+								MockExpInfo me = new MockExpInfo();
+								me.accId = (String) pt.getProperty("accountId", true);
+								me.expId = (String) pt.getProperty("expId", true);
+								me.body = (String) pt.getProperty("body", true);
+								
+								expList.add(me);
+							}
+							ma.expList = expList;
+							rt.add(ma);
+						}
+						return rt;
+					}
+				});
+
+		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public MockActivityDetail getActivityDetail(String actId) {
+		//
+
+		MessageI req = this.newRequest("/activity/detail");
+		req.setPayload("actId", actId);
+		MockActivityDetail rt = this.sendMessageAndGetResult(req,
+				new CallbackI<MessageI, MockActivityDetail>() {
+
+					@Override
+					public MockActivityDetail execute(MessageI i) {
+						PropertiesI pts = i.getPayloads();
+						List<PropertiesI> expList = (List<PropertiesI>) pts.getProperty("participants");
+						MockActivityDetail rt = new MockActivityDetail();
+						rt.activityUid = (String) pts.getProperty("actId", true);
+						for (PropertiesI pt : expList) {
+							String expId = (String) pt.getProperty("expId");
+							String accId = (String) pt.getProperty("accountId");
+							String body = (String) pt.getProperty("body");//
+
+							MockExpInfo exp = new MockExpInfo();
+							exp.accId = accId;
+							exp.body = body;
+							exp.expId = expId;
+
+							rt.expMap.put(expId, exp);
+
+						}
+						return rt;
+					}
+				});
+
 		return rt;
 	}
 

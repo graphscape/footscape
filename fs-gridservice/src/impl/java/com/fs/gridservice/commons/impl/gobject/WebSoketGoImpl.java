@@ -22,13 +22,14 @@ import com.fs.websocket.api.WebSocketI;
  * 
  */
 public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(WebSoketGoImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WebSoketGoImpl.class);
 	protected WebSocketI target;
 
 	protected CodecI messageCodec;
 
 	protected String terminalId;
+
+	protected String clientId;
 
 	/**
 	 * @param ws
@@ -74,7 +75,7 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	public void sendReady(String termId, String clientId) {
 
 		this.terminalId = termId;
-
+		this.clientId = clientId;
 		MessageI msg = new MessageSupport();
 		msg.setHeader(MessageI.HK_PATH, P_READY);
 		msg.setPayload("terminalId", termId);
@@ -92,11 +93,21 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	 */
 	@Override
 	public String getTerminalId(boolean b) {
-		if (this.terminalId == null) {
-			throw new FsException("no terminal binding for websocket:"
-					+ this.getId());
+		if (this.terminalId == null && b) {
+			throw new FsException("no terminal binding for websocket:" + this.getId());
 		}
 		return this.terminalId;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public String getClientId(boolean force) {
+		if (this.clientId == null && force) {
+			throw new FsException("no client binding for websocket:" + this.getId());
+		}
+		return this.clientId;
 	}
 
 }

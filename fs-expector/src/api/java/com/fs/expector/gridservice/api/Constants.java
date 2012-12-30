@@ -10,6 +10,6 @@ package com.fs.expector.gridservice.api;
  */
 public interface Constants {
 
-	public static final String HK_CLIENT_ID = "X_FS" + "_session_id";
+	public static final String HK_CLIENT_ID = "x-fs-client-id";
 
 }

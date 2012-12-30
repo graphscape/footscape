@@ -13,6 +13,7 @@ import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.ExpectorGsSPI;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wuzhen
@@ -36,9 +37,9 @@ public class I18nHandler extends ExpectorTMREHSupport {
 	 * @param res
 	 */
 	@Handle("refresh")
-	public void handleRefresh(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleRefresh(TerminalMsgReceiveEW ew, HandleContextI hc, RequestI req, ResponseI res) {
 		// Convert to Map's Map
-		String locale = this.getLocale(hc);
+		String locale = this.getLocale(ew);
 		PropertiesI<String> pts = this.mergeResource(locale);
 
 		res.setPayload(pts);

@@ -18,12 +18,15 @@ public abstract class TerminalEW extends EventWrapper {
 
 	public static final String HK_TID = "_terminalId";
 
+	public static final String HK_CID = "_clientId";
+
 	/**
 	 * @param target
 	 */
-	public TerminalEW(EventGd target, String tid) {
+	public TerminalEW(EventGd target, String tid, String cid) {
 		super(target);
 		this.target.setHeader(HK_TID, tid);
+		this.target.setHeader(HK_CID, cid);
 	}
 
 	public TerminalEW(EventGd target) {
@@ -33,6 +36,10 @@ public abstract class TerminalEW extends EventWrapper {
 
 	public String getTerminalId() {
 		return (String) this.target.getHeader(HK_TID);
+	}
+
+	public String getClientId() {
+		return (String) this.target.getHeader(HK_CID);
 	}
 
 }

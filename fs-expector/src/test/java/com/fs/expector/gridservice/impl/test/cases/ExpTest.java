@@ -6,10 +6,11 @@ package com.fs.expector.gridservice.impl.test.cases;
 
 import java.util.List;
 
+import com.fs.expector.gridservice.api.mock.MockActivityDetail;
+import com.fs.expector.gridservice.api.mock.MockExpectorClient;
+import com.fs.expector.gridservice.api.mock.MockActivity;
 import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
-import com.fs.expector.gridservice.impl.test.mock.MockActivityDetail;
 import com.fs.expector.gridservice.impl.test.mock.MockClient;
-import com.fs.expector.gridservice.impl.test.mock.MockUserActivity;
 
 /**
  * @author wu
@@ -17,9 +18,9 @@ import com.fs.expector.gridservice.impl.test.mock.MockUserActivity;
  */
 public class ExpTest extends AuthedTestBase {
 
-	private MockClient client1;
+	private MockExpectorClient client1;
 
-	private MockClient client2;
+	private MockExpectorClient client2;
 
 	public void testExpAndCooperAndActivity() {
 		this.client1 = this.startClient("user1@domain1.com", "user1");
@@ -35,16 +36,16 @@ public class ExpTest extends AuthedTestBase {
 
 		this.client2.cooperConfirm(cooperUid, true);
 
-		List<MockUserActivity> maL = this.client1.refreshActivity();
+		List<MockActivity> maL = this.client1.refreshActivity();
 		assertEquals("should be one activity created for client1", 1,
 				maL.size());
 
-		List<MockUserActivity> maL2 = this.client2.refreshActivity();
+		List<MockActivity> maL2 = this.client2.refreshActivity();
 
 		assertEquals("should be one activity created for client2", 1,
 				maL2.size());
-		MockUserActivity a1 = maL.get(0);
-		MockUserActivity a2 = maL2.get(0);
+		MockActivity a1 = maL.get(0);
+		MockActivity a2 = maL2.get(0);
 
 		assertEquals("the two activity id should be same", a1.actId, a2.actId);//
 

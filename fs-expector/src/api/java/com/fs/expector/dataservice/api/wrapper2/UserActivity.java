@@ -30,13 +30,16 @@ public class UserActivity extends NodeWrapper {
 	}
 
 	public static void config(NodeConfigurations cfs) {
-		NodeConfig nc = cfs.addConfig(TYPE, UserActivity.class)
-				.field(PK_ACCOUNT_ID).field(PK_ACTIVITY_ID);
+		NodeConfig nc = cfs.addConfig(TYPE, UserActivity.class).field(PK_ACCOUNT_ID).field(PK_ACTIVITY_ID);
 
 	}
 
 	public void setAccountId(String accId) {
 		this.setProperty(PK_ACCOUNT_ID, accId);
+	}
+
+	public String getActivityId() {
+		return this.getPropertyAsString(PK_ACTIVITY_ID);
 	}
 
 	public void setActivityId(String accId) {

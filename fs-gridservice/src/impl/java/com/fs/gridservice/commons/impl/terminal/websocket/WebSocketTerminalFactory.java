@@ -116,9 +116,11 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
 		String path = msg.getPath();
-		String tId = getWso(ws).getTerminalId(true);// assign the ws id.
-
-		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId, msg);
+		WebSocketGoI wso =getWso(ws);
+		
+		String tId = wso.getTerminalId(true);// assign the ws id.
+		String cid = wso.getClientId(true);
+		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId,cid, msg);
 
 		// eventWrapper->target:EventGd->payload:Message
 		// RequestI->payload:EventGd->payload:Message

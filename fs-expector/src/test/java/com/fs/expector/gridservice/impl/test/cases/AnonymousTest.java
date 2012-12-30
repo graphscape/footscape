@@ -14,7 +14,7 @@ import com.fs.expector.gridservice.impl.test.mock.MockClient;
 public class AnonymousTest extends AuthedTestBase{
 
 	public void testAnonymous(){
-		MockClient mc = this.startClient();
+	//	MockClient mc = this.startClient();
 		
 	}
 }

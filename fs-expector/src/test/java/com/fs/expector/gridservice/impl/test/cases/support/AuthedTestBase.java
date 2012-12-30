@@ -4,7 +4,8 @@
  */
 package com.fs.expector.gridservice.impl.test.cases.support;
 
-import com.fs.expector.gridservice.impl.test.mock.MockClient;
+import com.fs.expector.gridservice.api.mock.MockExpectorClient;
+import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
 
 /**
  * @author wu
@@ -12,19 +13,13 @@ import com.fs.expector.gridservice.impl.test.mock.MockClient;
  */
 public class AuthedTestBase extends TestBase {
 
-	protected MockClient newClient() {
-		return new MockClient(this.container);
+	protected MockExpectorClient newClient() {
+		return MockExpectorClientFactory.getInstance(this.container).newClient();
 	}
 
-	protected MockClient startClient(){//anonymous
-		MockClient rt = this.newClient();
-		rt.start();
-		return rt;
-	}
-	protected MockClient startClient(String email, String nick) {
-		MockClient rt = this.startClient();
-		rt.signupAndLogin(email, nick);
-		
+	protected MockExpectorClient startClient(String email, String nick) {// anonymous
+		MockExpectorClient rt = this.newClient();
+		rt.start(email, nick, nick);
 		return rt;
 	}
 }

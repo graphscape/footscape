@@ -18,6 +18,8 @@ import com.fs.engine.api.ServiceEngineI;
 import com.fs.engine.api.support.RRContext;
 import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.TestHelperI;
+import com.fs.expector.gridservice.api.mock.MockActivityDetail;
+import com.fs.expector.gridservice.api.mock.MockActivity;
 import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
@@ -38,7 +40,7 @@ public class MockClient {
 
 	private String nick;
 
-	public List<MockUserActivity> activityIdList = new ArrayList<MockUserActivity>();
+	public List<MockActivity> activityIdList = new ArrayList<MockActivity>();
 
 	protected DataServiceI dataService;
 
@@ -207,7 +209,7 @@ public class MockClient {
 	/**
 	 * Nov 3, 2012
 	 */
-	public List<MockUserActivity> refreshActivity() {
+	public List<MockActivity> refreshActivity() {
 		//ActivitiesHandler
 		RequestI req = this.newRequest("/uiserver/activities/activities");
 		ResponseI res = this.service(req);
@@ -217,42 +219,15 @@ public class MockClient {
 				"activities", true);
 		this.activityIdList.clear();//
 		for (PropertiesI apt : actList) {
-			MockUserActivity ma = new MockUserActivity();
+			MockActivity ma = new MockActivity();
 			ma.actId = (String) apt.getProperty("actId", true);
-			ma.accId = (String) apt.getProperty("accountId", true);
+			//ma.accId = (String) apt.getProperty("accountId", true);
 
 			this.activityIdList.add(ma);
 		}
 		return this.activityIdList;
 	}
 
-	public MockActivityDetail getActivityDetail(String actUid) {
-		RequestI req = this.newRequest("/uiserver/activity/detail");
-		req.setPayload("actId", actUid);
-		ResponseI res = this.service(req);
-		res.assertNoError();
-		PropertiesI pts = res.getPayloads();
-		List<PropertiesI> expList = (List<PropertiesI>) pts
-				.getProperty("participants");
-		MockActivityDetail rt = new MockActivityDetail();
-		rt.activityUid = (String) pts.getProperty("actId", true);
-		for (PropertiesI pt : expList) {
-			String expId = (String) pt.getProperty("expId");
-			String accId = (String) pt.getProperty("accountId");
-			String body = (String) pt.getProperty("body");//
-
-			MockExpectation exp = new MockExpectation();
-			exp.accountId = accId;
-			exp.body = body;
-			exp.expUid = expId;
-
-			rt.expMap.put(expId, exp);
-
-		}
-
-		return rt;
-
-	}
 
 	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
 		RequestI req = this.newRequest("/uiserver/usshot/snapshot");

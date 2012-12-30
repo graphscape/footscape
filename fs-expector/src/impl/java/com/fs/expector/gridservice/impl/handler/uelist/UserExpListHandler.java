@@ -20,6 +20,7 @@ import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -51,8 +52,8 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	 * Refresh the summary list of ue. Nov 28, 2012
 	 */
 	@Handle("refresh")
-	public void handleRefresh(HandleContextI hc, RequestI req, ResponseI res) {
-		SessionGd login = this.getSession(hc, true);
+	public void handleRefresh(TerminalMsgReceiveEW ew,HandleContextI hc, RequestI req, ResponseI res) {
+		SessionGd login = this.getSession(ew, true);
 
 		NodeQueryOperationI<Expectation> finder = this.dataService
 				.prepareNodeQuery(Expectation.class);

@@ -5,18 +5,24 @@
 package com.fs.expector.gridservice.impl.handler.activities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.Activity;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
+import com.fs.expector.dataservice.api.wrapper2.UserActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -26,14 +32,17 @@ public class ActivitiesHandler extends ExpectorTMREHSupport {
 
 	// query activities by account.
 	@Handle("activities")
-	public void handleActivities(HandleContextI hc, RequestI req, ResponseI res) {
-		List<String> idL = (List<String>) req.getPayload("idList", true);
+	public void handleActivities(HandleContextI hc, TerminalMsgReceiveEW ew, ResponseI res) {
+		MessageI req = ew.getMessage();//
+		List<String> idL = (List<String>) req.getPayload("idList", false);
+		if (idL == null) {
+			idL = this.getUserActivityIdList(ew);
+		}
 
 		// TODO parttern of data retrieving.
 		List<PropertiesI<Object>> rt = new ArrayList<PropertiesI<Object>>();
 
-		List<Activity> actL = this.dataService.getNewestListById(
-				Activity.class, idL, true, false);
+		List<Activity> actL = this.dataService.getNewestListById(Activity.class, idL, true, false);
 
 		for (Activity act : actL) {
 			PropertiesI<Object> pts = new MapProperties<Object>();
@@ -42,14 +51,29 @@ public class ActivitiesHandler extends ExpectorTMREHSupport {
 			pts.setProperty("expectations", expL);
 			rt.add(pts);
 		}
-		res.setPayload("activities");
+		res.setPayload("activities",rt);
+	}
+
+	/**
+	 * Dec 30, 2012 TODO other statu table entity.
+	 */
+	private List<String> getUserActivityIdList(TerminalMsgReceiveEW ew) {
+		String accId = this.getSession(ew, true).getAccountId();
+		NodeQueryOperationI<UserActivity> op = this.dataService.prepareNodeQuery(UserActivity.class);
+		op.propertyEq(UserActivity.PK_ACCOUNT_ID, accId);
+		NodeQueryResultI<UserActivity> rst = op.execute().getResult().assertNoError();
+		Set<String> rt = new HashSet<String>();
+		for (UserActivity ua : rst.list()) {
+			String aid = ua.getPropertyAsString(UserActivity.PK_ACTIVITY_ID);
+			rt.add(aid);
+		}
+		return new ArrayList<String>(rt);
 	}
 
 	protected List<PropertiesI<Object>> expList(String actId) {
 
-		List<ExpActivity> eaL = this.dataService.getListNewestFirst(
-				ExpActivity.class, ExpActivity.PK_ACTIVITY_ID, actId, 0,
-				Integer.MAX_VALUE);
+		List<ExpActivity> eaL = this.dataService.getListNewestFirst(ExpActivity.class,
+				ExpActivity.PK_ACTIVITY_ID, actId, 0, Integer.MAX_VALUE);
 
 		return this.toPayload(eaL);
 	}
@@ -59,8 +83,7 @@ public class ActivitiesHandler extends ExpectorTMREHSupport {
 
 		for (ExpActivity ea : eaL) {
 			String expId = ea.getExpId();
-			Expectation exp = this.dataService.getNewestById(Expectation.class,
-					expId, true);
+			Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
 
 			PropertiesI<Object> pts = new MapProperties<Object>();
 			pts.setProperty("accountId", ea.getAccountId());

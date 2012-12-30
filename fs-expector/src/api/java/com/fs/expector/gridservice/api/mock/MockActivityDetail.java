@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Nov 3, 2012
  */
-package com.fs.expector.gridservice.impl.test.mock;
+package com.fs.expector.gridservice.api.mock;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,6 @@ import java.util.Map;
  */
 public class MockActivityDetail {
 	public String activityUid;
-	public Map<String, MockExpectation> expMap = new HashMap<String, MockExpectation>();
+	public Map<String, MockExpInfo> expMap = new HashMap<String, MockExpInfo>();
 
 }

@@ -12,6 +12,7 @@ import com.fs.expector.dataservice.api.operations.UserSnapshotOperationI;
 import com.fs.expector.dataservice.api.result.UserSnapshotResultI;
 import com.fs.expector.dataservice.api.wrapper2.UserSnapshot;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -20,12 +21,11 @@ import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 public class UserSnapshotHandler extends ExpectorTMREHSupport {
 
 	@Handle("snapshot")
-	public void handleSnapshot(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleSnapshot(TerminalMsgReceiveEW ew, HandleContextI hc, RequestI req, ResponseI res) {
 
 		// create new user exp
-		boolean refresh = req.getPayload(Boolean.class, "refresh",
-				Boolean.FALSE);
-		String accId = this.getSession(hc, true).getAccountId();//
+		boolean refresh = req.getPayload(Boolean.class, "refresh", Boolean.FALSE);
+		String accId = this.getSession(ew, true).getAccountId();//
 
 		if (refresh) {
 			this.snapshot(accId);
@@ -43,8 +43,8 @@ public class UserSnapshotHandler extends ExpectorTMREHSupport {
 	}
 
 	protected UserSnapshot getSnapshot(String accId, boolean force) {
-		UserSnapshot rt = this.dataService.getNewest(UserSnapshot.class,
-				UserSnapshot.PK_ACCOUNT_ID, accId, force);
+		UserSnapshot rt = this.dataService.getNewest(UserSnapshot.class, UserSnapshot.PK_ACCOUNT_ID, accId,
+				force);
 
 		return rt;
 
@@ -52,8 +52,7 @@ public class UserSnapshotHandler extends ExpectorTMREHSupport {
 
 	protected String snapshot(String accId) {
 		// (String) req.getPayload("accountId");
-		UserSnapshotOperationI uso = this.dataService
-				.prepareOperation(UserSnapshotOperationI.class);
+		UserSnapshotOperationI uso = this.dataService.prepareOperation(UserSnapshotOperationI.class);
 		uso.accountId(accId);
 		uso.refreshForSave(true);
 		UserSnapshotResultI rst = uso.execute().getResult().assertNoError();

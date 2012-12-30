@@ -28,18 +28,20 @@ import com.fs.webserver.api.support.ConfigurableServletSupport;
 
 /**
  * @author wu
- *
+ * 
  */
 public class Web20TerminalFactoryServlet extends ConfigurableServletSupport {
 
 	public static final String HK_TERMINAL_ID = "x-fs-terminal-id";
-	
+
+	public static final String HK_CLIENT_ID = "x-fs-client-id";
+
 	protected CodecI messageCodec;
 
 	protected DgQueueI<EventGd> global;
 
 	protected GridFacadeI facade;
-	
+
 	/*
 	 * Dec 15, 2012
 	 */
@@ -48,62 +50,59 @@ public class Web20TerminalFactoryServlet extends ConfigurableServletSupport {
 		//
 		super.active(ac);
 		//
-		this.messageCodec = this.container.find(CodecI.FactoryI.class, true)
-				.getCodec(MessageI.class);
+		this.messageCodec = this.container.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		this.facade = this.container.find(GridFacadeI.class, true);
 
 		this.global = this.facade.getGlogalEventQueue();//
 
 	}
-	
+
 	/* */
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		//virtual terminal id
+	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException,
+			IOException {
+		// virtual terminal id
 		String tid = arg0.getHeader(HK_TERMINAL_ID);
-		
-		if(tid == null){//create terminal for this web20 client.
+		if (tid == null) {// create terminal for this web20 client.
 			this.onConnection(arg0, arg1);
 			return;
 		}
-		
-		this.onMessage(tid,arg0, arg1);
-		
-		this.serviceGetMessage(tid,arg0,arg1);
-	
-	}	
 
-	protected void serviceGetMessage(String tid,HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		//TODO long live http connection.
-		//but for now,not use this terminal receive message from server side.
-		//binding 
+		String cid = arg0.getHeader(HK_CLIENT_ID);
+		this.onMessage(tid, cid, arg0, arg1);
+
+		this.serviceGetMessage(tid, arg0, arg1);
+
 	}
-	
-	protected void onMessage(String tid,HttpServletRequest arg0, HttpServletResponse arg1)
+
+	protected void serviceGetMessage(String tid, HttpServletRequest arg0, HttpServletResponse arg1)
 			throws ServletException, IOException {
-		
+		// TODO long live http connection.
+		// but for now,not use this terminal receive message from server side.
+		// binding
+	}
+
+	protected void onMessage(String tid, String cid, HttpServletRequest arg0, HttpServletResponse arg1)
+			throws ServletException, IOException {
+
 		Reader rd = arg0.getReader();
 		Object obj = JSONValue.parse(rd);
-		MessageI msg = (MessageI)this.messageCodec.decode(obj);
+		MessageI msg = (MessageI) this.messageCodec.decode(obj);
 		String path = msg.getHeader(MessageI.HK_PATH);
-		
-		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tid, msg);
+
+		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tid, cid, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
-	
+
 	}
-	
-	protected void onConnection(HttpServletRequest arg0, HttpServletResponse arg1)
-			throws ServletException, IOException {
-		TerminalManagerI tm = this.facade
-				.getEntityManager(TerminalManagerI.class);
+
+	protected void onConnection(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException,
+			IOException {
+		TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
 		String address = "todo";
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		TerminalGd td = tm.web20Terminal(address, pts);
 		arg1.setHeader(HK_TERMINAL_ID, td.getId());//
 	}
 
-	
 }
