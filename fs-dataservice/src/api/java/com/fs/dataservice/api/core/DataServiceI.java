@@ -64,6 +64,10 @@ public interface DataServiceI {
 
 	public void refresh();
 
+	public <T extends NodeWrapper> boolean deleteByUid(Class<T> wpcls, String uid);
+	
+	public <T extends NodeWrapper> int deleteById(Class<T> wpcls, String id);
+	
 	public NodeConfigurations getConfigurations();
 
 }

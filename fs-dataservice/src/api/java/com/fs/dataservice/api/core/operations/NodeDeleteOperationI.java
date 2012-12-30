@@ -4,21 +4,18 @@
  */
 package com.fs.dataservice.api.core.operations;
 
-import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.result.VoidResultI;
+import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
  * @author wu
  * 
  */
-public interface NodeDeleteOperationI extends
-		OperationI<NodeDeleteOperationI, VoidResultI> {
+public interface NodeDeleteOperationI<W extends NodeWrapper> extends
+		OperationI<NodeDeleteOperationI<W>, VoidResultI> {
+	public NodeDeleteOperationI<W> nodeType(Class<W> cls);
 
-	public NodeDeleteOperationI nodeType(NodeType ntype);
-
-	public NodeDeleteOperationI uniqueId(String id);
-
-	public NodeDeleteOperationI execute(NodeType type, String uid);
+	public NodeDeleteOperationI<W> uniqueId(String id);
 
 }

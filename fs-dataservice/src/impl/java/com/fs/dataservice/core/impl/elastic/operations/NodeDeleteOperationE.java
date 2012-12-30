@@ -10,24 +10,28 @@ import org.elasticsearch.client.Client;
 
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
+import com.fs.dataservice.api.core.conf.NodeConfig;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.result.VoidResultI;
 import com.fs.dataservice.api.core.support.OperationSupport;
 import com.fs.dataservice.api.core.support.VoidResult;
+import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.dataservice.core.impl.elastic.ElasticClientI;
 
 /**
  * @author wu
  * 
  */
-public class NodeDeleteOperationE extends
-		OperationSupport<NodeDeleteOperationI, VoidResultI> implements
-		NodeDeleteOperationI {
+public class NodeDeleteOperationE<W extends NodeWrapper> extends
+		OperationSupport<NodeDeleteOperationI<W>, VoidResultI> implements NodeDeleteOperationI<W> {
 
 	private static final String PK_UNIQUE = "uniqueId";
 	private static final String PK_NODETYPE = "nodeType";
+	private static final String PK_WRAPPER_CLS = "wrapperCls";
 
 	private ElasticClientI elastic;
+
+	protected NodeConfig nodeConfig;
 
 	/**
 	 * @param ds
@@ -38,19 +42,29 @@ public class NodeDeleteOperationE extends
 	}
 
 	/*
-	 * Oct 27, 2012
+	 * Dec 30, 2012
 	 */
 	@Override
-	public NodeDeleteOperationI nodeType(NodeType ntype) {
-		this.parameter(PK_NODETYPE, ntype);
+	public NodeDeleteOperationI<W> nodeType(Class<W> cls) {
+		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(cls, true);
+		this.nodeType(nc);
 		return this;
+	}
+
+	/**
+	 * Nov 28, 2012
+	 */
+	private void nodeType(NodeConfig nc) {
+		this.parameter(PK_NODETYPE, nc.getNodeType());
+		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());
+		this.nodeConfig = nc;
 	}
 
 	/*
 	 * Oct 27, 2012
 	 */
 	@Override
-	public NodeDeleteOperationI uniqueId(String id) {
+	public NodeDeleteOperationI<W> uniqueId(String id) {
 		this.parameter(PK_UNIQUE, id);
 		return this;
 	}
@@ -66,6 +80,7 @@ public class NodeDeleteOperationE extends
 		drb.setIndex(elastic.getIndex());
 		drb.setType(this.getNodeType(true).toString());
 		drb.setId(this.getUniqueId(true));//
+		drb.setRefresh(true);
 
 		DeleteResponse gr = drb.execute().actionGet();
 
@@ -88,14 +103,6 @@ public class NodeDeleteOperationE extends
 	private NodeType getNodeType(boolean force) {
 		//
 		return (NodeType) this.getParameter(PK_NODETYPE, force);
-	}
-
-	/*
-	 * Oct 27, 2012
-	 */
-	@Override
-	public NodeDeleteOperationI execute(NodeType type, String uid) {
-		return this.nodeType(type).uniqueId(uid).execute().cast();
 	}
 
 }

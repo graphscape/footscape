@@ -10,6 +10,7 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
+import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.operations.RefreshOperationI;
@@ -17,6 +18,7 @@ import com.fs.dataservice.core.impl.elastic.ElasticDataServiceImpl;
 import com.fs.dataservice.core.impl.elastic.operations.DeleteAllOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.DumpOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeCreateOperationE;
+import com.fs.dataservice.core.impl.elastic.operations.NodeDeleteOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeGetOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeQueryOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.RefreshOperationE;
@@ -69,6 +71,8 @@ public class DataServiceCoreSPI extends SPISupport {
 				DumpOperationE.class);
 		ds.registerOperation("core.refresh", RefreshOperationI.class,
 				RefreshOperationE.class);
+		ds.registerOperation("core.delete", NodeDeleteOperationI.class,
+				NodeDeleteOperationE.class);
 
 	}
 

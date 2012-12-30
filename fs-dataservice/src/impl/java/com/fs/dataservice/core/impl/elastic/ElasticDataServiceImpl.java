@@ -210,4 +210,5 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements
 		return rst.list();
 	}
 
+
 }
