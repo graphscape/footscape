@@ -7,17 +7,8 @@ package com.fs.expector.dataservice.impl.elastic;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.core.impl.elastic.operations.NodeQueryOperationE;
-import com.fs.expector.dataservice.api.operations.AuthedQueryOperationI;
-import com.fs.expector.dataservice.api.operations.CooperConfirmOperationI;
 import com.fs.expector.dataservice.api.operations.ExpSearchOperationI;
-import com.fs.expector.dataservice.api.wrapper.Activity;
-import com.fs.expector.dataservice.api.wrapper.CooperConfirm;
-import com.fs.expector.dataservice.api.wrapper.CooperRequest;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
-import com.fs.expector.dataservice.api.wrapper.Session;
-import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
-import com.fs.expector.dataservice.api.wrapper2.UserActivity;
-import com.fs.expector.dataservice.impl.result.CooperConfirmResultImpl;
 
 /**
  * @author wu

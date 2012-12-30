@@ -8,8 +8,7 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.engine.api.HandleContextI;
 import com.fs.engine.api.ResponseI;
 import com.fs.engine.api.annotation.Handle;
-import com.fs.expector.dataservice.api.operations.ExpCreateOperationI;
-import com.fs.expector.dataservice.api.result.ExpCreateResultI;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -20,21 +19,20 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpEditHandler extends ExpectorTMREHSupport {
 
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew,HandleContextI hc,  ResponseI res) {
+	public void handleSubmit(TerminalMsgReceiveEW ew, HandleContextI hc, ResponseI res) {
 
 		// the relation between activity and user.
-		ExpCreateOperationI eo = this.dataService
-				.prepareOperation(ExpCreateOperationI.class);
+
 		MessageI req = ew.getMessage();//
 		String body = (String) req.getPayload("body", true);
 
-		eo.expBody(body);
-		eo.sessionId(this.getSessionId(ew));
+		Expectation exp = new Expectation().forCreate(this.dataService);
 
-		ExpCreateResultI rst = eo.execute().getResult()
-				.assertNoError();
+		exp.setAccountId(this.getAccountId(ew, true));
+		exp.setBody(body);
+		exp.save(true);
 
-		String eid = rst.getExpId();
+		String eid = exp.getId();
 
 		res.setPayload("expId", eid);//
 	}

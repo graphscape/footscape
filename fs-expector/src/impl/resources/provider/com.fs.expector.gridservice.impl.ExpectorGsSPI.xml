@@ -77,19 +77,9 @@
 				<pattern value="/events/profile/.*" />
 			</config>
 
-			<uexp.class value="com.fs.expector.gridservice.impl.handler.uexp.UserExpHandler" />
-			<config name="uexp">
-				<pattern value="/events/uexp/.*" />
-			</config>
-
 			<uelist.class value="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />
 			<config name="uelist">
 				<pattern value="/events/uelist/.*" />
-			</config>
-
-			<usshot.class value="com.fs.expector.gridservice.impl.handler.usshot.UserSnapshotHandler" />
-			<config name="usshot">
-				<pattern value="/events/usshot/.*" />
 			</config>
 
 		</prefix>

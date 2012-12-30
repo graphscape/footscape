@@ -20,9 +20,7 @@ import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
  */
 public class Activity extends NodeWrapper {
 
-	public static final String COOPER_CONFIRM_ID = "cooperConfirmId";
-
-	public static final String[] FNS = new String[] { COOPER_CONFIRM_ID };
+	public static final String[] FNS = new String[] {};
 
 	/**
 	 * @param ntype
@@ -33,29 +31,21 @@ public class Activity extends NodeWrapper {
 	}
 
 	public static void config(NodeConfigurations cfs) {
-		cfs.addConfig(NodeTypes.ACTIVITY, Activity.class).field(
-				COOPER_CONFIRM_ID);
-	}
-
-	public String getCooperConfirmUid() {
-		return (String) this.getProperty(COOPER_CONFIRM_ID);
-	}
-
-	public void setCooperConfirmUid(String uid) {
-		this.setProperty(COOPER_CONFIRM_ID, uid);
+		cfs.addConfig(NodeTypes.ACTIVITY, Activity.class);
 	}
 
 	public List<Expectation> getExpectationList() {
-		NodeQueryOperationI<ExpActivity> op = this.dataService
-				.prepareNodeQuery(ExpActivity.TYPE);
-		op.propertyEq(ExpActivity.PK_ACTIVITY_ID, this.getId());//TODO how about multiple same id?
+		NodeQueryOperationI<ExpActivity> op = this.dataService.prepareNodeQuery(ExpActivity.TYPE);
+		op.propertyEq(ExpActivity.PK_ACTIVITY_ID, this.getId());// TODO how
+																// about
+																// multiple same
+																// id?
 		//
 		NodeQueryResultI<ExpActivity> rst = op.execute().getResult().assertNoError();
 		List<ExpActivity> eaL = rst.list();
 		List<Expectation> rt = new ArrayList<Expectation>();
 		for (ExpActivity ea : eaL) {
-			Expectation ex = this.dataService.getNewestById(Expectation.class,
-					ea.getExpId(), true);
+			Expectation ex = this.dataService.getNewestById(Expectation.class, ea.getExpId(), true);
 
 			rt.add(ex);
 

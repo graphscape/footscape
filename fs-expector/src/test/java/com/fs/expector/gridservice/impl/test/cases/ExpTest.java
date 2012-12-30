@@ -6,11 +6,10 @@ package com.fs.expector.gridservice.impl.test.cases;
 
 import java.util.List;
 
+import com.fs.expector.gridservice.api.mock.MockActivity;
 import com.fs.expector.gridservice.api.mock.MockActivityDetail;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
-import com.fs.expector.gridservice.api.mock.MockActivity;
 import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
-import com.fs.expector.gridservice.impl.test.mock.MockClient;
 
 /**
  * @author wu
@@ -37,13 +36,11 @@ public class ExpTest extends AuthedTestBase {
 		this.client2.cooperConfirm(cooperUid, true);
 
 		List<MockActivity> maL = this.client1.refreshActivity();
-		assertEquals("should be one activity created for client1", 1,
-				maL.size());
+		assertEquals("should be one activity created for client1", 1, maL.size());
 
 		List<MockActivity> maL2 = this.client2.refreshActivity();
 
-		assertEquals("should be one activity created for client2", 1,
-				maL2.size());
+		assertEquals("should be one activity created for client2", 1, maL2.size());
 		MockActivity a1 = maL.get(0);
 		MockActivity a2 = maL2.get(0);
 

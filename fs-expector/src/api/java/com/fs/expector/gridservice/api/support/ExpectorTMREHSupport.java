@@ -28,6 +28,7 @@ import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgEW;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -36,9 +37,9 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgEW;
 public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	protected DataServiceI dataService;
-	
+
 	protected JexlEngineI jexl;
-	
+
 	protected GridFacadeI facade;
 
 	protected ClientManagerI clientManager;
@@ -46,9 +47,8 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	protected TerminalManagerI terminalManager;
 
 	protected SessionManagerI sessionManager;
-	
+
 	protected String prefix = "payloads.property['_default'].payloads.property['_message'].payloads.property";
-	
 
 	/* */
 	@Override
@@ -62,19 +62,16 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 		this.facade = this.container.find(GridFacadeI.class, true);
 
 		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
-		this.terminalManager = this.facade
-				.getEntityManager(TerminalManagerI.class);
+		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 		this.sessionManager = this.facade.getSessionManager();
 	}
 
-	protected <T extends NodeWrapper> T createNode(String expPrefix,
-			HandleContextI hc, Class<T> cls) {
-		return this.createNode(expPrefix, hc, cls,
-				new HashMap<String, String>());
+	protected <T extends NodeWrapper> T createNode(String expPrefix, HandleContextI hc, Class<T> cls) {
+		return this.createNode(expPrefix, hc, cls, new HashMap<String, String>());
 	}
 
-	protected <T extends NodeWrapper> T createNode(String expPrefix,
-			HandleContextI hc, Class<T> cls, Map<String, String> payloadKeyMap) {
+	protected <T extends NodeWrapper> T createNode(String expPrefix, HandleContextI hc, Class<T> cls,
+			Map<String, String> payloadKeyMap) {
 		T rt = ClassUtil.newInstance(cls);
 		rt.forCreate(this.dataService);
 		for (Map.Entry<String, String> e : payloadKeyMap.entrySet()) {
@@ -90,17 +87,14 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI findNodeList(
-			String expPrefix, HandleContextI hc, NodeType type, Class<T> cls,
-			Map<String, String> payloadKeyMap) {
+	protected <T extends NodeWrapper> NodeQueryResultI findNodeList(String expPrefix, HandleContextI hc,
+			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap) {
 		return this.findNodeList(expPrefix, hc, type, cls, payloadKeyMap, true);//
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI<T> findNodeList(
-			String expPrefix, HandleContextI hc, NodeType type, Class<T> cls,
-			Map<String, String> payloadKeyMap, boolean sortTimeStampDesc) {
-		NodeQueryOperationI<T> dbo = this.dataService
-				.prepareOperation(NodeQueryOperationI.class);
+	protected <T extends NodeWrapper> NodeQueryResultI<T> findNodeList(String expPrefix, HandleContextI hc,
+			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap, boolean sortTimeStampDesc) {
+		NodeQueryOperationI<T> dbo = this.dataService.prepareOperation(NodeQueryOperationI.class);
 		dbo.nodeType(type);
 
 		for (Map.Entry<String, String> e : payloadKeyMap.entrySet()) {
@@ -143,7 +137,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	protected ClientGd getClient(TerminalMsgEW ew) {
 		String cid = ew.getClientId();
-		if(cid == null){
+		if (cid == null) {
 			return null;
 		}
 		return this.clientManager.getEntity(cid);// client from grid.
@@ -165,8 +159,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 		String sid = c.getSessionId(false);
 		if (sid == null) {
 			if (force) {
-				throw new FsException("no session binding to client:"
-						+ c.getId());
+				throw new FsException("no session binding to client:" + c.getId());
 			}
 			return null;
 		}
@@ -174,20 +167,34 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 		SessionGd rt = this.sessionManager.getSession(sid);
 
 		if (rt == null && force) {
-			throw new FsException("no session found by id:" + sid
-					+ " from clientId:" + c.getId());
+			throw new FsException("no session found by id:" + sid + " from clientId:" + c.getId());
 		}
 		return rt;
 
 	}
 
-	protected <T extends NodeWrapper> void processGetNewestListById(
-			Class<T> cls, HandleContextI hc) {
+	/**
+	 * TODO move to converter. Dec 30, 2012
+	 */
+	protected String getAccountId(TerminalMsgReceiveEW ew, boolean force) {
+		//
+		SessionGd s = this.getSession(ew, false);
+		if (s == null) {
+			if (force) {
+				throw new FsException("no session binding with terminal:" + ew.getTerminalId());
+			} else {
+				return null;
+			}
+		}
+		return s.getAccountId();
+	}
+
+	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, HandleContextI hc) {
 		this.processGetNewestListById(cls, hc, "idList", "nodeList");
 	}
 
-	protected <T extends NodeWrapper> void processGetNewestListById(
-			Class<T> cls, HandleContextI hc, String reqKey, String resKey) {
+	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, HandleContextI hc,
+			String reqKey, String resKey) {
 		RequestI req = hc.getRequest();
 		ResponseI res = hc.getResponse();
 		List<String> idL = (List<String>) req.getPayload(reqKey);
