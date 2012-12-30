@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.data.EntityGd;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.core.api.objects.DgMapI;
 
 /**
@@ -95,6 +97,44 @@ public class EntityGdManagerSupport<T extends EntityGd> extends FacadeAwareConfi
 			rt.add(t);
 		}
 		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public List<T> getEntityListByField(String fname, Object fvalue) {
+		//
+
+		List<String> kl = this.dgMap.keyList();
+		List<T> rt = new ArrayList<T>();
+		for (String k : kl) {
+			T t = this.dgMap.getValue(k);
+			if (fvalue.equals(t.getProperty(fname))) {
+				rt.add(t);//
+			}
+		}
+		return rt;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public T getEntityByField(String fname, Object fvalue, boolean force) {
+		//
+		List<T> rt = this.getEntityListByField(fname, fvalue);
+		if (rt.isEmpty()) {
+			if (force) {
+				throw new FsException("no entity for " + fname + "=" + fvalue);
+			} else {
+				return null;
+			}
+		} else if (rt.size() == 1) {
+			return rt.get(0);
+		} else {
+			throw new FsException("to many terminal for " + fname + "=" + fvalue + ",all are:" + rt);
+		}
 	}
 
 }

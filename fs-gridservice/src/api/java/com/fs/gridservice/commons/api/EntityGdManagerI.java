@@ -22,5 +22,9 @@ public interface EntityGdManagerI<T extends EntityGd> {
 	public T getEntity(String id, boolean force);
 
 	public List<T> getEntityList(List<String> idL);
+	
+	public List<T> getEntityListByField(String fname, Object fvalue);
+	
+	public T getEntityByField(String fname, Object fvalue, boolean force);
 
 }

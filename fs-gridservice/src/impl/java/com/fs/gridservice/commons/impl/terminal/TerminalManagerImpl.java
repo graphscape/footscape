@@ -3,6 +3,8 @@
  */
 package com.fs.gridservice.commons.impl.terminal;
 
+import java.util.List;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
@@ -18,8 +20,7 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  * @author wuzhen
  * 
  */
-public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
-		implements TerminalManagerI {
+public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> implements TerminalManagerI {
 
 	public static final String N_WEBSOCKET_GOMANAGER = "webSocketGoManager";
 
@@ -64,13 +65,11 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 		}
 		String pro = tg.getProtocol();
 		if (!"websocket".equals(pro)) {
-			throw new FsException("protocol:" + pro
-					+ " not supported for send message to");
+			throw new FsException("protocol:" + pro + " not supported for send message to");
 		}
 
 		String wsoId = tg.getAddress();
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade
-				.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		WebSocketGoI wso = gom.getGridedObject(wsoId, true);
 		wso.sendMessage(msg);//
 	}
@@ -134,8 +133,7 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 	@Override
 	public TerminalGd webSocketTerminal(WebSocketGoI wso) {
 
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade
-				.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		gom.addGridedObject(wso);
 		TerminalGd rt = new TerminalGd();
 		rt.setProperty(TerminalGd.PK_PROTOCAL, "websocket");
@@ -155,8 +153,12 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 		return rt;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.gridservice.commons.api.terminal.TerminalManagerI#bindingClient(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.gridservice.commons.api.terminal.TerminalManagerI#bindingClient
+	 * (java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void bindingClient(String tid, String clientId) {
@@ -164,6 +166,25 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd>
 		t.setProperty(TerminalGd.PK_CLIENTID, clientId);
 		this.addEntity(t);
 		return;
+	}
+
+	/*
+	 * Dec 30, 2012
+	 */
+	@Override
+	public TerminalGd getTerminalBySessionId(String sid, boolean force) {
+		List<TerminalGd> rt = this.getEntityListByField(TerminalGd.PK_SESSIONID, sid);
+		if (rt.isEmpty()) {
+			if (force) {
+				throw new FsException("no sid:" + sid);
+			} else {
+				return null;
+			}
+		} else if (rt.size() == 1) {
+			return rt.get(0);
+		} else {
+			throw new FsException("to many terminal for session:" + sid + ",all terminals:" + rt);
+		}
 	}
 
 }

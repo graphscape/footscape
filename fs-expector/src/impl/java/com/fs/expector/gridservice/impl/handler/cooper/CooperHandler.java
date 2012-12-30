@@ -6,8 +6,8 @@ package com.fs.expector.gridservice.impl.handler.cooper;
 
 import java.util.List;
 
-import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.engine.api.HandleContextI;
@@ -21,6 +21,7 @@ import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.dataservice.api.wrapper2.UserActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
+import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -41,18 +42,29 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		String expId2 = (String) req.getPayload("expId2", true);
 
 		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
-
+		String accId2 = exp2.getAccountId();
 		CooperRequest cr = new CooperRequest().forCreate(this.dataService);
 		cr.setAccountId1(aid);
 		cr.setExpId1(expId1);
 		cr.setExpId2(expId2);
-		cr.setAccountId2(exp2.getAccountId());
+		cr.setAccountId2(accId2);
 		cr.save(true);
 
 		String cid = cr.getId();
 		//
 
 		res.setPayload("cooperRequestId", cid);//
+		//notify the exp2's account to refresh the incoming request,if he/she is online
+		SessionGd s2 = this.sessionManager.getEntityByField(SessionGd.ACCID, accId2,false);
+		
+		if(s2 != null){//not online
+			TerminalGd t2 = this.terminalManager.getTerminalBySessionId(s2.getId(), false);
+			MessageI msg = new MessageSupport();
+			msg.setHeader(MessageI.HK_PATH, "/notify/cooper-request");
+			
+			this.terminalManager.sendMessage(t2.getId(), msg);
+			
+		}
 	}
 
 	@Handle("confirm")
