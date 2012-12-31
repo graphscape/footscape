@@ -52,7 +52,7 @@ public class MockClientFactoryImpl extends MockClientFactory {
 			throw new FsException(e);
 		}
 		String name = "client" + this.nextClient++;
-		MockClientBase rt = new MockClientImpl(name, this.cf, this.container,
+		MockClientBase rt = new MockClientBase(name, this.cf, this.container,
 				uri);
 		return rt;
 	}

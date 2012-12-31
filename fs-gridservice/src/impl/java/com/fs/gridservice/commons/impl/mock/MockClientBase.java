@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 
@@ -28,8 +30,10 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
@@ -43,8 +47,7 @@ import com.fs.gridservice.commons.api.mock.MockClient;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public abstract class MockClientBase extends MockClient implements
-		WebSocketListener {
+public class MockClientBase extends MockClient implements WebSocketListener {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(MockClientBase.class);
 
@@ -70,11 +73,25 @@ public abstract class MockClientBase extends MockClient implements
 
 	protected CodecI messageCodec;
 
-	public MockClientBase(WebSocketClientFactory f, ContainerI c, URI uri) {
+	protected MessageServiceI engine;
+
+	protected ExecutorService executor;
+
+	protected String name;
+
+	public MockClientBase(String name, WebSocketClientFactory f, ContainerI c,
+			URI uri) {
 		this.uri = uri;
+		this.name = name;
+
+		this.executor = Executors.newFixedThreadPool(1);// TODO
+		this.engine = c.find(MessageServiceI.FactoryI.class, true).create(
+				"mock-client-" + name);
+
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
 		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
 				MessageI.class);
+
 		this.client = f.newWebSocketClient(this);
 
 		this.getDispatcher().addHandler(null,
@@ -97,7 +114,15 @@ public abstract class MockClientBase extends MockClient implements
 
 	@Override
 	public MockClient connect() {
+		this.executor.submit(new Callable<Object>() {
 
+			@Override
+			public Object call() throws Exception {
+				//
+				MockClientBase.this.run();
+				return "stoped";
+			}
+		});
 		this.connected = new Semaphore(0);
 
 		try {
@@ -243,4 +268,38 @@ public abstract class MockClientBase extends MockClient implements
 		return accountId;
 	}
 
+	public void eachLoop(MessageI msg) throws Exception {
+		String path = msg.getHeader(MessageI.HK_PATH);
+		Path v = Path.valueOf(path);
+		ResponseI res = this.engine.service(msg);
+		if (res.getErrorInfos().hasError()) {
+			LOG.error("", res);
+		}
+	}
+
+	public void run() {
+		try {
+			this.runInternal();
+		} catch (Throwable t) {
+			LOG.error("exit loop with exception", t);
+		}
+	}
+
+	public void runInternal() throws Exception {
+
+		while (true) {
+			MessageI msg = this.messageReceived.take();
+			this.eachLoop(msg);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.gridservice.commons.api.mock.MockClient#getDispatcher()
+	 */
+	@Override
+	public DispatcherI<MessageContext> getDispatcher() {
+		return this.engine.getDispatcher();
+	}
 }

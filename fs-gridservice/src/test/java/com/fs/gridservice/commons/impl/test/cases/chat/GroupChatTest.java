@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.mock.MockClient;
-import com.fs.gridservice.commons.impl.mock.MockClientImpl;
 import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
 import com.fs.gridservice.commons.impl.test.mock.chat.MockClientChatGroup;
 import com.fs.gridservice.commons.impl.test.mock.chat.MockParticipant;
