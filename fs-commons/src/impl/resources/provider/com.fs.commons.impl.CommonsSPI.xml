@@ -1,0 +1,5 @@
+<config>
+
+	<config name="dispatcherFactory" class="com.fs.commons.impl.service.DispatcherFactoryImpl" />
+
+</config>

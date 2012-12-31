@@ -20,6 +20,10 @@ public class CollectionHandler<T> implements HandlerI<T> {
 		this.handlers = new ArrayList<HandlerI<T>>();
 	}
 
+	public int size() {
+		return this.handlers.size();
+	}
+
 	public void addHandler(HandlerI<T> h) {
 		this.handlers.add(h);
 	}

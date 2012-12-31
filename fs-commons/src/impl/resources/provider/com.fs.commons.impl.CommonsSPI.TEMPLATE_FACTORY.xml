@@ -2,4 +2,6 @@
 	<prefix name="freemarker.setting">
 		<property name="object_wrapper" value="com.fs.commons.impl.freemarker.DataWrapper" />
 	</prefix>
+	
+	
 </config>

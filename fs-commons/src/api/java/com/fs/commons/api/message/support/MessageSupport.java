@@ -9,6 +9,7 @@ package com.fs.commons.api.message.support;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 
@@ -23,9 +24,13 @@ public class MessageSupport implements MessageI {
 	private PropertiesI<Object> payloads;
 
 	public MessageSupport() {
+		this(null);
+	}
+
+	public MessageSupport(String path) {
 		this.headers = new MapProperties<String>();
 		this.payloads = new MapProperties<Object>();
-
+		this.headers.setProperty(HK_PATH, path);
 	}
 
 	public static MessageI newMessage() {
@@ -242,12 +247,12 @@ public class MessageSupport implements MessageI {
 		//
 		return (String) this.getPayload(key, def);
 	}
-	
+
 	@Override
 	public String getId() {
 		return this.getHeader(HK_ID);
 	}
-	
+
 	@Override
 	public String getPath() {
 		return this.getHeader(HK_PATH);
@@ -264,7 +269,9 @@ public class MessageSupport implements MessageI {
 		return this.getHeader(HK_SOURCE);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.commons.api.message.MessageI#getResponseAddress()
 	 */
 	@Override
