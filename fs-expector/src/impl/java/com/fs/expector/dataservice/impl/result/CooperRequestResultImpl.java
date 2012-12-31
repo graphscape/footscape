@@ -21,7 +21,7 @@ public class CooperRequestResultImpl extends ResultSupport<CooperRequestResultI,
 	 * Oct 30, 2012
 	 */
 	@Override
-	public String getCooperRequestId() {
+	public String getCooperMessageId() {
 		//
 		return (String) this.getProperty(COOPER_REQUEST_ID);
 	}

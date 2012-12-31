@@ -38,36 +38,21 @@
 	<config name="globalEventDispatcher" class="com.fs.gridservice.commons.impl.GlobalEventDispatcher">
 		<!-- engine is created from EngineSPI -->
 		<engine value="engine-1" />
+		<handlers value="ping,wsmre,gchat" />
 
-		<prefix name="handler">
+		<config name="ping" path="/events/ping" class="com.fs.gridservice.commons.impl.handler.global.ping.PingHandler" />
+		<config name="wsmre" path="/events/terminal" class="com.fs.gridservice.commons.impl.handler.global.terminal.TerminalAuthHandler" />
+		<config name="gchat" path="/events/gchat" class="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatEventHandler" />
 
-			<ping.class value="com.fs.gridservice.commons.impl.handler.global.ping.PingHandler" />
-			<config name="ping">
-				<pattern value="/events/ping/.*" />
-			</config>
-
-			<wsmre.class value="com.fs.gridservice.commons.impl.handler.global.terminal.TerminalAuthHandler" />
-			<config name="wsmre">
-				<pattern value="/events/terminal/.*" />
-			</config>
-
-			<gchat.class value="com.fs.gridservice.commons.impl.handler.global.gchat.GroupChatEventHandler" />
-			<config name="gchat">
-				<pattern value="/events/gchat/.*" />
-			</config>
-		</prefix>
 	</config>
 
 	<config name="localEventDispatcher" class="com.fs.gridservice.commons.impl.LocalEventDispatcher">
 		<!-- engine is created from EngineSPI -->
 		<engine value="engine-2" />
+		<handlers value="wsmsg" />
 
-		<prefix name="handler">
-			<wsmsg.class value="com.fs.gridservice.commons.impl.handler.local.terminal.TermialMessageSendEventHandler" />
-			<config name="wsmsg">
-				<pattern value="/events/terminal/.*" />
-			</config>
-		</prefix>
+		<config name="wsmsg" path="/events/terminal" class="com.fs.gridservice.commons.impl.handler.local.terminal.TermialMessageSendEventHandler" />
+
 	</config>
 
 	<config name="webApp.GS">

@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -38,7 +38,7 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 
 		super.active(ac);
 		{// submit
-			ValidatorI<RequestI> vl = this.createValidator("submit");
+			ValidatorI<MessageI> vl = this.createValidator("submit");
 			vl.addExpression("payloads.property['age']!=null");
 			vl.addExpression("payloads.property['gender']!=null");
 			vl.addExpression("payloads.property['icon']!=null");
@@ -55,13 +55,13 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 
 	/* */
 	@Override
-	public void handle(HandleContextI sc) {
+	public void handle(MessageContext sc) {
 
 		super.handle(sc);
 	}
 
 	@Handle("init")
-	public void handleInit(TerminalMsgReceiveEW ew, HandleContextI hc, ResponseI res) {
+	public void handleInit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 
 		SessionGd login = this.getSession(ew, true);
 
@@ -79,8 +79,8 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew, RequestI req, ResponseI res, HandleContextI hc,
-			ValidatorI<RequestI> vl, ValidateResult<RequestI> vr) {
+	public void handleSubmit(TerminalMsgReceiveEW ew, MessageI req, ResponseI res, MessageContext hc,
+			ValidatorI<MessageI> vl, ValidateResult<MessageI> vr) {
 
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.

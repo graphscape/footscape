@@ -3,13 +3,14 @@
  */
 package com.fs.commons.api.service;
 
+import com.fs.commons.api.HasContainerI;
 import com.fs.commons.api.struct.Path;
 
 /**
  * @author wuzhen
  * 
  */
-public interface DispatcherI<T> {
+public interface DispatcherI<T> extends HasContainerI{
 
 	public static interface FactoryI {
 
@@ -24,5 +25,7 @@ public interface DispatcherI<T> {
 	public void addHandler(String cfgId, Path p, boolean strict, HandlerI<T> h);
 
 	public void addHandler(String cfgId);
+
+	public void addHandlers(String cfgId, String[] names);
 
 }

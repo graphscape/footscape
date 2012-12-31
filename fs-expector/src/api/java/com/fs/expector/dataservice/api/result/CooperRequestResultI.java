@@ -7,8 +7,8 @@ import com.fs.dataservice.api.core.ResultI;
 
 public interface CooperRequestResultI extends
 		ResultI<CooperRequestResultI, String> {
-	public static final String COOPER_REQUEST_ID = "cooperRequestId";
+	public static final String COOPER_REQUEST_ID = "cooperMessageId";
 
-	public String getCooperRequestId();// account is account uniqueId
+	public String getCooperMessageId();// account is account uniqueId
 
 }

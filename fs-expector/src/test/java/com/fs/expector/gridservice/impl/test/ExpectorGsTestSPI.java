@@ -4,8 +4,9 @@
 package com.fs.expector.gridservice.impl.test;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.engine.api.DispatcherI;
 import com.fs.expector.gridservice.api.TestHelperI;
 import com.fs.expector.gridservice.impl.handler.signup.SignupHandler;
 import com.fs.expector.gridservice.impl.test.helper.TestHelperImpl;
@@ -28,9 +29,10 @@ public class ExpectorGsTestSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 		// test scenario
-		DispatcherI dis = ac.getContainer().find(GlobalEventDispatcherI.class, true).getEngine()
+		DispatcherI<MessageContext> dis = ac.getContainer().find(GlobalEventDispatcherI.class, true).getEngine()
 				.getDispatcher();
-		SignupHandler sh = dis.getHandlerContainer().find(SignupHandler.class, true);
+		
+		SignupHandler sh = dis.getInternal().find(SignupHandler.class, true);
 		TestHelperI th = new TestHelperImpl();
 
 		ac.active("TEST_HELPER", th);//

@@ -48,9 +48,9 @@ public interface MailReceiverI {
 
 	}
 
-	public static class MessageContext {
+	public static class MailContext {
 
-		public MessageContext(MimeMessageWrapper mw, FolderContext fc) {
+		public MailContext(MimeMessageWrapper mw, FolderContext fc) {
 			this.messageWrapper = mw;
 			this.folderContext = fc;
 		}
@@ -81,13 +81,13 @@ public interface MailReceiverI {
 			CallbackI<FolderContext, Boolean> cb);
 
 	public void forEachMessage(String folder,
-			CallbackI<MessageContext, Boolean> each);
+			CallbackI<MailContext, Boolean> each);
 
 	public void forEachFolder(CallbackI<FolderContext, Boolean> each);
 
 	public Future<Integer> waitMessageCountEvent(String folder, long timeout);
 
 	public <T> List<T> processEachMessage(String folder,
-			CallbackI<MessageContext, T> each);
+			CallbackI<MailContext, T> each);
 
 }

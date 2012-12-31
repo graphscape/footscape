@@ -96,7 +96,7 @@ public class MailReceiverImpl implements MailReceiverI {
 	/* */
 	@Override
 	public void forEachMessage(final String folder,
-			final CallbackI<MessageContext, Boolean> each) {
+			final CallbackI<MailContext, Boolean> each) {
 		this.executeInFolder(folder, new CallbackI<FolderContext, Boolean>() {
 
 			@Override
@@ -116,7 +116,7 @@ public class MailReceiverImpl implements MailReceiverI {
 						MimeMessageWrapper mw = new MimeMessageImpl(
 								(MimeMessage) msg);
 
-						each.execute(new MessageContext(mw, fc));
+						each.execute(new MailContext(mw, fc));
 					}
 				} catch (MessagingException e) {
 					throw new FsException(e);
@@ -178,10 +178,10 @@ public class MailReceiverImpl implements MailReceiverI {
 
 	public int getMailCount(String folder) {
 		List<Object> ms = this.processEachMessage(folder,
-				new CallbackI<MessageContext, Object>() {
+				new CallbackI<MailContext, Object>() {
 
 					@Override
-					public Object execute(MessageContext i) {
+					public Object execute(MailContext i) {
 
 						return null;
 
@@ -193,13 +193,13 @@ public class MailReceiverImpl implements MailReceiverI {
 	/* */
 	@Override
 	public <T> List<T> processEachMessage(String folder,
-			final CallbackI<MessageContext, T> each) {
+			final CallbackI<MailContext, T> each) {
 		final List<T> rtL = new ArrayList<T>();
 
-		this.forEachMessage(folder, new CallbackI<MessageContext, Boolean>() {
+		this.forEachMessage(folder, new CallbackI<MailContext, Boolean>() {
 
 			@Override
-			public Boolean execute(MessageContext i) {
+			public Boolean execute(MailContext i) {
 
 				T t = each.execute(i);
 				rtL.add(t);

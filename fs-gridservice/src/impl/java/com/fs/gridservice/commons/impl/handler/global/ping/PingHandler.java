@@ -5,8 +5,7 @@
 package com.fs.gridservice.commons.impl.handler.global.ping;
 
 import com.fs.commons.api.message.MessageI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.annotation.Handle;
+import com.fs.commons.api.service.Handle;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -17,7 +16,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class PingHandler extends TerminalMsgReseiveEventHandler {
 
 	@Handle("ping")
-	public void handlePing(TerminalMsgReceiveEW reqE, RequestI req) {
+	public void handlePing(TerminalMsgReceiveEW reqE, MessageI req) {
 		MessageI msg = reqE.getMessage();
 		String text = msg.getString("text", true);
 

@@ -5,8 +5,8 @@ package com.fs.expector.gridservice.impl.signup;
 
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.value.ErrorInfo;
-import com.fs.engine.api.HandleContextI;
 import com.fs.expector.gridservice.api.signup.ConfirmCodeNotifierI;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -23,7 +23,7 @@ public class CompositeConfirmCodeNotifier extends ConfigurableSupport implements
 	}
 
 	@Override
-	public void notify(TerminalMsgReceiveEW req, HandleContextI hc, String email, String confirmCode) {
+	public void notify(TerminalMsgReceiveEW req, MessageContext hc, String email, String confirmCode) {
 
 		String ccnN = (String) req.getMessage().getPayload("confirmCodeNotifier");
 		ConfirmCodeNotifierI ccn = this.container.finder(ConfirmCodeNotifierI.class).name(ccnN).find(false);

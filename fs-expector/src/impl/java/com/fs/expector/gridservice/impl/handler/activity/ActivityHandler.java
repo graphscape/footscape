@@ -7,13 +7,13 @@ package com.fs.expector.gridservice.impl.handler.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.ResponseI;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -25,7 +25,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ActivityHandler extends ExpectorTMREHSupport {
 
 	//
-	public void handleDetail(HandleContextI hc, TerminalMsgReceiveEW ew, ResponseI res) {
+	public void handleDetail(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 
 		// the relation between activity and user.
 		MessageI req = ew.getMessage();//

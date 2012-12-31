@@ -6,9 +6,8 @@ package com.fs.gridservice.commons.impl.handler.global.terminal;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
@@ -40,7 +39,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 	}
 
 	@Handle("auth")
-	public void handleAuth(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
+	public void handleAuth(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, MessageI req) {
 		PropertiesI<Object> cre = reqE.getMessage().getPayloads();
 
 		PropertiesI<Object> ok = this.authProvider.auth(cre);
@@ -66,7 +65,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 
 	@Handle("binding")
 	// directly binding session with terminal
-	public void handleBinding(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
+	public void handleBinding(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, MessageI req) {
 		String sid = reqE.getMessage().getString("sessionId", true);//
 		SessionGd s = this.sessionManager.getSession(sid);
 		if (s == null) {

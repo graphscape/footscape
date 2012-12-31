@@ -20,68 +20,26 @@
 
 	</prefix>
 	<config name="globalEventDispatcher">
-		<prefix name="handler">
 
-			<activities.class value="com.fs.expector.gridservice.impl.handler.activities.ActivitiesHandler" />
-			<config name="activities">
-				<pattern value="/events/activities/.*" />
-			</config>
+		<handlers value="activities,activity,signup,client,i18n,imsg,expe,exps,cooper,profile,uelist" />
 
-			<activity.class value="com.fs.expector.gridservice.impl.handler.activity.ActivityHandler" />
-			<config name="activity">
-				<pattern value="/events/activity/.*" />
-			</config>
+		<config name="activities" path="/events/activities" class="com.fs.expector.gridservice.impl.handler.activities.ActivitiesHandler" />
+		<config name="activity" path="/events/activity" class="com.fs.expector.gridservice.impl.handler.activity.ActivityHandler" />
+		<config name="signup" path="/events/signup" class="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
+		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
+			<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
+		</config>
+		<config name="i18n" path="/events/i18n" class="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
+		<config name="imsg" path="/events/imsg" class="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />
+		<config name="expe" path="/events/expe" class="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />
+		<config name="exps" path="/events/exps" class="com.fs.expector.gridservice.impl.handler.exps.ExpSearchHandler">
+			<defaultIconDataUrl
+				value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==" />
 
-			<signup.class value="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
-			<config name="signup">
-				<pattern value="/events/signup/.*" />
-			</config>
+		</config>
+		<config name="cooper" path="/events/cooper" class="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
+		<config name="profile" path="/events/profile" class="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
+		<config name="uelist" path="/events/uelist" class="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />
 
-			<client.class value="com.fs.expector.gridservice.impl.handler.client.ClientHandler" />
-			<config name="client">
-				<pattern value="/events/client/.*" />
-				<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
-			</config>
-
-			<i18n.class value="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
-			<config name="i18n">
-				<pattern value="/events/i18n/.*" />
-			</config>
-
-			<imsg.class value="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />
-			<config name="imsg">
-				<pattern value="/events/internal/.*" />
-			</config>
-
-			<expe.class value="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />
-			<config name="expe">
-				<pattern value="/events/expe/.*" />
-			</config>
-
-			<exps.class value="com.fs.expector.gridservice.impl.handler.exps.ExpSearchHandler" />
-			<config name="exps">
-				<pattern value="/events/exps/.*" />
-				<!-- If account has no icon,use this one -->
-				<defaultIconDataUrl
-					value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==" />
-			</config>
-
-
-			<cooper.class value="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
-			<config name="cooper">
-				<pattern value="/events/cooper/.*" />
-			</config>
-
-			<profile.class value="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
-			<config name="profile">
-				<pattern value="/events/profile/.*" />
-			</config>
-
-			<uelist.class value="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />
-			<config name="uelist">
-				<pattern value="/events/uelist/.*" />
-			</config>
-
-		</prefix>
 	</config>
 </config>

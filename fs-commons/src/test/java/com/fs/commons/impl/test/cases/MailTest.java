@@ -22,7 +22,7 @@ import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.mail.MailReceiverI;
 import com.fs.commons.api.mail.MailReceiverI.FolderContext;
-import com.fs.commons.api.mail.MailReceiverI.MessageContext;
+import com.fs.commons.api.mail.MailReceiverI.MailContext;
 import com.fs.commons.api.mail.MailSenderI;
 import com.fs.commons.api.mail.MimeMessageWrapper;
 import com.fs.commons.impl.test.cases.support.TestBase;
@@ -118,10 +118,10 @@ public class MailTest extends TestBase {
 			throw new FsException(e);
 		}
 		List<String> mws = mr.processEachMessage("INBOX",
-				new CallbackI<MessageContext, String>() {
+				new CallbackI<MailContext, String>() {
 
 					@Override
-					public String execute(MessageContext i) {
+					public String execute(MailContext i) {
 
 						String rt = i.getMessageWrapper().getContentAsText();
 						return rt;

@@ -5,6 +5,7 @@
 package com.fs.expector.gridservice.impl;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.factory.ConfigFactoryI;
 import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.support.SPISupport;
@@ -36,18 +37,27 @@ public class ExpectorGsSPI extends SPISupport {
 	}
 
 	protected void activeHandlers(ActiveContext ac) {
-		EventDispatcherI ged = ac.getContainer().find(GlobalEventDispatcherI.class, true);
+		EventDispatcherI ged = ac.getContainer().find(
+				GlobalEventDispatcherI.class, true);
 
-		PopulatorI hp = ged.getEngine().getDispatcher().populator("handler");
+		Configuration cfg = Configuration.properties(this.id
+				+ ".globalEventDispatcher");
 
-		hp.active(ac).cfgId(this.id + ".globalEventDispatcher").force(true).populate();
+		ged.getEngine()
+				.getDispatcher()
+				.addHandlers(
+						cfg.getId(),
+						cfg.getPropertyAsCsv("handlers").toArray(
+								new String[] {}));
+
 	}
 
 	protected void activeConfirmCodeNotifier(ActiveContext ac) {
 
 		ConfigFactoryI cf = ac.getContainer().find(ConfigFactoryI.class, true);
 
-		PopulatorI pp = cf.newPopulator().container(ac.getContainer()).type("confirmCodeNotifier");
+		PopulatorI pp = cf.newPopulator().container(ac.getContainer())
+				.type("confirmCodeNotifier");
 		pp.spi(this).active(ac).force(true).populate();
 
 	}

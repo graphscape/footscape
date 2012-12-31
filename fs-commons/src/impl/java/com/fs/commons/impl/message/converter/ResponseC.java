@@ -5,13 +5,13 @@ package com.fs.commons.impl.message.converter;
 
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.ResponseI;
-import com.fs.commons.api.service.support.ServiceContextConverterSupport;
+import com.fs.commons.api.message.support.MessageContextConverterSupport;
 
 /**
  * @author wu
  * 
  */
-public class ResponseC extends ServiceContextConverterSupport<ResponseI> {
+public class ResponseC extends MessageContextConverterSupport<ResponseI> {
 
 	/** */
 	public ResponseC(com.fs.commons.api.converter.ConverterI.FactoryI fa) {

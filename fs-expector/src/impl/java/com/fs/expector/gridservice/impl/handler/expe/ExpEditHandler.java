@@ -4,10 +4,10 @@
  */
 package com.fs.expector.gridservice.impl.handler.expe;
 
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -19,7 +19,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpEditHandler extends ExpectorTMREHSupport {
 
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew, HandleContextI hc, ResponseI res) {
+	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 
 		// the relation between activity and user.
 

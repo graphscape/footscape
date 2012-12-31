@@ -158,4 +158,18 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.service.DispatcherI#addHandlers(java.lang.String,
+	 * java.lang.String[])
+	 */
+	@Override
+	public void addHandlers(String prefix, String[] names) {
+		for (String name : names) {
+			String cfg = prefix + "." + name;
+			this.addHandler(cfg);
+		}
+	}
+
 }

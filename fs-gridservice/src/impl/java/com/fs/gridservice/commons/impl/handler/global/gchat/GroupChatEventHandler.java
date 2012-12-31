@@ -10,10 +10,9 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.gchat.ChatGroupManagerI;
 import com.fs.gridservice.commons.api.gchat.data.ChatGroupGd;
@@ -45,7 +44,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	// message from one of participant,websocket, dispatch to other
 	// participants.
 	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE,
-			RequestI req) {
+			MessageI req) {
 		//
 		String tid = reqE.getTerminalId();
 		TerminalGd t = this.terminalManager.getTerminal(tid, true);
@@ -132,7 +131,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	// message from one of participant,websocket, dispatch to other
 	// participants.
 	public void handleExit(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE,
-			RequestI req) {
+			MessageI req) {
 		//
 		String tid = reqE.getTerminalId();
 		TerminalGd t = this.terminalManager.getTerminal(tid, true);
@@ -173,7 +172,7 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 	// message from one of participant,websocket, dispatch to other
 	// participants.
 	public void handleMessage(TerminalMsgReceiveEW reqE,
-			TerminalMsgSendEW resE, RequestI req) {
+			TerminalMsgSendEW resE, MessageI req) {
 		//
 		MessageI msg = reqE.getMessage();
 

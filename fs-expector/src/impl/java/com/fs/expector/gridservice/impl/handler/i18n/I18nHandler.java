@@ -5,12 +5,12 @@ package com.fs.expector.gridservice.impl.handler.i18n;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -37,7 +37,7 @@ public class I18nHandler extends ExpectorTMREHSupport {
 	 * @param res
 	 */
 	@Handle("refresh")
-	public void handleRefresh(TerminalMsgReceiveEW ew, HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleRefresh(TerminalMsgReceiveEW ew, MessageContext hc, MessageI req, ResponseI res) {
 		// Convert to Map's Map
 		String locale = this.getLocale(ew);
 		PropertiesI<String> pts = this.mergeResource(locale);

@@ -3,7 +3,7 @@
  */
 package com.fs.expector.gridservice.api.signup;
 
-import com.fs.engine.api.HandleContextI;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -12,6 +12,6 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  */
 public interface ConfirmCodeNotifierI {
 
-	public void notify(TerminalMsgReceiveEW req,HandleContextI hc, String email, String confirmCode);
+	public void notify(TerminalMsgReceiveEW req,MessageContext hc, String email, String confirmCode);
 
 }

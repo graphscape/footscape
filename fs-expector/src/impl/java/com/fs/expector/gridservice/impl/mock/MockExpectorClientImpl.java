@@ -196,7 +196,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 			@Override
 			public String execute(MessageI i) {
 				//
-				String rt = (String) i.getPayload("cooperRequestId", true);
+				String rt = (String) i.getPayload("cooperMessageId", true);
 				return rt;
 			}
 		});
@@ -212,7 +212,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		//
 		MessageI req = this.newRequest("/cooper/confirm");
 
-		req.setPayload("cooperRequestId", crid);
+		req.setPayload("cooperMessageId", crid);
 
 		req.setPayload("useNewestActivityId", findAct);
 

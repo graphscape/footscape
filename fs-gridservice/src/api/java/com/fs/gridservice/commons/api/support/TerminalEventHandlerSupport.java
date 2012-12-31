@@ -7,7 +7,7 @@ package com.fs.gridservice.commons.api.support;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.engine.api.support.ValidatorHandlerSupport;
+import com.fs.commons.api.message.support.ValidatorHandlerSupport;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
@@ -34,9 +34,10 @@ public class TerminalEventHandlerSupport extends ValidatorHandlerSupport {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.facade = this.container.find(GridFacadeI.class, true);
-		this.sessionManager = this.container.find(SessionManagerI.class, true);
-		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
+		this.facade = this.top.find(GridFacadeI.class, true);
+		this.sessionManager = this.top.find(SessionManagerI.class, true);
+		this.terminalManager = this.facade
+				.getEntityManager(TerminalManagerI.class);
 		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
 	}
 

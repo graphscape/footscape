@@ -12,14 +12,14 @@ import com.fs.commons.api.jexl.ExpressionI;
 import com.fs.commons.api.jexl.JexlEngineI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.ClientGd;
@@ -55,22 +55,22 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
-		this.dataService = ac.getContainer().find(DataServiceI.class, true);
+		this.dataService = top.find(DataServiceI.class, true);
 
-		jexl = this.container.find(JexlEngineI.class, true);
+		jexl = this.top.find(JexlEngineI.class, true);
 
-		this.facade = this.container.find(GridFacadeI.class, true);
+		this.facade = this.top.find(GridFacadeI.class, true);
 
 		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
 		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 		this.sessionManager = this.facade.getSessionManager();
 	}
 
-	protected <T extends NodeWrapper> T createNode(String expPrefix, HandleContextI hc, Class<T> cls) {
+	protected <T extends NodeWrapper> T createNode(String expPrefix, MessageContext hc, Class<T> cls) {
 		return this.createNode(expPrefix, hc, cls, new HashMap<String, String>());
 	}
 
-	protected <T extends NodeWrapper> T createNode(String expPrefix, HandleContextI hc, Class<T> cls,
+	protected <T extends NodeWrapper> T createNode(String expPrefix, MessageContext hc, Class<T> cls,
 			Map<String, String> payloadKeyMap) {
 		T rt = ClassUtil.newInstance(cls);
 		rt.forCreate(this.dataService);
@@ -87,12 +87,12 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI findNodeList(String expPrefix, HandleContextI hc,
+	protected <T extends NodeWrapper> NodeQueryResultI findNodeList(String expPrefix, MessageContext hc,
 			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap) {
 		return this.findNodeList(expPrefix, hc, type, cls, payloadKeyMap, true);//
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI<T> findNodeList(String expPrefix, HandleContextI hc,
+	protected <T extends NodeWrapper> NodeQueryResultI<T> findNodeList(String expPrefix, MessageContext hc,
 			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap, boolean sortTimeStampDesc) {
 		NodeQueryOperationI<T> dbo = this.dataService.prepareOperation(NodeQueryOperationI.class);
 		dbo.nodeType(type);
@@ -145,7 +145,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 	}
 
 	//
-	// protected String getLoginEmail(HandleContextI hc, boolean force) {
+	// protected String getLoginEmail(MessageContext hc, boolean force) {
 	// Session li = this.getLogin(hc, force);
 	//
 	// if (li == null) {
@@ -189,13 +189,13 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 		return s.getAccountId();
 	}
 
-	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, HandleContextI hc) {
+	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, MessageContext hc) {
 		this.processGetNewestListById(cls, hc, "idList", "nodeList");
 	}
 
-	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, HandleContextI hc,
+	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, MessageContext hc,
 			String reqKey, String resKey) {
-		RequestI req = hc.getRequest();
+		MessageI req = hc.getRequest();
 		ResponseI res = hc.getResponse();
 		List<String> idL = (List<String>) req.getPayload(reqKey);
 		List<T> rtL = this.dataService.getNewestListById(cls, idL, true, true);

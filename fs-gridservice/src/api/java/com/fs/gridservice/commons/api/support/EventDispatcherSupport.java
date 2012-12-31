@@ -4,6 +4,7 @@
  */
 package com.fs.gridservice.commons.api.support;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,16 +17,14 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.event.ListenerI;
-import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.support.ServerSupport;
 import com.fs.commons.api.value.ErrorInfos;
-import com.fs.engine.api.EngineFactoryI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.ServiceEngineI;
-import com.fs.engine.api.support.RRContext;
 import com.fs.gridservice.commons.api.EventDispatcherI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.data.EventGd;
@@ -37,11 +36,13 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends ServerSupport implements EventDispatcherI {
+public abstract class EventDispatcherSupport extends ServerSupport implements
+		EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory
+			.getLogger(EventDispatcherSupport.class);
 
-	protected ServiceEngineI engine;
+	protected MessageServiceI engine;
 
 	protected DgQueueI<EventGd> eventQueue;
 
@@ -63,13 +64,13 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		this.facade = this.container.find(GridFacadeI.class, true);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(EngineFactoryI.class, true).getEngine(engineName);//
-
+		this.engine = this.container.find(MessageServiceI.FactoryI.class, true)
+				.create(engineName);//
 		// handlers
+		List<String> names = this.config.getPropertyAsCsv("handlers");
 
-		PopulatorI hp = this.engine.getDispatcher().populator("handler");
-
-		hp.active(ac).cfgId(this.configId).force(true).populate();
+		this.engine.getDispatcher().addHandlers(this.configId,
+				names.toArray(new String[] {}));
 
 		//
 		this.container.getEventBus().addListener(BeforeDgCloseEvent.class,
@@ -87,7 +88,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	 * Dec 28, 2012
 	 */
 	@Override
-	public ServiceEngineI getEngine() {
+	public MessageServiceI getEngine() {
 		//
 		return this.engine;
 	}
@@ -172,7 +173,8 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 			this.onException(t);
 
 			if (this.isState(ServerI.RUNNING)) {
-				LOG.warn("shutdown event dispatcher:" + this.getConfiguration().getName()
+				LOG.warn("shutdown event dispatcher:"
+						+ this.getConfiguration().getName()
 						+ " for the task abnormally return");
 			}
 			this.shutdown();
@@ -224,18 +226,20 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	}
 
 	protected void onException(Throwable t) {
-		LOG.error("exeception got,eventQueue:" + this.getConfiguration().getName(), t);
+		LOG.error("exeception got,eventQueue:"
+				+ this.getConfiguration().getName(), t);
 	}
 
 	protected void onException(EventGd evt, Throwable t) {
-		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
+		LOG.error("exception got,eventQueue:"
+				+ this.getConfiguration().getName() + ", event:" + evt, t);
 	}
 
 	public void handleEvent(EventGd evt) {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
-					+ "," + evt);
+			LOG.debug("dispatcher:" + this.config.getName()
+					+ " is processing event#" + this.eventCounter + "," + evt);
 		}
 		String path = evt.getPath();
 
@@ -245,15 +249,16 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 			path = "/events/" + path;
 		}
 
-		RequestI req = RRContext.newRequest(path);
+		MessageI req = new MessageSupport();
 		req.setHeaders(evt.getHeaders());//
+		req.setHeader(MessageI.HK_PATH, path);// override the path;
 		req.setPayload(evt);
 
 		ResponseI res = this.engine.service(req);
 		this.onResponse(req, res);
 	}
 
-	protected void onResponse(RequestI req, ResponseI res) {
+	protected void onResponse(MessageI req, ResponseI res) {
 
 		ErrorInfos eis = res.getErrorInfos();
 
@@ -267,11 +272,13 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 			LOG.warn("no response address for request:" + req);
 		} else {
 			if (!ra.startsWith("tid://")) {
-				throw new FsException("address not supported:" + ra + ", only 'tid://' is supported for now");
+				throw new FsException("address not supported:" + ra
+						+ ", only 'tid://' is supported for now");
 			}
 			String tid = ra.substring("tid://".length());
 
-			TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
+			TerminalManagerI tm = this.facade
+					.getEntityManager(TerminalManagerI.class);
 
 			tm.sendMessage(tid, res);
 

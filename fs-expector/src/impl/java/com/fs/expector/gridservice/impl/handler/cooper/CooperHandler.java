@@ -6,14 +6,13 @@ package com.fs.expector.gridservice.impl.handler.cooper;
 
 import java.util.List;
 
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.Activity;
 import com.fs.expector.dataservice.api.wrapper.CooperRequest;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
@@ -32,7 +31,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	// query activities by account.
 
 	@Handle("request")
-	public void handleRequest(HandleContextI hc, TerminalMsgReceiveEW ew, ResponseI res) {
+	public void handleRequest(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 
 		MessageI req = ew.getMessage();//
 
@@ -53,7 +52,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		String cid = cr.getId();
 		//
 
-		res.setPayload("cooperRequestId", cid);//
+		res.setPayload("cooperMessageId", cid);//
 		//notify the exp2's account to refresh the incoming request,if he/she is online
 		SessionGd s2 = this.sessionManager.getEntityByField(SessionGd.ACCID, accId2,false);
 		
@@ -68,9 +67,9 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("confirm")
-	public void handleConfirm(TerminalMsgReceiveEW ew, HandleContextI hc, ResponseI res) {
+	public void handleConfirm(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 		MessageI req = ew.getMessage();//
-		String crid = (String) req.getPayload("cooperRequestId", true);
+		String crid = (String) req.getPayload("cooperMessageId", true);
 
 		boolean findAct = req.getPayload(Boolean.class, "useNewestActivityId", Boolean.FALSE);//
 		CooperRequest cr = this.dataService.getNewestById(CooperRequest.class, crid, true);
@@ -140,7 +139,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 	// TODO replace by server notifier to client.
 	@Handle("requestList")
-	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, RequestI req, ResponseI res) {
+	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, MessageI req, ResponseI res) {
 		String accId = this.getAccountId(ew, true);
 		List<CooperRequest> crL = this.dataService.getListNewestFirst(CooperRequest.class,
 				CooperRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);

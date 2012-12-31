@@ -49,7 +49,7 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.factory = container.find(DgFactoryI.class, true);
+		this.factory = top.find(DgFactoryI.class, true);
 		this.dg = this.factory.getInstance();
 		this.memberRefDgMap = this.dg.getMap(N_MAP_MEMBERS, MemberRefGd.class);
 		// this.goManagerMap = new HashMap<String,GridedObjectManagerI>();
@@ -123,7 +123,7 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	@Override
 	public GridMemberI getLocalMember() {
 		//
-		return this.container.find(GridMemberI.class, true);
+		return this.top.find(GridMemberI.class, true);
 
 	}
 
@@ -138,12 +138,12 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	public <E extends EntityGd, T extends EntityGdManagerI<E>> T getEntityManager(
 			Class<T> emcls) {
 
-		return this.container.find(emcls, true);
+		return this.top.find(emcls, true);
 	}
 
 	@Override
 	public AuthProviderI getAuthProvider() {
-		return this.container.find(AuthProviderI.class, true);
+		return this.top.find(AuthProviderI.class, true);
 	}
 
 	/*
@@ -154,7 +154,7 @@ public class GridFacadeImpl extends ConfigurableSupport implements GridFacadeI {
 	@Override
 	public SessionManagerI getSessionManager() {
 		// TODO Auto-generated method stub
-		return this.container.find(SessionManagerI.class, true);
+		return this.top.find(SessionManagerI.class, true);
 
 	}
 

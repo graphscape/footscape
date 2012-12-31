@@ -29,8 +29,7 @@ public class ValidatorHandlerSupport extends HandlerSupport {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		this.validatorFactory = ac.getContainer().find(
-				ValidatorI.FactoryI.class, true);
+		this.validatorFactory = top.find(ValidatorI.FactoryI.class, true);
 
 	}
 

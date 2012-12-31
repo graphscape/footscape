@@ -15,7 +15,7 @@ public class MockUserSnapshot {
 
 	private List<String> activityIdList = new ArrayList<String>();
 	private List<String> expIdList = new ArrayList<String>();
-	private List<String> cooperRequestIdList = new ArrayList<String>();
+	private List<String> cooperMessageIdList = new ArrayList<String>();
 	private String accountId;
 
 	public MockUserSnapshot(String accId) {
@@ -30,8 +30,8 @@ public class MockUserSnapshot {
 		return this.expIdList;
 	}
 
-	public List<String> getCooperRequestIdList() {
-		return this.cooperRequestIdList;
+	public List<String> getCooperMessageIdList() {
+		return this.cooperMessageIdList;
 	}
 
 	public String getAccountId() {
@@ -46,8 +46,8 @@ public class MockUserSnapshot {
 		this.expIdList.addAll(eL);
 	}
 
-	public void addCooperRequestIdList(List<String> crL) {
-		this.cooperRequestIdList.addAll(crL);
+	public void addCooperMessageIdList(List<String> crL) {
+		this.cooperMessageIdList.addAll(crL);
 	}
 
 }

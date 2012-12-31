@@ -6,14 +6,14 @@ package com.fs.expector.gridservice.impl.handler.exps;
 
 import java.util.List;
 
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.operations.ExpSearchOperationI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
@@ -27,7 +27,7 @@ import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 	@Handle("search")
-	public void handleSearch(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleSearch(MessageContext hc, MessageI req, ResponseI res) {
 
 		int pageNumber = (Integer) req.getPayload("pageNumber", true);
 		int pageSize = (Integer) req.getPayload("pageSize", true);

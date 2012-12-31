@@ -9,13 +9,11 @@ import org.junit.Before;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.message.MessageServiceI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
-import com.fs.engine.api.EngineFactoryI;
-import com.fs.engine.api.ServiceEngineI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
-import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
  * @author wu
@@ -27,7 +25,7 @@ public class TestBase extends TestCase {
 
 	protected DataServiceI dataService;
 
-	protected ServiceEngineI engine;
+	protected MessageServiceI engine;
 
 	protected MockExpectorClientFactory cfactory;
 

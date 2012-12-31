@@ -6,10 +6,10 @@ package com.fs.expector.gridservice.impl.handler.internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.expector.dataservice.api.wrapper.Session;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -25,7 +25,7 @@ public class InternalMsgHandler extends ExpectorTMREHSupport {
 
 	@Handle("after-session-binding")
 	// internal event
-	public void handleAnonymous(InternalMsgEW ew, HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleAnonymous(InternalMsgEW ew, MessageContext hc, MessageI req, ResponseI res) {
 		String sid = (String) ew.getMessage().getPayload("sessionId", true);
 		SessionGd s = this.sessionManager.getSession(sid);
 

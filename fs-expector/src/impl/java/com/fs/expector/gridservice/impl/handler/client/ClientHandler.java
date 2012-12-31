@@ -5,10 +5,10 @@ package com.fs.expector.gridservice.impl.handler.client;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
@@ -33,7 +33,7 @@ public class ClientHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("init")
-	public void handleInit(HandleContextI hc) {
+	public void handleInit(MessageContext hc) {
 		// create session for client init.
 		// PropertiesI<Object> session = new MapProperties<Object>();
 		TerminalGd t = this.terminalManager.web20Terminal("todo",
@@ -51,7 +51,7 @@ public class ClientHandler extends ExpectorTMREHSupport {
 
 	}
 
-	protected String resolveLocale(HandleContextI hc) {
+	protected String resolveLocale(MessageContext hc) {
 		String rt = (String) hc.getRequest().getPayload("preferedLocale");
 		if (rt != null) {
 			return rt;// is provided by client side,may saved in client side

@@ -81,7 +81,7 @@ public class MockClients {
 
 			MockUserSnapshot us1 = c1.getUserSnapshot(refreshSnapshot);
 
-			List<String> crIdL1 = us1.getCooperRequestIdList();
+			List<String> crIdL1 = us1.getCooperMessageIdList();
 			
 			for (int j = 0; j < maxSize; j++) {
 				String id = crIdL1.get(j);

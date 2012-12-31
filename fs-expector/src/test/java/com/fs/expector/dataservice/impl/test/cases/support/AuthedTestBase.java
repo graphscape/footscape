@@ -65,7 +65,7 @@ public class AuthedTestBase extends TestBase {
 		// confirm the request
 		SignupConfirm nw = new SignupConfirm().forCreate(this.datas);
 
-		nw.setSignupRequestId(signup.getId());
+		nw.setSignupMessageId(signup.getId());
 		nw.save(true);
 		String id = (String) nw.getId();
 
@@ -78,7 +78,7 @@ public class AuthedTestBase extends TestBase {
 		// the account,to be active
 
 		SignupRequest signup = this.datas.getNewestById(SignupRequest.class,
-				sc.getSignupRequestId(), true);//
+				sc.getSignupMessageId(), true);//
 
 		// create account
 

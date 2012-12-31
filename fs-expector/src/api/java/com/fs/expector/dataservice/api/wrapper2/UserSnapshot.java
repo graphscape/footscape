@@ -28,7 +28,7 @@ public class UserSnapshot extends NodeWrapper {
 
 	public static final String PK_EXP_ID_CSV = "expIdCsv";//
 
-	public static final String PK_COOPER_REQUEST_ID_CSV = "cooperRequestIdCsv";// in
+	public static final String PK_COOPER_REQUEST_ID_CSV = "cooperMessageIdCsv";// in
 																				// requesting
 																				// not
 																				// processed.
@@ -67,7 +67,7 @@ public class UserSnapshot extends NodeWrapper {
 		return this.csvToList(csv);
 	}
 
-	public List<String> getCooperRequestIdList() {
+	public List<String> getCooperMessageIdList() {
 		String csv = this.getPropertyAsString(PK_COOPER_REQUEST_ID_CSV);
 
 		return this.csvToList(csv);

@@ -9,14 +9,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.Activity;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
@@ -32,7 +32,7 @@ public class ActivitiesHandler extends ExpectorTMREHSupport {
 
 	// query activities by account.
 	@Handle("activities")
-	public void handleActivities(HandleContextI hc, TerminalMsgReceiveEW ew, ResponseI res) {
+	public void handleActivities(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		List<String> idL = (List<String>) req.getPayload("idList", false);
 		if (idL == null) {

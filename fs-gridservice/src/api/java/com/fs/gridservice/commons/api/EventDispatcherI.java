@@ -4,7 +4,7 @@
  */
 package com.fs.gridservice.commons.api;
 
-import com.fs.engine.api.ServiceEngineI;
+import com.fs.commons.api.message.MessageServiceI;
 
 /**
  * @author wu
@@ -12,6 +12,6 @@ import com.fs.engine.api.ServiceEngineI;
  */
 public interface EventDispatcherI {
 	
-	public ServiceEngineI getEngine();
+	public MessageServiceI getEngine();
 	
 }

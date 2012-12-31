@@ -6,15 +6,15 @@ package com.fs.expector.gridservice.impl.handler.uelist;
 
 import java.util.List;
 
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.wrapper.CooperRequest;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
@@ -28,7 +28,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  */
 public class UserExpListHandler extends ExpectorTMREHSupport {
 	@Handle("init")
-	public void handleInit(HandleContextI hc, ResponseI res) {
+	public void handleInit(MessageContext hc, ResponseI res) {
 
 	}
 
@@ -38,7 +38,7 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	 * Nov 28, 2012
 	 */
 	@Handle("get")
-	public void handleGet(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleGet(MessageContext hc, MessageI req, ResponseI res) {
 		String expId = (String) req.getPayload("expId");
 		Expectation exp = this.dataService.getNewestById(Expectation.class,
 				expId, false);
@@ -52,7 +52,7 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	 * Refresh the summary list of ue. Nov 28, 2012
 	 */
 	@Handle("refresh")
-	public void handleRefresh(TerminalMsgReceiveEW ew,HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleRefresh(TerminalMsgReceiveEW ew,MessageContext hc, MessageI req, ResponseI res) {
 		SessionGd login = this.getSession(ew, true);
 
 		NodeQueryOperationI<Expectation> finder = this.dataService

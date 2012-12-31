@@ -8,19 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
-import com.fs.engine.api.EngineFactoryI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.ServiceEngineI;
-import com.fs.engine.api.support.RRContext;
 import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.TestHelperI;
-import com.fs.expector.gridservice.api.mock.MockActivityDetail;
 import com.fs.expector.gridservice.api.mock.MockActivity;
-import com.fs.expector.gridservice.impl.ExpectorGsSPI;
 
 /**
  * @author wu
@@ -34,7 +31,7 @@ public class MockClient {
 
 	private String accountId;
 
-	private ServiceEngineI engine;
+	private MessageServiceI engine;
 
 	private ContainerI container;
 
@@ -69,7 +66,7 @@ public class MockClient {
 
 	protected String clientInit() {// get sessionUid
 
-		RequestI req = RRContext.newRequest("/uiserver/client/init");
+		MessageI req = new MessageSupport("/uiserver/client/init");
 		ResponseI res = this.service(req);
 		res.assertNoError();
 
@@ -80,7 +77,7 @@ public class MockClient {
 	// return login uid;
 	protected String login(String accId, String email, String password) {
 
-		RequestI req = newRequest("/uiserver/login/submit");
+		MessageI req = newRequest("/uiserver/login/submit");
 		// req.setPayload("accountId","");//by accountId or email
 		if (accId == null) {
 			req.setPayload("isSaved", Boolean.FALSE);
@@ -104,7 +101,7 @@ public class MockClient {
 
 	protected String login() {
 
-		RequestI req = newRequest("/uiserver/login/anonymous");
+		MessageI req = newRequest("/uiserver/login/anonymous");
 		ResponseI res = this.service(req);
 		res.assertNoError();
 
@@ -114,7 +111,7 @@ public class MockClient {
 		return this.login(accId, null, password);
 	}
 
-	protected ResponseI service(RequestI req) {
+	protected ResponseI service(MessageI req) {
 		ResponseI rt = this.engine.service(req);
 		if (rt.getErrorInfos().hasError()) {
 			DumpOperationI op = this.dataService
@@ -126,8 +123,8 @@ public class MockClient {
 		return rt;
 	}
 
-	protected RequestI newRequest(String path) {
-		RequestI rt = RRContext.newRequest(path);
+	protected MessageI newRequest(String path) {
+		MessageI rt = new MessageSupport(path);
 		rt.setHeader(Constants.HK_CLIENT_ID, this.clientId);
 		return rt;
 
@@ -135,7 +132,7 @@ public class MockClient {
 
 	protected String signupRequest(String email, String nick) {
 
-		RequestI req = newRequest("/uiserver/signup/submit");
+		MessageI req = newRequest("/uiserver/signup/submit");
 		req.setPayload("email", email);
 		req.setPayload("nick", nick);
 		req.setPayload("password", nick);//
@@ -153,7 +150,7 @@ public class MockClient {
 
 	protected void signupConfirm(String email, String ccode) {
 
-		RequestI req = newRequest("/uiserver/signup/confirm");
+		MessageI req = newRequest("/uiserver/signup/confirm");
 		req.setPayload("email", email);
 		req.setPayload("confirmCode", ccode);
 		ResponseI res = this.service(req);
@@ -165,7 +162,7 @@ public class MockClient {
 	}
 
 	public String newExp(String body) {
-		RequestI req = this.newRequest("/uiserver/expe/submit");
+		MessageI req = this.newRequest("/uiserver/expe/submit");
 		req.setPayload("body", body);
 		ResponseI res = this.service(req);
 		res.assertNoError();
@@ -178,7 +175,7 @@ public class MockClient {
 	 * Nov 3, 2012
 	 */
 	public String cooperRequest(String expId1, String expId2) {
-		RequestI req = this.newRequest("/uiserver/cooper/request");
+		MessageI req = this.newRequest("/uiserver/cooper/request");
 
 		req.setPayload("expId1", expId1);
 
@@ -186,7 +183,7 @@ public class MockClient {
 
 		ResponseI res = this.service(req);
 		res.assertNoError();
-		String rt = (String) res.getPayload("cooperRequestId", true);
+		String rt = (String) res.getPayload("cooperMessageId", true);
 
 		return rt;
 	}
@@ -195,9 +192,9 @@ public class MockClient {
 	 * Nov 3, 2012
 	 */
 	public void cooperConfirm(String cooperId, boolean findAct) {
-		RequestI req = this.newRequest("/uiserver/cooper/confirm");
+		MessageI req = this.newRequest("/uiserver/cooper/confirm");
 
-		req.setPayload("cooperRequestId", cooperId);
+		req.setPayload("cooperMessageId", cooperId);
 
 		req.setPayload("useNewestActivityId", findAct);
 
@@ -210,8 +207,8 @@ public class MockClient {
 	 * Nov 3, 2012
 	 */
 	public List<MockActivity> refreshActivity() {
-		//ActivitiesHandler
-		RequestI req = this.newRequest("/uiserver/activities/activities");
+		// ActivitiesHandler
+		MessageI req = this.newRequest("/uiserver/activities/activities");
 		ResponseI res = this.service(req);
 		res.assertNoError();
 		PropertiesI pts = res.getPayloads();
@@ -221,16 +218,15 @@ public class MockClient {
 		for (PropertiesI apt : actList) {
 			MockActivity ma = new MockActivity();
 			ma.actId = (String) apt.getProperty("actId", true);
-			//ma.accId = (String) apt.getProperty("accountId", true);
+			// ma.accId = (String) apt.getProperty("accountId", true);
 
 			this.activityIdList.add(ma);
 		}
 		return this.activityIdList;
 	}
 
-
 	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
-		RequestI req = this.newRequest("/uiserver/usshot/snapshot");
+		MessageI req = this.newRequest("/uiserver/usshot/snapshot");
 		req.setPayload("refresh", forceRefresh);
 		ResponseI res = this.service(req);
 
@@ -241,11 +237,11 @@ public class MockClient {
 				"activityIdList", true);
 		List<String> expIds = (List<String>) pts.getProperty("expIdList", true);
 		List<String> corrIds = (List<String>) pts.getProperty(
-				"cooperRequestIdList", true);
+				"cooperMessageIdList", true);
 		MockUserSnapshot rt = new MockUserSnapshot(this.accountId);
 		rt.addActivityIdList(activityIds);
 		rt.addExpIdList(expIds);
-		rt.addCooperRequestIdList(corrIds);
+		rt.addCooperMessageIdList(corrIds);
 		return rt;
 	}
 }

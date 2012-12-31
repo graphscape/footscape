@@ -5,8 +5,7 @@ package com.fs.gridservice.commons.impl.handler.global.presence;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.annotation.Handle;
+import com.fs.commons.api.service.Handle;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.presence.PresenceManagerI;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
@@ -30,7 +29,7 @@ public class PresenceEventHandler extends TerminalMsgReseiveEventHandler {
 	@Handle("leave")
 	// message from one of participant,websocket, dispatch to other
 	// participants.
-	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, RequestI req) {
+	public void handleJoin(TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, MessageI req) {
 		//
 		MessageI msg = reqE.getMessage();
 		String sid = (String) msg.getPayload("sessionId", true);

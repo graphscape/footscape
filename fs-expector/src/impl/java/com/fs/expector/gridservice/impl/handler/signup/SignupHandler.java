@@ -11,16 +11,15 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.annotation.Handle;
 import com.fs.expector.dataservice.api.NodeTypes;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
@@ -50,7 +49,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		super.active(ac);
 
 		{
-			ValidatorI<RequestI> vl = this.createValidator("submit");
+			ValidatorI<MessageI> vl = this.createValidator("submit");
 			vl.addExpression(prefix + "['email']!=null");
 			vl.addExpression(prefix + "['password']!=null");
 			vl.addExpression(prefix + "['nick']!=null");
@@ -59,12 +58,12 @@ public class SignupHandler extends ExpectorTMREHSupport {
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
 		{
-			ValidatorI<RequestI> vl = this.createValidator("confirm");
+			ValidatorI<MessageI> vl = this.createValidator("confirm");
 			vl.addExpression(prefix + "['email']!=null");
 			vl.addExpression(prefix + "['confirmCode']!=null");
 		}
 
-		this.confirmCodeNotifier = this.container.finder(ConfirmCodeNotifierI.class).name("main").find(true);
+		this.confirmCodeNotifier = this.top.finder(ConfirmCodeNotifierI.class).name("main").find(true);
 
 	}
 
@@ -76,13 +75,13 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 	/* */
 	@Override
-	public void handle(HandleContextI sc) {
+	public void handle(MessageContext sc) {
 
 		super.handle(sc);
 	}
 
 	@Handle("init")
-	public void handleInit(RequestI req, ResponseI res, HandleContextI hc) {
+	public void handleInit(MessageI req, ResponseI res, MessageContext hc) {
 
 	}
 
@@ -96,8 +95,8 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	 * @param vr
 	 */
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW mw, ResponseI res, HandleContextI hc,
-			ValidatorI<RequestI> vl, ValidateResult<RequestI> vr) {
+	public void handleSubmit(TerminalMsgReceiveEW mw, ResponseI res, MessageContext hc,
+			ValidatorI<MessageI> vl, ValidateResult<MessageI> vr) {
 		MessageI req = mw.getMessage();
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
@@ -134,7 +133,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	 * @param res
 	 */
 	@Handle("confirm")
-	public void handleConfirm(TerminalMsgReceiveEW mw, HandleContextI hc, ResponseI res) {
+	public void handleConfirm(TerminalMsgReceiveEW mw, MessageContext hc, ResponseI res) {
 		MessageI req = mw.getMessage();//
 		String email = (String) req.getPayload("email");
 		email = email.toLowerCase();
@@ -174,7 +173,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 	@Handle("anonymous")
 	// create anonymous account.
-	public void handleAnonymous(HandleContextI hc, RequestI req, ResponseI res) {
+	public void handleAnonymous(MessageContext hc, MessageI req, ResponseI res) {
 		String id = UUID.randomUUID().toString();
 		Account an = new Account().forCreate(this.dataService);
 

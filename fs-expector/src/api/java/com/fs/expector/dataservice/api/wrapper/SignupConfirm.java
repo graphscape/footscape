@@ -14,7 +14,7 @@ import com.fs.expector.dataservice.api.NodeTypes;
  */
 public class SignupConfirm extends NodeWrapper {
 
-	public static final String PK_SIGNUPREQUESTID = "signupRequestId";
+	public static final String PK_SIGNUPREQUESTID = "signupMessageId";
 
 	public SignupConfirm() {
 		super(NodeTypes.SIGNUP_CONFIRM);
@@ -27,11 +27,11 @@ public class SignupConfirm extends NodeWrapper {
 
 	}
 
-	public void setSignupRequestId(String srid) {
+	public void setSignupMessageId(String srid) {
 		this.setProperty(PK_SIGNUPREQUESTID, srid);
 	}
 
-	public String getSignupRequestId() {
+	public String getSignupMessageId() {
 		return (String) this.getProperty(PK_SIGNUPREQUESTID);
 	}
 
