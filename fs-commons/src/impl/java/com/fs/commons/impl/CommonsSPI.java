@@ -94,6 +94,7 @@ public class CommonsSPI extends SPISupport {
 		ac.active("MOCK_FACTORY", tstf);
 		//
 		ac.active("dispatcherFactory");
+		ac.active("messageServiceFactory");
 	}
 
 	/* */

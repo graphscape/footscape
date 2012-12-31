@@ -9,12 +9,14 @@ import com.fs.commons.api.callback.CallbackI;
  * @author wuzhen
  * 
  */
-public interface ServiceI<REQ, RES> {
+public interface ServiceI<R, T, C extends ServiceContext<R, T>> {
 
-	public void service(REQ req, CallbackI<RES, Object> res);
+	public void service(R req, CallbackI<T, Object> res);
 
-	public void service(REQ req, RES res);
+	public void service(R req, T res);
 
-	public RES service(REQ req);
+	public T service(R req);
+
+	public DispatcherI<C> getDispatcher();
 
 }

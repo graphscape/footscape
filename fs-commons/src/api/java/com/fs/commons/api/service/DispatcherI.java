@@ -19,8 +19,10 @@ public interface DispatcherI<T> {
 
 	public void dispatch(Path p, T ctx);
 
-	public void addHandler(Path p, HandlerI<T> h);
+	public void addHandler(String cfgId, Path p, HandlerI<T> h);
 
-	public void addHandler(Path p, boolean strict, HandlerI<T> h);
+	public void addHandler(String cfgId, Path p, boolean strict, HandlerI<T> h);
+
+	public void addHandler(String cfgId);
 
 }

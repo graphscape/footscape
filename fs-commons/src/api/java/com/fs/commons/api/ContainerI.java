@@ -35,7 +35,7 @@ public interface ContainerI extends AttachableI {
 		public String getName();
 
 		public Describe getDescribe();
-		
+
 		public String getId();
 
 	}
@@ -45,7 +45,7 @@ public interface ContainerI extends AttachableI {
 	public ContainerI getTop();
 
 	public EventBusI getEventBus();
-	
+
 	public void addObject(SPI spi, String name, Object o);
 
 	public void forEach(CallbackI<ObjectEntryI, Boolean> cb);
@@ -57,7 +57,7 @@ public interface ContainerI extends AttachableI {
 	public <T> T find(Class<T> cls, String name);
 
 	public <T extends HasIdI> T find(String id);
-	
+
 	public <T extends HasIdI> T find(String id, boolean force);
 
 	public <T> T find(Class<T> cls, String name, boolean force);

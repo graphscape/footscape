@@ -1,5 +1,6 @@
 <config>
 
 	<config name="dispatcherFactory" class="com.fs.commons.impl.service.DispatcherFactoryImpl" />
+	<config name="messageServiceFactory" class="com.fs.commons.impl.message.MessageServiceFactoryImpl" />
 
 </config>

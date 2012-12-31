@@ -95,13 +95,18 @@ public class Path {
 		return new Path(names);
 	}
 
+	public static Path valueOf(String[] names) {
+		return valueOf(Arrays.asList(names));
+
+	}
+
+	public static Path valueOf(String name) {
+		return valueOf(name, '/');
+	}
+
 	public static Path valueOf(String name, char sep) {
 		String[] names = name.split("" + sep);
 		return valueOf(names);
-	}
-
-	public static Path valueOf(String... names) {
-		return new Path(names);
 	}
 
 	public int length() {

@@ -16,12 +16,18 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 
 	protected ContainerI container;
 
+	protected ContainerI top;
+
 	protected SPI spi;
+
+	protected ActiveContext activeContext;
 
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
+		this.activeContext = ac;
 		this.container = ac.getContainer();
+		this.top = this.container.getTop();//
 		this.spi = ac.getSpi();
 	}
 

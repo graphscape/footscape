@@ -121,7 +121,6 @@ public class ActiveContext {
 				this.obj = cfg.getPropertyAsNewInstance("class", true);
 			}
 
-			
 			if (this.obj instanceof ConfigurableI) {
 
 				if (cfg == null) {
@@ -195,13 +194,25 @@ public class ActiveContext {
 	}
 
 	public void active(Configuration cfg, Object o) {
-		this.activitor().object(o).name(cfg.getName()).configuration(cfg)
-				.active();
+
+		ActivitorI act = this.activitor().object(o);
+		if (cfg != null) {
+			act.name(cfg.getName());
+		}
+		act.configuration(cfg);
+		act.active();
 	}
 
 	public ActivitorI activitor() {
 		return new Activitor().context(this);
 
+	}
+
+	/**
+	 * @param internal
+	 */
+	public ActiveContext newActiveContext(ContainerI internal) {
+		return new ActiveContext(internal, this.spi);
 	}
 
 }

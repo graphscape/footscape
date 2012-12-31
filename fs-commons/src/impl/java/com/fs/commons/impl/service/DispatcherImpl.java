@@ -9,17 +9,21 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.struct.Node;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.struct.Tree;
+import com.fs.commons.api.support.HasContainerSupport;
 
 /**
  * @author wuzhen
  * 
  */
-public class DispatcherImpl<T> implements DispatcherI<T> {
+public class DispatcherImpl<T> extends HasContainerSupport implements
+		DispatcherI<T> {
 
 	public static class PathEntyHandler<T> {
 
@@ -84,12 +88,22 @@ public class DispatcherImpl<T> implements DispatcherI<T> {
 	}
 
 	@Override
+	public void active(ActiveContext ac) {
+		super.active(ac);
+	}
+
+	@Override
+	public void deactive(ActiveContext ac) {
+		super.deactive(ac);
+	}
+
+	@Override
 	public void dispatch(Path p, T ctx) {
 
 		List<PathEntyHandler<T>> chL = this.tree.getTargetListInPath(p);
 		int count = 0;
 		for (PathEntyHandler<T> ch : chL) {
-			if(ch == null){
+			if (ch == null) {
 				continue;
 			}
 			count += ch.handle(p, ctx);
@@ -102,12 +116,19 @@ public class DispatcherImpl<T> implements DispatcherI<T> {
 	}
 
 	@Override
-	public void addHandler(Path p, HandlerI<T> h) {
-		this.addHandler(p, false, h);
+	public void addHandler(String cfgId, Path p, HandlerI<T> h) {
+		this.addHandler(cfgId, p, false, h);
 	}
 
 	@Override
-	public void addHandler(Path p, boolean strict, HandlerI<T> h) {
+	public void addHandler(String cfgId, Path p, boolean strict, HandlerI<T> h) {
+		Configuration cfg = cfgId == null ? null : Configuration
+				.properties(cfgId);
+		this.addHandler(cfg, p, strict, h);
+	}
+
+	public void addHandler(Configuration cfg, Path p, boolean strict,
+			HandlerI<T> h) {
 		Node<PathEntyHandler<T>> node = this.tree.getOrCreateNode(p);
 		PathEntyHandler<T> cl = node.getTarget();
 		if (cl == null) {
@@ -115,6 +136,26 @@ public class DispatcherImpl<T> implements DispatcherI<T> {
 			node.setTarget(cl);
 		}
 		cl.addHandler(p, strict, h);
+		ActiveContext ac = this.activeContext.newActiveContext(internal);
+
+		ac.active(cfg, h);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.service.DispatcherI#addHandler(java.lang.String)
+	 */
+	@Override
+	public void addHandler(String cfgId) {
+		Configuration cfg = Configuration.properties(cfgId);
+		String pathS = cfg.getProperty("path", true);
+		boolean strict = cfg.getPropertyAsBoolean("strict", false);
+		HandlerI<T> h = cfg.getPropertyAsNewInstance("class", true);
+
+		Path p = Path.valueOf(pathS);
+		this.addHandler(cfg, p, strict, h);
+
 	}
 
 }

@@ -100,8 +100,7 @@ public class ChainImpl<REQ, RES> extends ConfigurableSupport implements
 	public void active(ActiveContext ac) {
 		//
 		super.active(ac);
-		ContainerI c2 = ac.getContainer().find(ContainerI.FactoryI.class)
-				.newContainer();
+		ContainerI c2 = this.top.find(ContainerI.FactoryI.class).newContainer();
 		this.internal = new FilterContainer<REQ, RES>(c2);
 		//
 	}
@@ -109,7 +108,7 @@ public class ChainImpl<REQ, RES> extends ConfigurableSupport implements
 	/* */
 	@Override
 	public PopulatorI newPopulator() {
-		ConfigFactoryI cf = this.container.find(ConfigFactoryI.class, true);
+		ConfigFactoryI cf = this.top.find(ConfigFactoryI.class, true);
 
 		PopulatorI rt = cf.newPopulator().container(this.internal);
 		return rt;

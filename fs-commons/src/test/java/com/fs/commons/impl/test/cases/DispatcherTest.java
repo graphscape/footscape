@@ -46,9 +46,9 @@ public class DispatcherTest extends TestBase {
 		Path p3 = Path.valueOf("/x/y", '/');
 		Path p31 = Path.valueOf(p3, "z");
 
-		d.addHandler(p1, new MyHandler(p1.toString()));
-		d.addHandler(p2, new MyHandler(p2.toString()));
-		d.addHandler(p3, true, new MyHandler(p2.toString()));
+		d.addHandler(null, p1, new MyHandler(p1.toString()));
+		d.addHandler(null, p2, new MyHandler(p2.toString()));
+		d.addHandler(null, p3, true, new MyHandler(p2.toString()));
 
 		MessageI req = null;
 		ServiceContext<MessageI, MessageI> sc = null;

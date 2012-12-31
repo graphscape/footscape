@@ -10,8 +10,8 @@ import com.fs.commons.api.support.ActivableSupport;
 
 /**
  * @author wuzhen
- * <p>
- * TODO move to common.support package
+ *         <p>
+ *         TODO move to common.support package
  */
 public class ConfigurableSupport extends ActivableSupport implements
 		ConfigurableI {
@@ -22,13 +22,30 @@ public class ConfigurableSupport extends ActivableSupport implements
 
 	protected Configuration config;
 
+	protected String name;
+
 	public ConfigurableSupport() {
 
+	}
+
+	/**
+	 * @param name2
+	 */
+	public ConfigurableSupport(String name2) {
+		this.name = name2;
 	}
 
 	@Override
 	public Configuration getConfiguration() {
 		return this.config;
+	}
+
+	protected String getName() {
+		if (this.name == null) {
+			return this.config.getName();
+		} else {
+			return this.name;
+		}
 	}
 
 	/*
