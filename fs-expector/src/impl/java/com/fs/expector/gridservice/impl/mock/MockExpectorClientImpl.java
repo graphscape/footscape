@@ -5,16 +5,15 @@ package com.fs.expector.gridservice.impl.mock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.message.support.QueueMessageHandler;
+import com.fs.commons.api.service.DispatcherI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.gridservice.api.TestHelperI;
@@ -31,6 +30,7 @@ import com.fs.gridservice.commons.api.mock.MockClient;
 public class MockExpectorClientImpl extends MockExpectorClient {
 
 	protected ContainerI container;
+	protected DispatcherI<MessageContext> dispatcher;
 
 	/**
 	 * @param mc
@@ -38,13 +38,33 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 	public MockExpectorClientImpl(MockClient mc, ContainerI container) {
 		super(mc);
 		this.container = container;
+		this.dispatcher = this.getDispatcher();
 	}
 
 	@Override
-	public String signup(final String email, String nick, String pass) {
-		String ccode = this.signupRequest(email, nick, pass);
-		String rt = this.signupConfirm(email, ccode);
+	public MessageI syncSendMessage(MessageI msg) {
+		Path mp = msg.getPath();
+
+		QueueMessageHandler qh = new QueueMessageHandler();
+		this.dispatcher.addHandler(mp, qh);
+		this.sendMessage(msg);
+
+		MessageContext mc = qh.take();
+
+		MessageI rt = mc.getRequest();
+		Path rp = rt.getPath();
+		if (!"success".equals(rp.getName())) {
+			throw new FsException("failure response:" + rt);
+		}
+
 		return rt;
+
+	}
+
+	@Override
+	public void signup(final String email, String nick, String pass) {
+		String ccode = this.signupRequest(email, nick, pass);
+		this.signupConfirm(email, ccode);
 	}
 
 	protected String signupRequest(final String email, String nick, String pass) {
@@ -55,73 +75,29 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("password", pass);//
 		req.setPayload("isAgree", Boolean.TRUE);//
 		req.setPayload("confirmCodeNotifier", "test");//
+		QueueMessageHandler qh = new QueueMessageHandler();
+
+		this.dispatcher.addHandler(Path.valueOf("/signup/submit"), qh);
+
 		this.sendMessage(req);
-		String rt = this.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
-
-			@Override
-			public String execute(MessageI i) {
-				TestHelperI th = MockExpectorClientImpl.this.container.find(TestHelperI.class);
-				String rt = th.getConfirmCode(email, true);
-
-				return rt;
-			}
-		});
+		qh.take().getRequest();//
+		TestHelperI th = MockExpectorClientImpl.this.container.find(TestHelperI.class);
+		String rt = th.getConfirmCode(email, true);
 
 		return rt;
 	}
 
-	protected String signupConfirm(String email, String ccode) {
+	protected void signupConfirm(String email, String ccode) {
 
 		MessageI req = newRequest("/signup/confirm");
 		req.setPayload("email", email);
 		req.setPayload("confirmCode", ccode);
+		QueueMessageHandler qh = new QueueMessageHandler();
+
+		this.dispatcher.addHandler(Path.valueOf("/signup/confirm"), qh);
+
 		this.sendMessage(req);
-		String rt = this.receiveAndProcessMessageAndGetResult(new CallbackI<MessageI, String>() {
-
-			@Override
-			public String execute(MessageI i) {
-				// String rt = i.getString("accountId", true);
-
-				return null;
-			}
-		});
-		return rt;
-	}
-
-	public <T> T receiveAndProcessMessageAndGetResult(final CallbackI<MessageI, T> cb) {
-		Future<T> rtF = this.receiveAndProcessMessage(cb);
-
-		try {
-			return rtF.get();
-		} catch (Exception e) {
-			throw new FsException(e);
-		}
-	}
-
-	public <T> Future<T> receiveAndProcessMessage(final CallbackI<MessageI, T> cb) {
-		FutureTask<T> rt = new FutureTask<T>(new Callable<T>() {
-
-			@Override
-			public T call() throws Exception {
-				MessageI msg = MockExpectorClientImpl.this.receiveAndGetMessage();
-
-				return cb.execute(msg);
-			}
-		});
-		rt.run();
-		return rt;
-	}
-
-	public MessageI receiveAndGetMessage() {
-		MessageI msg = null;
-		try {
-			msg = this.receiveMessage().get();
-		} catch (InterruptedException e) {
-			throw new FsException(e);
-		} catch (ExecutionException e) {
-			throw new FsException(e);
-		}
-		return msg;
+		qh.take();
 	}
 
 	protected MessageI newRequest(String path) {
@@ -138,13 +114,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 	@Override
 	public void start(String email, String nick, String pass) {
 		//
-		try {
-			this.connect().get();
-		} catch (InterruptedException e) {
-			throw new FsException(e);
-		} catch (ExecutionException e) {
-			throw new FsException(e);
-		}
+		this.connect();
 		this.signup(email, nick, pass);
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty("type", "registered");
@@ -152,11 +122,6 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		cre.setProperty("password", pass);
 
 		this.auth(cre);
-	}
-
-	public <T> T sendMessageAndGetResult(MessageI msg, CallbackI<MessageI, T> cb) {
-		this.sendMessage(msg);
-		return this.receiveAndProcessMessageAndGetResult(cb);
 	}
 
 	/*
@@ -167,15 +132,8 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		MessageI req = this.newRequest("/expe/submit");
 		req.setPayload("body", body);
 
-		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
-
-			@Override
-			public String execute(MessageI i) {
-				//
-				String rt = (String) i.getPayload("expId", true);
-				return rt;
-			}
-		});
+		MessageI i = this.syncSendMessage(req);
+		String rt = (String) i.getPayload("expId", true);
 
 		return rt;
 	}
@@ -190,16 +148,9 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("expId1", expId1);
 
 		req.setPayload("expId2", expId2);
-
-		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
-
-			@Override
-			public String execute(MessageI i) {
-				//
-				String rt = (String) i.getPayload("cooperMessageId", true);
-				return rt;
-			}
-		});
+		MessageI i = this.syncSendMessage(req);
+		//
+		String rt = (String) i.getPayload("cooperMessageId", true);
 
 		return rt;
 	}
@@ -215,16 +166,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("cooperMessageId", crid);
 
 		req.setPayload("useNewestActivityId", findAct);
-
-		String rt = this.sendMessageAndGetResult(req, new CallbackI<MessageI, String>() {
-
-			@Override
-			public String execute(MessageI i) {
-				//
-
-				return null;
-			}
-		});
+		MessageI i = this.syncSendMessage(req);
 
 	}
 
@@ -236,38 +178,28 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		//
 		// ActivitiesHandler
 		MessageI req = this.newRequest("/activities/activities");
+		MessageI i = this.syncSendMessage(req);
+		Path path = i.getPath();
 
-		List<MockActivity> rt = this.sendMessageAndGetResult(req,
-				new CallbackI<MessageI, List<MockActivity>>() {
+		PropertiesI pts = i.getPayloads();
+		List<PropertiesI> actList = (List<PropertiesI>) pts.getProperty("activities", true);
+		List<MockActivity> rt = new ArrayList<MockActivity>();
+		for (PropertiesI apt : actList) {
+			MockActivity ma = new MockActivity();
+			ma.actId = (String) apt.getProperty("id", true);
+			List<MockExpInfo> expList = new ArrayList<MockExpInfo>();
+			List<PropertiesI<Object>> eL = (List<PropertiesI<Object>>) apt.getProperty("expectations", true);
+			for (PropertiesI<Object> pt : eL) {
+				MockExpInfo me = new MockExpInfo();
+				me.accId = (String) pt.getProperty("accountId", true);
+				me.expId = (String) pt.getProperty("expId", true);
+				me.body = (String) pt.getProperty("body", true);
 
-					@Override
-					public List<MockActivity> execute(MessageI i) {
-						String path = i.getPath();
-
-						PropertiesI pts = i.getPayloads();
-						List<PropertiesI> actList = (List<PropertiesI>) pts.getProperty("activities", true);
-						List<MockActivity> rt = new ArrayList<MockActivity>();
-						for (PropertiesI apt : actList) {
-							MockActivity ma = new MockActivity();
-							ma.actId = (String) apt.getProperty("id", true);
-							List<MockExpInfo> expList = new ArrayList<MockExpInfo>();
-							List<PropertiesI<Object>> eL = (List<PropertiesI<Object>>) apt.getProperty(
-									"expectations", true);
-							for (PropertiesI<Object> pt : eL) {
-								MockExpInfo me = new MockExpInfo();
-								me.accId = (String) pt.getProperty("accountId", true);
-								me.expId = (String) pt.getProperty("expId", true);
-								me.body = (String) pt.getProperty("body", true);
-								
-								expList.add(me);
-							}
-							ma.expList = expList;
-							rt.add(ma);
-						}
-						return rt;
-					}
-				});
-
+				expList.add(me);
+			}
+			ma.expList = expList;
+			rt.add(ma);
+		}
 		return rt;
 	}
 
@@ -280,32 +212,26 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 
 		MessageI req = this.newRequest("/activity/detail");
 		req.setPayload("actId", actId);
-		MockActivityDetail rt = this.sendMessageAndGetResult(req,
-				new CallbackI<MessageI, MockActivityDetail>() {
 
-					@Override
-					public MockActivityDetail execute(MessageI i) {
-						PropertiesI pts = i.getPayloads();
-						List<PropertiesI> expList = (List<PropertiesI>) pts.getProperty("participants");
-						MockActivityDetail rt = new MockActivityDetail();
-						rt.activityUid = (String) pts.getProperty("actId", true);
-						for (PropertiesI pt : expList) {
-							String expId = (String) pt.getProperty("expId");
-							String accId = (String) pt.getProperty("accountId");
-							String body = (String) pt.getProperty("body");//
+		MessageI i = this.syncSendMessage(req);
 
-							MockExpInfo exp = new MockExpInfo();
-							exp.accId = accId;
-							exp.body = body;
-							exp.expId = expId;
+		PropertiesI pts = i.getPayloads();
+		List<PropertiesI> expList = (List<PropertiesI>) pts.getProperty("participants");
+		MockActivityDetail rt = new MockActivityDetail();
+		rt.activityUid = (String) pts.getProperty("actId", true);
+		for (PropertiesI pt : expList) {
+			String expId = (String) pt.getProperty("expId");
+			String accId = (String) pt.getProperty("accountId");
+			String body = (String) pt.getProperty("body");//
 
-							rt.expMap.put(expId, exp);
+			MockExpInfo exp = new MockExpInfo();
+			exp.accId = accId;
+			exp.body = body;
+			exp.expId = expId;
 
-						}
-						return rt;
-					}
-				});
+			rt.expMap.put(expId, exp);
 
+		}
 		return rt;
 	}
 

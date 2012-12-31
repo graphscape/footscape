@@ -10,7 +10,7 @@ import com.fs.commons.api.struct.Path;
  * @author wuzhen
  * 
  */
-public interface DispatcherI<T> extends HasContainerI{
+public interface DispatcherI<T> extends HasContainerI {
 
 	public static interface FactoryI {
 
@@ -19,6 +19,10 @@ public interface DispatcherI<T> extends HasContainerI{
 	}
 
 	public void dispatch(Path p, T ctx);
+
+	public void addHandler(Path p, HandlerI<T> h);
+
+	public void addHandler(Path p, boolean strict, HandlerI<T> h);
 
 	public void addHandler(String cfgId, Path p, HandlerI<T> h);
 

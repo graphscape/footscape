@@ -7,6 +7,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
@@ -88,7 +89,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 		msg.setPayload("sessionId", sid);
 		msg.setPayload("accountId", aid);
 		this.sendMessage(msg);
-		InternalMsgEW sb = InternalMsgEW.valueOf("/internal/after-session-binding", msg);
+		InternalMsgEW sb = InternalMsgEW.valueOf(Path.valueOf("/internal/after-session-binding"), msg);
 		this.raiseEvent(sb);
 
 	}

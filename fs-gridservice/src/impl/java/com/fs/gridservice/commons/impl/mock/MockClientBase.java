@@ -48,8 +48,7 @@ import com.fs.gridservice.commons.api.mock.MockClient;
  *         and-loadtest/
  */
 public class MockClientBase extends MockClient implements WebSocketListener {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(MockClientBase.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MockClientBase.class);
 
 	protected URI uri;
 
@@ -79,37 +78,32 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 
 	protected String name;
 
-	public MockClientBase(String name, WebSocketClientFactory f, ContainerI c,
-			URI uri) {
+	public MockClientBase(String name, WebSocketClientFactory f, ContainerI c, URI uri) {
 		this.uri = uri;
 		this.name = name;
 
 		this.executor = Executors.newFixedThreadPool(1);// TODO
-		this.engine = c.find(MessageServiceI.FactoryI.class, true).create(
-				"mock-client-" + name);
+		this.engine = c.find(MessageServiceI.FactoryI.class, true).create("mock-client-" + name);
 
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
-		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
-				MessageI.class);
+		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 
 		this.client = f.newWebSocketClient(this);
 
-		this.getDispatcher().addHandler(null,
-				Path.valueOf("/terminal/auth/success"), new MessageHandlerI() {
+		this.getDispatcher().addHandler(null, Path.valueOf("/terminal/auth/success"), new MessageHandlerI() {
 
-					@Override
-					public void handle(MessageContext sc) {
-						MockClientBase.this.onAuthSuccess(sc);
-					}
-				});
-		this.getDispatcher().addHandler(null,
-				Path.valueOf(WebSocketGoI.P_READY), new MessageHandlerI() {
+			@Override
+			public void handle(MessageContext sc) {
+				MockClientBase.this.onAuthSuccess(sc);
+			}
+		});
+		this.getDispatcher().addHandler(null, Path.valueOf(WebSocketGoI.P_READY), new MessageHandlerI() {
 
-					@Override
-					public void handle(MessageContext sc) {
-						MockClientBase.this.onConnected(sc);
-					}
-				});
+			@Override
+			public void handle(MessageContext sc) {
+				MockClientBase.this.onConnected(sc);
+			}
+		});
 	}
 
 	@Override
@@ -138,7 +132,7 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 
 	private void onConnected(MessageContext sc) {
 
-		ResponseI msg = sc.getResponse();
+		MessageI msg = sc.getRequest();//
 		this.terminalId = msg.getString("terminalId", true);
 		this.clientId = msg.getString("clientId", true);
 
@@ -167,11 +161,11 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 	}
 
 	private void onAuthSuccess(MessageContext sc) {
-		ResponseI res = sc.getResponse();
-		String path = res.getPath();
+		MessageI msg = sc.getRequest();//
+		Path path = msg.getPath();
 
-		String sid = (String) res.getPayload("sessionId", true);
-		String accId = res.getString("accountId", true);
+		String sid = (String) msg.getPayload("sessionId", true);
+		String accId = msg.getString("accountId", true);
 		this.sessionId = sid;
 		this.accountId = accId;//
 		this.authed.release();
@@ -184,8 +178,7 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 			throw new FsException("not connected");
 		}
 
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
-				.getSession().getRemote();
+		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
@@ -270,6 +263,9 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 
 	public void eachLoop(MessageI msg) throws Exception {
 		String path = msg.getHeader(MessageI.HK_PATH);
+		if (path == null) {
+			throw new FsException("msg has no path,msg:" + msg + "");
+		}
 		Path v = Path.valueOf(path);
 		ResponseI res = this.engine.service(msg);
 		if (res.getErrorInfos().hasError()) {

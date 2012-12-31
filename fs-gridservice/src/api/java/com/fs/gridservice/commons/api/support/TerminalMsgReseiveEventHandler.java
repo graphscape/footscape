@@ -7,6 +7,7 @@ package com.fs.gridservice.commons.api.support;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -26,8 +27,8 @@ public class TerminalMsgReseiveEventHandler extends TerminalEventHandlerSupport 
 
 	protected void sendResponseFailureMessage(TerminalMsgReceiveEW source) {
 		String tId = source.getTerminalId();
-		String path = source.getMessage().getPath();
-		path += "/failure";
+		Path path = source.getMessage().getPath();
+		path = path.getSubPath("failure");
 		this.sendTextMessage(tId, path, null);
 
 	}
@@ -38,10 +39,10 @@ public class TerminalMsgReseiveEventHandler extends TerminalEventHandlerSupport 
 
 	protected MessageI newResponseSuccessMessage(TerminalMsgReceiveEW source) {
 		String tId = source.getTerminalId();
-		String path = source.getMessage().getPath();
-		path += "/success";
+		Path path = source.getMessage().getPath();
+		path = path.getSubPath("success");
 		MessageI msg = new MessageSupport();
-		msg.setHeader(MessageI.HK_PATH, path);
+		msg.setHeader(MessageI.HK_PATH, path.toString());
 		msg.setHeader("terminalId", tId);
 
 		return msg;

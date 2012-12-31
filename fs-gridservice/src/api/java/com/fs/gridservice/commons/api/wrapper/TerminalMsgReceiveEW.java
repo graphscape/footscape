@@ -5,6 +5,7 @@
 package com.fs.gridservice.commons.api.wrapper;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.EventResponse;
 import com.fs.gridservice.commons.api.EventType;
 import com.fs.gridservice.commons.api.data.EventGd;
@@ -25,7 +26,7 @@ public class TerminalMsgReceiveEW extends TerminalMsgEW {
 
 	}
 
-	public static TerminalMsgReceiveEW valueOf(String path,String tId, String cid,MessageI msg) {
+	public static TerminalMsgReceiveEW valueOf(Path path,String tId, String cid,MessageI msg) {
 
 		TerminalMsgReceiveEW rt = new TerminalMsgReceiveEW(new EventGd(TYPE, path),tId,cid);
 		rt.setMessage(msg);

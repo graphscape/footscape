@@ -8,6 +8,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.message.support.ValidatorHandlerSupport;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
@@ -36,14 +37,12 @@ public class TerminalEventHandlerSupport extends ValidatorHandlerSupport {
 		super.active(ac);
 		this.facade = this.top.find(GridFacadeI.class, true);
 		this.sessionManager = this.top.find(SessionManagerI.class, true);
-		this.terminalManager = this.facade
-				.getEntityManager(TerminalManagerI.class);
+		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 		this.clientManager = this.facade.getEntityManager(ClientManagerI.class);
 	}
 
-	protected void sendTextMessage(String termId, String path, String text) {
-		MessageI msg = new MessageSupport();
-		msg.setHeader(MessageI.HK_PATH, path);
+	protected void sendTextMessage(String termId, Path path, String text) {
+		MessageI msg = new MessageSupport(path.toString());
 		msg.setHeader("terminalId", termId);
 		msg.setPayload("text", text);//
 		this.sendMessage(termId, msg);

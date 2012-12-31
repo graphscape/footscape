@@ -23,6 +23,7 @@ import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.server.ServerI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.ServerSupport;
 import com.fs.commons.api.value.ErrorInfos;
 import com.fs.gridservice.commons.api.EventDispatcherI;
@@ -36,11 +37,9 @@ import com.fs.gridservice.core.api.objects.DgQueueI;
  * @author wu
  * 
  */
-public abstract class EventDispatcherSupport extends ServerSupport implements
-		EventDispatcherI {
+public abstract class EventDispatcherSupport extends ServerSupport implements EventDispatcherI {
 
-	protected static final Logger LOG = LoggerFactory
-			.getLogger(EventDispatcherSupport.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(EventDispatcherSupport.class);
 
 	protected MessageServiceI engine;
 
@@ -64,13 +63,11 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 		this.facade = this.container.find(GridFacadeI.class, true);
 		String engineName = this.config.getProperty("engine", true);
 
-		this.engine = this.container.find(MessageServiceI.FactoryI.class, true)
-				.create(engineName);//
+		this.engine = this.container.find(MessageServiceI.FactoryI.class, true).create(engineName);//
 		// handlers
 		List<String> names = this.config.getPropertyAsCsv("handlers");
 
-		this.engine.getDispatcher().addHandlers(this.configId,
-				names.toArray(new String[] {}));
+		this.engine.getDispatcher().addHandlers(this.configId, names.toArray(new String[] {}));
 
 		//
 		this.container.getEventBus().addListener(BeforeDgCloseEvent.class,
@@ -173,8 +170,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 			this.onException(t);
 
 			if (this.isState(ServerI.RUNNING)) {
-				LOG.warn("shutdown event dispatcher:"
-						+ this.getConfiguration().getName()
+				LOG.warn("shutdown event dispatcher:" + this.getConfiguration().getName()
 						+ " for the task abnormally return");
 			}
 			this.shutdown();
@@ -226,59 +222,59 @@ public abstract class EventDispatcherSupport extends ServerSupport implements
 	}
 
 	protected void onException(Throwable t) {
-		LOG.error("exeception got,eventQueue:"
-				+ this.getConfiguration().getName(), t);
+		LOG.error("exeception got,eventQueue:" + this.getConfiguration().getName(), t);
 	}
 
 	protected void onException(EventGd evt, Throwable t) {
-		LOG.error("exception got,eventQueue:"
-				+ this.getConfiguration().getName() + ", event:" + evt, t);
+		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
 	}
 
 	public void handleEvent(EventGd evt) {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName()
-					+ " is processing event#" + this.eventCounter + "," + evt);
+			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
+					+ "," + evt);
 		}
-		String path = evt.getPath();
 
-		if (path.startsWith("/")) {
-			path = "/events" + path;
-		} else {
-			path = "/events/" + path;
-		}
+		Path ep = evt.getPath();
+
+		Path p = Path.valueOf("events", ep);
 
 		MessageI req = new MessageSupport();
 		req.setHeaders(evt.getHeaders());//
-		req.setHeader(MessageI.HK_PATH, path);// override the path;
+		req.setHeader(MessageI.HK_PATH, p.toString());// override the path;
 		req.setPayload(evt);
 
 		ResponseI res = this.engine.service(req);
-		this.onResponse(req, res);
+
+		this.onResponse(ep, req, res);
 	}
 
-	protected void onResponse(MessageI req, ResponseI res) {
+	protected void onResponse(Path ep, MessageI req, ResponseI res) {
 
 		ErrorInfos eis = res.getErrorInfos();
 
+		Path path = ep;
 		// process error
-		if (!eis.hasError()) {
+		if (eis.hasError()) {
 			LOG.error("response contains error for request:" + req, res);
+			path = path.getSubPath("failure");
+
+		} else {
+			path = path.getSubPath("success");
 		}
 
+		res.setHeader(MessageI.HK_PATH, path.toString());
 		String ra = req.getResponseAddress();
 		if (ra == null) {//
 			LOG.warn("no response address for request:" + req);
 		} else {
 			if (!ra.startsWith("tid://")) {
-				throw new FsException("address not supported:" + ra
-						+ ", only 'tid://' is supported for now");
+				throw new FsException("address not supported:" + ra + ", only 'tid://' is supported for now");
 			}
 			String tid = ra.substring("tid://".length());
 
-			TerminalManagerI tm = this.facade
-					.getEntityManager(TerminalManagerI.class);
+			TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
 
 			tm.sendMessage(tid, res);
 

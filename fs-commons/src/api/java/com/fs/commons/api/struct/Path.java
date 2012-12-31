@@ -10,6 +10,8 @@ public class Path {
 
 	private List<String> nameList;
 
+	public static Path ROOT = Path.valueOf(new String[] {});
+
 	public List<String> getNameList() {
 		return nameList;
 	}
@@ -21,7 +23,7 @@ public class Path {
 		return this.nameList.get(this.nameList.size() - 1);
 	}
 
-	private Path(String... names) {
+	private Path(String[] names) {
 		this(Arrays.asList(names));
 	}
 
@@ -85,6 +87,12 @@ public class Path {
 		names.addAll(this.nameList);
 		names.add(name);
 		return Path.valueOf(names);
+	}
+
+	public static Path valueOf(String name, Path p) {
+		List<String> nl = new ArrayList<String>(p.getNameList());
+		nl.add(0, name);
+		return new Path(nl);
 	}
 
 	public static Path valueOf(Path par, String name) {

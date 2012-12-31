@@ -32,8 +32,7 @@ public class GdSessionTest extends TestBase {
 		SessionGd s = sm.getSession(sid);
 
 		assertNotNull("session is not in manager", s);
-		TerminalManagerI tm = this.facade
-				.getEntityManager(TerminalManagerI.class);
+		TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
 
 		String cid = s.getClientId();
 		ClientGd c = this.cmanager.getEntity(cid, true);
@@ -44,8 +43,7 @@ public class GdSessionTest extends TestBase {
 		String text = "this is a text message from server.";
 
 		QueueMessageHandler mh = new QueueMessageHandler();
-		client.getDispatcher().addHandler(null,
-				Path.valueOf(new ArrayList<String>()), mh);
+		client.getDispatcher().addHandler(Path.ROOT, mh);
 		tm.sendTextMessage(tid, text);
 
 		// assert the client received.

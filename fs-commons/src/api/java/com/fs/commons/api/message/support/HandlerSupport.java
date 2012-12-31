@@ -16,13 +16,13 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.struct.Path;
 
 /**
  * @author wuzhen
  * 
  */
-public abstract class HandlerSupport extends ConfigurableSupport implements
-		MessageHandlerI {
+public abstract class HandlerSupport extends ConfigurableSupport implements MessageHandlerI {
 
 	protected static class MethodWrapper extends ContextSupport {
 		public Method method;
@@ -40,9 +40,8 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 
 		}
 
-		public void invoke(HandlerSupport obj, MessageContext hc)
-				throws IllegalAccessException, IllegalArgumentException,
-				InvocationTargetException {
+		public void invoke(HandlerSupport obj, MessageContext hc) throws IllegalAccessException,
+				IllegalArgumentException, InvocationTargetException {
 			Object[] args = this.toArgs(hc);
 			this.method.invoke(obj, args);
 		}
@@ -106,8 +105,7 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 
 			MethodWrapper old = this.methodEntryMap.get(key);
 			if (old != null) {
-				throw new FsException("path duplicated:" + key
-						+ " for handler:" + this);
+				throw new FsException("path duplicated:" + key + " for handler:" + this);
 			}
 
 			MethodWrapper me = new MethodWrapper(key, m);// TODO
@@ -131,16 +129,14 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 
 	private ConverterI getConverter(Class ptype, MethodWrapper me) {
 
-		ConverterI rt = this.factory.getConverter(MessageContext.class, ptype,
-				false);//
+		ConverterI rt = this.factory.getConverter(MessageContext.class, ptype, false);//
 		if (rt == null) {
 			rt = this.getDefaultConverter(ptype, me);
 		}
 
 		if (rt == null) {
 
-			throw new FsException("no converter found for type:" + ptype
-					+ ",in method:" + me);
+			throw new FsException("no converter found for type:" + ptype + ",in method:" + me);
 		}
 		return rt;
 	}
@@ -150,13 +146,11 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 	 * @return
 	 */
 	protected ConverterI getDefaultConverter(Class ptype, MethodWrapper me) {
-		throw new FsException("no converter found for type:" + ptype
-				+ " for handler:" + this.getClass());
+		throw new FsException("no converter found for type:" + ptype + " for handler:" + this.getClass());
 
 	}
 
-	private ConverterI<MessageContext, Object>[] getConverterArray(
-			MethodWrapper me) {
+	private ConverterI<MessageContext, Object>[] getConverterArray(MethodWrapper me) {
 		Class[] ptypes = me.ptypes;
 		ConverterI<MessageContext, Object>[] rt = new ConverterI[ptypes.length];
 		for (int i = 0; i < ptypes.length; i++) {
@@ -188,17 +182,16 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 		return name;
 	}
 
-	private String getEndPath(String path) {
+	private String getEndPath(Path path) {
 		if (path == null) {
 			return null;
 		}
-		int idx = path.lastIndexOf("/");
-		return path.substring(idx + 1);
+		return path.getName();
 	}
 
 	@Override
 	public void handle(MessageContext sc) {
-		String path = sc.getRequest().getPath();
+		Path path = sc.getRequest().getPath();
 		String endp = this.getEndPath(path);
 		MethodWrapper me = this.methodEntryMap.get(endp);
 		if (me == null) {
@@ -224,8 +217,7 @@ public abstract class HandlerSupport extends ConfigurableSupport implements
 	}
 
 	protected void none(MessageContext sc) {
-		throw new FsException("handler:" + this
-				+ " has no method for request with path:"
+		throw new FsException("handler:" + this + " has no method for request with path:"
 				+ sc.getRequest().getPath());
 	}
 

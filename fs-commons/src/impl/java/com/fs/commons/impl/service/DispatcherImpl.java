@@ -22,8 +22,7 @@ import com.fs.commons.api.support.HasContainerSupport;
  * @author wuzhen
  * 
  */
-public class DispatcherImpl<T> extends HasContainerSupport implements
-		DispatcherI<T> {
+public class DispatcherImpl<T> extends HasContainerSupport implements DispatcherI<T> {
 
 	public static class PathEntyHandler<T> {
 
@@ -65,8 +64,7 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 		}
 
 		public boolean tryHandle(Path p, T sc) {
-			if (this.strict && p.equals(this.path) || !this.strict
-					&& path.isSubPath(p, true)) {
+			if (this.strict && p.equals(this.path) || !this.strict && path.isSubPath(p, true)) {
 				this.target.handle(sc);
 				return true;
 			}
@@ -75,8 +73,7 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 
 	}
 
-	protected static final Logger LOG = LoggerFactory
-			.getLogger(DispatcherImpl.class);
+	protected static final Logger LOG = LoggerFactory.getLogger(DispatcherImpl.class);
 
 	private Tree<PathEntyHandler<T>> tree;
 
@@ -110,8 +107,7 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 		}
 
 		if (count == 0) {
-			LOG.warn("no handler/s for ctx:" + ctx + " with path:" + p
-					+ " in dispatcher:" + this.name);
+			LOG.warn("no handler/s for ctx:" + ctx + " with path:" + p + " in dispatcher:" + this.name);
 		}
 	}
 
@@ -122,13 +118,11 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 
 	@Override
 	public void addHandler(String cfgId, Path p, boolean strict, HandlerI<T> h) {
-		Configuration cfg = cfgId == null ? null : Configuration
-				.properties(cfgId);
+		Configuration cfg = cfgId == null ? null : Configuration.properties(cfgId);
 		this.addHandler(cfg, p, strict, h);
 	}
 
-	public void addHandler(Configuration cfg, Path p, boolean strict,
-			HandlerI<T> h) {
+	public void addHandler(Configuration cfg, Path p, boolean strict, HandlerI<T> h) {
 		Node<PathEntyHandler<T>> node = this.tree.getOrCreateNode(p);
 		PathEntyHandler<T> cl = node.getTarget();
 		if (cl == null) {
@@ -170,6 +164,22 @@ public class DispatcherImpl<T> extends HasContainerSupport implements
 			String cfg = prefix + "." + name;
 			this.addHandler(cfg);
 		}
+	}
+
+	/*
+	 * Dec 31, 2012
+	 */
+	@Override
+	public void addHandler(Path p, HandlerI<T> h) {
+		this.addHandler(null, p, h);
+	}
+
+	/*
+	 * Dec 31, 2012
+	 */
+	@Override
+	public void addHandler(Path p, boolean strict, HandlerI<T> h) {
+		this.addHandler((String) null, p, strict, h);
 	}
 
 }

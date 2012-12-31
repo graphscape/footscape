@@ -5,6 +5,7 @@
 package com.fs.gridservice.commons.api.wrapper.gchat;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.EventType;
 import com.fs.gridservice.commons.api.EventWrapper;
 import com.fs.gridservice.commons.api.data.EventGd;
@@ -17,7 +18,7 @@ public class ChatMsgEW extends EventWrapper {
 
 	public static final EventType TYPE = EventType.valueOf("ChatMsg");
 
-	public static ChatMsgEW valueOf(String path, String tid, MessageI msg) {
+	public static ChatMsgEW valueOf(Path path, String tid, MessageI msg) {
 
 		ChatMsgEW rt = new ChatMsgEW(new EventGd(TYPE, path));
 

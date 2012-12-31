@@ -5,6 +5,7 @@
 package com.fs.gridservice.commons.api.wrapper;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.EventType;
 import com.fs.gridservice.commons.api.data.EventGd;
 
@@ -16,7 +17,7 @@ public class TerminalMsgSendEW extends TerminalMsgEW {
 
 	public static final EventType TYPE = EventType.valueOf("WebSocketMessageSending");
 
-	public static TerminalMsgSendEW valueOf(String path, String tid, String cid, MessageI msg) {
+	public static TerminalMsgSendEW valueOf(Path path, String tid, String cid, MessageI msg) {
 
 		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path), tid, cid);
 		rt.setMessage(msg);

@@ -5,7 +5,6 @@ package com.fs.expector.gridservice.api.mock;
 
 import java.util.List;
 
-import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.mock.MockClient;
 import com.fs.gridservice.commons.api.mock.ProxyMockClient;
@@ -22,10 +21,10 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 	public MockExpectorClient(MockClient mc) {
 		super(mc);
 	}
+	
+	public abstract MessageI syncSendMessage(MessageI msg);
 
-	public abstract <T> T sendMessageAndGetResult(MessageI msg, CallbackI<MessageI, T> cb);
-
-	public abstract String signup(String email, String nick, String pass);
+	public abstract void signup(String email, String nick, String pass);
 
 	public abstract void start(String email, String nick, String pass);
 

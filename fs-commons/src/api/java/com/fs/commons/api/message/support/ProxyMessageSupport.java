@@ -9,6 +9,7 @@ package com.fs.commons.api.message.support;
 
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -209,7 +210,7 @@ public class ProxyMessageSupport implements MessageI {
 	}
 
 	@Override
-	public String getPath() {
+	public Path getPath() {
 		// TODO Auto-generated method stub
 		return this.target.getPath();
 	}

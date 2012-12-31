@@ -7,6 +7,7 @@ package com.fs.gridservice.commons.api.data;
 import java.util.UUID;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.EventType;
 import com.fs.gridservice.commons.api.GridedDataI;
 import com.fs.gridservice.core.api.gdata.MessageGd;
@@ -24,7 +25,7 @@ public class EventGd extends MessageGd implements GridedDataI {
 	public static final String HK_ORIGIN_EVENT_ID = "_originEventId";
 
 	public static final String HK_CAUSE_EVENT_ID = "_causeEventId";
-	
+
 	public static final String HK_SOURCE_TERMINAL_ID = "_source_terminal_id";
 
 	public EventGd() {
@@ -35,13 +36,13 @@ public class EventGd extends MessageGd implements GridedDataI {
 		super(msg);
 	}
 
-	public EventGd(EventType type, String path) {
+	public EventGd(EventType type, Path path) {
 		this(type, path, UUID.randomUUID().toString());//
 	}
 
-	public EventGd(EventType type, String path, String id) {
+	public EventGd(EventType type, Path path, String id) {
 		this.setHeader(HK_TYPE, type.name());
-		this.setHeader(HK_PATH, path);
+		this.setHeader(HK_PATH, path.toString());
 		this.setHeader(HK_ID, id);
 	}
 
@@ -49,28 +50,18 @@ public class EventGd extends MessageGd implements GridedDataI {
 		String ts = this.getHeader(HK_TYPE, true);
 		return EventType.valueOf(ts);
 	}
-	
-	public String getSourceTerminalId(){
+
+	public String getSourceTerminalId() {
 		return this.getHeader(HK_SOURCE_TERMINAL_ID);
 	}
-	
+
 	public String getId() {
 		return this.getHeader(HK_ID, true);
-	}
-
-	/**
-	 * Dec 16, 2012
-	 */
-	public String getPath() {
-		//
-		return this.getHeader(HK_PATH);
-
 	}
 
 	@Override
 	public String toString() {
 		return super.toString();
 	}
-	
 
 }

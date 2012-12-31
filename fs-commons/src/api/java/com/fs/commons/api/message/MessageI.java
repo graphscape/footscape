@@ -7,6 +7,7 @@
  */
 package com.fs.commons.api.message;
 
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -32,7 +33,7 @@ public interface MessageI {
 
 	public String getSource();
 
-	public String getPath();
+	public Path getPath();
 
 	public String getId();
 

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
-import com.fs.gridservice.commons.api.EventDispatcherI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.EventGd;
@@ -115,7 +115,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport
 		}
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
 		MessageI msg = (MessageI) this.messageCodec.decode(js);
-		String path = msg.getPath();
+		Path path = msg.getPath();
 		WebSocketGoI wso =getWso(ws);
 		
 		String tId = wso.getTerminalId(true);// assign the ws id.

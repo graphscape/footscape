@@ -83,8 +83,7 @@ public class MessageServiceImpl extends
 	protected void lastFilter(FilterI.Context<MessageI, ResponseI> fc) {
 		MessageI req = fc.getRequest();
 		MessageContext sc = new MessageContext(req, fc.getResponse());
-		String pS = req.getPath();
-		Path p = Path.valueOf(pS, '/');
+		Path p = req.getPath();
 		this.dispatcher.dispatch(p, sc);
 
 	}

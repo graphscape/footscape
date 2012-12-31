@@ -24,7 +24,7 @@ public class MessageSupport implements MessageI {
 	private PropertiesI<Object> payloads;
 
 	public MessageSupport() {
-		this(null);
+		this(Path.ROOT.toString());
 	}
 
 	public MessageSupport(String path) {
@@ -205,8 +205,7 @@ public class MessageSupport implements MessageI {
 	/**
 	 * Dec 15, 2012
 	 */
-	public static MessageI newMessage(PropertiesI<String> hds,
-			PropertiesI<Object> pls) {
+	public static MessageI newMessage(PropertiesI<String> hds, PropertiesI<Object> pls) {
 		MessageI rt = newMessage();
 		rt.setHeaders(hds);
 		rt.setPayloads(pls);
@@ -254,8 +253,9 @@ public class MessageSupport implements MessageI {
 	}
 
 	@Override
-	public String getPath() {
-		return this.getHeader(HK_PATH);
+	public Path getPath() {
+		String ps = this.getHeader(HK_PATH);
+		return Path.valueOf(ps);
 	}
 
 	@Override

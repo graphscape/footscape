@@ -16,6 +16,7 @@ import org.json.simple.JSONValue;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
@@ -88,8 +89,7 @@ public class Web20TerminalFactoryServlet extends ConfigurableServletSupport {
 		Reader rd = arg0.getReader();
 		Object obj = JSONValue.parse(rd);
 		MessageI msg = (MessageI) this.messageCodec.decode(obj);
-		String path = msg.getHeader(MessageI.HK_PATH);
-
+		Path path = msg.getPath();
 		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tid, cid, msg);
 		// send to global event queue
 		this.global.offer(ew.getTarget());
