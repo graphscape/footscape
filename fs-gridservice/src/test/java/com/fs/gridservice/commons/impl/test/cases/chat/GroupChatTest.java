@@ -26,9 +26,9 @@ public class GroupChatTest extends TestBase {
 		String accId2 = "acc2";
 		String accId3 = "acc3";
 
-		MockClient c1 = this.newEventDriveClient(accId1, true);
-		MockClient c2 = this.newEventDriveClient(accId2, true);
-		MockClient c3 = this.newEventDriveClient(accId3, true);
+		MockClient c1 = this.newClientAndAuth(accId1);
+		MockClient c2 = this.newClientAndAuth(accId2);
+		MockClient c3 = this.newClientAndAuth(accId3);
 		MockClientChatGroup gc1 = newChatRoom("group1", c1);
 
 		MockClientChatGroup gc2 = newChatRoom("group1", c2);
@@ -79,19 +79,19 @@ public class GroupChatTest extends TestBase {
 			gc3.join().get(5000, TimeUnit.MILLISECONDS);
 			assertTrue("acc3 should join", gc3.isJoined());
 
-			//c1:
+			// c1:
 			pt = gc1.waitNewJoin(10, TimeUnit.SECONDS);
 			assertTrue("c3 should join c1,all:" + gc1.getAccIdList(),
 					gc1.containsAccountId(accId3));
 
-			//c2:
+			// c2:
 			pt = gc2.waitNewJoin(10, TimeUnit.SECONDS);
 			assertEquals("c3 should join c2" + gc2.getAccIdList(), accId3,
 					pt.getAccountId());
 			assertTrue("c3 should join c2 , all:" + gc2.getAccIdList(),
 					gc2.containsAccountId(accId3));
 
-			//c3:
+			// c3:
 			pt = gc3.waitNewJoin(10, TimeUnit.SECONDS);
 			assertEquals("c1 should join first" + gc3.getAccIdList(), accId1,
 					pt.getAccountId());
@@ -155,8 +155,8 @@ public class GroupChatTest extends TestBase {
 		}
 	}
 
-	protected MockClientChatGroup newChatRoom(String gcid,
-			MockClient mc) throws Exception {
+	protected MockClientChatGroup newChatRoom(String gcid, MockClient mc)
+			throws Exception {
 		MockClientChatGroup rt = new MockClientChatGroup(gcid, mc);
 		return rt;
 

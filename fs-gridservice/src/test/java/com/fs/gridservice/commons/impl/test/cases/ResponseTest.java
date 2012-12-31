@@ -3,10 +3,10 @@
  */
 package com.fs.gridservice.commons.impl.test.cases;
 
-import java.util.concurrent.TimeUnit;
-
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.message.support.QueueMessageHandler;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.mock.MockClient;
 import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
 
@@ -24,9 +24,11 @@ public class ResponseTest extends TestBase {
 		String tid = client.getTerminalId();
 		msg.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + tid);
 		msg.setHeader(MessageI.HK_PATH, "/not-exist");
+		QueueMessageHandler mh = new QueueMessageHandler();
+		client.getDispatcher().addHandler(null, Path.valueOf(new String[] {}),
+				mh);
 		client.sendMessage(msg);
-		MessageI res = client.receiveMessage().get(10 * 1000,
-				TimeUnit.MILLISECONDS);
+		MessageI res = mh.take().getRequest();//
 		System.out.println(res);
 
 	}

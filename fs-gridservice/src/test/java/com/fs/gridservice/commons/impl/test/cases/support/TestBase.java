@@ -60,7 +60,7 @@ public class TestBase extends TestCase {
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty(SessionGd.ACCID, accId);//
 		MockClient rt = this.factory.newClient();
-		rt.connect().get();
+		rt.connect();
 		rt.auth(cre);
 		return rt;
 
@@ -68,16 +68,6 @@ public class TestBase extends TestCase {
 
 	protected void dump() {
 		System.out.println("\n\ndump:\nTODO");
-
-	}
-
-	protected MockClient newEventDriveClient(String accId, boolean start) throws Exception {
-		MockClient mc = this.newClientAndAuth(accId);
-
-		if (start) {
-			mc.startEventDrive();
-		}
-		return mc;
 
 	}
 

@@ -24,6 +24,8 @@ public class MockClientFactoryImpl extends MockClientFactory {
 
 	protected ContainerI container;
 
+	protected int nextClient;
+
 	public MockClientFactoryImpl start(ContainerI c) {
 		this.container = c;
 		try {
@@ -49,7 +51,9 @@ public class MockClientFactoryImpl extends MockClientFactory {
 		} catch (URISyntaxException e) {
 			throw new FsException(e);
 		}
-		MockClientBase rt = new MockClientImpl(this.cf, this.container, uri);
+		String name = "client" + this.nextClient++;
+		MockClientBase rt = new MockClientImpl(name, this.cf, this.container,
+				uri);
 		return rt;
 	}
 

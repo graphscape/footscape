@@ -7,17 +7,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import javax.net.websocket.RemoteEndpoint;
 
-import org.eclipse.jetty.util.FutureCallback;
-import org.eclipse.jetty.websocket.api.UpgradeResponse;
 import org.eclipse.jetty.websocket.api.WebSocketConnection;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -31,8 +25,12 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.mock.MockClient;
@@ -45,8 +43,10 @@ import com.fs.gridservice.commons.api.mock.MockClient;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public abstract class MockClientBase extends MockClient implements WebSocketListener {
-	private static final Logger LOG = LoggerFactory.getLogger(MockClientBase.class);
+public abstract class MockClientBase extends MockClient implements
+		WebSocketListener {
+	private static final Logger LOG = LoggerFactory
+			.getLogger(MockClientBase.class);
 
 	protected URI uri;
 
@@ -57,6 +57,8 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 	protected WebSocketConnection connection;
 
 	protected Semaphore connected;
+
+	protected Semaphore authed;
 
 	protected String clientId;
 
@@ -71,43 +73,84 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 	public MockClientBase(WebSocketClientFactory f, ContainerI c, URI uri) {
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
-		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
+		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(
+				MessageI.class);
 		this.client = f.newWebSocketClient(this);
 
+		this.getDispatcher().addHandler(null,
+				Path.valueOf("/terminal/auth/success"), new MessageHandlerI() {
+
+					@Override
+					public void handle(MessageContext sc) {
+						MockClientBase.this.onAuthSuccess(sc);
+					}
+				});
+		this.getDispatcher().addHandler(null,
+				Path.valueOf(WebSocketGoI.P_READY), new MessageHandlerI() {
+
+					@Override
+					public void handle(MessageContext sc) {
+						MockClientBase.this.onConnected(sc);
+					}
+				});
+	}
+
+	@Override
+	public MockClient connect() {
+
+		this.connected = new Semaphore(0);
+
+		try {
+			this.client.connect(this.uri);
+
+			this.connected.acquire();
+		} catch (Exception e) {
+			throw new FsException(e);
+		}
+		return this;
+
+	}
+
+	private void onConnected(MessageContext sc) {
+
+		ResponseI msg = sc.getResponse();
+		this.terminalId = msg.getString("terminalId", true);
+		this.clientId = msg.getString("clientId", true);
+
+		this.connected.release();
 	}
 
 	@Override
 	public MockClient auth(PropertiesI<Object> cre) {
+
 		if (this.clientId == null) {
 			throw new FsException("not ready yet");
 		}
+		this.authed = new Semaphore(0);
 
 		MessageI msg = new MessageSupport() {
 		};
 		msg.setHeader(MessageI.HK_PATH, "/terminal/auth");
 		msg.setPayloads(cre);//
 		this.sendMessage(msg);
-		MessageI res = null;
-
 		try {
-			res = this.receiveMessage().get(1000000, TimeUnit.MILLISECONDS);
-		} catch (TimeoutException e) {
-			throw new FsException("timeout for auth :" + accountId);
-		} catch (Exception e) {
-			throw FsException.toRtE(e);
-
+			this.authed.acquire();
+		} catch (InterruptedException e) {
+			throw new FsException(e);
 		}
-		String path = res.getPath();
-		if (path.endsWith("terminal/auth/success")) {
-			String sid = (String) res.getPayload("sessionId", true);
-			String accId = res.getString("accountId", true);
-			this.sessionId = sid;
-			this.accountId = accId;//
-		} else {
-			throw new FsException("failed binding credentical:" + cre + ",path:" + path);
-		}
-
 		return this;
+	}
+
+	private void onAuthSuccess(MessageContext sc) {
+		ResponseI res = sc.getResponse();
+		String path = res.getPath();
+
+		String sid = (String) res.getPayload("sessionId", true);
+		String accId = res.getString("accountId", true);
+		this.sessionId = sid;
+		this.accountId = accId;//
+		this.authed.release();
+
 	}
 
 	@Override
@@ -116,7 +159,8 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 			throw new FsException("not connected");
 		}
 
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
+		RemoteEndpoint<Object> endpoint = this.client.getWebSocket()
+				.getSession().getRemote();
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
@@ -124,13 +168,6 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 		} catch (IOException e) {
 			throw new FsException(e);
 		}
-	}
-
-	/**
-	 * @param wsc
-	 */
-	public void init(WebSocketClient wsc) {
-		this.client = wsc;
 	}
 
 	@Override
@@ -163,7 +200,7 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 	@Override
 	public void onWebSocketConnect(WebSocketConnection connection) {
 		this.connection = connection;
-		this.connected.release();
+
 	}
 
 	/*
@@ -176,42 +213,6 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 	@Override
 	public void onWebSocketException(WebSocketException error) {
 		LOG.error("", error);
-	}
-
-	@Override
-	public Future<MockClient> connect() {
-		this.connected = new Semaphore(0);
-
-		FutureTask<MockClient> rt = new FutureTask<MockClient>(new Callable<MockClient>() {
-
-			@Override
-			public MockClient call() throws Exception {
-				MockClientBase.this.connectSync();
-				return MockClientBase.this;
-			}
-		});
-		rt.run();
-		return rt;
-
-	}
-
-	public void connectSync() throws Exception {
-
-		FutureCallback<UpgradeResponse> fc = MockClientBase.this.client.connect(MockClientBase.this.uri);
-		MockClientBase.this.connected.acquireUninterruptibly();
-
-		MessageI msg = this.messageReceived.poll(10, TimeUnit.SECONDS);//
-		if (msg == null) {
-			throw new FsException("timeout for waiting server ready.");
-		}
-
-		String path = msg.getPath();
-
-		if (!path.equals(WebSocketGoI.P_READY)) {
-			throw new FsException("first message must by" + WebSocketGoI.P_READY + ", but got:" + path);
-		}
-		this.terminalId = msg.getString("terminalId", true);
-		this.clientId = msg.getString("clientId", true);
 	}
 
 	@Override
@@ -233,20 +234,6 @@ public abstract class MockClientBase extends MockClient implements WebSocketList
 		} catch (IOException e) {
 			throw new FsException(e);
 		}
-	}
-
-	@Override
-	public Future<MessageI> receiveMessage() {
-		FutureTask<MessageI> rt = new FutureTask<MessageI>(new Callable<MessageI>() {
-
-			@Override
-			public MessageI call() throws Exception {
-				return MockClientBase.this.messageReceived.take();
-
-			}
-		});
-		rt.run();
-		return rt;
 	}
 
 	/**

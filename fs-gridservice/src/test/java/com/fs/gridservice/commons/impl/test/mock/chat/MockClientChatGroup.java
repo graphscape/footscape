@@ -19,13 +19,15 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.commons.api.event.ListenerI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.service.DispatcherI;
+import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.mock.MockClient;
-import com.fs.gridservice.commons.impl.mock.MockClientImpl;
 
 /**
  * @author wu
@@ -61,35 +63,41 @@ public class MockClientChatGroup {
 		this.exitQueue = new LinkedBlockingQueue<MockParticipant>();
 		this.joinQueue = new LinkedBlockingQueue<MockParticipant>();
 		this.messageQueue = new LinkedBlockingQueue<MessageI>();
-		mc.addListener("/gchat/join", new ListenerI<MessageI>() {
+		DispatcherI<MessageContext> ds = mc.getDispatcher();
+
+		ds.addHandler(null, Path.valueOf("/gchat/join"), new MessageHandlerI() {
 
 			@Override
-			public void handle(MessageI t) {
-				MockClientChatGroup.this.handleJoinMessage(t);
+			public void handle(MessageContext t) {
+				MockClientChatGroup.this.handleJoinMessage(t.getRequest());
 			}
 		});
-		mc.addListener("/gchat/exit", new ListenerI<MessageI>() {
+		ds.addHandler(null, Path.valueOf("/gchat/exit"), new MessageHandlerI() {
 
 			@Override
-			public void handle(MessageI t) {
-				MockClientChatGroup.this.handleExitMessage(t);
+			public void handle(MessageContext t) {
+				MockClientChatGroup.this.handleExitMessage(t.getRequest());
 			}
 		});
-		mc.addListener("/gchat/exit/success", new ListenerI<MessageI>() {
+		ds.addHandler(null, Path.valueOf("/gchat/exit/success"),
+				new MessageHandlerI() {
 
-			@Override
-			public void handle(MessageI t) {
-				MockClientChatGroup.this.handleExitMessage(t);
-			}
-		});
+					@Override
+					public void handle(MessageContext t) {
+						MockClientChatGroup.this.handleExitMessage(t
+								.getRequest());
+					}
+				});
 
-		mc.addListener("/gchat/message", new ListenerI<MessageI>() {
+		ds.addHandler(null, Path.valueOf("/gchat/message"),
+				new MessageHandlerI() {
 
-			@Override
-			public void handle(MessageI t) {
-				MockClientChatGroup.this.handleMessageMessage(t);
-			}
-		});
+					@Override
+					public void handle(MessageContext t) {
+						MockClientChatGroup.this.handleMessageMessage(t
+								.getRequest());
+					}
+				});
 
 	}
 

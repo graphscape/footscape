@@ -5,21 +5,22 @@
 package com.fs.gridservice.commons.impl.mock;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.eclipse.jetty.websocket.client.WebSocketClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.event.ListenerI;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
-import com.fs.commons.api.support.CollectionListener;
+import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.DispatcherI;
+import com.fs.commons.api.struct.Path;
+import com.fs.gridservice.commons.api.mock.MockClient;
 
 /**
  * @author wu
@@ -30,28 +31,24 @@ public class MockClientImpl extends MockClientBase {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(MockClientImpl.class);
 
-	protected Map<String, CollectionListener<MessageI>> messageHandler;
-
-	protected ListenerI<MessageI> defaultListener;
-
 	protected ExecutorService executor;
 
-	public MockClientImpl(WebSocketClientFactory f, ContainerI c, URI uri) {
+	protected MessageServiceI engine;
+
+	protected String name;
+
+	public MockClientImpl(String name, WebSocketClientFactory f, ContainerI c,
+			URI uri) {
 		super(f, c, uri);
+		this.name = name;
 		this.executor = Executors.newFixedThreadPool(1);// TODO
-		this.messageHandler = new HashMap<String, CollectionListener<MessageI>>();
-		this.defaultListener = new ListenerI<MessageI>() {
-
-			@Override
-			public void handle(MessageI t) {
-				LOG.info("default listener,message:" + t);
-			}
-
-		};
+		this.engine = c.find(MessageServiceI.FactoryI.class, true).create(
+				"mock-client-" + name);
 	}
 
-	public Future<Object> startEventDrive() {
-		return this.executor.submit(new Callable<Object>() {
+	@Override
+	public MockClient connect() {
+		this.executor.submit(new Callable<Object>() {
 
 			@Override
 			public Object call() throws Exception {
@@ -60,25 +57,16 @@ public class MockClientImpl extends MockClientBase {
 				return "stoped";
 			}
 		});
-	}
-
-	@Override
-	public void addListener(String path, ListenerI<MessageI> ml) {
-		CollectionListener<MessageI> cl = this.messageHandler.get(path);
-		if (cl == null) {
-			cl = new CollectionListener<MessageI>();
-			this.messageHandler.put(path, cl);
-		}
-		cl.addListener(ml);
+		super.connect();
+		return this;
 	}
 
 	public void eachLoop(MessageI msg) throws Exception {
 		String path = msg.getHeader(MessageI.HK_PATH);
-		ListenerI<MessageI> l = this.messageHandler.get(path);
-		if (l == null) {
-			this.defaultListener.handle(msg);
-		} else {
-			l.handle(msg);
+		Path v = Path.valueOf(path);
+		ResponseI res = this.engine.service(msg);
+		if (res.getErrorInfos().hasError()) {
+			LOG.error("", res);
 		}
 	}
 
@@ -93,9 +81,19 @@ public class MockClientImpl extends MockClientBase {
 	public void runInternal() throws Exception {
 
 		while (true) {
-			MessageI msg = this.receiveMessage().get();
+			MessageI msg = this.messageReceived.take();
 			this.eachLoop(msg);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.gridservice.commons.api.mock.MockClient#getDispatcher()
+	 */
+	@Override
+	public DispatcherI<MessageContext> getDispatcher() {
+		return this.engine.getDispatcher();
 	}
 
 }

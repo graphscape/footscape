@@ -3,10 +3,9 @@
  */
 package com.fs.gridservice.commons.api.mock;
 
-import java.util.concurrent.Future;
-
-import com.fs.commons.api.event.ListenerI;
+import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -21,21 +20,9 @@ public class ProxyMockClient extends MockClient {
 		this.target = target;
 	}
 
-	public Future<Object> startEventDrive() {
-		return this.target.startEventDrive();
-	}
-
-	public void addListener(String path, ListenerI<MessageI> ml) {
-		this.target.addListener(path, ml);
-	}
-
 	public MockClient auth(PropertiesI<Object> accId) {
 		this.target.auth(accId);
 		return this;
-	}
-
-	public Future<MessageI> receiveMessage() {
-		return this.target.receiveMessage();
 	}
 
 	public String getSessionId() {
@@ -58,9 +45,22 @@ public class ProxyMockClient extends MockClient {
 	 * Dec 28, 2012
 	 */
 	@Override
-	public Future<MockClient> connect() {
+	public MockClient connect() {
 		//
-		return this.target.connect();
+		this.target.connect();
+		return this;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.gridservice.commons.api.mock.MockClient#getDispatcher()
+	 */
+	@Override
+	public DispatcherI<MessageContext> getDispatcher() {
+		// TODO Auto-generated method stub
+		return this.target.getDispatcher();
 	}
 
 }
