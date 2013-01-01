@@ -3,6 +3,9 @@
  */
 package com.fs.uicore.impl.test.gwt.client.cases.support;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
@@ -26,6 +29,8 @@ public abstract class TestBase extends GWTTestCase {
 	protected UiClientI client;
 	protected ContainerI container;
 
+	protected Set<String> finishing;
+
 	/* */
 	@Override
 	public String getModuleName() {
@@ -39,9 +44,9 @@ public abstract class TestBase extends GWTTestCase {
 	protected void gwtSetUp() throws Exception {
 
 		super.gwtSetUp();
+		this.finishing = new HashSet<String>();
 
-		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
-				new UiCoreTestGPI() };
+		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), new UiCoreTestGPI() };
 
 		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
 
@@ -59,6 +64,14 @@ public abstract class TestBase extends GWTTestCase {
 		System.out.println(this.getClass() + ":" + e);
 		if (e instanceof AfterClientStartEvent) {
 			this.onClientStart((AfterClientStartEvent) e);
+		}
+	}
+
+	public void tryFinish(String finish) {
+		this.finishing.remove(finish);
+		System.out.println("finish:" + finish + ",waiting:" + this.finishing);
+		if (this.finishing.isEmpty()) {
+			this.finishTest();
 		}
 	}
 

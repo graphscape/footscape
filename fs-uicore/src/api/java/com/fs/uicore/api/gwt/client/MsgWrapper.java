@@ -3,41 +3,35 @@
  */
 package com.fs.uicore.api.gwt.client;
 
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
  * @author wuzhen
  * 
  */
-public class UiTransfer extends UiObjectSupport {
+public class MsgWrapper {
 
-	private UiHeaders headers;
+	private MessageData target;
 
-	private ObjectPropertiesData payloads;
-
-	public UiTransfer(String name) {
-		super(name);
-		this.headers = new UiHeaders();
-		this.payloads = new ObjectPropertiesData();
+	public MsgWrapper(Path path) {
+		this(new MessageData(path));
 	}
 
-	/**
-	 * @return the header
-	 */
-	public UiHeaders getHeaders() {
-		return headers;
+	public MsgWrapper(MessageData md) {
+		this.target = md;
 	}
 
 	public String getHeader(String key, boolean force) {
-		return this.headers.getProperty(key, force);
+		return this.target.getHeader(key, force);
 	}
 
 	public String getHeader(String key) {
-		return this.headers.getProperty(key);
+		return this.target.getHeader(key);
 	}
 
 	/**
@@ -45,14 +39,14 @@ public class UiTransfer extends UiObjectSupport {
 	 *            the header to set
 	 */
 	public void setHeader(String key, String value) {
-		this.headers.setProperty(key, value);
+		this.target.setHeader(key, value);
 	}
 
 	/**
 	 * @return the payload
 	 */
 	public ObjectPropertiesData getPayloads() {
-		return payloads;
+		return this.target.getPayloads();
 	}
 
 	/**
@@ -60,7 +54,7 @@ public class UiTransfer extends UiObjectSupport {
 	 *            the payload to set
 	 */
 	public void setPayloads(ObjectPropertiesData pts) {
-		this.payloads.setProperties(pts);
+		this.target.setPayloads(pts);
 	}
 
 	public <T extends UiData> T getPayload(String key, boolean force) {
@@ -70,7 +64,7 @@ public class UiTransfer extends UiObjectSupport {
 	}
 
 	public void setPayload(String key, UiData value) {
-		this.payloads.setProperty(key, value);
+		this.target.setPayload(key, value);
 	}
 
 	public String getPayLoadAsString(String key, boolean force) {
@@ -88,16 +82,6 @@ public class UiTransfer extends UiObjectSupport {
 		return rt == null ? def : rt;
 	}
 
-	@Override
-	public String toDebugString() {
-		String rt = super.toDebugString();
-		rt += "\nheaders:" + this.headers;
-		rt += "\npayloads:" + this.payloads;
-
-		return rt;
-
-	}
-
 	public Boolean getPayLoadAsBoolean(String key, boolean force) {
 		BooleanData sd = this.getPayload(key, false);
 		Boolean rt = sd == null ? null : sd.getValue();
@@ -108,6 +92,13 @@ public class UiTransfer extends UiObjectSupport {
 
 		return rt;
 
+	}
+
+	/**
+	 * @return the target
+	 */
+	public MessageData getTarget() {
+		return target;
 	}
 
 }

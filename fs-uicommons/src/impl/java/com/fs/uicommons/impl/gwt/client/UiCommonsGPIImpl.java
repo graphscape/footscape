@@ -132,9 +132,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		this.activeWidgetCreater(c);
 
-		// message df
-		MessageDispatcherFactory mdf = new MessageDispatcherFactory();
-		client.child(mdf);
+		
 		// end point
 		EndpointWsImpl ti = new EndpointWsImpl();
 		client.child(ti);//

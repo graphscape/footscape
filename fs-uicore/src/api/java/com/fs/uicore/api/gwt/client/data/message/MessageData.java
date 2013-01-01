@@ -5,6 +5,7 @@
 package com.fs.uicore.api.gwt.client.data.message;
 
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -26,6 +27,13 @@ public class MessageData extends UiData {
 
 	public MessageData(String path) {
 		this.setHeader("path", path);
+	}
+
+	/**
+	 * @param path
+	 */
+	public MessageData(Path path) {
+		this(path.toString());
 	}
 
 	public StringPropertiesData getHeaders() {

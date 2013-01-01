@@ -11,7 +11,6 @@ import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.UiFilterI.Context;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ModelEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -21,8 +20,7 @@ import com.google.gwt.user.client.Element;
  * @author wuzhen
  * 
  */
-public abstract class WidgetBase extends ElementObjectSupport implements
-		WidgetI {
+public abstract class WidgetBase extends ElementObjectSupport implements WidgetI {
 
 	private static int INIT = -2;
 
@@ -33,8 +31,6 @@ public abstract class WidgetBase extends ElementObjectSupport implements
 	protected ModelI model;
 
 	protected WidgetFactoryI factory;
-
-	protected Context context;
 
 	protected WidgetBase(String name, Element element) {
 		super(name, element);
@@ -71,11 +67,9 @@ public abstract class WidgetBase extends ElementObjectSupport implements
 				ValueWrapper vw = txt.getValueWrapper(loc);
 				this.processModelValue(loc, vw);//
 			} else if (obj instanceof List) {
-				throw new UiException("not supported,the value of  property:"
-						+ k + " is a list");
+				throw new UiException("not supported,the value of  property:" + k + " is a list");
 			} else {
-				throw new UiException("not supported,the property value type:"
-						+ obj);
+				throw new UiException("not supported,the property value type:" + obj);
 			}
 		}
 
@@ -111,11 +105,11 @@ public abstract class WidgetBase extends ElementObjectSupport implements
 		boolean show = vw.getValue(Boolean.TRUE);
 
 		this.elementWrapper.addAndRemoveClassName(show, "visible", "invisible");
-//		// TODO remove following
-//		Display display = (Boolean) vw.getValue() ? Display.BLOCK
-//				: Display.NONE;
-//
-//		this.getElementWrapper().getStyle().setDisplay(display);
+		// // TODO remove following
+		// Display display = (Boolean) vw.getValue() ? Display.BLOCK
+		// : Display.NONE;
+		//
+		// this.getElementWrapper().getStyle().setDisplay(display);
 
 	}
 

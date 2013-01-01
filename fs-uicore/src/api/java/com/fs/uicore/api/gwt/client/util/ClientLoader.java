@@ -62,7 +62,7 @@ public class ClientLoader {
 
 		UiClientI client = container.get(UiClientI.class, true);
 
-		client.setProperty(UiClientI.ROOT_URi, rootUri);
+		
 		//
 
 		client.attach();// NOTE

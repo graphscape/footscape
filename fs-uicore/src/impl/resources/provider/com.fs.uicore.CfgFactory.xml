@@ -1,3 +1,0 @@
-<config>
-	<xmpp.domain value="$xmpp.domain" />
-</config>

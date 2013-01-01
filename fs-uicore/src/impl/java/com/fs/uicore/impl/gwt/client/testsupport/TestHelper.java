@@ -21,7 +21,7 @@ public class TestHelper {
 	public static TestHelper ME;
 	
 	
-	public static UiClientI startClient(Class[] spiClsA){
+	private static UiClientI startClient(Class[] spiClsA){
 		
 		if(ME != null){
 			throw new UiException("already initialized,");//TODO support this case
@@ -35,7 +35,7 @@ public class TestHelper {
 		
 		UiClientI client = container.get(UiClientI.class, true);
 		
-		client.setProperty(UiClientI.ROOT_URi, "/uicore/uidt/do");
+		//client.setProperty(UiClientI.ROOT_URi, "/uicore/uidt/do");
 		
 		client.attach();//NOTE
 		

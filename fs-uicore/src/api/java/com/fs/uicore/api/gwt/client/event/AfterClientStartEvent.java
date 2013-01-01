@@ -12,19 +12,9 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 public class AfterClientStartEvent extends ClientEvent {
 	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(ClientEvent.TYPE);
 
-	private String sessionId;
-
 	/** */
-	public AfterClientStartEvent(UiClientI client, String sessionId) {
+	public AfterClientStartEvent(UiClientI client) {
 		super(TYPE, client);
-		this.sessionId = sessionId;
-	}
-
-	/**
-	 * @return the sessionId
-	 */
-	public String getSessionId() {
-		return sessionId;
 	}
 
 }

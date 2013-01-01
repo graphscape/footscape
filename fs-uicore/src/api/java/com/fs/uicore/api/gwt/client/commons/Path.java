@@ -92,7 +92,11 @@ public class Path {
 		return valueOf(names);
 	}
 
-	public static Path valueOf(String... names) {
+	public static Path valueOf(String name) {
+		return valueOf(name, '/');
+	}
+
+	public static Path valueOf(String[] names) {
 		return new Path(names);
 	}
 

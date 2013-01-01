@@ -3,14 +3,13 @@
  */
 package com.fs.uicore.api.gwt.client;
 
-import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
-import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
  * @author wuzhen
  * 
  */
-public class UiResponse extends UiTransfer {
+public class UiResponse extends MsgWrapper {
 
 	public static final String ERROR_INFO_S = "_ERROR_INFO_S";// NOTE must same
 																// as
@@ -18,39 +17,11 @@ public class UiResponse extends UiTransfer {
 																// in server
 																// side.
 
-	protected UiRequest request;
+	protected MsgWrapper request;
 
-	protected ErrorInfosData errorInfoData;
-
-	/**
-	 * @param fc
-	 */
-	public UiResponse(UiRequest req) {
-		this(null, req);
-	}
-
-	public UiResponse(String name, UiRequest req) {
-		super(name);
-		this.errorInfoData = new ErrorInfosData();
-		this.request = req;
+	public UiResponse(MessageData md) {
+		super(md);
 
 	}
 
-	public void onResponse(ObjectPropertiesData pls, ErrorInfosData eis) {
-		this.setPayloads(pls);
-		if (eis != null) {
-			this.errorInfoData.addAll(eis);
-		}
-	}
-
-	public ErrorInfosData getErrorInfos() {
-		return this.errorInfoData;
-	}
-
-	/**
-	 * @return the request
-	 */
-	public UiRequest getRequest() {
-		return request;
-	}
 }

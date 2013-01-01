@@ -3,36 +3,30 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.UiRequest;
-import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.core.UiData;
-import com.fs.uicore.api.gwt.client.core.UiFilterI;
-import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
-import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
-import com.fs.uicore.api.gwt.client.event.ErrorEvent;
-import com.fs.uicore.api.gwt.client.event.ErrorResponseEvent;
-import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
-import com.fs.uicore.api.gwt.client.event.SuccessResponseEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
+import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
+import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
+import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
-import com.fs.uicore.impl.gwt.client.filter.ErrorResponseFilter;
-import com.google.gwt.json.client.JSONValue;
+import com.fs.uicore.impl.gwt.client.message.MessageDispatcherFactory;
 
 /**
  * @author wu TOTO rename to UiCoreI and impl.
@@ -45,45 +39,16 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	private RootI root;
 
-	private List<UiFilterI> filterList = new ArrayList<UiFilterI>();
-
 	private UiPropertiesI<String> parameters;
+
+	private MessageDispatcherI.FactoryI factory;
+
+	private EndPointI endpoint;
 
 	public UiClientImpl(RootI root) {
 		this.root = root;
 		this.parameters = new MapProperties<String>();
-		this.filterList.add(new LocalRequestFilter());
-		this.filterList.add(new RemoteRequestFilter(this));
 
-	}
-
-	protected void processResponse(UiResponse res, JSONValue resJson, UiCallbackI<UiResponse, Object> cb) {
-		CodecI cd = this.cf.getCodec(ObjectPropertiesData.class);
-
-		UiData uid = cd.decode(resJson);
-
-		ObjectPropertiesData dt = (ObjectPropertiesData) uid;
-
-		ErrorInfosData eis = (ErrorInfosData) dt.removeProperty(UiResponse.ERROR_INFO_S);
-		this.processResponse(res, dt, eis, cb);
-	}
-
-	protected void processResponse(UiResponse res, ObjectPropertiesData dt, ErrorInfosData eis,
-			UiCallbackI<UiResponse, Object> cb) {
-		try {
-
-			res.onResponse(dt, eis);
-			// TODO header?
-			cb.execute(res);
-
-			if (eis != null && eis.hasError()) {
-				new ErrorResponseEvent(this, res).dispatch();
-			} else {
-				new SuccessResponseEvent(this, res).dispatch();
-			}
-		} catch (Throwable t) {
-			new ErrorEvent(this, t).dispatch();
-		}
 	}
 
 	@Override
@@ -91,38 +56,65 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		// TODO move to SPI.active.
 		this.cf = new JsonCodecFactoryC();
+		this.factory = new MessageDispatcherFactory();
+		this.factory.parent(this);
 
-		// um.setDefaultProperty(this);// TODO//
-
-		this.addFilter(0, new ErrorResponseFilter(this));
-		this.addHandler(ErrorEvent.TYPE, new DefaultErrorListener());
-		new StateChangeEvent(this).dispatch();// TODO
+		this.endpoint = new EndpointWsImpl();
+		this.endpoint.parent(this);
 
 	}
 
 	@Override
 	public void start() {
-		new BeforeClientStartEvent(this).dispatch();//
-		UiRequest req = new UiRequest();
-		req.setRequestPath("client/init");
-		req.setInit(true);//
-		String locale = this.getPreferedLocale();
-		req.setPayload("preferedLocale", StringData.valueOf(locale));
-		this.sendRequest(req, new UiCallbackI<UiResponse, Object>() {
+		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
 
 			@Override
-			public Object execute(UiResponse t) {
-
-				if (t.getErrorInfos().hasError()) {
-					throw new UiException(t.getErrorInfos().toString());// TODO
-																		// more
-																		// friendly
-				}
-
-				UiClientImpl.this.onInitResponse(t);
-				return null;
+			public void handle(EndpointOpenEvent t) {
+				UiClientImpl.this.onEndpointOpen();
 			}
 		});
+		this.endpoint.getMessageDispatcher().addHandler(Path.valueOf("/client/init/success"),
+				new MessageHandlerI() {
+
+					@Override
+					public void handle(MessageData t) {
+						UiClientImpl.this.onInitSuccess(t);
+					}
+				});
+		this.endpoint.open();
+
+	}
+
+	/**
+	 * Jan 1, 2013
+	 */
+	protected void onInitSuccess(MessageData t) {
+		StringData sd = (StringData) t.getPayloads().getProperty("clientId", true);
+		String sid = sd.getValue();
+		if (sid == null) {
+			throw new UiException("got a null sessionId");
+		}
+		this.clientId = sd.getValue();
+		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
+		// parameters:
+
+		for (String key : opd.keyList()) {
+			StringData valueS = (StringData) opd.getProperty(key);
+
+			this.parameters.setProperty(key, valueS.getValue());
+
+		}
+
+		new AfterClientStartEvent(this).dispatch();
+	}
+
+	public void onEndpointOpen() {
+
+		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
+		String locale = this.getPreferedLocale();
+
+		req.setPayload("preferedLocale", StringData.valueOf(locale));
+		this.endpoint.sendMessage(req);
 
 	}
 
@@ -133,25 +125,6 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	/**
 	 * Client got the sessionId from server,client stared on. Nov 14, 2012
 	 */
-	protected void onInitResponse(UiResponse t) {
-		StringData sd = (StringData) t.getPayloads().getProperty("clientId", true);
-		String sid = sd.getValue();
-		if (sid == null) {
-			throw new UiException("got a null sessionId");
-		}
-		this.clientId = sd.getValue();
-		ObjectPropertiesData opd = t.getPayload("parameters", true);//
-		// parameters:
-
-		for (String key : opd.keyList()) {
-			StringData valueS = (StringData) opd.getProperty(key);
-
-			this.parameters.setProperty(key, valueS.getValue());
-
-		}
-
-		new AfterClientStartEvent(this, this.clientId).dispatch();
-	}
 
 	public String getParameter(String key, String def) {
 		return this.parameters.getProperty(key, def);
@@ -163,37 +136,6 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	protected WidgetFactoryI getWidgetFactory() {
 		return this.getContainer().get(WidgetFactoryI.class, true);
-
-	}
-
-	@Override
-	public void addFilter(UiFilterI f) {
-		this.addFilter(0, f);//
-	}
-
-	@Override
-	public void addFilter(int idx, UiFilterI f) {
-		// NOTE this may be called at the spi active time,there is no
-		// LasterFilter added at that time.
-
-		this.filterList.add(idx, f);
-
-	}
-
-	public String getUrl() {
-
-		return (String) this.getProperty(UiClientI.ROOT_URi, true);
-	}
-
-	/*
-	
-	 */
-	@Override
-	public void sendRequest(UiRequest req, final UiCallbackI<UiResponse, Object> cb) {
-
-		final UiResponse rt = new UiResponse(req);
-		UiFilterI.Context fc = new UiFilterI.Context(req, rt, this.filterList);
-		fc.next().filter(fc, cb);// TODO
 
 	}
 
@@ -250,16 +192,18 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		return this.cf;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicore.api.gwt.client.UiClientI#setParameter(java.lang.String,
-	 * java.lang.String)
-	 */
 	@Override
 	public void setParameter(String key, String value) {
 		this.parameters.setProperty(key, value);
+	}
+
+	/*
+	 * Jan 1, 2013
+	 */
+	@Override
+	public EndPointI getEndpoint() {
+		//
+		return this.endpoint;
 	}
 
 }
