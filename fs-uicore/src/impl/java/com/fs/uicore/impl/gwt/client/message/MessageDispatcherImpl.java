@@ -20,8 +20,7 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  * @author wu
  * 
  */
-public class MessageDispatcherImpl extends UiObjectSupport implements
-		MessageDispatcherI {
+public class MessageDispatcherImpl extends UiObjectSupport implements MessageDispatcherI {
 
 	protected List<HandlerEntry> handlers;
 
@@ -64,10 +63,10 @@ public class MessageDispatcherImpl extends UiObjectSupport implements
 
 	protected void handleInternal(MessageData t) {
 		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
-		String path = t.getHeader("path", true);
-		Path p = Path.valueOf(path, '/');
+		Path p = t.getPath();
 		boolean match = false;
-		for (HandlerEntry he : this.handlers) {
+		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
+		for (HandlerEntry he : hls) {
 			match = he.tryHandle(p, t);
 		}
 
@@ -75,9 +74,8 @@ public class MessageDispatcherImpl extends UiObjectSupport implements
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.info("path:" + path + " with msg:" + t
-						+ " has no handler match it in dispatcher:"
-						+ this.getName() + ",all handlers:" + this.handlers);
+				logger.info("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
+						+ this.getName() + ",all handlers:" + hls);
 			}
 		}
 

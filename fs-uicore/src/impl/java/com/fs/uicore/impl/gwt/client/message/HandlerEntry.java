@@ -40,4 +40,14 @@ public class HandlerEntry {
 			return this.path.isSubPath(p, true);
 		}
 	}
+
+	/*
+	 *Jan 1, 2013
+	 */
+	@Override
+	public String toString() {
+		return "{path:"+this.path+",handler:"+this.handlers+"}";
+	}
+	
+	
 }

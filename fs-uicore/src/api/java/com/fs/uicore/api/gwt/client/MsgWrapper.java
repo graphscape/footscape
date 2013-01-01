@@ -63,6 +63,14 @@ public class MsgWrapper {
 		return (T) rt;
 	}
 
+	public void setPayload(String key, boolean value) {
+		this.target.setPayload(key, value);
+	}
+
+	public void setPayload(String key, String value) {
+		this.target.setPayload(key, StringData.valueOf(value));
+	}
+
 	public void setPayload(String key, UiData value) {
 		this.target.setPayload(key, value);
 	}

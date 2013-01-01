@@ -10,6 +10,8 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.core.UiData;
+import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
@@ -19,6 +21,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
+import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
@@ -38,6 +41,12 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private String sessionId;
 
+	private boolean serverIsReady;
+
+	private String clientId;
+
+	private String terminalId;
+
 	private boolean bond;
 
 	private MessageDispatcherI dispatcher;
@@ -56,11 +65,30 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		// message dispatcher
 		MessageDispatcherI.FactoryI df = client.find(MessageDispatcherI.FactoryI.class, true);
 		this.dispatcher = df.get(D_NAME);// for end point
-		this.dispatcher.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new ServerIsReadyMH(
-				this));
+		this.dispatcher.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new MessageHandlerI() {
 
-		this.dispatcher.addHandler(Path.valueOf("/terminal/binding/success", '/'),
-				new BIndingSuccessMH(this));
+			@Override
+			public void handle(MessageData t) {
+				EndpointWsImpl.this.onServerIsReady(t);
+			}
+		});
+		MessageHandlerI bindingMH = new MessageHandlerI() {
+
+			@Override
+			public void handle(MessageData t) {
+				EndpointWsImpl.this.onBindingSuccess(t);
+			}
+		};
+		this.dispatcher.addHandler(Path.valueOf("/terminal/auth/success"), bindingMH);
+		this.dispatcher.addHandler(Path.valueOf("/terminal/binding/success"), bindingMH);
+
+	}
+
+	protected void onServerIsReady(MessageData md) {
+		this.clientId = md.getString("clientId", true);
+		this.terminalId = md.getString("terminalId", true);
+		this.serverIsReady = true;
+		new EndpointOpenEvent(this).dispatch();
 	}
 
 	@Override
@@ -80,7 +108,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 			@Override
 			public Object execute(Object t) {
 				//
-				EndpointWsImpl.this.onOpen(t);
+				EndpointWsImpl.this.onWsOpen(t);
 				return null;
 			}
 		});
@@ -89,7 +117,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 			@Override
 			public Object execute(String t) {
 				//
-				EndpointWsImpl.this.onMessage(t);
+				EndpointWsImpl.this.onWsMessage(t);
 				return null;
 			}
 		});
@@ -98,7 +126,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 			@Override
 			public Object execute(Object t) {
 				//
-				EndpointWsImpl.this.onClose(t);
+				EndpointWsImpl.this.onWsClose(t);
 				return null;
 			}
 		});
@@ -107,7 +135,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 			@Override
 			public Object execute(String t) {
 				//
-				EndpointWsImpl.this.onError(t);
+				EndpointWsImpl.this.onWsError(t);
 				return null;
 			}
 		});
@@ -115,10 +143,12 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	}
 
 	protected void assertSocketOpen() {
-		if (this.socket != null && this.socket.isOpen()) {
+		if (this.socket != null && this.socket.isOpen() && this.serverIsReady) {
 			return;
 		}
+
 		throw new UiException("socket is not ready.");
+
 	}
 
 	/*
@@ -131,26 +161,30 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		if (this.sessionId != null) {
 			req.setHeader("sessionId", this.sessionId);//
 		}
+		req.setHeader("_resonse_address", "tid://" + this.terminalId);
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.socket.send(jsS);
 	}
 
-	protected void onOpen(Object evt) {
-		new EndpointOpenEvent(this).dispatch();
+	protected void onWsOpen(Object evt) {
+		// wait server is ready
 	}
 
-	protected void onClose(Object evt) {
+	protected void onWsClose(Object evt) {
+		this.serverIsReady = false;
+		this.clientId = null;
+		this.terminalId = null;//
 		new EndpointCloseEvent(this).dispatch();
 
 	}
 
-	protected void onError(String jsonS) {
+	protected void onWsError(String jsonS) {
 		new EndpointErrorEvent(this, jsonS).dispatch();
 
 	}
 
-	protected void onMessage(String jsonS) {
+	protected void onWsMessage(String jsonS) {
 		JSONValue jsonV = JSONParser.parseStrict(jsonS);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
 		// dispatch to #0 dispatcher.
@@ -176,7 +210,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	 */
 	@Override
 	public boolean isOpen() {
-		return this.socket.isOpen();
+		return this.serverIsReady;
 
 	}
 
@@ -188,6 +222,13 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public String getUri() {
 		return this.uri;
+	}
+
+	@Override
+	public void auth(PropertiesData<UiData> pts) {
+		MessageData req = new MessageData("/terminal/auth");
+		req.setPayloads(pts);
+		this.sendMessage(req);
 	}
 
 	/*
@@ -211,13 +252,14 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	/**
 	 * Dec 23, 2012
 	 */
-	public void bindingSuccess() {
-		this.bond = true;
+	public void onBindingSuccess(MessageData md) {
+		System.out.println("onBindingSuccess:" + md);
+		this.sessionId = md.getString("sessionId", true);
 		new EndpointBondEvent(this, this.sessionId).dispatch();
 	}
 
 	/*
-	 *Jan 1, 2013
+	 * Jan 1, 2013
 	 */
 	@Override
 	public void sendMessage(MsgWrapper req) {

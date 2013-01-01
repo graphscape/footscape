@@ -59,7 +59,7 @@ public class PropertiesData<T> extends UiData {
 
 	@Override
 	public String toString() {
-		return this.getClass().getName() + "," + this.map.toString();
+		return this.map.toString();
 	}
 
 	protected boolean isEquals(PropertiesData<T> pts) {

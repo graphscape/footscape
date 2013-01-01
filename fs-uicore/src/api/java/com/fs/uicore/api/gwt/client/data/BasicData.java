@@ -34,7 +34,7 @@ public class BasicData<T> extends UiData {
 
 	@Override
 	public String toString() {
-		return this.getClass() + "," + this.value;
+		return "{" + this.value + "}";
 	}
 
 	@Override

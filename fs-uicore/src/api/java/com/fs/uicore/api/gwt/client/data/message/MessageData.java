@@ -8,6 +8,8 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
+import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
+import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 
@@ -17,6 +19,7 @@ import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
  */
 public class MessageData extends UiData {
 
+	public static final String HK_PATH = "_path";
 	private StringPropertiesData headers = new StringPropertiesData();
 
 	private ObjectPropertiesData payloads = new ObjectPropertiesData();
@@ -26,7 +29,7 @@ public class MessageData extends UiData {
 	}
 
 	public MessageData(String path) {
-		this.setHeader("path", path);
+		this.setHeader(HK_PATH, path);
 	}
 
 	/**
@@ -49,7 +52,7 @@ public class MessageData extends UiData {
 		String rt = this.getHeader(key);
 
 		if (force && rt == null) {
-			throw new UiException("no header with key:" + key);
+			throw new UiException("no header with key:" + key + ",msg:" + this);
 		}
 
 		return rt;
@@ -90,14 +93,32 @@ public class MessageData extends UiData {
 		this.payloads.setProperties(pts);
 	}
 
+	public void setPayload(String key, boolean value) {
+		this.setPayload(key, BooleanData.valueOf(value));
+	}
+
+	public void setPayload(String key, String value) {
+		this.setPayload(key, StringData.valueOf(value));
+	}
+
 	public void setPayload(String key, UiData value) {
 		this.payloads.setProperty(key, value);
 	}
 
 	@Override
 	public String toString() {
-		return this.getClass().getName() + ",headers:"
-				+ this.headers.toString() + ",payloads:" + this.payloads;
+		return this.getClass().getName() + ",headers:" + this.headers.toString() + ",payloads:"
+				+ this.payloads;
+	}
+
+	/**
+	 * Jan 1, 2013
+	 */
+	public Path getPath() {
+		//
+		String ps = this.getHeader(HK_PATH);
+		return Path.valueOf(ps);
+
 	}
 
 }

@@ -11,6 +11,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
@@ -28,6 +29,8 @@ public abstract class TestBase extends GWTTestCase {
 
 	protected UiClientI client;
 	protected ContainerI container;
+	
+	protected EndPointI endpoint;
 
 	protected Set<String> finishing;
 
@@ -57,7 +60,9 @@ public abstract class TestBase extends GWTTestCase {
 		});
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
+		this.endpoint = this.client.getEndpoint();
 		this.client.start();//
+		
 	}
 
 	protected void onEvent(Event e) {

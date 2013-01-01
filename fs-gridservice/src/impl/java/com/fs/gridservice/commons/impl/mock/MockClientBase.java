@@ -177,7 +177,10 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 		if (this.connection == null) {
 			throw new FsException("not connected");
 		}
-
+		if (this.terminalId == null) {
+			throw new FsException("no terminalId");
+		}
+		msg.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + this.terminalId);
 		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
