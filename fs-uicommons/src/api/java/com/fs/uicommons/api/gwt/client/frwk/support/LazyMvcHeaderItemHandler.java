@@ -42,8 +42,7 @@ public class LazyMvcHeaderItemHandler implements EventHandlerI<ModelValueEvent> 
 
 	public void start(ModelI parent) {
 
-		HeaderModelI hm = this.getFrwkModel(parent).getChild(
-				HeaderModelI.class, true);
+		HeaderModelI hm = this.getFrwkModel(parent).getHeader();
 		if (this.menuItem == null) {//top menu item
 			this.headerItem = hm.addItem(this.lazyMvc.getName(),
 					HeaderModelI.ItemModel.P_RIGHT);

@@ -14,11 +14,9 @@ import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageFileUrlDataEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI.PropertyModel;
-import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.WindowModelI;
 import com.fs.uicommons.api.gwt.client.frwk.blank.BlankModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
@@ -34,7 +32,6 @@ import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.manage.BossControlI;
 import com.fs.uicommons.api.gwt.client.manage.BossModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
-import com.fs.uicommons.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
@@ -46,7 +43,6 @@ import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI.TaskI;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
@@ -72,7 +68,6 @@ import com.fs.uicommons.impl.gwt.client.editor.basic.StringEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.file.ImageFileUrlDataEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.image.ImageCropEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.properties.PropertiesEditorImpl;
-import com.fs.uicommons.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.FrwkModelImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
@@ -84,13 +79,12 @@ import com.fs.uicommons.impl.gwt.client.frwk.login.LoginControl;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginModel;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
+import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
 import com.fs.uicommons.impl.gwt.client.manage.BossControlImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossModelImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossView;
-import com.fs.uicommons.impl.gwt.client.message.MessageDispatcherFactory;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;
 import com.fs.uicommons.impl.gwt.client.schedule.SchedulerImpl;
-import com.fs.uicommons.impl.gwt.client.session.SessionModelImpl;
 import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.AnchorWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.ButtonImpl;
@@ -108,10 +102,12 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
+import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
@@ -132,11 +128,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		this.activeWidgetCreater(c);
 
-		
-		// end point
-		EndpointWsImpl ti = new EndpointWsImpl();
-		client.child(ti);//
-
 		// scheduler
 		c.add(new SchedulerImpl());
 
@@ -146,44 +137,26 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		// mvc start from here
 		new ControlManagerImpl().parent(client);
 
-		this.activeBossFrwkSession(rootM, client, c);
+		// boss mvc
+		new Mvc(new BossModelImpl("boss"), new BossView("boss", c), new BossControlImpl("boss")).start(rootM,
+				client.getRoot());
+		//
 
+		new Mvc(new FrwkModelImpl("frwk")).start(rootM);//
+		// Headers
+		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM);//
+		//
 		this.activeLogin(c);
 
 		this.activeConsole(c);
+
+		this.activeMessageHandlers(c, client);
 	}
 
-	private void activeBossFrwkSession(ModelI rootM, UiClientI client, ContainerI c) {
-
-		// boss mvc
-		final Mvc boss = new Mvc(new BossModelImpl("boss"), new BossView("boss", c), new BossControlImpl(
-				"boss")).start(rootM, client.getRoot());
-		//
-		final FrwkModelI fm = new FrwkModelImpl("frwk");
-
-		new Mvc(fm).start(rootM);//
-		// Headers
-		{
-			new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(fm);//
-			//
-		}
-		final SessionModelI sm = new SessionModelImpl("session");
-		sm.parent(rootM);//
-
-		// new LoginHeaderItemHandler().start(rootM);// add header item to click
-		// for login
-		// listen authed event for display account in header
-
-		sm.addAuthedHandler(new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent e) {
-				HeaderModelI.ItemModel im = fm.getHeader().getOrAdd("user", ItemModel.P_RIGHT);
-				String accId = sm.getAccount();//
-				im.setValue(ItemModel.L_DISPLAY_NAME, accId);
-
-			}
-		});
+	public void activeMessageHandlers(ContainerI c, UiClientI client) {
+		EndPointI ep = client.getEndpoint();
+		MessageDispatcherI mp = ep.getMessageDispatcher();
+		mp.addHandler(Path.valueOf("/signup/anonymous/success"), new SignupAnonymousMsgHandler());
 	}
 
 	/**
@@ -219,6 +192,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		};
 		//
+
+		cm.addLazy("loginLazyMvc", login);
 
 		// click by user.
 		new LazyMvcHeaderItemHandler(login, "user").start(rootModel);
@@ -738,14 +713,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof LoginControlI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(SessionModelI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof SessionModelI;
-			}
-		});
 		InstanceOf.addChecker(new CheckerSupport(ManagerModelI.class) {
 
 			@Override
@@ -874,30 +841,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof DateWI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(EndPointI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof EndPointI;
-			}
-		});
-		InstanceOf.addChecker(new CheckerSupport(MessageDispatcherI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof MessageDispatcherI;
-			}
-		});
-		InstanceOf.addChecker(new CheckerSupport(MessageDispatcherI.FactoryI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof MessageDispatcherI.FactoryI;
-			}
-		});
 		InstanceOf.addChecker(new CheckerSupport(GChatControlI.class) {
 
 			@Override
@@ -930,8 +873,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof MessageModel;
 			}
 		});
-		
-		
+
 	}
 
 }

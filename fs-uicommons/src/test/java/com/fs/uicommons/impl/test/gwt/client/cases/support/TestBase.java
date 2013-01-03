@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
-import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -19,6 +18,7 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.SyncHandlerI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
@@ -49,7 +49,7 @@ public class TestBase extends GWTTestCase {
 	protected int timeoutMillis = 10 * 1000;
 
 	protected boolean disableWebSocket;
-	
+
 	protected Set<String> finishing = new HashSet<String>();
 
 	@Override
@@ -84,26 +84,33 @@ public class TestBase extends GWTTestCase {
 		this.framework = this.rootModel.getChild(FrwkModelI.class, true);
 		// xxxSPI.active
 		// this.client.attach();//
-		if(this.disableWebSocket){
-			this.client.setParameter(EndPointI.CP_WEBSOCKET_DISABLE, "true");
-		}
+
 		this.client.start();//
 	}
 
 	protected void onEvent(Event e) {
 		System.out.println(this.getClass().getName() + ":" + e);
 		if (e instanceof AfterClientStartEvent) {
-			this.afterClientStart((AfterClientStartEvent) e);
+			this.onClientStart((AfterClientStartEvent) e);
 		} else if (e instanceof BeforeClientStartEvent) {
 			this.beforeClientStart((BeforeClientStartEvent) e);
+		} else if (e instanceof AttachedEvent) {
+			this.onAttachedEvent((AttachedEvent) e);
 		}
+	}
+
+	/**
+	 * Jan 2, 2013
+	 */
+	protected void onAttachedEvent(AttachedEvent e) {
+
 	}
 
 	protected void beforeClientStart(BeforeClientStartEvent e) {
 
 	}
 
-	protected void afterClientStart(AfterClientStartEvent e) {
+	protected void onClientStart(AfterClientStartEvent e) {
 
 	}
 

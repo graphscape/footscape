@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  */
 public class MsgWrapper {
 
-	private MessageData target;
+	protected MessageData target;
 
 	public MsgWrapper(Path path) {
 		this(new MessageData(path));

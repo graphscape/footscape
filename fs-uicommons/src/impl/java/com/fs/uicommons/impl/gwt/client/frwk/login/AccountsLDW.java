@@ -38,4 +38,12 @@ public class AccountsLDW extends LocalDataWrapper {
 	public RegisteredAccountLDW getRegistered() {
 		return new RegisteredAccountLDW(this.getChild("registered"));
 	}
+
+	/**
+	 * Jan 2, 2013
+	 */
+	public void invalid() {
+		this.getAnonymous().invalid();
+		this.getRegistered().invalid();
+	}
 }

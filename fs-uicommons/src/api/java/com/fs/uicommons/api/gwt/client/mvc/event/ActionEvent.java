@@ -11,10 +11,9 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  * 
  * 
  */
-public abstract class ActionEvent extends ControlEvent {
+public class ActionEvent extends ControlEvent {
 
-	public static final Type<ActionEvent> TYPE = new Type<ActionEvent>(
-			ControlEvent.TYPE);
+	public static final Type<ActionEvent> TYPE = new Type<ActionEvent>(ControlEvent.TYPE);
 
 	private String action;
 
@@ -22,9 +21,8 @@ public abstract class ActionEvent extends ControlEvent {
 	 * @param src
 	 * @param code
 	 */
-	public ActionEvent(Type<? extends ActionEvent> type, ControlI control,
-			String a) {
-		super(type, control);
+	public ActionEvent(ControlI control, String a) {
+		super(TYPE, control);
 		this.action = a;
 	}
 
@@ -34,5 +32,16 @@ public abstract class ActionEvent extends ControlEvent {
 	public String getAction() {
 		return action;
 	}
+
+	/*
+	 *Jan 2, 2013
+	 */
+	@Override
+	public String toString() {
+		// 
+		return super.toString()+",action:"+action;
+	}
+	
+	
 
 }

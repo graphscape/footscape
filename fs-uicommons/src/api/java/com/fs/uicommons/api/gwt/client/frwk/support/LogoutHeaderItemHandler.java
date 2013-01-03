@@ -25,13 +25,12 @@ public class LogoutHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 	 */
 	@Override
 	public void handle(ModelValueEvent e) {
-		FrwkUtil.getSessionModel(e.getModel()).setLoginRequired(true);//
+		// FrwkUtil.getSessionModel(e.getModel()).setLoginRequired(true);//
 	}
 
 	public void start(ModelI parent) {
 
-		HeaderModelI.ItemModel logout = FrwkUtil.getFrwkModel(parent)
-				.getHeader()
+		HeaderModelI.ItemModel logout = FrwkUtil.getFrwkModel(parent).getHeader()
 				.addItem(new String[] { "user", "logout" }, ItemModel.P_RIGHT);
 		logout.addTriggerHandler(this);
 	}

@@ -4,29 +4,24 @@
  */
 package com.fs.uicommons.impl.gwt.client.gchat;
 
-import com.fs.uicommons.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
-import com.fs.uicore.api.gwt.client.UiRequest;
+import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 
 /**
  * @author wu
  * 
  */
-public class JoinAP extends APSupport {
+public class JoinAP extends ActionHandlerSupport {
 
 	/*
-	 * Dec 23, 2012
+	 * Jan 2, 2013
 	 */
 	@Override
-	public void processRequest(ControlI c, String a, UiRequest req) {
-		// c.getClient(true).getChild(MessageDispatcherI.FactoryI.class,
-		// false).get(0);
-		EndPointI ep = c.getClient(true).getChild(EndPointI.class, true);
+	public void handle(ActionEvent t) {
+		//
 		// ep.s
-		((GChatControlI) c).join();
-
+		((GChatControlI) t.getControl()).join();
 	}
 
 }

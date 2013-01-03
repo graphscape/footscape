@@ -25,7 +25,7 @@ public class LoginHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 	 */
 	@Override
 	public void handle(ModelValueEvent e) {
-		FrwkUtil.getSessionModel(e.getModel()).setLoginRequired(true);//
+		
 	}
 
 	public void start(ModelI parent) {

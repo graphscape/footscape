@@ -4,8 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.frwk.login.event;
 
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
  * @author wu
@@ -20,7 +20,7 @@ public class AfterAuthEvent extends Event {
 	/**
 	 * @param type
 	 */
-	public AfterAuthEvent(LoginControlI src,String sessionId) {
+	public AfterAuthEvent(UiObjectI src,String sessionId) {
 		super(TYPE, src);
 		this.sessionId = sessionId;
 	}

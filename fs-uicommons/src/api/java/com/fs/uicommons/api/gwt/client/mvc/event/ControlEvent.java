@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * @author wu
  * 
  */
-public class ControlEvent extends Event {
+public abstract class ControlEvent extends Event {
 
 	public static final Type<ControlEvent> TYPE = new Type<ControlEvent>();
 

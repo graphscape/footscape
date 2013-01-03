@@ -4,14 +4,14 @@
  */
 package com.fs.uicommons.api.gwt.client.gchat.wrapper;
 
-import com.fs.uicommons.api.gwt.client.endpoint.wrapper.EpMsgWrapper;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
  * @author wu
  *
  */
-public class GChatMW extends EpMsgWrapper{
+public class GChatMW extends MsgWrapper{
 
 	/**
 	 * @param md
@@ -21,10 +21,10 @@ public class GChatMW extends EpMsgWrapper{
 	}
 
 	public String getGroupId(){
-		return this.target.getHeader("groupId",true);
+		return this.getHeader("groupId",true);
 	}
 	
 	public String getParticipantId(){
-		return this.target.getHeader("participantId",true);
+		return this.getHeader("participantId",true);
 	}
 }

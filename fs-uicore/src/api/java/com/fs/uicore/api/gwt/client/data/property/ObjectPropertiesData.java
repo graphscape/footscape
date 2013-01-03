@@ -6,6 +6,7 @@ package com.fs.uicore.api.gwt.client.data.property;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
+import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
@@ -41,6 +42,16 @@ public class ObjectPropertiesData extends PropertiesData<UiData> {
 
 		return super.isEquals((ObjectPropertiesData) obj);
 
+	}
+
+	/**
+	 * Jan 2, 2013
+	 */
+	public Boolean getBoolean(String key, Boolean def) {
+		//
+		BooleanData rt = (BooleanData) this.getProperty(key);
+
+		return rt == null ? def : rt.getValue();
 	}
 
 }

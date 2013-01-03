@@ -11,9 +11,9 @@ import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatYouJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.JoinMW;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
 /**
  * @author wu
@@ -45,9 +45,8 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 		group.addParticipant(p);
 
 		new GChatJoinEvent(this.control, gid, pid).dispatch();//
-
-		SessionModelI sm = this.control.getSessionModel(true);
-		if (sm.isAccount(accId)) {
+		UserInfo ui = this.getUserInfo();
+		if (ui.getAccountId().equals(accId)) {
 			new GChatYouJoinEvent(this.control, gid, pid).dispatch();
 		}
 

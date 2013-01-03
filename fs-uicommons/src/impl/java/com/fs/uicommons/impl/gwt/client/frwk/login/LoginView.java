@@ -5,13 +5,10 @@ import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.manage.BossModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagableI;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
-import com.fs.uicommons.api.gwt.client.session.event.AccountUpdateEvent;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -52,24 +49,7 @@ public class LoginView extends FormsView implements ManagableI {
 	@Override
 	protected void doModel(ModelI model) {
 		super.doModel(model);
-		SessionModelI sm = this.getModel().getSessionModel();
-		sm.addHandler(AccountUpdateEvent.TYPE,
-				new EventHandlerI<AccountUpdateEvent>() {
 
-					@Override
-					public void handle(AccountUpdateEvent e) {
-						LoginView.this.onAccount(e);
-					}
-				});
-
-		sm.addValueHandler(SessionModelI.L_LOGIN_REQUIRED,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						LoginView.this.onLoginRequired(e);
-					}
-				});
 	}
 
 	/**
@@ -85,12 +65,6 @@ public class LoginView extends FormsView implements ManagableI {
 	public void doAttach() {
 		super.doAttach();
 
-	}
-
-	// account set to the model
-	protected void onAccount(AccountUpdateEvent e) {
-		// TODO model connector.
-		this.accountLabel.getModel().setDefaultValue(e.getAccountId());//
 	}
 
 	/*

@@ -5,8 +5,10 @@
 package com.fs.uicommons.impl.test;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.engine.api.EngineFactoryI;
+import com.fs.gridservice.commons.api.EventDispatcherI;
+import com.fs.gridservice.commons.api.GlobalEventDispatcherI;
 
 /**
  * @author wu
@@ -31,12 +33,12 @@ public class UiCommonsImplTestSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 		// ac.getContainer().find(ConfigFactoryI.class).newPopulator().active(ac).type("ha")
-		ac.getContainer().find(EngineFactoryI.class, true).getEngine("uiserver").getDispatcher().populator("handler")
-				.active(ac).cfgId(this.getId() + ".Object.DISPATCHER").populate();
+		EventDispatcherI ged = ac.getContainer().find(GlobalEventDispatcherI.class, true);
 
-		//
-		MockAuthProvider ap = new MockAuthProvider();
-		ac.getContainer().addObject(this, "MOCK_AP", ap);
+		Configuration cfg = Configuration.properties(this.id + ".globalEventDispatcher");
+
+		ged.getEngine().getDispatcher()
+				.addHandlers(cfg.getId(), cfg.getPropertyAsCsv("handlers").toArray(new String[] {}));
 
 	}
 

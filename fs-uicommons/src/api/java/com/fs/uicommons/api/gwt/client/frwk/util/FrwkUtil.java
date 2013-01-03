@@ -6,7 +6,6 @@ package com.fs.uicommons.api.gwt.client.frwk.util;
 
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
@@ -25,7 +24,4 @@ public class FrwkUtil {
 		return getFrwkModel(model).getHeader();
 	}
 
-	public static SessionModelI getSessionModel(ModelI model) {
-		return model.getTopObject().getChild(SessionModelI.class, true);
-	}
 }

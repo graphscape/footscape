@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.i18n.I18nResolverI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.commons.Holder;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -29,8 +30,7 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 	}
 
 	@Override
-	public void resolve(final String key,
-			final UiCallbackI<String, String> callback) {
+	public void resolve(final String key, final UiCallbackI<String, String> callback) {
 
 		if (this.cache == null) {
 			this.refresh(key, callback);
@@ -44,20 +44,11 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 
 	}
 
-	protected void refresh(final String key,
-			final UiCallbackI<String, String> callback) {
+	protected void refresh(final String key, final UiCallbackI<String, String> callback) {
 
 		UiClientI client = this.getClient(true);
-		client.sendRequest(new UiRequest().requestPath("/i18n/refresh"),
-				new UiCallbackI<UiResponse, Object>() {
 
-					@Override
-					public Object execute(UiResponse t) {
-						I18nResolverImpl.this.onResoved(t, key, callback);
-						return null;
-
-					}
-				});
+		client.getEndpoint().sendMessage(new MsgWrapper(Path.valueOf("/i18n/refresh")));
 	}
 
 	/**
@@ -65,8 +56,7 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 	 * @param key
 	 * @param callback
 	 */
-	protected void onResoved(UiResponse t, String key,
-			UiCallbackI<String, String> callback) {
+	protected void onResoved(UiResponse t, String key, UiCallbackI<String, String> callback) {
 		this.cache = new HashMap<String, Holder<String>>();
 
 		ObjectPropertiesData opd = t.getPayload("resources", true);

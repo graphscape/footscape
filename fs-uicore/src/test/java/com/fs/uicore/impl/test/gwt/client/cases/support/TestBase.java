@@ -29,7 +29,7 @@ public abstract class TestBase extends GWTTestCase {
 
 	protected UiClientI client;
 	protected ContainerI container;
-	
+
 	protected EndPointI endpoint;
 
 	protected Set<String> finishing;
@@ -62,7 +62,7 @@ public abstract class TestBase extends GWTTestCase {
 		this.client = this.container.get(UiClientI.class, true);
 		this.endpoint = this.client.getEndpoint();
 		this.client.start();//
-		
+
 	}
 
 	protected void onEvent(Event e) {

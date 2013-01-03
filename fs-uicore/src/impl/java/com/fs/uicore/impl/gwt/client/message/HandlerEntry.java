@@ -4,7 +4,7 @@
 package com.fs.uicore.impl.gwt.client.message;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
@@ -25,7 +25,7 @@ public class HandlerEntry {
 		this.handlers = hdls;
 	}
 
-	public boolean tryHandle(Path p, MessageData md) {
+	public boolean tryHandle(Path p, EndpointMessageEvent md) {
 		if (!this.isMatch(p)) {
 			return false;
 		}

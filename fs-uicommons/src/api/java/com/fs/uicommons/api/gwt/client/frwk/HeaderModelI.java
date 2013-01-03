@@ -4,10 +4,14 @@
  */
 package com.fs.uicommons.api.gwt.client.frwk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -22,16 +26,13 @@ public interface HeaderModelI extends ModelI {
 
 		protected String name;
 
-		public static final Location L_DISPLAY_NAME = Location
-				.valueOf("displayName");//
+		public static final Location L_DISPLAY_NAME = Location.valueOf("displayName");//
 
-		public static final Location L_ISSELECTED = Location
-				.valueOf("_isselected");
+		public static final Location L_ISSELECTED = Location.valueOf("_isselected");
 
 		public static final Location L_POSITION = Location.valueOf("_position");
 
-		public static final Location L_TRIGGERED_MS = Location
-				.valueOf("_triggeredMs");
+		public static final Location L_TRIGGERED_MS = Location.valueOf("_triggeredMs");
 
 		public static final Position P_LEFT = Position.valueOf("left");
 
@@ -59,17 +60,16 @@ public interface HeaderModelI extends ModelI {
 		public String getName() {
 			return name;
 		}
-		
-		public ItemModel getItem(String name, boolean force){
-			ItemModel rt = this.getChild(ItemModel.class, name,force);
+
+		public ItemModel getItem(String name, boolean force) {
+			ItemModel rt = this.getChild(ItemModel.class, name, force);
 			return rt;
 		}
 
 		public ItemModel addItem(String name) {
 			ItemModel old = this.getChild(ItemModel.class, name, false);
 			if (old != null) {
-				throw new UiException("already exist name:" + name
-						+ " under item:" + this.getName());
+				throw new UiException("already exist name:" + name + " under item:" + this.getName());
 			}
 			ItemModel rt = new ItemModel(name);
 
@@ -106,6 +106,19 @@ public interface HeaderModelI extends ModelI {
 			}
 			ItemModel p = (ItemModel) this.parent;
 			return p.getItemDepth() + 1;
+		}
+
+		public Path getPath() {
+			if (null == this.parent || !(this.parent instanceof ItemModel)) {
+				return Path.valueOf(this.name);
+
+			}
+			ItemModel p = (ItemModel) this.parent;
+			Path pp = p.getPath();
+			List<String> nl = new ArrayList<String>(pp.getNameList());
+			nl.add(this.name);
+			return Path.valueOf(nl);
+
 		}
 
 		public boolean isSelected() {

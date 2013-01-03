@@ -9,8 +9,6 @@ import com.fs.uicommons.api.gwt.client.manage.BossControlI;
 import com.fs.uicommons.api.gwt.client.manage.BossModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.event.AfterActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.event.BeforeActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
@@ -93,21 +91,7 @@ public class EchoTest extends TestBase {
 	}
 
 	protected void onActionEvent(ActionEvent e) {
-		if (e instanceof BeforeActionEvent) {
-			this.onActionRequest((BeforeActionEvent) e);
-		} else if (e instanceof AfterActionEvent) {
-			this.onActionAfter((AfterActionEvent) e);
-		} else {
-			System.out.println(e);
-		}
-	}
-
-	protected void onActionRequest(BeforeActionEvent e) {
-		this.tryFinish("action");
-	}
-
-	protected void onActionAfter(AfterActionEvent e) {
-		this.tryFinish("response");
+		
 	}
 
 	// form data

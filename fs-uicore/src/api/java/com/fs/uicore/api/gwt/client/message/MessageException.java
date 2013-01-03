@@ -3,7 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client.message;
 
-import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wuzhen
@@ -12,17 +12,17 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 public class MessageException {
 
 	protected Throwable exception;
-	protected MessageData messageData;
+	protected EndpointMessageEvent messageData;
 
 	public Throwable getException() {
 		return exception;
 	}
 
-	public MessageData getMessageData() {
+	public EndpointMessageEvent getMessageData() {
 		return messageData;
 	}
 
-	public MessageException(Throwable t, MessageData md) {
+	public MessageException(Throwable t, EndpointMessageEvent md) {
 		this.exception = t;
 		this.messageData = md;
 	}

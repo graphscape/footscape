@@ -6,18 +6,18 @@ package com.fs.uicommons.api.gwt.client.mvc.simple;
 
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
+import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.UiRequest;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
  * @author wu
  * 
  */
-public class FormDataAP extends APSupport {
+public abstract class FormDataAP extends ActionHandlerSupport {
 
 	private String form;
 
@@ -29,16 +29,18 @@ public class FormDataAP extends APSupport {
 		this.form = form;
 	}
 
-	/*
-	 */
-	@Override
-	public void processRequest(final ControlI c, final String a, UiRequest req) {
+	protected void processFormData(ActionEvent ae, MsgWrapper req) {
+		ObjectPropertiesData dt = this.getFormData(ae);
+		req.setPayloads(dt);
+	}
 
-		ModelI cm = c.getModel();
+	protected ObjectPropertiesData getFormData(ActionEvent ae) {
+
+		ModelI cm = ae.getControl().getModel();
 		if (!(cm instanceof FormsModel)) {
-			throw new UiException("the model of control:" + c
-					+ " not a FormModel");
+			throw new UiException("the model of control:" + ae.getControl() + " not a FormModel");
 		}
+
 		FormsModel fcm = (FormsModel) cm;
 		FormModel fm = null;
 		if (this.form == null) {
@@ -46,12 +48,8 @@ public class FormDataAP extends APSupport {
 		} else {
 			fm = fcm.getForm(form, true);
 		}
-		req.setPayloads(fm.getData());
+		return fm.getData();
 
 	}
 
-	@Override
-	public void processResponse(final ControlI c, final String a, UiResponse res) {
-
-	}
 }

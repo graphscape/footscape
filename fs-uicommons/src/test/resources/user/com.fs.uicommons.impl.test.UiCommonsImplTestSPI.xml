@@ -1,0 +1,10 @@
+
+<config>
+
+	<config name="globalEventDispatcher">
+		<handlers value="echo" />
+		<config name="echo" path="/events/echo" class="com.fs.uicommons.impl.test.handler.EchoHandler" />
+	</config>
+
+
+</config>

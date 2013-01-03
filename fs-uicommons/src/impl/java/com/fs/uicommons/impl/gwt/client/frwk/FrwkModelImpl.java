@@ -6,7 +6,6 @@ package com.fs.uicommons.impl.gwt.client.frwk;
 
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderModel;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
@@ -29,7 +28,7 @@ public class FrwkModelImpl extends ModelSupport implements FrwkModelI {
 	@Override
 	public HeaderModelI getHeader() {
 		//
-		return this.getChild(HeaderModelI.class, true);
+		return this.getParent().getChild(HeaderModelI.class, true);
 
 	}
 
@@ -40,8 +39,6 @@ public class FrwkModelImpl extends ModelSupport implements FrwkModelI {
 	protected void doAttach() {
 		//
 		super.doAttach();
-
-		new HeaderModel("header").parent(this);
 
 	}
 

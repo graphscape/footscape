@@ -18,5 +18,7 @@ public interface ClientManagerI extends EntityGdManagerI<ClientGd> {
 	public ClientGd createClient(String tid, PropertiesI<Object> pts);
 
 	public void bindingSession(String cid, String sid);
+	
+	public void unBindingSession(String cid);
 
 }

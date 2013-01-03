@@ -69,6 +69,10 @@ public class MessageData extends UiData {
 	public String getString(String key) {
 		return this.payloads.getString(key);
 	}
+	
+	public Boolean getBoolean(String key, Boolean def){
+		return this.payloads.getBoolean(key,def);
+	}
 
 	public UiData getPayload(String key) {
 		UiData rt = this.payloads.getProperty(key, false);

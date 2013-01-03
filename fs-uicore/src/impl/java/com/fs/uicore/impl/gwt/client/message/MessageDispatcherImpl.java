@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageException;
 import com.fs.uicore.api.gwt.client.message.MessageExceptionHandlerI;
@@ -24,7 +25,7 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 
 	protected List<HandlerEntry> handlers;
 
-	protected CollectionHandler<MessageData> defaultHandlers;
+	protected CollectionHandler<EndpointMessageEvent> defaultHandlers;
 
 	protected CollectionHandler<MessageException> exceptionHandlers;
 
@@ -32,7 +33,7 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 		super(name);
 		this.exceptionHandlers = new CollectionHandler<MessageException>();
 		this.handlers = new ArrayList<HandlerEntry>();
-		this.defaultHandlers = new CollectionHandler<MessageData>();
+		this.defaultHandlers = new CollectionHandler<EndpointMessageEvent>();
 
 	}
 
@@ -40,7 +41,7 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void handle(MessageData msg) {
+	public void handle(EndpointMessageEvent msg) {
 		try {
 			this.handleInternal(msg);
 		} catch (Throwable t) {
@@ -61,9 +62,9 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 		}
 	}
 
-	protected void handleInternal(MessageData t) {
+	protected void handleInternal(EndpointMessageEvent t) {
 		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
-		Path p = t.getPath();
+		Path p = t.getMessage().getPath();
 		boolean match = false;
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
 		for (HandlerEntry he : hls) {

@@ -33,6 +33,8 @@ public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
 	
 	public void bindingSession(String tid, String sid);
 	
+	public void unBindingSession(String tid);
+	
 	public TerminalGd getTerminalBySessionId(String sid, boolean force);
 
 }

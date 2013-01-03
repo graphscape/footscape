@@ -74,7 +74,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 		String tid = reqE.getTerminalId();
 		this.binding(res, null, reqE, tid, s);
 	}
-
+	
 	protected void binding(ResponseI res, PropertiesI<Object> pts, TerminalMsgReceiveEW reqE, String tid,
 			SessionGd session) {
 		String sid = session.getId();
@@ -89,5 +89,26 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 		res.setPayload("accountId", aid);
 
 	}
+	@Handle("unbinding")
+	public void handleUnbinding(ResponseI res, TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, MessageI req) {
+		String sid = reqE.getMessage().getString("sessionId",true);
+		SessionGd s = this.sessionManager.getSession(sid);
+		if(s == null){
+			throw new FsException("todo no session ");
+		}
+		String tid = reqE.getTerminalId();
+		this.unbinding(res, reqE, tid, s);
+	}
+	
+	protected void unbinding(ResponseI res,TerminalMsgReceiveEW reqE, String tid,
+			SessionGd session) {
+		String sid = session.getId();
+		String aid = session.getAccountId();
+		String cid = reqE.getClientId();
+		this.terminalManager.unBindingSession(tid);
+		this.clientManager.unBindingSession(cid);
+		this.sessionManager.removeEntity(sid);
+		
 
+	}
 }

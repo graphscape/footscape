@@ -30,10 +30,14 @@ public interface EndPointI extends UiObjectI {
 	public boolean isOpen();
 
 	public void auth(PropertiesData<UiData> pts);
-	
+
+	public void logout();
+
 	public boolean isBond();
 
 	public String getSessionId();
+
+	public UserInfo getUserInfo();
 
 	public String getUri();
 

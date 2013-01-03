@@ -35,6 +35,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 	@Override
 	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
 		//
+		PropertiesI<Object> rt = new MapProperties<Object>();
 		String type = (String) credential.getProperty("type");// anonymous/registered
 		// boolean isSaved = credential.getProperty(Boolean.class, "isSaved",
 		// Boolean.FALSE);//
@@ -43,7 +44,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 		if (type.equals("registered")) {// registered
 
 			String email = (String) credential.getProperty("email", true);
-
+			rt.setProperty("email", email);
 			AccountInfo ai = this.dataService.getNewest(AccountInfo.class, AccountInfo.EMAIL, email, false);
 			if (ai == null) {// not found account by email.
 
@@ -60,7 +61,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 		if (acc == null) {// no this account or password
 			return null;
 		}
-		PropertiesI<Object> rt = new MapProperties<Object>();
+		
 		rt.setProperty("isAnonymous", acc.getIsAnonymous());
 		rt.setProperty(SessionGd.ACCID, accountId);
 

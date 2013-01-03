@@ -19,6 +19,7 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
@@ -48,7 +49,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	public UiClientImpl(RootI root) {
 		this.root = root;
 		this.parameters = new MapProperties<String>();
-
+		this.factory = new MessageDispatcherFactory();
+		this.factory.parent(this);
+		MessageDispatcherI md = this.factory.get("endpoint");
+		this.endpoint = new EndpointWsImpl(md);
+		this.endpoint.parent(this);
 	}
 
 	@Override
@@ -56,11 +61,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		// TODO move to SPI.active.
 		this.cf = new JsonCodecFactoryC();
-		this.factory = new MessageDispatcherFactory();
-		this.factory.parent(this);
-
-		this.endpoint = new EndpointWsImpl();
-		this.endpoint.parent(this);
+		
 
 	}
 
@@ -77,7 +78,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 				new MessageHandlerI() {
 
 					@Override
-					public void handle(MessageData t) {
+					public void handle(EndpointMessageEvent t) {
 						UiClientImpl.this.onInitSuccess(t);
 					}
 				});
@@ -88,7 +89,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(MessageData t) {
+	protected void onInitSuccess(EndpointMessageEvent evt) {
+		MessageData t = evt.getMessage();
 		StringData sd = (StringData) t.getPayloads().getProperty("clientId", true);
 		String sid = sd.getValue();
 		if (sid == null) {

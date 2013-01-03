@@ -187,4 +187,13 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 		}
 	}
 
+	/*
+	 *Jan 2, 2013
+	 */
+	@Override
+	public void unBindingSession(String tid) {
+		// 
+		this.bindingSession(tid, null);
+	}
+
 }

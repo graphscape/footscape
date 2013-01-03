@@ -60,4 +60,13 @@ public class ClientManagerImpl extends EntityGdManagerSupport<ClientGd>
 		this.addEntity(c);//
 	}
 
+	/*
+	 *Jan 2, 2013
+	 */
+	@Override
+	public void unBindingSession(String cid) {
+		// 
+		this.bindingSession(cid, null);
+	}
+
 }

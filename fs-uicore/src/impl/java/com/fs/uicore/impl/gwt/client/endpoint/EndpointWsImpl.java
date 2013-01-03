@@ -13,12 +13,15 @@ import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointUnbondEvent;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
@@ -39,19 +42,47 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private String uri;
 
-	private String sessionId;
-
 	private boolean serverIsReady;
 
 	private String clientId;
 
 	private String terminalId;
 
-	private boolean bond;
-
 	private MessageDispatcherI dispatcher;
 
-	public EndpointWsImpl() {
+	private UserInfo userInfo;
+
+	/**
+	 * @param md
+	 */
+	public EndpointWsImpl(MessageDispatcherI md) {
+		this.dispatcher = md;
+		this.dispatcher.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new MessageHandlerI() {
+
+			@Override
+			public void handle(EndpointMessageEvent t) {
+				EndpointWsImpl.this.onServerIsReady(t);
+			}
+		});
+		MessageHandlerI bindingMH = new MessageHandlerI() {
+
+			@Override
+			public void handle(EndpointMessageEvent t) {
+				EndpointWsImpl.this.onBindingSuccess(t);
+			}
+		};
+		this.dispatcher.addHandler(Path.valueOf("/terminal/auth/success"), bindingMH);
+		this.dispatcher.addHandler(Path.valueOf("/terminal/binding/success"), bindingMH);
+
+		MessageHandlerI unBindingMH = new MessageHandlerI() {
+
+			@Override
+			public void handle(EndpointMessageEvent t) {
+				EndpointWsImpl.this.onUnbindingSuccess(t);
+			}
+		};
+		this.dispatcher.addHandler(Path.valueOf("/terminal/unbinding/success"), unBindingMH);
+
 	}
 
 	/*
@@ -60,31 +91,11 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-		UiClientI client = this.getClient(true);// .addh
-
-		// message dispatcher
-		MessageDispatcherI.FactoryI df = client.find(MessageDispatcherI.FactoryI.class, true);
-		this.dispatcher = df.get(D_NAME);// for end point
-		this.dispatcher.addHandler(Path.valueOf("/control/status/serverIsReady", '/'), new MessageHandlerI() {
-
-			@Override
-			public void handle(MessageData t) {
-				EndpointWsImpl.this.onServerIsReady(t);
-			}
-		});
-		MessageHandlerI bindingMH = new MessageHandlerI() {
-
-			@Override
-			public void handle(MessageData t) {
-				EndpointWsImpl.this.onBindingSuccess(t);
-			}
-		};
-		this.dispatcher.addHandler(Path.valueOf("/terminal/auth/success"), bindingMH);
-		this.dispatcher.addHandler(Path.valueOf("/terminal/binding/success"), bindingMH);
 
 	}
 
-	protected void onServerIsReady(MessageData md) {
+	protected void onServerIsReady(EndpointMessageEvent e) {
+		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);
 		this.terminalId = md.getString("terminalId", true);
 		this.serverIsReady = true;
@@ -158,8 +169,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	public void sendMessage(MessageData req) {
 		//
 		this.assertSocketOpen();
-		if (this.sessionId != null) {
-			req.setHeader("sessionId", this.sessionId);//
+		if (this.userInfo != null) {
+			req.setHeader("sessionId", this.getSessionId());//
 		}
 		req.setHeader("_resonse_address", "tid://" + this.terminalId);
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
@@ -187,10 +198,11 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	protected void onWsMessage(String jsonS) {
 		JSONValue jsonV = JSONParser.parseStrict(jsonS);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
+		EndpointMessageEvent evt = new EndpointMessageEvent(this, md).dispatch();
+
 		// dispatch to #0 dispatcher.
-		this.dispatcher.handle(md);// handler
+		this.dispatcher.handle(evt);// handler
 		// and raise a event
-		new EndpointMessageEvent(this, md).dispatch();
 
 	}
 
@@ -237,7 +249,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public boolean isBond() {
 		//
-		return this.bond;
+		return this.userInfo != null;
 	}
 
 	/*
@@ -246,16 +258,25 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public String getSessionId() {
 		//
-		return this.sessionId;
+		return this.userInfo.getString("sessionId", true);
 	}
 
 	/**
 	 * Dec 23, 2012
 	 */
-	public void onBindingSuccess(MessageData md) {
+	public void onBindingSuccess(EndpointMessageEvent evt) {
+		MessageData md = evt.getMessage();
 		System.out.println("onBindingSuccess:" + md);
-		this.sessionId = md.getString("sessionId", true);
-		new EndpointBondEvent(this, this.sessionId).dispatch();
+		this.userInfo = new UserInfo();
+		String sid = md.getString("sessionId", true);
+		this.userInfo.setProperties(md.getPayloads());
+
+		new EndpointBondEvent(this, this.getSessionId()).dispatch();
+	}
+
+	public void onUnbindingSuccess(EndpointMessageEvent evt) {
+		this.userInfo = null;
+		new EndpointUnbondEvent(this).dispatch();
 	}
 
 	/*
@@ -264,6 +285,30 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public void sendMessage(MsgWrapper req) {
 		this.sendMessage(req.getTarget());//
+	}
+
+	/*
+	 * Jan 2, 2013
+	 */
+	@Override
+	public void logout() {
+		//
+		if (!this.isBond()) {
+			throw new UiException("not bound yet.");
+		}
+
+		MessageData req = new MessageData("/terminal/unbinding");
+		req.setPayload("sessionId", this.getSessionId());
+		this.sendMessage(req);
+	}
+
+	/*
+	 * Jan 2, 2013
+	 */
+	@Override
+	public UserInfo getUserInfo() {
+		//
+		return this.userInfo;
 	}
 
 }

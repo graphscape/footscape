@@ -3,11 +3,10 @@
  */
 package com.fs.uicommons.impl.test.handler;
 
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.message.support.HandlerSupport;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.engine.api.HandleContextI;
-import com.fs.engine.api.RequestI;
-import com.fs.engine.api.ResponseI;
-import com.fs.engine.api.support.HandlerSupport;
 
 /**
  * @author wu
@@ -15,16 +14,7 @@ import com.fs.engine.api.support.HandlerSupport;
  */
 public class EchoHandler extends HandlerSupport {
 
-	/* */
-	@Override
-	public void handle(HandleContextI sc) {
-		
-		super.handle(sc);
-		
-		
-	}
-	
-	public void handleEcho(RequestI req, ResponseI res) {
+	public void handleEcho(MessageI req, ResponseI res) {
 		PropertiesI<Object> pts = req.getPayloads();
 
 		res.setPayloads(pts);
