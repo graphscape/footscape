@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.uelist;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
@@ -26,7 +26,7 @@ public class OpenExpEditAP extends ActionHandlerSupport {
 		Mvc mvc = mc.getLazyObject(MainControlI.LZ_EXP_EDIT, true);
 
 		ExpEditModelI eem = mvc.getModel();
-
+		// TODO by control.
 		eem.setValue(ExpEditModelI.L_ISOPEN, true);// listen by the view of the
 													// model.
 	}

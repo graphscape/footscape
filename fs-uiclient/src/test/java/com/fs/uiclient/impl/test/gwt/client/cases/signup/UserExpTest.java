@@ -15,7 +15,6 @@ public class UserExpTest extends ExpTestBase {
 	public void testUserExp() {
 		this.finishing.add("all.created");
 		this.delayTestFinish(timeoutMillis * 10);
-		this.start();
 
 	}
 

@@ -8,13 +8,22 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 public class Path {
 
+	public static final Path ROOT = new Path(new String[] {});
+
 	private List<String> nameList;
+
+	public String getName() {
+		if (this.nameList.isEmpty()) {
+			return null;
+		}
+		return this.nameList.get(this.nameList.size() - 1);
+	}
 
 	public List<String> getNameList() {
 		return nameList;
 	}
 
-	private Path(String... names) {
+	private Path(String[] names) {
 		this(Arrays.asList(names));
 	}
 
@@ -39,13 +48,9 @@ public class Path {
 		if (this.isRoot()) {
 			return null;
 		}
-		List<String> ps = new ArrayList<String>();
-		for (int i = 0; i < this.nameList.size() - 1; i++) {
-			String name = this.nameList.get(i);
-			ps.add(name);
+		List<String> ps = new ArrayList<String>(this.nameList.subList(0, this.nameList.size() - 1));
 
-		}
-		return new Path();
+		return new Path(ps);
 	}
 
 	public int size() {

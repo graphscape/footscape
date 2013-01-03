@@ -27,7 +27,6 @@ public class SignupTest extends SignupTestBase {
 
 		this.finishing.add("signup.ok");
 		this.delayTestFinish(timeoutMillis);
-		super.start();
 
 	}
 

@@ -13,7 +13,6 @@ public class ActivityTest extends ActivityTestBase {
 
 	public void testActivityOpen() {
 		this.delayTestFinish(timeoutMillis);
-		super.start();
 
 	}
 

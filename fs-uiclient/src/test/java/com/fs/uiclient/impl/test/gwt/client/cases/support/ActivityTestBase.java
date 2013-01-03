@@ -12,15 +12,14 @@ import com.fs.uiclient.api.gwt.client.event.AfterExpSelectedEvent;
 import com.fs.uiclient.api.gwt.client.event.CooperRequestRefreshEvent;
 import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
-import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 
 /**
@@ -48,14 +47,9 @@ public class ActivityTestBase extends ExpTestBase {
 		this.finishing.add("activity.open");
 	}
 
-	public void start() {
-		this.delayTestFinish(timeoutMillis);//
-		super.start();
-
-	}
-
-	protected void onAfterAuthEvent(AfterAuthEvent e) {
-
+	@Override
+	protected void onLogin(UserInfo ui) {
+		// this.tryFinish("login.ok");
 	}
 
 	@Override
@@ -132,13 +126,6 @@ public class ActivityTestBase extends ExpTestBase {
 		// is set.
 
 		this.tryFinish("coper.submit");
-	}
-
-	@Override
-	protected void onSuccessResposne(String path, UiResponse sre) {
-		super.onSuccessResposne(path, sre);
-		if (path.endsWith("uelist/" + UserExpListModelI.A_REFRESH)) {
-		}
 	}
 
 	// after search

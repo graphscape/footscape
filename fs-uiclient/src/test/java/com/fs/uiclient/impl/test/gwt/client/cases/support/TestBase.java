@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
+import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
+import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
+import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
@@ -19,6 +22,7 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
@@ -29,7 +33,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * 
  */
 public class TestBase extends GWTTestCase {
-	public static final int timeoutMillis = 100000;
+	public static final int timeoutMillis = 1000000;
 
 	protected GwtSPI.Factory factory;
 
@@ -68,7 +72,8 @@ public class TestBase extends GWTTestCase {
 	@Override
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-
+		AccountsLDW accs = AccountsLDW.getInstance();
+		accs.invalid();
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), GWT.create(UiCommonsGPI.class),
 				GWT.create(UiClientGwtSPI.class), };
 
@@ -97,7 +102,36 @@ public class TestBase extends GWTTestCase {
 		if (e instanceof AttachedEvent) {
 			AttachedEvent ae = (AttachedEvent) e;
 			this.onAttachedEvent(ae);
+		} else if (e instanceof EndpointBondEvent) {
+			this.onBondEvent((EndpointBondEvent) e);
+		} else if (e instanceof SuccessMessageEvent) {
+			this.onSuccessMessageEvent((SuccessMessageEvent) e);
+		} else if (e instanceof FailureMessageEvent) {
+			this.onFailureMessageEvent((FailureMessageEvent) e);
 		}
+
+	}
+
+	/**
+	 * Jan 3, 2013
+	 */
+	protected void onFailureMessageEvent(FailureMessageEvent e) {
+		//
+		System.err.println("failure message " + e.getMessage());
+	}
+
+	/**
+	 * Jan 3, 2013
+	 */
+	protected void onSuccessMessageEvent(SuccessMessageEvent e) {
+		//
+
+	}
+
+	/**
+	 * Jan 3, 2013
+	 */
+	protected void onBondEvent(EndpointBondEvent e) {
 
 	}
 

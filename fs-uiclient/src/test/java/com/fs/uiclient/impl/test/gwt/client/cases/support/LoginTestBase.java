@@ -3,17 +3,20 @@
  */
 package com.fs.uiclient.impl.test.gwt.client.cases.support;
 
+import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
-import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
-import com.fs.uicommons.impl.gwt.client.frwk.login.LoginModel;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 
 /**
  * @author wuzhen
@@ -24,12 +27,10 @@ public abstract class LoginTestBase extends SignupTestBase {
 	protected LoginView loginView;
 
 	@Override
-	public void start() {
-		super.start();
-	}
-
-	@Override
 	protected void onSignup(String email, String pass) {
+		LoginModelI lm = this.loginView.getModel();
+		lm.setIsUsingSavedAccout(false);//
+		
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);
 		FormView fv = this.loginView.find(FormView.class, "default", true);
 
@@ -37,16 +38,40 @@ public abstract class LoginTestBase extends SignupTestBase {
 		passwordE.input(StringData.valueOf(this.password));
 		EditorI emailE = fv.find(EditorI.class, "email", true);
 		emailE.input(StringData.valueOf(this.email));
-
+		
 		this.loginView.clickAction("submit");
 	}
 
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
-		if (e instanceof AfterAuthEvent) {
-			this.onAfterAuthEvent((AfterAuthEvent) e);
+		if (e instanceof EndpointBondEvent) {
+			this.onBond((EndpointBondEvent)e);
 		}
+	}
+
+	/**
+	 *Jan 3, 2013
+	 */
+	private void onBond(EndpointBondEvent e) {
+		// 
+		UserInfo ui = e.getChannel().getUserInfo();
+		if(ui.isAnonymous()){
+			this.onAnonymousUserLogin();
+		}else{
+			this.onLogin(ui);
+		}
+	}
+
+	/**
+	 *Jan 3, 2013
+	 */
+	protected abstract void onLogin(UserInfo ui) ;
+	/**
+	 *Jan 3, 2013
+	 */
+	private void onAnonymousUserLogin() {
+		
 	}
 
 	@Override
@@ -58,6 +83,11 @@ public abstract class LoginTestBase extends SignupTestBase {
 		}
 	}
 
+	@Override
+	protected void onSuccessMessageEvent(SuccessMessageEvent e) {
+		super.onSuccessMessageEvent(e);
+	}
+
 	/**
 	 * @param obj
 	 */
@@ -65,18 +95,6 @@ public abstract class LoginTestBase extends SignupTestBase {
 		this.loginView = obj;
 	}
 
-	protected void onSuccessResposne(String path, UiResponse sre) {
-		super.onSuccessResposne(path, sre);
-		if (path.endsWith("login/" + LoginModel.A_SUBMIT)) {
-			String sid = sre.getPayLoadAsString("sessionId", true);//
-
-		}
-	}
-	
-	protected void onAfterAuthEvent(AfterAuthEvent e) {
-
-	}
-	
 	/**
 	 * 
 	 */

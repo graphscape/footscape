@@ -24,10 +24,12 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.main.MainModel;
 import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
-import com.fs.uiclient.impl.gwt.client.tasks.TaskManager;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
@@ -41,6 +43,8 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 
@@ -56,17 +60,19 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		this.activeInstanceOfChecker(c);
 		this.activeMainControl(c, client);
-		// this.activeTaskManager(c);
+		this.activeMessageHandlers(c, client);
 	}
 
-	private void activeTaskManager(ContainerI c) {
-		UiClientI client = c.get(UiClientI.class, true);
-
-		TaskManager tm = new TaskManager();
-		client.child(tm);//
+	/**
+	 * Jan 3, 2013
+	 */
+	private void activeMessageHandlers(ContainerI c, UiClientI client) {
+		MessageDispatcherI dis = client.getEndpoint().getMessageDispatcher();
+		dis.addHandler(Path.ROOT, new SuccessOrFailureEventMH());
+		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());
+		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());
 
 	}
-
 
 	private void activeMainControl(ContainerI c, UiClientI client) {
 		//
@@ -291,8 +297,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(
-				ActivitiesModelI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(ActivitiesModelI.ItemModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {

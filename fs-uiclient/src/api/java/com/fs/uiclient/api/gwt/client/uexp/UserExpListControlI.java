@@ -12,4 +12,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public interface UserExpListControlI extends ControlI {
 
+	public void refresh(String expId);
+	
 }

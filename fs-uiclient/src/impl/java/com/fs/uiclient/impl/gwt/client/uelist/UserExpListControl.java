@@ -12,6 +12,8 @@ import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.UserExpListRefreshAP;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
@@ -37,7 +39,7 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 
 		// refresh list,summary list,TODO this should be triggered by snapshot
 		// changing.
-		this.addActionEventHandler(UserExpListModelI.A_REFRESH, new RefreshAP());
+		this.addActionEventHandler(UserExpListModelI.A_REFRESH, new UserExpListRefreshAP());
 
 		this.addActionEventHandler(UserExpListModelI.A_CREATE, new OpenExpEditAP());
 
@@ -183,6 +185,15 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		UserExpModel uem = (UserExpModel) e.getModel();
 		this.getModel().select(uem.getExpId());
 
+	}
+
+	/*
+	 * Jan 3, 2013
+	 */
+	@Override
+	public void refresh(String expId) {
+		//
+		this.triggerAction(UserExpListModelI.A_REFRESH);
 	}
 
 }

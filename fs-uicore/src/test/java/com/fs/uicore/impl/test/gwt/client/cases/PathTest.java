@@ -6,14 +6,15 @@ package com.fs.uicore.impl.test.gwt.client.cases;
 
 import java.util.ArrayList;
 
+import junit.framework.TestCase;
+
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 
 /**
  * @author wu
  * 
  */
-public class PathTest extends TestBase {
+public class PathTest extends TestCase {
 
 	public void testPath() {
 		Path root = Path.valueOf(new ArrayList<String>());
@@ -33,6 +34,12 @@ public class PathTest extends TestBase {
 
 		assertFalse("p31 should not subpath of p32,it's same", p31.isSubPath(p32));
 		assertTrue("p31 should subpath of p32,it's same", p31.isSubPath(p32, true));
+		
+		assertTrue("root's subpath",root.isSubPath(p1));
+		assertTrue("root's subpath",root.isSubPath(p2));
+		assertTrue("root's subpath",root.isSubPath(p1,true));
+		assertTrue("root's subpath",root.isSubPath(p2,true));
+		
 
 	}
 }

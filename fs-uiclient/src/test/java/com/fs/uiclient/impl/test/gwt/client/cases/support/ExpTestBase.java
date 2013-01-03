@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
+import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -16,14 +17,14 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 
 /**
@@ -34,7 +35,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 	protected UserExpListView ueListView;
 
-	protected UserExpView ueView;
+	protected Map<String,UserExpView> ueViewMap;
 
 	protected ExpEditView eeView;
 
@@ -45,6 +46,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
+		this.ueViewMap = new HashMap<String,UserExpView>();
 		this.finishing.add("editview");// 1
 		this.finishing.add("editok");// 2
 		this.finishing.add("expcreated");// 3 the new item child event
@@ -52,24 +54,13 @@ public abstract class ExpTestBase extends LoginTestBase {
 	}
 
 	@Override
-	public void start() {
-
-		super.start();
-	}
-
-	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
-		if (e instanceof ExpCreatedEvent) {
-			ExpCreatedEvent ec = (ExpCreatedEvent) e;
-			String id = ec.getExpId();
-			this.onExpCreated(this.expCreatedEventIdx, (ExpCreatedEvent) e);
-			this.expCreatedEventIdx++;
-		}
+	
 	}
 
 	@Override
-	protected void onAfterAuthEvent(AfterAuthEvent e) {
+	protected void onLogin(UserInfo ui) {
 		Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_UE_LIST, true);
 	}
 
@@ -125,9 +116,11 @@ public abstract class ExpTestBase extends LoginTestBase {
 	protected abstract String expText(int idx);
 
 	@Override
-	protected void onSuccessResposne(String path, UiResponse sre) {
-		super.onSuccessResposne(path, sre);
-		if (path.endsWith("expe/" + ExpEditModelI.A_SUBMIT)) {
+	protected void onSuccessMessageEvent(SuccessMessageEvent e) {
+		super.onSuccessMessageEvent(e);
+		Path p = e.getMessage().getPath().getParent();
+
+		if (p.equals(Path.valueOf("/expe/submit"))) {
 			this.nextExpIdx++;
 			if (this.nextExpIdx < this.totalExp()) {
 				this.submitExp();
@@ -142,7 +135,11 @@ public abstract class ExpTestBase extends LoginTestBase {
 	public void onUserExpViewAttached(UserExpView v) {
 
 		UserExpModel uem = v.getModel();
-		this.tryFinish("expcreated");
+		String expId = uem.getExpId();
+		this.ueViewMap.put(expId, v);//
+		if(this.ueViewMap.size()==this.totalExp()){
+			this.tryFinish("expcreated");			
+		}
 
 	}
 

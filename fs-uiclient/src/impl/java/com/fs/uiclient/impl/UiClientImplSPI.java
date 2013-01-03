@@ -21,7 +21,6 @@ public class UiClientImplSPI extends SPISupport {
 	/* */
 	@Override
 	public void doActive(ActiveContext ac) {
-
 	}
 
 	/* */

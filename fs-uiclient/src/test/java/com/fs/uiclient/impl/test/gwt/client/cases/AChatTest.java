@@ -67,7 +67,6 @@ public class AChatTest extends ActivityTestBase {
 		this.tryOpenChatGroup();
 
 		// listen to the anthed and activity open
-		super.start();
 
 	}
 
@@ -83,8 +82,7 @@ public class AChatTest extends ActivityTestBase {
 	}
 
 	protected void tryOpenChatGroup() {
-		if (this.finishing.contains("activity.open")
-				|| this.finishing.contains("gchat.ready")) {
+		if (this.finishing.contains("activity.open") || this.finishing.contains("gchat.ready")) {
 			// wait the two event ,both the activity is open and the xmpp is
 			// ready.
 			return;
@@ -94,25 +92,22 @@ public class AChatTest extends ActivityTestBase {
 		// wait the occupant join.
 
 		// AChatModel csm = this.rootModel.find(AChatModel.class, true);
-		GChatControlI gcc = this.rootModel.getClient(true)
-				.getChild(ControlManagerI.class, true)
+		GChatControlI gcc = this.rootModel.getClient(true).getChild(ControlManagerI.class, true)
 				.getControl(GChatControlI.class, true);
 
-		gcc.addHandler(GChatGroupCreatedEvent.TYPE,
-				new EventHandlerI<GChatGroupCreatedEvent>() {
+		gcc.addHandler(GChatGroupCreatedEvent.TYPE, new EventHandlerI<GChatGroupCreatedEvent>() {
 
-					@Override
-					public void handle(GChatGroupCreatedEvent e) {
+			@Override
+			public void handle(GChatGroupCreatedEvent e) {
 
-						AChatTest.this.onChatGroupCreated(e);
-					}
-				});
+				AChatTest.this.onChatGroupCreated(e);
+			}
+		});
 
 		// click the open chat button to join into or create the room for the
 		// activity.
 
-		ControlUtil.triggerAction(this.activityModel,
-				ActivityModelI.A_OPEN_CHAT_ROOM);
+		ControlUtil.triggerAction(this.activityModel, ActivityModelI.A_OPEN_CHAT_ROOM);
 
 	}
 
@@ -127,14 +122,13 @@ public class AChatTest extends ActivityTestBase {
 		assertEquals("room name not correct", actId, gid);//
 
 		this.tryFinish("group.created");
-		gc.addHandler(GChatMessageEvent.TYPE,
-				new EventHandlerI<GChatMessageEvent>() {
+		gc.addHandler(GChatMessageEvent.TYPE, new EventHandlerI<GChatMessageEvent>() {
 
-					@Override
-					public void handle(GChatMessageEvent t) {
-						AChatTest.this.onMessage(t);
-					}
-				});
+			@Override
+			public void handle(GChatMessageEvent t) {
+				AChatTest.this.onMessage(t);
+			}
+		});
 	}
 
 	protected void onMessage(GChatMessageEvent e) {
@@ -149,17 +143,15 @@ public class AChatTest extends ActivityTestBase {
 		} else {
 			String actId = this.activityModel.getActivityId();
 
-			String msg = "autoresponse:" + "hello,message got:(" + body
-					+ "),from:" + e.getParticipantId() + ",actId:" + actId
-					+ ",waiting:" + this.finishing;
+			String msg = "autoresponse:" + "hello,message got:(" + body + "),from:" + e.getParticipantId()
+					+ ",actId:" + actId + ",waiting:" + this.finishing;
 
 			this.send(actId, msg);
 			//
 			if (body.startsWith("finish:")) {
 				String f = body.substring("finish:".length());
 				this.tryFinish(f);
-				this.send(actId, "autoresponse:finish:" + f + ",waiting:"
-						+ this.finishing);
+				this.send(actId, "autoresponse:finish:" + f + ",waiting:" + this.finishing);
 			}
 
 		}
