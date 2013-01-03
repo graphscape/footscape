@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityControl;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
+import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesAP;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -31,7 +32,7 @@ public class ActivitiesControl extends ControlSupport implements
 	 */
 	public ActivitiesControl(String name) {
 		super(name);
-		this.addActionProcessor(ActivitiesModelI.A_ACTIVITES, new ActivitiesAP());
+		this.addActionEventHandler(ActivitiesModelI.A_ACTIVITES, new ActivitiesAP());
 	}
 
 	/*

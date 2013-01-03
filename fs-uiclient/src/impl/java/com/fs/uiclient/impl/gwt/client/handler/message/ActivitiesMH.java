@@ -1,8 +1,8 @@
 /**
  * All right is from Author of the file,to be explained in comming days.
- * Oct 21, 2012
+ * Jan 3, 2013
  */
-package com.fs.uiclient.impl.gwt.client.activities;
+package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,48 +11,30 @@ import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
 import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
-import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
-import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
-import com.fs.uiclient.api.gwt.client.util.ListDataUtil;
-import com.fs.uicommons.api.gwt.client.mvc.ActionProcessorI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicore.api.gwt.client.UiRequest;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicore.api.gwt.client.data.ListData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wu
  * 
  */
-public class ActivitiesAP implements ActionProcessorI {
+public class ActivitiesMH extends MHSupport {
 
 	/*
-	 * Oct 21, 2012
+	 * Jan 2, 2013
 	 */
 	@Override
-	public void processRequest(ControlI c, String a, UiRequest req) {
-		UserSnapshotModelI mc = c.getManager()
-				.getControl(UserSnapshotControlI.class, true).getModel();
-		List<String> actIdL = mc.getActivityIdList();
-		req.setPayload("idList", ListDataUtil.toStringDataList(actIdL));//
-
-	}
-
-	/*
-	 * Oct 21, 2012
-	 */
-	@Override
-	public void processResponse(ControlI c, String a, UiResponse res) {
-		if (res.getErrorInfos().hasError()) {
-			return;// ignore when error
-		}
+	public void handle(EndpointMessageEvent t) {
 		// TODO provide a general way for this.
-		ActivitiesModelI asm = (ActivitiesModel) c.getModel();
-		ListData<ObjectPropertiesData> ld = (ListData<ObjectPropertiesData>) res
-				.getPayloads().getProperty("activities");
-
+		ActivitiesModelI asm = this.getModel(t, ActivitiesModelI.class, true);
+		MessageData res = t.getMessage();
+		ListData<ObjectPropertiesData> ld = (ListData<ObjectPropertiesData>) res.getPayloads().getProperty(
+				"activities");
+		ActivitiesControlI c = this.getControl(t, ActivitiesControlI.class, true);
 		for (int i = 0; i < ld.size(); i++) {
 
 			// TODO general way,converter from ObjectPropertiesData to Model.
@@ -60,9 +42,8 @@ public class ActivitiesAP implements ActionProcessorI {
 			ObjectPropertiesData oi = ld.get(i);
 			StringData actIdD = (StringData) oi.getProperty("id");
 			String actId = actIdD.getValue();
-			List<String> expL = this
-					.getExpIdList((ListData<ObjectPropertiesData>) oi
-							.getProperty("expectations"));
+			List<String> expL = this.getExpIdList((ListData<ObjectPropertiesData>) oi
+					.getProperty("expectations"));
 			ItemModel im = asm.getItem(actId, false);
 			if (im == null) {
 				im = new ItemModel(actId, expL);//
@@ -89,5 +70,4 @@ public class ActivitiesAP implements ActionProcessorI {
 		}
 		return rt;
 	}
-
 }

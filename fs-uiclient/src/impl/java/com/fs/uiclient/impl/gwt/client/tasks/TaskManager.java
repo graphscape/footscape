@@ -5,9 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.tasks;
 
 import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
@@ -24,20 +22,6 @@ public class TaskManager extends UiObjectSupport {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-		// listener to the authed event,trigger activity's query repeatedly
-		SessionModelI sm = this.getClient(true).getRootModel()
-				.find(SessionModelI.class, true);
-
-		// TODO this may by missed,if here the authed event already raised.
-
-		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						TaskManager.this.onAuthedEvent(e);
-					}
-				});
 
 	}
 
@@ -46,8 +30,7 @@ public class TaskManager extends UiObjectSupport {
 	 */
 	protected void onAuthedEvent(ModelValueEvent e) {
 		// start the scheduler
-		String secS = this.getClient(true).getParameter("refresh.interval",
-				"60S");
+		String secS = this.getClient(true).getParameter("refresh.interval", "60S");
 		if (secS.endsWith("S")) {
 			secS = secS.substring(0, secS.length() - 1);
 		} else {

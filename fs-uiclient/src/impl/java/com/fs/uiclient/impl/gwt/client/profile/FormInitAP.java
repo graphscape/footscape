@@ -4,20 +4,19 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
+import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
+import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wu
  * 
  */
-public class FormInitAP extends APSupport {
+public class FormInitAP extends MHSupport {
 
 	private String form;
 
@@ -29,23 +28,20 @@ public class FormInitAP extends APSupport {
 	}
 
 	@Override
-	protected void processResponseSuccess(final ControlI c, final String a,
-			UiResponse res) {
-		ModelI cm = c.getModel();
-		if (!(cm instanceof FormsModel)) {
-			throw new UiException("the model of control:" + c
-					+ " not a FormModel");
-		}
-		FormsModel fcm = (FormsModel) cm;
+	public void handle(EndpointMessageEvent t) {
+
+		ProfileModelI pm = this.getModel(t, ProfileModelI.class, true);
+
+		FormsModel fcm = (FormsModel) pm;
 		FormModel fm = null;
 		if (this.form == null) {
 			fm = fcm.getDefaultForm();
 		} else {
 			fm = fcm.getForm(form, true);
 		}
-		ObjectPropertiesData opd = (ObjectPropertiesData) res.getPayloads()
-				.getProperty(this.payload, false);
-		
+		MessageData res = t.getMessage();
+		ObjectPropertiesData opd = (ObjectPropertiesData) res.getPayloads().getProperty(this.payload, false);
+
 		fm.setDefaultValue(opd);//
 	}
 }

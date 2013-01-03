@@ -19,8 +19,6 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
-import com.fs.uicore.api.gwt.client.event.ErrorResponseEvent;
-import com.fs.uicore.api.gwt.client.event.SuccessResponseEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
@@ -71,18 +69,16 @@ public class TestBase extends GWTTestCase {
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
 
-		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class),
-				GWT.create(UiCommonsGPI.class),
+		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), GWT.create(UiCommonsGPI.class),
 				GWT.create(UiClientGwtSPI.class), };
 
-		factory = ClientLoader.getOrLoadClient(spis,
-				new EventHandlerI<Event>() {
+		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
 
-					@Override
-					public void handle(Event e) {
-						TestBase.this.onEvent(e);
-					}
-				});
+			@Override
+			public void handle(Event e) {
+				TestBase.this.onEvent(e);
+			}
+		});
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
 
@@ -97,17 +93,12 @@ public class TestBase extends GWTTestCase {
 
 	public void onEvent(Event e) {
 		System.out.println(this.getClass().getName() + ",onEvent:" + e);
-		if (e instanceof ErrorResponseEvent) {
-			this.onErrorResponseEvent((ErrorResponseEvent) e);
-		}
 
 		if (e instanceof AttachedEvent) {
 			AttachedEvent ae = (AttachedEvent) e;
 			this.onAttachedEvent(ae);
 		}
-		if (e instanceof SuccessResponseEvent) {
-			this.onSuccessResponseEvent((SuccessResponseEvent) e);
-		}
+
 	}
 
 	/**
@@ -115,18 +106,6 @@ public class TestBase extends GWTTestCase {
 	 */
 	protected void onAttachedEvent(AttachedEvent ae) {
 
-	}
-
-	protected void onSuccessResponseEvent(SuccessResponseEvent ase) {
-
-	}
-
-	/**
-	 * @param e
-	 */
-	protected void onErrorResponseEvent(ErrorResponseEvent e) {
-		fail("error response,req:" + e.getResponse().getRequest()
-				+ ",errorInfos:" + e.getResponse().getErrorInfos());
 	}
 
 	/*

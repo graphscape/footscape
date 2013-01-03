@@ -27,9 +27,9 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	 */
 	public CooperControl(String name) {
 		super(name);
-		this.addActionProcessor(CooperModelI.A_REQUEST, new CooperRequestAP());
-		this.addActionProcessor(CooperModelI.A_CONFIRM, new CooperConfirmAP());
-		this.addActionProcessor(CooperModelI.A_REFRESH_INCOMING_CR,
+		this.addActionEventHandler(CooperModelI.A_REQUEST, new CooperRequestAP());
+		this.addActionEventHandler(CooperModelI.A_CONFIRM, new CooperConfirmAP());
+		this.addActionEventHandler(CooperModelI.A_REFRESH_INCOMING_CR,
 				new RefreshIncomingCrAP());
 
 	}

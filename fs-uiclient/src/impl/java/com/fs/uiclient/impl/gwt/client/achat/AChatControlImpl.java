@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.achat;
 
 import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uiclient.api.gwt.client.achat.AChatModel;
+import com.fs.uiclient.impl.gwt.client.handler.action.AChatOpenAP;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
@@ -22,10 +23,9 @@ public class AChatControlImpl extends ControlSupport implements AChatControlI {
 	 */
 	public AChatControlImpl(String name) {
 		super(name);
-		// this.addActionProcessor(ActivityModelI.A_REFRESH, new RefreshAP());
+		// this.addActionEventHandler(ActivityModelI.A_REFRESH, new ActivityRefreshAP());
 		this.localMap.put(AChatModel.A_OPEN, true);
-
-		this.addActionProcessor(AChatModel.A_OPEN, new OpenAP());
+		this.addActionEventHandler(AChatModel.A_OPEN, new AChatOpenAP());
 	}
 
 	public GChatControlI getGChatControl() {

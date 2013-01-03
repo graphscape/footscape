@@ -29,7 +29,7 @@ public class ExpSearchControl extends ControlSupport implements
 	public ExpSearchControl(String name) {
 		super(name);
 
-		this.addActionProcessor(ExpSearchModelI.A_SEARCH, new SearchAP());
+		this.addActionEventHandler(ExpSearchModelI.A_SEARCH, new SearchAP());
 	}
 
 	/*

@@ -24,8 +24,6 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
 import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
-import com.fs.uiclient.impl.gwt.client.filter.LocalActionFilter;
-import com.fs.uiclient.impl.gwt.client.filter.SessionFilter;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.main.MainModel;
 import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
@@ -57,7 +55,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		UiClientI client = c.get(UiClientI.class, true);//
 
 		this.activeInstanceOfChecker(c);
-		this.activeFilter(c);
 		this.activeMainControl(c, client);
 		// this.activeTaskManager(c);
 	}
@@ -70,11 +67,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 	}
 
-	private void activeFilter(ContainerI c) {
-		UiClientI client = c.get(UiClientI.class, true);
-		client.addFilter(new LocalActionFilter());
-		client.addFilter(new SessionFilter(client));//
-	}
 
 	private void activeMainControl(ContainerI c, UiClientI client) {
 		//

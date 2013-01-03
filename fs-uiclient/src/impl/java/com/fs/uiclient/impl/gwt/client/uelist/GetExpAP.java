@@ -6,16 +6,17 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.support.APSupport;
-import com.fs.uicore.api.gwt.client.UiRequest;
-import com.fs.uicore.api.gwt.client.UiResponse;
+import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
  * 
  */
-public class GetExpAP extends APSupport {
+public class GetExpAP extends ActionHandlerSupport {
 
 	/**
 	 * Nov 28, 2012
@@ -23,19 +24,13 @@ public class GetExpAP extends APSupport {
 	 * Get the detail of the exp,user click in the list, to open the detail.
 	 */
 	@Override
-	public void processRequest(ControlI c, String a, UiRequest req) {
-		String expId = (String) c.getModel().getValue(
-				UserExpListModelI.L_EXP_ID_GET_REQUIRED);
+	public void handle(ActionEvent ae) {
+		ControlI c = ae.getControl();
+		String expId = (String) c.getModel().getValue(UserExpListModelI.L_EXP_ID_GET_REQUIRED);
+		MsgWrapper req = this.newRequest(Path.valueOf("/exps/get"));
 		req.setPayload("expId", StringData.valueOf(expId));//
-	}
 
-	/*
-	 * Nov 28, 2012
-	 */
-	@Override
-	protected void processResponseSuccess(ControlI c, String a, UiResponse res) {
-		//
-		//TODO
+		this.sendMessage(ae, req);
 	}
 
 }

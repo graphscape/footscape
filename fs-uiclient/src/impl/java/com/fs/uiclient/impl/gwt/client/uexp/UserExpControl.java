@@ -20,10 +20,10 @@ public class UserExpControl extends ControlSupport implements UserExpControlI {
 	public UserExpControl(String name) {
 		super(name);
 		this.localMap.put(UserExpModel.A_OPEN_ACTIVITY, true);//
-		this.addActionProcessor(UserExpModel.A_OPEN_ACTIVITY,
+		this.addActionEventHandler(UserExpModel.A_OPEN_ACTIVITY,
 				new OpenActivityAP());
 		this.localMap.put(UserExpModel.A_SELECT, true);//
-		this.addActionProcessor(UserExpModel.A_SELECT,
+		this.addActionEventHandler(UserExpModel.A_SELECT,
 				new SelectAP());
 		
 	}

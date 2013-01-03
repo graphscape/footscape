@@ -17,8 +17,6 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionSuccessEvent;
-import com.fs.uicommons.api.gwt.client.session.SessionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
@@ -52,23 +50,10 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	public void testSearch() {
-		SessionModelI sm = this.rootModel.find(SessionModelI.class, true);
-		sm.addValueHandler(SessionModelI.L_IS_AUTHED,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						ExpSearchTest.this.onAuthed();
-					}
-				});
 
 		this.delayTestFinish(timeoutMillis);//
 
-		sm.setAccount(this.account);// TODO more info?
-
 		this.listenToTheUserExpInitBeforeAuth();//
-
-		sm.setAuthed(true);
 
 	}
 
@@ -77,17 +62,7 @@ public class ExpSearchTest extends TestBase {
 	// model.
 	protected void listenToTheUserExpInitBeforeAuth() {
 
-		UserExpListControlI uec = this.manager.getControl(
-				UserExpListControlI.class, true);
-		uec.addActionEventHandler(ActionSuccessEvent.TYPE,
-				UserExpListModelI.A_REFRESH, new EventHandlerI<ActionSuccessEvent>() {
-
-					@Override
-					public void handle(ActionSuccessEvent e) {
-						ExpSearchTest.this
-								.onUserExpListInitActionAndSelectOne(e);
-					}
-				});
+		UserExpListControlI uec = this.manager.getControl(UserExpListControlI.class, true);
 
 	}
 
@@ -100,7 +75,7 @@ public class ExpSearchTest extends TestBase {
 	// already.
 
 	// find the user exp and select it, this will cause the search and result
-	protected void onUserExpListInitActionAndSelectOne(ActionSuccessEvent e) {
+	protected void onUserExpListInitActionAndSelectOne() {
 		// listen to the main model for the activity model,all activity model
 		// will be the main model's children
 		//
@@ -133,14 +108,12 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	private UserExpModel getTheUserExpModel() {
-		UserExpListModelI uem = this.rootModel.find(UserExpListModelI.class,
-				true);
+		UserExpListModelI uem = this.rootModel.find(UserExpListModelI.class, true);
 
 		// this.dump();
 		UserExpModel ue = uem.getUserExp(expId, true);
 
-		assertEquals("the selected exp should is the specified one",
-				this.expId, ue.getExpId());
+		assertEquals("the selected exp should is the specified one", this.expId, ue.getExpId());
 		return ue;
 	}
 
@@ -177,7 +150,7 @@ public class ExpSearchTest extends TestBase {
 
 	protected void listenToTheActivityIdSettingBeforeCoper() {
 		UserExpModel ue = this.getTheUserExpModel();
-		ue.addValueHandler(null,//TODO UserExpModel.L_ACTIVITY_ID,
+		ue.addValueHandler(null,// TODO UserExpModel.L_ACTIVITY_ID,
 				new EventHandlerI<ModelValueEvent>() {
 
 					@Override
@@ -199,24 +172,21 @@ public class ExpSearchTest extends TestBase {
 		UserExpModel ue2 = (UserExpModel) e.getModel();
 		String expId2 = ue2.getExpId();
 
-		assertEquals("the activity id set on the wrong exp", expId2,
-				ue.getExpId());
+		assertEquals("the activity id set on the wrong exp", expId2, ue.getExpId());
 
 		// the selected item should have an activity with it.
 		String actId = ue.getActivityId();
-		assertNotNull(
-				"activity id is nulll for the exp model with id:"
-						+ ue.getExpId(), actId);
+		assertNotNull("activity id is nulll for the exp model with id:" + ue.getExpId(), actId);
 
-		assertEquals("selected activity not correct or not selected.", actId1,
-				actId);
+		assertEquals("selected activity not correct or not selected.", actId1, actId);
 
 		this.tryFinish("activity.created");//
 
 		// listen to the activity open
 		this.listenToTheActivityOpen();
 		// open the activity by click the view.
-		String vname = "userExpView-"+expId;// the view name is same as the exp id;
+		String vname = "userExpView-" + expId;// the view name is same as the
+												// exp id;
 		this.dump();
 		UserExpView uev = this.root.find(UserExpView.class, vname, true);
 		uev.clickAction(UserExpModel.A_OPEN_ACTIVITY);
@@ -224,8 +194,7 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	protected void listenToTheActivityOpen() {
-		ActivitiesModelI asm = this.rootModel
-				.find(ActivitiesModelI.class, true);
+		ActivitiesModelI asm = this.rootModel.find(ActivitiesModelI.class, true);
 		asm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
 			@Override
@@ -236,13 +205,13 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	// the activity is opened.
-	protected void onActivityModelAdd(ModelChildEvent e){
-		if(!(e.getChild() instanceof ActivityModelI)){
-			return ;
+	protected void onActivityModelAdd(ModelChildEvent e) {
+		if (!(e.getChild() instanceof ActivityModelI)) {
+			return;
 		}
-		ActivityModelI am = (ActivityModelI)e.getChild();
+		ActivityModelI am = (ActivityModelI) e.getChild();
 		String actId2 = am.getActivityId();
-		assertEquals("activity opened but the id not correct",this.actId1,actId2);
+		assertEquals("activity opened but the id not correct", this.actId1, actId2);
 		this.tryFinish("activity.open");
 	}
 

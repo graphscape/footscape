@@ -1,10 +1,10 @@
 /**
  * All right is from Author of the file,to be explained in comming days.
- * Oct 20, 2012
+ * Oct 21, 2012
  */
-package com.fs.uiclient.impl.gwt.client.cooper;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
+import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -15,18 +15,19 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
  * @author wu
  * 
  */
-public class CooperConfirmAP extends ActionHandlerSupport {
+public class ActivityRefreshAP extends ActionHandlerSupport {
 
 	/*
-	 * Oct 20, 2012
+	 * Oct 21, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
 
-		String cooperRequestId = (String) ae.getControl().getModel()
-				.getValue(CooperModelI.L_COOPERREQUEST_ID);
-		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
-		req.getPayloads().setProperty("cooperRequestId", StringData.valueOf(cooperRequestId));
+		MsgWrapper req = this.newRequest(Path.valueOf("/activity/refresh"));
+
+		String actId = ((ActivityModelI) ae.getControl().getModel()).getActivityId();
+
+		req.getPayloads().setProperty("activityId", StringData.valueOf(actId));
 		this.sendMessage(ae, req);
 	}
 

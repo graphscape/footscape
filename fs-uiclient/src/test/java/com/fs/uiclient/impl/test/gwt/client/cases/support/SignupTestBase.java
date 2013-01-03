@@ -11,13 +11,11 @@ import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
-import com.fs.uicore.api.gwt.client.UiRequest;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
-import com.fs.uicore.api.gwt.client.event.SuccessResponseEvent;
 
 /**
  * @author wuzhen
@@ -48,14 +46,6 @@ public abstract class SignupTestBase extends TestBase {
 		if (obj instanceof SignupView) {
 			this.onSignupView((SignupView) obj);
 		}
-	}
-
-	@Override
-	public void onSuccessResponseEvent(SuccessResponseEvent ase) {
-		UiResponse res = ase.getResponse();
-		UiRequest req = ase.getResponse().getRequest();
-		String path = req.getRequestPath();
-		this.onSuccessResposne(path, res);
 	}
 
 	/**

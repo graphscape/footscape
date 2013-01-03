@@ -16,9 +16,7 @@ import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
@@ -39,25 +37,20 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 
 		// refresh list,summary list,TODO this should be triggered by snapshot
 		// changing.
-		this.addActionProcessor(UserExpListModelI.A_REFRESH, new RefreshAP());
+		this.addActionEventHandler(UserExpListModelI.A_REFRESH, new RefreshAP());
 
-		this.addActionProcessor(UserExpListModelI.A_CREATE, new OpenExpEditAP());
+		this.addActionEventHandler(UserExpListModelI.A_CREATE, new OpenExpEditAP());
 
 		// get the detail of one exp.
-		this.addActionProcessor(UserExpListModelI.A_GET, new GetExpAP());
+		this.addActionEventHandler(UserExpListModelI.A_GET, new GetExpAP());
 
-		this.addActionProcessor(UserExpListModelI.A_SELECT, new SelectExpAP());
+		this.addActionEventHandler(UserExpListModelI.A_SELECT, new SelectExpAP());
 
 	}
 
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-
-		this.addAuthProcessorAction(UserExpListModelI.A_REFRESH);// TODO add to
-																	// the after
-																	// auth
-																	// content.
 
 		// listen to the Exp edit model for the new created exp
 		new SimpleValueDeliver<String, String>((MainModelI) this.getModel().getParent(),
@@ -144,37 +137,6 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 	@Override
 	public UserExpListModelI getModel() {
 		return (UserExpListModelI) this.model;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.mvc.support.AbstractControl#onActionSuccess
-	 * (java.lang.String, com.fs.uicore.api.gwt.client.UiResponse)
-	 */
-	@Override
-	protected void onActionSuccess(String action, UiResponse res) {
-		super.onActionSuccess(action, res);
-		if (UserExpListModelI.A_GET.equals(action)) {
-			this.onGetActionSuccess(res);
-		}
-	}
-
-	/**
-	 * @param res
-	 */
-	private void onGetActionSuccess(UiResponse res) {
-
-		StringData idD = (StringData) res.getPayloads().getProperty("expId");
-		StringData bodyD = (StringData) res.getPayloads().getProperty("body");
-
-		// TODO show the detail of the exp.
-
-		//
-		// UserExpModel uem = this.getModel().getOrAddUserExp(idD.getValue());
-		// uem.setBody(bodyD.getValue());
-
 	}
 
 	/*
