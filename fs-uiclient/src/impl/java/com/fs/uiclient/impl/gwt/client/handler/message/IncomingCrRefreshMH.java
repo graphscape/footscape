@@ -6,9 +6,9 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
-import com.fs.uiclient.api.gwt.client.event.CooperRequestRefreshEvent;
+import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
 import com.fs.uicore.api.gwt.client.data.ListData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
@@ -20,7 +20,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  * @author wu
  * 
  */
-public class RefreshIncomingCrMH extends MHSupport {
+public class IncomingCrRefreshMH extends MHSupport {
 
 	/*
 	 * Jan 2, 2013
@@ -43,7 +43,7 @@ public class RefreshIncomingCrMH extends MHSupport {
 																				// 1
 			StringData accountId2 = (StringData) od.getProperty("accountId2");
 
-			CooperRequestModel crm = new CooperRequestModel(crId.getValue());
+			IncomingCrModel crm = new IncomingCrModel(crId.getValue());
 			crm.setAccountId1(accountId1.getValue());
 			crm.setAccountId2(accountId2.getValue());
 			crm.setExpId1(expId1.getValue());
@@ -51,9 +51,18 @@ public class RefreshIncomingCrMH extends MHSupport {
 			crm.commit();
 			cm.child(crm);// add as the child,this is monitored by uelist
 							// control.
-			new CooperRequestRefreshEvent((CooperControlI) c, crId.getValue())
-					.dispatch();
+			this.onIncomingCr(t,crm);
 		}
 	}
+
+	/**
+	 *Jan 4, 2013
+	 */
+	private void onIncomingCr(EndpointMessageEvent t, IncomingCrModel crm) {
+		UserExpListControlI c = this.getControl(t,UserExpListControlI.class, true);
+		c.incomingCr(crm);
+	}
+	
+	
 
 }

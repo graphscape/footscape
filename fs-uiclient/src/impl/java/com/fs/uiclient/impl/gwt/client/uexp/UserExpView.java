@@ -118,22 +118,6 @@ public class UserExpView extends SimpleView {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicore.api.gwt.client.support.WidgetBase#processModelValue(com
-	 * .fs.uicore.api.gwt.client.ModelI.Location,
-	 * com.fs.uicore.api.gwt.client.ModelI.ValueWrapper)
-	 */
-	@Override
-	protected void processModelValue(Location loc, ValueWrapper vw) {
-		super.processModelValue(loc, vw);
-		if (loc.equals(UserExpModel.L_ISSELECTED)) {
-			this.processModelValueSelected(vw);
-		}
-	}
-
 	@Override
 	public UserExpModel getModel() {
 		return (UserExpModel) this.model;

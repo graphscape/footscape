@@ -29,8 +29,8 @@ public interface CooperModelI extends ModelI {
 	public static final Location L_EXPID2 = Location.valueOf("expId2");
 
 	// before confirm action,please set this value.
-	public static final Location L_COOPERREQUEST_ID = Location
-			.valueOf("cooperRequestId");// for confirm
+	public static final Location L_COOPERREQUEST_ID = Location.valueOf("cooperRequestId");// for
+																							// confirm
 
 	public void coperExpId1(String expId);// for request action,set this two
 											// exps firstly.
@@ -42,13 +42,6 @@ public interface CooperModelI extends ModelI {
 	// incoming cooper request only needed,for outgoing cr, it is a "message" to
 	// another people,no worth to do see it here.may be in "history" message.
 
-	public List<CooperRequestModel> getIncomingCooperRequestModelList();
-
-	public List<String> getIncomingCooperRequestIdList();
-
-	public void setIncomingCooperRequestIdList(List<String> crIdL);
-
-	// return the id list that has no model,for refresh
-	public List<String> getNewIncomingCrIdList();
+	public List<IncomingCrModel> getIncomingCooperRequestModelList();
 
 }

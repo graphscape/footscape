@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.cooper;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import java.util.List;
 
@@ -17,13 +17,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 /**
  * @author wu
  *         <p>
- *         Snapshot notify new crList:which will cause 1)some cr should
- *         delete,those are confirmed already. 2)the new created detail should
- *         be got from this AP.
- *         <p>
- *         New created got and add to the child of the CooperModelI.
- *         UserExpListControlI should monitor this event,including deleting and
- *         adding the CR here.
+ * 
  *         <p>
  * 
  */
@@ -36,7 +30,7 @@ public class RefreshIncomingCrAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		ControlI c = ae.getControl();
 		CooperModelI cm = c.getModel();
-		List<String> crIdL = cm.getNewIncomingCrIdList();
+		List<String> crIdL = null;
 		MsgWrapper req = this.newRequest(Path.valueOf("/coooper/incomingCr"));
 
 		req.getPayloads().setProperty("cooperRequestIdList", ListDataUtil.toStringDataList(crIdL));

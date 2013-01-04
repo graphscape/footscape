@@ -32,6 +32,8 @@
 
 		<dependency org="com.google.gwt" name="gwt-dev" rev="2.5.0" force="true" conf="test->master" />
 
+	
+		<dependency org="org.seleniumhq.selenium.client-drivers" name="selenium-java-client-driver" rev="1.0.2" force="true" conf="test->master" />
 
 		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" force="true" conf="*->master" />
 

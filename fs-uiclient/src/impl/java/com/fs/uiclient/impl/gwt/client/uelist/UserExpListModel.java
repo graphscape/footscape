@@ -24,12 +24,9 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	 */
 	public UserExpListModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, UserExpListModelI.A_REFRESH)
-				.setHidden(true);
 		// new open the other view:ExpEditModel.
 		ControlUtil.addAction(this, UserExpListModelI.A_CREATE);
 		// click and open one exp,enter the exp's main view.
-		ControlUtil.addAction(this, UserExpListModelI.A_GET, true);
 
 	}
 
@@ -45,7 +42,8 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 
 		UserExpModel rt = this.getUserExp(id, false);
 		if (rt == null) {
-			rt = new UserExpModel(id, id);//NOTE the name must be the id,see the getUserExp();
+			rt = new UserExpModel(id, id);// NOTE the name must be the id,see
+											// the getUserExp();
 			rt.parent(this);
 		}
 		return rt;

@@ -14,22 +14,13 @@ public interface UserExpListModelI extends ModelI {
 
 	public static final String A_CREATE = "create";// link to new exp edit view.
 
-	public static final String A_GET = "get";// hidden,when user click the
-												// detail icon,expend the detail
-												// in the list item.
-
 	public static final String A_SELECT = "open";// open the default view of the
 													// exp,only when the exp is
 													// coppered?.
 
-	public static final String A_REFRESH = "refresh";// get the list of exp for
-														// this
 	// user.
 	// when new exp is created,this value is set and the control will get the
 	// content from server side.
-
-	public static final Location L_EXP_ID_GET_REQUIRED = Location
-			.valueOf("expIdGetRequired");//
 	// when one selected.
 	/**
 	 * @see ExpSearchControl.onUserExpSelected()

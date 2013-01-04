@@ -97,7 +97,7 @@ public class TestBase extends GWTTestCase {
 	}
 
 	public void onEvent(Event e) {
-		System.out.println(this.getClass().getName() + ",onEvent:" + e);
+		System.out.println("TestBase.onEvent:" + e);
 
 		if (e instanceof AttachedEvent) {
 			AttachedEvent ae = (AttachedEvent) e;

@@ -26,11 +26,7 @@ public class GetExpAP extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		ControlI c = ae.getControl();
-		String expId = (String) c.getModel().getValue(UserExpListModelI.L_EXP_ID_GET_REQUIRED);
-		MsgWrapper req = this.newRequest(Path.valueOf("/exps/get"));
-		req.setPayload("expId", StringData.valueOf(expId));//
-
-		this.sendMessage(ae, req);
+		
 	}
 
 }

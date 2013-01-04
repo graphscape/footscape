@@ -7,16 +7,12 @@ package com.fs.uiclient.impl.test.gwt.client.cases.support;
 import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
-import com.fs.uiclient.api.gwt.client.event.AfterExpSearchEvent;
 import com.fs.uiclient.api.gwt.client.event.AfterExpSelectedEvent;
-import com.fs.uiclient.api.gwt.client.event.CooperRequestRefreshEvent;
-import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
@@ -37,10 +33,11 @@ public class ActivityTestBase extends ExpTestBase {
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		this.finishing.add("search.result");// user select user's exp,the search
-											// result is got
+		this.finishing.add("selectuserexp");
+		
 		this.finishing.add("coper.submit");// user select one item from search
 											// result,a coper is created.
+		//
 		this.finishing.add("activity.created");// the coper is confirmed by
 												// other user and activity
 												// created.
@@ -55,9 +52,7 @@ public class ActivityTestBase extends ExpTestBase {
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
-		if (e instanceof AfterExpSearchEvent) {
-			this.onAfterExpSearchEvent((AfterExpSearchEvent) e);
-		}
+
 		if (e instanceof AfterExpSelectedEvent) {
 			this.onAfterExpSelectedEvent((AfterExpSelectedEvent) e);
 		}
@@ -65,18 +60,8 @@ public class ActivityTestBase extends ExpTestBase {
 			this.onActivityCreatedEvent((ActivityCreatedEvent) e);
 		}
 
-		if (e instanceof CooperRequestRefreshEvent) {
-			this.onCooperRequestRefreshEvent((CooperRequestRefreshEvent) e);
-		}
 	}
 
-	/**
-	 * @param e
-	 */
-	private void onCooperRequestRefreshEvent(CooperRequestRefreshEvent e) {
-		// confirm this reqest
-
-	}
 
 	/**
 	 * @param e
@@ -112,8 +97,11 @@ public class ActivityTestBase extends ExpTestBase {
 	 * @param src
 	 */
 	private void onExpItemView(ExpItemView src) {
-
-		if (expToBeCooper != null) {
+		if(this.userExpViewSelected == null){
+			return;//not selected one exp,ignore
+		}
+		
+		if (expToBeCooper != null) {//already find one to cooper
 			return;// only cooper one
 		}
 
@@ -126,13 +114,6 @@ public class ActivityTestBase extends ExpTestBase {
 		// is set.
 
 		this.tryFinish("coper.submit");
-	}
-
-	// after search
-	private void onAfterExpSearchEvent(AfterExpSearchEvent e) {
-
-		this.tryFinish("search.result");
-
 	}
 
 	/**
@@ -178,9 +159,12 @@ public class ActivityTestBase extends ExpTestBase {
 	 * (int, com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent)
 	 */
 	@Override
-	protected void onExpCreated(int idx, ExpCreatedEvent e) {
-		// TODO Auto-generated method stub
-
+	protected void onNewExpView(int idx, UserExpView e) {
+		if (idx == this.totalExp() - 1) {// select the last exp
+			this.userExpViewSelected = e;
+			e.getModel().select(true);//select exp will cause exp search.
+			this.tryFinish("selectuserexp");
+		}
 	}
 
 }

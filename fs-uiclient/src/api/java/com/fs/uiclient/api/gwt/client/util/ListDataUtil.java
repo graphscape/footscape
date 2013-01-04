@@ -31,6 +31,9 @@ public class ListDataUtil {
 	}
 
 	public static ObjectListData toStringDataList(List<String> sl) {
+		if (sl == null) {
+			return null;
+		}
 		ObjectListData rt = new ObjectListData();
 		for (String s : sl) {
 			rt.add(StringData.valueOf(s));

@@ -21,18 +21,18 @@ public class UserExpModel extends ModelSupport {
 
 	public static final Location L_TIMESTAMP = Location.valueOf("timestamp");//
 
-	public static final Location L_ISSELECTED = Location.valueOf("isSelected");//
-
 	public static final Location L_ISEXPANDED = Location.valueOf("isExpanded");//
 
-	public static final Location L_INCOMING_CR_ID = Location
-			.valueOf("incomingCrId");
+	public static final Location L_INCOMING_CR_ID = Location.valueOf("incomingCrId");
 
 	public static final String A_OPEN_ACTIVITY = "activity";
 
 	public static final String A_SELECT = "select";
 
 	private String activityId;
+
+	private boolean selected;
+
 	/**
 	 * @param name
 	 */
@@ -58,7 +58,7 @@ public class UserExpModel extends ModelSupport {
 	}
 
 	public void select(boolean sel) {
-		this.setValue(L_ISSELECTED, sel);
+		this.selected = sel;
 	}
 
 	public boolean isExpId(String expId) {
@@ -66,7 +66,7 @@ public class UserExpModel extends ModelSupport {
 	}
 
 	public boolean isSelected() {
-		return this.getValue(Boolean.class, L_ISSELECTED, Boolean.FALSE);
+		return this.selected;
 	}
 
 	public void setTimestamp(DateData ts) {
@@ -99,7 +99,8 @@ public class UserExpModel extends ModelSupport {
 	}
 
 	/**
-	 * @param activityId the activityId to set
+	 * @param activityId
+	 *            the activityId to set
 	 */
 	public void setActivityId(String activityId) {
 		this.activityId = activityId;

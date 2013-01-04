@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
-import com.fs.uiclient.api.gwt.client.event.AfterExpSearchEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
@@ -55,8 +54,6 @@ public class ExpSearchMH extends MHSupport {
 			ei.setIconDataUrl(icon.getValue());
 			ei.commit();
 		}
-
-		new AfterExpSearchEvent((ExpSearchControlI) c, null).dispatch();
 
 	}
 

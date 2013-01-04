@@ -35,7 +35,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 	protected UserExpListView ueListView;
 
-	protected Map<String,UserExpView> ueViewMap;
+	protected Map<String, UserExpView> ueViewMap;
 
 	protected ExpEditView eeView;
 
@@ -46,7 +46,8 @@ public abstract class ExpTestBase extends LoginTestBase {
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		this.ueViewMap = new HashMap<String,UserExpView>();
+		this.ueViewMap = new HashMap<String, UserExpView>();
+		this.finishing.add("uelistview");// 1
 		this.finishing.add("editview");// 1
 		this.finishing.add("editok");// 2
 		this.finishing.add("expcreated");// 3 the new item child event
@@ -56,12 +57,13 @@ public abstract class ExpTestBase extends LoginTestBase {
 	@Override
 	public void onEvent(Event e) {
 		super.onEvent(e);
-	
+
 	}
 
 	@Override
 	protected void onLogin(UserInfo ui) {
-		Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_UE_LIST, true);
+		// Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_UE_LIST, true);
+
 	}
 
 	@Override
@@ -81,6 +83,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 	public void onUserExpListViewAttached(UserExpListView v) {
 		this.ueListView = v;
+		this.tryFinish("uelistview");
 		this.ueListView.clickAction(UserExpListModelI.A_CREATE);// open ths edit
 		// view
 	}
@@ -134,15 +137,20 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 	public void onUserExpViewAttached(UserExpView v) {
 
+		int size = this.ueViewMap.size();
 		UserExpModel uem = v.getModel();
 		String expId = uem.getExpId();
 		this.ueViewMap.put(expId, v);//
-		if(this.ueViewMap.size()==this.totalExp()){
-			this.tryFinish("expcreated");			
+		int newSize = this.ueViewMap.size();
+		if (newSize > size) {
+			this.onNewExpView(size, v);//
+		}
+		if (this.ueViewMap.size() == this.totalExp()) {
+			this.tryFinish("expcreated");
 		}
 
 	}
 
-	protected abstract void onExpCreated(int idx, ExpCreatedEvent e);
+	protected abstract void onNewExpView(int idx, UserExpView e);
 
 }

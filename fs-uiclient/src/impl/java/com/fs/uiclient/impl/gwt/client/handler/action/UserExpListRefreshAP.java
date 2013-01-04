@@ -24,12 +24,7 @@ public class UserExpListRefreshAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		UserExpListModel uelm = ae.getControl().getModel().cast();
-		Long lts = uelm.getLastTimestamp(false);
-		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/refresh"));
-		req.setPayload("lastTimestamp", DateData.valueOf(lts));// fresh from
-																// here
-		this.sendMessage(ae, req);
+		
 	}
 
 }

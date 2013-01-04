@@ -6,6 +6,8 @@ package com.fs.uicommons.api.gwt.client.mvc.support;
 import com.fs.uicommons.api.gwt.client.mvc.efilter.ActionEventFilter;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
@@ -36,4 +38,11 @@ public class ControlSupport extends AbstractControl {
 
 	}
 
+	protected MsgWrapper newRequest(Path path) {
+		return new MsgWrapper(path);
+	}
+
+	protected void sendMessage(MsgWrapper req) {
+		this.getClient(true).getEndpoint().sendMessage(req);//
+	}
 }

@@ -3,7 +3,7 @@
  */
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
-import com.fs.uiclient.api.gwt.client.event.ExpCreatedEvent;
+import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.ExpTestBase;
 
 /**
@@ -19,7 +19,7 @@ public class UserExpTest extends ExpTestBase {
 	}
 
 	@Override
-	protected void onExpCreated(int idx, ExpCreatedEvent e) {
+	protected void onNewExpView(int idx, UserExpView e) {
 		if (idx + 1 == this.totalExp()) {
 			this.tryFinish("all.created");
 		}

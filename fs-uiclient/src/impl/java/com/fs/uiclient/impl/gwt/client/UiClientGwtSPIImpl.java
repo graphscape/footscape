@@ -10,7 +10,7 @@ import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.coper.CooperRequestModel;
+import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -21,10 +21,9 @@ import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotControlI;
-import com.fs.uiclient.api.gwt.client.usshot.UserSnapshotModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
@@ -69,8 +68,11 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		MessageDispatcherI dis = client.getEndpoint().getMessageDispatcher();
 		dis.addHandler(Path.ROOT, new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());
-		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());
+		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());//create exp
+		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());//refresh exp
+		dis.addHandler(Path.valueOf("/exps/search/success"), new ExpSearchMH());//search exp
+		dis.addHandler(Path.valueOf("/cooper/request/success"), new ExpSearchMH());//search exp
+		
 
 	}
 
@@ -368,32 +370,13 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(UserSnapshotControlI.class) {
+
+		InstanceOf.addChecker(new CheckerSupport(IncomingCrModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof UserSnapshotControlI;
-
-			}
-
-		});
-		InstanceOf.addChecker(new CheckerSupport(UserSnapshotModelI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof UserSnapshotModelI;
-
-			}
-
-		});
-		InstanceOf.addChecker(new CheckerSupport(CooperRequestModel.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof CooperRequestModel;
+				return o instanceof IncomingCrModel;
 
 			}
 

@@ -11,5 +11,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  * 
  */
 public interface CooperControlI extends ControlI {
-	
+
+	public void refreshIncomingCr(String crId);
+
 }

@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * @author wu
  * 
  */
-public class CooperRequestModel extends ModelSupport {
+public class IncomingCrModel extends ModelSupport {
 
 	private String cooperRequestId;
 	
@@ -25,7 +25,7 @@ public class CooperRequestModel extends ModelSupport {
 	/**
 	 * @param name
 	 */
-	public CooperRequestModel(String name) {
+	public IncomingCrModel(String name) {
 		super(name);
 	}
 
