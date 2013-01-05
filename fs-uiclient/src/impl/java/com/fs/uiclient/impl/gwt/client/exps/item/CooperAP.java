@@ -27,7 +27,8 @@ public class CooperAP extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		// find the coper model and perform action
-		ControlManagerI mgr = ae.getSource().getClient(true).getChild(ControlManagerI.class, true);
+		ControlManagerI mgr = ae.getSource().getClient(true)
+				.getChild(ControlManagerI.class, true);
 
 		MainControlI mc = mgr.getControl(MainControlI.class, true);
 
@@ -37,13 +38,12 @@ public class CooperAP extends ActionHandlerSupport {
 		ControlI c = ae.getControl();
 		ExpItemModel eim = (ExpItemModel) c.getModel();
 		String expId2 = eim.getExpId();
-		cm.coperExpId2(expId2);
 
 		//
 		ExpSearchModelI sm = (ExpSearchModelI) eim.getParent();
-		String expId = sm.getExpId(true);
+		String expId1 = sm.getExpId(true);
 
-		cm.coperExpId1(expId);
+		cm.cooper(expId1, expId2);
 		// this is just forward to CoperContorl's submit action
 		ControlUtil.triggerAction(cm, CooperModelI.A_REQUEST);
 

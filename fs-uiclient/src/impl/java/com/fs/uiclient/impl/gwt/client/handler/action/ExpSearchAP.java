@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.exps;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
@@ -17,7 +17,7 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
  * @author wu
  * 
  */
-public class SearchAP extends ActionHandlerSupport {
+public class ExpSearchAP extends ActionHandlerSupport {
 
 	/*
 	 * Oct 20, 2012

@@ -8,8 +8,13 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- *
+ * 
  */
-public interface ExpSearchControlI extends ControlI{
+public interface ExpSearchControlI extends ControlI {
+
+	/**
+	 * 
+	 */
+	public void search(String expId);
 
 }

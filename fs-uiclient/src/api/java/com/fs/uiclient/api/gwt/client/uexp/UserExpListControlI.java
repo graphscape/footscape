@@ -18,7 +18,5 @@ public interface UserExpListControlI extends ControlI {
 	public void incomingCr(IncomingCrModel crm);
 
 	public void detailExp(String expId);
-	
-	public void select(String expId);
 
 }

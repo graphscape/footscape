@@ -24,7 +24,7 @@ public interface UserExpListModelI extends ModelI {
 	// when one selected.
 	/**
 	 * @see ExpSearchControl.onUserExpSelected()
-	 * @see SearchAP of ExpSearchControl
+	 * @see ExpSearchAP of ExpSearchControl
 	 */
 	public static final Location L_SELECTED_EXP_ID = Location
 			.valueOf("selectedExpId");

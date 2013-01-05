@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.gwt.client.uexp;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
+import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
  * @author wu
@@ -23,9 +24,15 @@ public class UserExpControl extends ControlSupport implements UserExpControlI {
 		this.addActionEventHandler(UserExpModel.A_OPEN_ACTIVITY,
 				new OpenActivityAP());
 		this.localMap.put(UserExpModel.A_SELECT, true);//
-		this.addActionEventHandler(UserExpModel.A_SELECT,
-				new SelectAP());
+		this.addActionEventHandler(UserExpModel.A_SELECT, new SelectAP());
+
+	}
+
+	@Override
+	protected void doModel(ModelI cm) {
+		super.doModel(cm);
 		
 	}
+
 
 }

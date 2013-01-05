@@ -19,6 +19,10 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class CooperModel extends ModelSupport implements CooperModelI {
 
+	private String expId1;
+
+	private String expId2;
+
 	/**
 	 * @param name
 	 */
@@ -33,13 +37,9 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 	}
 
 	@Override
-	public void coperExpId1(String expId) {
-		this.setValue(L_EXPID1, expId);
-	}
-
-	@Override
-	public void coperExpId2(String expId) {
-		this.setValue(L_EXPID2, expId);
+	public void cooper(String expId1, String expId2) {
+		this.expId1 = expId1;
+		this.expId2 = expId2;
 	}
 
 	/*
@@ -55,6 +55,28 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 		//
 		return this.getChildList(IncomingCrModel.class);
 
+	}
+
+	@Override
+	public String getExpId1() {
+		return this.expId1;
+	}
+
+	@Override
+	public String getExpId2() {
+		return this.expId2;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.coper.CooperModelI#incomingCr(com.fs.uiclient
+	 * .api.gwt.client.coper.IncomingCrModel)
+	 */
+	@Override
+	public void incomingCr(IncomingCrModel crm) {
+		this.child(crm);
 	}
 
 }

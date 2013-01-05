@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
+import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -19,6 +21,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
@@ -26,7 +29,8 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
  * @author wu
  * 
  */
-public class UserExpListControl extends ControlSupport implements UserExpListControlI {
+public class UserExpListControl extends ControlSupport implements
+		UserExpListControlI {
 
 	/**
 	 * @param name
@@ -35,8 +39,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		super(name);
 		// changing.
 
-		this.addActionEventHandler(UserExpListModelI.A_CREATE, new OpenExpEditAP());
-
+		this.addActionEventHandler(UserExpListModelI.A_CREATE,
+				new OpenExpEditAP());
 
 	}
 
@@ -45,7 +49,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		super.doAttach();
 
 		// listen to the cooper model for incoming cooperrequest.
-		MainControlI mc = this.getManager().getControl(MainControlI.class, true);
+		MainControlI mc = this.getManager()
+				.getControl(MainControlI.class, true);
 		Mvc mvc = mc.getLazyObject(MainControlI.LZ_COOPER, true);
 		CooperModelI cpm = mvc.getModel();
 	}
@@ -64,7 +69,6 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 	protected void sendMessage(MsgWrapper req) {
 		this.getClient(true).getEndpoint().sendMessage(req);//
 	}
-
 
 	public MainControlI getMainControl() {
 		return this.getManager().getControl(MainControlI.class, true);
@@ -94,27 +98,43 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		// one should be selected.
 		// control it
 
-		this.getManager().addControl(new UserExpControl(cm.getName()).model(cm));
+		this.getManager()
+				.addControl(new UserExpControl(cm.getName()).model(cm));
+		cm.addHandler(UserExpSelectEvent.TYPE,
+				new EventHandlerI<UserExpSelectEvent>() {
 
+					@Override
+					public void handle(UserExpSelectEvent t) {
+						UserExpListControl.this.onUserExpSelectEvent(t);
+					}
+				});
 	}
 
 	/**
-	 * Oct 20, 2012
+	 * Model Event
+	 * @param t
 	 */
-	@Override
-	public void select(String expId) {
-		List<UserExpModel> ueL = this.getModel().getChildList(UserExpModel.class);
+	protected void onUserExpSelectEvent(UserExpSelectEvent t) {
+		String expId = t.getModel().getExpId();
+		boolean selected = t.getModel().isSelected();//
+		if (!selected) {// ignore unselected.
+			return;
+		}
+		List<UserExpModel> ueL = this.getModel().getChildList(
+				UserExpModel.class);
 		for (UserExpModel ue : ueL) {
 
-			UserExpModel uem = (UserExpModel) this.getModel().getUserExp(expId, true);
-			if (uem.getExpId().equals(expId)) {
-				uem.select(true);
-			} else {
+			UserExpModel uem = (UserExpModel) this.getModel().getUserExp(expId,
+					true);
+			if (!uem.getExpId().equals(expId)) {
 				uem.select(false);
 			}
-
 		}
 
+		// call search
+		ExpSearchControlI sc = this.getManager().getControl(
+				ExpSearchControlI.class, true);
+		sc.search(expId);
 	}
 
 	/*
@@ -130,8 +150,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		this.sendMessage(req);
 	}
 
-	/*
-	 * Jan 4, 2013
+	/**notify a incoming cr.
+	 *
 	 */
 	@Override
 	public void incomingCr(IncomingCrModel cr) {
@@ -140,7 +160,7 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		UserExpModel uem = uelm.getUserExp(expId, true);//
 		String expId1 = cr.getExpId1();
 		uem.setIncomingCrId(expId1);// FROM exp id
-		uem.commit();// see UserExpView.onCommit...;
+		
 	}
 
 }

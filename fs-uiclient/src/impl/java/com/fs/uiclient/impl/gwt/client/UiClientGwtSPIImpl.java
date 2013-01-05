@@ -22,8 +22,11 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
+import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrNotifyMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
@@ -71,9 +74,11 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());//create exp
 		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());//refresh exp
 		dis.addHandler(Path.valueOf("/exps/search/success"), new ExpSearchMH());//search exp
-		dis.addHandler(Path.valueOf("/cooper/request/success"), new ExpSearchMH());//search exp
+		dis.addHandler(Path.valueOf("/cooper/request/success"), new CooperRequestSuccessMH());//search exp
+		dis.addHandler(Path.valueOf("/notify/incomingCr"), new IncomingCrNotifyMH());//search exp
+		dis.addHandler(Path.valueOf("/cooper/incomingCr/success"), new IncomingCrRefreshMH());//search exp
 		
-
+		
 	}
 
 	private void activeMainControl(ContainerI c, UiClientI client) {

@@ -59,7 +59,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		if(s2 != null){//not online
 			TerminalGd t2 = this.terminalManager.getTerminalBySessionId(s2.getId(), false);
 			MessageI msg = new MessageSupport();
-			msg.setHeader(MessageI.HK_PATH, "/notify/cooper-request");
+			msg.setHeader(MessageI.HK_PATH, "/notify/incomingCr");
 			
 			this.terminalManager.sendMessage(t2.getId(), msg);
 			
@@ -138,7 +138,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	}
 
 	// TODO replace by server notifier to client.
-	@Handle("requestList")
+	@Handle("incomingCr")
 	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, MessageI req, ResponseI res) {
 		String accId = this.getAccountId(ew, true);
 		List<CooperRequest> crL = this.dataService.getListNewestFirst(CooperRequest.class,

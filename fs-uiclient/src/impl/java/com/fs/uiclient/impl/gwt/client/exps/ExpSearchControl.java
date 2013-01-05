@@ -8,8 +8,8 @@ import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemControl;
+import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -29,7 +29,7 @@ public class ExpSearchControl extends ControlSupport implements
 	public ExpSearchControl(String name) {
 		super(name);
 
-		this.addActionEventHandler(ExpSearchModelI.A_SEARCH, new SearchAP());
+		this.addActionEventHandler(ExpSearchModelI.A_SEARCH, new ExpSearchAP());
 	}
 
 	/*
@@ -44,15 +44,6 @@ public class ExpSearchControl extends ControlSupport implements
 				.getControl(MainControlI.class, true);
 		Mvc uel = mc.getLazyObject(MainControlI.LZ_UE_LIST, true);
 
-		UserExpListModelI uelM = uel.getModel();
-		uelM.addValueHandler(UserExpListModelI.L_SELECTED_EXP_ID,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						ExpSearchControl.this.onUserExpSelected(e);
-					}
-				});
 		// listen to the page number
 		this.getModel().addValueHandler(ExpSearchModelI.L_PAGENUMBER,
 				new EventHandlerI<ModelValueEvent>() {
@@ -65,18 +56,27 @@ public class ExpSearchControl extends ControlSupport implements
 
 	}
 
-	protected void onPageNumber(ModelValueEvent e){
+	protected void onPageNumber(ModelValueEvent e) {
 		this.triggerSearchAction();
 	}
-	protected void onUserExpSelected(ModelValueEvent e) {
-		String expId = (String) e.getValue();
-		this.getModel().setValue(ExpSearchModelI.L_EXP_ID, expId);
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#search(java.lang
+	 * .String)
+	 */
+	@Override
+	public void search(String expId) {
+		ExpSearchModelI es = this.getModel();
+		es.setExpId(expId);//
 		// do search
 		this.triggerSearchAction();
 	}
-	
-	protected void triggerSearchAction(){
-		
+
+	protected void triggerSearchAction() {
+
 		this.triggerAction(ExpSearchModelI.A_SEARCH);
 	}
 

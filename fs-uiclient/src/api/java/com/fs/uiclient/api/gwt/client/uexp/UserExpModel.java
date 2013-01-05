@@ -4,8 +4,9 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
+import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -23,11 +24,11 @@ public class UserExpModel extends ModelSupport {
 
 	public static final Location L_ISEXPANDED = Location.valueOf("isExpanded");//
 
-	public static final Location L_INCOMING_CR_ID = Location.valueOf("incomingCrId");
-
 	public static final String A_OPEN_ACTIVITY = "activity";
 
 	public static final String A_SELECT = "select";
+
+	private String incomingCrId;
 
 	private String activityId;
 
@@ -59,6 +60,7 @@ public class UserExpModel extends ModelSupport {
 
 	public void select(boolean sel) {
 		this.selected = sel;
+		new UserExpSelectEvent(this, sel).dispatch();
 	}
 
 	public boolean isExpId(String expId) {
@@ -81,14 +83,16 @@ public class UserExpModel extends ModelSupport {
 	 * Dec 4, 2012
 	 */
 	public void setIncomingCrId(String string) {// TODO list
-		this.setValue(L_INCOMING_CR_ID, string);
+		this.incomingCrId = string;
+		new UserExpIncomingCrEvent(this, this.incomingCrId).dispatch();
+
 	}
 
 	/**
 	 * @return the cooperReqId
 	 */
 	public String getIncomingCrId() {
-		return (String) this.getValue(L_INCOMING_CR_ID);//
+		return this.incomingCrId;
 	}
 
 	/**

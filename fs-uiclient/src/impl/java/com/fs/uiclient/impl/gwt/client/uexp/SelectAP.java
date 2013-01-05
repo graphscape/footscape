@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.event.AfterExpSelectedEvent;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
@@ -25,7 +24,6 @@ public class SelectAP extends ActionHandlerSupport {
 		UserExpModel uem = (UserExpModel) c.getModel();
 		uem.select(true);
 
-		new AfterExpSelectedEvent(c, uem.getExpId()).dispatch();
 	}
 
 }

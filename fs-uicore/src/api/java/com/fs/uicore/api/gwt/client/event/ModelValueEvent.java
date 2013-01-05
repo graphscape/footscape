@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
- * 
+ * @deprecated use model update event.
  */
 public class ModelValueEvent extends ModelEvent {
 	public static Type<ModelValueEvent> TYPE = new Type<ModelValueEvent>(

@@ -24,18 +24,18 @@ public interface CooperModelI extends ModelI {
 
 	public static final String A_REFRESH_INCOMING_CR = "refreshIncomingCr";
 
-	public static final Location L_EXPID1 = Location.valueOf("expId1");
-
-	public static final Location L_EXPID2 = Location.valueOf("expId2");
-
 	// before confirm action,please set this value.
-	public static final Location L_COOPERREQUEST_ID = Location.valueOf("cooperRequestId");// for
-																							// confirm
+	public static final Location L_COOPERREQUEST_ID = Location
+			.valueOf("cooperRequestId");// for
+										// confirm
 
-	public void coperExpId1(String expId);// for request action,set this two
-											// exps firstly.
+	public void cooper(String expId1, String expId2);// for request action,set
+														// this two
+	// exps firstly.
 
-	public void coperExpId2(String expId);
+	public String getExpId1();
+
+	public String getExpId2();
 
 	public void cooperRequestId(String crId);// for confirm action, to set this
 												// value first.
@@ -43,5 +43,7 @@ public interface CooperModelI extends ModelI {
 	// another people,no worth to do see it here.may be in "history" message.
 
 	public List<IncomingCrModel> getIncomingCooperRequestModelList();
+
+	public void incomingCr(IncomingCrModel crm);
 
 }

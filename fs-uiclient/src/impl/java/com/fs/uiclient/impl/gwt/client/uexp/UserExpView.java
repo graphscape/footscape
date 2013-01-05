@@ -4,16 +4,16 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
-import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
@@ -55,6 +55,23 @@ public class UserExpView extends SimpleView {
 				return null;
 			}
 		});
+		model.addHandler(UserExpSelectEvent.TYPE,
+				new EventHandlerI<UserExpSelectEvent>() {
+
+					@Override
+					public void handle(UserExpSelectEvent t) {
+						UserExpView.this.onUserExpSelected(t);
+					}
+				});
+
+	}
+
+	private void onUserExpSelected(UserExpSelectEvent t) {
+		boolean sel = t.getModel().isSelected();
+
+		this.elementWrapper
+				.addAndRemoveClassName(sel, "selected", "unselected");
+
 	}
 
 	protected void onModelCommit(UserExpModel t) {
@@ -105,7 +122,7 @@ public class UserExpView extends SimpleView {
 		{// activity
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
-			this.incomingCrExpId1 = td;//TODO lazy
+			this.incomingCrExpId1 = td;// TODO lazy
 			td.getElement().setInnerText(t.getIncomingCrId());//
 
 		}
@@ -121,14 +138,6 @@ public class UserExpView extends SimpleView {
 	@Override
 	public UserExpModel getModel() {
 		return (UserExpModel) this.model;
-	}
-
-	private void processModelValueSelected(ValueWrapper vw) {
-		boolean sel = vw.getValue(Boolean.FALSE);
-
-		this.elementWrapper
-				.addAndRemoveClassName(sel, "selected", "unselected");
-
 	}
 
 }

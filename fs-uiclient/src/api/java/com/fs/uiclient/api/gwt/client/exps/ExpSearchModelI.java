@@ -16,8 +16,6 @@ public interface ExpSearchModelI extends ModelI {
 
 	public static final String A_SEARCH = "search";
 
-	public static final Location L_EXP_ID = Location.valueOf("expId");
-	
 	public static final Location L_PAGENUMBER = Location.valueOf("pageFrom");
 
 	public static final Location L_PAGESIZE = Location.valueOf("pageSize");
@@ -27,17 +25,21 @@ public interface ExpSearchModelI extends ModelI {
 	public String getExpId(boolean force);
 
 	public ExpItemModel addExpItem(String id);
-	
+
 	public List<ExpItemModel> getExpItemList();
-	
+
 	public int getPageNumber();
-	
+
 	public int getPageSize();
-	
+
 	public void pageNumber(int pg);
-	
+
 	public boolean nextPage();
-	
+
 	public boolean previousPage();
+
+	public void setExpId(String expId);//for search parameter
+
+	public String getExpId();//for search parameter
 
 }

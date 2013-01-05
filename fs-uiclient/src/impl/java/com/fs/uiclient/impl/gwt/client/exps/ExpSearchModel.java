@@ -18,6 +18,8 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 
+	private String expId;
+
 	/**
 	 * @param name
 	 */
@@ -41,7 +43,7 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public String getExpId(boolean force) {
 		//
-		String rt = this.getValue(String.class, ExpSearchModelI.L_EXP_ID);
+		String rt = this.getExpId();
 		if (force && rt == null) {
 			throw new UiException("no expId in :" + this);
 		}
@@ -118,6 +120,28 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public List<ExpItemModel> getExpItemList() {
 		return this.getChildList(ExpItemModel.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#setExpId(java.lang
+	 * .String)
+	 */
+	@Override
+	public void setExpId(String expId) {
+		this.expId = expId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#getExpId()
+	 */
+	@Override
+	public String getExpId() {
+		return this.expId;
 	}
 
 }

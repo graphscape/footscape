@@ -25,8 +25,10 @@ public class CooperRequestAP extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		ControlI c = ae.getControl();
-		String id1 = (String) c.getModel().getValue(CooperModelI.L_EXPID1);
-		String id2 = (String) c.getModel().getValue(CooperModelI.L_EXPID2);
+		CooperModelI cm = c.getModel();
+		String id1 = cm.getExpId1();
+		String id2 = cm.getExpId2();
+		
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/request"));
 		req.getPayloads().setProperty("expId1", StringData.valueOf(id1));
 		req.getPayloads().setProperty("expId2", StringData.valueOf(id2));

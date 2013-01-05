@@ -31,7 +31,7 @@ public class RefreshIncomingCrAP extends ActionHandlerSupport {
 		ControlI c = ae.getControl();
 		CooperModelI cm = c.getModel();
 		List<String> crIdL = null;
-		MsgWrapper req = this.newRequest(Path.valueOf("/coooper/incomingCr"));
+		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
 
 		req.getPayloads().setProperty("cooperRequestIdList", ListDataUtil.toStringDataList(crIdL));
 

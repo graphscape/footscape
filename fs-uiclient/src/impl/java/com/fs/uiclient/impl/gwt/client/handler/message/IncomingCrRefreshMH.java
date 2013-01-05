@@ -49,8 +49,7 @@ public class IncomingCrRefreshMH extends MHSupport {
 			crm.setExpId1(expId1.getValue());
 			crm.setExpId2(expId2.getValue());
 			crm.commit();
-			cm.child(crm);// add as the child,this is monitored by uelist
-							// control.
+			cm.incomingCr(crm);
 			this.onIncomingCr(t,crm);
 		}
 	}
