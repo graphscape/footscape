@@ -20,7 +20,7 @@ public class LoginViewTest extends LoginTestBase {
 	}
 
 	@Override
-	protected void onLogin(UserInfo ui) {
+	protected void onRegisterUserLogin(UserInfo ui) {
 		this.tryFinish("login.ok");
 	}
 }

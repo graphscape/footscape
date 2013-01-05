@@ -19,6 +19,7 @@ import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
  * @author wu
@@ -27,8 +28,8 @@ import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 	@Handle("search")
-	public void handleSearch(MessageContext hc, MessageI req, ResponseI res) {
-
+	public void handleSearch(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
+		MessageI req = ew.getMessage();//
 		int pageNumber = (Integer) req.getPayload("pageNumber", true);
 		int pageSize = (Integer) req.getPayload("pageSize", true);
 		String expId = (String) req.getPayload("expId");// may null

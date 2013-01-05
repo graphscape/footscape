@@ -4,12 +4,14 @@
  */
 package com.fs.expector.gridservice.impl.handler.expe;
 
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -22,13 +24,20 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 
 		// the relation between activity and user.
+		SessionGd s = this.getSession(ew, true);
+		String aid = s.getAccountId();
+
+		boolean isa = (Boolean) s.getProperty("isAnonymous", true);
+		if (isa) {
+			throw new FsException("operation not allowed for anonymous user");
+		}
 
 		MessageI req = ew.getMessage();//
 		String body = (String) req.getPayload("body", true);
 
 		Expectation exp = new Expectation().forCreate(this.dataService);
 
-		exp.setAccountId(this.getAccountId(ew, true));
+		exp.setAccountId(aid);
 		exp.setBody(body);
 		exp.save(true);
 

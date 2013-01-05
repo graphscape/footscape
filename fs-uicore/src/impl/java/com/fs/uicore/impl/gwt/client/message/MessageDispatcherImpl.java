@@ -65,13 +65,17 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	protected void handleInternal(EndpointMessageEvent t) {
 		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
 		Path p = t.getMessage().getPath();
-		boolean match = false;
+
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
+		int matches = 0;
 		for (HandlerEntry he : hls) {
-			match = he.tryHandle(p, t);
+			boolean match = he.tryHandle(p, t);
+			if (match) {
+				matches++;
+			}
 		}
 
-		if (!match) {
+		if (matches == 0) {
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {

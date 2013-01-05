@@ -59,14 +59,14 @@ public abstract class LoginTestBase extends SignupTestBase {
 		if(ui.isAnonymous()){
 			this.onAnonymousUserLogin();
 		}else{
-			this.onLogin(ui);
+			this.onRegisterUserLogin(ui);
 		}
 	}
 
 	/**
 	 *Jan 3, 2013
 	 */
-	protected abstract void onLogin(UserInfo ui) ;
+	protected abstract void onRegisterUserLogin(UserInfo ui) ;
 	/**
 	 *Jan 3, 2013
 	 */

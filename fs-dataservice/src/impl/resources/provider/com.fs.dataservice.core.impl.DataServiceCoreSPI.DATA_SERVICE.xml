@@ -1,6 +1,0 @@
-
-<config>
-	<host value="$elastic.host" />
-	<port value="$elastic.port" />
-	
-</config>

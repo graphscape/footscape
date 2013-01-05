@@ -9,6 +9,7 @@ import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
+import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
@@ -71,14 +72,19 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		MessageDispatcherI dis = client.getEndpoint().getMessageDispatcher();
 		dis.addHandler(Path.ROOT, new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());//create exp
-		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());//refresh exp
-		dis.addHandler(Path.valueOf("/exps/search/success"), new ExpSearchMH());//search exp
-		dis.addHandler(Path.valueOf("/cooper/request/success"), new CooperRequestSuccessMH());//search exp
-		dis.addHandler(Path.valueOf("/notify/incomingCr"), new IncomingCrNotifyMH());//search exp
-		dis.addHandler(Path.valueOf("/cooper/incomingCr/success"), new IncomingCrRefreshMH());//search exp
-		
-		
+		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());// create
+																					// exp
+		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());// refresh
+																						// exp
+		dis.addHandler(Path.valueOf("/exps/search/success"), new ExpSearchMH());// search
+																				// exp
+		dis.addHandler(Path.valueOf("/cooper/request/success"), new CooperRequestSuccessMH());// search
+																								// exp
+		dis.addHandler(Path.valueOf("/notify/incomingCr"), new IncomingCrNotifyMH());// search
+																						// exp
+		dis.addHandler(Path.valueOf("/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
+																								// exp
+
 	}
 
 	private void activeMainControl(ContainerI c, UiClientI client) {
@@ -382,6 +388,16 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof IncomingCrModel;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(CooperControlI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof CooperControlI;
 
 			}
 

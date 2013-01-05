@@ -49,6 +49,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 		this.ueViewMap = new HashMap<String, UserExpView>();
 		this.finishing.add("uelistview");// 1
 		this.finishing.add("editview");// 1
+		this.finishing.add("editrequest");// 1		
 		this.finishing.add("editok");// 2
 		this.finishing.add("expcreated");// 3 the new item child event
 
@@ -60,11 +61,6 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 	}
 
-	@Override
-	protected void onLogin(UserInfo ui) {
-		// Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_UE_LIST, true);
-
-	}
 
 	@Override
 	public void onAttachedEvent(AttachedEvent ae) {
@@ -93,12 +89,14 @@ public abstract class ExpTestBase extends LoginTestBase {
 	 */
 	private void onExpEditViewAttached(ExpEditView v) {
 		//
-
 		this.eeView = v;
 		this.tryFinish("editview");
+	}
 
+	@Override
+	protected void onRegisterUserLogin(UserInfo ui) {
 		this.submitExp();
-
+		this.tryFinish("editrequest");
 	}
 
 	protected void submitExp() {

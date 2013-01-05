@@ -24,7 +24,7 @@ public class UserExpSelectEvent extends ModelUpdateEvent {
 	}
 	
 	public UserExpModel getModel(){
-		return (UserExpModel)this.getModel();
+		return (UserExpModel)this.source;
 	}
 	
 

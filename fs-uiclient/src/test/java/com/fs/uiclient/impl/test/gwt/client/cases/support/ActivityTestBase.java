@@ -54,8 +54,8 @@ public class ActivityTestBase extends ExpTestBase {
 	}
 
 	@Override
-	protected void onLogin(UserInfo ui) {
-		// this.tryFinish("login.ok");
+	protected void onRegisterUserLogin(UserInfo ui) {
+		super.onRegisterUserLogin(ui);
 	}
 
 	@Override

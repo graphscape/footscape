@@ -6,6 +6,7 @@ package com.fs.expector.gridservice.impl.handler.cooper;
 
 import java.util.List;
 
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
@@ -53,16 +54,21 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		//
 
 		res.setPayload("cooperMessageId", cid);//
-		//notify the exp2's account to refresh the incoming request,if he/she is online
-		SessionGd s2 = this.sessionManager.getEntityByField(SessionGd.ACCID, accId2,false);
-		
-		if(s2 != null){//not online
+		// notify the exp2's account to refresh the incoming request,if he/she
+		// is online
+		SessionGd s2 = this.sessionManager.getEntityByField(SessionGd.ACCID, accId2, false);
+
+		if (s2 != null) {// not online
 			TerminalGd t2 = this.terminalManager.getTerminalBySessionId(s2.getId(), false);
+			if (t2 == null) {// TODO
+				throw new FsException("TODO,remove old session when binding new session.");
+			}
+
 			MessageI msg = new MessageSupport();
 			msg.setHeader(MessageI.HK_PATH, "/notify/incomingCr");
-			
+
 			this.terminalManager.sendMessage(t2.getId(), msg);
-			
+
 		}
 	}
 
@@ -139,13 +145,14 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 	// TODO replace by server notifier to client.
 	@Handle("incomingCr")
-	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, MessageI req, ResponseI res) {
+	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, ResponseI res) {
+
 		String accId = this.getAccountId(ew, true);
+
 		List<CooperRequest> crL = this.dataService.getListNewestFirst(CooperRequest.class,
 				CooperRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);
 		List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
 		res.setPayload("cooperRequestList", ptsL);
 	}
-
 
 }

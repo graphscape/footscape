@@ -1,0 +1,10 @@
+
+<config>
+	<config name="dataService" class="com.fs.dataservice.core.impl.elastic.ElasticDataServiceImpl">
+
+		<host value="$elastic.host" />
+		<port value="$elastic.port" />
+		<cleanAtInit value="$data.cleanAtInit" />
+	</config>
+
+</config>

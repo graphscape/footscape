@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.exps.item;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -19,7 +19,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
  * @author wu
  * 
  */
-public class CooperAP extends ActionHandlerSupport {
+public class ItemCooperAP extends ActionHandlerSupport {
 
 	/*
 	 * Oct 20, 2012
