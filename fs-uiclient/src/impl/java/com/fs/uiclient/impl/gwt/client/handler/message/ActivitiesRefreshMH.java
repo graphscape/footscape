@@ -10,8 +10,10 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
-import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicore.api.gwt.client.data.ListData;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
@@ -47,10 +49,27 @@ public class ActivitiesRefreshMH extends MHSupport {
 			ItemModel im = asm.getItem(actId, false);
 			if (im == null) {
 				im = new ItemModel(actId, expL);//
-				new ActivityCreatedEvent((ActivitiesControlI) c, actId);
+				asm.child(im);
+				// new ActivityCreatedEvent((ActivitiesControlI) c,
+				// actId).dispatch();
+				this.tryLinkActivityToUserExp(t, actId, expL);
 			}
-			// TODO other properties?
 
+		}
+	}
+
+	/**
+	 * Jan 6, 2013
+	 */
+	private void tryLinkActivityToUserExp(EndpointMessageEvent t, String actId, List<String> expL) {
+		UserExpListControlI uec = this.getControl(t, UserExpListControlI.class, true);
+		UserExpListModelI uem = uec.getModel();
+		for (String expId : expL) {
+			UserExpModel um = uem.getUserExp(expId, false);
+			if (um == null) {
+				continue;
+			}
+			um.setActivityId(actId);//
 		}
 	}
 

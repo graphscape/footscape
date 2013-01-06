@@ -158,10 +158,12 @@ public class UserExpListControl extends ControlSupport implements
 	@Override
 	public void incomingCr(IncomingCrModel cr) {
 		UserExpListModelI uelm = this.getModel();
+		String crId = cr.getCrId();
 		String expId = cr.getExpId2();// to this exp
 		UserExpModel uem = uelm.getUserExp(expId, true);//
 		String expId1 = cr.getExpId1();
-		uem.setIncomingCrId(expId1);// FROM exp id
+		
+		uem.setIncomingCrId(crId);// FROM exp id
 
 	}
 

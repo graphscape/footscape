@@ -44,19 +44,6 @@ public class ActivitiesControl extends ControlSupport implements
 		//
 		super.processChildModelAdd(p, cm);
 
-		if (cm instanceof ActivityModelI) {
-			this.processChildActivityModelAdd((ActivityModelI) cm);
-		}
-	}
-
-	/**
-	 * Oct 22, 2012
-	 */
-	private void processChildActivityModelAdd(ActivityModelI cm) {
-		// control it.
-		ActivityControlI ac = new ActivityControl("activity");
-		ac.model(cm);
-		this.getManager().addControl(ac);//
 	}
 
 	/*

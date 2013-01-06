@@ -153,25 +153,23 @@ public class ActivityTestBase extends ExpTestBase {
 		UserExpModel uem = v.getModel();
 		String crId = uem.getIncomingCrId();
 		if (crId != null) {
-			boolean pro = (Boolean) uem
-					.getProperty("incomingCrConfirmProcessing");
-			if (pro) {
-				throw new UiException(
-						"/notify/incomingCr should cause the crId to be null");
+			Boolean pro = (Boolean) v.getProperty("incomingCrConfirmProcessing");
+			if (pro != null) {
+				throw new UiException("/notify/incomingCr should cause the crId to be null");
 			}
 
-			uem.setProperty("incomingCrConfirmProcessing", true);
+			v.setProperty("incomingCrConfirmProcessing", true);
 
 			v.clickAction(UserExpModel.A_COOPER_CONFIRM);
 			this.tryFinish("cooper.confirm");
 		}
 		String actId = uem.getActivityId();
 		if (actId != null) {
-			Boolean pro = (Boolean) uem.getProperty("activityOpened");
+			Boolean pro = (Boolean) v.getProperty("activityOpened");
 			if (pro == null) {
-				uem.setProperty("activityOpened", Boolean.TRUE);//
+				v.setProperty("activityOpened", Boolean.TRUE);//
 				this.tryFinish("activity.created");//
-				// this.userExpViewSelected.clickAction(UserExpModel.A_OPEN_ACTIVITY);
+				v.clickAction(UserExpModel.A_OPEN_ACTIVITY);
 
 			}
 		}

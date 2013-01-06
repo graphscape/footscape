@@ -114,7 +114,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		this.dataService.deleteById(CooperRequest.class, crid);// delete this
 																// cr,if
 
-		// res.setPayload("cooperConfirmId", ccid);//
+		res.setPayload("crId", crid);//
 	}
 
 	protected void tryLinkExp2Activity(Expectation exp, String actId) {

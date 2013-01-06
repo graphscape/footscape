@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uiclient.api.gwt.client.achat.AChatModel;
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
@@ -90,9 +91,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
 		// exp
 		dis.addHandler(Path.valueOf("/notify/activity"), new ActivityCreatedNotifyMH());// search
-		dis.addHandler(Path.valueOf("/activities/activities"), new ActivitiesRefreshMH());// search
-
-
+		dis.addHandler(Path.valueOf("/activities/activities/success"), new ActivitiesRefreshMH());// search
 
 	}
 
@@ -407,6 +406,16 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof CooperControlI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(ActivitiesControlI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof ActivitiesControlI;
 
 			}
 

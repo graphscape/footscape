@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
@@ -26,11 +27,13 @@ public class CooperConfirmAP extends ActionHandlerSupport {
 		ActionModelI am = ae.getControl().getModel()
 				.getChild(ActionModelI.class, action, true);
 
-		String cooperRequestId = (String) am.getProperty("crId", true);
-
+		String crId = (String) am.getValue("crId");
+		if(crId == null){
+			throw new UiException("missing action parameter crId");
+		}
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
 		req.getPayloads().setProperty("cooperRequestId",
-				StringData.valueOf(cooperRequestId));
+				StringData.valueOf(crId));
 		this.sendMessage(ae, req);
 	}
 
