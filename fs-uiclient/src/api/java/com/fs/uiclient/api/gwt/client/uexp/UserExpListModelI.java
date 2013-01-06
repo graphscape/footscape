@@ -4,6 +4,9 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import java.util.List;
+
+import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
@@ -37,5 +40,8 @@ public interface UserExpListModelI extends ModelI {
 
 	public void select(String expId);// the current user exp,use select this
 										// one,for search or open it.
+	public List<UserExpModel> getUserExpByActivityId(String actId);
+	
+	public UserExpModel getUserExpByIncomingCrId(String actId, boolean force);	
 
 }

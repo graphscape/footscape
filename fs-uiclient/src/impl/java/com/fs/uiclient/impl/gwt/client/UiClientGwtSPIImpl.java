@@ -23,6 +23,9 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
+import com.fs.uiclient.impl.gwt.client.handler.message.ActivitiesRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ActivityCreatedNotifyMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
@@ -83,7 +86,13 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/notify/incomingCr"), new IncomingCrNotifyMH());// search
 																						// exp
 		dis.addHandler(Path.valueOf("/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
-																								// exp
+		// exp
+		dis.addHandler(Path.valueOf("/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/notify/activity"), new ActivityCreatedNotifyMH());// search
+		dis.addHandler(Path.valueOf("/activities/activities"), new ActivitiesRefreshMH());// search
+
+
 
 	}
 

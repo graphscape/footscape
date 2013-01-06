@@ -11,7 +11,7 @@ import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityControl;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
-import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -32,7 +32,8 @@ public class ActivitiesControl extends ControlSupport implements
 	 */
 	public ActivitiesControl(String name) {
 		super(name);
-		this.addActionEventHandler(ActivitiesModelI.A_ACTIVITES, new ActivitiesAP());
+		this.addActionEventHandler(ActivitiesModelI.A_ACTIVITES,
+				new ActivitiesRefreshAP());
 	}
 
 	/*
@@ -63,29 +64,41 @@ public class ActivitiesControl extends ControlSupport implements
 	 */
 	@Override
 	public void openActivity(final String actId) {
-		// 
-		LazyMvcI mvc = new LazyMvcSupport(this.model,"activity"){
+		//
+		LazyMvcI mvc = new LazyMvcSupport(this.model, "activity") {
 
 			@Override
 			protected ModelI createModel(String name) {
-				// 
+				//
 				return new ActivityModel(name, actId);
 			}
 
 			@Override
 			protected ViewI createView(String name, ContainerI c) {
-				// 
-				return new ActivityView(name,c);
+				//
+				return new ActivityView(name, c);
 			}
 
 			@Override
 			protected ControlI createControl(String name) {
-				// 
+				//
 				return new ActivityControl(name);
 			}
-			
+
 		};
 		mvc.get();//
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI#refresh(
+	 * java.lang.String)
+	 */
+	@Override
+	public void refresh(String actId) {
+		this.triggerAction(ActivitiesModelI.A_ACTIVITES);
 	}
 }

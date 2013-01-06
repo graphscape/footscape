@@ -4,7 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.event.model.UserExpActivityEvent;
+import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
+import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
@@ -12,7 +15,6 @@ import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
@@ -63,7 +65,37 @@ public class UserExpView extends SimpleView {
 						UserExpView.this.onUserExpSelected(t);
 					}
 				});
+		model.addHandler(UserExpIncomingCrEvent.TYPE,
+				new EventHandlerI<UserExpIncomingCrEvent>() {
 
+					@Override
+					public void handle(UserExpIncomingCrEvent t) {
+						UserExpView.this.onUserExpIncomingCr(t);
+					}
+				});
+		model.addHandler(UserExpActivityEvent.TYPE,
+				new EventHandlerI<UserExpActivityEvent>() {
+
+					@Override
+					public void handle(UserExpActivityEvent t) {
+						UserExpView.this.onUserExpActivityEvent(t);
+					}
+				});
+
+	}
+
+	/**
+	 * @param t
+	 */
+	protected void onUserExpActivityEvent(UserExpActivityEvent t) {
+		this.update(this.getModel());
+	}
+
+	/**
+	 * @param t
+	 */
+	protected void onUserExpIncomingCr(UserExpIncomingCrEvent t) {
+		this.update(this.getModel());// TODO only update needed part.
 	}
 
 	private void onUserExpSelected(UserExpSelectEvent t) {
@@ -75,6 +107,11 @@ public class UserExpView extends SimpleView {
 	}
 
 	protected void onModelCommit(UserExpModel t) {
+		this.update(t);
+	}
+
+	protected void update(UserExpModel t) {
+
 		//
 		if (this.table != null) {
 			this.table.getElement().removeFromParent();//
@@ -132,7 +169,7 @@ public class UserExpView extends SimpleView {
 			td.getElement().setInnerText(t.getActivityId());
 
 		}
-
+		new ViewUpdateEvent(this).dispatch();
 	}
 
 	@Override

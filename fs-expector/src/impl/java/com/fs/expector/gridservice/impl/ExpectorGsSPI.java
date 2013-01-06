@@ -31,8 +31,10 @@ public class ExpectorGsSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 		ac.active("authProvider");
 		// Converter factory
+		ac.active("onlineNotifyService");
 		this.activeConfirmCodeNotifier(ac);
 		this.activeHandlers(ac);
+		
 
 	}
 

@@ -14,4 +14,6 @@ public interface ActivitiesControlI extends ControlI {
 
 	public void openActivity(String actId);
 
+	public void refresh(String actId);
+
 }

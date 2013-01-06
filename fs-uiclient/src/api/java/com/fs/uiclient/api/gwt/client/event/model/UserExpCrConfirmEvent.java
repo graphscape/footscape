@@ -14,8 +14,8 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  * @see UserExpModel
  * @see UserExpView
  */
-public class UserExpIncomingCrEvent extends ModelUpdateEvent {
-	public static final Type<UserExpIncomingCrEvent> TYPE = new Type<UserExpIncomingCrEvent>(
+public class UserExpCrConfirmEvent extends ModelUpdateEvent {
+	public static final Type<UserExpCrConfirmEvent> TYPE = new Type<UserExpCrConfirmEvent>(
 			ModelUpdateEvent.TYPE);
 
 	/**
@@ -23,7 +23,7 @@ public class UserExpIncomingCrEvent extends ModelUpdateEvent {
 	 * @param loc
 	 * @param vw
 	 */
-	public UserExpIncomingCrEvent(UserExpModel m, String crId) {
+	public UserExpCrConfirmEvent(UserExpModel m, String crId) {
 		super(TYPE, m, "crId", crId);
 	}
 

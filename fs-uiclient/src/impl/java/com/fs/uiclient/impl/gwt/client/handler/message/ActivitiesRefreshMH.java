@@ -22,7 +22,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  * @author wu
  * 
  */
-public class ActivitiesMH extends MHSupport {
+public class ActivitiesRefreshMH extends MHSupport {
 
 	/*
 	 * Jan 2, 2013

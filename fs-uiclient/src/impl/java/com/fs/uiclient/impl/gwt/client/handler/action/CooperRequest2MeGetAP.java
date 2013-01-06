@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -22,11 +21,10 @@ public class CooperRequest2MeGetAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-
-		String cooperRequestId = (String) ae.getControl().getModel()
-				.getValue(CooperModelI.L_COOPERREQUEST_ID);
+		String cooperRequestId = null;// TODO
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
-		req.getPayloads().setProperty("cooperRequestId", StringData.valueOf(cooperRequestId));
+		req.getPayloads().setProperty("cooperRequestId",
+				StringData.valueOf(cooperRequestId));
 
 	}
 

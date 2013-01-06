@@ -32,7 +32,8 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	// query activities by account.
 
 	@Handle("request")
-	public void handleRequest(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
+	public void handleRequest(MessageContext hc, TerminalMsgReceiveEW ew,
+			ResponseI res) {
 
 		MessageI req = ew.getMessage();//
 
@@ -41,7 +42,8 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		String expId1 = (String) req.getPayload("expId1", true);
 		String expId2 = (String) req.getPayload("expId2", true);
 
-		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
+		Expectation exp2 = this.dataService.getNewestById(Expectation.class,
+				expId2, true);
 		String accId2 = exp2.getAccountId();
 		CooperRequest cr = new CooperRequest().forCreate(this.dataService);
 		cr.setAccountId1(aid);
@@ -53,38 +55,32 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		String cid = cr.getId();
 		//
 
-		res.setPayload("cooperMessageId", cid);//
+		res.setPayload("cooperRequestId", cid);//
 		// notify the exp2's account to refresh the incoming request,if he/she
 		// is online
-		SessionGd s2 = this.sessionManager.getEntityByField(SessionGd.ACCID, accId2, false);
 
-		if (s2 != null) {// not online
-			TerminalGd t2 = this.terminalManager.getTerminalBySessionId(s2.getId(), false);
-			if (t2 == null) {// TODO
-				throw new FsException("TODO,remove old session when binding new session.");
-			}
+		MessageI msg = new MessageSupport();
+		msg.setHeader(MessageI.HK_PATH, "/notify/incomingCr");
 
-			MessageI msg = new MessageSupport();
-			msg.setHeader(MessageI.HK_PATH, "/notify/incomingCr");
-
-			this.terminalManager.sendMessage(t2.getId(), msg);
-
-		}
+		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 	}
 
 	@Handle("confirm")
-	public void handleConfirm(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
+	public void handleConfirm(TerminalMsgReceiveEW ew, MessageContext hc,
+			ResponseI res) {
 		MessageI req = ew.getMessage();//
-		String crid = (String) req.getPayload("cooperMessageId", true);
+		String crid = (String) req.getPayload("cooperRequestId", true);
 
-		boolean findAct = req.getPayload(Boolean.class, "useNewestActivityId", Boolean.FALSE);//
-		CooperRequest cr = this.dataService.getNewestById(CooperRequest.class, crid, true);
+		boolean findAct = req.getPayload(Boolean.class, "useNewestActivityId",
+				Boolean.FALSE);//
+		CooperRequest cr = this.dataService.getNewestById(CooperRequest.class,
+				crid, true);
 		String exp2ActId = null;
 		if (findAct) {// find the newest activity for the expId2,in case there
 						// is already one activity for it.
 
-			ExpActivity ea = this.dataService.getNewest(ExpActivity.class, ExpActivity.PK_EXP_ID,
-					cr.getExpId2(), false);
+			ExpActivity ea = this.dataService.getNewest(ExpActivity.class,
+					ExpActivity.PK_EXP_ID, cr.getExpId2(), false);
 			if (ea != null) {
 				exp2ActId = ea.getActivityId();//
 
@@ -93,8 +89,10 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 		String actId = exp2ActId;
 
-		Expectation exp1 = this.dataService.getNewestById(Expectation.class, cr.getExpId1(), true);
-		Expectation exp2 = this.dataService.getNewestById(Expectation.class, cr.getExpId2(), true);
+		Expectation exp1 = this.dataService.getNewestById(Expectation.class,
+				cr.getExpId1(), true);
+		Expectation exp2 = this.dataService.getNewestById(Expectation.class,
+				cr.getExpId2(), true);
 
 		if (actId == null) {// create a new activity.
 			Activity act = new Activity().forCreate(this.dataService);
@@ -120,9 +118,11 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	}
 
 	protected void tryLinkExp2Activity(Expectation exp, String actId) {
-		ExpActivity oldEa = this.dataService.getNewest(ExpActivity.class, new String[] {
-				ExpActivity.PK_EXP_ID, ExpActivity.PK_ACTIVITY_ID }, new Object[] { exp.getId(), actId },
-				false);
+		String accId = exp.getAccountId();
+		ExpActivity oldEa = this.dataService.getNewest(ExpActivity.class,
+				new String[] { ExpActivity.PK_EXP_ID,
+						ExpActivity.PK_ACTIVITY_ID },
+				new Object[] { exp.getId(), actId }, false);
 		if (oldEa == null) {
 			ExpActivity ea = new ExpActivity().forCreate(this.dataService);
 			ea.setAccountId(exp.getAccountId());
@@ -131,15 +131,21 @@ public class CooperHandler extends ExpectorTMREHSupport {
 			ea.save(true);// Note the last one is refresh
 			// query the user's activity list,update the link
 		}
-		UserActivity oldUa = this.dataService.getNewest(UserActivity.class, new String[] {
-				UserActivity.PK_ACCOUNT_ID, UserActivity.PK_ACTIVITY_ID }, new Object[] { exp.getAccountId(),
-				actId }, false);
+		UserActivity oldUa = this.dataService.getNewest(UserActivity.class,
+				new String[] { UserActivity.PK_ACCOUNT_ID,
+						UserActivity.PK_ACTIVITY_ID },
+				new Object[] { exp.getAccountId(), actId }, false);
 		if (oldUa == null) {
 			// TODO duplicated entry:
 			UserActivity ua = new UserActivity().forCreate(this.dataService);
 			ua.setAccountId(exp.getAccountId());// the exp's user
 			ua.setActivityId(actId);
 			ua.save(true);
+
+			MessageI msg = new MessageSupport();
+			msg.setHeader(MessageI.HK_PATH, "/notify/activity");
+			msg.setPayload("activityId", actId);
+			this.onlineNotifyService.tryNotifyAccount(accId, msg);
 		}
 	}
 
@@ -149,8 +155,9 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 		String accId = this.getAccountId(ew, true);
 
-		List<CooperRequest> crL = this.dataService.getListNewestFirst(CooperRequest.class,
-				CooperRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);
+		List<CooperRequest> crL = this.dataService.getListNewestFirst(
+				CooperRequest.class, CooperRequest.ACCOUNT_ID2, accId, 0,
+				Integer.MAX_VALUE);
 		List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
 		res.setPayload("cooperRequestList", ptsL);
 	}

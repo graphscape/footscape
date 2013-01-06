@@ -23,9 +23,12 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	 */
 	public CooperControl(String name) {
 		super(name);
-		this.addActionEventHandler(CooperModelI.A_REQUEST, new CooperRequestAP());
-		this.addActionEventHandler(CooperModelI.A_CONFIRM, new CooperConfirmAP());
-		this.addActionEventHandler(CooperModelI.A_REFRESH_INCOMING_CR, new RefreshIncomingCrAP());
+		this.addActionEventHandler(CooperModelI.A_REQUEST,
+				new CooperRequestAP());
+		this.addActionEventHandler(CooperModelI.A_CONFIRM,
+				new CooperConfirmAP());
+		this.addActionEventHandler(CooperModelI.A_REFRESH_INCOMING_CR,
+				new RefreshIncomingCrAP());
 
 	}
 
@@ -39,12 +42,34 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	}
 
 	/*
-	 *Jan 4, 2013
+	 * Jan 4, 2013
 	 */
 	@Override
 	public void refreshIncomingCr(String crId) {
-		// 
+		//
 		this.triggerAction(CooperModelI.A_REFRESH_INCOMING_CR);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.coper.CooperControlI#cooperConfirm(java
+	 * .lang.String)
+	 */
+	@Override
+	public void cooperConfirm(String crId) {
+		CooperModelI cm = this.getModel();
+
+		this.triggerAction(CooperModelI.A_CONFIRM);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.coper.CooperControlI#removeIncomingCr(java.lang.String)
+	 */
+	@Override
+	public void removeIncomingCr(String crId) {
+		this.getModel().removeIncomingCr(crId);
 	}
 
 }

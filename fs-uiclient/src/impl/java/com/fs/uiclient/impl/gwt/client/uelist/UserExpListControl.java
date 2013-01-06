@@ -112,6 +112,7 @@ public class UserExpListControl extends ControlSupport implements
 
 	/**
 	 * Model Event
+	 * 
 	 * @param t
 	 */
 	protected void onUserExpSelectEvent(UserExpSelectEvent t) {
@@ -150,8 +151,9 @@ public class UserExpListControl extends ControlSupport implements
 		this.sendMessage(req);
 	}
 
-	/**notify a incoming cr.
-	 *
+	/**
+	 * notify a incoming cr.
+	 * 
 	 */
 	@Override
 	public void incomingCr(IncomingCrModel cr) {
@@ -160,7 +162,22 @@ public class UserExpListControl extends ControlSupport implements
 		UserExpModel uem = uelm.getUserExp(expId, true);//
 		String expId1 = cr.getExpId1();
 		uem.setIncomingCrId(expId1);// FROM exp id
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI#removeIncomingCr
+	 * (java.lang.String)
+	 */
+	@Override
+	public void incomingCrConfirmed(String crId) {
+		UserExpListModelI ulm = this.getModel();
+
+		UserExpModel uem = ulm.getUserExpByIncomingCrId(crId, true);
+		uem.incomingCrConfirmed(crId);//
 	}
 
 }

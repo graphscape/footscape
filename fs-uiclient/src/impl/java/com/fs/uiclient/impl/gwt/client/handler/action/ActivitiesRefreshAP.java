@@ -17,7 +17,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * @author wu
  * 
  */
-public class ActivitiesAP extends ActionHandlerSupport {
+public class ActivitiesRefreshAP extends ActionHandlerSupport {
 
 	/*
 	 * Oct 21, 2012

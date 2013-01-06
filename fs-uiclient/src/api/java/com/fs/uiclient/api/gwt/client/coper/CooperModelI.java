@@ -24,11 +24,6 @@ public interface CooperModelI extends ModelI {
 
 	public static final String A_REFRESH_INCOMING_CR = "refreshIncomingCr";
 
-	// before confirm action,please set this value.
-	public static final Location L_COOPERREQUEST_ID = Location
-			.valueOf("cooperRequestId");// for
-										// confirm
-
 	public void cooper(String expId1, String expId2);// for request action,set
 														// this two
 	// exps firstly.
@@ -37,13 +32,10 @@ public interface CooperModelI extends ModelI {
 
 	public String getExpId2();
 
-	public void cooperRequestId(String crId);// for confirm action, to set this
-												// value first.
-	// incoming cooper request only needed,for outgoing cr, it is a "message" to
-	// another people,no worth to do see it here.may be in "history" message.
-
 	public List<IncomingCrModel> getIncomingCooperRequestModelList();
 
 	public void incomingCr(IncomingCrModel crm);
+
+	public void removeIncomingCr(String crId);
 
 }

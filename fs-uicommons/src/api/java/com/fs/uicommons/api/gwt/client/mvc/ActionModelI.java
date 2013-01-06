@@ -19,7 +19,7 @@ public interface ActionModelI extends ModelI {
 	public static final Location L_LOCAL = Location.valueOf("_local");
 
 	public static final Location L_STATE = Location.valueOf("_state");
-	
+
 	public static final Location L_HIDDEN = Location.valueOf("_hidden");
 
 	public static final State TRIGGERED = State.valueOf("triggered");
@@ -45,7 +45,7 @@ public interface ActionModelI extends ModelI {
 	public void processed(ErrorInfosData eis);
 
 	public ErrorInfosData getErrorInfos();
-	
+
 	public void setHidden(boolean hidden);
 
 }

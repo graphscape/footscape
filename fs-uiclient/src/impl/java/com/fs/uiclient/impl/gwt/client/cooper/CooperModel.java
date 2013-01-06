@@ -42,14 +42,6 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 		this.expId2 = expId2;
 	}
 
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public void cooperRequestId(String crId) {
-		this.setValue(L_COOPERREQUEST_ID, crId);
-	}
-
 	@Override
 	public List<IncomingCrModel> getIncomingCooperRequestModelList() {
 		//
@@ -77,6 +69,19 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 	@Override
 	public void incomingCr(IncomingCrModel crm) {
 		this.child(crm);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.coper.CooperModelI#removeIncomingCr(java
+	 * .lang.String)
+	 */
+	@Override
+	public void removeIncomingCr(String crId) {
+		IncomingCrModel cm = this.getChild(IncomingCrModel.class, crId, true);
+		cm.parent(null);//
 	}
 
 }

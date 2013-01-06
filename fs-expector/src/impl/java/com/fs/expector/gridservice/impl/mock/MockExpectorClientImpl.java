@@ -150,7 +150,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("expId2", expId2);
 		MessageI i = this.syncSendMessage(req);
 		//
-		String rt = (String) i.getPayload("cooperMessageId", true);
+		String rt = (String) i.getPayload("cooperRequestId", true);
 
 		return rt;
 	}
@@ -163,7 +163,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		//
 		MessageI req = this.newRequest("/cooper/confirm");
 
-		req.setPayload("cooperMessageId", crid);
+		req.setPayload("cooperRequestId", crid);
 
 		req.setPayload("useNewestActivityId", findAct);
 		MessageI i = this.syncSendMessage(req);

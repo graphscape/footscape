@@ -12,8 +12,8 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class IncomingCrModel extends ModelSupport {
 
-	private String cooperRequestId;
-	
+	private String crId;
+
 	private String expId1;
 
 	private String expId2;
@@ -25,8 +25,13 @@ public class IncomingCrModel extends ModelSupport {
 	/**
 	 * @param name
 	 */
-	public IncomingCrModel(String name) {
-		super(name);
+	public IncomingCrModel(String crId) {
+		super(crId);
+		this.crId = crId;
+	}
+
+	public String getCrId() {
+		return crId;
 	}
 
 	/**
@@ -82,7 +87,8 @@ public class IncomingCrModel extends ModelSupport {
 	}
 
 	/**
-	 * @param accountId1 the accountId1 to set
+	 * @param accountId1
+	 *            the accountId1 to set
 	 */
 	public void setAccountId1(String accountId1) {
 		this.accountId1 = accountId1;
@@ -96,24 +102,11 @@ public class IncomingCrModel extends ModelSupport {
 	}
 
 	/**
-	 * @param accountId2 the accountId2 to set
+	 * @param accountId2
+	 *            the accountId2 to set
 	 */
 	public void setAccountId2(String accountId2) {
 		this.accountId2 = accountId2;
-	}
-
-	/**
-	 * @return the cooperRequestId
-	 */
-	public String getCooperRequestId() {
-		return cooperRequestId;
-	}
-
-	/**
-	 * @param cooperRequestId the cooperRequestId to set
-	 */
-	public void setCooperRequestId(String cooperRequestId) {
-		this.cooperRequestId = cooperRequestId;
 	}
 
 }

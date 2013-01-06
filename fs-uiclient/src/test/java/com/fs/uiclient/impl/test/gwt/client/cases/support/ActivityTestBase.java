@@ -10,12 +10,13 @@ import java.util.Map;
 import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
+import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
@@ -28,24 +29,24 @@ import com.fs.uicore.api.gwt.client.event.AttachedEvent;
  */
 public class ActivityTestBase extends ExpTestBase {
 
-	protected String expIdSelected;//selected 
-	
-	protected String expIdCooperTo;//cooper with
-	
-	protected Map<String,UserExpView> userExpViewMap;
+	protected String expIdSelected;// selected
+
+	protected String expIdCooperTo;// cooper with
+
+	protected Map<String, UserExpView> userExpViewMap;
 
 	protected ActivityView activityView;
 
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		userExpViewMap = new HashMap<String,UserExpView>();
-		
+		userExpViewMap = new HashMap<String, UserExpView>();
+
 		this.finishing.add("selectuserexp");
 
 		this.finishing.add("cooper.submit");// user select one item from search
 											// result,a coper is created.
-		this.finishing.add("cooepr.confirm");
+		this.finishing.add("cooper.confirm");
 		//
 		this.finishing.add("activity.created");// the coper is confirmed by
 												// other user and activity
@@ -62,20 +63,27 @@ public class ActivityTestBase extends ExpTestBase {
 	public void onEvent(Event e) {
 		super.onEvent(e);
 
-		if (e instanceof UserExpIncomingCrEvent) {
-			this.onUserExpIncomingCrEvent((UserExpIncomingCrEvent) e);
-		}
-		if (e instanceof ActivityCreatedEvent) {
-			this.onActivityCreatedEvent((ActivityCreatedEvent) e);
+		if (e instanceof ViewUpdateEvent) {
+			this.onViewUpdateEvent((ViewUpdateEvent) e);
 		}
 
+	}
+
+	/**
+	 * @param e
+	 */
+	private void onViewUpdateEvent(ViewUpdateEvent e) {
+		ViewI v = e.getView();
+		if (v instanceof UserExpView) {
+			this.onUserExpViewUpdate((UserExpView) v, e);
+		}
 	}
 
 	@Override
 	protected void onNewExpView(int idx, UserExpView e) {
 		String id = e.getModel().getExpId();//
 		this.ueViewMap.put(id, e);
-		
+
 		if (idx == this.totalExp() - 1) {
 			// select the last exp
 			this.expIdSelected = id;
@@ -99,7 +107,6 @@ public class ActivityTestBase extends ExpTestBase {
 			this.onActivityViewAttached((ActivityView) src);
 		}
 	}
-
 
 	/**
 	 * search result
@@ -134,24 +141,46 @@ public class ActivityTestBase extends ExpTestBase {
 		// is set.
 
 		this.tryFinish("cooper.submit");
+		// next:onUserExpViewUpdate,incomingCrId is rendered.
+
+	}
+
+	/**
+	 * @param v
+	 * @param e
+	 */
+	private void onUserExpViewUpdate(UserExpView v, ViewUpdateEvent e) {
+		UserExpModel uem = v.getModel();
+		String crId = uem.getIncomingCrId();
+		if (crId != null) {
+			boolean pro = (Boolean) uem
+					.getProperty("incomingCrConfirmProcessing");
+			if (pro) {
+				throw new UiException(
+						"/notify/incomingCr should cause the crId to be null");
+			}
+
+			uem.setProperty("incomingCrConfirmProcessing", true);
+
+			v.clickAction(UserExpModel.A_COOPER_CONFIRM);
+			this.tryFinish("cooper.confirm");
+		}
+		String actId = uem.getActivityId();
+		if (actId != null) {
+			Boolean pro = (Boolean) uem.getProperty("activityOpened");
+			if (pro == null) {
+				uem.setProperty("activityOpened", Boolean.TRUE);//
+				this.tryFinish("activity.created");//
+				// this.userExpViewSelected.clickAction(UserExpModel.A_OPEN_ACTIVITY);
+
+			}
+		}
+
 	}
 
 	/**
 	 * @param e
 	 */
-	protected void onUserExpIncomingCrEvent(UserExpIncomingCrEvent e) {
-		UserExpModel ue = e.getModel();
-
-	}
-
-	/**
-	 * @param e
-	 */
-	private void onActivityCreatedEvent(ActivityCreatedEvent e) {
-		this.tryFinish("activity.created");//
-
-		//this.userExpViewSelected.clickAction(UserExpModel.A_OPEN_ACTIVITY);
-	}
 
 	/**
 	 * @param src

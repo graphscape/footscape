@@ -4,6 +4,7 @@
 package com.fs.uiclient.api.gwt.client.event.model;
 
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
 
 /**
@@ -14,8 +15,8 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  * @see UserExpModel
  * @see UserExpView
  */
-public class UserExpIncomingCrEvent extends ModelUpdateEvent {
-	public static final Type<UserExpIncomingCrEvent> TYPE = new Type<UserExpIncomingCrEvent>(
+public class UserExpActivityEvent extends ModelUpdateEvent {
+	public static final Type<UserExpActivityEvent> TYPE = new Type<UserExpActivityEvent>(
 			ModelUpdateEvent.TYPE);
 
 	/**
@@ -23,8 +24,8 @@ public class UserExpIncomingCrEvent extends ModelUpdateEvent {
 	 * @param loc
 	 * @param vw
 	 */
-	public UserExpIncomingCrEvent(UserExpModel m, String crId) {
-		super(TYPE, m, "crId", crId);
+	public UserExpActivityEvent(UserExpModel m, String actId) {
+		super(TYPE, m, "activityId", actId);
 	}
 
 	public UserExpModel getModel() {

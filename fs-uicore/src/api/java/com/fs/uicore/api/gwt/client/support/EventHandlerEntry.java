@@ -18,7 +18,8 @@ public class EventHandlerEntry {
 
 	private Event.FilterI filter;
 	private Event.EventHandlerI handler;
-	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EventHandlerEntry.class);
+	private static final UiLoggerI LOG = UiLoggerFactory
+			.getLogger(EventHandlerEntry.class);
 
 	public EventHandlerEntry(Event.FilterI f, Event.EventHandlerI<?> h) {
 		this.filter = f;
@@ -43,8 +44,8 @@ public class EventHandlerEntry {
 
 		try {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("tryHandle event:" + evt + " by filter:" + this.filter + " and handler:"
-						+ this.handler);
+				LOG.debug("tryHandle event:" + evt + " by filter:"
+						+ this.filter + " and handler:" + this.handler);
 			}
 
 			Event ef = this.filter.filter(evt);
@@ -59,8 +60,8 @@ public class EventHandlerEntry {
 			this.handler.handle(ef);
 
 		} catch (RuntimeException e) {
-			throw new UiException("handler exception,event:" + evt + ",handler:" + this.handler + ",filter:"
-					+ filter, e);
+			throw new UiException("handler exception,event:" + evt
+					+ ",handler:" + this.handler + ",filter:" + filter, e);
 		}
 	}
 

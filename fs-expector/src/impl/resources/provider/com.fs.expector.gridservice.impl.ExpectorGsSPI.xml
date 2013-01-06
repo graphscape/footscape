@@ -1,5 +1,7 @@
 <config>
 
+	<config name="onlineNotifyService" class="com.fs.expector.gridservice.impl.OnlineNotifyServiceImpl" />
+
 	<!-- AuthProviderI for grid service -->
 	<config name="authProvider" class="com.fs.expector.gridservice.impl.AuthProviderImpl" />
 

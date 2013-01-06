@@ -4,7 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
+import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -22,11 +22,15 @@ public class CooperConfirmAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
+		String action = ae.getAction();
+		ActionModelI am = ae.getControl().getModel()
+				.getChild(ActionModelI.class, action, true);
 
-		String cooperRequestId = (String) ae.getControl().getModel()
-				.getValue(CooperModelI.L_COOPERREQUEST_ID);
+		String cooperRequestId = (String) am.getProperty("crId", true);
+
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
-		req.getPayloads().setProperty("cooperRequestId", StringData.valueOf(cooperRequestId));
+		req.getPayloads().setProperty("cooperRequestId",
+				StringData.valueOf(cooperRequestId));
 		this.sendMessage(ae, req);
 	}
 

@@ -19,4 +19,6 @@ public interface UserExpListControlI extends ControlI {
 
 	public void detailExp(String expId);
 
+	public void incomingCrConfirmed(String crId);
+
 }

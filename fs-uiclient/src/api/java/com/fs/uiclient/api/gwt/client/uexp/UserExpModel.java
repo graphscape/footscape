@@ -4,9 +4,12 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.event.model.UserExpActivityEvent;
+import com.fs.uiclient.api.gwt.client.event.model.UserExpCrConfirmEvent;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -15,8 +18,6 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * 
  */
 public class UserExpModel extends ModelSupport {
-
-	public static final Location L_EXPID = Location.valueOf("expId");
 
 	public static final Location L_BODY = Location.valueOf("body");//
 
@@ -27,6 +28,10 @@ public class UserExpModel extends ModelSupport {
 	public static final String A_OPEN_ACTIVITY = "activity";
 
 	public static final String A_SELECT = "select";
+
+	public static final String A_COOPER_CONFIRM = "cooperConfirm";
+
+	private String expId;
 
 	private String incomingCrId;
 
@@ -42,8 +47,8 @@ public class UserExpModel extends ModelSupport {
 		super(name);
 		ControlUtil.addAction(this, A_SELECT);//
 		ControlUtil.addAction(this, A_OPEN_ACTIVITY);//
-		this.setValue(L_EXPID, id);//
-
+		ControlUtil.addAction(this, A_COOPER_CONFIRM);
+		this.expId = id;
 	}
 
 	public void setBody(String body) {
@@ -55,7 +60,7 @@ public class UserExpModel extends ModelSupport {
 	}
 
 	public String getExpId() {
-		return this.getValue(String.class, L_EXPID);
+		return this.expId;
 	}
 
 	public void select(boolean sel) {
@@ -77,6 +82,15 @@ public class UserExpModel extends ModelSupport {
 
 	public DateData getTimestamp(boolean force) {
 		return (DateData) this.getValue(L_TIMESTAMP, force);
+	}
+
+	public void incomingCrConfirmed(String crId) {
+		if (!crId.equals(this.incomingCrId)) {
+			throw new UiException("crid:" + crId + " not same as:"
+					+ this.incomingCrId);
+		}
+		this.incomingCrId = null;
+		new UserExpCrConfirmEvent(this, crId).dispatch();
 	}
 
 	/**
@@ -108,5 +122,6 @@ public class UserExpModel extends ModelSupport {
 	 */
 	public void setActivityId(String activityId) {
 		this.activityId = activityId;
+		new UserExpActivityEvent(this, this.activityId).dispatch();
 	}
 }
