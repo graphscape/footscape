@@ -4,7 +4,6 @@
 package com.fs.uicore.impl.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNull;
@@ -15,8 +14,7 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public abstract class PropertiesJCCSupport<T extends UiData> extends
-		JsonCodecCSupport<T> implements CodecI {
+public abstract class PropertiesJCCSupport<T> extends JsonCodecCSupport<T> implements CodecI<T> {
 
 	/** */
 	public PropertiesJCCSupport(String type, Class<T> cls, FactoryI f) {
@@ -30,7 +28,7 @@ public abstract class PropertiesJCCSupport<T extends UiData> extends
 		ObjectPropertiesData rt = new ObjectPropertiesData();
 		for (String key : jo.keySet()) {
 			JSONValue jsv = (JSONValue) jo.get(key);
-			UiData value = null;
+			Object value = null;
 			if (jsv instanceof JSONNull) {
 
 			} else {
@@ -58,7 +56,7 @@ public abstract class PropertiesJCCSupport<T extends UiData> extends
 		ObjectPropertiesData ud = this.convert(t);
 		JSONObject rt = new JSONObject();
 		for (String key : ud.keyList()) {
-			UiData da = ud.getProperty(key);
+			Object da = ud.getProperty(key);
 			JSONValue value = null;
 			if (da == null) {
 				value = JSONNull.getInstance();

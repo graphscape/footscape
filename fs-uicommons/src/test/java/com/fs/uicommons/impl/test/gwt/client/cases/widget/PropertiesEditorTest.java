@@ -11,9 +11,6 @@ import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.UiData;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
@@ -52,17 +49,17 @@ public class PropertiesEditorTest extends TestBase {
 		System.out.println(edt.dump());
 
 		// integer property
-		IntegerData expected1 = IntegerData.valueOf(1);
+		Integer expected1 = Integer.valueOf(1);
 
 		IntegerEditorI ie = edt.find(IntegerEditorI.class, false);
 		assertNotNull("no editor found.", ie);
 		ie.input(expected1);//
 		ObjectPropertiesData data = holder.getTarget();
-		UiData actual = data.getProperty("integer1", false);
+		Object actual = data.getProperty("integer1", false);
 		assertNotNull(actual);
 		assertEquals(expected1, actual);
 		// boolean property
-		BooleanData expected2 = BooleanData.valueOf(true);
+		Boolean expected2 = (true);
 		BooleanEditorI e2 = edt.find(BooleanEditorI.class, true);
 		e2.input(expected2);
 		actual = data.getProperty("boolean1", true);

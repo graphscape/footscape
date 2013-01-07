@@ -12,8 +12,6 @@ import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 
 /**
@@ -38,15 +36,15 @@ public class WidgetFactoryTest extends TestBase {
 
 	public void testStringEditor() {
 		StringEditorI se = wf.create(StringEditorI.class);
-		final Holder<StringData> sdH = new Holder<StringData>();
+		final Holder<String> sdH = new Holder<String>();
 		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
 
 			@Override
 			public void handle(ChangeEvent<?> e) {
-				sdH.setTarget((StringData) e.getData());
+				sdH.setTarget((String) e.getData());
 			}
 		});
-		StringData sd = StringData.valueOf("this is string value");
+		String sd = ("this is string value");
 		se.input(sd);
 		assertEquals(sd, sdH.getTarget());
 
@@ -54,15 +52,15 @@ public class WidgetFactoryTest extends TestBase {
 
 	public void testIntegerEditor() {
 		IntegerEditorI se = wf.create(IntegerEditorI.class);
-		final Holder<IntegerData> sdH = new Holder<IntegerData>();
+		final Holder<Integer> sdH = new Holder<Integer>();
 		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
 
 			@Override
 			public void handle(ChangeEvent<?> e) {
-				sdH.setTarget((IntegerData) e.getData());
+				sdH.setTarget((Integer) e.getData());
 			}
 		});
-		IntegerData sd = IntegerData.valueOf(10);
+		Integer sd = Integer.valueOf(10);
 		se.input(sd);
 		assertEquals(sd, sdH.getTarget());
 

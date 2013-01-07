@@ -8,7 +8,6 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -24,7 +23,7 @@ public class CooperRequest2MeGetAP extends ActionHandlerSupport {
 		String cooperRequestId = null;// TODO
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
 		req.getPayloads().setProperty("cooperRequestId",
-				StringData.valueOf(cooperRequestId));
+				(cooperRequestId));
 
 	}
 

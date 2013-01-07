@@ -11,8 +11,6 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -39,13 +37,13 @@ public class SignupModel extends FormsModel implements SignupModelI {
 		def.addAction(A_SUBMIT);
 
 		// fields1
-		def.addField("nick", StringData.class);
-		def.addField("password", StringData.class);
-		def.addField("password2", StringData.class);
-		def.addField("email", StringData.class);
-		def.addField("isAgree", BooleanData.class);
+		def.addField("nick", String.class);
+		def.addField("password", String.class);
+		def.addField("password2", String.class);
+		def.addField("email", String.class);
+		def.addField("isAgree", Boolean.class);
 		// options
-		FieldModel fm = def.addField("confirmCodeNotifier", StringData.class,
+		FieldModel fm = def.addField("confirmCodeNotifier", String.class,
 				EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
 
 					@Override
@@ -62,8 +60,8 @@ public class SignupModel extends FormsModel implements SignupModelI {
 		// actions
 		con.addAction(A_CONFIRM);
 		//
-		con.addField("email", StringData.class);
-		con.addField("confirmCode", StringData.class);
+		con.addField("email", String.class);
+		con.addField("confirmCode", String.class);
 
 	}
 

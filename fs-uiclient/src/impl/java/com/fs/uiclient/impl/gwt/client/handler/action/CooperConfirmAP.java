@@ -10,7 +10,6 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -33,7 +32,7 @@ public class CooperConfirmAP extends ActionHandlerSupport {
 		}
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
 		req.getPayloads().setProperty("cooperRequestId",
-				StringData.valueOf(crId));
+				(crId));
 		this.sendMessage(ae, req);
 	}
 

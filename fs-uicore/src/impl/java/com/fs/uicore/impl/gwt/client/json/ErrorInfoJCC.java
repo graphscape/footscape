@@ -3,9 +3,11 @@
  */
 package com.fs.uicore.impl.gwt.client.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfoData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
-import com.fs.uicore.api.gwt.client.data.list.ObjectListData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.impl.gwt.client.support.PropertiesJCCSupport;
 
@@ -25,7 +27,7 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	public static final String DETAIL = "detail";
 
 	/** */
-	public ErrorInfoJCC(FactoryI f) {
+	public ErrorInfoJCC(CodecI.FactoryI f) {
 		super("E", ErrorInfoData.class, f);
 
 	}
@@ -33,16 +35,15 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	/* */
 	@Override
 	protected ErrorInfoData convert(ObjectPropertiesData l) {
-		StringData code = (StringData) l.getProperty(CODE);
-		StringData message = (StringData) l.getProperty(MESSAGE);
-		ObjectListData dl = (ObjectListData) l.getProperty(DETAIL);
+		String code = (String) l.getProperty(CODE);
+		String message = (String) l.getProperty(MESSAGE);
+		List dl = (List) l.getProperty(DETAIL);
 
-		ErrorInfoData rt = new ErrorInfoData(code == null ? null
-				: code.getValue(), message == null ? null : message.getValue());// TODO
-																				// null
+		ErrorInfoData rt = new ErrorInfoData(code, message);// TODO
+															// null
 		for (int i = 0; i < dl.size(); i++) {
-			StringData sd = (StringData) dl.get(i);
-			rt.getDetail().add(sd.getValue());// TODO null?
+			String sd = (String) dl.get(i);
+			rt.getDetail().add(sd);// TODO null?
 		}
 
 		return rt;
@@ -53,11 +54,11 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	@Override
 	protected ObjectPropertiesData convert(ErrorInfoData t) {
 		ObjectPropertiesData rt = new ObjectPropertiesData();
-		rt.setProperty(MESSAGE, StringData.valueOf(t.getMessage()));
-		rt.setProperty(CODE, StringData.valueOf(t.getCode()));
-		ObjectListData ld = new ObjectListData();
+		rt.setProperty(MESSAGE, (t.getMessage()));
+		rt.setProperty(CODE, (t.getCode()));
+		List ld = new ArrayList();
 		for (String d : t.getDetail()) {
-			ld.add(StringData.valueOf(d));
+			ld.add((d));
 		}
 
 		rt.setProperty(DETAIL, ld);

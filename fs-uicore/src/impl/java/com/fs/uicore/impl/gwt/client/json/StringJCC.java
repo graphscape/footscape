@@ -4,7 +4,6 @@
 package com.fs.uicore.impl.gwt.client.json;
 
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
@@ -13,27 +12,27 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public class StringJCC extends JsonCodecCSupport<StringData> implements CodecI {
+public class StringJCC extends JsonCodecCSupport<String> implements CodecI<String> {
 
 	/** */
 	public StringJCC(FactoryI f) {
-		super("s", StringData.class, f);
+		super("s", String.class, f);
 
 	}
 
 	/* */
 	@Override
-	protected StringData decodeWithOutType(JSONValue jv) {
+	protected String decodeWithOutType(JSONValue jv) {
 		JSONString js = (JSONString) jv;
-		StringData rt = StringData.valueOf(js.stringValue());
+		String rt = (js.stringValue());
 		return rt;
 	}
 
 	/* */
 	@Override
-	protected JSONValue encodeWithOutType(StringData d) {
+	protected JSONValue encodeWithOutType(String d) {
 
-		return new JSONString(d.getValue());
+		return new JSONString(d);
 
 	}
 

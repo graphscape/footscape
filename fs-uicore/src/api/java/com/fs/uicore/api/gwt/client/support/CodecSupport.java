@@ -4,19 +4,18 @@
 package com.fs.uicore.api.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 
 /**
  * @author wu
  * 
  */
-public abstract class CodecSupport<T extends UiData, SER> implements CodecI {
+public abstract class CodecSupport<T, SER> implements CodecI<T> {
 	protected CodecI.FactoryI factory;
 
 	protected String typeCode;
-	protected Class<? extends UiData> dataClass;
+	protected Class<T> dataClass;
 
-	public CodecSupport(String tc, Class<? extends UiData> dc, CodecI.FactoryI f) {
+	public CodecSupport(String tc, Class<T> dc, CodecI.FactoryI f) {
 		this.factory = f;
 		this.typeCode = tc;
 		this.dataClass = dc;
@@ -24,7 +23,7 @@ public abstract class CodecSupport<T extends UiData, SER> implements CodecI {
 
 	/* */
 	@Override
-	public UiData decode(Object s) {
+	public T decode(Object s) {
 		SER ser = (SER) s;
 		return this.decodeInternal(ser);
 
@@ -32,7 +31,7 @@ public abstract class CodecSupport<T extends UiData, SER> implements CodecI {
 
 	/* */
 	@Override
-	public SER encode(UiData ud) {
+	public SER encode(T ud) {
 
 		return this.encodeInternal((T) ud);
 
@@ -40,7 +39,6 @@ public abstract class CodecSupport<T extends UiData, SER> implements CodecI {
 
 	protected abstract T decodeInternal(SER js);
 
-	
 	protected abstract SER encodeInternal(T d);
 
 	@Override
@@ -49,7 +47,7 @@ public abstract class CodecSupport<T extends UiData, SER> implements CodecI {
 	}
 
 	@Override
-	public Class<? extends UiData> getDataClass() {
+	public Class<T> getDataClass() {
 		return dataClass;
 	}
 }

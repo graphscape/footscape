@@ -12,7 +12,6 @@ import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
@@ -126,10 +125,10 @@ public class LoginTest extends TestBase {
 		LoginModelI lm = this.loginView.getModel();
 		lm.setIsUsingSavedAccout(false);//
 		StringEditorI unameE = this.loginView.find(StringEditorI.class, "email", true);
-		unameE.input(StringData.valueOf(this.email));
+		unameE.input((this.email));
 
 		StringEditorI passwordE = this.loginView.find(StringEditorI.class, "password", true);
-		passwordE.input(StringData.valueOf(this.pass));
+		passwordE.input((this.pass));
 
 		this.loginView.clickAction("submit");// submit
 		this.tryFinish("loginrequest");

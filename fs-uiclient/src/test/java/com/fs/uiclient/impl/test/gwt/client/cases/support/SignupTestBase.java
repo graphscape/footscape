@@ -14,8 +14,6 @@ import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
@@ -71,10 +69,10 @@ public abstract class SignupTestBase extends TestBase {
 			FormView fv = this.signupView.find(FormView.class, "confirm", true);
 
 			EditorI emailE = fv.find(EditorI.class, "email", true);
-			emailE.input(StringData.valueOf(this.email));
+			emailE.input((this.email));
 			EditorI ccodeE = fv.find(EditorI.class, "confirmCode", true);// see
 																			// ResponseConfirmCodeNodifier
-			ccodeE.input(StringData.valueOf(ccode));
+			ccodeE.input((ccode));
 
 			this.signupView.clickAction(SignupModel.A_CONFIRM);
 			this.tryFinish("submit");
@@ -96,22 +94,22 @@ public abstract class SignupTestBase extends TestBase {
 		FormView fv = this.signupView.find(FormView.class, "default", true);
 
 		EditorI unameE = fv.find(EditorI.class, "nick", true);
-		unameE.input(StringData.valueOf("user1"));
+		unameE.input(("user1"));
 
 		EditorI passwordE = fv.find(EditorI.class, "password", true);
-		passwordE.input(StringData.valueOf(this.password));
+		passwordE.input((this.password));
 
 		EditorI password2E = fv.find(EditorI.class, "password2", true);
-		password2E.input(StringData.valueOf(this.password));
+		password2E.input((this.password));
 
 		EditorI emailE = fv.find(EditorI.class, "email", true);
-		emailE.input(StringData.valueOf(this.email));
+		emailE.input((this.email));
 
 		EditorI isaE = fv.find(EditorI.class, "isAgree", true);
-		isaE.input(BooleanData.valueOf(true));
+		isaE.input((true));
 
 		EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
-		ccnE.input(StringData.valueOf("resp"));
+		ccnE.input(("resp"));
 
 		this.signupView.clickAction(SignupModelI.A_SUBMIT);
 

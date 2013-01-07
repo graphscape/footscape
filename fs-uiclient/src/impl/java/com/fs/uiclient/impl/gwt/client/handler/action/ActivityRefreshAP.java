@@ -9,7 +9,6 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -27,7 +26,7 @@ public class ActivityRefreshAP extends ActionHandlerSupport {
 
 		String actId = ((ActivityModelI) ae.getControl().getModel()).getActivityId();
 
-		req.getPayloads().setProperty("activityId", StringData.valueOf(actId));
+		req.getPayloads().setProperty("activityId", (actId));
 		this.sendMessage(ae, req);
 	}
 

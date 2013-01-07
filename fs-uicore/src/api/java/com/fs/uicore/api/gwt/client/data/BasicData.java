@@ -3,14 +3,13 @@
  */
 package com.fs.uicore.api.gwt.client.data;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
  * 
  */
-public class BasicData<T> extends UiData {
+public class BasicData<T> {
 	protected T value;
 
 	protected BasicData(T t) {

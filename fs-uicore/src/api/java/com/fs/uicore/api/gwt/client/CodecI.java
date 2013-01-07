@@ -3,27 +3,25 @@
  */
 package com.fs.uicore.api.gwt.client;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
-
 /**
  * @author wu
  * 
  */
-public interface CodecI {
+public interface CodecI<T> {
 
 	public static interface FactoryI {
-		public CodecI getCodec(Class<? extends UiData> dataCls);
+		public <T> CodecI<T> getCodec(Class<T> dataCls);
 
-		public CodecI getCodec(String type);
+		public <T> CodecI<T> getCodec(String type);
 
 	}
-	
+
 	public String getTypeCode();
-	
-	public Class<? extends UiData> getDataClass();
 
-	public UiData decode(Object ser);
+	public Class<T> getDataClass();
 
-	public Object encode(UiData ud);
+	public T decode(Object ser);
+
+	public Object encode(T ud);
 
 }

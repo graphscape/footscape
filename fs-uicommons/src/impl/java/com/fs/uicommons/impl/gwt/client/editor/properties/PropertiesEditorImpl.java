@@ -15,7 +15,6 @@ import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.SimpleValueDeliverI.ValueConverterI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -66,8 +65,8 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 	protected void processModelDefaultValue(ObjectPropertiesData dt) {
 		// model change,should update PropertyModel
 		for (PropertyModel pm : this.getFieldModelList()) {
-			UiData value = dt == null ? null : dt.getProperty(pm.getKey());//
-			UiData old = (UiData) pm.getDefaultValue();
+			Object value = dt == null ? null : dt.getProperty(pm.getKey());//
+			Object old = (Object) pm.getDefaultValue();
 
 			// to avoid dead loop , reversely,property model's change will
 			// cause the data update also.
@@ -123,7 +122,7 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 
 	protected void syncPropertModelWithEditor(final PropertyModel pm,
 			EditorI editor) {
-		SyncValueDeliver<UiData, UiData> svd = new SyncValueDeliver<UiData, UiData>(
+		SyncValueDeliver<Object, Object> svd = new SyncValueDeliver<Object, Object>(
 				pm, ModelI.L_DEFAULT, editor.getModel(), ModelI.L_DEFAULT);
 
 		svd.mapDefaultDirect();
@@ -150,13 +149,13 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 	protected void processPropertyModelValue(ModelValueEvent e) {
 		PropertyModel pm = (PropertyModel) e.getSource();
 		String key = pm.getKey();
-		UiData value = (UiData) e.getValue();
+		Object value = (Object) e.getValue();
 
 		ObjectPropertiesData data = this.getData();
 		if (data == null) {
 			data = new ObjectPropertiesData();
 		}
-		UiData old = data.getProperty(key);
+		Object old = data.getProperty(key);
 		if (!ObjectUtil.nullSafeEquals(old, value)) {
 			data.setProperty(key, value);
 			this.setData(data, true);// see: processModelDefaultValue();
@@ -165,12 +164,12 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 	}
 
 	protected void syncWithPropertyModel_DEL(final String key, PropertyModel pm) {
-		SyncValueDeliver<ObjectPropertiesData, UiData> svd = new SyncValueDeliver<ObjectPropertiesData, UiData>(
+		SyncValueDeliver<ObjectPropertiesData, Object> svd = new SyncValueDeliver<ObjectPropertiesData, Object>(
 				this.getModel(), ModelI.L_DEFAULT, pm, ModelI.L_DEFAULT);
-		svd.mapDefault(new ValueConverterI<ObjectPropertiesData, UiData>() {
+		svd.mapDefault(new ValueConverterI<ObjectPropertiesData, Object>() {
 
 			@Override
-			public UiData convert(ObjectPropertiesData s) {
+			public Object convert(ObjectPropertiesData s) {
 				//
 				return s == null ? null : s.getProperty(key);
 
@@ -178,10 +177,10 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData>
 		});
 
 		svd.getReverseValueDeliver().mapDefault(
-				new ValueConverterI<UiData, ObjectPropertiesData>() {
+				new ValueConverterI<Object, ObjectPropertiesData>() {
 
 					@Override
-					public ObjectPropertiesData convert(UiData s) {
+					public ObjectPropertiesData convert(Object s) {
 						//
 						ObjectPropertiesData old = PropertiesEditorImpl.this
 								.getData();

@@ -8,8 +8,6 @@ import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -60,10 +58,10 @@ public class LoginMsgHandler implements MessageHandlerI {
 		MessageData res = evt.getMessage();
 		ObjectPropertiesData opd = res.getPayloads();
 
-		BooleanData isAnony = (BooleanData) opd.getProperty("isAnonymous");
-		StringData sidD = (StringData) opd.getProperty("sessionId");
-		StringData accId = (StringData) opd.getProperty("accountId");
+		Boolean isAnony = (Boolean) opd.getProperty("isAnonymous");
+		String sidD = (String) opd.getProperty("sessionId");
+		String accId = (String) opd.getProperty("accountId");
 
-		new AfterAuthEvent(lm, sidD.getValue()).dispatch();
+		new AfterAuthEvent(lm, sidD).dispatch();
 	}
 }

@@ -7,7 +7,6 @@ package com.fs.uiclient.impl.gwt.client.handler.action;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.util.ListDataUtil;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
@@ -33,7 +32,7 @@ public class RefreshIncomingCrAP extends ActionHandlerSupport {
 		List<String> crIdL = null;
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
 
-		req.getPayloads().setProperty("cooperRequestIdList", ListDataUtil.toStringDataList(crIdL));
+		req.getPayloads().setProperty("cooperRequestIdList", (crIdL));
 
 		this.sendMessage(ae, req);
 	}

@@ -7,8 +7,6 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
@@ -35,19 +33,19 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 			RegisteredAccountLDW acc1 = accs.getRegistered();
 			AnonymousAccountLDW acc2 = accs.getAnonymous();
 			if (acc1.isValid()) {
-				req.setProperty("isSaved", BooleanData.valueOf(true));
-				req.setProperty("type", StringData.valueOf("registered"));
-				req.setProperty("email", StringData.valueOf(acc1.getEmail()));
-				req.setProperty("password", StringData.valueOf(acc1.getPassword()));
+				req.setProperty("isSaved", (true));
+				req.setProperty("type", ("registered"));
+				req.setProperty("email", (acc1.getEmail()));
+				req.setProperty("password", (acc1.getPassword()));
 			} else if (acc2.isValid()) {
-				req.setProperty("isSaved", BooleanData.valueOf(true));
-				req.setProperty("type", StringData.valueOf("anonymous"));
+				req.setProperty("isSaved", (true));
+				req.setProperty("type", ("anonymous"));
 
 				String accId = acc2.getAccountId();
 
 				String password = acc2.getPassword();
-				req.setProperty("accountId", StringData.valueOf(accId));
-				req.setProperty("password", StringData.valueOf(password));
+				req.setProperty("accountId", (accId));
+				req.setProperty("password", (password));
 
 			} else {// has not saved account,create it first and then call this
 					// submit again.
@@ -58,14 +56,14 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 				return;
 			}
 		} else {// else,user login by view input
-			req.setProperty("isSaved", BooleanData.valueOf(false));
-			req.setProperty("type", StringData.valueOf("registered"));
+			req.setProperty("isSaved", (false));
+			req.setProperty("type", ("registered"));
 
 			String email = lm.getEmail();
 
 			String password = lm.getPassword();
-			req.setProperty("email", StringData.valueOf(email));
-			req.setProperty("password", StringData.valueOf(password));
+			req.setProperty("email", (email));
+			req.setProperty("password", (password));
 
 		}
 		this.getEndpoint(ae).auth(req);

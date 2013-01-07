@@ -10,8 +10,6 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -31,14 +29,14 @@ public class ExpSearchAP extends ActionHandlerSupport {
 
 		int pg = sm.getPageNumber();
 		MsgWrapper req = this.newRequest(Path.valueOf("/exps/search"));
-		req.setPayload("pageNumber", IntegerData.valueOf(pg));
-		req.setPayload("pageSize", IntegerData.valueOf(sm.getPageSize()));
+		req.setPayload("pageNumber", Integer.valueOf(pg));
+		req.setPayload("pageSize", Integer.valueOf(sm.getPageSize()));
 
 		// the selected expId for matching.
-		req.getPayloads().setProperty("expId", StringData.valueOf(expId));
+		req.getPayloads().setProperty("expId", (expId));
 
 		// user input keywords.
-		req.getPayloads().setProperty("keywords", StringData.valueOf(""));
+		req.getPayloads().setProperty("keywords", (""));
 
 		// TODO keywords
 		this.sendMessage(ae, req);

@@ -18,7 +18,6 @@ import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -73,8 +72,8 @@ public class GChatView extends SimpleView implements ManagableI {
 	}
 
 	protected void onGroupIdChange(ModelValueEvent e) {
-		StringData sd = (StringData) e.getValueWrapper().getValue();
-		String gid = sd == null ? null : sd.getValue();
+		String sd = (String) e.getValueWrapper().getValue();
+		String gid = sd == null ? null : sd;
 		this.getModel().setGroupIdToJoin(gid);//
 	}
 

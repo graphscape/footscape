@@ -4,19 +4,16 @@
 package com.fs.uicore.api.gwt.client.data.property;
 
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
  * 
  */
-public class ObjectPropertiesData extends PropertiesData<UiData> {
+public class ObjectPropertiesData extends PropertiesData<Object> {
 
 	public void setString(String key, String value) {
-		this.setProperty(key, StringData.valueOf(value));
+		this.setProperty(key, (value));
 	}
 
 	public String getString(String key, boolean force) {
@@ -29,8 +26,8 @@ public class ObjectPropertiesData extends PropertiesData<UiData> {
 	}
 
 	public String getString(String key) {
-		StringData sd = (StringData) this.getProperty(key);
-		return sd == null ? null : sd.getValue();
+		String sd = (String) this.getProperty(key);
+		return sd;
 	}
 
 	/* */
@@ -49,9 +46,8 @@ public class ObjectPropertiesData extends PropertiesData<UiData> {
 	 */
 	public Boolean getBoolean(String key, Boolean def) {
 		//
-		BooleanData rt = (BooleanData) this.getProperty(key);
+		Boolean rt = (Boolean) this.getProperty(key);
 
-		return rt == null ? def : rt.getValue();
+		return rt == null ? def : rt;
 	}
-
 }

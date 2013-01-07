@@ -6,10 +6,7 @@ package com.fs.uicore.api.gwt.client.data.message;
 
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 
@@ -17,7 +14,7 @@ import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
  * @author wu
  * 
  */
-public class MessageData extends UiData {
+public class MessageData {
 
 	public static final String HK_PATH = "_path";
 	private StringPropertiesData headers = new StringPropertiesData();
@@ -69,18 +66,18 @@ public class MessageData extends UiData {
 	public String getString(String key) {
 		return this.payloads.getString(key);
 	}
-	
-	public Boolean getBoolean(String key, Boolean def){
-		return this.payloads.getBoolean(key,def);
+
+	public Boolean getBoolean(String key, Boolean def) {
+		return this.payloads.getBoolean(key, def);
 	}
 
-	public UiData getPayload(String key) {
-		UiData rt = this.payloads.getProperty(key, false);
+	public Object getPayload(String key) {
+		Object rt = this.payloads.getProperty(key, false);
 		return rt == null ? null : rt;
 	}
 
-	public UiData getPayload(String key, boolean force) {
-		UiData rt = this.getPayload(key);
+	public Object getPayload(String key, boolean force) {
+		Object rt = this.getPayload(key);
 
 		if (force && rt == null) {
 			throw new UiException("no header with key:" + key);
@@ -93,19 +90,15 @@ public class MessageData extends UiData {
 		return this.payloads;
 	}
 
-	public void setPayloads(PropertiesData<UiData> pts) {
+	public void setPayloads(PropertiesData<Object> pts) {
 		this.payloads.setProperties(pts);
 	}
 
 	public void setPayload(String key, boolean value) {
-		this.setPayload(key, BooleanData.valueOf(value));
+		this.setPayload(key, (value));
 	}
 
-	public void setPayload(String key, String value) {
-		this.setPayload(key, StringData.valueOf(value));
-	}
-
-	public void setPayload(String key, UiData value) {
+	public void setPayload(String key, Object value) {
 		this.payloads.setProperty(key, value);
 	}
 

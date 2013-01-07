@@ -20,9 +20,6 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
@@ -42,9 +39,9 @@ public class FormView extends ViewSupport {
 	private PropertiesEditorI propertiesEditor;
 
 	static {
-		typeEditorMap.put(StringData.class, StringEditorI.class);
-		typeEditorMap.put(BooleanData.class, BooleanEditorI.class);
-		typeEditorMap.put(IntegerData.class, IntegerEditorI.class);
+		typeEditorMap.put(String.class, StringEditorI.class);
+		typeEditorMap.put(Boolean.class, BooleanEditorI.class);
+		typeEditorMap.put(Integer.class, IntegerEditorI.class);
 
 	}
 

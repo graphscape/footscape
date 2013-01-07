@@ -10,7 +10,6 @@ import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -30,8 +29,8 @@ public class CooperRequestAP extends ActionHandlerSupport {
 		String id2 = cm.getExpId2();
 		
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/request"));
-		req.getPayloads().setProperty("expId1", StringData.valueOf(id1));
-		req.getPayloads().setProperty("expId2", StringData.valueOf(id2));
+		req.getPayloads().setProperty("expId1", (id1));
+		req.getPayloads().setProperty("expId2", (id2));
 		this.sendMessage(ae, req);
 	}
 

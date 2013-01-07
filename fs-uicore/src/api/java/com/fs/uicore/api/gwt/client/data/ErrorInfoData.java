@@ -6,14 +6,13 @@ package com.fs.uicore.api.gwt.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
  * 
  */
-public class ErrorInfoData extends UiData {
+public class ErrorInfoData {
 
 	private String message;
 
@@ -28,9 +27,10 @@ public class ErrorInfoData extends UiData {
 
 	}
 
-	public boolean isCode(String code){
+	public boolean isCode(String code) {
 		return this.code.equals(code);
 	}
+
 	/**
 	 * @return the message
 	 */
@@ -58,8 +58,7 @@ public class ErrorInfoData extends UiData {
 	/* */
 	@Override
 	public String toString() {
-		return "code:" + this.code + ",msg:" + this.message + ",detail:"
-				+ this.detail;
+		return "code:" + this.code + ",msg:" + this.message + ",detail:" + this.detail;
 
 	}
 

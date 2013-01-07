@@ -10,7 +10,6 @@ import com.fs.uicommons.api.gwt.client.html5.file.FileReaderJSO;
 import com.fs.uicommons.api.gwt.client.html5.file.FileRefJSO;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtChangeHandler;
 import com.fs.uicore.api.gwt.client.support.ObjectElementHelper;
@@ -24,7 +23,7 @@ import com.google.gwt.user.client.DOM;
  *         <p>
  *         This implementation require html5.
  */
-public class FileUrlDataEditorSupport extends EditorSupport<StringData> {
+public class FileUrlDataEditorSupport extends EditorSupport<String> {
 
 	private int maxSize = 10 * 1024 * 1024;// max size of file processing.
 
@@ -108,11 +107,11 @@ public class FileUrlDataEditorSupport extends EditorSupport<StringData> {
 
 		String dataUrl = reader.getResult();//
 
-		StringData urlData = StringData.valueOf(dataUrl);//
+		String urlData = (dataUrl);//
 		this.onDataLoad(urlData);
 	}
 	
-	protected void onDataLoad(StringData urlData){
+	protected void onDataLoad(String urlData){
 		
 		this.setData(urlData, true);//
 	}

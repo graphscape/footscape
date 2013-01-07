@@ -8,9 +8,7 @@ import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
@@ -29,7 +27,7 @@ public class MockUiClient extends UiObjectSupport {
 	protected EndPointI endpoint;
 
 	protected String email;
-	
+
 	public MockUiClient(UiClientI client) {
 		this.client = client;
 		this.endpoint = this.client.getEndpoint();
@@ -71,7 +69,7 @@ public class MockUiClient extends UiObjectSupport {
 	}
 
 	public void signup(String email, String nick, String pass) {
-		
+
 		this.email = email;
 		MsgWrapper req = newRequest("/signup/submit");
 		req.setPayload("email", email);
@@ -86,10 +84,10 @@ public class MockUiClient extends UiObjectSupport {
 	public void login(String email, String pass) {
 		//
 		this.email = email;
-		PropertiesData<UiData> cre = new PropertiesData<UiData>();
-		cre.setProperty("type", StringData.valueOf("registered"));
-		cre.setProperty("email", StringData.valueOf(email));
-		cre.setProperty("password", StringData.valueOf(pass));
+		PropertiesData<Object> cre = new PropertiesData<Object>();
+		cre.setProperty("type", ("registered"));
+		cre.setProperty("email", (email));
+		cre.setProperty("password", (pass));
 		endpoint.auth(cre);
 
 	}

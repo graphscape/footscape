@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiData;
 
 /**
  * @author wu
@@ -40,7 +39,7 @@ public class CodecFactorySupport implements CodecI.FactoryI {
 
 	/* */
 	@Override
-	public CodecI getCodec(Class<? extends UiData> dataCls) {
+	public <T> CodecI<T> getCodec(Class<T> dataCls) {
 		String tc = this.classMap.get(dataCls);
 		if (tc == null) {
 			throw new UiException("no codec found for data class:" + dataCls);
@@ -51,12 +50,11 @@ public class CodecFactorySupport implements CodecI.FactoryI {
 
 	/* */
 	@Override
-	public CodecI getCodec(String type) {
+	public <T> CodecI<T> getCodec(String type) {
 
 		CodecI rt = this.jcMap.get(type);
 		if (rt == null) {
-			throw new UiException("no codec found for type code:" + type
-					+ ",all:" + this.jcMap.keySet());
+			throw new UiException("no codec found for type code:" + type + ",all:" + this.jcMap.keySet());
 		}
 		return rt;
 	}

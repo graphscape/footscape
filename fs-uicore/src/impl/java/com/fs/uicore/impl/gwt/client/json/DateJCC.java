@@ -15,7 +15,7 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public class DateJCC extends JsonCodecCSupport<DateData> implements CodecI {
+public class DateJCC extends JsonCodecCSupport<DateData> implements CodecI<DateData> {
 
 	/** */
 	public DateJCC(FactoryI f) {
@@ -28,7 +28,7 @@ public class DateJCC extends JsonCodecCSupport<DateData> implements CodecI {
 		if (js instanceof JSONNull) {
 			return null;//
 		}
-		JSONString jsS = (JSONString)js;
+		JSONString jsS = (JSONString) js;
 		DateData rt = DateUtil.parse(jsS.stringValue());
 		return rt;
 	}

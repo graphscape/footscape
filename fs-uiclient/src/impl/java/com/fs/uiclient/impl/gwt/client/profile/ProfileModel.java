@@ -14,8 +14,6 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.data.basic.IntegerData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wuzhen
@@ -32,9 +30,9 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 		ControlUtil.addAction(this, "submit");
 		//
 		FormModel def = this.getDefaultForm();
-		def.addField("email", StringData.class);
-		def.addField("age", IntegerData.class);
-		FieldModel genderFM = def.addField("gender", StringData.class,
+		def.addField("email", String.class);
+		def.addField("age", Integer.class);
+		FieldModel genderFM = def.addField("gender", String.class,
 				EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
 
 					@Override
@@ -47,10 +45,10 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 				});
 
 		// options
-		//FieldModel iconFM = def.addField("icon", StringData.class,
+		//FieldModel iconFM = def.addField("icon", String.class,
 		//		ImageFileUrlDataEditorI.class);
 		
-		FieldModel iconFM = def.addField("icon", StringData.class,
+		FieldModel iconFM = def.addField("icon", String.class,
 						ImageCropEditorI.class);
 		
 		def.addAction(ProfileModelI.A_SUBMIT);//

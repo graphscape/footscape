@@ -4,9 +4,7 @@
 package com.fs.uicore.api.gwt.client.data.property;
 
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -15,18 +13,17 @@ import com.fs.uicore.api.gwt.client.data.basic.StringData;
 public class StringPropertiesData extends PropertiesData<String> {
 	/* */
 
-	public static StringPropertiesData valueOf(PropertiesData<UiData> pts) {
+	public static StringPropertiesData valueOf(PropertiesData<Object> pts) {
 		StringPropertiesData rt = new StringPropertiesData();
 
 		for (String key : pts.keyList()) {
-			UiData di = pts.getProperty(key);
-			if (di instanceof StringData) {
-				String svalue = ((StringData) di).getValue();
+			Object di = pts.getProperty(key);
+			if (di instanceof String) {
+				String svalue = (String) di;
 				rt.setProperty(key, svalue);
 
 			} else {
-				throw new UiException("cannot convert:" + di + " to:"
-						+ StringData.class);
+				throw new UiException("cannot convert:" + di + " to:" + String.class);
 			}
 		}
 		return rt;
@@ -48,7 +45,6 @@ public class StringPropertiesData extends PropertiesData<String> {
 
 	public Boolean getPropertyAsBoolean(String key, boolean def) {
 		String rtS = this.getProperty(key);
-		return "true".equalsIgnoreCase(rtS) || "Y".equalsIgnoreCase(rtS)
-				|| "YES".equalsIgnoreCase(rtS);
+		return "true".equalsIgnoreCase(rtS) || "Y".equalsIgnoreCase(rtS) || "YES".equalsIgnoreCase(rtS);
 	}
 }

@@ -5,7 +5,6 @@ package com.fs.uicommons.impl.gwt.client.editor.basic;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.DOM;
 
@@ -13,7 +12,7 @@ import com.google.gwt.user.client.DOM;
  * @author wu
  * 
  */
-public class StringEditorImpl extends EditorSupport<StringData> implements
+public class StringEditorImpl extends EditorSupport<String> implements
 		StringEditorI {
 
 	/** */
@@ -34,14 +33,14 @@ public class StringEditorImpl extends EditorSupport<StringData> implements
 
 	protected void onChange() {
 		String v = this.getText();
-		this.setData(StringData.valueOf(v), true);//
+		this.setData((v), true);//
 
 	}
 
 	/* */
 	@Override
-	protected void processModelDefaultValue(StringData dt) {
-		String txt = dt == null ? "" : dt.getValue();
+	protected void processModelDefaultValue(String dt) {
+		String txt = dt == null ? "" : dt;
 		this.setText(txt);
 	}
 

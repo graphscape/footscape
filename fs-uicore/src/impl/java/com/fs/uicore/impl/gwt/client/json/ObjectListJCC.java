@@ -3,38 +3,37 @@
  */
 package com.fs.uicore.impl.gwt.client.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.core.UiData;
-import com.fs.uicore.api.gwt.client.data.list.ObjectListData;
 import com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
 /**
  * @author wu
  * 
  */
-public class ObjectListJCC extends JsonCodecCSupport<ObjectListData> implements
-		CodecI {
+public class ObjectListJCC extends JsonCodecCSupport<List> implements CodecI<List> {
 
 	/** */
 	public ObjectListJCC(FactoryI f) {
-		super("L", ObjectListData.class, f);
+		super("L", List.class, f);
 	}
 
 	/* */
 	@Override
-	public ObjectListData decodeWithOutType(JSONValue jv) {
+	public List decodeWithOutType(JSONValue jv) {
 		JSONArray jo = (JSONArray) jv;
-		ObjectListData rt = new ObjectListData();
+		List rt = new ArrayList();
 		for (int i = 0; i < jo.size(); i++) {
 			JSONArray jvX = (JSONArray) jo.get(i);// must be array for any
 													// data
 			String type = this.getType(jvX);
 			CodecI c = this.factory.getCodec(type);
 
-			UiData value = c.decode(jvX);
+			Object value = c.decode(jvX);
 
 			rt.add(value);
 
@@ -46,12 +45,12 @@ public class ObjectListJCC extends JsonCodecCSupport<ObjectListData> implements
 
 	/* */
 	@Override
-	public JSONValue encodeWithOutType(ObjectListData ud) {
+	public JSONValue encodeWithOutType(List ud) {
 
 		JSONArray rt = new JSONArray();
 
 		for (int i = 0; i < ud.size(); i++) {
-			UiData da = ud.get(i);
+			Object da = ud.get(i);
 			CodecI c = this.factory.getCodec(da.getClass());
 
 			JSONArray value = (JSONArray) c.encode(da);

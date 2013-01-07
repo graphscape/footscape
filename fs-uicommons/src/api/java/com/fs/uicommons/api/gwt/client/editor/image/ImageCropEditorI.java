@@ -7,12 +7,11 @@
 package com.fs.uicommons.api.gwt.client.editor.image;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wuzhen
  * 
  */
-public interface ImageCropEditorI extends EditorI<StringData> {
+public interface ImageCropEditorI extends EditorI<String> {
 
 }

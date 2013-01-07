@@ -7,7 +7,6 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.google.gwt.user.client.Element;
 
@@ -15,8 +14,7 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class EditorSupport<T extends UiData> extends LayoutSupport implements
-		EditorI<T> {
+public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 
 	/** */
 	public EditorSupport(String name, Element ele) {

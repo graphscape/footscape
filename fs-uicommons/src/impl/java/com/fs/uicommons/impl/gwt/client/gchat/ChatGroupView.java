@@ -14,7 +14,6 @@ import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
@@ -62,10 +61,10 @@ public class ChatGroupView extends SimpleView {
 	 * @param e
 	 */
 	protected void onMessageEditorValue(ModelValueEvent e) {
-		StringData sd = (StringData) e.getValueWrapper().getValue();
+		String sd = (String) e.getValueWrapper().getValue();
 
 		this.getModel().setMessageToSend(
-				sd == null ? null : (String) sd.getValue());
+				sd == null ? null : (String) sd);
 
 	}
 

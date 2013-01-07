@@ -4,7 +4,6 @@
 package com.fs.uicore.impl.gwt.client.json;
 
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
 import com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONValue;
@@ -13,28 +12,27 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
-public class BooleanJCC extends JsonCodecCSupport<BooleanData> implements
-		CodecI {
+public class BooleanJCC extends JsonCodecCSupport<Boolean> implements CodecI<Boolean> {
 
 	/** */
 	public BooleanJCC(FactoryI f) {
-		super("b", BooleanData.class, f);
+		super("b", Boolean.class, f);
 	}
 
 	/* */
 	@Override
-	protected BooleanData decodeWithOutType(JSONValue js) {
+	protected Boolean decodeWithOutType(JSONValue js) {
 
 		Boolean v = ((JSONBoolean) js).booleanValue();
-		BooleanData rt = BooleanData.valueOf(v);
+		Boolean rt = (v);
 		return rt;
 	}
 
 	/* */
 	@Override
-	protected JSONValue encodeWithOutType(BooleanData d) {
+	protected JSONValue encodeWithOutType(Boolean d) {
 
-		return JSONBoolean.getInstance(d.getValue());
+		return JSONBoolean.getInstance(d);
 
 	}
 

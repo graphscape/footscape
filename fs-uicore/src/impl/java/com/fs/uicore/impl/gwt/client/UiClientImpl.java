@@ -14,7 +14,6 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
@@ -91,19 +90,19 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	 */
 	protected void onInitSuccess(EndpointMessageEvent evt) {
 		MessageData t = evt.getMessage();
-		StringData sd = (StringData) t.getPayloads().getProperty("clientId", true);
-		String sid = sd.getValue();
+		String sd = (String) t.getPayloads().getProperty("clientId", true);
+		String sid = sd;
 		if (sid == null) {
 			throw new UiException("got a null sessionId");
 		}
-		this.clientId = sd.getValue();
+		this.clientId = sd;
 		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
 		// parameters:
 
 		for (String key : opd.keyList()) {
-			StringData valueS = (StringData) opd.getProperty(key);
+			String valueS = (String) opd.getProperty(key);
 
-			this.parameters.setProperty(key, valueS.getValue());
+			this.parameters.setProperty(key, valueS);
 
 		}
 
@@ -115,7 +114,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
 		String locale = this.getPreferedLocale();
 
-		req.setPayload("preferedLocale", StringData.valueOf(locale));
+		req.setPayload("preferedLocale", (locale));
 		this.endpoint.sendMessage(req);
 
 	}

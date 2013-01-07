@@ -14,8 +14,6 @@ import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uicore.api.gwt.client.data.ListData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -34,7 +32,7 @@ public class ActivitiesRefreshMH extends MHSupport {
 		// TODO provide a general way for this.
 		ActivitiesModelI asm = this.getModel(t, ActivitiesModelI.class, true);
 		MessageData res = t.getMessage();
-		ListData<ObjectPropertiesData> ld = (ListData<ObjectPropertiesData>) res.getPayloads().getProperty(
+		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"activities");
 		ActivitiesControlI c = this.getControl(t, ActivitiesControlI.class, true);
 		for (int i = 0; i < ld.size(); i++) {
@@ -42,9 +40,9 @@ public class ActivitiesRefreshMH extends MHSupport {
 			// TODO general way,converter from ObjectPropertiesData to Model.
 
 			ObjectPropertiesData oi = ld.get(i);
-			StringData actIdD = (StringData) oi.getProperty("id");
-			String actId = actIdD.getValue();
-			List<String> expL = this.getExpIdList((ListData<ObjectPropertiesData>) oi
+			String actIdD = (String) oi.getProperty("id");
+			String actId = actIdD;
+			List<String> expL = this.getExpIdList((List<ObjectPropertiesData>) oi
 					.getProperty("expectations"));
 			ItemModel im = asm.getItem(actId, false);
 			if (im == null) {
@@ -59,7 +57,7 @@ public class ActivitiesRefreshMH extends MHSupport {
 	}
 
 	/**
-	 * Jan 6, 2013
+	 * Jan 6, 2013.getValue()
 	 */
 	private void tryLinkActivityToUserExp(EndpointMessageEvent t, String actId, List<String> expL) {
 		UserExpListControlI uec = this.getControl(t, UserExpListControlI.class, true);
@@ -73,18 +71,18 @@ public class ActivitiesRefreshMH extends MHSupport {
 		}
 	}
 
-	protected List<String> getExpIdList(ListData<ObjectPropertiesData> ptsL) {// TODO
+	protected List<String> getExpIdList(List<ObjectPropertiesData> ptsL) {// TODO
 																				// move
 																				// to
 																				// Util.
 		List<String> rt = new ArrayList<String>();
 		for (int i = 0; i < ptsL.size(); i++) {
 			ObjectPropertiesData pts = ptsL.get(i);
-			StringData e = (StringData) pts.getProperty("expId");
-			// StringData e = (StringData) pts.getProperty("accountId");
-			// StringData e = (StringData) pts.getProperty("body");
+			String e = (String) pts.getProperty("expId");
+			// String e = (String) pts.getProperty("accountId");
+			// String e = (String) pts.getProperty("body");
 
-			rt.add(e.getValue());
+			rt.add(e);
 
 		}
 		return rt;

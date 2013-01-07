@@ -6,14 +6,13 @@ package com.fs.uicore.api.gwt.client.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
  * 
  */
-public class ErrorInfosData extends UiData {
+public class ErrorInfosData {
 	private List<ErrorInfoData> errorInfoList = new ArrayList<ErrorInfoData>();
 
 	public List<ErrorInfoData> getErrorInfoList() {

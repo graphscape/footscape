@@ -12,7 +12,6 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -32,17 +31,17 @@ public class FormModel extends ModelSupport {
 		super(name);
 	}
 
-	public FieldModel addField(String name, Class<? extends UiData> dcls) {
+	public FieldModel addField(String name, Class<? > dcls) {
 		return this.addField(name, dcls, null);// default editor class
 	}
 
 	public <T extends EditorI> FieldModel addField(String name,
-			Class<? extends UiData> dcls, Class<T> editorClass) {
+			Class<? > dcls, Class<T> editorClass) {
 		return this.addField(name, dcls, editorClass, null);
 	}
 
 	public <T extends EditorI> FieldModel addField(String name,
-			Class<? extends UiData> dcls, Class<T> editorClass,
+			Class<? > dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback) {
 		FieldModel rt = new FieldModel(name);
 		rt.setEditorClass(editorClass);

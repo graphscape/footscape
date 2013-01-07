@@ -9,11 +9,8 @@ import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
-import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
-import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
@@ -35,9 +32,9 @@ public abstract class LoginTestBase extends SignupTestBase {
 		FormView fv = this.loginView.find(FormView.class, "default", true);
 
 		EditorI passwordE = fv.find(EditorI.class, "password", true);
-		passwordE.input(StringData.valueOf(this.password));
+		passwordE.input((this.password));
 		EditorI emailE = fv.find(EditorI.class, "email", true);
-		emailE.input(StringData.valueOf(this.email));
+		emailE.input((this.email));
 		
 		this.loginView.clickAction("submit");
 	}

@@ -16,7 +16,6 @@ import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.simple.OffspringValueDeliver;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -80,8 +79,7 @@ public class ProfileView extends FormsView implements ManagableI {
 	// }
 
 	protected FrwkModelI getFrwkModel() {
-		FrwkModelI fc = this.getModel().getTopObject()
-				.getChild(FrwkModelI.class, true);
+		FrwkModelI fc = this.getModel().getTopObject().getChild(FrwkModelI.class, true);
 
 		return fc;
 	}
@@ -95,9 +93,9 @@ public class ProfileView extends FormsView implements ManagableI {
 		super.processChildFormModelAdd(fm);
 		// listen to the icon value inf field model
 		if (this.listenIcon) {
-			OffspringValueDeliver<StringData, StringData> ovd = new OffspringValueDeliver<StringData, StringData>(
-					fm, FieldModel.class, ProfileModelI.L_ICON.getProperty(),
-					FieldModel.L_DEFAULT, this.model, ProfileModelI.L_ICON);
+			OffspringValueDeliver<String, String> ovd = new OffspringValueDeliver<String, String>(fm,
+					FieldModel.class, ProfileModelI.L_ICON.getProperty(), FieldModel.L_DEFAULT, this.model,
+					ProfileModelI.L_ICON);
 			ovd.mapDefaultDirect();// NOTE
 			ovd.start();
 		}
@@ -107,18 +105,18 @@ public class ProfileView extends FormsView implements ManagableI {
 	protected void processModelValue(Location loc, ValueWrapper vw) {
 		super.processModelValue(loc, vw);
 		if (ProfileModelI.L_ICON.equals(loc)) {
-			this.processModelIconValue((StringData) vw.getValue());
+			this.processModelIconValue((String) vw.getValue());
 		}
 	}
 
 	/**
 	 * Nov 16, 2012
 	 */
-	protected void processModelIconValue(StringData value) {
+	protected void processModelIconValue(String value) {
 		if (this.image != null) {
-			this.image.setAttribute("src",
-					value == null ? "null" : value.getValue());// TODO none
-																// image.
+			this.image.setAttribute("src", value == null ? "null" : value);// TODO
+																			// none
+																			// image.
 		}
 	}
 

@@ -8,7 +8,6 @@ import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -25,7 +24,7 @@ public class ExpEditModel extends FormsModel implements ExpEditModelI {
 		ControlUtil.addAction(this, ExpEditModelI.A_SUBMIT);//
 
 		FormModel fm = this.getDefaultForm();
-		fm.addField(F_BODY, StringData.class);
+		fm.addField(F_BODY, String.class);
 		fm.addAction(ExpEditModelI.A_SUBMIT);//
 	}
 

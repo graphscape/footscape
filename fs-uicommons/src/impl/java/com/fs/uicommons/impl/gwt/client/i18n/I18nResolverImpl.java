@@ -13,7 +13,6 @@ import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
@@ -62,9 +61,9 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 		ObjectPropertiesData opd = t.getPayload("resources", true);
 
 		for (String k : opd.keyList()) {
-			StringData value = (StringData) opd.getProperty(k);
+			String value = (String) opd.getProperty(k);
 
-			this.cache.put(k, new Holder<String>(value.getValue()));
+			this.cache.put(k, new Holder<String>(value));
 
 		}
 

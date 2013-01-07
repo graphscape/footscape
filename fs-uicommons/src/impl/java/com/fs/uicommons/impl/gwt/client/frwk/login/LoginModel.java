@@ -4,8 +4,6 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 public class LoginModel extends FormsModel implements LoginModelI {
 
@@ -39,9 +37,9 @@ public class LoginModel extends FormsModel implements LoginModelI {
 
 		FormModel def = this.getDefaultForm();
 
-		def.addField(FK_EMAIL, StringData.class);//
-		def.addField(FK_PASSWORD, StringData.class);//
-		def.addField(FK_SAVINGACCOUNT, BooleanData.class);
+		def.addField(FK_EMAIL, String.class);//
+		def.addField(FK_PASSWORD, String.class);//
+		def.addField(FK_SAVINGACCOUNT, Boolean.class);
 		// actions
 		def.addAction(LoginModelI.A_SUBMIT);//
 	}
@@ -52,16 +50,16 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	@Override
 	public boolean isSavingAccount() {
 		//
-		BooleanData bd = (BooleanData) this.getDefaultForm().getFieldModel(FK_SAVINGACCOUNT, true)
+		Boolean bd = (Boolean) this.getDefaultForm().getFieldModel(FK_SAVINGACCOUNT, true)
 				.getFieldValue();
-		return bd == null ? false : bd.getValue();
+		return bd == null ? false : bd;
 
 	}
 
 	@Override
 	public String getPassword() {
-		StringData sd = this.getDefaultForm().getFieldValue(FK_PASSWORD, null);
-		return sd == null ? null : sd.getValue();
+		String sd = this.getDefaultForm().getFieldValue(FK_PASSWORD, null);
+		return sd == null ? null : sd;
 	}
 
 	/*
@@ -70,8 +68,8 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	@Override
 	public String getEmail() {
 		//
-		StringData sd = this.getDefaultForm().getFieldValue(FK_EMAIL, null);
-		return sd == null ? null : sd.getValue();
+		String sd = this.getDefaultForm().getFieldValue(FK_EMAIL, null);
+		return sd == null ? null : sd;
 	}
 
 	/*

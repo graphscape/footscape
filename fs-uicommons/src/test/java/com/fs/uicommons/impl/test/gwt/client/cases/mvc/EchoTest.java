@@ -15,7 +15,6 @@ import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoControl;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoModel;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
@@ -24,7 +23,7 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
  * 
  */
 public class EchoTest extends TestBase {
-	private StringData field1Data = StringData.valueOf("field1-data");
+	private String field1Data = ("field1-data");
 
 	public void testFormView() {
 		this.finishing.add("field1");
@@ -72,7 +71,7 @@ public class EchoTest extends TestBase {
 		assertTrue("form view should attached.", view.isAttached());
 
 		this.delayTestFinish(timeoutMillis);
-		FieldModel f1m = fm.getDefaultForm().addField("field1", StringData.class);
+		FieldModel f1m = fm.getDefaultForm().addField("field1", String.class);
 
 		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
@@ -101,7 +100,7 @@ public class EchoTest extends TestBase {
 		ObjectPropertiesData d = (ObjectPropertiesData) e.getValueWrapper()
 				.getValue();
 		assertNotNull("form data is null", d);
-		StringData sd = (StringData) d.getProperty("field1");
+		String sd = (String) d.getProperty("field1");
 		assertNotNull("field1 is null", sd);
 		assertEquals("", this.field1Data, sd);
 

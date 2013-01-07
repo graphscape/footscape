@@ -9,7 +9,6 @@ package com.fs.uicommons.impl.gwt.client.editor.image;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.FileUrlDataEditorSupport;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.DataEvent;
 import com.google.gwt.user.client.DOM;
@@ -19,8 +18,7 @@ import com.google.gwt.user.client.DOM;
  *         <p>
  *         http://code.google.com/p/gwt-examples/wiki/gwt_hmtl5#Crop_Image
  */
-public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements
-		ImageCropEditorI {
+public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements ImageCropEditorI {
 
 	protected ElementWrapper image;
 
@@ -41,7 +39,7 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements
 		//
 		String ds = e.getData();
 
-		this.setData(StringData.valueOf(ds), true);
+		this.setData((ds), true);
 
 	}
 
@@ -49,15 +47,15 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements
 	 * Nov 21, 2012
 	 */
 	@Override
-	protected void processModelDefaultValue(StringData data) {
+	protected void processModelDefaultValue(String data) {
 		super.processModelDefaultValue(data);
-		this.image.setAttribute("src", data == null ? null : data.getValue());
+		this.image.setAttribute("src", data);
 	}
 
 	// data is from file input,not setData directly,process it first,see
 	// onImageCroperData() method.
 	@Override
-	protected void onDataLoad(StringData data) {
+	protected void onDataLoad(String data) {
 
 		if (this.imageCroper != null) {
 			this.imageCroper.getElement().removeFromParent();//
@@ -75,7 +73,7 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements
 			}
 		});
 
-		imageCroper.setDataUrl(data == null ? null : data.getValue());
+		imageCroper.setDataUrl(data);
 		// open croper
 		imageCroper.open();
 

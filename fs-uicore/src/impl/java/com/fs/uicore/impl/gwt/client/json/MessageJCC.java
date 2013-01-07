@@ -3,7 +3,6 @@
  */
 package com.fs.uicore.impl.gwt.client.json;
 
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.impl.gwt.client.support.PropertiesJCCSupport;
@@ -32,8 +31,8 @@ public class MessageJCC extends PropertiesJCCSupport<MessageData> {
 
 		MessageData rt = new MessageData();
 		for (String key : hds.keyList()) {
-			StringData sd = (StringData) hds.getProperty(key);
-			rt.setHeader(key, sd == null ? null : sd.getValue());
+			String sd = (String) hds.getProperty(key);
+			rt.setHeader(key, sd == null ? null : sd);
 		}
 		rt.setPayloads(pls);
 		return rt;
@@ -49,7 +48,7 @@ public class MessageJCC extends PropertiesJCCSupport<MessageData> {
 		ObjectPropertiesData hds = new ObjectPropertiesData();
 
 		for (String key : t.getHeaders().keyList()) {
-			StringData value = StringData.valueOf(t.getHeader(key));
+			String value = (t.getHeader(key));
 			hds.setProperty(key, value);
 		}
 		rt.setProperty(HEADERS, hds);

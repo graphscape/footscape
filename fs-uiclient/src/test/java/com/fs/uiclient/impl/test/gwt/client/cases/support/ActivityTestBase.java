@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.junit.Before;
 
-import com.fs.uiclient.api.gwt.client.event.ActivityCreatedEvent;
 import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;

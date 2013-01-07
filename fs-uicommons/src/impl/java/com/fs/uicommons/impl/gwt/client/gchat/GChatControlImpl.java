@@ -22,7 +22,6 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
@@ -268,7 +267,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		req.setHeader("format", "message");//
 		MessageData msg = new MessageData("plain-text");
 		msg.setHeader("format", "text");
-		msg.setPayload("text", StringData.valueOf(text));
+		msg.setPayload("text", (text));
 		req.setPayload("message", msg);
 		this.endpoint.sendMessage(req);
 	}

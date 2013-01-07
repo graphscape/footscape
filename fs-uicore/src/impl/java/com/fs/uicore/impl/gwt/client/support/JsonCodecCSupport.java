@@ -3,7 +3,6 @@
  */
 package com.fs.uicore.impl.gwt.client.support;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.support.CodecSupport;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONString;
@@ -19,8 +18,7 @@ import com.google.gwt.json.client.JSONValue;
  *         <p>
  *         {a:null} is invalid.
  */
-public abstract class JsonCodecCSupport<T extends UiData> extends
-		CodecSupport<T, JSONArray> {
+public abstract class JsonCodecCSupport<T> extends CodecSupport<T, JSONArray> {
 
 	/** */
 	public JsonCodecCSupport(String tc, Class<T> cls, FactoryI f) {

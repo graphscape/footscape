@@ -4,9 +4,6 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiData;
-import com.fs.uicore.api.gwt.client.data.basic.BooleanData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
@@ -57,7 +54,7 @@ public class MsgWrapper {
 		this.target.setPayloads(pts);
 	}
 
-	public <T extends UiData> T getPayload(String key, boolean force) {
+	public <T> T getPayload(String key, boolean force) {
 		Object rt = this.getPayloads().getProperty(key, force);
 
 		return (T) rt;
@@ -68,16 +65,18 @@ public class MsgWrapper {
 	}
 
 	public void setPayload(String key, String value) {
-		this.target.setPayload(key, StringData.valueOf(value));
+		
+		this.target.setPayload(key, (value));
+		
 	}
 
-	public void setPayload(String key, UiData value) {
+	public void setPayload(String key, Object value) {
 		this.target.setPayload(key, value);
 	}
 
 	public String getPayLoadAsString(String key, boolean force) {
-		StringData sd = this.getPayload(key, force);
-		String rt = sd == null ? null : sd.getValue();
+		String sd = this.getPayload(key, force);
+		String rt = sd == null ? null : sd;
 		if (rt == null && force) {
 			throw new UiException("no payload:" + key);
 		}
@@ -91,8 +90,8 @@ public class MsgWrapper {
 	}
 
 	public Boolean getPayLoadAsBoolean(String key, boolean force) {
-		BooleanData sd = this.getPayload(key, false);
-		Boolean rt = sd == null ? null : sd.getValue();
+		Boolean sd = this.getPayload(key, false);
+		Boolean rt = sd == null ? null : sd;
 
 		if (rt == null && force) {
 			throw new UiException("no payload:" + key);

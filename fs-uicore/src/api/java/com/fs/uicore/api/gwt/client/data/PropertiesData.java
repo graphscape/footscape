@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wuzhen
  * 
  */
-public class PropertiesData<T> extends UiData {
+public class PropertiesData<T>  {
 	private Map<String, T> map = new HashMap<String, T>();
 
 	public List<String> keyList() {

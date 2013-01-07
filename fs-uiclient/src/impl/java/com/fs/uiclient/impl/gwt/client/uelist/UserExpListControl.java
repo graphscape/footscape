@@ -23,7 +23,6 @@ import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
-import com.fs.uicore.api.gwt.client.data.basic.StringData;
 
 /**
  * @author wu
@@ -57,7 +56,7 @@ public class UserExpListControl extends ControlSupport implements
 
 	public void detailExp(String expId) {
 		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/get"));
-		req.setPayload("expId", StringData.valueOf(expId));//
+		req.setPayload("expId", (expId));//
 
 		this.sendMessage(req);
 	}

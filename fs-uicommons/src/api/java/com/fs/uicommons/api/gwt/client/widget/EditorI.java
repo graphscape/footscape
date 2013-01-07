@@ -3,14 +3,13 @@
  */
 package com.fs.uicommons.api.gwt.client.widget;
 
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wuzhen
  * 
  */
-public interface EditorI<T extends UiData> extends WidgetI {
+public interface EditorI<T> extends WidgetI {
 
 	public T getData();
 

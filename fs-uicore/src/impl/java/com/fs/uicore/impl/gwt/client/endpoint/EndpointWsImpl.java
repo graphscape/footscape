@@ -10,10 +10,8 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
@@ -237,7 +235,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	}
 
 	@Override
-	public void auth(PropertiesData<UiData> pts) {
+	public void auth(PropertiesData<Object> pts) {
 		MessageData req = new MessageData("/terminal/auth");
 		req.setPayloads(pts);
 		this.sendMessage(req);
@@ -299,6 +297,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 		MessageData req = new MessageData("/terminal/unbinding");
 		req.setPayload("sessionId", this.getSessionId());
+		
 		this.sendMessage(req);
 	}
 

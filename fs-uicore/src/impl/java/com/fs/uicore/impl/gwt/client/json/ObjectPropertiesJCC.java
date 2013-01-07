@@ -4,7 +4,6 @@
 package com.fs.uicore.impl.gwt.client.json;
 
 import com.fs.uicore.api.gwt.client.CodecI;
-import com.fs.uicore.api.gwt.client.core.UiData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.impl.gwt.client.support.JsonCodecCSupport;
 import com.google.gwt.json.client.JSONArray;
@@ -17,7 +16,7 @@ import com.google.gwt.json.client.JSONValue;
  * 
  */
 public class ObjectPropertiesJCC extends
-		JsonCodecCSupport<ObjectPropertiesData> implements CodecI {
+		JsonCodecCSupport<ObjectPropertiesData> implements CodecI<ObjectPropertiesData> {
 
 	/** */
 	public ObjectPropertiesJCC(FactoryI f) {
@@ -31,7 +30,7 @@ public class ObjectPropertiesJCC extends
 		ObjectPropertiesData rt = new ObjectPropertiesData();
 		for (String key : jo.keySet()) {
 			JSONValue jvi = jo.get(key);
-			UiData value = null;
+			Object value = null;
 			if (jvi instanceof JSONNull) {
 				// value is null,and not know the type.
 			} else {
@@ -54,7 +53,7 @@ public class ObjectPropertiesJCC extends
 	public JSONValue encodeWithOutType(ObjectPropertiesData ud) {
 		JSONObject rt = new JSONObject();
 		for (String key : ud.keyList()) {
-			UiData da = ud.getProperty(key);
+			Object da = ud.getProperty(key);
 			JSONValue value = null;
 			if (da == null) {
 				// what to do?
