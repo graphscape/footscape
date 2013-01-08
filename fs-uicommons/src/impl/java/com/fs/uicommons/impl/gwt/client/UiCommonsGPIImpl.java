@@ -155,8 +155,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 	public void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI ep = client.getEndpoint();
-		MessageDispatcherI mp = ep.getMessageDispatcher();
-		mp.addHandler(Path.valueOf("/signup/anonymous/success"), new SignupAnonymousMsgHandler());
+		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
+				new SignupAnonymousMsgHandler());
 	}
 
 	/**

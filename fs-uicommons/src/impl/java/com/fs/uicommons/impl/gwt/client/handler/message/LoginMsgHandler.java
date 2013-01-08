@@ -17,13 +17,13 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class LoginMsgHandler implements MessageHandlerI {
+public class LoginMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 
 		LoginModelI lm = t.getSource().getClient(true).getRootModel().find(LoginModelI.class, true);
 

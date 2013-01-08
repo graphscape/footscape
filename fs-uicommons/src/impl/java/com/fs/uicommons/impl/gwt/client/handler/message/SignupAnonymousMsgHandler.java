@@ -18,13 +18,13 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class SignupAnonymousMsgHandler implements MessageHandlerI {
+public class SignupAnonymousMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		//
 		UiClientI client = t.getSource().getClient(true);
 		LoginModelI lm = client.getRootModel().find(LoginModelI.class, true);

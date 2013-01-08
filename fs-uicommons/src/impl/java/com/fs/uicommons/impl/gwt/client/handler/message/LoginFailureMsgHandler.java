@@ -10,6 +10,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
@@ -21,13 +22,13 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class LoginFailureMsgHandler implements MessageHandlerI {
+public class LoginFailureMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 
 		MessageData req = t.getMessage();
 

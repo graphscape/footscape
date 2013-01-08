@@ -57,6 +57,12 @@ public class Path {
 		return this.nameList.size();
 	}
 
+	public Path subPath(int idx) {
+
+		List<String> nl = this.nameList.subList(idx, this.nameList.size());
+		return new Path(nl);
+	}
+
 	public boolean isSubPath(Path p) {
 		return this.isSubPath(p, false);
 	}

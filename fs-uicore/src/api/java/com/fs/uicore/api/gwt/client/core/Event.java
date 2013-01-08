@@ -117,7 +117,7 @@ public class Event extends MsgWrapper {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass().getName() + ",src:" + this.source;
+		return "Event,class:" + this.getClass() + "," + super.toString();
 	}
 
 }

@@ -5,7 +5,6 @@
 package com.fs.uicommons.api.gwt.client.gchat.event;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatGroupEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicore.api.gwt.client.core.Event;
 
@@ -16,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 public class GChatMessageEvent extends GChatParticipantEvent {
 
 	public static final Event.Type<GChatMessageEvent> TYPE = new Event.Type<GChatMessageEvent>(
-			GChatParticipantEvent.TYPE, "unkown");
+			GChatParticipantEvent.TYPE, "message");
 
 	protected MessageMW message;
 
@@ -25,14 +24,13 @@ public class GChatMessageEvent extends GChatParticipantEvent {
 	 * @param gc
 	 * @param gid
 	 */
-	public GChatMessageEvent(GChatControlI gc, String gid, String pid,
-			MessageMW md) {
+	public GChatMessageEvent(GChatControlI gc, String gid, String pid, MessageMW md) {
 		super(TYPE, gc, gid, pid);
 		this.message = md;
 
 	}
 
-	public MessageMW getMessage() {
+	public MessageMW getGChatMessage() {
 		return message;
 	}
 

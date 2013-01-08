@@ -16,7 +16,6 @@ import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicommons.impl.gwt.client.gchat.GChatView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -61,7 +60,7 @@ public class GChatTest extends TestBase {
 		super.onEvent(e);
 		if (e instanceof AttachedEvent) {
 			Object src = e.getSource();
-			if (src instanceof GChatView) {
+			if (src instanceof GChatControlI) {
 				this.onGChatAttached();
 			}
 
@@ -110,7 +109,7 @@ public class GChatTest extends TestBase {
 	protected void onMessage(GChatMessageEvent t) {
 		String gid = t.getGroupId();
 		assertEquals("groupId not correct", GROUPID, gid);
-		MessageMW wp = t.getMessage();
+		MessageMW wp = t.getGChatMessage();
 		String pid = wp.getParticipantId();
 		GChatModel cm = this.rootModel.find(GChatModel.class, true);
 		ChatGroupModel gm = cm.getGroup(gid, true);

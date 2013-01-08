@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.GChatMW;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -15,7 +16,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public abstract class AbstractGChatMH<T extends GChatMW> implements MessageHandlerI {
+public abstract class AbstractGChatMH<T extends GChatMW> implements MessageHandlerI<MsgWrapper> {
 
 	protected GChatControlI control;
 
@@ -27,7 +28,7 @@ public abstract class AbstractGChatMH<T extends GChatMW> implements MessageHandl
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void handle(EndpointMessageEvent evt) {
+	public void handle(MsgWrapper evt) {
 		//
 		MessageData msg = evt.getMessage();
 		T mw = this.wrap(msg);

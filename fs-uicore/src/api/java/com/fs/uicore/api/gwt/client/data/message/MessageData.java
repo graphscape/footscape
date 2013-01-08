@@ -25,6 +25,11 @@ public class MessageData {
 
 	}
 
+	public MessageData(MessageData md) {
+		this.headers.setProperties(md.headers);
+		this.payloads.setProperties(md.payloads);
+	}
+
 	public MessageData(String path) {
 		this.setHeader(HK_PATH, path);
 	}

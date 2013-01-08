@@ -32,7 +32,7 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 	 * Dec 23, 2012
 	 */
 	@Override
-	protected void handle(JoinMW mw) {
+	public void handle(JoinMW mw) {
 		String gid = mw.getGroupId();
 		String pid = mw.getJoinParticipantId();
 		String accId = mw.getAccountId();

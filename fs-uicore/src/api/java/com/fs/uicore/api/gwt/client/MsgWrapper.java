@@ -105,8 +105,8 @@ public class MsgWrapper extends PropertiesData<Object> {
 		return rt;
 
 	}
-	
-	public Path getPath(){
+
+	public Path getPath() {
 		return this.target.getPath();
 	}
 
@@ -124,4 +124,8 @@ public class MsgWrapper extends PropertiesData<Object> {
 		return this.getTarget();
 	}
 
+	@Override
+	public String toString() {
+		return "MsgWarpper,target:" + this.target.toString();
+	}
 }
