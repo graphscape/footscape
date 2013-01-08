@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 public class DraggingEvent extends DragEvent {
 
 	public static Event.Type<DraggingEvent> TYPE = new Event.Type<DraggingEvent>(
-			DragEvent.TYPE);
+			DragEvent.TYPE, "unkown");
 
 	/**
 	 * @param type

@@ -5,12 +5,12 @@
 package com.fs.uicore.api.gwt.client.message;
 
 import com.fs.uicore.api.gwt.client.HandlerI;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 
 /**
  * @author wu
  * 
  */
-public interface MessageHandlerI extends HandlerI<EndpointMessageEvent> {
+public interface MessageHandlerI<W extends MsgWrapper> extends HandlerI<W> {
 
 }

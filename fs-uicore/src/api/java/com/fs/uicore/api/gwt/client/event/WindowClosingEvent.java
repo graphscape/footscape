@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.WindowI;
  */
 public class WindowClosingEvent extends StateChangeEvent {
 
-	public static final Type<WindowClosingEvent> TYPE = new Type<WindowClosingEvent>();
+	public static final Type<WindowClosingEvent> TYPE = new Type<WindowClosingEvent>("window-closing");
 
 	/**
 	 * @param type

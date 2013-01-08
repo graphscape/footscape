@@ -18,7 +18,7 @@ public class CooperRequestSuccessMH extends MHSupport {
 	 * @see com.fs.uicore.api.gwt.client.HandlerI#handle(java.lang.Object)
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(MsgWrapper t) {
 		//DO nothing,wait the incoming cr notifiy
 	}
 

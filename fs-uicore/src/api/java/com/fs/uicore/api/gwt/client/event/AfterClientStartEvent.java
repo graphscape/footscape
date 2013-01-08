@@ -10,7 +10,8 @@ import com.fs.uicore.api.gwt.client.UiClientI;
  * 
  */
 public class AfterClientStartEvent extends ClientEvent {
-	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(ClientEvent.TYPE);
+	public static Type<AfterClientStartEvent> TYPE = new Type<AfterClientStartEvent>(
+			ClientEvent.TYPE, "started");
 
 	/** */
 	public AfterClientStartEvent(UiClientI client) {

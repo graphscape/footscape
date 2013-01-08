@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class AfterEventHandleEvent extends Event {
 
-	public static final Type<AfterEventHandleEvent> TYPE = new Type<AfterEventHandleEvent>();
+	public static final Type<AfterEventHandleEvent> TYPE = new Type<AfterEventHandleEvent>("eventhandle");
 
 	private Event event;
 

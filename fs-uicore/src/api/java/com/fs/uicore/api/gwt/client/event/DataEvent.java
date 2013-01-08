@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class DataEvent extends Event {
 
-	public static final Event.Type<DataEvent> TYPE = new Event.Type<DataEvent>();
+	public static final Event.Type<DataEvent> TYPE = new Event.Type<DataEvent>("data");
 
 	private Object data;
 

@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * 
  */
 public class MockSignupEvent extends Event {
-	public static Type<MockSignupEvent> TYPE = new Type<MockSignupEvent>();
+	public static Type<MockSignupEvent> TYPE = new Type<MockSignupEvent>("mock-signup");
 	/**
 	 * @param type
 	 */

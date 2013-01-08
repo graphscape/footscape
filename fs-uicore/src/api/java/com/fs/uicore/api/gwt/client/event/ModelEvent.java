@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
  * 
  */
 public class ModelEvent extends LocalEvent {
-	public static Type<ModelEvent> TYPE = new Type<ModelEvent>();
+	public static Type<ModelEvent> TYPE = new Type<ModelEvent>("model");
 
 	protected String replay;
 

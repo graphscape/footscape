@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.event.ModelEvent;
 public class ModelUpdateEvent extends ModelEvent {
 
 	public static final Type<ModelUpdateEvent> TYPE = new Type<ModelUpdateEvent>(
-			ModelEvent.TYPE);
+			ModelEvent.TYPE, "update");
 
 	private String key;
 

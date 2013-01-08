@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class SizeChangeEvent extends Event {
 
-	public static final Type<SizeChangeEvent> TYPE = new Type<SizeChangeEvent>();
+	public static final Type<SizeChangeEvent> TYPE = new Type<SizeChangeEvent>("size-change");
 
 	private Size size;
 

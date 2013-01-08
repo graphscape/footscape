@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class EndpointErrorEvent extends EndpointEvent {
 
-	public static final Type<EndpointErrorEvent> TYPE = new Type<EndpointErrorEvent>(EndpointEvent.TYPE);
+	public static final Type<EndpointErrorEvent> TYPE = new Type<EndpointErrorEvent>(EndpointEvent.TYPE, "error");
 
 	protected ErrorInfosData errors = new ErrorInfosData();
 

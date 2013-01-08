@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
  * 
  */
 public class BeforeClientStartEvent extends ClientEvent {
-	public static Type<BeforeClientStartEvent> TYPE = new Type<BeforeClientStartEvent>(ClientEvent.TYPE);
+	public static Type<BeforeClientStartEvent> TYPE = new Type<BeforeClientStartEvent>(ClientEvent.TYPE, "before-start");
 
 	/** */
 	public BeforeClientStartEvent(UiClientI client) {

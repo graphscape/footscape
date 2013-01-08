@@ -23,7 +23,7 @@ public class LoginMsgHandler implements MessageHandlerI {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(MsgWrapper t) {
 
 		LoginModelI lm = t.getSource().getClient(true).getRootModel().find(LoginModelI.class, true);
 

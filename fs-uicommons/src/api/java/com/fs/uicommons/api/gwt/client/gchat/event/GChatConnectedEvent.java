@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 public class GChatConnectedEvent extends GChatConnectEvent {
 
 	public static final Event.Type<GChatConnectedEvent> TYPE = new Event.Type<GChatConnectedEvent>(
-			GChatConnectEvent.TYPE);
+			GChatConnectEvent.TYPE, "unkown");
 
 	/**
 	 * @param type

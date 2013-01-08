@@ -24,7 +24,7 @@ public class SignupAnonymousMsgHandler implements MessageHandlerI {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(MsgWrapper t) {
 		//
 		UiClientI client = t.getSource().getClient(true);
 		LoginModelI lm = client.getRootModel().find(LoginModelI.class, true);

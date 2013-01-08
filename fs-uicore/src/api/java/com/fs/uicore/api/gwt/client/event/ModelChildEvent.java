@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public class ModelChildEvent extends ModelEvent {
 
-	public static Type<ModelChildEvent> TYPE = new Type<ModelChildEvent>();
+	public static Type<ModelChildEvent> TYPE = new Type<ModelChildEvent>("child");
 
 	private ModelI child;
 

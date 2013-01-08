@@ -4,7 +4,6 @@
 package com.fs.uiclient.api.gwt.client.event.model;
 
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
 
 /**
@@ -13,11 +12,11 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  *         This event is raised on user exp model, when it have received one
  *         incoming cr(cooper request).
  * @see UserExpModel
- * @see UserExpView
+ * 
  */
 public class UserExpActivityEvent extends ModelUpdateEvent {
 	public static final Type<UserExpActivityEvent> TYPE = new Type<UserExpActivityEvent>(
-			ModelUpdateEvent.TYPE);
+			ModelUpdateEvent.TYPE, "unkown");
 
 	/**
 	 * @param m

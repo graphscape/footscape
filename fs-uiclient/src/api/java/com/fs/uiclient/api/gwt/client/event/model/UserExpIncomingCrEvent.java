@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  */
 public class UserExpIncomingCrEvent extends ModelUpdateEvent {
 	public static final Type<UserExpIncomingCrEvent> TYPE = new Type<UserExpIncomingCrEvent>(
-			ModelUpdateEvent.TYPE);
+			ModelUpdateEvent.TYPE, "unkown");
 
 	/**
 	 * @param m

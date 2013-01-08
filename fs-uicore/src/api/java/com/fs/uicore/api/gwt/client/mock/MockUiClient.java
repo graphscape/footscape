@@ -12,7 +12,6 @@ import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
@@ -31,37 +30,41 @@ public class MockUiClient extends UiObjectSupport {
 	public MockUiClient(UiClientI client) {
 		this.client = client;
 		this.endpoint = this.client.getEndpoint();
-		this.endpoint.getMessageDispatcher().addHandler(Path.valueOf("/signup/submit/success"),
-				new MessageHandlerI() {
+		this.endpoint.getMessageDispatcher().addHandler(
+				Path.valueOf("/signup/submit/success"),
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
-					public void handle(EndpointMessageEvent t) {
+					public void handle(MsgWrapper t) {
 						MockUiClient.this.onSignupRequestSuccess(t);
 					}
 				});
-		this.endpoint.getMessageDispatcher().addHandler(Path.valueOf("/signup/confirm/success"),
-				new MessageHandlerI() {
+		this.endpoint.getMessageDispatcher().addHandler(
+				Path.valueOf("/signup/confirm/success"),
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
-					public void handle(EndpointMessageEvent t) {
+					public void handle(MsgWrapper t) {
 						new MockSignupEvent(MockUiClient.this).dispatch();
 					}
 				});
-		this.endpoint.getMessageDispatcher().addHandler(Path.valueOf("/terminal/unbinding/success"),
-				new MessageHandlerI() {
+		this.endpoint.getMessageDispatcher().addHandler(
+				Path.valueOf("/terminal/unbinding/success"),
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
-					public void handle(EndpointMessageEvent t) {
+					public void handle(MsgWrapper t) {
 						new MockSignupEvent(MockUiClient.this).dispatch();
 					}
 				});
-		this.endpoint.addHandler(EndpointBondEvent.TYPE, new EventHandlerI<EndpointBondEvent>() {
+		this.endpoint.addHandler(EndpointBondEvent.TYPE,
+				new EventHandlerI<EndpointBondEvent>() {
 
-			@Override
-			public void handle(EndpointBondEvent t) {
-				MockUiClient.this.onBond();
-			}
-		});
+					@Override
+					public void handle(EndpointBondEvent t) {
+						MockUiClient.this.onBond();
+					}
+				});
 	}
 
 	protected MsgWrapper newRequest(String path) {
@@ -96,8 +99,8 @@ public class MockUiClient extends UiObjectSupport {
 		this.endpoint.logout();
 	}
 
-	protected void onSignupRequestSuccess(EndpointMessageEvent evt) {
-		MessageData t = evt.getMessage();
+	protected void onSignupRequestSuccess(MsgWrapper evt) {
+		MessageData t = evt.getTarget();
 		String ccode = t.getString("confirmCode", true);
 		MsgWrapper req = this.newRequest("/signup/confirm");
 		req.setPayload("email", email);

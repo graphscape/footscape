@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
 public class AttachedEvent extends AttachEvent {
 
 	public static final Type<AttachedEvent> TYPE = new Type<AttachedEvent>(
-			AttachEvent.TYPE);
+			AttachEvent.TYPE,"attached");
 
 	/** */
 	public AttachedEvent(UiObjectI src) {

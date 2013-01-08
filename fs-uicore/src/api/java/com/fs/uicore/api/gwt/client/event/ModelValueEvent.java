@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
  */
 public class ModelValueEvent extends ModelEvent {
 	public static Type<ModelValueEvent> TYPE = new Type<ModelValueEvent>(
-			ModelEvent.TYPE);
+			ModelEvent.TYPE, "value");
 
 	protected Location location;
 

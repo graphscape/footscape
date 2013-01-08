@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public abstract class DragEvent extends Event {
 
-	public static Event.Type<DragEvent> TYPE = new Event.Type<DragEvent>();
+	public static Event.Type<DragEvent> TYPE = new Event.Type<DragEvent>("unknow");
 
 	protected DraggerI dragger;
 

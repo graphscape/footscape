@@ -12,19 +12,18 @@ import java.util.Set;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
-import com.fs.uicore.api.gwt.client.EventDispatcherI;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.Event.FilterI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
+import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.util.OID;
 
@@ -49,7 +48,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	protected boolean attached;
 
-	protected EventDispatcherI eventDispatcher;
+	protected MessageDispatcherI eventDispatcher;
 
 	protected String name;
 
@@ -81,7 +80,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		this.logger = log != null ? log : UiLoggerFactory.getLogger(this
 				.getClass());//
 
-		this.eventDispatcher = new DefaultEventDispatcher(this, this.logger);//
+		this.eventDispatcher = new MessageDispatcherImpl("unknow");//
 		this.lazyMap = new HashMap<String, LazyI>();
 
 	}
@@ -291,18 +290,28 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	@Override
 	public <E extends Event> void addHandler(EventHandlerI<E> l) {
-		this.eventDispatcher.addHandler(this, l);
+		this.eventDispatcher.addHandler(Path.ROOT, l);
 	}
 
 	/* */
 	@Override
 	public <E extends Event> void addHandler(Type<E> ec, EventHandlerI<E> l) {
-		this.eventDispatcher.addHandler(this, ec, l);
+		this.eventDispatcher.addHandler(ec.getAsPath(), l);
 	}
 
 	@Override
-	public <E extends Event> void addHandler(FilterI ef, EventHandlerI<E> eh) {
-		this.eventDispatcher.addHandler(ef, eh);
+	public <E extends Event> void addHandler(final Event.FilterI ef,
+			final EventHandlerI<E> l) {
+		this.eventDispatcher.addHandler(Path.ROOT, new EventHandlerI<E>() {
+
+			@Override
+			public void handle(E t) {
+				if (null == ef.filter(t)) {
+					return;
+				}
+				l.handle(t);//
+			}
+		});
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class EventDispatchedEvent extends Event {
 
-	public static final Type<EventDispatchedEvent> TYPE = new Type<EventDispatchedEvent>();
+	public static final Type<EventDispatchedEvent> TYPE = new Type<EventDispatchedEvent>("dispatched");
 
 	protected Event event;
 	/**

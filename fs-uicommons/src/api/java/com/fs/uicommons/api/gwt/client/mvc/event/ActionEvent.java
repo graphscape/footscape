@@ -13,7 +13,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public class ActionEvent extends ControlEvent {
 
-	public static final Type<ActionEvent> TYPE = new Type<ActionEvent>(ControlEvent.TYPE);
+	public static final Type<ActionEvent> TYPE = new Type<ActionEvent>(ControlEvent.TYPE, "unkown");
 
 	private String action;
 

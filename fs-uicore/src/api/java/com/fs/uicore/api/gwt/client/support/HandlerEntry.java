@@ -1,10 +1,10 @@
 /**
  *  Dec 24, 2012
  */
-package com.fs.uicore.impl.gwt.client.message;
+package com.fs.uicore.api.gwt.client.support;
 
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
@@ -25,7 +25,7 @@ public class HandlerEntry {
 		this.handlers = hdls;
 	}
 
-	public boolean tryHandle(Path p, EndpointMessageEvent md) {
+	public boolean tryHandle(Path p, MsgWrapper md) {
 		if (!this.isMatch(p)) {
 			return false;
 		}
@@ -42,12 +42,11 @@ public class HandlerEntry {
 	}
 
 	/*
-	 *Jan 1, 2013
+	 * Jan 1, 2013
 	 */
 	@Override
 	public String toString() {
-		return "{path:"+this.path+",handler:"+this.handlers+"}";
+		return "{path:" + this.path + ",handler:" + this.handlers + "}";
 	}
-	
-	
+
 }

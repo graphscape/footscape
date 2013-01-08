@@ -25,7 +25,7 @@ public class UeListRefreshMH extends MHSupport {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(MsgWrapper t) {
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"userExpList");

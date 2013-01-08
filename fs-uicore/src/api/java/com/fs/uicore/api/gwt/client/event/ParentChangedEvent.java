@@ -12,11 +12,8 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class ParentChangedEvent extends Event {
 
-	public static final class Type extends Event.Type<ParentChangedEvent> {
-
-	}
-
-	public static final Type TYPE = new Type();
+	public static final Type<ParentChangedEvent> TYPE = new Type<ParentChangedEvent>(
+			"parent-change");
 
 	public static final String OLD_PARENT = "OLD_PARENT";
 	public static final String NEW_PARENT = "NEW_PARENT";
@@ -24,16 +21,16 @@ public class ParentChangedEvent extends Event {
 	/** */
 	public ParentChangedEvent(UiObjectI src, UiObjectI oldP, UiObjectI newP) {
 		super(TYPE, src);
-		this.properties.setProperty(OLD_PARENT, oldP);
-		this.properties.setProperty(NEW_PARENT, newP);
+		this.setProperty(OLD_PARENT, oldP);
+		this.setProperty(NEW_PARENT, newP);
 	}
 
 	public UiObjectI getOldParent() {
-		return (UiObjectI) this.properties.getProperty(OLD_PARENT);
+		return (UiObjectI) this.getProperty(OLD_PARENT);
 	}
 
 	public UiObjectI getNewParent() {
-		return (UiObjectI) this.properties.getProperty(NEW_PARENT);
+		return (UiObjectI) this.getProperty(NEW_PARENT);
 	}
 
 }

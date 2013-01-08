@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 public class EndpointCloseEvent extends EndpointEvent {
 
 	public static final Type<EndpointCloseEvent> TYPE = new Type<EndpointCloseEvent>(
-			EndpointEvent.TYPE);
+			EndpointEvent.TYPE, "close");
 
 	/**
 	 * @param type

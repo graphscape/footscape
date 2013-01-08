@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class StateChangeEvent extends Event {
 
-	public static final Event.Type<StateChangeEvent> TYPE = new Event.Type<StateChangeEvent>();
+	public static final Event.Type<StateChangeEvent> TYPE = new Event.Type<StateChangeEvent>("state-change");
 
 	/**
 	 * @param type

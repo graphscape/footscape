@@ -4,10 +4,7 @@
  */
 package com.fs.uicore.impl.test.gwt.client.cases;
 
-import com.fs.uicore.api.gwt.client.config.ConfigurationFactoryI;
-import com.fs.uicore.api.gwt.client.config.UiConfiguration;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 
 /**
@@ -25,16 +22,7 @@ public class CfgFactoryTest extends TestBase {
 	@Override
 	protected void onEvent(Event e) {
 		super.onEvent(e);
-		if (e.isMatch(StateChangeEvent.TYPE, ConfigurationFactoryI.class)) {
-
-			System.out.println("state chaged");
-
-			ConfigurationFactoryI cf = (ConfigurationFactoryI) e.getSource();
-			UiConfiguration cfg = cf.getConfiguration(
-					"com.fs.uicore.CfgFactory", true);
-			// TODO
-			this.finishTest();
-		}
+		
 	}
 
 }

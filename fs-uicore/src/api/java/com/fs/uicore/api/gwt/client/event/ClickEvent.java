@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class ClickEvent extends Event {
 
-	public static final Type<ClickEvent> TYPE = new Type<ClickEvent>();
+	public static final Type<ClickEvent> TYPE = new Type<ClickEvent>("click");
 
 	/** */
 	public ClickEvent(UiObjectI src) {

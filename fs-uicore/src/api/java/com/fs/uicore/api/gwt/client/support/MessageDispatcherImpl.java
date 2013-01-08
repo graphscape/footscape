@@ -2,38 +2,42 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 23, 2012
  */
-package com.fs.uicore.impl.gwt.client.message;
+package com.fs.uicore.api.gwt.client.support;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageException;
 import com.fs.uicore.api.gwt.client.message.MessageExceptionHandlerI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
-import com.fs.uicore.api.gwt.client.support.CollectionHandler;
-import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
  * @author wu
  * 
  */
-public class MessageDispatcherImpl extends UiObjectSupport implements MessageDispatcherI {
+public class MessageDispatcherImpl implements MessageDispatcherI {
+
+	private static final UiLoggerI logger = UiLoggerFactory
+			.getLogger(MessageDispatcherImpl.class);//
 
 	protected List<HandlerEntry> handlers;
 
-	protected CollectionHandler<EndpointMessageEvent> defaultHandlers;
+	protected CollectionHandler<MsgWrapper> defaultHandlers;
 
 	protected CollectionHandler<MessageException> exceptionHandlers;
 
+	protected String name;
+
 	public MessageDispatcherImpl(String name) {
-		super(name);
+		this.name = name;
 		this.exceptionHandlers = new CollectionHandler<MessageException>();
 		this.handlers = new ArrayList<HandlerEntry>();
-		this.defaultHandlers = new CollectionHandler<EndpointMessageEvent>();
+		this.defaultHandlers = new CollectionHandler<MsgWrapper>();
 
 	}
 
@@ -41,7 +45,7 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void handle(EndpointMessageEvent msg) {
+	public void handle(MsgWrapper msg) {
 		try {
 			this.handleInternal(msg);
 		} catch (Throwable t) {
@@ -62,9 +66,9 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 		}
 	}
 
-	protected void handleInternal(EndpointMessageEvent t) {
-		logger.info("dispatcher:" + this.getName() + ",handle msg:" + t);
-		Path p = t.getMessage().getPath();
+	protected void handleInternal(MsgWrapper t) {
+		logger.info("dispatcher:" + ",handle msg:" + t);
+		Path p = t.getTarget().getPath();
 
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
 		int matches = 0;
@@ -79,8 +83,9 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.info("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
-						+ this.getName() + ",all handlers:" + hls);
+				logger.info("path:" + p + " with msg:" + t
+						+ " has no handler match it in dispatcher:" + this.name
+						+ ",all handlers:" + hls);
 			}
 		}
 
@@ -90,12 +95,14 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void addHandler(Path path, MessageHandlerI mh) {
+	public <W extends MsgWrapper> void addHandler(Path path,
+			MessageHandlerI<W> mh) {
 		this.addHandler(path, false, mh);
 	}
 
 	@Override
-	public void addHandler(Path path, boolean strict, MessageHandlerI mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, boolean strict,
+			MessageHandlerI<W> mh) {
 
 		HandlerEntry he = new HandlerEntry(path, strict, mh);
 
@@ -107,7 +114,7 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	 * Dec 23, 2012
 	 */
 	@Override
-	public void addDefaultHandler(MessageHandlerI mh) {
+	public <W extends MsgWrapper> void addDefaultHandler(MessageHandlerI<W> mh) {
 		this.defaultHandlers.addHandler(mh);
 	}
 
@@ -121,6 +128,18 @@ public class MessageDispatcherImpl extends UiObjectSupport implements MessageDis
 	@Override
 	public void addExceptionHandler(MessageExceptionHandlerI eh) {
 		this.exceptionHandlers.addHandler(eh);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicore.api.gwt.client.message.MessageDispatcherI#dispatch(com.
+	 * fs.uicore.api.gwt.client.MsgWrapper)
+	 */
+	@Override
+	public void dispatch(MsgWrapper mw) {
+		this.handle(mw);
 	}
 
 }

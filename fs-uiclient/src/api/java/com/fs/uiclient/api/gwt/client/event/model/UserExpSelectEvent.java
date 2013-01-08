@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  */
 public class UserExpSelectEvent extends ModelUpdateEvent {
 	public static final Type<UserExpSelectEvent> TYPE = new Type<UserExpSelectEvent>(
-			ModelUpdateEvent.TYPE);
+			ModelUpdateEvent.TYPE, "unkown");
 
 	/**
 	 * @param m

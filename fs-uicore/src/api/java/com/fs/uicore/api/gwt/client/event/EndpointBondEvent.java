@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class EndpointBondEvent extends EndpointEvent {
 
-	public static final Type<EndpointBondEvent> TYPE = new Type<EndpointBondEvent>(EndpointEvent.TYPE);
+	public static final Type<EndpointBondEvent> TYPE = new Type<EndpointBondEvent>(EndpointEvent.TYPE, "bond");
 
 	protected String sessionId;
 

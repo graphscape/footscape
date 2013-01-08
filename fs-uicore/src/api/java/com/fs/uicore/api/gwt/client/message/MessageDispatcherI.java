@@ -4,24 +4,24 @@
  */
 package com.fs.uicore.api.gwt.client.message;
 
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
  * @author wu
  * 
  */
-public interface MessageDispatcherI extends MessageHandlerI, UiObjectI {
+public interface MessageDispatcherI extends MessageHandlerI<MsgWrapper> {
 
-	public static interface FactoryI extends UiObjectI {
-		public MessageDispatcherI get(String name);
-	}
-	
-	public void addHandler(Path path, MessageHandlerI mh);
-	
-	public void addHandler(Path path, boolean strict, MessageHandlerI mh);
+	public <W extends MsgWrapper> void addHandler(Path path,
+			MessageHandlerI<W> mh);
 
-	public void addDefaultHandler(MessageHandlerI mh);
+	public <W extends MsgWrapper> void addHandler(Path path, boolean strict,
+			MessageHandlerI<W> mh);
+
+	public <W extends MsgWrapper> void addDefaultHandler(MessageHandlerI<W> mh);
 
 	public void addExceptionHandler(MessageExceptionHandlerI eh);
+
+	public void dispatch(MsgWrapper mw);
 }

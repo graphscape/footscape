@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class AfterAuthEvent extends Event {
 
-	public static final Type<AfterAuthEvent> TYPE = new Type<AfterAuthEvent>();
+	public static final Type<AfterAuthEvent> TYPE = new Type<AfterAuthEvent>("unknow");
 
 	protected String sessionId;
 	

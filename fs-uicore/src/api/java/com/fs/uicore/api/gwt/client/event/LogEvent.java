@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
  */
 public class LogEvent extends Event {
 
-	public static final Event.Type<LogEvent> TYPE = new Event.Type<LogEvent>();
+	public static final Event.Type<LogEvent> TYPE = new Event.Type<LogEvent>("log");
 
 	private String message;
 
@@ -32,7 +32,7 @@ public class LogEvent extends Event {
 	/**
 	 * @return the message
 	 */
-	public String getMessage() {
+	public String getLogMessage() {
 		return message;
 	}
 

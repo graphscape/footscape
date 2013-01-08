@@ -15,9 +15,9 @@ import com.fs.uicore.api.gwt.client.HandlerI;
  */
 public class CollectionHandler<T> implements HandlerI<T> {
 
-	protected List<HandlerI<T>> handlers = new ArrayList<HandlerI<T>>();
+	protected List<HandlerI> handlers = new ArrayList<HandlerI>();
 
-	public void addHandler(HandlerI<T> h) {
+	public void addHandler(HandlerI<? extends T> h) {
 		this.handlers.add(h);
 	}
 
@@ -30,7 +30,7 @@ public class CollectionHandler<T> implements HandlerI<T> {
 	 */
 	@Override
 	public void handle(T t) {
-		for (HandlerI<T> h : this.handlers) {
+		for (HandlerI h : this.handlers) {
 			h.handle(t);
 		}
 	}

@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class EndpointUnbondEvent extends EndpointEvent {
 
-	public static final Type<EndpointUnbondEvent> TYPE = new Type<EndpointUnbondEvent>(EndpointEvent.TYPE);
+	public static final Type<EndpointUnbondEvent> TYPE = new Type<EndpointUnbondEvent>(EndpointEvent.TYPE, "unbond");
 
 	/**
 	 * @param type

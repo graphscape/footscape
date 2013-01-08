@@ -3,6 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client;
 
+import com.fs.commons.api.service.DispatcherI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 

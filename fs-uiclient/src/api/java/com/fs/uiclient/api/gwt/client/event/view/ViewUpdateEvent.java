@@ -19,7 +19,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  */
 public class ViewUpdateEvent extends Event {
 	public static final Type<ViewUpdateEvent> TYPE = new Type<ViewUpdateEvent>(
-			ModelUpdateEvent.TYPE);
+			ModelUpdateEvent.TYPE, "unkown");
 
 	private String key;
 

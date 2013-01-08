@@ -25,7 +25,7 @@ public class ExpSearchMH extends MHSupport {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(EndpointMessageEvent t) {
+	public void handle(MsgWrapper t) {
 		ExpSearchControlI c = this.getControl(t, ExpSearchControlI.class, true);
 		ExpSearchModelI sm = this.getModel(t, ExpSearchModelI.class, true);
 

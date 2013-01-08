@@ -65,11 +65,14 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 	public void removeChild(UiObjectI c);
 
 	// use EventBusI.addHandler
-	public <E extends Event> void addHandler(Event.Type<E> ec, EventHandlerI<E> l);
+	public <E extends Event> void addHandler(Event.Type<E> ec,
+			EventHandlerI<E> l);
 
 	public <E extends Event> void addHandler(EventHandlerI<E> l);
 
-	public <E extends Event> void addHandler(Event.FilterI ef, Event.EventHandlerI<E> eh);
+	@Deprecated
+	public <E extends Event> void addHandler(final Event.FilterI ef,
+			final EventHandlerI<E> l);
 
 	public <E extends Event> void dispatch(E evt);
 
@@ -81,7 +84,8 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 
 	public String getId();
 
-	public <T extends UiObjectI> T getChild(Class<T> cls, String name, boolean force);
+	public <T extends UiObjectI> T getChild(Class<T> cls, String name,
+			boolean force);
 
 	public <T extends UiObjectI> T getChild(Class<T> cls, boolean force);
 

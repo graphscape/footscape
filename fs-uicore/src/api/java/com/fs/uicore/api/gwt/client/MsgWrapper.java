@@ -4,6 +4,7 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
@@ -11,9 +12,13 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  * @author wuzhen
  * 
  */
-public class MsgWrapper {
+public class MsgWrapper extends PropertiesData<Object> {
 
 	protected MessageData target;
+
+	public MsgWrapper(String path) {
+		this(Path.valueOf(path));
+	}
 
 	public MsgWrapper(Path path) {
 		this(new MessageData(path));
@@ -65,9 +70,9 @@ public class MsgWrapper {
 	}
 
 	public void setPayload(String key, String value) {
-		
+
 		this.target.setPayload(key, (value));
-		
+
 	}
 
 	public void setPayload(String key, Object value) {
@@ -100,12 +105,23 @@ public class MsgWrapper {
 		return rt;
 
 	}
+	
+	public Path getPath(){
+		return this.target.getPath();
+	}
 
 	/**
 	 * @return the target
 	 */
 	public MessageData getTarget() {
 		return target;
+	}
+
+	/**
+	 * @return
+	 */
+	public MessageData getMessage() {
+		return this.getTarget();
 	}
 
 }

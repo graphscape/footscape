@@ -3,11 +3,12 @@
  */
 package com.fs.uicore.impl.test.gwt.client.cases;
 
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
+import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
 
 /**
@@ -16,7 +17,7 @@ import com.fs.uicore.impl.test.gwt.client.cases.support.TestBase;
  */
 public class DispatcherTest extends TestBase {
 
-	private static class MyHandler implements MessageHandlerI {
+	private static class MyHandler implements MessageHandlerI<MsgWrapper> {
 		private DispatcherTest test;
 		private Path path;
 		private String name;
@@ -29,16 +30,15 @@ public class DispatcherTest extends TestBase {
 		}
 
 		@Override
-		public void handle(EndpointMessageEvent t) {
+		public void handle(MsgWrapper t) {
 			test.onMessage(this, t);
 		}
 	}
 
 	public void testDispatcher() {
 
-		MessageDispatcherI.FactoryI df = this.client.find(MessageDispatcherI.FactoryI.class, true);
-		final MessageDispatcherI d0 = df.get("test0");
-		final MessageDispatcherI d1 = df.get("test1");
+		final MessageDispatcherI d0 = new MessageDispatcherImpl("test0");
+		final MessageDispatcherI d1 = new MessageDispatcherImpl("test1");
 
 		final Path p0 = Path.valueOf("p0/p0-1");
 		final Path p1 = Path.valueOf("p1/p1-1");
@@ -56,28 +56,28 @@ public class DispatcherTest extends TestBase {
 			MessageData m1 = new MessageData("/p0/p0-1");
 			m1.setHeader("handler", "handler0");
 			m1.setHeader("finishing", "01");
-			EndpointMessageEvent evt = new EndpointMessageEvent(null, m1);
+			MsgWrapper evt = new MsgWrapper(m1);
 			d0.handle(evt);
 		}
 		{
 			MessageData m1 = new MessageData("/p0/p0-1/p0-2");
 			m1.setHeader("handler", "handler0");
 			m1.setHeader("finishing", "02");
-			EndpointMessageEvent evt = new EndpointMessageEvent(null, m1);
+			MsgWrapper evt = new MsgWrapper(m1);
 			d0.handle(evt);
 		}
 		{
 			MessageData m1 = new MessageData("/p1/p1-1");
 			m1.setHeader("handler", "handler1");
 			m1.setHeader("finishing", "11");
-			EndpointMessageEvent evt = new EndpointMessageEvent(null, m1);
+			MsgWrapper evt = new MsgWrapper(m1);
 			d0.handle(evt);
 		}
 		{
 			MessageData m1 = new MessageData("/p1/p1-1/p1-2");
 			m1.setHeader("handler", "handler1");
 			m1.setHeader("finishing", "12");
-			EndpointMessageEvent evt = new EndpointMessageEvent(null, m1);
+			MsgWrapper evt = new MsgWrapper(m1);
 			d0.handle(evt);
 		}
 	}
@@ -86,7 +86,7 @@ public class DispatcherTest extends TestBase {
 	 * @param p1p2
 	 * @param t
 	 */
-	protected void onMessage(MyHandler mh, EndpointMessageEvent t) {
+	protected void onMessage(MyHandler mh, MsgWrapper t) {
 		//
 		String hname = mh.name;
 		String hname2 = t.getMessage().getHeader("handler", true);

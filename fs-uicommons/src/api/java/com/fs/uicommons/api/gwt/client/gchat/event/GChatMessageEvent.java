@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 public class GChatMessageEvent extends GChatParticipantEvent {
 
 	public static final Event.Type<GChatMessageEvent> TYPE = new Event.Type<GChatMessageEvent>(
-			GChatParticipantEvent.TYPE);
+			GChatParticipantEvent.TYPE, "unkown");
 
 	protected MessageMW message;
 

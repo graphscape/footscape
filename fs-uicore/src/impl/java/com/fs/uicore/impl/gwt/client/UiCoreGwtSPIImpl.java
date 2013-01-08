@@ -14,7 +14,6 @@ import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.config.ConfigurationFactoryI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
@@ -170,15 +169,6 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof UiObjectI.AttacherI;
-			}
-		});
-
-		InstanceOf.addChecker(new CheckerSupport(MessageDispatcherI.FactoryI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof MessageDispatcherI.FactoryI;
 			}
 		});
 

@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class HeaderItemEvent extends Event {
 
-	public static final Type<HeaderItemEvent> TYPE = new Type<HeaderItemEvent>();
+	public static final Type<HeaderItemEvent> TYPE = new Type<HeaderItemEvent>("unknow");
 
 	protected Path path;
 

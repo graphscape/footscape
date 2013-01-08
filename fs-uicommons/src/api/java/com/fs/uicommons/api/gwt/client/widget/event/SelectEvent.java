@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class SelectEvent extends Event {
 
-	public static Type<SelectEvent> TYPE = new Type<SelectEvent>();
+	public static Type<SelectEvent> TYPE = new Type<SelectEvent>("unknow");
 
 	private boolean selected;
 

@@ -16,29 +16,25 @@ public class ErrorEvent extends Event {
 
 	public static final String CAUSE = "cause";
 
-	public static Type TYPE = new Type();
-
-	public static class Type extends Event.Type<ErrorEvent> {
-
-	}
+	public static Type<ErrorEvent> TYPE = new Type<ErrorEvent>("error");
 
 	public ErrorEvent(UiObjectI src, Throwable t) {
 		super(TYPE, src);
-		this.properties.setProperty(CAUSE, t);
+		this.setProperty(CAUSE, t);
 	}
 
 	/** */
 	public ErrorEvent(UiObjectI src, String msg) {
 		super(TYPE, src);
-		this.properties.setProperty(MESSAGE, msg);
+		this.setProperty(MESSAGE, msg);
 	}
 
-	public String getMessage() {
-		return (String) this.properties.getProperty(MESSAGE, null);
+	public String getErrorMessage() {
+		return (String) this.getProperty(MESSAGE, null);
 	}
 
 	public Throwable getCause() {
-		return (Throwable) this.properties.getProperty(CAUSE);
+		return (Throwable) this.getProperty(CAUSE);
 	}
 
 }

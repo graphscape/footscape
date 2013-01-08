@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class LocalEvent extends Event {
 
-	public static final Event.Type<LocalEvent> TYPE = new Event.Type<LocalEvent>();
+	public static final Event.Type<LocalEvent> TYPE = new Event.Type<LocalEvent>("local");
 
 	/**
 	 * @param type

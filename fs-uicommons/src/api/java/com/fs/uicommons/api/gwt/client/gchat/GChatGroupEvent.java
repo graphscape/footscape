@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public abstract class GChatGroupEvent extends GChatEvent {
 
-	public static final Event.Type<GChatGroupEvent> TYPE = new Event.Type<GChatGroupEvent>(GChatEvent.TYPE);
+	public static final Event.Type<GChatGroupEvent> TYPE = new Event.Type<GChatGroupEvent>(GChatEvent.TYPE, "unkown");
 
 	protected String groupId;
 

@@ -18,20 +18,20 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
+import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
-import com.fs.uicore.impl.gwt.client.message.MessageDispatcherFactory;
 
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
+public class UiClientImpl extends ContainerAwareUiObjectSupport implements
+		UiClientI {
 
 	private String clientId;
 
@@ -41,16 +41,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	private UiPropertiesI<String> parameters;
 
-	private MessageDispatcherI.FactoryI factory;
-
 	private EndPointI endpoint;
 
 	public UiClientImpl(RootI root) {
 		this.root = root;
 		this.parameters = new MapProperties<String>();
-		this.factory = new MessageDispatcherFactory();
-		this.factory.parent(this);
-		MessageDispatcherI md = this.factory.get("endpoint");
+		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
 		this.endpoint = new EndpointWsImpl(md);
 		this.endpoint.parent(this);
 	}
@@ -60,24 +56,24 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		// TODO move to SPI.active.
 		this.cf = new JsonCodecFactoryC();
-		
 
 	}
 
 	@Override
 	public void start() {
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
-
-			@Override
-			public void handle(EndpointOpenEvent t) {
-				UiClientImpl.this.onEndpointOpen();
-			}
-		});
-		this.endpoint.getMessageDispatcher().addHandler(Path.valueOf("/client/init/success"),
-				new MessageHandlerI() {
+		this.endpoint.addHandler(EndpointOpenEvent.TYPE,
+				new EventHandlerI<EndpointOpenEvent>() {
 
 					@Override
-					public void handle(EndpointMessageEvent t) {
+					public void handle(EndpointOpenEvent t) {
+						UiClientImpl.this.onEndpointOpen();
+					}
+				});
+		this.endpoint.getMessageDispatcher().addHandler(
+				Path.valueOf("/client/init/success"), new MessageHandlerI<MsgWrapper>() {
+
+					@Override
+					public void handle(MsgWrapper t) {
 						UiClientImpl.this.onInitSuccess(t);
 					}
 				});
@@ -88,7 +84,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(EndpointMessageEvent evt) {
+	protected void onInitSuccess(MsgWrapper evt) {
 		MessageData t = evt.getMessage();
 		String sd = (String) t.getPayloads().getProperty("clientId", true);
 		String sid = sd;
@@ -96,7 +92,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 			throw new UiException("got a null sessionId");
 		}
 		this.clientId = sd;
-		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
+		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload(
+				"parameters", true);//
 		// parameters:
 
 		for (String key : opd.keyList()) {

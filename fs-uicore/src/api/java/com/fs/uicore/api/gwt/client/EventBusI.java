@@ -4,8 +4,6 @@
  */
 package com.fs.uicore.api.gwt.client;
 
-import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
@@ -13,8 +11,5 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  *         dispatched in UiObjectI will be also send to the event bus .
  */
 public interface EventBusI extends UiObjectI {
-
-	public <E extends Event> void addHandler(Event.FilterI ef,
-			EventHandlerI<E> eh);
 
 }

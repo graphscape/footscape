@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 public class GChatExitEvent extends GChatParticipantEvent {
 
 	public static final Event.Type<GChatExitEvent> TYPE = new Event.Type<GChatExitEvent>(
-			GChatParticipantEvent.TYPE);
+			GChatParticipantEvent.TYPE, "unkown");
 
 	/**
 	 * @param type

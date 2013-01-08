@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class ScheduleEvent extends Event {
 
-	public static final Type<ScheduleEvent> TYPE = new Type<ScheduleEvent>();
+	public static final Type<ScheduleEvent> TYPE = new Type<ScheduleEvent>("unknow");
 
 	/**
 	 * @param type

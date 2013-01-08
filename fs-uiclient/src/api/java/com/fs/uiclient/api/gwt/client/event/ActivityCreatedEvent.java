@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class ActivityCreatedEvent extends Event {
 
-	public static final Type<ActivityCreatedEvent> TYPE = new Type<ActivityCreatedEvent>();
+	public static final Type<ActivityCreatedEvent> TYPE = new Type<ActivityCreatedEvent>("unknow");
 
 	private String activityId;
 

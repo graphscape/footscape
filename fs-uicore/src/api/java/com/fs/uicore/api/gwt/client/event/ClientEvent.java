@@ -11,7 +11,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  * 
  */
 public abstract class ClientEvent extends Event {
-	public static Type<ClientEvent> TYPE = new Type<ClientEvent>();
+	public static Type<ClientEvent> TYPE = new Type<ClientEvent>("client");
 
 	/** */
 	public ClientEvent(Type<? extends ClientEvent> type, UiClientI client) {

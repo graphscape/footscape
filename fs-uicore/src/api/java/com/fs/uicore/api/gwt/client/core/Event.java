@@ -3,50 +3,66 @@
  */
 package com.fs.uicore.api.gwt.client.core;
 
-import com.fs.uicore.api.gwt.client.HandlerI;
-import com.fs.uicore.api.gwt.client.data.PropertiesData;
-import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
  * @author wuzhen
  * 
  */
-public class Event {
+public class Event extends MsgWrapper {
 
 	public static class Type<E extends Event> extends UiType<E> {
 
-		public Type() {
-			this(null);
+		private String name;
+
+		public Type(String name) {
+			this(null, name);
 		}
 
-		public Type(Type<? extends Event> p) {
+		public Type(Type<? extends Event> p, String name) {
 			super(p);
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public Path getAsPath() {
+			Type<?> pt = (Type<?>) this.getParent();
+			if (pt == null) {
+				return Path.valueOf(this.name);
+			}
+			return pt.getAsPath().getSubPath(this.name);
 		}
 	}
 
+	@Deprecated
 	public static interface FilterI {
 
 		public <T extends Event> T filter(Event e);
 
 	}
 
-	public static interface SyncHandlerI<E extends Event> extends EventHandlerI<E>, SynchronizedI {
+	public static interface SyncHandlerI<E extends Event> extends
+			EventHandlerI<E>, SynchronizedI {
 
 	}
 
-	public static interface AsyncHandlerI<E extends Event> extends EventHandlerI<E> {
+	public static interface AsyncHandlerI<E extends Event> extends
+			EventHandlerI<E> {
 
 	}
 
-	public static interface EventHandlerI<E extends Event> extends HandlerI<E> {
+	public static interface EventHandlerI<E extends Event> extends
+			MessageHandlerI<E> {
 
 	}
 
 	protected UiObjectI source;
-
-	protected Type<? extends Event> type;
-
-	protected PropertiesData<Object> properties;
 
 	protected boolean isGlobal = true;
 
@@ -55,13 +71,13 @@ public class Event {
 	}
 
 	public Event(Type<? extends Event> type, UiObjectI src) {
-		this(type, src, new PropertiesData<Object>());
+		this(src, new MessageData(type.getAsPath()));
 	}
 
-	public Event(Type<? extends Event> type, UiObjectI src, PropertiesData<Object> pts) {
+	public Event(UiObjectI src, MessageData msg) {
+		super(msg);
 		this.source = src;
-		this.type = type;
-		this.properties = pts;
+
 	}
 
 	public boolean isGlobal() {
@@ -73,13 +89,6 @@ public class Event {
 	 */
 	public UiObjectI getSource() {
 		return source;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public <E extends Event> Type<E> getType() {
-		return (Type<E>) type;
 	}
 
 	public <E extends Event> E source(UiObjectI s) {
@@ -97,11 +106,6 @@ public class Event {
 		return (E) this;
 	}
 
-	public boolean isMatch(Type type, Class<? extends UiObjectI> srcCls) {
-		return this.type.equals(type) && (this.source != null && InstanceOf.isInstance(srcCls, this.source));
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -109,7 +113,8 @@ public class Event {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass().getName() + ",src:" + this.source;
+		return "Event,class:" + this.getClass().getName() + ",src:"
+				+ this.source;
 	}
 
 }

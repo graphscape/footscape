@@ -4,6 +4,7 @@
  */
 package com.fs.uicore.api.gwt.client.efilter;
 
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
@@ -14,7 +15,7 @@ import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
  */
 public class SimpleEventFilter implements Event.FilterI {
 
-	private Event.Type<?> eventType;
+	private Path eventPath;
 
 	private Class srcType;
 
@@ -33,7 +34,7 @@ public class SimpleEventFilter implements Event.FilterI {
 	}
 
 	protected SimpleEventFilter(Event.Type et, Class srcCls, Object src) {
-		this.eventType = et;
+		this.eventPath = et.getAsPath();//
 		this.srcType = srcCls;
 		this.source = src;
 	}
@@ -53,8 +54,8 @@ public class SimpleEventFilter implements Event.FilterI {
 
 	@Override
 	public <T extends Event> T filter(Event e) {
-		if (this.eventType != null
-				&& !this.eventType.isSubType(e.getType(), true)) {
+		if (this.eventPath != null
+				&& !this.eventPath.isSubPath(e.getPath(), true)) {
 			return null;
 		}
 
@@ -75,7 +76,7 @@ public class SimpleEventFilter implements Event.FilterI {
 	@Override
 	public String toString() {
 		//
-		return "class:" + this.getClass() + ",eventType:" + this.eventType
+		return "class:" + this.getClass() + ",eventPath:" + this.eventPath
 				+ ",source:" + this.source + ",srcType:" + this.srcType + "";
 	}
 
