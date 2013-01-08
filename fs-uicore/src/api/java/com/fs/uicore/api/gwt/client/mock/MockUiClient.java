@@ -30,8 +30,8 @@ public class MockUiClient extends UiObjectSupport {
 	public MockUiClient(UiClientI client) {
 		this.client = client;
 		this.endpoint = this.client.getEndpoint();
-		this.endpoint.getMessageDispatcher().addHandler(
-				Path.valueOf("/signup/submit/success"),
+		this.endpoint.addHandler(
+				Path.valueOf("/endpoint/message/signup/submit/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -39,8 +39,8 @@ public class MockUiClient extends UiObjectSupport {
 						MockUiClient.this.onSignupRequestSuccess(t);
 					}
 				});
-		this.endpoint.getMessageDispatcher().addHandler(
-				Path.valueOf("/signup/confirm/success"),
+		this.endpoint.addHandler(
+				Path.valueOf("/endpoint/message/signup/confirm/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -48,8 +48,8 @@ public class MockUiClient extends UiObjectSupport {
 						new MockSignupEvent(MockUiClient.this).dispatch();
 					}
 				});
-		this.endpoint.getMessageDispatcher().addHandler(
-				Path.valueOf("/terminal/unbinding/success"),
+		this.endpoint.addHandler(
+				Path.valueOf("/endpoint/message/terminal/unbinding/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override

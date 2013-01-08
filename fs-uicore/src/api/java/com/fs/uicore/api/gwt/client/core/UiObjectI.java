@@ -9,10 +9,12 @@ import java.util.Set;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.LazyI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
  * @author wuzhen
@@ -65,14 +67,14 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 	public void removeChild(UiObjectI c);
 
 	// use EventBusI.addHandler
-	public <E extends Event> void addHandler(Event.Type<E> ec,
-			EventHandlerI<E> l);
+	public <E extends Event> void addHandler(Event.Type<E> ec, EventHandlerI<E> l);
 
 	public <E extends Event> void addHandler(EventHandlerI<E> l);
 
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh);
+
 	@Deprecated
-	public <E extends Event> void addHandler(final Event.FilterI ef,
-			final EventHandlerI<E> l);
+	public <E extends Event> void addHandler(final Event.FilterI ef, final EventHandlerI<E> l);
 
 	public <E extends Event> void dispatch(E evt);
 
@@ -84,8 +86,7 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 
 	public String getId();
 
-	public <T extends UiObjectI> T getChild(Class<T> cls, String name,
-			boolean force);
+	public <T extends UiObjectI> T getChild(Class<T> cls, String name, boolean force);
 
 	public <T extends UiObjectI> T getChild(Class<T> cls, boolean force);
 

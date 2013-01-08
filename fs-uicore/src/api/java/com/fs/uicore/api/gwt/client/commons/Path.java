@@ -79,8 +79,8 @@ public class Path {
 	}
 
 	public Path getSubPath(String name) {
-		List<String> names = new ArrayList<String>();
-
+		List<String> names = new ArrayList<String>(this.nameList);
+		names.add(name);
 		return Path.valueOf(names);
 	}
 
@@ -155,6 +155,26 @@ public class Path {
 	public int hashCode() {
 		//
 		return this.nameList.hashCode();
+	}
+
+	/**
+	 * Jan 8, 2013
+	 */
+	public static Path valueOf(String string, Path p) {
+		//
+		List<String> names = new ArrayList<String>(p.nameList);
+		names.add(0, string);
+		return new Path(names);
+	}
+
+	/**
+	 * Jan 8, 2013
+	 */
+	public Path concat(Path p) {
+		//
+		List<String> names = new ArrayList<String>(this.nameList);
+		names.addAll(p.nameList);
+		return new Path(names);
 	}
 
 }

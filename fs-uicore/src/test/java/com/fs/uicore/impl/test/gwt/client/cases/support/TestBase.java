@@ -66,7 +66,7 @@ public abstract class TestBase extends GWTTestCase {
 	}
 
 	protected void onEvent(Event e) {
-		System.out.println(this.getClass() + ":" + e);
+		System.out.println("TestBase.onEvent(),e:" + e);
 		if (e instanceof AfterClientStartEvent) {
 			this.onClientStart((AfterClientStartEvent) e);
 		}

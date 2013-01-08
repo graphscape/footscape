@@ -4,6 +4,7 @@
 package com.fs.uicore.api.gwt.client.core;
 
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
@@ -47,18 +48,15 @@ public class Event extends MsgWrapper {
 
 	}
 
-	public static interface SyncHandlerI<E extends Event> extends
-			EventHandlerI<E>, SynchronizedI {
+	public static interface SyncHandlerI<E extends Event> extends EventHandlerI<E>, SynchronizedI {
 
 	}
 
-	public static interface AsyncHandlerI<E extends Event> extends
-			EventHandlerI<E> {
+	public static interface AsyncHandlerI<E extends Event> extends EventHandlerI<E> {
 
 	}
 
-	public static interface EventHandlerI<E extends Event> extends
-			MessageHandlerI<E> {
+	public static interface EventHandlerI<E extends Event> extends MessageHandlerI<E> {
 
 	}
 
@@ -71,11 +69,17 @@ public class Event extends MsgWrapper {
 	}
 
 	public Event(Type<? extends Event> type, UiObjectI src) {
-		this(src, new MessageData(type.getAsPath()));
+		this(type, src, new MessageData(type.getAsPath()));
 	}
 
-	public Event(UiObjectI src, MessageData msg) {
+	protected Event(Type<? extends Event> type, UiObjectI src, MessageData msg) {
 		super(msg);
+		Path tpath = type.getAsPath();
+		Path mpath = msg.getPath();
+		if (!tpath.isSubPath(mpath, true)) {
+			throw new UiException("event type path:" + tpath + " is not the super type of message path:"
+					+ mpath);
+		}
 		this.source = src;
 
 	}
@@ -113,8 +117,7 @@ public class Event extends MsgWrapper {
 	 */
 	@Override
 	public String toString() {
-		return "Event,class:" + this.getClass().getName() + ",src:"
-				+ this.source;
+		return "Event,class:" + this.getClass().getName() + ",src:" + this.source;
 	}
 
 }

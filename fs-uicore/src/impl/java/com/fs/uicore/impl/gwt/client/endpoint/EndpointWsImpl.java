@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointUnbondEvent;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
@@ -45,17 +46,15 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private String terminalId;
 
-	private MessageDispatcherI dispatcher;
-
 	private UserInfo userInfo;
 
 	/**
 	 * @param md
 	 */
 	public EndpointWsImpl(MessageDispatcherI md) {
-		this.dispatcher = md;
-		this.dispatcher.addHandler(
-				Path.valueOf("/control/status/serverIsReady", '/'),
+		this.addHandler(
+				EndpointMessageEvent.TYPE.getAsPath().concat(
+						Path.valueOf("/control/status/serverIsReady", '/')),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -70,10 +69,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 				EndpointWsImpl.this.onBindingSuccess(t);
 			}
 		};
-		this.dispatcher.addHandler(Path.valueOf("/terminal/auth/success"),
-				bindingMH);
-		this.dispatcher.addHandler(Path.valueOf("/terminal/binding/success"),
-				bindingMH);
+		this.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), bindingMH);
+		this.addHandler(Path.valueOf("/endpoint/message/terminal/binding/success"), bindingMH);
 
 		MessageHandlerI<MsgWrapper> unBindingMH = new MessageHandlerI<MsgWrapper>() {
 
@@ -82,8 +79,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 				EndpointWsImpl.this.onUnbindingSuccess(t);
 			}
 		};
-		this.dispatcher.addHandler(Path.valueOf("/terminal/unbinding/success"),
-				unBindingMH);
+		this.addHandler(Path.valueOf("/endpoint/message/terminal/unbinding/success"), unBindingMH);
 
 	}
 
@@ -113,8 +109,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		port = "8080";// for testing.
 		this.uri = "ws://" + host + ":" + port + "/wsa/default";
 
-		this.messageCodec = this.getClient(true).getCodecFactory()
-				.getCodec(MessageData.class);
+		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
 		this.socket = WebSocketJSO.newInstance(uri, true);
 		this.socket.onOpen(new UiCallbackI<Object, Object>() {
@@ -201,16 +196,11 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	protected void onWsMessage(String jsonS) {
 		JSONValue jsonV = JSONParser.parseStrict(jsonS);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
-		this.dispatcher.dispatch(new MsgWrapper(md));
-	}
+		Path p = md.getPath();
+		Path tp = EndpointMessageEvent.TYPE.getAsPath();
 
-	/*
-	 * Dec 20, 2012
-	 */
-	@Override
-	public MessageDispatcherI getMessageDispatcher() {
-		//
-		return this.dispatcher;
+		md.setHeader(MessageData.HK_PATH, tp.concat(p).toString());
+		new EndpointMessageEvent(this, md).dispatch();
 	}
 
 	/*

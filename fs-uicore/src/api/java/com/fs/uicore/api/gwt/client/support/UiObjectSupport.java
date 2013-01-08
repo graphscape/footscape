@@ -13,6 +13,7 @@ import java.util.Set;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.LazyI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -24,6 +25,7 @@ import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
+import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.util.OID;
 
@@ -77,8 +79,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		this.id = id == null ? OID.next("oid-") : id;
 		this.childList = new ArrayList<UiObjectI>();
 		this.attacherList = new ArrayList<Object>();
-		this.logger = log != null ? log : UiLoggerFactory.getLogger(this
-				.getClass());//
+		this.logger = log != null ? log : UiLoggerFactory.getLogger(this.getClass());//
 
 		this.eventDispatcher = new MessageDispatcherImpl("unknow");//
 		this.lazyMap = new HashMap<String, LazyI>();
@@ -135,8 +136,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		// new parent
 		if (newParent != null) {
 			if (newParent.contains(this)) {
-				throw new UiException("already parent:" + newParent + ",child:"
-						+ this.toDebugString());
+				throw new UiException("already parent:" + newParent + ",child:" + this.toDebugString());
 			}
 
 			if (this instanceof ContainerI.AwareI) {
@@ -166,19 +166,17 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	}
 
 	@Override
-	public <T extends UiObjectI> T getChild(Class<T> cls, String name,
-			boolean force) {
+	public <T extends UiObjectI> T getChild(Class<T> cls, String name, boolean force) {
 		List<T> rt = this.getChildList(cls, name);
 
 		if (rt.isEmpty()) {
 			if (force) {
-				throw new UiException("force:" + cls + "/" + name + " in "
-						+ this.toDebugString());
+				throw new UiException("force:" + cls + "/" + name + " in " + this.toDebugString());
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new UiException("too many,there are " + rt.size() + " " + cls
-					+ "/" + name + " in " + this.toDebugString());
+			throw new UiException("too many,there are " + rt.size() + " " + cls + "/" + name + " in "
+					+ this.toDebugString());
 
 		}
 		return rt.get(0);
@@ -198,8 +196,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	public <T extends UiObjectI> List<T> getChildList(Class<T> cls, String name) {
 		List<T> rt = new ArrayList<T>();
 		for (UiObjectI oi : this.childList) {
-			if (InstanceOf.isInstance(cls, oi)
-					&& (name == null || name.equals(oi.getName()))) {
+			if (InstanceOf.isInstance(cls, oi) && (name == null || name.equals(oi.getName()))) {
 				rt.add((T) oi);
 			}
 		}
@@ -299,9 +296,16 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		this.eventDispatcher.addHandler(ec.getAsPath(), l);
 	}
 
+	/*
+	 * Jan 8, 2013
+	 */
 	@Override
-	public <E extends Event> void addHandler(final Event.FilterI ef,
-			final EventHandlerI<E> l) {
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
+		this.eventDispatcher.addHandler(path, mh);
+	}
+
+	@Override
+	public <E extends Event> void addHandler(final Event.FilterI ef, final EventHandlerI<E> l) {
 		this.eventDispatcher.addHandler(Path.ROOT, new EventHandlerI<E>() {
 
 			@Override
@@ -317,6 +321,13 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	@Override
 	public <E extends Event> void dispatch(E evt) {
 		this.eventDispatcher.dispatch(evt);
+		if (evt.isGlobal()) {
+			EventBusI eb = this.getEventBus(false);
+			if (eb == null || this == eb) {
+				return;
+			}
+			eb.dispatch(evt);
+		}
 	}
 
 	/* */
@@ -326,13 +337,11 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 		if (rt.isEmpty()) {
 			if (force) {
-				throw new UiException("force:" + cls + "/" + name + " in:"
-						+ this.toDebugString());
+				throw new UiException("force:" + cls + "/" + name + " in:" + this.toDebugString());
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new UiException("too many:" + cls + "/" + name + " in:"
-					+ this.toDebugString());
+			throw new UiException("too many:" + cls + "/" + name + " in:" + this.toDebugString());
 
 		}
 		return rt.get(0);
@@ -495,8 +504,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		ContainerI c = this.getContainer();
 		if (c == null) {
 			if (force) {
-				throw new UiException("force,container not found for object:"
-						+ this.toDebugString());
+				throw new UiException("force,container not found for object:" + this.toDebugString());
 			}
 			return null;
 		}
@@ -583,8 +591,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	@Override
 	public String toString() {
 		//
-		return "class:" + this.getClass().getName() + ",path:" + this.getPath()
-				+ "";
+		return "class:" + this.getClass().getName() + ",path:" + this.getPath() + "";
 	}
 
 	@Override
@@ -620,15 +627,13 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		List<T> l = this.getAttacherList(cls);
 		if (l.isEmpty()) {
 			if (force) {
-				throw new UiException("no attacher:" + cls + " in uio:"
-						+ this.toDebugString());
+				throw new UiException("no attacher:" + cls + " in uio:" + this.toDebugString());
 			}
 			return null;
 		} else if (l.size() == 1) {
 			return l.get(0);
 		} else {
-			throw new UiException("to many attacher:" + cls + " in uio:"
-					+ this.toDebugString());
+			throw new UiException("to many attacher:" + cls + " in uio:" + this.toDebugString());
 
 		}
 
@@ -732,8 +737,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		}
 
 		if (force) {
-			throw new UiException("not found id:" + id + " in:"
-					+ this.toDebugString());
+			throw new UiException("not found id:" + id + " in:" + this.toDebugString());
 		}
 
 		return null;

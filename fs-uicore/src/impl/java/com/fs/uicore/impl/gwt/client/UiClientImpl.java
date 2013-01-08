@@ -69,8 +69,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 						UiClientImpl.this.onEndpointOpen();
 					}
 				});
-		this.endpoint.getMessageDispatcher().addHandler(
-				Path.valueOf("/client/init/success"), new MessageHandlerI<MsgWrapper>() {
+		this.endpoint.addHandler(
+				Path.valueOf("/endpoint/message/client/init/success"), new MessageHandlerI<MsgWrapper>() {
 
 					@Override
 					public void handle(MsgWrapper t) {

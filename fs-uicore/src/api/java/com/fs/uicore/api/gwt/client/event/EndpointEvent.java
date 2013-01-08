@@ -13,8 +13,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class EndpointEvent extends Event {
 
-	public static final Type<EndpointEvent> TYPE = new Type<EndpointEvent>(
-			"endpoint");
+	public static final Type<EndpointEvent> TYPE = new Type<EndpointEvent>("endpoint");
 
 	/**
 	 * @param type
@@ -24,8 +23,8 @@ public class EndpointEvent extends Event {
 
 	}
 
-	public EndpointEvent(EndPointI source, MessageData md) {
-		super(source, md);
+	protected EndpointEvent(Type<? extends EndpointEvent> type, EndPointI source, MessageData md) {
+		super(type, source, md);
 	}
 
 	public EndPointI getChannel() {

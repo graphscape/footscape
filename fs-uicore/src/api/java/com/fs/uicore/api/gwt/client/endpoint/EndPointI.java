@@ -8,7 +8,6 @@ import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 
 /**
  * @author wu
@@ -21,8 +20,6 @@ public interface EndPointI extends UiObjectI {
 	public void sendMessage(MessageData req);
 
 	public void sendMessage(MsgWrapper req);
-
-	public MessageDispatcherI getMessageDispatcher();
 
 	public void open();
 
