@@ -6,6 +6,8 @@ package com.fs.uicore.api.gwt.client.support;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * @author wuzhen
@@ -25,11 +27,22 @@ public class HandlerEntry {
 		this.handlers = hdls;
 	}
 
-	public boolean tryHandle(Path p, MsgWrapper md) {
+	public boolean tryHandle(boolean dely, Path p, final MsgWrapper md) {
 		if (!this.isMatch(p)) {
 			return false;
 		}
-		this.handlers.handle(md);
+		if (dely) {
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+				@Override
+				public void execute() {
+					HandlerEntry.this.handlers.handle(md);
+
+				}
+			});
+		} else {
+			this.handlers.handle(md);
+		}
 		return true;
 	}
 

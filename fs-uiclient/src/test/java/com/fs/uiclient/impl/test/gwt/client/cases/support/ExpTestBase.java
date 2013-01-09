@@ -22,6 +22,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wuzhen
@@ -45,7 +46,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 		this.ueViewMap = new HashMap<String, UserExpView>();
 		this.finishing.add("uelistview");// 1
 		this.finishing.add("editview");// 1
-		this.finishing.add("editrequest");// 1		
+		this.finishing.add("editrequest");// 1
 		this.finishing.add("editok");// 2
 		this.finishing.add("expcreated");// 3 the new item child event
 
@@ -56,7 +57,6 @@ public abstract class ExpTestBase extends LoginTestBase {
 		super.onEvent(e);
 
 	}
-
 
 	@Override
 	public void onAttachedEvent(AttachedEvent ae) {
@@ -117,7 +117,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 		super.onSuccessMessageEvent(e);
 		Path p = e.getMessage().getPath().getParent();
 
-		if (p.equals(Path.valueOf("/expe/submit"))) {
+		if (p.equals(Path.valueOf(EndpointMessageEvent.TYPE.getAsPath().toString() + "/expe/submit"))) {
 			this.nextExpIdx++;
 			if (this.nextExpIdx < this.totalExp()) {
 				this.submitExp();

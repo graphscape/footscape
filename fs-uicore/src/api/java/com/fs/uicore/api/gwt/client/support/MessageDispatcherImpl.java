@@ -22,8 +22,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  */
 public class MessageDispatcherImpl implements MessageDispatcherI {
 
-	private static final UiLoggerI logger = UiLoggerFactory
-			.getLogger(MessageDispatcherImpl.class);//
+	private static final UiLoggerI logger = UiLoggerFactory.getLogger(MessageDispatcherImpl.class);//
 
 	protected List<HandlerEntry> handlers;
 
@@ -73,7 +72,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
 		int matches = 0;
 		for (HandlerEntry he : hls) {
-			boolean match = he.tryHandle(p, t);
+			boolean match = he.tryHandle(true, p, t);
 			if (match) {
 				matches++;
 			}
@@ -83,9 +82,8 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.info("path:" + p + " with msg:" + t
-						+ " has no handler match it in dispatcher:" + this.name
-						+ ",all handlers:" + hls);
+				logger.info("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
+						+ this.name + ",all handlers:" + hls);
 			}
 		}
 
@@ -95,14 +93,12 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	 * Dec 23, 2012
 	 */
 	@Override
-	public <W extends MsgWrapper> void addHandler(Path path,
-			MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, MessageHandlerI<W> mh) {
 		this.addHandler(path, false, mh);
 	}
 
 	@Override
-	public <W extends MsgWrapper> void addHandler(Path path, boolean strict,
-			MessageHandlerI<W> mh) {
+	public <W extends MsgWrapper> void addHandler(Path path, boolean strict, MessageHandlerI<W> mh) {
 
 		HandlerEntry he = new HandlerEntry(path, strict, mh);
 

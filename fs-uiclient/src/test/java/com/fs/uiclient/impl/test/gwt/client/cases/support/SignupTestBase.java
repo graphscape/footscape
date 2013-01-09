@@ -63,7 +63,7 @@ public abstract class SignupTestBase extends TestBase {
 	protected void onSuccessMessageEvent(SuccessMessageEvent e) {
 		MessageData res = e.getMessage();
 		Path p = e.getMessage().getPath().getParent();
-		if (p.equals(Path.valueOf("/signup/submit"))) {
+		if (p.equals(Path.valueOf("/endpoint/message/signup/submit"))) {
 			String ccode = res.getString("confirmCode", true);//
 
 			FormView fv = this.signupView.find(FormView.class, "confirm", true);
@@ -76,7 +76,7 @@ public abstract class SignupTestBase extends TestBase {
 
 			this.signupView.clickAction(SignupModel.A_CONFIRM);
 			this.tryFinish("submit");
-		} else if (p.equals(Path.valueOf("/signup/confirm"))) {
+		} else if (p.equals(Path.valueOf("/endpoint/message/signup/confirm"))) {
 			this.onSignup(this.email, this.password);
 			this.tryFinish("confirm");
 		}

@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class ChangeEvent<T> extends Event {
 
-	public static Type<ChangeEvent<?>> TYPE = new Type<ChangeEvent<?>>("unkown");
+	public static Type<ChangeEvent<?>> TYPE = new Type<ChangeEvent<?>>("change");
 
 	/** */
 	public ChangeEvent(EditorI<T> source) {
