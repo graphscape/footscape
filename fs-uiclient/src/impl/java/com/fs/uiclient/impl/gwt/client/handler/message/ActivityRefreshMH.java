@@ -23,7 +23,7 @@ public class ActivityRefreshMH extends MHSupport {
 	 *Jan 3, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		
 		ActivityModelI asm = this.getModel(t, ActivityModelI.class, true);
 		MessageData res = t.getMessage();

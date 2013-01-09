@@ -19,7 +19,7 @@ public class ExpEditSubmitMH extends MHSupport {
 	 * Jan 3, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		MessageData res = t.getMessage();
 		String expId = res.getString("expId", true);
 

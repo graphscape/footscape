@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  */
 public class UserExpActivityEvent extends ModelUpdateEvent {
 	public static final Type<UserExpActivityEvent> TYPE = new Type<UserExpActivityEvent>(
-			ModelUpdateEvent.TYPE, "unkown");
+			ModelUpdateEvent.TYPE, "user-exp-activity");
 
 	/**
 	 * @param m

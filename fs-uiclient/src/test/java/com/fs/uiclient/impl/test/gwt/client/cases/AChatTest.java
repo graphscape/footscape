@@ -133,7 +133,7 @@ public class AChatTest extends ActivityTestBase {
 
 	protected void onMessage(GChatMessageEvent e) {
 		// echo to message
-		MessageMW mw = e.getMessage();
+		MessageMW mw = e.getGChatMessage();
 		MessageData md = (MessageData) mw.getTarget().getPayload("message");
 
 		String body = md.getString("text", true);

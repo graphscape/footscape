@@ -14,7 +14,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class MessageEvent extends Event {
 
-	public static final Type<MessageEvent> TYPE = new Type<MessageEvent>("unknow");
+	public static final Type<MessageEvent> TYPE = new Type<MessageEvent>("message");
 
 	private MessageData message;
 

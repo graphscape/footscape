@@ -17,7 +17,7 @@ public class ActivityCreatedNotifyMH extends NotifyMH {
 	 * Jan 3, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		ActivitiesControlI cc = this.getControl(t, ActivitiesControlI.class,
 				true);
 		cc.refresh(null);

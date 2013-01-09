@@ -7,6 +7,7 @@ package com.fs.uiclient.api.gwt.client.support;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
@@ -15,7 +16,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public abstract class MHSupport implements MessageHandlerI {
+public abstract class MHSupport implements MessageHandlerI<EndpointMessageEvent> {
 
 	protected ControlManagerI getControlManager(EndpointMessageEvent t) {
 		return t.getSource().getClient(true).getChild(ControlManagerI.class, true);

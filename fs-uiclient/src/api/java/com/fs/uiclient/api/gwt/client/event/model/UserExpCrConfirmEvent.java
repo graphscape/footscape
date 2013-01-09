@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  */
 public class UserExpCrConfirmEvent extends ModelUpdateEvent {
 	public static final Type<UserExpCrConfirmEvent> TYPE = new Type<UserExpCrConfirmEvent>(
-			ModelUpdateEvent.TYPE, "unkown");
+			ModelUpdateEvent.TYPE, "user-exp-cr-confirm");
 
 	/**
 	 * @param m

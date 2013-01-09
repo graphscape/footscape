@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public class ExpCreatedEvent extends Event {
 
-	public static final Type<ExpCreatedEvent> TYPE = new Type<ExpCreatedEvent>("unknow");
+	public static final Type<ExpCreatedEvent> TYPE = new Type<ExpCreatedEvent>("exp-created");
 
 	private String expId;
 

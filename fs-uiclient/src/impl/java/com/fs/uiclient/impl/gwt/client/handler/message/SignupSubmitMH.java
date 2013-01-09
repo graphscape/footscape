@@ -18,7 +18,7 @@ public class SignupSubmitMH extends MHSupport {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		MessageData res = t.getMessage();
 		
 	}

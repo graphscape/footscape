@@ -20,7 +20,7 @@ public class CooperConfirmSuccessMH extends MHSupport {
 	 * @see com.fs.uicore.api.gwt.client.HandlerI#handle(java.lang.Object)
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		// remove cr from model
 
 		CooperControlI cc = this.getControl(t, CooperControlI.class, true);

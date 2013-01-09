@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public class ModelChildEvent extends ModelEvent {
 
-	public static Type<ModelChildEvent> TYPE = new Type<ModelChildEvent>("child");
+	public static Type<ModelChildEvent> TYPE = new Type<ModelChildEvent>(ModelEvent.TYPE, "child");
 
 	private ModelI child;
 
@@ -25,8 +25,7 @@ public class ModelChildEvent extends ModelEvent {
 
 	}
 
-	public ModelChildEvent(ModelI m, ModelI child, int idx, boolean aor,
-			String rep) {
+	public ModelChildEvent(ModelI m, ModelI child, int idx, boolean aor, String rep) {
 		super(TYPE, m, rep);
 		this.child = child;
 		this.add = aor;

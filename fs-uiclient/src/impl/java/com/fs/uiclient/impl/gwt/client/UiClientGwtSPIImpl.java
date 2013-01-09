@@ -51,7 +51,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 
@@ -74,24 +74,25 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 * Jan 3, 2013
 	 */
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
-		MessageDispatcherI dis = client.getEndpoint().getMessageDispatcher();
-		dis.addHandler(Path.ROOT, new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/expe/submit/success"), new ExpEditSubmitMH());// create
-																					// exp
-		dis.addHandler(Path.valueOf("/uelist/refresh/success"), new UeListRefreshMH());// refresh
-																						// exp
-		dis.addHandler(Path.valueOf("/exps/search/success"), new ExpSearchMH());// search
-																				// exp
-		dis.addHandler(Path.valueOf("/cooper/request/success"), new CooperRequestSuccessMH());// search
-																								// exp
-		dis.addHandler(Path.valueOf("/notify/incomingCr"), new IncomingCrNotifyMH());// search
-																						// exp
-		dis.addHandler(Path.valueOf("/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
+		EndPointI dis = client.getEndpoint();
+		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH());
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH());// create
 		// exp
-		dis.addHandler(Path.valueOf("/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH());// refresh
 		// exp
-		dis.addHandler(Path.valueOf("/notify/activity"), new ActivityCreatedNotifyMH());// search
-		dis.addHandler(Path.valueOf("/activities/activities/success"), new ActivitiesRefreshMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"), new CooperRequestSuccessMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new IncomingCrNotifyMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"), new ActivityCreatedNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/activities/activities/success"),
+				new ActivitiesRefreshMH());// search
 
 	}
 

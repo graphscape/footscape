@@ -26,7 +26,7 @@ public class IncomingCrRefreshMH extends MHSupport {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		CooperControlI c = this.getControl(t, CooperControlI.class, true);
 		CooperModelI cm = c.getModel();
 		MessageData res = t.getMessage();

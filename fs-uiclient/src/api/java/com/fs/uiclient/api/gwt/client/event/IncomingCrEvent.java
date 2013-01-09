@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.Event;
  */
 public class IncomingCrEvent extends Event {
 
-	public static final Type<IncomingCrEvent> TYPE = new Type<IncomingCrEvent>("unknow");
+	public static final Type<IncomingCrEvent> TYPE = new Type<IncomingCrEvent>("incoming-cr");
 
 	private String crId;
 

@@ -21,7 +21,7 @@ public class SuccessOrFailureEventMH extends MHSupport {
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 		MessageData res = t.getMessage();
 		Path p = res.getPath();
 		if ("success".equals(p.getName())) {

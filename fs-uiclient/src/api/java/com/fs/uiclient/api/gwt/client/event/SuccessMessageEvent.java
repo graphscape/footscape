@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public class SuccessMessageEvent extends MessageEvent {
 
-	public static final Type<SuccessMessageEvent> TYPE = new Type<SuccessMessageEvent>(MessageEvent.TYPE, "unkown");
+	public static final Type<SuccessMessageEvent> TYPE = new Type<SuccessMessageEvent>(MessageEvent.TYPE, "success");
 
 	/**
 	 * @param type

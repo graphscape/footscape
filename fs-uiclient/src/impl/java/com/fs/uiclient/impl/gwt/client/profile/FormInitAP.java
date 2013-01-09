@@ -28,7 +28,7 @@ public class FormInitAP extends MHSupport {
 	}
 
 	@Override
-	public void handle(MsgWrapper t) {
+	public void handle(EndpointMessageEvent t) {
 
 		ProfileModelI pm = this.getModel(t, ProfileModelI.class, true);
 
