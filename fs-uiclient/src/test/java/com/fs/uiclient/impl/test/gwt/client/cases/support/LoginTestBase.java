@@ -4,6 +4,7 @@
 package com.fs.uiclient.impl.test.gwt.client.cases.support;
 
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
@@ -36,7 +37,7 @@ public abstract class LoginTestBase extends SignupTestBase {
 		EditorI emailE = fv.find(EditorI.class, "email", true);
 		emailE.input((this.email));
 		
-		this.loginView.clickAction("submit");
+		this.loginView.clickAction(Actions.A_LOGIN_SUBMIT);
 	}
 
 	@Override

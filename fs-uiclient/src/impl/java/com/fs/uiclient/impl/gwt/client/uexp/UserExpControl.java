@@ -21,9 +21,7 @@ public class UserExpControl extends ControlSupport implements UserExpControlI {
 	 */
 	public UserExpControl(String name) {
 		super(name);
-		this.addActionEventHandler(UserExpModel.A_OPEN_ACTIVITY, new OpenActivityAP());
-		this.addActionEventHandler(UserExpModel.A_SELECT, new SelectAP());
-		this.addActionEventHandler(UserExpModel.A_COOPER_CONFIRM, new UserExpCooperConfirmAP());
+
 	}
 
 	@Override

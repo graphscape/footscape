@@ -1,5 +1,6 @@
 package com.fs.uicommons.impl.gwt.client.handler.action;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
@@ -24,7 +25,7 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		LoginModelI lm = ae.getControl().getModel();
+		LoginModelI lm = ae.findModel(LoginModelI.class, true);//
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit
@@ -50,7 +51,7 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 			} else {// has not saved account,create it first and then call this
 					// submit again.
 
-				ControlUtil.triggerAction(lm, LoginModelI.A_ANONYMOUS);
+				ControlUtil.triggerAction(lm, Actions.A_LOGIN_ANONYMOUS);
 				// break the current request
 				// req.setIsLocal(true);// NOTE break this request,
 				return;

@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.test.gwt.client.cases;
 
 import org.junit.Before;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.ActivityTestBase;
@@ -107,7 +108,7 @@ public class AChatTest extends ActivityTestBase {
 		// click the open chat button to join into or create the room for the
 		// activity.
 		// open from activity.
-		this.activityView.clickAction(ActivityModelI.A_OPEN_CHAT_ROOM);
+		this.activityView.clickAction(Actions.A_ACT_OPEN_CHAT_ROOM);
 		this.tryFinish("open.group");
 	}
 

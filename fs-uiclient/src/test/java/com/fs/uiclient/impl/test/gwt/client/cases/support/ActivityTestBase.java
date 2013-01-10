@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.junit.Before;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
-import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
@@ -130,7 +130,7 @@ public class ActivityTestBase extends ExpTestBase {
 
 		this.expIdCooperTo = src.getModel().getExpId();
 
-		src.clickAction(ExpItemModel.A_COPER);// listener to the
+		src.clickAction(Actions.A_EXPS_COOPER);// listener to the
 												// UserExpIncomingCrEvent on the
 												// UserExpModel
 		// cooper-request->notify/incomingCr->refreshIncomingCr->UeListControl
@@ -159,7 +159,7 @@ public class ActivityTestBase extends ExpTestBase {
 
 			v.setProperty("incomingCrConfirmProcessing", true);
 
-			v.clickAction(UserExpModel.A_COOPER_CONFIRM);
+			v.clickAction(Actions.A_UEXP_COOPER_CONFIRM);
 			this.tryFinish("cooper.confirm");
 		}
 		String actId = uem.getActivityId();
@@ -168,7 +168,7 @@ public class ActivityTestBase extends ExpTestBase {
 			if (pro == null) {
 				v.setProperty("activityOpened", Boolean.TRUE);//
 				this.tryFinish("activity.created");//
-				v.clickAction(UserExpModel.A_OPEN_ACTIVITY);
+				v.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
 
 			}
 		}

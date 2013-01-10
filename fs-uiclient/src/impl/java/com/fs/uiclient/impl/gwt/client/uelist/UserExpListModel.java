@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -26,7 +27,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	public UserExpListModel(String name) {
 		super(name);
 		// new open the other view:ExpEditModel.
-		ControlUtil.addAction(this, UserExpListModelI.A_CREATE);
+		ControlUtil.addAction(this, Actions.A_UEL_CREATE);
 		// click and open one exp,enter the exp's main view.
 
 	}

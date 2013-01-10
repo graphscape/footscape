@@ -15,11 +15,6 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public interface UserExpListModelI extends ModelI {
 
-	public static final String A_CREATE = "create";// link to new exp edit view.
-
-	public static final String A_SELECT = "open";// open the default view of the
-													// exp,only when the exp is
-													// coppered?.
 
 	// user.
 	// when new exp is created,this value is set and the control will get the

@@ -18,10 +18,7 @@ public class LoginControl extends ControlSupport implements LoginControlI {
 
 	public LoginControl(String name) {
 		super(name);
-		this.addActionEventHandler(LoginModelI.A_SUBMIT, new LoginSubmitAH());
-		this.addActionEventHandler(LoginModelI.A_LOGOUT, new LogoutAP());
-		this.addActionEventHandler(LoginModelI.A_ANONYMOUS, new SignupAnonymousAH());
-
+		
 	}
 
 }

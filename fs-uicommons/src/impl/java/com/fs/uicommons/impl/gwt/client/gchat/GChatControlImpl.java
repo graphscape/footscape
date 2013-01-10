@@ -50,10 +50,6 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	 */
 	public GChatControlImpl(String name) {
 		super(name);
-		this.localMap.put(GChatModel.A_JOIN, true);
-		this.localMap.put(GChatModel.A_SEND, true);
-		this.addActionEventHandler(GChatModel.A_JOIN, new JoinAP());
-		this.addActionEventHandler(GChatModel.A_SEND, new SendAP());
 
 	}
 
@@ -99,17 +95,19 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		// side
 		this.dispatcher1 = new MessageDispatcherImpl("gchat");
 		// dispatcher another:
-		this.endpoint.addHandler(Path.valueOf("/endpoint/message/gchat"), new MessageHandlerI<EndpointMessageEvent>(){
+		this.endpoint.addHandler(Path.valueOf("/endpoint/message/gchat"),
+				new MessageHandlerI<EndpointMessageEvent>() {
 
-			@Override
-			public void handle(EndpointMessageEvent t) {
-				Path p = t.getPath();
-				MessageData md = t.getMessage();
-				MessageData md2 = new MessageData(md);
-				md2.setHeader(MessageData.HK_PATH, p.subPath(2).toString());
-				MsgWrapper mw = new MsgWrapper(md2);
-				GChatControlImpl.this.dispatcher1.handle(mw);
-			}});
+					@Override
+					public void handle(EndpointMessageEvent t) {
+						Path p = t.getPath();
+						MessageData md = t.getMessage();
+						MessageData md2 = new MessageData(md);
+						md2.setHeader(MessageData.HK_PATH, p.subPath(2).toString());
+						MsgWrapper mw = new MsgWrapper(md2);
+						GChatControlImpl.this.dispatcher1.handle(mw);
+					}
+				});
 
 		// strict mode
 		this.dispatcher1.addHandler(Path.valueOf(new String[] { "gchat", "join" }), true, new JoinGMH(this));
@@ -267,7 +265,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		if (text == null) {
 			throw new UiException("message to send is null");
 		}
-		MessageData req = new MessageData( "/gchat/message");
+		MessageData req = new MessageData("/gchat/message");
 		req.setHeader("groupId", cid);
 		req.setHeader("format", "message");//
 		MessageData msg = new MessageData("plain-text");

@@ -3,6 +3,7 @@
  */
 package com.fs.uiclient.impl.gwt.client;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
@@ -18,10 +19,24 @@ import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.main.MainModelI;
+import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
+import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ActivityRefreshAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ItemCooperAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.OpenChatRoomAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.RefreshIncomingCrAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.UserExpCooperConfirmAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.ActivitiesRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ActivityCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
@@ -34,8 +49,11 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.main.MainModel;
+import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
+import com.fs.uiclient.impl.gwt.client.uexp.OpenActivityAP;
+import com.fs.uiclient.impl.gwt.client.uexp.SelectAP;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
@@ -45,6 +63,7 @@ import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -64,8 +83,44 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		UiClientI client = c.get(UiClientI.class, true);//
 
 		this.activeInstanceOfChecker(c);
+		this.activeActionHandlers(c, client);
 		this.activeMainControl(c, client);
 		this.activeMessageHandlers(c, client);
+	}
+
+	/**
+	 * Jan 10, 2013
+	 */
+	private void activeActionHandlers(ContainerI c, UiClientI client) {
+		EventBusI eb = client.getEventBus(true);
+		eb.addHandler(Actions.A_ACTS_ACTIVITIES, new ActivitiesRefreshAP());
+		// this.addActionEventHandler(ActivityModelI.A_REFRESH, new
+		// ActivityRefreshAP());
+		eb.addHandler(Actions.A_ACT_OPEN_CHAT_ROOM, new OpenChatRoomAP());
+		// this.localMap.put(ActivityModelI.A_REFRESH, true);
+		eb.addHandler(Actions.A_ACT_REFRESH, new ActivityRefreshAP());
+		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP());
+		eb.addHandler(Actions.A_COOP_CONFIRM, new CooperConfirmAP());
+		eb.addHandler(Actions.A_COOP_REFRESH_INCOMING_CR, new RefreshIncomingCrAP());
+		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP());//
+
+		eb.addHandler(Actions.A_EXPS_COOPER, new ItemCooperAP());
+
+		eb.addHandler(Actions.A_EXPS_SEARCH, new ExpSearchAP());
+
+		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP("/profile/init"));
+		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP());
+		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP("/signup/submit"));
+		eb.addHandler(Actions.A_SIGNUP_CONFIRM, new FormSubmitAP("/signup/confirm",
+				SignupModelI.F_CONFIRM));
+		
+
+		eb.addHandler(Actions.A_UEL_CREATE,
+				new OpenExpEditAP());
+		
+		eb.addHandler(Actions.A_UEXP_OPEN_ACTIVITY, new OpenActivityAP());
+		eb.addHandler(Actions.A_UEXP_SELECT, new SelectAP());
+		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP());
 	}
 
 	/**
@@ -73,37 +128,23 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI dis = client.getEndpoint();
-		dis.addHandler(Path.valueOf("/endpoint/message"),
-				new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"),
-				new ExpEditSubmitMH());// create
+		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH());
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH());// create
 		// exp
-		dis.addHandler(
-				Path.valueOf("/endpoint/message/uelist/refresh/success"),
-				new UeListRefreshMH());// refresh
+		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH());// refresh
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"),
-				new ExpSearchMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH());// search
 		// exp
-		dis.addHandler(
-				Path.valueOf("/endpoint/message/cooper/request/success"),
-				new CooperRequestSuccessMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"), new CooperRequestSuccessMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"),
-				new IncomingCrNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new IncomingCrNotifyMH());// search
 		// exp
-		dis.addHandler(
-				Path.valueOf("/endpoint/message/cooper/incomingCr/success"),
-				new IncomingCrRefreshMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
 		// exp
-		dis.addHandler(
-				Path.valueOf("/endpoint/message/cooper/confirm/success"),
-				new CooperConfirmSuccessMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"),
-				new ActivityCreatedNotifyMH());// search
-		dis.addHandler(
-				Path.valueOf("/endpoint/message/activities/activities/success"),
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"), new ActivityCreatedNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/activities/activities/success"),
 				new ActivitiesRefreshMH());// search
 
 	}
@@ -331,8 +372,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(
-				ActivitiesModelI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(ActivitiesModelI.ItemModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {

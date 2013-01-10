@@ -20,6 +20,5 @@ public interface ExpEditModelI extends ModelI {
 
 	public static final String F_BODY = "body";
 
-	public static final String A_SUBMIT = "submit";
 
 }

@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.exps;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -25,7 +26,7 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 */
 	public ExpSearchModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, ExpSearchModelI.A_SEARCH);//
+		ControlUtil.addAction(this, Actions.A_EXPS_SEARCH);//
 	}
 
 	/*

@@ -3,12 +3,9 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
-import com.fs.uicommons.api.gwt.client.mvc.efilter.ActionEventFilter;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wuzhen
@@ -20,13 +17,8 @@ public class ControlSupport extends AbstractControl {
 		super(name);
 	}
 
-	public void triggerAction(String action) {
+	public void triggerAction(Path action) {
 		ControlUtil.triggerAction(this.model, action);
-	}
-
-	@Override
-	public void addActionEventHandler(String a, EventHandlerI<ActionEvent> eh) {
-		this.addHandler(new ActionEventFilter(a), eh);
 	}
 
 	/*

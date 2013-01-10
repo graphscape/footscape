@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.activities;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
@@ -23,7 +24,7 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 	 */
 	public ActivitiesModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, ActivitiesModelI.A_ACTIVITES);
+		ControlUtil.addAction(this, Actions.A_ACTS_ACTIVITIES);
 	}
 
 	/*

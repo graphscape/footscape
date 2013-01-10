@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.test.gwt.client.cases.gchat;
 
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
@@ -125,7 +126,7 @@ public class GChatTest extends TestBase {
 	protected void join() {
 		GChatModel cm = this.rootModel.find(GChatModel.class, true);
 		cm.setGroupIdToJoin(GROUPID);
-		ControlUtil.triggerAction(cm, GChatModel.A_JOIN);
+		ControlUtil.triggerAction(cm, Actions.A_GCHAT_JOIN);
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class GChatTest extends TestBase {
 		cm.setCurrentGroupId(gid);
 		ChatGroupModel gm = cm.getGroup(gid, true);
 		gm.setMessageToSend(TEXT);
-		ControlUtil.triggerAction(cm, GChatModel.A_SEND);
+		ControlUtil.triggerAction(cm, Actions.A_GCHAT_SEND);
 	}
 
 }

@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.api.gwt.client.gchat;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -14,10 +15,6 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class GChatModel extends ModelSupport {
 
-	public static final String A_JOIN = "join";
-
-	public static final String A_SEND = "send";
-
 	private String currentGroupId;
 	
 	private String groupIdToJoin;
@@ -27,8 +24,8 @@ public class GChatModel extends ModelSupport {
 	 */
 	public GChatModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, A_JOIN);
-		ControlUtil.addAction(this, A_SEND);
+		ControlUtil.addAction(this, Actions.A_GCHAT_JOIN);
+		ControlUtil.addAction(this, Actions.A_GCHAT_SEND);
 
 	}
 

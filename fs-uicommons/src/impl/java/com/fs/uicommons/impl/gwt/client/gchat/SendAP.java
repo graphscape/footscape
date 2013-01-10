@@ -5,7 +5,6 @@
 package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 
@@ -20,8 +19,8 @@ public class SendAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
-		((GChatControlI) c).send();
+		GChatControlI gc = ae.getSource().getClient(true).find(GChatControlI.class, true);
+		gc.send();
 
 	}
 

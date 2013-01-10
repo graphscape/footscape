@@ -6,6 +6,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
@@ -26,14 +27,14 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 	 */
 	public ProfileModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, ProfileModelI.A_INIT);
-		ControlUtil.addAction(this, "submit");
+		ControlUtil.addAction(this, Actions.A_PROFILE_INIT);
+		ControlUtil.addAction(this, Actions.A_PROFILE_SUBMIT);
 		//
 		FormModel def = this.getDefaultForm();
 		def.addField("email", String.class);
 		def.addField("age", Integer.class);
-		FieldModel genderFM = def.addField("gender", String.class,
-				EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
+		FieldModel genderFM = def.addField("gender", String.class, EnumEditorI.class,
+				new UiCallbackI<EnumEditorI, Object>() {
 
 					@Override
 					public Object execute(EnumEditorI t) {
@@ -45,14 +46,13 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 				});
 
 		// options
-		//FieldModel iconFM = def.addField("icon", String.class,
-		//		ImageFileUrlDataEditorI.class);
-		
-		FieldModel iconFM = def.addField("icon", String.class,
-						ImageCropEditorI.class);
-		
-		def.addAction(ProfileModelI.A_SUBMIT);//
-				
+		// FieldModel iconFM = def.addField("icon", String.class,
+		// ImageFileUrlDataEditorI.class);
+
+		FieldModel iconFM = def.addField("icon", String.class, ImageCropEditorI.class);
+
+		def.addAction(Actions.A_PROFILE_SUBMIT);//
+
 	}
 
 }

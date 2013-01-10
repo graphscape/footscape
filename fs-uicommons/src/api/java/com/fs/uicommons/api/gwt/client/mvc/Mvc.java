@@ -13,7 +13,10 @@ import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
 
 /**
  * @author wu
- * 
+ * @deprecated ControlI should the place to connect view to model, and there is
+ *             the case that multiple view interest same model.And more, view
+ *             should capiable know control/model or any other object to operate
+ *             them by calling method plus events.
  */
 public class Mvc {
 

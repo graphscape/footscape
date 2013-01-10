@@ -21,7 +21,9 @@ public class JoinAP extends ActionHandlerSupport {
 	public void handle(ActionEvent t) {
 		//
 		// ep.s
-		((GChatControlI) t.getControl()).join();
+		GChatControlI gc = t.getSource().getClient(true).find(GChatControlI.class, true);
+		gc.join();
+		
 	}
 
 }

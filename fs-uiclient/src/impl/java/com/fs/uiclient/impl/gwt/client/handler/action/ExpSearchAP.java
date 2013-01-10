@@ -23,7 +23,7 @@ public class ExpSearchAP extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		//
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI) ae.getSource();
 		ExpSearchModelI sm = (ExpSearchModelI) c.getModel();
 		String expId = sm.getExpId(true);
 

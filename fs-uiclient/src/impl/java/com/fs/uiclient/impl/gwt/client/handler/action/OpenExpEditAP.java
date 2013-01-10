@@ -18,7 +18,7 @@ public class OpenExpEditAP extends ActionHandlerSupport {
 
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		MainControlI mc = c.getManager().getControl(MainControlI.class, true);
 
 		// TODO create only when required.

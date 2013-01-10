@@ -14,6 +14,7 @@ import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -139,7 +140,7 @@ public class SimpleView extends ViewSupport {
 	 * com.fs.uicommons.api.gwt.client.mvc.ViewI#clickAction(java.lang.String)
 	 */
 	@Override
-	public void clickAction(final String a) {
+	public void clickAction(final Path apath) {
 		// click action is used for testing code,that should be the simulation
 		// of human click.
 		// for some test case,when child model is adding to the parent child,the
@@ -149,13 +150,14 @@ public class SimpleView extends ViewSupport {
 
 			@Override
 			public void execute() {
-				SimpleView.this.doClickAction(a);
+				SimpleView.this.doClickAction(apath);
 			}
 		});
 	}
 
-	private void doClickAction(String a) {
+	private void doClickAction(Path ap) {
 		List<ButtonI> btl = this.actionList.getChildList(ButtonI.class);
+		String a = ap.getName();//
 		ButtonI ab = null;
 		for (ButtonI bt : btl) {
 			if (bt.getModel().getName().equals("button-" + a)) {
@@ -163,7 +165,7 @@ public class SimpleView extends ViewSupport {
 			}
 		}
 		if (ab == null) {
-			throw new UiException("widget not found for action:" + a
+			throw new UiException("widget not found for action:" + ap
 					+ " in view:" + this);
 		}
 		ab.getElementWrapper().click();

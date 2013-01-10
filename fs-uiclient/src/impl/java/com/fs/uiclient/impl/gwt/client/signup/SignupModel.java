@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.signup;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
@@ -18,23 +19,19 @@ import com.fs.uicore.api.gwt.client.core.UiCallbackI;
  */
 public class SignupModel extends FormsModel implements SignupModelI {
 
-	public static final String A_SUBMIT = "submit";// signup request
-
-	public static final String A_CONFIRM = "confirm";// signup confirm
-
 	/**
 	 * @param name
 	 */
 	public SignupModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, A_SUBMIT);
-		ControlUtil.addAction(this, A_CONFIRM);
+		ControlUtil.addAction(this, Actions.A_SIGNUP_SUBMIT);
+		ControlUtil.addAction(this, Actions.A_SIGNUP_CONFIRM);
 		//
 
 		// form1
 		FormModel def = this.getDefaultForm();
 		// actions for form1
-		def.addAction(A_SUBMIT);
+		def.addAction(Actions.A_SIGNUP_SUBMIT);
 
 		// fields1
 		def.addField("nick", String.class);
@@ -58,7 +55,7 @@ public class SignupModel extends FormsModel implements SignupModelI {
 		// form2
 		FormModel con = this.addForm(SignupModelI.F_CONFIRM);//
 		// actions
-		con.addAction(A_CONFIRM);
+		con.addAction(Actions.A_SIGNUP_CONFIRM);
 		//
 		con.addField("email", String.class);
 		con.addField("confirmCode", String.class);

@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.handler.message;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -43,7 +44,7 @@ public class SignupAnonymousMsgHandler implements MessageHandlerI<EndpointMessag
 		aal.save(accId, password);// save anonymous
 														// account.
 		lm.setIsUsingSavedAccout(true);//
-		ControlUtil.triggerAction(lm, LoginModelI.A_SUBMIT);//
+		ControlUtil.triggerAction(lm, Actions.A_LOGIN_SUBMIT);//
 	}
 
 }

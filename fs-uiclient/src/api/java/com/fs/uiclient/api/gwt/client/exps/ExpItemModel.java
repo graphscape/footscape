@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -29,17 +30,12 @@ public class ExpItemModel extends ModelSupport {
 
 	public static final Location L_NICK = Location.valueOf("nick");
 
-	public static final String A_COPER = "coper";// request coper,set value to
-													// CoperModelI, trigger the
-													// CoperModelI.coper action
-													// then.
-
 	/**
 	 * @param name
 	 */
 	public ExpItemModel(String id) {
 		super(id);
-		ControlUtil.addAction(this, A_COPER);//
+		ControlUtil.addAction(this, Actions.A_EXPS_COOPER);//
 		this.setValue(L_EXP_ID, id);//
 	}
 

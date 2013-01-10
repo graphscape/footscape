@@ -21,7 +21,7 @@ public class UserExpCooperConfirmAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		UserExpModel m = c.getModel();
 		CooperControlI cc = c.getManager().getControl(
 				CooperControlI.class, true);//

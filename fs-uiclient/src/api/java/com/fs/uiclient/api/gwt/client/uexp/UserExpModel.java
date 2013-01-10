@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpActivityEvent;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpCrConfirmEvent;
 import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
@@ -25,12 +26,6 @@ public class UserExpModel extends ModelSupport {
 
 	public static final Location L_ISEXPANDED = Location.valueOf("isExpanded");//
 
-	public static final String A_OPEN_ACTIVITY = "activity";
-
-	public static final String A_SELECT = "select";
-
-	public static final String A_COOPER_CONFIRM = "cooperConfirm";
-
 	private String expId;
 
 	private String incomingCrId;
@@ -45,9 +40,9 @@ public class UserExpModel extends ModelSupport {
 
 	public UserExpModel(String name, String id) {
 		super(name);
-		ControlUtil.addAction(this, A_SELECT);//
-		ControlUtil.addAction(this, A_OPEN_ACTIVITY);//
-		ControlUtil.addAction(this, A_COOPER_CONFIRM);
+		ControlUtil.addAction(this, Actions.A_UEXP_SELECT);//
+		ControlUtil.addAction(this, Actions.A_UEXP_OPEN_ACTIVITY);//
+		ControlUtil.addAction(this, Actions.A_UEXP_COOPER_CONFIRM);
 		this.expId = id;
 	}
 

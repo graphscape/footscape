@@ -38,8 +38,6 @@ public class UserExpListControl extends ControlSupport implements
 		super(name);
 		// changing.
 
-		this.addActionEventHandler(UserExpListModelI.A_CREATE,
-				new OpenExpEditAP());
 
 	}
 

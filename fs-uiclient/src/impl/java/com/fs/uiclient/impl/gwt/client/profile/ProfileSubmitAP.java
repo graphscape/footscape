@@ -4,8 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
+import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.simple.FormDataAP;
+import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -21,7 +23,8 @@ public class ProfileSubmitAP extends FormDataAP {
 	@Override
 	public void handle(ActionEvent ae) {
 		MsgWrapper req = this.newRequest(Path.valueOf("/profile/submit"));
-		this.processFormData(ae, req);
+		ModelI m = ((ControlI) ae.getSource()).getModel();
+		this.processFormData(m, req);
 		this.sendMessage(ae, req);
 	}
 

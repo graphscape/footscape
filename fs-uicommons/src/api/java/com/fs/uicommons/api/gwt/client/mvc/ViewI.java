@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc;
 
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
@@ -11,6 +12,6 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface ViewI extends WidgetI {
 
-	public void clickAction(String a);
+	public void clickAction(Path a);
 
 }

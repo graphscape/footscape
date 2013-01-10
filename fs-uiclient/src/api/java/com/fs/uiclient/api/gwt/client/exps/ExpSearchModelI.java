@@ -14,7 +14,6 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public interface ExpSearchModelI extends ModelI {
 
-	public static final String A_SEARCH = "search";
 
 	public static final Location L_PAGENUMBER = Location.valueOf("pageFrom");
 

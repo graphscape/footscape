@@ -18,13 +18,6 @@ public interface ActivityModelI extends ModelI {
 
 	public static final Location L_SELECTED = Location.valueOf("selected");
 
-	public static final String A_OPEN_CHAT_ROOM = "openChatRoom";
-
-	public static final String A_REFRESH = "refresh";// refresh participant
-														// list,or only the new
-														// participant should be
-														// refreshed.
-
 	public void setActivityId(String actId);
 
 	public String getActivityId();

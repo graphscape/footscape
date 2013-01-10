@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.activity;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -23,8 +24,8 @@ public class ActivityModel extends ModelSupport implements ActivityModelI {
 	public ActivityModel(String name, String id) {
 		super(name, id);//
 
-		ControlUtil.addAction(this, ActivityModelI.A_OPEN_CHAT_ROOM);//
-		ControlUtil.addAction(this, ActivityModelI.A_REFRESH);//
+		ControlUtil.addAction(this, Actions.A_ACT_OPEN_CHAT_ROOM);//
+		ControlUtil.addAction(this, Actions.A_ACT_REFRESH);//
 
 		this.setActivityId(id);
 	}

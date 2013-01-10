@@ -20,8 +20,7 @@ public class ExpItemControl extends ControlSupport {
 	 */
 	public ExpItemControl(String name) {
 		super(name);
-		this.localMap.put(ExpItemModel.A_COPER, true);
-		this.addActionEventHandler(ExpItemModel.A_COPER, new ItemCooperAP());
+		
 	}
 
 	/*

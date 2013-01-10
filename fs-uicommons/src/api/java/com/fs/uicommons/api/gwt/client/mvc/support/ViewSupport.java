@@ -11,6 +11,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
@@ -105,7 +106,7 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 	 * com.fs.uicommons.api.gwt.client.mvc.ViewI#clickAction(java.lang.String)
 	 */
 	@Override
-	public void clickAction(String a) {
+	public void clickAction(Path a) {
 		throw new UiException("TODO");
 	}
 

@@ -29,19 +29,18 @@ public abstract class FormDataAP extends ActionHandlerSupport {
 		this.form = form;
 	}
 
-	protected void processFormData(ActionEvent ae, MsgWrapper req) {
-		ObjectPropertiesData dt = this.getFormData(ae);
+	protected void processFormData(ModelI md, MsgWrapper req) {
+		ObjectPropertiesData dt = this.getFormData(md);
 		req.setPayloads(dt);
 	}
 
-	protected ObjectPropertiesData getFormData(ActionEvent ae) {
+	protected ObjectPropertiesData getFormData(ModelI fsm) {
 
-		ModelI cm = ae.getControl().getModel();
-		if (!(cm instanceof FormsModel)) {
-			throw new UiException("the model of control:" + ae.getControl() + " not a FormModel");
+		if (!(fsm instanceof FormsModel)) {
+			throw new UiException("the model:" + fsm+ " not a FormsModel");
 		}
 
-		FormsModel fcm = (FormsModel) cm;
+		FormsModel fcm = (FormsModel) fsm;
 		FormModel fm = null;
 		if (this.form == null) {
 			fm = fcm.getDefaultForm();

@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.auth;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
@@ -130,7 +131,7 @@ public class LoginTest extends TestBase {
 		StringEditorI passwordE = this.loginView.find(StringEditorI.class, "password", true);
 		passwordE.input((this.pass));
 
-		this.loginView.clickAction("submit");// submit
+		this.loginView.clickAction(Actions.A_LOGIN_SUBMIT);// submit
 		this.tryFinish("loginrequest");
 
 	}

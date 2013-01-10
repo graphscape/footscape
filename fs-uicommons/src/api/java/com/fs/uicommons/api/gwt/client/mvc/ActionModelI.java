@@ -5,6 +5,7 @@
 package com.fs.uicommons.api.gwt.client.mvc;
 
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -12,7 +13,7 @@ import com.fs.uicore.api.gwt.client.state.State;
 
 /**
  * @author wu
- * 
+ * @deprecated todo remove this model def
  */
 public interface ActionModelI extends ModelI {
 
@@ -37,6 +38,8 @@ public interface ActionModelI extends ModelI {
 	public void setState(State st);
 
 	public ModelI getControlModel();
+	
+	public Path getActionPath();
 
 	public void addTriggerHandler(EventHandlerI<ModelValueEvent> ah);
 

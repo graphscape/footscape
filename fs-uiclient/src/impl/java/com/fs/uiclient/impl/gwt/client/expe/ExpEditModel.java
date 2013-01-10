@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.expe;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
@@ -21,11 +22,11 @@ public class ExpEditModel extends FormsModel implements ExpEditModelI {
 	public ExpEditModel(String name) {
 		super(name);
 
-		ControlUtil.addAction(this, ExpEditModelI.A_SUBMIT);//
+		ControlUtil.addAction(this, Actions.A_EXPE_SUBMIT);//
 
 		FormModel fm = this.getDefaultForm();
 		fm.addField(F_BODY, String.class);
-		fm.addAction(ExpEditModelI.A_SUBMIT);//
+		fm.addAction(Actions.A_EXPE_SUBMIT);//
 	}
 
 }

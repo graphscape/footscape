@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.simple.SyncValueDeliver;
 
@@ -126,12 +127,12 @@ public class FormsView extends SimpleView {
 	}
 
 	protected void updateActionHidden(FormModel fm) {
-		List<String> actions = fm.getActionList();
+		List<Path> actions = fm.getActionList();
 		List<ActionModelI> amL = ControlUtil
 				.getActionList(this.concreteModel());
 
 		for (ActionModelI am : amL) {
-			String name = am.getName();
+			Path name = am.getActionPath();
 			boolean show = actions.contains(name);
 			am.setHidden(!show);// this value is listen by the super
 								// class:SimpleView.

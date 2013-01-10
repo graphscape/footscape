@@ -23,12 +23,7 @@ public class ActivityControl extends ControlSupport implements ActivityControlI 
 	 */
 	public ActivityControl(String name) {
 		super(name);
-		// this.addActionEventHandler(ActivityModelI.A_REFRESH, new ActivityRefreshAP());
-		this.addActionEventHandler(ActivityModelI.A_OPEN_CHAT_ROOM,
-				new OpenChatRoomAP());
-		//this.localMap.put(ActivityModelI.A_REFRESH, true);
-		this.addActionEventHandler(ActivityModelI.A_REFRESH,
-				new ActivityRefreshAP());
+		
 		
 	}
 

@@ -6,6 +6,7 @@ package com.fs.uicommons.api.gwt.client.mvc.support;
 
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
@@ -25,9 +26,11 @@ public class ActionModelSupport extends ModelSupport implements ActionModelI {
 
 	public ErrorInfosData errorInfos = new ErrorInfosData();
 
-	public ActionModelSupport(String name) {
-		super(name);
-
+	protected Path actionPath;
+	
+	public ActionModelSupport(Path apath) {
+		super(apath.getName());
+		this.actionPath = apath;
 	}
 
 	public State getState() {
@@ -111,6 +114,13 @@ public class ActionModelSupport extends ModelSupport implements ActionModelI {
 	@Override
 	public void setHidden(boolean hidden) {
 		this.setValue(L_HIDDEN, hidden);
+	}
+
+	/**
+	 * @return the actionPath
+	 */
+	public Path getActionPath() {
+		return actionPath;
 	}
 
 }

@@ -18,7 +18,7 @@ public class EchoModel extends FormsModel {
 	 */
 	public EchoModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, "echo");// or called from control
+		// ControlUtil.addAction(this, "echo");// or called from control
 	}
 
 }

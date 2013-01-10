@@ -18,11 +18,6 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public interface CooperModelI extends ModelI {
 
-	public static final String A_REQUEST = "request";
-
-	public static final String A_CONFIRM = "confirm";
-
-	public static final String A_REFRESH_INCOMING_CR = "refreshIncomingCr";
 
 	public void cooper(String expId1, String expId2);// for request action,set
 														// this two

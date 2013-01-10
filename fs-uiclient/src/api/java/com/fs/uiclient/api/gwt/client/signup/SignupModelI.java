@@ -17,8 +17,5 @@ public interface SignupModelI extends ModelI {
 
 	public static final String F_CONFIRM = "confirm";//
 
-	public static final String A_SUBMIT = "submit";
-
-	public static final String A_CONFIRM = "confirm";
 
 }

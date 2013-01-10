@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -90,15 +91,15 @@ public class FormModel extends ModelSupport {
 		return null;
 	}
 
-	public void addAction(String... names) {
-		List<String> actionList = this.getActionList();
+	public void addAction(Path... names) {
+		List<Path> actionList = this.getActionList();
 		actionList.addAll(Arrays.asList(names));
 		this.setValue(L_ACTION_LIST, actionList);
 
 	}
 
-	public List<String> getActionList() {
-		List<String> rt = (List<String>) this.getValue(L_ACTION_LIST);
+	public List<Path> getActionList() {
+		List<Path> rt = (List<Path>) this.getValue(L_ACTION_LIST);
 		return rt == null ? new ArrayList() : rt;
 	}
 

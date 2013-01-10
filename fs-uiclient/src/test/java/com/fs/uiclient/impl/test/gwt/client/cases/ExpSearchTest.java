@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.test.gwt.client.cases;
 
 import org.junit.Before;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -140,7 +141,7 @@ public class ExpSearchTest extends TestBase {
 		// click coper
 		String name = "expItem-" + eim.getName();// see ExpSearchView
 		ExpItemView eiv = this.root.find(ExpItemView.class, name, true);
-		eiv.clickAction(ExpItemModel.A_COPER);// coper request,wait the
+		eiv.clickAction(Actions.A_EXPS_COOPER);// coper request,wait the
 												// activities refresh and the
 												// user's exp 001's activity id
 												// is set.
@@ -189,7 +190,7 @@ public class ExpSearchTest extends TestBase {
 												// exp id;
 		this.dump();
 		UserExpView uev = this.root.find(UserExpView.class, vname, true);
-		uev.clickAction(UserExpModel.A_OPEN_ACTIVITY);
+		uev.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
 
 	}
 

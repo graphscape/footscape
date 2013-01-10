@@ -23,7 +23,7 @@ public class CooperRequestAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		CooperModelI cm = c.getModel();
 		String id1 = cm.getExpId1();
 		String id2 = cm.getExpId2();

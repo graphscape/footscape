@@ -25,12 +25,11 @@ public class OpenChatRoomAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();//
+		ControlI c = (ControlI) ae.getSource();//
 		// this AP service for activity.
 		// open a chat room for the activity.
 		ActivityModelI am = (ActivityModelI) c.getModel();
-		GChatControlI gc = ae.getControl().getClient(true)
-				.find(GChatControlI.class, true);
+		GChatControlI gc = ae.getControl(GChatControlI.class);
 
 		gc.join(am.getActivityId());
 

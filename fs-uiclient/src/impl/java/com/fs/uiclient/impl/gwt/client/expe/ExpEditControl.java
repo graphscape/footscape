@@ -20,7 +20,7 @@ public class ExpEditControl extends ControlSupport implements ExpEditControlI {
 	 */
 	public ExpEditControl(String name) {
 		super(name);
-		this.addActionEventHandler(ExpEditModelI.A_SUBMIT, new ExpEditSumbitAP());//
+	
 
 	}
 

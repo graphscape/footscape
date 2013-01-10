@@ -6,8 +6,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
-import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
-import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -26,8 +25,6 @@ public class ProfileControl extends ControlSupport {
 	 */
 	public ProfileControl(String c) {
 		super(c);
-		this.addActionEventHandler(ProfileModelI.A_INIT, new SimpleRequestAP("/profile/init"));
-		this.addActionEventHandler(ProfileModelI.A_SUBMIT, new ProfileSubmitAP());
 
 	}
 
@@ -51,7 +48,7 @@ public class ProfileControl extends ControlSupport {
 			return;
 		}
 		// TODO
-		ControlUtil.triggerAction(this.getModel(), ProfileModelI.A_INIT);//
+		ControlUtil.triggerAction(this.getModel(), Actions.A_PROFILE_INIT);//
 
 	}
 

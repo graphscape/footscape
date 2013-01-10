@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.cooper;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
@@ -30,9 +31,9 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 	public CooperModel(String name) {
 		super(name);
 
-		ControlUtil.addAction(this, CooperModel.A_REQUEST);
-		ControlUtil.addAction(this, CooperModel.A_CONFIRM);
-		ControlUtil.addAction(this, CooperModel.A_REFRESH_INCOMING_CR);
+		ControlUtil.addAction(this, Actions.A_COOP_REQUEST);
+		ControlUtil.addAction(this, Actions.A_COOP_CONFIRM);
+		ControlUtil.addAction(this, Actions.A_COOP_REFRESH_INCOMING_CR);
 
 	}
 

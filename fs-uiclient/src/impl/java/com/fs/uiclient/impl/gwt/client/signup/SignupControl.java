@@ -20,9 +20,7 @@ public class SignupControl extends ControlSupport {
 	 */
 	public SignupControl(String c) {
 		super(c);
-		this.addActionEventHandler(SignupModelI.A_SUBMIT, new FormSubmitAP("/signup/submit"));
-		this.addActionEventHandler(SignupModelI.A_CONFIRM, new FormSubmitAP("/signup/confirm",
-				SignupModelI.F_CONFIRM));
+		
 	}
 
 	@Override

@@ -17,9 +17,6 @@ public interface ProfileModelI extends ModelI {
 
 	public static final String F_PROFILE = FormsModel.DEFAULT_FORM;
 
-	public static final String A_SUBMIT = "submit";
-
-	public static final String A_INIT = "init";
 
 	public static final Location L_AGE = Location.valueOf("age");
 

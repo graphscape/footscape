@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.junit.Before;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
@@ -76,7 +76,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 	public void onUserExpListViewAttached(UserExpListView v) {
 		this.ueListView = v;
 		this.tryFinish("uelistview");
-		this.ueListView.clickAction(UserExpListModelI.A_CREATE);// open ths edit
+		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit
 		// view
 	}
 
@@ -104,7 +104,7 @@ public abstract class ExpTestBase extends LoginTestBase {
 
 		bodyE.input((text));//
 
-		this.eeView.clickAction(ExpEditModelI.A_SUBMIT);// after submit action
+		this.eeView.clickAction(Actions.A_EXPE_SUBMIT);// after submit action
 
 	}
 

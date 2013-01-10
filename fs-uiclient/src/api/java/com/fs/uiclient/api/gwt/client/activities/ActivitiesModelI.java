@@ -21,8 +21,6 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
 public interface ActivitiesModelI extends ModelI {
 	// refresh the activities list of sumber info,such as activity id.
 	// detail infor is not need here.
-	public static final String A_ACTIVITES = "activities";
-
 	public static class ItemModel extends ModelSupport {
 
 		protected String actId;

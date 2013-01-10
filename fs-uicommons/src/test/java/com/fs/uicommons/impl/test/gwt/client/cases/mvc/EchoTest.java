@@ -32,7 +32,7 @@ public class EchoTest extends TestBase {
 		this.finishing.add("response");
 
 		BossControlI fc = this.manager.getControl(BossControlI.class, true);
-		
+
 		ManagerModelI cm = fc.getManager(BossModelI.M_CENTER);
 
 		System.out.println(this.client.dump());
@@ -54,14 +54,7 @@ public class EchoTest extends TestBase {
 		control.model(fm);//
 		control.parent(this.manager);// for attach
 		// listen to the control event
-		control.addActionEventHandler("echo", new EventHandlerI<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent e) {
-				EchoTest.this.onActionEvent(e);
-
-			}
-		});
 		// view
 		FormView view = new FormView(this.container);
 		view.model(fm);
@@ -85,20 +78,19 @@ public class EchoTest extends TestBase {
 		EditorI fE = view.getEditor("field1");
 		fE.input(this.field1Data);
 
-		view.clickAction("echo");// cause action
+		//view.clickAction("echo");// cause action
 
 	}
 
 	protected void onActionEvent(ActionEvent e) {
-		
+
 	}
 
 	// form data
 	protected void onDataValue(ModelValueEvent e) {
 		System.out.println("field1:" + e.getValueWrapper().getValue());
 
-		ObjectPropertiesData d = (ObjectPropertiesData) e.getValueWrapper()
-				.getValue();
+		ObjectPropertiesData d = (ObjectPropertiesData) e.getValueWrapper().getValue();
 		assertNotNull("form data is null", d);
 		String sd = (String) d.getProperty("field1");
 		assertNotNull("field1 is null", sd);
@@ -111,8 +103,7 @@ public class EchoTest extends TestBase {
 	protected void onField1Value(ModelValueEvent e) {
 		System.out.println("field1:" + e.getValueWrapper().getValue());
 
-		assertEquals("field1 data error", this.field1Data, e.getValueWrapper()
-				.getValue());
+		assertEquals("field1 data error", this.field1Data, e.getValueWrapper().getValue());
 		this.tryFinish("field1");
 	}
 

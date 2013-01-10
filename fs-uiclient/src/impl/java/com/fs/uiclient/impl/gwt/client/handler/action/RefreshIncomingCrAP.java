@@ -27,7 +27,7 @@ public class RefreshIncomingCrAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		CooperModelI cm = c.getModel();
 		List<String> crIdL = null;
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));

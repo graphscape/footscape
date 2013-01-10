@@ -3,10 +3,10 @@
  */
 package com.fs.uiclient.impl.test.gwt.client.cases.support;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
-import com.fs.uiclient.impl.gwt.client.signup.SignupModel;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
@@ -74,7 +74,7 @@ public abstract class SignupTestBase extends TestBase {
 																			// ResponseConfirmCodeNodifier
 			ccodeE.input((ccode));
 
-			this.signupView.clickAction(SignupModel.A_CONFIRM);
+			this.signupView.clickAction(Actions.A_SIGNUP_CONFIRM);
 			this.tryFinish("submit");
 		} else if (p.equals(Path.valueOf("/endpoint/message/signup/confirm"))) {
 			this.onSignup(this.email, this.password);
@@ -111,7 +111,7 @@ public abstract class SignupTestBase extends TestBase {
 		EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
 		ccnE.input(("resp"));
 
-		this.signupView.clickAction(SignupModelI.A_SUBMIT);
+		this.signupView.clickAction(Actions.A_SIGNUP_SUBMIT);
 
 	}
 	protected abstract void onSignup(String email, String pass);

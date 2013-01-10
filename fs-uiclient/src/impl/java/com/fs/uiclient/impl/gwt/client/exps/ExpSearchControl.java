@@ -4,12 +4,12 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemControl;
-import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -29,7 +29,6 @@ public class ExpSearchControl extends ControlSupport implements
 	public ExpSearchControl(String name) {
 		super(name);
 
-		this.addActionEventHandler(ExpSearchModelI.A_SEARCH, new ExpSearchAP());
 	}
 
 	/*
@@ -77,7 +76,7 @@ public class ExpSearchControl extends ControlSupport implements
 
 	protected void triggerSearchAction() {
 
-		this.triggerAction(ExpSearchModelI.A_SEARCH);
+		this.triggerAction(Actions.A_EXPS_SEARCH);
 	}
 
 	/*

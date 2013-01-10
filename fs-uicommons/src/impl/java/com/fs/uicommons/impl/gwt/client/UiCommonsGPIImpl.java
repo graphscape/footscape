@@ -4,6 +4,7 @@
 package com.fs.uicommons.impl.gwt.client;
 
 import com.fs.uicommons.api.gwt.client.AdjusterI;
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.drag.DraggerI;
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
@@ -79,6 +80,11 @@ import com.fs.uicommons.impl.gwt.client.frwk.login.LoginControl;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginModel;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
+import com.fs.uicommons.impl.gwt.client.gchat.JoinAP;
+import com.fs.uicommons.impl.gwt.client.gchat.SendAP;
+import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
+import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
+import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
 import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
 import com.fs.uicommons.impl.gwt.client.manage.BossControlImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossModelImpl;
@@ -99,6 +105,7 @@ import com.fs.uicommons.impl.gwt.client.widget.tab.TabberWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.table.TableImpl;
 import com.fs.uicommons.impl.gwt.client.widget.wpanel.WindowPanelWImpl;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
@@ -126,7 +133,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		this.activeInstaneOf(c);
 
 		this.activeWidgetCreater(c);
-
+		//
+		this.activeActionHandlers(c, client);
 		// scheduler
 		c.add(new SchedulerImpl());
 
@@ -137,14 +145,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		new ControlManagerImpl().parent(client);
 
 		// boss mvc
-		new Mvc(new BossModelImpl("boss"), new BossView("boss", c),
-				new BossControlImpl("boss")).start(rootM, client.getRoot());
+		new Mvc(new BossModelImpl("boss"), new BossView("boss", c), new BossControlImpl("boss")).start(rootM,
+				client.getRoot());
 		//
 
 		new Mvc(new FrwkModelImpl("frwk")).start(rootM);//
 		// Headers
-		new Mvc(new HeaderModel("header"), new HeaderView("header", c))
-				.start(rootM);//
+		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM);//
 		//
 		this.activeLogin(c);
 
@@ -153,10 +160,22 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		this.activeMessageHandlers(c, client);
 	}
 
+	public void activeActionHandlers(ContainerI c, UiClientI client) {
+		EventBusI eb = client.getEventBus(true);
+
+		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH());
+		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP());
+		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH());
+		
+		//
+		eb.addHandler(Actions.A_GCHAT_JOIN, new JoinAP());
+		eb.addHandler(Actions.A_GCHAT_SEND, new SendAP());
+
+	}
+
 	public void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI ep = client.getEndpoint();
-		ep.addHandler(
-				Path.valueOf("/endpoint/message/signup/anonymous/success"),
+		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousMsgHandler());
 	}
 
@@ -202,16 +221,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		// Control
 
 		// auto auth after session got
-		client.addHandler(AfterClientStartEvent.TYPE,
-				new EventHandlerI<AfterClientStartEvent>() {
+		client.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
 
-					@Override
-					public void handle(AfterClientStartEvent e) {
-						//
-						ControlUtil.triggerAction(login.get().getModel(),
-								LoginModelI.A_SUBMIT);//
-					}
-				});
+			@Override
+			public void handle(AfterClientStartEvent e) {
+				//
+				ControlUtil.triggerAction(login.get().getModel(), Actions.A_LOGIN_SUBMIT);//
+			}
+		});
 
 		//
 		// gchat
@@ -336,8 +353,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		// Editors
 
-		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(
-				StringEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(StringEditorI.class) {
 			@Override
 			public StringEditorI create(String name) {
 
@@ -345,8 +361,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(
-				BooleanEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(BooleanEditorI.class) {
 			@Override
 			public BooleanEditorI create(String name) {
 
@@ -354,8 +369,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(
-				IntegerEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(IntegerEditorI.class) {
 			@Override
 			public IntegerEditorI create(String name) {
 
@@ -363,8 +377,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(
-				PropertiesEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
 			@Override
 			public PropertiesEditorI create(String name) {
 
@@ -373,8 +386,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(
-				WindowPanelWI.class) {
+		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(WindowPanelWI.class) {
 			@Override
 			public WindowPanelWI create(String name) {
 
@@ -401,8 +413,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(
-				ErrorInfosWidgetI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
 			@Override
 			public ErrorInfosWidgetI create(String name) {
 
@@ -410,8 +421,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(
-				ImageFileUrlDataEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(ImageFileUrlDataEditorI.class) {
 			@Override
 			public ImageFileUrlDataEditorI create(String name) {
 
@@ -419,8 +429,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(
-				ImageCropEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(ImageCropEditorI.class) {
 			@Override
 			public ImageCropEditorI create(String name) {
 
@@ -797,15 +806,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ErrorInfosWidgetI;
 			}
 		});
-		InstanceOf
-				.addChecker(new CheckerSupport(ImageFileUrlDataEditorI.class) {
+		InstanceOf.addChecker(new CheckerSupport(ImageFileUrlDataEditorI.class) {
 
-					@Override
-					public boolean isInstance(Object o) {
+			@Override
+			public boolean isInstance(Object o) {
 
-						return o instanceof ImageFileUrlDataEditorI;
-					}
-				});
+				return o instanceof ImageFileUrlDataEditorI;
+			}
+		});
 		InstanceOf.addChecker(new CheckerSupport(ImageCropEditorI.class) {
 
 			@Override

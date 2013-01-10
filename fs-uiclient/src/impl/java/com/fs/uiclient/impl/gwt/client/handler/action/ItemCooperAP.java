@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
@@ -35,7 +36,7 @@ public class ItemCooperAP extends ActionHandlerSupport {
 		Mvc mvc = (Mvc) mc.getLazyObject(MainControlI.LZ_COOPER, true);
 
 		CooperModelI cm = mvc.getModel();
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		ExpItemModel eim = (ExpItemModel) c.getModel();
 		String expId2 = eim.getExpId();
 
@@ -45,7 +46,7 @@ public class ItemCooperAP extends ActionHandlerSupport {
 
 		cm.cooper(expId1, expId2);
 		// this is just forward to CoperContorl's submit action
-		ControlUtil.triggerAction(cm, CooperModelI.A_REQUEST);
+		ControlUtil.triggerAction(cm, Actions.A_COOP_REQUEST);
 
 		// CooperControlI cc= c.getManager().find(CooperControlI.class, true);
 

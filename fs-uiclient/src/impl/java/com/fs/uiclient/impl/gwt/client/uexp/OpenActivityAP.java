@@ -22,7 +22,7 @@ public class OpenActivityAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = ae.getControl();
+		ControlI c = (ControlI)ae.getSource();
 		UserExpModel uem = (UserExpModel) c.getModel();
 
 		String actId = uem.getActivityId();

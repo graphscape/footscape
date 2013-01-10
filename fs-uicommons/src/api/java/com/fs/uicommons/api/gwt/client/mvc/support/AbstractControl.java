@@ -3,17 +3,14 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.efilter.ActionEventFilter;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -29,8 +26,6 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 	protected String name;
 
 	protected ModelI model;
-
-	protected Map<String, Boolean> localMap = new HashMap<String, Boolean>();
 
 	public AbstractControl(String name) {
 		this.name = name;
@@ -98,24 +93,10 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 
 		if (vw.isValue(ActionModelI.TRIGGERED)) {
 			vw.setValue(ActionModelI.PROCESSING);// NOTE //TODO raise event.
-
-			new ActionEvent(this, am.getName()).dispatch();
+			Path ap = am.getActionPath();
+			new ActionEvent(this, ap).dispatch();
 
 		}
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.mvc.ControlI#addActionEventHandler(java
-	 * .lang.String, com.fs.uicore.api.gwt.client.core.Event.HandlerI)
-	 */
-	@Override
-	public void addActionEventHandler(String a, EventHandlerI<ActionEvent> eh) {
-		ActionEventFilter ef = new ActionEventFilter(a);
-		this.addHandler(ef, eh);
 
 	}
 

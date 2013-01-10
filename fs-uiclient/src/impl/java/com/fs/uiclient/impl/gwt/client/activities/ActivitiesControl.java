@@ -4,14 +4,11 @@
  */
 package com.fs.uiclient.impl.gwt.client.activities;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
-import com.fs.uiclient.api.gwt.client.activity.ActivityControlI;
-import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityControl;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
-import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -24,16 +21,13 @@ import com.fs.uicore.api.gwt.client.ModelI;
  * @author wu
  * 
  */
-public class ActivitiesControl extends ControlSupport implements
-		ActivitiesControlI {
+public class ActivitiesControl extends ControlSupport implements ActivitiesControlI {
 
 	/**
 	 * @param name
 	 */
 	public ActivitiesControl(String name) {
 		super(name);
-		this.addActionEventHandler(ActivitiesModelI.A_ACTIVITES,
-				new ActivitiesRefreshAP());
 	}
 
 	/*
@@ -86,6 +80,6 @@ public class ActivitiesControl extends ControlSupport implements
 	 */
 	@Override
 	public void refresh(String actId) {
-		this.triggerAction(ActivitiesModelI.A_ACTIVITES);
+		this.triggerAction(Actions.A_ACTS_ACTIVITIES);
 	}
 }

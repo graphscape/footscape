@@ -5,6 +5,7 @@
 package com.fs.uicommons.api.gwt.client.mvc.simple;
 
 import com.fs.uicommons.api.gwt.client.mvc.support.ActionModelSupport;
+import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
  * @author wu
@@ -12,7 +13,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ActionModelSupport;
  */
 public class SimpleActionModel extends ActionModelSupport {
 
-	public SimpleActionModel(String name) {
+	public SimpleActionModel(Path name) {
 		super(name);
 	}
 
