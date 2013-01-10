@@ -4,8 +4,6 @@
 package com.fs.uiclient.impl.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
-import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
-import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
@@ -75,23 +73,37 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI dis = client.getEndpoint();
-		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH());// create
+		dis.addHandler(Path.valueOf("/endpoint/message"),
+				new SuccessOrFailureEventMH());
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"),
+				new ExpEditSubmitMH());// create
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH());// refresh
+		dis.addHandler(
+				Path.valueOf("/endpoint/message/uelist/refresh/success"),
+				new UeListRefreshMH());// refresh
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"),
+				new ExpSearchMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"), new CooperRequestSuccessMH());// search
+		dis.addHandler(
+				Path.valueOf("/endpoint/message/cooper/request/success"),
+				new CooperRequestSuccessMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new IncomingCrNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"),
+				new IncomingCrNotifyMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
+		dis.addHandler(
+				Path.valueOf("/endpoint/message/cooper/incomingCr/success"),
+				new IncomingCrRefreshMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
+		dis.addHandler(
+				Path.valueOf("/endpoint/message/cooper/confirm/success"),
+				new CooperConfirmSuccessMH());// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"), new ActivityCreatedNotifyMH());// search
-		dis.addHandler(Path.valueOf("/endpoint/message/activities/activities/success"),
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"),
+				new ActivityCreatedNotifyMH());// search
+		dis.addHandler(
+				Path.valueOf("/endpoint/message/activities/activities/success"),
 				new ActivitiesRefreshMH());// search
 
 	}
@@ -319,7 +331,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ActivitiesModelI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(
+				ActivitiesModelI.ItemModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
@@ -339,33 +352,12 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(AChatModel.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof AChatModel;
-
-			}
-
-		});
 		InstanceOf.addChecker(new CheckerSupport(PartnerModel.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
 				return o instanceof PartnerModel;
-
-			}
-
-		});
-
-		InstanceOf.addChecker(new CheckerSupport(AChatControlI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof AChatControlI;
 
 			}
 

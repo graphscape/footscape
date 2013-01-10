@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- *
+ * 
  */
 public interface MainControlI extends ControlI {
 
@@ -17,9 +17,7 @@ public interface MainControlI extends ControlI {
 	public static String LZ_EXP_SEARCH = "expSearchLazyMvc";
 	public static String LZ_SIGNUP = "signupLazyMvc";
 	public static String LZ_PROFILE = "profileLazyMvc";
-	public static String LZ_ACHAT = "achatLazyMvc";
 	public static String LZ_ACTIVITIES = "activitiesLazyMvc";
 	public static String LZ_COOPER = "cooperLazyMvc";
-	
-	
+
 }

@@ -5,6 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
 import com.fs.uicommons.api.gwt.client.Position;
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.UiException;
@@ -35,13 +36,14 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	public ItemModel addItem(String name, Position pos, final ManagedModelI mgd) {
 		final ItemModel rt = new ItemModel(name);
 		rt.setPosition(pos);
-		rt.addTriggerHandler(new EventHandlerI<ModelValueEvent>() {
+		rt.addHandler(HeaderItemEvent.TYPE,
+				new EventHandlerI<HeaderItemEvent>() {
 
-			@Override
-			public void handle(ModelValueEvent e) {
-				HeaderModel.this.onItemTrigger(mgd, rt);
-			}
-		});
+					@Override
+					public void handle(HeaderItemEvent e) {
+						HeaderModel.this.onItemTrigger(mgd, rt);
+					}
+				});
 		rt.parent(this).cast();
 
 		// exclusive trigger

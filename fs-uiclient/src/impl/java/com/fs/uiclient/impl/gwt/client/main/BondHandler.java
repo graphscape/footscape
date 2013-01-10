@@ -30,7 +30,7 @@ public class BondHandler implements EventHandlerI<EndpointBondEvent> {
 		UserInfo ui = t.getChannel().getUserInfo();
 
 		this.control.getLazyObject(MainControlI.LZ_EXP_SEARCH, true);//
-		if (!ui.isAnonymous()) {//TODO acc change
+		if (!ui.isAnonymous()) {// TODO acc change
 
 			// command/data from server side.
 			// after auth,active activities control.
@@ -41,7 +41,6 @@ public class BondHandler implements EventHandlerI<EndpointBondEvent> {
 			// active cooper control.
 			this.control.getLazyObject(MainControlI.LZ_COOPER, true);
 
-			this.control.getLazyObject(MainControlI.LZ_ACHAT, true);
 		}
 	}
 

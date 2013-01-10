@@ -3,18 +3,18 @@
  */
 package com.fs.uicommons.api.gwt.client.frwk.support;
 
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.util.FrwkUtil;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class LoginHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
+public class LoginHeaderItemHandler implements EventHandlerI<HeaderItemEvent> {
 
 	private LoginHeaderItemHandler() {
 
@@ -24,8 +24,8 @@ public class LoginHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 	 * Nov 23, 2012
 	 */
 	@Override
-	public void handle(ModelValueEvent e) {
-		
+	public void handle(HeaderItemEvent e) {
+
 	}
 
 	public void start(ModelI parent) {
@@ -33,6 +33,6 @@ public class LoginHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
 		HeaderModelI.ItemModel login = FrwkUtil.getFrwkModel(parent)
 				.getHeader()
 				.addItem(new String[] { "user", "login" }, ItemModel.P_RIGHT);
-		login.addTriggerHandler(this);
+		login.addHandler(HeaderItemEvent.TYPE, this);
 	}
 }

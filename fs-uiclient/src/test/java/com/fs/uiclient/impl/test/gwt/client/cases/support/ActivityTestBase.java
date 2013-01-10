@@ -50,7 +50,7 @@ public class ActivityTestBase extends ExpTestBase {
 		this.finishing.add("activity.created");// the coper is confirmed by
 												// other user and activity
 												// created.
-		this.finishing.add("activity.open");
+		this.finishing.add("activity.view");
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class ActivityTestBase extends ExpTestBase {
 	 */
 	protected void onActivityViewAttached(ActivityView src) {
 		this.activityView = src;
-		this.tryFinish("activity.open");
+		this.tryFinish("activity.view");
 	}
 
 	@Override

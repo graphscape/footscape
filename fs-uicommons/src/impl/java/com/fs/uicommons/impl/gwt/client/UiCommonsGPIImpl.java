@@ -107,7 +107,6 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
-import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
@@ -138,13 +137,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		new ControlManagerImpl().parent(client);
 
 		// boss mvc
-		new Mvc(new BossModelImpl("boss"), new BossView("boss", c), new BossControlImpl("boss")).start(rootM,
-				client.getRoot());
+		new Mvc(new BossModelImpl("boss"), new BossView("boss", c),
+				new BossControlImpl("boss")).start(rootM, client.getRoot());
 		//
 
 		new Mvc(new FrwkModelImpl("frwk")).start(rootM);//
 		// Headers
-		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM);//
+		new Mvc(new HeaderModel("header"), new HeaderView("header", c))
+				.start(rootM);//
 		//
 		this.activeLogin(c);
 
@@ -155,7 +155,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 	public void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI ep = client.getEndpoint();
-		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
+		ep.addHandler(
+				Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousMsgHandler());
 	}
 
@@ -201,20 +202,23 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		// Control
 
 		// auto auth after session got
-		client.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
+		client.addHandler(AfterClientStartEvent.TYPE,
+				new EventHandlerI<AfterClientStartEvent>() {
 
-			@Override
-			public void handle(AfterClientStartEvent e) {
-				//
-				ControlUtil.triggerAction(login.get().getModel(), LoginModelI.A_SUBMIT);//
-			}
-		});
+					@Override
+					public void handle(AfterClientStartEvent e) {
+						//
+						ControlUtil.triggerAction(login.get().getModel(),
+								LoginModelI.A_SUBMIT);//
+					}
+				});
 
 		//
 		// gchat
 		LazyMvcI gchat = GChatControlImpl.createLazyMvc(rootModel, "gchat");
 		// add 'gchat' to 'tools' menu item.
 		new LazyMvcHeaderItemHandler(gchat, "tools").start(rootModel);
+		gchat.get();// not lazy?
 
 	}
 
@@ -332,7 +336,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		// Editors
 
-		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(StringEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(
+				StringEditorI.class) {
 			@Override
 			public StringEditorI create(String name) {
 
@@ -340,7 +345,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(BooleanEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(
+				BooleanEditorI.class) {
 			@Override
 			public BooleanEditorI create(String name) {
 
@@ -348,7 +354,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(IntegerEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(
+				IntegerEditorI.class) {
 			@Override
 			public IntegerEditorI create(String name) {
 
@@ -356,7 +363,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(
+				PropertiesEditorI.class) {
 			@Override
 			public PropertiesEditorI create(String name) {
 
@@ -365,7 +373,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(WindowPanelWI.class) {
+		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(
+				WindowPanelWI.class) {
 			@Override
 			public WindowPanelWI create(String name) {
 
@@ -392,7 +401,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		});
 
-		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(
+				ErrorInfosWidgetI.class) {
 			@Override
 			public ErrorInfosWidgetI create(String name) {
 
@@ -400,7 +410,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(ImageFileUrlDataEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(
+				ImageFileUrlDataEditorI.class) {
 			@Override
 			public ImageFileUrlDataEditorI create(String name) {
 
@@ -408,7 +419,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
-		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(ImageCropEditorI.class) {
+		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(
+				ImageCropEditorI.class) {
 			@Override
 			public ImageCropEditorI create(String name) {
 
@@ -785,14 +797,15 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ErrorInfosWidgetI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(ImageFileUrlDataEditorI.class) {
+		InstanceOf
+				.addChecker(new CheckerSupport(ImageFileUrlDataEditorI.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
+					@Override
+					public boolean isInstance(Object o) {
 
-				return o instanceof ImageFileUrlDataEditorI;
-			}
-		});
+						return o instanceof ImageFileUrlDataEditorI;
+					}
+				});
 		InstanceOf.addChecker(new CheckerSupport(ImageCropEditorI.class) {
 
 			@Override

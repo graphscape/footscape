@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.Position;
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
@@ -26,13 +27,13 @@ public interface HeaderModelI extends ModelI {
 
 		protected String name;
 
-		public static final Location L_DISPLAY_NAME = Location.valueOf("displayName");//
+		public static final Location L_DISPLAY_NAME = Location
+				.valueOf("displayName");//
 
-		public static final Location L_ISSELECTED = Location.valueOf("_isselected");
+		public static final Location L_ISSELECTED = Location
+				.valueOf("_isselected");
 
 		public static final Location L_POSITION = Location.valueOf("_position");
-
-		public static final Location L_TRIGGERED_MS = Location.valueOf("_triggeredMs");
 
 		public static final Position P_LEFT = Position.valueOf("left");
 
@@ -45,16 +46,12 @@ public interface HeaderModelI extends ModelI {
 			this.name = name;
 		}
 
-		public void addTriggerHandler(EventHandlerI<ModelValueEvent> eh) {
-			this.addValueHandler(L_TRIGGERED_MS, eh);
-		}
-
 		public void addSelectHandler(EventHandlerI<ModelValueEvent> eh) {
 			this.addValueHandler(L_ISSELECTED, eh);
 		}
 
 		public void trigger() {
-			this.setValue(L_TRIGGERED_MS, System.currentTimeMillis());
+			new HeaderItemEvent(this).dispatch();
 		}
 
 		public String getName() {
@@ -69,7 +66,8 @@ public interface HeaderModelI extends ModelI {
 		public ItemModel addItem(String name) {
 			ItemModel old = this.getChild(ItemModel.class, name, false);
 			if (old != null) {
-				throw new UiException("already exist name:" + name + " under item:" + this.getName());
+				throw new UiException("already exist name:" + name
+						+ " under item:" + this.getName());
 			}
 			ItemModel rt = new ItemModel(name);
 
@@ -80,13 +78,14 @@ public interface HeaderModelI extends ModelI {
 
 		public ItemModel addItem(String name, final ManagedModelI mgd) {
 			final ItemModel rt = this.addItem(name);
-			rt.addTriggerHandler(new EventHandlerI<ModelValueEvent>() {
+			this.addHandler(HeaderItemEvent.TYPE,
+					new EventHandlerI<HeaderItemEvent>() {
 
-				@Override
-				public void handle(ModelValueEvent e) {
-					mgd.select(true);//
-				}
-			});
+						@Override
+						public void handle(HeaderItemEvent e) {
+							mgd.select(true);//
+						}
+					});
 
 			return rt;
 		}

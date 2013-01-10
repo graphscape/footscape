@@ -39,12 +39,6 @@ public class GChatTest extends TestBase {
 
 		this.delayTestFinish(this.timeoutMillis * 100);
 
-		HeaderModelI hc = this.framework.getHeader();
-		HeaderModelI.ItemModel tools = hc.getItem("tools", true);
-		HeaderModelI.ItemModel gchat = tools.getItem("gchat", true);
-
-		// open the LazyMvcI of gchat
-		gchat.trigger();
 
 	}
 

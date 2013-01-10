@@ -4,10 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.main;
 
-import com.fs.uiclient.api.gwt.client.achat.AChatModel;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.HeaderNames;
-import com.fs.uiclient.impl.gwt.client.achat.AChatControlImpl;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesControl;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperControl;
@@ -59,7 +57,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		super.doAttach();
 		this.activeLazyMvcs();//
 
-		this.getEventBus(true).addHandler(EndpointBondEvent.TYPE, new BondHandler(this));
+		this.getEventBus(true).addHandler(EndpointBondEvent.TYPE,
+				new BondHandler(this));
 
 		this.activeHeaderItems();//
 
@@ -78,7 +77,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	protected void addHeaderForLazy(String lazyName, String headerItem) {
 		LazyI mvc = this.getLazy(lazyName, true);
-		new LazyMvcHeaderItemHandler((LazyMvcI) mvc, headerItem).start(this.model);
+		new LazyMvcHeaderItemHandler((LazyMvcI) mvc, headerItem)
+				.start(this.model);
 
 	}
 
@@ -89,7 +89,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 	protected void activeLazyMvcs() {
 		ModelI rootM = this.getClient(true).getRootModel();//
 
-		this.addLazyMvc(MainControlI.LZ_ACTIVITIES, new LazyMcSupport(this.model, "activities") {
+		this.addLazyMvc(MainControlI.LZ_ACTIVITIES, new LazyMcSupport(
+				this.model, "activities") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -103,7 +104,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 				return new ActivitiesControl(name);
 			}
 		});
-		this.addLazyMvc(MainControlI.LZ_SIGNUP, new LazyMvcSupport(this.model, "signup") {
+		this.addLazyMvc(MainControlI.LZ_SIGNUP, new LazyMvcSupport(this.model,
+				"signup") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -125,7 +127,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 		});
 		//
-		this.addLazyMvc(MainControlI.LZ_PROFILE, new LazyMvcSupport(this.model, "profile") {
+		this.addLazyMvc(MainControlI.LZ_PROFILE, new LazyMvcSupport(this.model,
+				"profile") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -148,7 +151,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		});
 
 		//
-		this.addLazyMvc(MainControlI.LZ_EXP_SEARCH, new LazyMvcSupport(this.model, "exps") {
+		this.addLazyMvc(MainControlI.LZ_EXP_SEARCH, new LazyMvcSupport(
+				this.model, "exps") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -171,7 +175,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		});
 
 		//
-		this.addLazy(MainControlI.LZ_UE_LIST, new LazyMvcSupport(this.model, "uelist") {
+		this.addLazy(MainControlI.LZ_UE_LIST, new LazyMvcSupport(this.model,
+				"uelist") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -193,7 +198,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 		});
 		//
-		this.addLazyMvc(MainControlI.LZ_EXP_EDIT, new LazyMvcSupport(this.model, "expe") {
+		this.addLazyMvc(MainControlI.LZ_EXP_EDIT, new LazyMvcSupport(
+				this.model, "expe") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -215,7 +221,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 		});
 
-		this.addLazyMvc(MainControlI.LZ_COOPER, new LazyMcSupport(rootM, "cooper") {
+		this.addLazyMvc(MainControlI.LZ_COOPER, new LazyMcSupport(rootM,
+				"cooper") {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -227,21 +234,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 			protected ControlI createControl(String name) {
 				//
 				return new CooperControl(name);
-			}
-		});
-
-		this.addLazyMvc(MainControlI.LZ_ACHAT, new LazyMcSupport(rootM, "chatrooms") {
-
-			@Override
-			protected ModelI createModel(String name) {
-				//
-				return new AChatModel(name);
-			}
-
-			@Override
-			protected ControlI createControl(String name) {
-				//
-				return new AChatControlImpl(name);
 			}
 		});
 

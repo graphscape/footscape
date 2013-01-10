@@ -6,7 +6,6 @@ package com.fs.uiclient.impl.test.gwt.client.cases;
 
 import org.junit.Before;
 
-import com.fs.uiclient.api.gwt.client.achat.AChatControlI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.ActivityTestBase;
@@ -14,11 +13,9 @@ import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatYouJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
-import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
@@ -29,6 +26,8 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  */
 public class AChatTest extends ActivityTestBase {
 
+	private static String TEXT = "hello exp2";
+
 	private ActivityModelI activityModel;
 
 	@Before
@@ -37,10 +36,10 @@ public class AChatTest extends ActivityTestBase {
 
 		this.finishing.add("activity.open");
 		this.finishing.add("gchat.ready");
+		this.finishing.add("open.group");
 		this.finishing.add("group.created");
 		this.finishing.add("group.youjoin");
 		this.finishing.add("hello.exp2");
-		this.finishing.add("done");//
 
 	}
 
@@ -57,6 +56,13 @@ public class AChatTest extends ActivityTestBase {
 			GChatConnectEvent ce = (GChatConnectEvent) e;
 			this.onGChatConnect(ce);
 
+		} else if (e instanceof GChatGroupCreatedEvent) {
+			this.onChatGroupCreated((GChatGroupCreatedEvent) e);
+		} else if (e instanceof GChatMessageEvent) {
+			this.onGChatMessage((GChatMessageEvent) e);
+
+		} else if (e instanceof GChatYouJoinEvent) {
+			this.onYouJoin((GChatYouJoinEvent) e);
 		}
 	}
 
@@ -75,15 +81,22 @@ public class AChatTest extends ActivityTestBase {
 	 */
 	@Override
 	protected void onActivityViewAttached(ActivityView src) {
-		this.activityModel = (ActivityModelI) src.getModel();// for chat room to
-																// be open.
+		super.onActivityViewAttached(src);
+
+		this.activityModel = (ActivityModelI) this.activityView.getModel();// for
+																			// chat
+																			// room
+																			// to
+		// be open.
 		this.tryFinish("activity.open");
+		this.tryOpenChatGroup();
 
 	}
 
 	protected void tryOpenChatGroup() {
-		if (this.finishing.contains("activity.open") || this.finishing.contains("gchat.ready")) {
-			// wait the two event ,both the activity is open and the xmpp is
+		if (this.finishing.contains("activity.open")
+				|| this.finishing.contains("gchat.ready")) {
+			// wait the two event ,both the activity is open and the gchat is
 			// ready.
 			return;
 
@@ -91,76 +104,45 @@ public class AChatTest extends ActivityTestBase {
 		// open chat room
 		// wait the occupant join.
 
-		// AChatModel csm = this.rootModel.find(AChatModel.class, true);
-		GChatControlI gcc = this.rootModel.getClient(true).getChild(ControlManagerI.class, true)
-				.getControl(GChatControlI.class, true);
-
-		gcc.addHandler(GChatGroupCreatedEvent.TYPE, new EventHandlerI<GChatGroupCreatedEvent>() {
-
-			@Override
-			public void handle(GChatGroupCreatedEvent e) {
-
-				AChatTest.this.onChatGroupCreated(e);
-			}
-		});
-
 		// click the open chat button to join into or create the room for the
 		// activity.
-
-		ControlUtil.triggerAction(this.activityModel, ActivityModelI.A_OPEN_CHAT_ROOM);
-
+		// open from activity.
+		this.activityView.clickAction(ActivityModelI.A_OPEN_CHAT_ROOM);
+		this.tryFinish("open.group");
 	}
 
 	/**
 	 * Oct 22, 2012
 	 */
 	protected void onChatGroupCreated(GChatGroupCreatedEvent e) {
-		GChatControlI gc = e.getGChat();
 
 		String gid = e.getGroupId();
 		String actId = this.activityModel.getActivityId();
 		assertEquals("room name not correct", actId, gid);//
 
 		this.tryFinish("group.created");
-		gc.addHandler(GChatMessageEvent.TYPE, new EventHandlerI<GChatMessageEvent>() {
 
-			@Override
-			public void handle(GChatMessageEvent t) {
-				AChatTest.this.onMessage(t);
-			}
-		});
 	}
 
-	protected void onMessage(GChatMessageEvent e) {
+	/**
+	 * @param e
+	 */
+	private void onYouJoin(GChatYouJoinEvent e) {
+		this.tryFinish("group.youjoin");
+		String gid = e.getGroupId();//
+		GChatControlI cms = this.manager.getControl(GChatControlI.class, true);
+		cms.send(gid, TEXT);//
+
+	}
+
+	protected void onGChatMessage(GChatMessageEvent e) {
 		// echo to message
 		MessageMW mw = e.getGChatMessage();
 		MessageData md = (MessageData) mw.getTarget().getPayload("message");
 
 		String body = md.getString("text", true);
-
-		if (body.startsWith("autoresponse:")) {
-			// ignore,for loop
-		} else {
-			String actId = this.activityModel.getActivityId();
-
-			String msg = "autoresponse:" + "hello,message got:(" + body + "),from:" + e.getParticipantId()
-					+ ",actId:" + actId + ",waiting:" + this.finishing;
-
-			this.send(actId, msg);
-			//
-			if (body.startsWith("finish:")) {
-				String f = body.substring("finish:".length());
-				this.tryFinish(f);
-				this.send(actId, "autoresponse:finish:" + f + ",waiting:" + this.finishing);
-			}
-
-		}
-
-	}
-
-	private void send(String actId, String msg) {
-		AChatControlI cms = this.manager.getControl(AChatControlI.class, true);
-		cms.send(actId, msg);//
+		assertEquals(TEXT, body);
+		this.tryFinish("hello.exp2");
 	}
 
 }

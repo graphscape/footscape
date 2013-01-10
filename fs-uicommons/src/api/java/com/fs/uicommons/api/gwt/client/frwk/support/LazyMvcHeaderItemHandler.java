@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.api.gwt.client.frwk.support;
 
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
@@ -10,13 +11,12 @@ import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
 import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class LazyMvcHeaderItemHandler implements EventHandlerI<ModelValueEvent> {
+public class LazyMvcHeaderItemHandler implements EventHandlerI<HeaderItemEvent> {
 
 	protected ItemModel headerItem;
 
@@ -43,21 +43,21 @@ public class LazyMvcHeaderItemHandler implements EventHandlerI<ModelValueEvent> 
 	public void start(ModelI parent) {
 
 		HeaderModelI hm = this.getFrwkModel(parent).getHeader();
-		if (this.menuItem == null) {//top menu item
+		if (this.menuItem == null) {// top menu item
 			this.headerItem = hm.addItem(this.lazyMvc.getName(),
 					HeaderModelI.ItemModel.P_RIGHT);
 		} else {
-			//second level menu item.
+			// second level menu item.
 			this.headerItem = hm.addItem(new String[] { this.menuItem,
 					this.lazyMvc.getName() }, HeaderModelI.ItemModel.P_RIGHT);
 		}
 
 		// call init at control.
-		this.headerItem.addTriggerHandler(this);
+		this.headerItem.addHandler(HeaderItemEvent.TYPE, this);
 	}
 
 	@Override
-	public void handle(ModelValueEvent e) {
+	public void handle(HeaderItemEvent e) {
 		this.lazyMvc.get().focus(true);
 
 	}
