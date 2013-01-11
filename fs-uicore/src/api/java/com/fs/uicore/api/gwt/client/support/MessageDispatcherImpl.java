@@ -66,7 +66,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 	}
 
 	protected void handleInternal(MsgWrapper t) {
-		logger.info("dispatcher:" + ",handle msg:" + t);
+		//logger.debug("dispatcher:" + ",handle msg:" + t);
 		Path p = t.getTarget().getPath();
 
 		List<HandlerEntry> hls = new ArrayList<HandlerEntry>(this.handlers);
@@ -82,7 +82,7 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 
 			this.defaultHandlers.handle(t);
 			if (this.defaultHandlers.size() == 0) {
-				logger.info("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
+				logger.debug("path:" + p + " with msg:" + t + " has no handler match it in dispatcher:"
 						+ this.name + ",all handlers:" + hls);
 			}
 		}

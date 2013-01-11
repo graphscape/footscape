@@ -3,8 +3,8 @@
  */
 package com.fs.uicommons.impl.gwt.client;
 
-import com.fs.uicommons.api.gwt.client.AdjusterI;
 import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.AdjusterI;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.drag.DraggerI;
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
@@ -42,8 +42,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
-import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
-import com.fs.uicommons.api.gwt.client.schedule.SchedulerI.TaskI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
@@ -90,7 +88,6 @@ import com.fs.uicommons.impl.gwt.client.manage.BossControlImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossModelImpl;
 import com.fs.uicommons.impl.gwt.client.manage.BossView;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;
-import com.fs.uicommons.impl.gwt.client.schedule.SchedulerImpl;
 import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.AnchorWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.ButtonImpl;
@@ -135,9 +132,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		this.activeWidgetCreater(c);
 		//
 		this.activeActionHandlers(c, client);
-		// scheduler
-		c.add(new SchedulerImpl());
-
 		//
 		new DraggerImpl().parent(client);
 
@@ -742,22 +736,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ManagerModelI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(SchedulerI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof SchedulerI;
-			}
-		});
-		InstanceOf.addChecker(new CheckerSupport(TaskI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof TaskI;
-			}
-		});
+		
 		InstanceOf.addChecker(new CheckerSupport(HeaderView.class) {
 
 			@Override

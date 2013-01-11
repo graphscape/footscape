@@ -89,7 +89,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-
+		new EndpointKeeper(this).start();
 	}
 
 	protected void onServerIsReady(MsgWrapper e) {

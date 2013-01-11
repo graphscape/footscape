@@ -17,8 +17,10 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
+import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
 import com.fs.uicore.impl.gwt.client.config.ConfigurationFactoryImpl;
+import com.fs.uicore.impl.gwt.client.scheduler.SchedulerImpl;
 
 /**
  * @author wu
@@ -32,6 +34,7 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 
 		this.activeInstanceOfChecker();
 
+		c.add(new SchedulerImpl());
 		// window
 		WindowI window = new WindowImpl();
 		c.add(window);
@@ -178,6 +181,14 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof EndPointI;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(SchedulerI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof SchedulerI;
 			}
 		});
 
