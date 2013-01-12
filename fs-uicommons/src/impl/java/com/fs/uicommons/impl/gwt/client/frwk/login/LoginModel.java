@@ -18,15 +18,19 @@ public class LoginModel extends FormsModel implements LoginModelI {
 
 	public static final String FK_PASSWORD = "password";
 
-	private boolean useSavingAccount = true;// NOTE
+	// NOTE at the time when client start useing saved account, when open the
+	// view of login,set this to false.
+	private boolean useSavingAccount = true;
 
 	public LoginModel(String name) {
 		super(name);
 
 		// auth is hidden action
-
+		ControlUtil.addAction(this, Actions.A_LOGIN_AUTO, true);
+		
 		ControlUtil.addAction(this, Actions.A_LOGIN_ANONYMOUS, true);// create
-																	// anonymous
+																		// anonymous
+		
 
 		// client start,to login
 		// from cokies or web data
@@ -51,8 +55,7 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	@Override
 	public boolean isSavingAccount() {
 		//
-		Boolean bd = (Boolean) this.getDefaultForm().getFieldModel(FK_SAVINGACCOUNT, true)
-				.getFieldValue();
+		Boolean bd = (Boolean) this.getDefaultForm().getFieldModel(FK_SAVINGACCOUNT, true).getFieldValue();
 		return bd == null ? false : bd;
 
 	}
@@ -73,20 +76,4 @@ public class LoginModel extends FormsModel implements LoginModelI {
 		return sd == null ? null : sd;
 	}
 
-	/*
-	 * Dec 9, 2012
-	 */
-	@Override
-	public boolean getIsUsingSavedAccount() {
-		//
-		return this.useSavingAccount;
-	}
-
-	/*
-	 * Dec 9, 2012
-	 */
-	@Override
-	public void setIsUsingSavedAccout(boolean b) {
-		this.useSavingAccount = b;
-	}
 }

@@ -5,6 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.signup;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.event.model.SignupConfirmCodeEvent;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
@@ -18,6 +19,8 @@ import com.fs.uicore.api.gwt.client.core.UiCallbackI;
  * 
  */
 public class SignupModel extends FormsModel implements SignupModelI {
+
+	private String confirmCode;
 
 	/**
 	 * @param name
@@ -40,8 +43,8 @@ public class SignupModel extends FormsModel implements SignupModelI {
 		def.addField("email", String.class);
 		def.addField("isAgree", Boolean.class);
 		// options
-		FieldModel fm = def.addField("confirmCodeNotifier", String.class,
-				EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
+		FieldModel fm = def.addField("confirmCodeNotifier", String.class, EnumEditorI.class,
+				new UiCallbackI<EnumEditorI, Object>() {
 
 					@Override
 					public Object execute(EnumEditorI t) {
@@ -59,6 +62,16 @@ public class SignupModel extends FormsModel implements SignupModelI {
 		//
 		con.addField("email", String.class);
 		con.addField("confirmCode", String.class);
+
+	}
+
+	/*
+	 * Jan 12, 2013
+	 */
+	@Override
+	public void setConfirmCode(String cc) {
+		this.confirmCode = cc;
+		new SignupConfirmCodeEvent(this, cc).dispatch();
 
 	}
 

@@ -80,6 +80,7 @@ import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
 import com.fs.uicommons.impl.gwt.client.gchat.JoinAP;
 import com.fs.uicommons.impl.gwt.client.gchat.SendAP;
+import com.fs.uicommons.impl.gwt.client.handler.action.LoginAutoAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
@@ -157,6 +158,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	public void activeActionHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 
+		eb.addHandler(Actions.A_LOGIN_AUTO, new LoginAutoAH());
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH());
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP());
 		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH());
@@ -220,7 +222,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public void handle(AfterClientStartEvent e) {
 				//
-				ControlUtil.triggerAction(login.get().getModel(), Actions.A_LOGIN_SUBMIT);//
+				ControlUtil.triggerAction(login.get().getModel(), Actions.A_LOGIN_AUTO);//
 			}
 		});
 

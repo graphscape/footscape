@@ -26,9 +26,12 @@ public class Actions {
 	public static final Path A_LOGIN_LOGOUT = A_LOGIN.getSubPath("logout");
 	// logout and open login
 	// view?.
-
+	public static final Path A_LOGIN_AUTO = A_LOGIN.getSubPath("auto");
+	
 	public static final Path A_LOGIN_SUBMIT = A_LOGIN.getSubPath("submit");
+	
 	public static final Path A_GCHAT_JOIN = A_GCHAT.getSubPath("join");
+	
 	public static final Path A_GCHAT_SEND = A_GCHAT.getSubPath("send");
 
 }

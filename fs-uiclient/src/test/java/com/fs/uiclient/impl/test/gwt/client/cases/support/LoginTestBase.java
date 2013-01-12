@@ -27,7 +27,6 @@ public abstract class LoginTestBase extends SignupTestBase {
 	@Override
 	protected void onSignup(String email, String pass) {
 		LoginModelI lm = this.loginView.getModel();
-		lm.setIsUsingSavedAccout(false);//
 		
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);
 		FormView fv = this.loginView.find(FormView.class, "default", true);

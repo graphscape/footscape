@@ -45,6 +45,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
@@ -111,6 +112,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP("/profile/init"));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP());
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP("/signup/submit"));
+		eb.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH());
 		eb.addHandler(Actions.A_SIGNUP_CONFIRM, new FormSubmitAP("/signup/confirm",
 				SignupModelI.F_CONFIRM));
 		

@@ -5,6 +5,8 @@ package com.fs.uicore.api.gwt.client.support;
 
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -14,6 +16,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  * 
  */
 public class HandlerEntry {
+
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(HandlerEntry.class);
 
 	protected Path path;
 
@@ -36,14 +40,22 @@ public class HandlerEntry {
 
 				@Override
 				public void execute() {
-					HandlerEntry.this.handlers.handle(md);
+					HandlerEntry.this.doHandle(md);
 
 				}
 			});
 		} else {
-			this.handlers.handle(md);
+			HandlerEntry.this.doHandle(md);
 		}
 		return true;
+	}
+
+	protected void doHandle(MsgWrapper md) {
+		try {
+			this.handlers.handle(md);
+		} catch (Throwable t) {
+			LOG.error("handler exception for msg:" + md, t);
+		}
 	}
 
 	public boolean isMatch(Path p) {

@@ -43,8 +43,7 @@ public class SignupAnonymousMsgHandler implements MessageHandlerI<EndpointMessag
 		AnonymousAccountLDW aal = sai.getAnonymous();
 		aal.save(accId, password);// save anonymous
 														// account.
-		lm.setIsUsingSavedAccout(true);//
-		ControlUtil.triggerAction(lm, Actions.A_LOGIN_SUBMIT);//
+		ControlUtil.triggerAction(lm, Actions.A_LOGIN_AUTO);//
 	}
 
 }

@@ -17,5 +17,6 @@ public interface SignupModelI extends ModelI {
 
 	public static final String F_CONFIRM = "confirm";//
 
+	public void setConfirmCode(String cc);
 
 }

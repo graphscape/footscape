@@ -124,7 +124,6 @@ public class LoginTest extends TestBase {
 
 	private void login() {
 		LoginModelI lm = this.loginView.getModel();
-		lm.setIsUsingSavedAccout(false);//
 		StringEditorI unameE = this.loginView.find(StringEditorI.class, "email", true);
 		unameE.input((this.email));
 

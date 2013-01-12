@@ -31,9 +31,9 @@ public class LoginMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 		boolean isSaved = res.getBoolean("isSaved", Boolean.FALSE);//
 		if (isSaved) {// successed for saved,do nothing,remain the same
 
-			lm.setIsUsingSavedAccout(false);// allow user to input with view
+			
 
-		} else {// user provide info
+		} else {// user provide info from view.
 				// String type = res.getRequest().getPayLoadAsString("type",
 				// true);
 				// type must be registered

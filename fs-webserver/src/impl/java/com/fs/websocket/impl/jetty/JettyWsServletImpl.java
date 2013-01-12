@@ -14,7 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.websocket.api.WebSocketBehavior;
 import org.eclipse.jetty.websocket.api.WebSocketPolicy;
+import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.lang.FsException;
 
@@ -27,6 +30,8 @@ import com.fs.commons.api.lang.FsException;
  */
 
 public class JettyWsServletImpl extends HttpServlet {
+
+	private static Logger LOG = LoggerFactory.getLogger(JettyWsServletImpl.class);
 
 	protected JettyWsManagerImpl manager;
 
@@ -59,8 +64,9 @@ public class JettyWsServletImpl extends HttpServlet {
 			}
 
 			String max = getInitParameter("maxIdleTime", true);
-			policy.setIdleTimeout(Integer.parseInt(max));
 
+			policy.setIdleTimeout(Integer.parseInt(max));
+			LOG.info("maxIdleTime:" + max);//
 			max = getInitParameter("maxTextMessageSize");
 			if (max != null) {
 				policy.setMaxTextMessageSize(Integer.parseInt(max));
