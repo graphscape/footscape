@@ -9,7 +9,8 @@ import org.junit.Before;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
-import com.fs.uiclient.impl.test.gwt.client.cases.support.ActivityTestBase;
+import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
+import com.fs.uiclient.impl.test.gwt.client.cases.signup.ActivityTest;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
@@ -17,7 +18,9 @@ import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatYouJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 
 /**
  * @author wu This test not automatic,start test,wait 20-30sec,login in xmpp
@@ -25,12 +28,13 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
  *         ar-act-001@muc.thinkpad
  * 
  */
-public class AChatTest extends ActivityTestBase {
+public class AChatTest extends ActivityTest {
 
 	private static String TEXT = "hello exp2";
 
 	private ActivityModelI activityModel;
-
+	private ActivityView activityView;
+	ActivityTestWorker worker;
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
@@ -45,7 +49,8 @@ public class AChatTest extends ActivityTestBase {
 	}
 
 	public void testAChat() {
-
+		this.worker = new ActivityTestWorker("user1","user1@some.com","user1",3);
+		
 		this.delayTestFinish(this.timeoutMillis * 100);
 
 	}
@@ -78,13 +83,24 @@ public class AChatTest extends ActivityTestBase {
 	}
 
 	/*
-	 * Oct 22, 2012
+	 *Jan 12, 2013
 	 */
 	@Override
-	protected void onActivityViewAttached(ActivityView src) {
-		super.onActivityViewAttached(src);
+	protected void onAttachedEvent(AttachedEvent ae) {
+		// 
+		super.onAttachedEvent(ae);
+		UiObjectI src = ae.getSource();
+		if(src instanceof ActivityView){
+			this.onActivityViewAttached((ActivityView)src);
+		}
+	}
 
-		this.activityModel = (ActivityModelI) this.activityView.getModel();// for
+	/*
+	 * Oct 22, 2012
+	 */
+	protected void onActivityViewAttached(ActivityView src) {
+		this.activityView = src;
+		this.activityModel = (ActivityModelI) src.getModel();// for
 																			// chat
 																			// room
 																			// to

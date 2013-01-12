@@ -5,7 +5,7 @@
 package com.fs.uiclient.impl.test.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
-import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -34,7 +34,7 @@ public class UiClientTestEntryPoint implements EntryPoint {
 		// UiLoggerFactory.configure((String) null, UiLoggerI.LEVEL_DEBUG);//
 
 		TestWorker.beforeTesting();
-		final LoginTestWorker lth = new LoginTestWorker("user1", "user1@some.com", "user1");
+		final ActivityTestWorker worker = new ActivityTestWorker("user1", "user1@some.com", "user1", 3);
 
 		GwtSPI[] spis = new GwtSPI[] { (UiCoreGwtSPI) GWT.create(UiCoreGwtSPI.class),
 				(UiCommonsGPI) GWT.create(UiCommonsGPI.class),
@@ -43,7 +43,7 @@ public class UiClientTestEntryPoint implements EntryPoint {
 
 			@Override
 			public void handle(Event e) {
-				lth.onEvent(e);
+				worker.onEvent(e);
 			}
 		});
 

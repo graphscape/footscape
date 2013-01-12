@@ -84,7 +84,7 @@ public class GChatView extends SimpleView implements ManagableI {
 	public String getManager() {
 		//
 
-		return BossModelI.M_LEFT; // TODO popup manager.
+		return BossModelI.M_CENTER; // TODO popup manager.
 
 	}
 

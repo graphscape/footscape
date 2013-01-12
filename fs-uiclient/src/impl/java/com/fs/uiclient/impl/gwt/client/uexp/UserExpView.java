@@ -132,7 +132,7 @@ public class UserExpView extends SimpleView {
 			td0.addClassName("icon");
 			td0.setAttribute("rowspan", "4");
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
-			image.setAttribute("src", "TODO");//
+			image.setAttribute("src", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==");//
 			td0.append(image);
 
 		}
@@ -166,6 +166,7 @@ public class UserExpView extends SimpleView {
 		{// activity
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
+			td.setAttribute("colspan", "2");//
 			td.getElement().setInnerText(t.getActivityId());
 
 		}
