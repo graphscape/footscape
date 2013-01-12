@@ -3,51 +3,36 @@
  */
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
+import com.fs.uiclient.impl.gwt.client.testsupport.ExpTestWorker;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uiclient.impl.test.gwt.client.cases.support.ExpTestBase;
+import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
+import com.fs.uicore.api.gwt.client.core.Event;
 
 /**
  * @author wuzhen
  * 
  */
-public class UserExpTest extends ExpTestBase {
+public class UserExpTest extends TestBase {
+	ExpTestWorker worker;
 
 	public void testUserExp() {
+		worker = new ExpTestWorker("user1", "user1@some.com", "user1", 2);
+
 		this.finishing.add("all.created");
 		this.delayTestFinish(timeoutMillis * 10);
 
 	}
 
+	/*
+	 * Jan 12, 2013
+	 */
 	@Override
-	protected void onNewExpView(int idx, UserExpView e) {
-		if (idx + 1 == this.totalExp()) {
+	public void onEvent(Event e) {
+		super.onEvent(e);
+		this.worker.onEvent(e);
+		if (this.worker.getTasks().isEmpty()) {
 			this.tryFinish("all.created");
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.impl.test.gwt.client.cases.support.ExpTestBase#totalExp()
-	 */
-	@Override
-	protected int totalExp() {
-		// TODO Auto-generated method stub
-		return 2;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.impl.test.gwt.client.cases.support.ExpTestBase#expText
-	 * (int)
-	 */
-	@Override
-	protected String expText(int idx) {
-		// TODO Auto-generated method stub
-		return "exp-" + idx;
 	}
 
 }

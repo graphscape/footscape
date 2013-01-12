@@ -1,7 +1,7 @@
 /**
  *  Dec 26, 2012
  */
-package com.fs.uiclient.impl.test.gwt.client.cases.support;
+package com.fs.uiclient.impl.gwt.client.testsupport;
 
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uicommons.api.gwt.client.Actions;
@@ -18,9 +18,14 @@ import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 
 /**
  * @author wuzhen
- * @deprecated use LoginTestWorker
+ * 
  */
-public abstract class LoginTestBase extends SignupTestBase {
+public class LoginTestWorker extends SignupTestWorker {
+
+	
+	public LoginTestWorker(String nick, String email, String pass) {
+		super(nick, email, pass);
+	}
 
 	protected LoginView loginView;
 
@@ -63,7 +68,9 @@ public abstract class LoginTestBase extends SignupTestBase {
 	/**
 	 * Jan 3, 2013
 	 */
-	protected abstract void onRegisterUserLogin(UserInfo ui);
+	protected void onRegisterUserLogin(UserInfo ui) {
+
+	}
 
 	/**
 	 * Jan 3, 2013
