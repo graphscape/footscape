@@ -16,10 +16,12 @@ import com.fs.uicore.api.gwt.client.LazyI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
@@ -194,9 +196,11 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	}
 
 	public <T extends UiObjectI> List<T> getChildList(Class<T> cls, String name) {
+
 		List<T> rt = new ArrayList<T>();
 		for (UiObjectI oi : this.childList) {
-			if (InstanceOf.isInstance(cls, oi) && (name == null || name.equals(oi.getName()))) {
+			if ((cls == null || InstanceOf.isInstance(cls, oi))
+					&& (name == null || name.equals(oi.getName()))) {
 				rt.add((T) oi);
 			}
 		}
@@ -741,6 +745,60 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		}
 
 		return null;
+	}
+
+	/*
+	 * Jan 13, 2013
+	 */
+	@Override
+	public <T extends UiObjectI> T find(final UiCallbackI<UiObjectI, T> cb) {
+		//
+		final Holder<T> rtH = new Holder<T>();
+		this.forEach(new UiCallbackI<UiObjectI, Boolean>() {
+
+			@Override
+			public Boolean execute(UiObjectI t) {
+				//
+				T rt = cb.execute(t);
+				if (rt != null) {
+					rtH.setTarget(rt);
+					return true;
+				}
+				return null;
+			}
+		});
+		return rtH.getTarget();
+	}
+
+	/*
+	 * Jan 13, 2013
+	 */
+	@Override
+	public void forEach(UiCallbackI<UiObjectI, Boolean> cb) {
+		Holder<Boolean> bh = new Holder<Boolean>(false);
+		UiObjectSupport.forEach(this, cb, bh);
+
+	}
+
+	private static void forEach(UiObjectI obj, UiCallbackI<UiObjectI, Boolean> cb, Holder<Boolean> bh) {
+		//
+		List<UiObjectI> cl = obj.getChildList(UiObjectI.class);
+		for (UiObjectI uo : cl) {
+
+			Boolean stop = cb.execute(uo);
+			if (stop != null && stop) {
+				bh.setTarget(true);
+				return;
+			}
+		}
+		for (UiObjectI uo : cl) {
+			UiObjectSupport.forEach(uo, cb, bh);
+			Boolean stop = bh.getTarget();
+			if (stop != null && stop) {
+				return;
+			}
+
+		}
 	}
 
 }

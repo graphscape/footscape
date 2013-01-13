@@ -16,7 +16,7 @@ import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
@@ -44,7 +44,7 @@ public class ExpTestWorker extends LoginTestWorker {
 		super(user, email, pass);
 		this.totalExp = totalExp;
 		this.ueViewMap = new HashMap<String, UserExpView>();
-		this.tasks.add("uelistview");// 1
+		this.tasks.add("founduelistview");// 1
 		this.tasks.add("editview");// 1
 		this.tasks.add("editrequest");// 1
 		this.tasks.add("editok");// 2
@@ -54,31 +54,16 @@ public class ExpTestWorker extends LoginTestWorker {
 	}
 
 	@Override
-	public void onEvent(Event e) {
-		super.onEvent(e);
-
-	}
-
-	@Override
 	public void onAttachedEvent(AttachedEvent ae) {
 		super.onAttachedEvent(ae);
 		UiObjectI obj = ae.getSource();
-		if (ae.getSource() instanceof UserExpListView) {
-			this.onUserExpListViewAttached((UserExpListView) ae.getSource());
-		}
+
 		if (obj instanceof ExpEditView) {
 			this.onExpEditViewAttached((ExpEditView) obj);
 		}
 		if (obj instanceof UserExpView) {
 			this.onUserExpViewAttached((UserExpView) obj);
 		}
-	}
-
-	public void onUserExpListViewAttached(UserExpListView v) {
-		this.ueListView = v;
-		this.tryFinish("uelistview");
-		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit
-		// view
 	}
 
 	/**
@@ -88,12 +73,27 @@ public class ExpTestWorker extends LoginTestWorker {
 		//
 		this.eeView = v;
 		this.tryFinish("editview");
+		
+		this.submitExp();
+		this.tryFinish("editrequest");
 	}
 
 	@Override
 	protected void onRegisterUserLogin(UserInfo ui) {
-		this.submitExp();
-		this.tryFinish("editrequest");
+		this.ueListView = this.client.getRoot().find(new UiCallbackI<UiObjectI, UserExpListView>() {
+
+			@Override
+			public UserExpListView execute(UiObjectI t) {
+				//
+				if (!(t instanceof UserExpListView)) {
+					return null;
+				}
+				return (UserExpListView) t;
+			}
+		});
+		this.tryFinish("founduelistview");
+		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit
+		
 	}
 
 	protected String expText(int idx) {

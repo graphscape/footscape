@@ -18,7 +18,12 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         Refresh Incoming CR,dispatch them to the UserExpList.
+ *         <p>
+ *         For the deleted Incoming CR,it should not be here to remove from
+ *         uelist, but in another message for calling
+ *         UserExpListControlI.incomingCrConfirmed() by CooperConfirmSuccessMH
  */
 public class IncomingCrRefreshMH extends MHSupport {
 

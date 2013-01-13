@@ -10,13 +10,14 @@ import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
+import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 
 /**
  * @author wuzhen
@@ -29,13 +30,16 @@ public abstract class SignupTestWorker extends TestWorker {
 	protected String email;
 
 	protected String password;
-	
+
 	protected String nick;
 	
-	public SignupTestWorker(String nick, String email, String pass){
+	private boolean signingUp=false;
+
+	public SignupTestWorker(String nick, String email, String pass) {
 		this.nick = nick;
 		this.email = email;
 		this.password = pass;
+		this.tasks.add("signup.done");
 	}
 
 	public void onEvent(Event e) {
@@ -45,21 +49,31 @@ public abstract class SignupTestWorker extends TestWorker {
 	}
 
 	@Override
-	protected void onBondEvent(EndpointBondEvent e) {
-		UserInfo ui = e.getChannel().getUserInfo();
-		if (ui.isAnonymous()) {//
-			// open signup view
-			Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_SIGNUP, true);
-
+	public void start(UiClientI client) {
+		super.start(client);
+		this.doStart();
+	}
+	protected void doStart(){
+		UserInfo ui = this.endpoint.getUserInfo();
+		if (!ui.isAnonymous()) {//
+			throw new UiException("user info not anonymous,ui:" + ui);
+		}
+		Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_SIGNUP, true);
+		this.signupView = mvc.getView();
+		if(this.signupView.isAttached()){
+			this.trySignup();
 		}
 	}
-
+	/*
+	 *Jan 13, 2013
+	 */
 	@Override
-	public void onAttachedEvent(AttachedEvent ae) {
+	protected void onAttachedEvent(AttachedEvent ae) {
+		// 
 		super.onAttachedEvent(ae);
-		UiObjectI obj = ae.getSource();
-		if (obj instanceof SignupView) {
-			this.onSignupView((SignupView) obj);
+		UiObjectI src = ae.getSource();
+		if(src instanceof SignupView){
+			this.trySignup();
 		}
 	}
 
@@ -80,16 +94,20 @@ public abstract class SignupTestWorker extends TestWorker {
 
 			this.signupView.clickAction(Actions.A_SIGNUP_CONFIRM);
 		} else if (p.equals(Path.valueOf("/endpoint/message/signup/confirm"))) {
+			this.tryFinish("signup.done");
 			this.onSignup(this.email, this.password);
 		}
 	}
-
-
+	
 	/**
 	 * @param obj
 	 */
-	private void onSignupView(SignupView obj) {
-		this.signupView = obj;//
+	private void trySignup() {
+		if(this.signingUp ){
+			return;
+		}
+		
+		this.signingUp = true;
 
 		FormView fv = this.signupView.find(FormView.class, "default", true);
 
@@ -114,6 +132,8 @@ public abstract class SignupTestWorker extends TestWorker {
 		this.signupView.clickAction(Actions.A_SIGNUP_SUBMIT);
 
 	}
+
 	protected abstract void onSignup(String email, String pass);
 
+	
 }

@@ -159,10 +159,10 @@ public class ActivityTestWorker extends ExpTestWorker {
 		if (crId != null) {
 			Boolean pro = (Boolean) v.getProperty("incomingCrConfirmProcessing");
 			if (pro != null) {
-				throw new UiException("/notify/incomingCr should cause the crId to be null");
+				throw new UiException("should not be here, CooperConfirmSuccessMH should cause the crId to be null");
 			}
 
-			v.setProperty("incomingCrConfirmProcessing", true);
+			v.setProperty("incomingCrConfirmProcessing", true);//next onUserExpViewUpdate should not here
 
 			v.clickAction(Actions.A_UEXP_COOPER_CONFIRM);
 			this.tryFinish("cooper.confirm");

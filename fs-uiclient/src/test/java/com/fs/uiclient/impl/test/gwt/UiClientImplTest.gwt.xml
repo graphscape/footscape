@@ -7,4 +7,8 @@
 	<!-- <set-property name="gwt.logging.logLevel" value="WARNING" />Disable finest log of tigase gwt -->
 	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
 	<set-property name="gwt.logging.enabled" value="TRUE"/> 
+	<!-- SPI -->
+	<replace-with class="com.fs.uiclient.impl.test.gwt.client.UiClientTestGPIImpl">
+		<when-type-is class="com.fs.uiclient.impl.test.gwt.client.UiClientTestGPI" />
+	</replace-with>
 </module>

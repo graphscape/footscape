@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.Position;
+import com.fs.uicommons.api.gwt.client.event.HeaderItemDisplayNameUpdateEvent;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -27,11 +28,9 @@ public interface HeaderModelI extends ModelI {
 
 		protected String name;
 
-		public static final Location L_DISPLAY_NAME = Location
-				.valueOf("displayName");//
+		protected String displayName;
 
-		public static final Location L_ISSELECTED = Location
-				.valueOf("_isselected");
+		public static final Location L_ISSELECTED = Location.valueOf("_isselected");
 
 		public static final Location L_POSITION = Location.valueOf("_position");
 
@@ -66,8 +65,7 @@ public interface HeaderModelI extends ModelI {
 		public ItemModel addItem(String name) {
 			ItemModel old = this.getChild(ItemModel.class, name, false);
 			if (old != null) {
-				throw new UiException("already exist name:" + name
-						+ " under item:" + this.getName());
+				throw new UiException("already exist name:" + name + " under item:" + this.getName());
 			}
 			ItemModel rt = new ItemModel(name);
 
@@ -78,14 +76,13 @@ public interface HeaderModelI extends ModelI {
 
 		public ItemModel addItem(String name, final ManagedModelI mgd) {
 			final ItemModel rt = this.addItem(name);
-			this.addHandler(HeaderItemEvent.TYPE,
-					new EventHandlerI<HeaderItemEvent>() {
+			this.addHandler(HeaderItemEvent.TYPE, new EventHandlerI<HeaderItemEvent>() {
 
-						@Override
-						public void handle(HeaderItemEvent e) {
-							mgd.select(true);//
-						}
-					});
+				@Override
+				public void handle(HeaderItemEvent e) {
+					mgd.select(true);//
+				}
+			});
 
 			return rt;
 		}
@@ -130,6 +127,22 @@ public interface HeaderModelI extends ModelI {
 		 */
 		public void select(boolean b) {
 			this.setValue(L_ISSELECTED, b);
+		}
+
+		/**
+		 * @return the displayName
+		 */
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		/**
+		 * @param displayName
+		 *            the displayName to set
+		 */
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
+			new HeaderItemDisplayNameUpdateEvent(this, this.displayName).dispatch();
 		}
 
 	}

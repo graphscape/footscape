@@ -4,36 +4,37 @@
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
 import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
-import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uiclient.impl.test.gwt.client.cases.support.WorkerTestBase;
+import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class ActivityTest extends TestBase {
+public class ActivityTest extends WorkerTestBase<ActivityTestWorker> {
 
-	ActivityTestWorker worker;
-	
 	public void testActivityOpen() {
-		this.worker = new ActivityTestWorker("user1","user1@some.com","user1",3);
-		
+
 		this.delayTestFinish(timeoutMillis);
 
 	}
 
 	/*
-	 *Jan 12, 2013
+	 * Jan 13, 2013
 	 */
 	@Override
-	public void onEvent(Event e) {
-		// 
-		super.onEvent(e);
-		this.worker.onEvent(e);
-		if(this.worker.getTasks().isEmpty()){
-			this.finishTest();//
-		}
+	protected ActivityTestWorker newWorker(UserLoginEvent le) {
+		//
+		return new ActivityTestWorker("user1", "user1@some.com", "user1", 3);
 	}
-	
+
+	/*
+	 * Jan 13, 2013
+	 */
+	@Override
+	protected void done() {
+		//
+		this.finishTest();
+	}
 
 }

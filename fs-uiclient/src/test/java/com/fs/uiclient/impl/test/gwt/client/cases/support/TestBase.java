@@ -10,8 +10,10 @@ import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
+import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -108,8 +110,22 @@ public class TestBase extends GWTTestCase {
 			this.onSuccessMessageEvent((SuccessMessageEvent) e);
 		} else if (e instanceof FailureMessageEvent) {
 			this.onFailureMessageEvent((FailureMessageEvent) e);
+		} else if (e instanceof UserLoginEvent) {
+			UserLoginEvent le = (UserLoginEvent) e;
+			if (le.getUserInfo().isAnonymous()) {
+				this.onAnonymousUserLogin(le);
+			}
 		}
 
+	}
+
+	/**
+	 *Jan 13, 2013
+	 *
+	 */
+	protected void onAnonymousUserLogin(UserLoginEvent le) {
+		// 
+		
 	}
 
 	/**

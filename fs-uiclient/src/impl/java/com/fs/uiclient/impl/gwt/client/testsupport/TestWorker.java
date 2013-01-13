@@ -14,9 +14,9 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.core.Event;
-import com.fs.uicore.api.gwt.client.core.UiObjectI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 
 /**
  * @author wu
@@ -35,6 +35,8 @@ public abstract class TestWorker {
 	protected MainControlI mcontrol;
 
 	protected ControlManagerI manager;
+	
+	protected EndPointI endpoint;
 
 	protected Set<String> tasks = new HashSet<String>();
 
@@ -45,14 +47,30 @@ public abstract class TestWorker {
 		}
 	}
 
+	public void start(UiClientI client) {
+		this.client = client;
+		this.client.getContainer().getEventBus().addHandler(new EventHandlerI<Event>() {
+
+			@Override
+			public void handle(Event t) {
+				TestWorker.this.onEvent(t);//
+			}
+		});
+		this.endpoint = this.client.getEndpoint();
+		this.manager = client.find(ControlManagerI.class, true);
+		this.mcontrol = client.find(MainControlI.class, true);
+
+	}
+
 	public void onEvent(Event e) {
-		System.out.println("TestBase.onEvent:" + e);
+		if (this.isDone()) {
+			return;
+		}
+		System.out.println("TestWroker.onEvent:" + e);
 
 		if (e instanceof AttachedEvent) {
 			AttachedEvent ae = (AttachedEvent) e;
 			this.onAttachedEvent(ae);
-		} else if (e instanceof EndpointBondEvent) {
-			this.onBondEvent((EndpointBondEvent) e);
 		} else if (e instanceof SuccessMessageEvent) {
 			this.onSuccessMessageEvent((SuccessMessageEvent) e);
 		} else if (e instanceof FailureMessageEvent) {
@@ -65,14 +83,7 @@ public abstract class TestWorker {
 	 * @param ae
 	 */
 	protected void onAttachedEvent(AttachedEvent ae) {
-		UiObjectI src = ae.getSource();
-		if (ae.getSource() instanceof UiClientI) {
-			this.client = (UiClientI) ae.getSource();
-		} else if (ae.getSource() instanceof MainControlI) {
-			this.mcontrol = (MainControlI) ae.getSource();
-		} else if (src instanceof ControlManagerI) {
-			this.manager = (ControlManagerI) src;
-		}
+
 	}
 
 	/**
@@ -92,17 +103,14 @@ public abstract class TestWorker {
 	}
 
 	/**
-	 * Jan 3, 2013
-	 */
-	protected void onBondEvent(EndpointBondEvent e) {
-
-	}
-
-	/**
 	 * @return the tasks
 	 */
 	public Set<String> getTasks() {
 		return tasks;
+	}
+
+	public boolean isDone() {
+		return this.tasks.isEmpty();
 	}
 
 }

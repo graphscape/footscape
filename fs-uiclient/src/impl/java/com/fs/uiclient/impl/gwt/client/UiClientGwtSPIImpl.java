@@ -37,6 +37,8 @@ import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.RefreshIncomingCrAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpCooperConfirmAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.UserExpOpenActivityAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.ActivitiesRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ActivityCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
@@ -48,14 +50,14 @@ import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.main.MainModel;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
-import com.fs.uiclient.impl.gwt.client.uexp.OpenActivityAP;
-import com.fs.uiclient.impl.gwt.client.uexp.SelectAP;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -87,6 +89,15 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		this.activeActionHandlers(c, client);
 		this.activeMainControl(c, client);
 		this.activeMessageHandlers(c, client);
+		this.activeOtherHandlers(c,client);
+	}
+
+	/**
+	 *Jan 13, 2013
+	 */
+	private void activeOtherHandlers(ContainerI c, UiClientI client) {
+		EventBusI eb = client.getEventBus(true);
+		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler());
 	}
 
 	/**
@@ -120,8 +131,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_UEL_CREATE,
 				new OpenExpEditAP());
 		
-		eb.addHandler(Actions.A_UEXP_OPEN_ACTIVITY, new OpenActivityAP());
-		eb.addHandler(Actions.A_UEXP_SELECT, new SelectAP());
+		eb.addHandler(Actions.A_UEXP_OPEN_ACTIVITY, new UserExpOpenActivityAP());
+		eb.addHandler(Actions.A_UEXP_SELECT, new UserExpSelectAP());
 		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP());
 	}
 

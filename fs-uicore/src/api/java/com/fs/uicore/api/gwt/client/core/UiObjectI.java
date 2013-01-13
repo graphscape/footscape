@@ -98,6 +98,10 @@ public interface UiObjectI extends UiPropertiesI<Object> {
 
 	public <T extends UiObjectI> List<T> findList(Class<T> cls, String name);
 
+	public <T extends UiObjectI> T find(UiCallbackI<UiObjectI, T> cb);
+	
+	public void forEach(UiCallbackI<UiObjectI, Boolean> cb);
+
 	public <T extends UiObjectI> List<T> getChildList(Class<T> cls);
 
 	public String dump();

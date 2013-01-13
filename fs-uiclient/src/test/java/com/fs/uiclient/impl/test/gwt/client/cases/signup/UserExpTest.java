@@ -4,35 +4,30 @@
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
 import com.fs.uiclient.impl.gwt.client.testsupport.ExpTestWorker;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uiclient.impl.test.gwt.client.cases.support.WorkerTestBase;
+import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 
 /**
  * @author wuzhen
  * 
  */
-public class UserExpTest extends TestBase {
-	ExpTestWorker worker;
+public class UserExpTest extends WorkerTestBase<ExpTestWorker> {
 
 	public void testUserExp() {
-		worker = new ExpTestWorker("user1", "user1@some.com", "user1", 2);
-
-		this.finishing.add("all.created");
 		this.delayTestFinish(timeoutMillis * 10);
+	}
+
+	protected ExpTestWorker newWorker(UserLoginEvent le) {
+		return new ExpTestWorker("user1", "user1@some.com", "user1", 2);
 
 	}
 
 	/*
-	 * Jan 12, 2013
+	 * Jan 13, 2013
 	 */
 	@Override
-	public void onEvent(Event e) {
-		super.onEvent(e);
-		this.worker.onEvent(e);
-		if (this.worker.getTasks().isEmpty()) {
-			this.tryFinish("all.created");
-		}
+	protected void done() {
+		this.finishTest();
 	}
 
 }

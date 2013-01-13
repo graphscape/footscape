@@ -320,7 +320,7 @@ Console View
 }
 
 /*Tab*/
-.wgt-TabberWImpl .position-header {
+.wgt-TabberWImpl td.position-header {
 	border-bottom: 1px solid #888;
 	padding: 0px;
 }

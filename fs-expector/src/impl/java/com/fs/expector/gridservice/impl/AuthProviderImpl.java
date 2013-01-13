@@ -51,7 +51,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 				return null;
 			}
 			accountId = ai.getAccountId();
-
+			
 		} else {
 			accountId = (String) credential.getProperty("accountId", true);
 		}
@@ -62,9 +62,10 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 			return null;
 		}
 		
+		String nick = acc.getNick();
 		rt.setProperty("isAnonymous", acc.getIsAnonymous());
 		rt.setProperty(SessionGd.ACCID, accountId);
-
+		rt.setProperty("nick", nick);
 		return rt;
 	}
 

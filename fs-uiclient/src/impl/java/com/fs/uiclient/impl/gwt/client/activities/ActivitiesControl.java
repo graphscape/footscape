@@ -11,6 +11,7 @@ import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
+import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
@@ -46,7 +47,15 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	@Override
 	public void openActivity(final String actId) {
 		//
-		LazyMvcI mvc = new LazyMvcSupport(this.model, "activity") {
+
+		String lname = "activity-" + actId;
+		Mvc mvc = this.getLazyObject(lname, false);
+		if (mvc != null) {
+			//TODO focus
+			return;
+		}
+
+		LazyMvcI lmvc = new LazyMvcSupport(this.model, lname) {
 
 			@Override
 			protected ModelI createModel(String name) {
@@ -67,7 +76,8 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 			}
 
 		};
-		mvc.get();//
+		this.addLazy(lname, lmvc);
+		lmvc.get();//
 
 	}
 

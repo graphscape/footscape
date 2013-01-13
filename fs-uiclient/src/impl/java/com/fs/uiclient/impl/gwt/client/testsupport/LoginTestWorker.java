@@ -11,9 +11,9 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
-import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 
 /**
@@ -22,15 +22,26 @@ import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
  */
 public class LoginTestWorker extends SignupTestWorker {
 
-	
+	protected LoginView loginView;
+
 	public LoginTestWorker(String nick, String email, String pass) {
 		super(nick, email, pass);
+		this.tasks.add("login.done");
 	}
-
-	protected LoginView loginView;
 
 	@Override
 	protected void onSignup(String email, String pass) {
+		this.loginView = this.client.getRoot().find(new UiCallbackI<UiObjectI, LoginView>() {
+
+			@Override
+			public LoginView execute(UiObjectI t) {
+				//
+				if (!(t instanceof LoginView)) {
+					return null;
+				}
+				return (LoginView) t;
+			}
+		});
 		LoginModelI lm = this.loginView.getModel();
 
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);
@@ -61,6 +72,7 @@ public class LoginTestWorker extends SignupTestWorker {
 		if (ui.isAnonymous()) {
 			this.onAnonymousUserLogin();
 		} else {
+			this.tryFinish("login.done");
 			this.onRegisterUserLogin(ui);
 		}
 	}
@@ -80,24 +92,8 @@ public class LoginTestWorker extends SignupTestWorker {
 	}
 
 	@Override
-	public void onAttachedEvent(AttachedEvent ae) {
-		super.onAttachedEvent(ae);
-		UiObjectI obj = ae.getSource();
-		if (obj instanceof LoginView) {
-			this.onLoginView((LoginView) obj);
-		}
-	}
-
-	@Override
 	protected void onSuccessMessageEvent(SuccessMessageEvent e) {
 		super.onSuccessMessageEvent(e);
-	}
-
-	/**
-	 * @param obj
-	 */
-	protected void onLoginView(LoginView obj) {
-		this.loginView = obj;
 	}
 
 	/**

@@ -26,6 +26,7 @@ import com.google.gwt.core.client.GWT;
 public class UiClientTestEntryPoint implements EntryPoint {
 	private ContainerI container;
 	private UiClientI client;
+	private int totalExp = 10;
 
 	/* */
 	@Override
@@ -34,7 +35,7 @@ public class UiClientTestEntryPoint implements EntryPoint {
 		// UiLoggerFactory.configure((String) null, UiLoggerI.LEVEL_DEBUG);//
 
 		TestWorker.beforeTesting();
-		final ActivityTestWorker worker = new ActivityTestWorker("user1", "user1@some.com", "user1", 3);
+		final ActivityTestWorker worker = new ActivityTestWorker("user1", "user1@some.com", "user1", 10);
 
 		GwtSPI[] spis = new GwtSPI[] { (UiCoreGwtSPI) GWT.create(UiCoreGwtSPI.class),
 				(UiCommonsGPI) GWT.create(UiCommonsGPI.class),
