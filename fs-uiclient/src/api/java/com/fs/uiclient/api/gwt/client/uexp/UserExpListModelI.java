@@ -6,7 +6,6 @@ package com.fs.uiclient.api.gwt.client.uexp;
 
 import java.util.List;
 
-import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
@@ -21,8 +20,8 @@ public interface UserExpListModelI extends ModelI {
 	// content from server side.
 	// when one selected.
 	/**
-	 * @see ExpSearchControl.onUserExpSelected()
-	 * @see ExpSearchAP of ExpSearchControl
+	 * see ExpSearchControl.onUserExpSelected()
+	 * see ExpSearchAP of ExpSearchControl
 	 */
 	public static final Location L_SELECTED_EXP_ID = Location
 			.valueOf("selectedExpId");

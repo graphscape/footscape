@@ -4,9 +4,9 @@
  */
 package com.fs.uiclient.impl.gwt.client.tasks;
 
-import com.fs.uicommons.api.gwt.client.schedule.SchedulerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
+import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**

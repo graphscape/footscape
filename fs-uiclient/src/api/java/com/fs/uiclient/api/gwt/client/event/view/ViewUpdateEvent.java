@@ -3,8 +3,6 @@
  */
 package com.fs.uiclient.api.gwt.client.event.view;
 
-import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
@@ -14,8 +12,8 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  *         <p>
  *         This event is raised on user exp model, when it have received one
  *         incoming cr(cooper request).
- * @see UserExpModel
- * @see UserExpView
+ *         <p>
+ *         see: UserExpModel UserExpView
  */
 public class ViewUpdateEvent extends Event {
 	public static final Type<ViewUpdateEvent> TYPE = new Type<ViewUpdateEvent>(
