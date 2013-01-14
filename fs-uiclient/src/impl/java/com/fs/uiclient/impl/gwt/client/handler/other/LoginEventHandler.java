@@ -4,16 +4,16 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
-import com.fs.uiclient.api.gwt.client.support.HandlerSupport;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wu
  * 
  */
-public class LoginEventHandler extends HandlerSupport implements EventHandlerI<UserLoginEvent> {
+public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI<UserLoginEvent> {
 
 	/*
 	 * Jan 13, 2013

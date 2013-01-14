@@ -104,13 +104,13 @@ public interface HeaderModelI extends ModelI {
 			return p.getItemDepth() + 1;
 		}
 
-		public Path getPath() {
+		public Path getMenuPath() {
 			if (null == this.parent || !(this.parent instanceof ItemModel)) {
 				return Path.valueOf(this.name);
 
 			}
 			ItemModel p = (ItemModel) this.parent;
-			Path pp = p.getPath();
+			Path pp = p.getMenuPath();
 			List<String> nl = new ArrayList<String>(pp.getNameList());
 			nl.add(this.name);
 			return Path.valueOf(nl);

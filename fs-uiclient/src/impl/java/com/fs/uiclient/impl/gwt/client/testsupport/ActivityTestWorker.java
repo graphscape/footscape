@@ -14,6 +14,7 @@ import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
+import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
@@ -48,12 +49,12 @@ public class ActivityTestWorker extends ExpTestWorker {
 		this.tasks.add("selectuserexp");
 
 		this.tasks.add("cooper.submit");// user select one item from search
-											// result,a coper is created.
+										// result,a coper is created.
 		this.tasks.add("cooper.confirm");
 		//
 		this.tasks.add("activity.created");// the coper is confirmed by
-												// other user and activity
-												// created.
+											// other user and activity
+											// created.
 		this.tasks.add("activity.view");
 	}
 
@@ -91,9 +92,10 @@ public class ActivityTestWorker extends ExpTestWorker {
 		if (idx == this.totalExp - 1) {
 			// select the last exp
 			this.expIdSelected = id;
-			e.getModel().select(true);// select exp will cause select event and
-										// then
-										// exp search.
+			ControlUtil.triggerAction(e.getModel(), Actions.A_UEXP_SELECT);
+			// select exp will cause select event and
+			// then
+			// exp search.
 			this.tryFinish("selectuserexp");
 		}
 	}
@@ -159,10 +161,14 @@ public class ActivityTestWorker extends ExpTestWorker {
 		if (crId != null) {
 			Boolean pro = (Boolean) v.getProperty("incomingCrConfirmProcessing");
 			if (pro != null) {
-				throw new UiException("should not be here, CooperConfirmSuccessMH should cause the crId to be null");
+				throw new UiException(
+						"should not be here, CooperConfirmSuccessMH should cause the crId to be null");
 			}
 
-			v.setProperty("incomingCrConfirmProcessing", true);//next onUserExpViewUpdate should not here
+			v.setProperty("incomingCrConfirmProcessing", true);// next
+																// onUserExpViewUpdate
+																// should not
+																// here
 
 			v.clickAction(Actions.A_UEXP_COOPER_CONFIRM);
 			this.tryFinish("cooper.confirm");

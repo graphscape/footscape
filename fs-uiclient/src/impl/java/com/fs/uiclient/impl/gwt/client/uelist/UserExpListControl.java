@@ -8,28 +8,24 @@ import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 
 /**
  * @author wu
  * 
  */
-public class UserExpListControl extends ControlSupport implements
-		UserExpListControlI {
+public class UserExpListControl extends ControlSupport implements UserExpListControlI {
 
 	/**
 	 * @param name
@@ -38,7 +34,6 @@ public class UserExpListControl extends ControlSupport implements
 		super(name);
 		// changing.
 
-
 	}
 
 	@Override
@@ -46,8 +41,7 @@ public class UserExpListControl extends ControlSupport implements
 		super.doAttach();
 
 		// listen to the cooper model for incoming cooperrequest.
-		MainControlI mc = this.getManager()
-				.getControl(MainControlI.class, true);
+		MainControlI mc = this.getManager().getControl(MainControlI.class, true);
 		Mvc mvc = mc.getLazyObject(MainControlI.LZ_COOPER, true);
 		CooperModelI cpm = mvc.getModel();
 	}
@@ -95,44 +89,26 @@ public class UserExpListControl extends ControlSupport implements
 		// one should be selected.
 		// control it
 
-		this.getManager()
-				.addControl(new UserExpControl(cm.getName()).model(cm));
-		cm.addHandler(UserExpSelectEvent.TYPE,
-				new EventHandlerI<UserExpSelectEvent>() {
+		this.getManager().addControl(new UserExpControl(cm.getName()).model(cm));
 
-					@Override
-					public void handle(UserExpSelectEvent t) {
-						UserExpListControl.this.onUserExpSelectEvent(t);
-					}
-				});
 	}
 
-	/**
-	 * Model Event
-	 * 
-	 * @param t
+	/*
+	 * Jan 14, 2013
 	 */
-	protected void onUserExpSelectEvent(UserExpSelectEvent t) {
-		String expId = t.getModel().getExpId();
-		boolean selected = t.getModel().isSelected();//
-		if (!selected) {// ignore unselected.
-			return;
-		}
-		List<UserExpModel> ueL = this.getModel().getChildList(
-				UserExpModel.class);
-		for (UserExpModel ue : ueL) {
+	@Override
+	public void select(String expId) {
 
-			UserExpModel uem = (UserExpModel) this.getModel().getUserExp(expId,
-					true);
-			if (!uem.getExpId().equals(expId)) {
-				uem.select(false);
-			}
+		List<UserExpModel> ueL = this.getModel().getChildList(UserExpModel.class);
+		for (UserExpModel ue : ueL) {
+			boolean sel = ue.getExpId().equals(expId);
+			ue.select(sel);
 		}
 
 		// call search
-		ExpSearchControlI sc = this.getManager().getControl(
-				ExpSearchControlI.class, true);
+		ExpSearchControlI sc = this.getManager().getControl(ExpSearchControlI.class, true);
 		sc.search(expId);
+
 	}
 
 	/*
@@ -159,7 +135,7 @@ public class UserExpListControl extends ControlSupport implements
 		String expId = cr.getExpId2();// to this exp
 		UserExpModel uem = uelm.getUserExp(expId, true);//
 		String expId1 = cr.getExpId1();
-		
+
 		uem.setIncomingCrId(crId);// FROM exp id
 
 	}

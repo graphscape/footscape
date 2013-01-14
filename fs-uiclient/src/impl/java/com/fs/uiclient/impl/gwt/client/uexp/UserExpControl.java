@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpCooperConfirmAP;
@@ -29,5 +30,6 @@ public class UserExpControl extends ControlSupport implements UserExpControlI {
 		super.doModel(cm);
 
 	}
+
 
 }

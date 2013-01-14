@@ -3,7 +3,6 @@
  */
 package com.fs.uiclient.impl.test.gwt.client;
 
-import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
@@ -19,7 +18,7 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
  * @author wuzhen
  * 
  */
-public class UiClientTestGPIImpl implements UiClientGwtSPI {
+public class UiClientTestGPIImpl implements UiClientTestGPI {
 
 	private static final Path HI_ACTIVITY = Path.valueOf(new String[] { "testers", "activities-worker" });
 
@@ -45,8 +44,7 @@ public class UiClientTestGPIImpl implements UiClientGwtSPI {
 	 * Jan 13, 2013
 	 */
 	protected void onHeaderItemEvent(UiClientI client, HeaderItemEvent t) {
-		Path path = t.getPath();
-
+		Path path = t.getModel().getMenuPath();//
 		if (HI_ACTIVITY.equals(path)) {
 			new ActivityTestWorker("user1", "user1@some.com", "user1", 6).start(client);
 		}

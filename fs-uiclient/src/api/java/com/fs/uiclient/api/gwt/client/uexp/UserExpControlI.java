@@ -8,8 +8,8 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- *
+ * 
  */
-public interface UserExpControlI extends ControlI{
+public interface UserExpControlI extends ControlI {
 
 }

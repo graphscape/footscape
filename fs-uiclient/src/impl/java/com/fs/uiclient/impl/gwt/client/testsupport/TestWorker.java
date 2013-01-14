@@ -35,7 +35,7 @@ public abstract class TestWorker {
 	protected MainControlI mcontrol;
 
 	protected ControlManagerI manager;
-	
+
 	protected EndPointI endpoint;
 
 	protected Set<String> tasks = new HashSet<String>();
@@ -53,6 +53,9 @@ public abstract class TestWorker {
 
 			@Override
 			public void handle(Event t) {
+				if (TestWorker.this.isDone()) {
+					return;
+				}
 				TestWorker.this.onEvent(t);//
 			}
 		});
@@ -63,9 +66,7 @@ public abstract class TestWorker {
 	}
 
 	public void onEvent(Event e) {
-		if (this.isDone()) {
-			return;
-		}
+
 		System.out.println("TestWroker.onEvent:" + e);
 
 		if (e instanceof AttachedEvent) {
