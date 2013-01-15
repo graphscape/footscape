@@ -5,6 +5,10 @@ package com.fs.uicommons.impl.gwt.client.widget.list;
 
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
+import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
+import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
+import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
+import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -13,14 +17,12 @@ import com.google.gwt.user.client.DOM;
  */
 public class ListImpl extends LayoutSupport implements ListI {
 
-	/*
-	 * Grid
-	 */
+	protected TableWrapper table;
 
-	/** */
 	public ListImpl(String name) {
 		super(name, DOM.createDiv());
-
+		table = new TableWrapper();
+		this.elementWrapper.append(table);
 	}
 
 	/*
@@ -33,4 +35,10 @@ public class ListImpl extends LayoutSupport implements ListI {
 		return this.getChildWidgetList().size();
 	}
 
+	@Override
+	protected void processAddChildElementObject(ElementObjectI ceo) {
+		TRWrapper tr = this.table.addTr();
+		TDWrapper td = tr.addTd();
+		td.append(ceo.getElement());
+	}
 }

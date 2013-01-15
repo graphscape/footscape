@@ -10,6 +10,7 @@ import java.util.List;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
@@ -24,8 +25,8 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  */
 public class ActivityHandler extends ExpectorTMREHSupport {
 
-	//
-	public void handleDetail(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
+	@Handle("refresh")
+	public void handleRefresh(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 
 		// the relation between activity and user.
 		MessageI req = ew.getMessage();//
