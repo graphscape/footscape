@@ -4,8 +4,8 @@
  */
 package com.fs.uicore.api.gwt.client.html5;
 
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Window;
 
@@ -48,40 +48,80 @@ public final class WebSocketJSO extends JavaScriptObject {
 		return null;
 	}-*/;
 
-	public native void onOpen(UiCallbackI<Object, Object> handler)
-	/*-{
-		this.onopen = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt);
-		}
-	}-*/;
+	public final void onOpen(final HandlerI<EventJSO> handler) {
 
-	public native void onClose(UiCallbackI<Object, Object> handler)
-	/*-{
-		this.onclose = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt);
-		}
-	}-*/;
+		this.onEvent("onopen", new HandlerI<JavaScriptObject>() {
 
-	public native void onMessage(UiCallbackI<String, Object> handler)
-	/*-{
-		this.onmessage = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt.data);
-		}
-	}-*/;
+			@Override
+			public void handle(JavaScriptObject t) {
+				EventJSO jso = t.cast();
+				handler.handle(jso);
+			}
 
-	public native void onError(UiCallbackI<String, Object> handler)
+		});
+
+	}
+
+	public final void onClose(final HandlerI<EventJSO> handler) {
+
+		this.onEvent("onclose", new HandlerI<JavaScriptObject>() {
+
+			@Override
+			public void handle(JavaScriptObject t) {
+				EventJSO jso = t.cast();
+				handler.handle(jso);
+			}
+
+		});
+
+	}
+
+	public final void onMessage(final HandlerI<EventJSO> handler) {
+
+		this.onEvent("onmessage", new HandlerI<JavaScriptObject>() {
+
+			@Override
+			public void handle(JavaScriptObject t) {
+				EventJSO jso = t.cast();
+				handler.handle(jso);
+			}
+
+		});
+
+	}
+
+	public final void onError(final HandlerI<ErrorJSO> handler) {
+
+		this.onEvent("onerror", new HandlerI<JavaScriptObject>() {
+
+			@Override
+			public void handle(JavaScriptObject t) {
+				ErrorJSO jso = t.cast();
+				handler.handle(jso);
+			}
+
+		});
+
+	}
+
+	public native void onEvent(String event, HandlerI<JavaScriptObject> handler)
 	/*-{
-		this.onerror = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt.data);
+		this[event] = function (evt){
+			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(evt);
 		}
 	}-*/;
 
 	public native void send(String msg)
 	/*-{
-										this.send(msg);
-										}-*/;
+		this.send(msg);
+	}-*/;
 
-	public native short getReadyState()
+	public final ReadyState getReadyState() {
+		short rs = this.getReadyStateValue();
+		return ReadyState.getReadyState(rs);
+	}
+
+	public native short getReadyStateValue()
 	/*-{
 		var rt = this.readyState;
 		//FOR:Caused by: com.google.gwt.dev.shell.HostedModeException: 
@@ -99,6 +139,6 @@ public final class WebSocketJSO extends JavaScriptObject {
 	 */
 	public final boolean isOpen() {
 		// TODO Auto-generated method stub
-		return this.getReadyState() == 1;
+		return this.getReadyState().equals(ReadyState.OPEN);
 	}
 }

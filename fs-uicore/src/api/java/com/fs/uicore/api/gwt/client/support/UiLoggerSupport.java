@@ -80,9 +80,11 @@ public abstract class UiLoggerSupport implements UiLoggerI {
 
 	protected abstract void doLog(int level, Object msg, Throwable t);
 
-	/*
-	 * Nov 8, 2012
-	 */
+	@Override
+	public void error(Object msg) {
+		this.error(msg, null);
+	}
+
 	@Override
 	public void error(Object msg, Throwable t) {
 		log(UiLoggerI.LEVEL_ERROR, msg, t);

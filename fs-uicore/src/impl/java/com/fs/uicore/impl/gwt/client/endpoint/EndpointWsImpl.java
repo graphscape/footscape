@@ -5,11 +5,11 @@
 package com.fs.uicore.impl.gwt.client.endpoint;
 
 import com.fs.uicore.api.gwt.client.CodecI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
@@ -20,7 +20,12 @@ import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointUnbondEvent;
+import com.fs.uicore.api.gwt.client.html5.ErrorJSO;
+import com.fs.uicore.api.gwt.client.html5.EventJSO;
+import com.fs.uicore.api.gwt.client.html5.ReadyState;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
@@ -33,6 +38,8 @@ import com.google.gwt.user.client.Window;
  * 
  */
 public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
+
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EndpointWsImpl.class);
 
 	private WebSocketJSO socket;
 
@@ -112,51 +119,56 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
 		this.socket = WebSocketJSO.newInstance(uri, true);
-		this.socket.onOpen(new UiCallbackI<Object, Object>() {
+		this.socket.onOpen(new HandlerI<EventJSO>() {
 
 			@Override
-			public Object execute(Object t) {
+			public void handle(EventJSO t) {
 				//
 				EndpointWsImpl.this.onWsOpen(t);
-				return null;
 			}
 		});
-		this.socket.onMessage(new UiCallbackI<String, Object>() {
+		this.socket.onMessage(new HandlerI<EventJSO>() {
 
 			@Override
-			public Object execute(String t) {
+			public void handle(EventJSO t) {
 				//
 				EndpointWsImpl.this.onWsMessage(t);
-				return null;
+
 			}
 		});
-		this.socket.onClose(new UiCallbackI<Object, Object>() {
+		this.socket.onClose(new HandlerI<EventJSO>() {
 
 			@Override
-			public Object execute(Object t) {
+			public void handle(EventJSO t) {
 				//
 				EndpointWsImpl.this.onWsClose(t);
-				return null;
 			}
 		});
-		this.socket.onError(new UiCallbackI<String, Object>() {
+		this.socket.onError(new HandlerI<ErrorJSO>() {
 
 			@Override
-			public Object execute(String t) {
+			public void handle(ErrorJSO t) {
 				//
 				EndpointWsImpl.this.onWsError(t);
-				return null;
 			}
 		});
 
 	}
 
 	protected void assertSocketOpen() {
-		if (this.socket != null && this.socket.isOpen() && this.serverIsReady) {
-			return;
+		if (this.socket == null) {
+			throw new UiException("socket is null");
+
 		}
 
-		throw new UiException("socket is not ready.");
+		ReadyState rs = this.socket.getReadyState();
+		if (!rs.isOpen()) {
+			throw new UiException("socket is not open,readyState:" + rs);
+		}
+
+		if (!this.serverIsReady) {
+			throw new UiException("socket is not ready,server is not ready");
+		}
 
 	}
 
@@ -180,7 +192,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		// wait server is ready
 	}
 
-	protected void onWsClose(Object evt) {
+	protected void onWsClose(EventJSO evt) {
+		LOG.info("onWsClose,evt:" + evt.toLongString());
 		this.serverIsReady = false;
 		this.clientId = null;
 		this.terminalId = null;//
@@ -188,13 +201,16 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	}
 
-	protected void onWsError(String jsonS) {
-		new EndpointErrorEvent(this, jsonS).dispatch();
+	protected void onWsError(ErrorJSO er) {
+		String errorS = er.toLongString();
+		LOG.error("onWsError,errorJSO:" + er.toLongString(), null);
+		new EndpointErrorEvent(this, errorS).dispatch();
 
 	}
 
-	protected void onWsMessage(String jsonS) {
-		JSONValue jsonV = JSONParser.parseStrict(jsonS);
+	protected void onWsMessage(EventJSO evt) {
+		String msg = "" + evt.getData();
+		JSONValue jsonV = JSONParser.parseStrict(msg);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
 		Path p = md.getPath();
 		Path tp = EndpointMessageEvent.TYPE.getAsPath();
