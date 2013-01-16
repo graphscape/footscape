@@ -15,6 +15,7 @@ import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
+import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
@@ -26,7 +27,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  * @author wuzhen
  * 
  */
-public class ExpTestWorker extends LoginTestWorker {
+public class ExpTestWorker extends AbstractTestWorker {
 
 	protected UserExpListView ueListView;
 
@@ -40,8 +41,9 @@ public class ExpTestWorker extends LoginTestWorker {
 
 	protected int expCreatedEventIdx = 0;
 
-	public ExpTestWorker(String user, String email, String pass, int totalExp) {
-		super(user, email, pass);
+	protected UserInfo userInfo;
+
+	public ExpTestWorker(int totalExp) {
 		this.totalExp = totalExp;
 		this.ueViewMap = new HashMap<String, UserExpView>();
 		this.tasks.add("founduelistview");// 1
@@ -73,13 +75,14 @@ public class ExpTestWorker extends LoginTestWorker {
 		//
 		this.eeView = v;
 		this.tryFinish("editview");
-		
+
 		this.submitExp();
 		this.tryFinish("editrequest");
 	}
 
-	@Override
-	protected void onRegisterUserLogin(UserInfo ui) {
+	public void start(UiClientI client) {
+		super.start(client);
+		this.userInfo = this.getRegisterUserInfo(true);//
 		this.ueListView = this.client.getRoot().find(new UiCallbackI<UiObjectI, UserExpListView>() {
 
 			@Override
@@ -93,11 +96,11 @@ public class ExpTestWorker extends LoginTestWorker {
 		});
 		this.tryFinish("founduelistview");
 		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit
-		
+
 	}
 
 	protected String expText(int idx) {
-		return "i exp " + idx;
+		return this.userInfo.getString("nick") + " is expecting " + idx;
 	}
 
 	protected void submitExp() {

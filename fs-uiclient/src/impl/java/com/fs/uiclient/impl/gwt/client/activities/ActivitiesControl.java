@@ -6,6 +6,8 @@ package com.fs.uiclient.impl.gwt.client.activities;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
+import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityControl;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
@@ -17,6 +19,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.UiException;
 
 /**
  * @author wu
@@ -41,17 +44,40 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 
 	}
 
+	@Override
+	public ActivitiesModelI getModel() {
+		return super.getModel();
+	}
+
+	public ActivityModelI getActivity(String actId, boolean force) {
+
+		String lname = this.activityModelName(actId);
+		ActivityModelI rt = this.getModel().getChild(ActivityModelI.class, lname, false);
+		if (rt == null) {
+			if (force) {
+				throw new UiException("no activity with id:" + actId);
+			}
+			return null;
+		}
+		return rt;
+
+	}
+
+	private String activityModelName(String actId) {
+		String rt = "activity-" + actId;
+		return rt;
+	}
+
 	/*
 	 * Nov 24, 2012
 	 */
 	@Override
 	public void openActivity(final String actId) {
 		//
-
-		String lname = "activity-" + actId;
+		String lname = this.activityModelName(actId);
 		Mvc mvc = this.getLazyObject(lname, false);
 		if (mvc != null) {
-			//TODO focus
+			// TODO focus
 			return;
 		}
 

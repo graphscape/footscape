@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.activities;
 
+import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -15,5 +16,7 @@ public interface ActivitiesControlI extends ControlI {
 	public void openActivity(String actId);
 
 	public void refresh(String actId);
+	
+	public ActivityModelI getActivity(String actId, boolean force);
 
 }

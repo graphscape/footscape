@@ -32,7 +32,7 @@ public abstract class WorkerTestBase<T extends TestWorker> extends TestBase {
 			return;
 		}
 
-		if (this.worker.getTasks().isEmpty()) {
+		if (this.worker.isDone()) {
 			this.done();
 		}
 	}

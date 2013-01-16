@@ -4,6 +4,10 @@
 package com.fs.uiclient.impl.test.gwt.client.cases.signup;
 
 import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.CollectionTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.ExpTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.WorkerTestBase;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 
@@ -11,7 +15,7 @@ import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
  * @author wuzhen
  * 
  */
-public class ActivityTest extends WorkerTestBase<ActivityTestWorker> {
+public class ActivityTest extends WorkerTestBase<TestWorker> {
 
 	public void testActivityOpen() {
 
@@ -23,9 +27,14 @@ public class ActivityTest extends WorkerTestBase<ActivityTestWorker> {
 	 * Jan 13, 2013
 	 */
 	@Override
-	protected ActivityTestWorker newWorker(UserLoginEvent le) {
+	protected TestWorker newWorker(UserLoginEvent le) {
 		//
-		return new ActivityTestWorker("user1", "user1@some.com", "user1", 3);
+		CollectionTestWorker worker = new CollectionTestWorker()
+				.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//
+				.addTestWorker(new ExpTestWorker(6))//
+				.addTestWorker(new ActivityTestWorker())//
+		;
+		return worker;
 	}
 
 	/*

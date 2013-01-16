@@ -20,7 +20,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
  * @author wuzhen
  * 
  */
-public class LoginTestWorker extends SignupTestWorker {
+public final class LoginTestWorker extends SignupTestWorker {
 
 	protected LoginView loginView;
 
@@ -73,15 +73,8 @@ public class LoginTestWorker extends SignupTestWorker {
 			this.onAnonymousUserLogin();
 		} else {
 			this.tryFinish("login.done");
-			this.onRegisterUserLogin(ui);
+
 		}
-	}
-
-	/**
-	 * Jan 3, 2013
-	 */
-	protected void onRegisterUserLogin(UserInfo ui) {
-
 	}
 
 	/**

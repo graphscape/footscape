@@ -9,7 +9,6 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -35,29 +34,6 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 		//
 		return this.getChild(ItemModel.class, actId, force);
 
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public ActivityModelI getActivity(String actId) {
-		//
-		ActivityModelI rt = this.getChildById(actId, false);
-
-		return rt;
-
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public ActivityModelI addActivity(String actId) {
-		ActivityModelI rt = new ActivityModel(actId, actId);
-		rt.parent(this);//
-		rt.setActivityId(actId);
-		return rt;
 	}
 
 	/*

@@ -10,6 +10,10 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.CollectionTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.ExpTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
 import com.fs.uiclient.impl.test.gwt.client.cases.signup.ActivityTest;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
@@ -34,7 +38,8 @@ public class AChatTest extends ActivityTest {
 
 	private ActivityModelI activityModel;
 	private ActivityView activityView;
-	ActivityTestWorker worker;
+	private TestWorker worker;
+
 	@Before
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
@@ -49,8 +54,13 @@ public class AChatTest extends ActivityTest {
 	}
 
 	public void testAChat() {
-		this.worker = new ActivityTestWorker("user1","user1@some.com","user1",3);
-		
+		CollectionTestWorker ctw = new CollectionTestWorker();
+		ctw.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"));
+		ctw.addTestWorker(new ExpTestWorker(3));
+		ctw.addTestWorker(new ActivityTestWorker());
+
+		this.worker = ctw;
+
 		this.delayTestFinish(this.timeoutMillis * 100);
 
 	}
@@ -83,15 +93,15 @@ public class AChatTest extends ActivityTest {
 	}
 
 	/*
-	 *Jan 12, 2013
+	 * Jan 12, 2013
 	 */
 	@Override
 	protected void onAttachedEvent(AttachedEvent ae) {
-		// 
+		//
 		super.onAttachedEvent(ae);
 		UiObjectI src = ae.getSource();
-		if(src instanceof ActivityView){
-			this.onActivityViewAttached((ActivityView)src);
+		if (src instanceof ActivityView) {
+			this.onActivityViewAttached((ActivityView) src);
 		}
 	}
 
@@ -101,9 +111,9 @@ public class AChatTest extends ActivityTest {
 	protected void onActivityViewAttached(ActivityView src) {
 		this.activityView = src;
 		this.activityModel = (ActivityModelI) src.getModel();// for
-																			// chat
-																			// room
-																			// to
+																// chat
+																// room
+																// to
 		// be open.
 		this.tryFinish("activity.open");
 		this.tryOpenChatGroup();
@@ -111,8 +121,7 @@ public class AChatTest extends ActivityTest {
 	}
 
 	protected void tryOpenChatGroup() {
-		if (this.finishing.contains("activity.open")
-				|| this.finishing.contains("gchat.ready")) {
+		if (this.finishing.contains("activity.open") || this.finishing.contains("gchat.ready")) {
 			// wait the two event ,both the activity is open and the gchat is
 			// ready.
 			return;

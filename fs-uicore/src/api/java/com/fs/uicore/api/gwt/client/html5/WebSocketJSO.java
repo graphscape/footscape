@@ -6,6 +6,7 @@ package com.fs.uicore.api.gwt.client.html5;
 
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.support.ErrorReportProxyHandler;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Window;
 
@@ -14,7 +15,7 @@ import com.google.gwt.user.client.Window;
  *         <p>
  *         http://dev.w3.org/html5/websockets/#the-websocket-interface
  */
-public final class WebSocketJSO extends JavaScriptObject {
+public final class WebSocketJSO extends AbstractJSO {
 	//
 	// public static final short CONNECTING = 0;
 	// public static final short OPEN = 1;
@@ -104,7 +105,11 @@ public final class WebSocketJSO extends JavaScriptObject {
 
 	}
 
-	public native void onEvent(String event, HandlerI<JavaScriptObject> handler)
+	public void onEvent(String event, HandlerI<JavaScriptObject> handler) {
+		this.onEventInternal(event, new ErrorReportProxyHandler<JavaScriptObject>(handler));
+	}
+
+	private native void onEventInternal(String event, HandlerI<JavaScriptObject> handler)
 	/*-{
 		this[event] = function (evt){
 			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(evt);

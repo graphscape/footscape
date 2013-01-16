@@ -11,7 +11,7 @@ import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
-import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
+import com.fs.uiclient.impl.gwt.client.testsupport.AbstractTestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
@@ -75,7 +75,7 @@ public class TestBase extends GWTTestCase {
 	@Override
 	protected void gwtSetUp() throws Exception {
 		super.gwtSetUp();
-		TestWorker.beforeTesting();//
+		AbstractTestWorker.beforeTesting();//
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), GWT.create(UiCommonsGPI.class),
 				GWT.create(UiClientGwtSPI.class), };
 

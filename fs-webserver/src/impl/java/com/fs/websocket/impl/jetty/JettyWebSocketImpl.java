@@ -61,11 +61,13 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
 		this.connection = null;
+		LOG.info("onWebSocketClose,statusCode:" + statusCode + ",reason:" + reason);
 		super.onClose(this, statusCode, reason);
 	}
 
 	@Override
 	public void onWebSocketConnect(WebSocketConnection connection) {
+		LOG.info("onWebSocketConnect");
 		this.connection = connection;
 		this.blocking = new WebSocketBlockingConnection(this.connection);
 		super.onConnect(this);
@@ -76,6 +78,7 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 	 */
 	@Override
 	public void onWebSocketException(WebSocketException error) {
+		LOG.error("onWebSocketException,error:" + error);
 		super.onException(this, error);
 	}
 

@@ -23,7 +23,7 @@ import com.fs.uicore.api.gwt.client.event.AttachedEvent;
  * @author wuzhen
  * 
  */
-public abstract class SignupTestWorker extends TestWorker {
+public abstract class SignupTestWorker extends AbstractTestWorker {
 
 	protected SignupView signupView;
 

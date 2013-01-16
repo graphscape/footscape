@@ -4,34 +4,38 @@
  */
 package com.fs.uiclient.impl.gwt.client.testsupport;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
-import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 
 /**
  * @author wu
  * 
+ *         <p>
+ *         This AbstractTestWorker will automatically signup one account, login
+ *         to system, create number of exp, send cooper request to one exp from
+ *         himself, confirm cooper request, finally open this activity.
+ *         <p>
+ *         see the TestEntryPoint for calling this class.
  */
-public class ActivityTestWorker extends ExpTestWorker {
+public class ActivityTestWorker extends AbstractTestWorker {
 
 	protected String expIdSelected;// selected
 
 	protected String expIdCooperTo;// cooper with
-
-	protected Map<String, UserExpView> userExpViewMap;
 
 	protected ActivityView activityView;
 
@@ -41,10 +45,7 @@ public class ActivityTestWorker extends ExpTestWorker {
 	 * @param pass
 	 * @param totalExp
 	 */
-	public ActivityTestWorker(String user, String email, String pass, int totalExp) {
-		super(user, email, pass, totalExp);
-
-		userExpViewMap = new HashMap<String, UserExpView>();
+	public ActivityTestWorker() {
 
 		this.tasks.add("selectuserexp");
 
@@ -56,11 +57,6 @@ public class ActivityTestWorker extends ExpTestWorker {
 											// other user and activity
 											// created.
 		this.tasks.add("activity.view");
-	}
-
-	@Override
-	protected void onRegisterUserLogin(UserInfo ui) {
-		super.onRegisterUserLogin(ui);
 	}
 
 	@Override
@@ -83,21 +79,25 @@ public class ActivityTestWorker extends ExpTestWorker {
 		}
 	}
 
-	@Override
-	protected void onNewExpView(int idx, UserExpView e) {
-		super.onNewExpView(idx, e);
-		String id = e.getModel().getExpId();//
-		this.ueViewMap.put(id, e);
+	public void start(UiClientI client) {
+		super.start(client);
+		this.getRegisterUserInfo(true);//
 
-		if (idx == this.totalExp - 1) {
-			// select the last exp
-			this.expIdSelected = id;
-			ControlUtil.triggerAction(e.getModel(), Actions.A_UEXP_SELECT);
-			// select exp will cause select event and
-			// then
-			// exp search.
-			this.tryFinish("selectuserexp");
+		UserExpListModelI uelm = client.getRootModel().find(UserExpListModelI.class, true);
+		List<UserExpModel> ueml = uelm.getChildList(UserExpModel.class);
+		if (ueml.size() == 0) {
+			throw new UiException("no user exp in list");
 		}
+		UserExpModel model = ueml.get(0);
+		String id = model.getExpId();//
+		this.expIdSelected = id;
+
+		ControlUtil.triggerAction(model, Actions.A_UEXP_SELECT);
+		// select exp will cause select event and
+		// then
+		// exp search.
+		this.tryFinish("selectuserexp");
+
 	}
 
 	@Override
@@ -135,7 +135,13 @@ public class ActivityTestWorker extends ExpTestWorker {
 			return;// only cooper one
 		}
 
-		this.expIdCooperTo = src.getModel().getExpId();
+		String expId = src.getModel().getExpId();
+
+		if (this.expIdSelected.equals(expId)) {
+			return;// not cooper to the same exp,wait the next one
+		}
+
+		this.expIdCooperTo = expId;
 
 		src.clickAction(Actions.A_EXPS_COOPER);// listener to the
 												// UserExpIncomingCrEvent on the
@@ -196,18 +202,6 @@ public class ActivityTestWorker extends ExpTestWorker {
 	protected void onActivityViewAttached(ActivityView src) {
 		this.activityView = src;
 		this.tryFinish("activity.view");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.impl.test.gwt.client.cases.support.ExpTestBase#expText
-	 * (int)
-	 */
-	@Override
-	protected String expText(int idx) {
-		return "exp text for #" + idx;
 	}
 
 }
