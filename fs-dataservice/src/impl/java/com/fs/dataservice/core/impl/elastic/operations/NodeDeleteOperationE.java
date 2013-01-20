@@ -10,7 +10,7 @@ import org.elasticsearch.client.Client;
 
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.result.VoidResultI;
 import com.fs.dataservice.api.core.support.OperationSupport;
@@ -31,7 +31,7 @@ public class NodeDeleteOperationE<W extends NodeWrapper> extends
 
 	private ElasticClientI elastic;
 
-	protected NodeConfig nodeConfig;
+	protected NodeMeta nodeConfig;
 
 	/**
 	 * @param ds
@@ -46,7 +46,7 @@ public class NodeDeleteOperationE<W extends NodeWrapper> extends
 	 */
 	@Override
 	public NodeDeleteOperationI<W> nodeType(Class<W> cls) {
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(cls, true);
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(cls, true);
 		this.nodeType(nc);
 		return this;
 	}
@@ -54,7 +54,7 @@ public class NodeDeleteOperationE<W extends NodeWrapper> extends
 	/**
 	 * Nov 28, 2012
 	 */
-	private void nodeType(NodeConfig nc) {
+	private void nodeType(NodeMeta nc) {
 		this.parameter(PK_NODETYPE, nc.getNodeType());
 		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());
 		this.nodeConfig = nc;

@@ -10,6 +10,7 @@ import org.junit.Before;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.message.MessageServiceI;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
@@ -34,7 +35,8 @@ public class TestBase extends TestCase {
 		this.sm = SPIManagerI.FACTORY.get();
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.dataService = this.container.find(DataServiceI.class, true);
+		DataServiceFactoryI dsf = this.container.find(DataServiceFactoryI.class, true);
+		this.dataService = dsf.getDataService();//
 
 		this.cfactory = MockExpectorClientFactory.getInstance(this.container);//
 		this.cleanDb();

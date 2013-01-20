@@ -17,8 +17,8 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.ResultI;
-import com.fs.dataservice.api.core.conf.FieldConfig;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.FieldMeta;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
 
 /**
@@ -54,11 +54,11 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 
 	}
 
-	public void validate(NodeConfig nc, ErrorInfos rt) {
+	public void validate(NodeMeta nc, ErrorInfos rt) {
 		List<String> kl = this.target.keyList();// actual data
 		Set<String> kset = new HashSet<String>(nc.keySet());// expected data
 		for (String k : kl) {
-			FieldConfig fc = nc.getField(k, false);
+			FieldMeta fc = nc.getField(k, false);
 			if (fc == null) {// any data must be defined.
 				rt.add(new ErrorInfo("no field:" + k
 						+ " is configured by for type:" + nc.getNodeType()));
@@ -66,7 +66,7 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 			}
 		}
 		for (String k : kset) {// expected:
-			FieldConfig fc = nc.getField(k, false);
+			FieldMeta fc = nc.getField(k, false);
 			Object value = this.target.getProperty(k);//
 
 			if (value == null && fc.isManditory()) {

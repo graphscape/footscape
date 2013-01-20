@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -40,8 +40,8 @@ public class UserSnapshot extends NodeWrapper {
 		super(TYPE);
 	}
 
-	public static void config(NodeConfigurations cfs) {
-		NodeConfig nc = cfs.addConfig(TYPE, UserSnapshot.class)
+	public static void config(DataSchema cfs) {
+		NodeMeta nc = cfs.addConfig(TYPE, UserSnapshot.class)
 				.field(PK_ACCOUNT_ID).field(PK_ACTIVITY_ID_CSV)
 				.field(PK_COOPER_REQUEST_ID_CSV).field(PK_EXP_ID_CSV);
 

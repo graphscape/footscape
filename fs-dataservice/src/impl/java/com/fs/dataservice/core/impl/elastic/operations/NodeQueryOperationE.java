@@ -15,6 +15,8 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -29,7 +31,7 @@ import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.support.OperationSupport;
@@ -42,8 +44,7 @@ import com.fs.dataservice.core.impl.elastic.SearchHitNode;
  * 
  */
 public class NodeQueryOperationE<W extends NodeWrapper> extends
-		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements
-		NodeQueryOperationI<W> {
+		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements NodeQueryOperationI<W> {
 
 	private static class Range {
 		String name;
@@ -51,6 +52,11 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		boolean includeFrom;
 		Object to;
 		boolean includeTo;
+	}
+
+	private static class Match {
+		String field;
+		String pharse;
 	}
 
 	private static class Sort {
@@ -66,11 +72,13 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 
 	private static final String PK_TERMS_RANGES = "termsRanges";
 
+	private static final String PK_MATCHES = "matches";
+
 	protected List<Sort> sortList = new ArrayList<Sort>();
 
 	private ElasticClientI elastic;
 
-	protected NodeConfig nodeConfig;
+	protected NodeMeta nodeConfig;
 
 	/**
 	 * @param ds
@@ -78,10 +86,10 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	public NodeQueryOperationE(DataServiceI ds) {
 		super(new NodeQueryResult<W>(ds));
 		this.elastic = (ElasticClientI) ds;
-		this.parameters.setProperties(PK_TERMS_EQUAL,
-				new MapProperties<Object>());
-		this.parameters.setProperties(PK_TERMS_RANGES,
-				new MapProperties<Range>());
+		this.parameters.setProperties(PK_TERMS_EQUAL, new MapProperties<Object>());
+		this.parameters.setProperties(PK_TERMS_RANGES, new MapProperties<Range>());
+		this.parameters.setProperties(PK_MATCHES, new MapProperties<Match>());
+
 	}
 
 	/*
@@ -90,8 +98,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	@Override
 	public NodeQueryOperationI<W> nodeType(NodeType ntype) {
 
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
-				ntype, true);
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(ntype, true);
 		this.nodeType(nc);
 
 		return this;
@@ -124,11 +131,9 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 																			// out.
 		qb.must(typeQ);
 		// fields equals
-		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters
-				.getProperty(PK_TERMS_EQUAL);
+		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters.getProperty(PK_TERMS_EQUAL);
 
-		this.validateKeyIsConfigedInType(ntype, tes.keyList(),
-				rst.getErrorInfo());
+		this.validateKeyIsConfigedInType(ntype, tes.keyList(), rst.getErrorInfo());
 		if (rst.hasError()) {
 			return;
 		}
@@ -139,11 +144,9 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		}
 		// end of equals
 		// ranges
-		PropertiesI<Range> rgs = (PropertiesI<Range>) this.parameters
-				.getProperty(PK_TERMS_RANGES);
+		PropertiesI<Range> rgs = (PropertiesI<Range>) this.parameters.getProperty(PK_TERMS_RANGES);
 
-		this.validateKeyIsConfigedInType(ntype, rgs.keyList(),
-				rst.getErrorInfo());
+		this.validateKeyIsConfigedInType(ntype, rgs.keyList(), rst.getErrorInfo());
 		if (rst.hasError()) {
 			return;
 		}
@@ -156,8 +159,21 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		}
 
 		// end of ranges
-		SearchRequestBuilder srb = client.prepareSearch()
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)//
+		// matches
+		PropertiesI<Match> mts = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
+
+		this.validateKeyIsConfigedInType(ntype, mts.keyList(), rst.getErrorInfo());
+		if (rst.hasError()) {
+			return;
+		}
+		for (String key : mts.keyList()) {
+			Match rg = mts.getProperty(key);
+			MatchQueryBuilder qbi = new MatchQueryBuilder(key, rg.pharse);
+			qbi.operator(Operator.AND);//
+			qb.must(qbi);//
+		}
+		// end of matches
+		SearchRequestBuilder srb = client.prepareSearch().setSearchType(SearchType.DFS_QUERY_THEN_FETCH)//
 				.setQuery(qb)//
 				.setFrom(this.getFrom())//
 				.setSize(this.getMaxSize())//
@@ -185,14 +201,11 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	/**
 	 * Nov 3, 2012
 	 */
-	private void validateKeyIsConfigedInType(NodeType ntype,
-			List<String> keyList, ErrorInfos errorInfo) {
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
-				ntype, true);
+	private void validateKeyIsConfigedInType(NodeType ntype, List<String> keyList, ErrorInfos errorInfo) {
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(ntype, true);
 		for (String k : keyList) {
 			if (null == nc.getField(k, false)) {
-				errorInfo.add(new ErrorInfo("no field:" + k + ",in type:"
-						+ ntype));
+				errorInfo.add(new ErrorInfo("no field:" + k + ",in type:" + ntype));
 			}
 		}
 	}
@@ -209,15 +222,13 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	@Override
 	public NodeQueryOperationI<W> propertyEq(String key, Object value) {
 		//
-		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters
-				.getProperty(PK_TERMS_EQUAL);
+		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters.getProperty(PK_TERMS_EQUAL);
 		tes.setProperty(key, value);
 		return this;
 	}
 
 	@Override
-	public NodeQueryOperationI<W> propertyGt(String key, Object value,
-			boolean include) {
+	public NodeQueryOperationI<W> propertyGt(String key, Object value, boolean include) {
 		//
 		Range rg = this.getOrCreateRange(key);
 		rg.from = value;
@@ -226,8 +237,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	}
 
 	public Range getOrCreateRange(String key) {
-		PropertiesI<Range> tes = (PropertiesI<Range>) this.parameters
-				.getProperty(PK_TERMS_RANGES);
+		PropertiesI<Range> tes = (PropertiesI<Range>) this.parameters.getProperty(PK_TERMS_RANGES);
 
 		Range rt = tes.getProperty(key);
 		if (rt == null) {
@@ -240,8 +250,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	}
 
 	@Override
-	public NodeQueryOperationI<W> propertyLt(String key, Object value,
-			boolean include) {
+	public NodeQueryOperationI<W> propertyLt(String key, Object value, boolean include) {
 		Range rg = this.getOrCreateRange(key);
 		rg.to = value;
 		rg.includeTo = include;
@@ -365,8 +374,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	@Override
 	public NodeQueryOperationI<W> nodeType(Class<W> cls) {
 		//
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(cls,
-				true);
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(cls, true);
 		this.nodeType(nc);
 		return this;
 	}
@@ -374,7 +382,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	/**
 	 * Nov 28, 2012
 	 */
-	private void nodeType(NodeConfig nc) {
+	private void nodeType(NodeMeta nc) {
 		this.parameter(PK_NODETYPE, nc.getNodeType());
 		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());
 		this.nodeConfig = nc;
@@ -384,8 +392,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	 * Dec 4, 2012
 	 */
 	@Override
-	public NodeQueryOperationI<W> timestampRange(Date from,
-			boolean includeFrom, Date to, boolean includeTo) {
+	public NodeQueryOperationI<W> timestampRange(Date from, boolean includeFrom, Date to, boolean includeTo) {
 		//
 		this.propertyRange(NodeI.PK_TIMESTAMP, from, includeFrom, to, includeTo);
 		return this;
@@ -395,11 +402,28 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	 * Dec 4, 2012
 	 */
 	@Override
-	public NodeQueryOperationI<W> propertyRange(String key, Object from,
-			boolean includeFrom, Object to, boolean includeTo) {
+	public NodeQueryOperationI<W> propertyRange(String key, Object from, boolean includeFrom, Object to,
+			boolean includeTo) {
 		//
 		this.propertyGt(key, from, includeFrom);
 		this.propertyLt(key, to, includeTo);//
+		return this;
+	}
+
+	/*
+	 * Jan 19, 2013
+	 */
+	@Override
+	public NodeQueryOperationI<W> propertyMatch(String key, String pharse) {
+		//
+		PropertiesI<Match> tes = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
+		Match m = tes.getProperty(key);
+		if (m == null) {
+			m = new Match();
+			m.field = key;
+			tes.setProperty(key, m);
+		}
+		m.pharse = pharse;
 		return this;
 	}
 

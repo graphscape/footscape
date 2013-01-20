@@ -19,7 +19,7 @@ import com.fs.commons.api.lang.FsException;
 public class ElasticTimeFormat {
 	protected static final DateFormat dateFormat;
 	static {
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
@@ -34,13 +34,14 @@ public class ElasticTimeFormat {
 	}
 
 	/**
-	 *Nov 29, 2012
+	 * Nov 29, 2012
 	 */
 	public static Date parse(String s) {
 		//
-		if(s == null){
+		if (s == null) {
 			return null;
 		}
+		s = s.replace("Z", "+0000");// NOTE
 		try {
 			return dateFormat.parse(s);
 		} catch (ParseException e) {

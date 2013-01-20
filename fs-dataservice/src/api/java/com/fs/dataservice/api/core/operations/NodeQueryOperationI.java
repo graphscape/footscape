@@ -12,8 +12,7 @@ import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
- * @author wu
- * 
+ * @author wu TODO separate a Query interface for different query style.
  */
 public interface NodeQueryOperationI<W extends NodeWrapper> extends
 		OperationI<NodeQueryOperationI<W>, NodeQueryResultI<W>> {
@@ -26,14 +25,14 @@ public interface NodeQueryOperationI<W extends NodeWrapper> extends
 
 	public NodeQueryOperationI<W> propertyEq(String key, Object value);
 
-	public NodeQueryOperationI<W> propertyGt(String key, Object value,
-			boolean include);
+	public NodeQueryOperationI<W> propertyGt(String key, Object value, boolean include);
 
-	public NodeQueryOperationI<W> propertyLt(String key, Object value,
-			boolean include);
+	public NodeQueryOperationI<W> propertyMatch(String key, String pharse);
 
-	public NodeQueryOperationI<W> propertyRange(String key, Object from,
-			boolean includeFrom, Object to, boolean includeTo);
+	public NodeQueryOperationI<W> propertyLt(String key, Object value, boolean include);
+
+	public NodeQueryOperationI<W> propertyRange(String key, Object from, boolean includeFrom, Object to,
+			boolean includeTo);
 
 	public NodeQueryOperationI<W> uniqueId(String uid);
 
@@ -51,8 +50,7 @@ public interface NodeQueryOperationI<W extends NodeWrapper> extends
 
 	public NodeQueryOperationI<W> singleNewest(boolean nf);
 
-	public NodeQueryOperationI<W> timestampRange(Date from,
-			boolean includeFrom, Date to, boolean includeTo);
+	public NodeQueryOperationI<W> timestampRange(Date from, boolean includeFrom, Date to, boolean includeTo);
 
 	public String getUniqueId();
 

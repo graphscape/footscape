@@ -5,9 +5,8 @@
 package com.fs.expector.dataservice.api.wrapper;
 
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.expector.dataservice.api.NodeTypes;
 
 /**
  * @author wu
@@ -32,7 +31,7 @@ public class Profile extends NodeWrapper {
 		super(TYPE);
 	}
 
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 		cfs.addConfig(TYPE, Profile.class).field(ACCOUNTID).field(AGE)
 				.field(GENDER).field(ICON);
 

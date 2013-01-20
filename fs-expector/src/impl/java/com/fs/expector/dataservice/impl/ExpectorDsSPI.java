@@ -6,9 +6,9 @@ package com.fs.expector.dataservice.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
-import com.fs.dataservice.core.impl.elastic.ElasticClientI;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.expector.dataservice.api.operations.ExpSearchOperationI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
@@ -43,16 +43,10 @@ public class ExpectorDsSPI extends SPISupport {
 	 */
 	@Override
 	public void doActive(ActiveContext ac) {
-		DataServiceI ds = ac.getContainer().find(DataServiceI.class, true);
 
-		ds.registerOperation("expapp.expsearch1", ExpSearchOperationI.class, RandomExpSearchOperationE.class);
-
-		//
-
-		ElasticClientI ec = ac.getContainer().find(ElasticClientI.class, true);
-
+		DataServiceFactoryI dsf = ac.getContainer().find(DataServiceFactoryI.class, true);
 		// Configurations
-		NodeConfigurations cfs = ds.getConfigurations();
+		DataSchema cfs = dsf.getSchema();
 
 		Account.config(cfs);
 		SignupRequest.config(cfs);
@@ -67,6 +61,11 @@ public class ExpectorDsSPI extends SPISupport {
 		Profile.config(cfs);
 		AccountInfo.config(cfs);//
 		UserSnapshot.config(cfs);
+
+		DataServiceI ds = dsf.getDataService();
+		// TODO move to factory
+		ds.registerOperation("expapp.expsearch1", ExpSearchOperationI.class, RandomExpSearchOperationE.class);
+
 	}
 
 	/*

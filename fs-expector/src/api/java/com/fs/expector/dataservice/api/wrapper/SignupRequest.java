@@ -4,7 +4,7 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.expector.dataservice.api.NodeTypes;
 
@@ -26,7 +26,7 @@ public class SignupRequest extends NodeWrapper {
 		super(NodeTypes.SIGNUP_REQUEST);
 	}
 
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 
 		cfs.addConfig(NodeTypes.SIGNUP_REQUEST, SignupRequest.class)
 				.field(PK_EMAIL).field(PK_NICK).field(PK_PASSWORD)

@@ -7,7 +7,7 @@ package com.fs.expector.dataservice.api.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
@@ -30,7 +30,7 @@ public class Activity extends NodeWrapper {
 		super(NodeTypes.ACTIVITY);
 	}
 
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 		cfs.addConfig(NodeTypes.ACTIVITY, Activity.class);
 	}
 

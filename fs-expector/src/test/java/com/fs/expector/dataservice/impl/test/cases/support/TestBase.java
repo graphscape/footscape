@@ -7,6 +7,7 @@ package com.fs.expector.dataservice.impl.test.cases.support;
 import junit.framework.TestCase;
 
 import com.fs.commons.api.SPIManagerI;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
@@ -25,13 +26,14 @@ public class TestBase extends TestCase {
 	public void setUp() {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
-		this.datas = sm.getContainer().finder(DataServiceI.class).find(true);
+
+		DataServiceFactoryI dsf = sm.getContainer().finder(DataServiceFactoryI.class).find(true);
+		this.datas = dsf.getDataService();//
 		this.deleteAll();
 	}
 
 	protected void deleteAll() {
-		DeleteAllOperationI dao = this.datas
-				.prepareOperation(DeleteAllOperationI.class);
+		DeleteAllOperationI dao = this.datas.prepareOperation(DeleteAllOperationI.class);
 
 		dao.execute().getResult().get(true);
 
@@ -39,8 +41,7 @@ public class TestBase extends TestCase {
 
 	protected void dump() {
 		System.out.println("\n\ndump:\n");
-		this.datas.prepareOperation(DumpOperationI.class).execute().getResult()
-				.assertNoError();
+		this.datas.prepareOperation(DumpOperationI.class).execute().getResult().assertNoError();
 	}
 
 	public void tearDown() throws Exception {

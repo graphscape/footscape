@@ -5,7 +5,8 @@
 package com.fs.dataservice.impl.test;
 
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.AnalyzerType;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -18,6 +19,7 @@ public class MockNode extends NodeWrapper {
 
 	public static final String FIELD1 = "field1";
 	public static final String FIELD2 = "field2";
+	public static final String FIELD3 = "field3";
 
 	/**
 	 * @param type
@@ -26,8 +28,9 @@ public class MockNode extends NodeWrapper {
 		super(TYPE);
 	}
 
-	public static void config(NodeConfigurations cfs) {
-		cfs.addConfig(TYPE, MockNode.class).field("field1").field("field2");
+	public static void config(DataSchema cfs) {
+		cfs.addConfig(TYPE, MockNode.class).field("field1").field("field2").field(FIELD3, AnalyzerType.TEXT);
+
 	}
 
 }

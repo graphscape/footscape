@@ -19,7 +19,5 @@ public interface ElasticClientI {
 	public Client getClient();
 
 	public <T> T executeInClient(CallbackI<Client, T> cb);
-	
-	public String getTimestampString();
 
 }

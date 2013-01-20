@@ -9,7 +9,7 @@ import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 
@@ -18,8 +18,7 @@ import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
  *         TODO add priviledge on session and signon id<br>
  *         TODO move this to commons-dbo module.
  */
-public class NodeQueryHandler<T extends NodeWrapper> extends
-		ExpectorTMREHSupport {
+public class NodeQueryHandler<T extends NodeWrapper> extends ExpectorTMREHSupport {
 
 	protected Class<T> cls;
 
@@ -33,8 +32,7 @@ public class NodeQueryHandler<T extends NodeWrapper> extends
 	@Handle("query")
 	public void handleQueryNode(MessageContext hc, MessageI req) {
 
-		PropertiesI<Object> parameters = (PropertiesI<Object>) req
-				.getPayload("parameters");
+		PropertiesI<Object> parameters = (PropertiesI<Object>) req.getPayload("parameters");
 
 		// TODO add relationship to user/signon/priviledge node.
 
@@ -52,8 +50,7 @@ public class NodeQueryHandler<T extends NodeWrapper> extends
 
 		String type = (String) req.getPayload("type", true);
 
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
-				NodeType.valueOf(type), true);
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(NodeType.valueOf(type), true);
 
 		Class<? extends NodeWrapper> wpcls = nc.getWrapperClass();
 

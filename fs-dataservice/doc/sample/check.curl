@@ -1,0 +1,36 @@
+
+#
+#Check settings 
+#
+
+curl -XGET 'http://localhost:9200/node-index/expectation/_search?pretty=true' -d '{
+    "query" : {
+     	"match_all" : {} 
+    }    
+}
+'
+
+curl -XGET 'http://localhost:9200/node-index/expectation/_search?pretty=true' -d '{
+    "query" : {
+     	"term" : { "body" : "check" }
+    }    
+}
+'
+
+curl -XPUT 'http://localhost:9200/node-index/expectation/1' -d '{
+    "accountId" : "hello, account1",
+    "body" : "hello, this is a check for expectation."
+    
+}'
+
+curl -XGET 'localhost:9200/node-index/_analyze?analyzer=text&pretty=true' -d '{hello, this is a check for expectation.}'
+
+curl -XGET 'http://localhost:9200/node-index/expectation/_mapping?pretty=true'
+
+curl -XGET 'http://localhost:9200/node-index/expectation/1?pretty=true'
+
+
+curl -XPUT 'http://localhost:9200/node-index/expectation/1' -d '{
+    "body" : "hello, this is a check for expectation."
+}'
+

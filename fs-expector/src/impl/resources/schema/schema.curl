@@ -1,0 +1,85 @@
+##
+# Create the base template for node index,the node index name must start with 'node-'.
+# The default analyzer is 'keyword' means not analysis the field, and directly use the whole field value as one term.
+#
+# see: 
+# 	http://www.elasticsearch.org/guide/reference/index-modules/analysis/ 
+# for how to define analyzer. 
+# 
+# see:
+#   http://www.elasticsearch.org/guide/reference/api/admin-indices-templates.html
+# for how to define index template.
+#
+# see:
+#	http://euphonious-intuition.com/2012/08/more-complicated-mapping-in-elasticsearch/
+# for more complicated mapping.	
+##
+
+curl -XPUT localhost:9200/_template/node-template-0 -d '{
+    "template" : "node-*",
+    "order" : 0,
+    "settings" : {
+        "number_of_shards" : 1,
+    	"analysis" : {
+        	"analyzer" : {
+        		"default" : {
+        			"type" : "keyword"
+        		}
+        	}
+    	}
+    }
+}
+'
+##
+# 	Create the upper level template for types/field that need 'standard' analyzer.
+# 	Here any field with name of 'body' will be apply the analyzer of 'body'. 
+# 	It is analyzer defined from standard analyzer. 
+##
+
+curl -XPUT localhost:9200/_template/node-template-1 -d '{
+    "template" : "node-index",
+    "order" : 1,
+    "settings" : {
+     	"analysis" : {
+        	"analyzer" : {
+        		"text" : {
+        			"type" : "standard",
+        			"stopwords" : [],
+        			"max_token_length" : 255
+        		}
+        	}
+    	}
+    },
+    
+    "mappings" : {
+    	"_default_" : {
+    		"properties" : {
+    			   		
+    		}
+    	},
+    	"expectation" : {
+        	"properties" : {
+        	    "body" : {"type" : "string", "store" : "yes", "analyzer" : "text" }
+        	}
+    	}
+    	
+    }
+}
+'
+##
+#
+#Create index with name node-index
+#
+#
+##
+
+curl -XPUT 'http://localhost:9200/node-index'
+
+##
+#
+##
+curl -XPOST 'http://localhost:9200/datas-meta/meta-info/0' -d '{
+    "version" : "0.1",
+    "nodeIndex" : "node-index"
+}
+'

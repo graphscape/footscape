@@ -2,9 +2,11 @@
  * All right is from Author of the file,to be explained in comming days.
  * Nov 2, 2012
  */
-package com.fs.dataservice.api.core.conf;
+package com.fs.dataservice.api.core.meta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,42 +20,42 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  * @author wu
  * 
  */
-public class NodeConfig {
+public class NodeMeta {
 
-	private Map<String, FieldConfig> fieldConfigMap = new HashMap<String, FieldConfig>();
+	private Map<String, FieldMeta> fieldConfigMap = new HashMap<String, FieldMeta>();
 
 	private Class<? extends NodeWrapper> wrapperClass;
 
 	private NodeType nodeType;
 
-	public NodeConfig(NodeType ntype, Class<? extends NodeWrapper> wcls) {
+	public NodeMeta(NodeType ntype, Class<? extends NodeWrapper> wcls) {
 		this.nodeType = ntype;
 		this.wrapperClass = wcls;
-		this.field(NodeI.PK_UNIQUE_ID, false);
-		this.field(NodeI.PK_ID, false);
-		this.field(NodeI.PK_TIMESTAMP, false);
+		this.addField(NodeI.PK_UNIQUE_ID).manditory(false);
+		this.addField(NodeI.PK_ID).manditory(false);
+		this.addField(NodeI.PK_TIMESTAMP).type(FieldType.DATE).manditory(false);
 	}
 
-	public NodeConfig field(String name) {
+	public NodeMeta field(String name) {
 		return field(name, true);
 	}
 
-	public NodeConfig field(String name, boolean mand) {
-		this.addField(name, mand);
+	public NodeMeta field(String name, AnalyzerType atype) {
+		this.addField(name).setAnalyzer(atype);
 		return this;
 	}
 
-	public FieldConfig addField(String fname) {
-		return this.addField(fname, true);
+	public NodeMeta field(String name, boolean mand) {
+		this.addField(name).manditory(mand);
+		return this;
 
 	}
 
-	public FieldConfig addField(String fname, boolean mand) {
+	public FieldMeta addField(String fname) {
 
-		FieldConfig rt = new FieldConfig(this, fname, mand);
+		FieldMeta rt = new FieldMeta(this, fname, true);
 		if (null != this.getField(fname, false)) {
-			throw new FsException("field already exist:" + fname + " for type:"
-					+ this.nodeType);
+			throw new FsException("field already exist:" + fname + " for type:" + this.nodeType);
 		}
 		this.fieldConfigMap.put(fname, rt);
 
@@ -84,15 +86,18 @@ public class NodeConfig {
 		return rt;
 	}
 
+	public List<FieldMeta> getFieldList() {
+		return new ArrayList<FieldMeta>(this.fieldConfigMap.values());
+	}
+
 	/**
 	 * Nov 2, 2012
 	 */
-	public FieldConfig getField(String fname, boolean force) {
+	public FieldMeta getField(String fname, boolean force) {
 		//
-		FieldConfig rt = this.fieldConfigMap.get(fname);
+		FieldMeta rt = this.fieldConfigMap.get(fname);
 		if (force && rt == null) {
-			throw new FsException("no field:" + fname + " found for type:"
-					+ this.nodeType);
+			throw new FsException("no field:" + fname + " found for type:" + this.nodeType);
 		}
 		return rt;
 	}

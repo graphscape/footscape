@@ -4,7 +4,7 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.expector.dataservice.api.AuthedNode;
 import com.fs.expector.dataservice.api.NodeTypes;
 
@@ -33,7 +33,7 @@ public class Session extends AuthedNode {
 	/**
 	 * Nov 2, 2012
 	 */
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 		AuthedNode.config(cfs.addConfig(NodeTypes.SESSION, Session.class)
 				.field(PK_CLIENTID)
 				.field(PK_IS_ANONYMOUS));

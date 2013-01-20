@@ -13,7 +13,7 @@ import org.elasticsearch.search.SearchHit;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.support.NodeSupport;
 import com.fs.dataservice.api.core.wrapper.PropertyConverterI;
 import com.fs.dataservice.core.impl.ElasticTimeFormat;
@@ -51,7 +51,7 @@ public class SearchHitNode extends NodeSupport {
 	public SearchHitNode(NodeType nodeType, DataServiceI ds, SearchHit sh) {
 		super(nodeType, "todo");
 
-		NodeConfig nc = ds.getConfigurations().getNodeConfig(nodeType, true);
+		NodeMeta nc = ds.getConfigurations().getNodeConfig(nodeType, true);
 
 		Map<String, Object> old = sh.sourceAsMap();
 		for (Map.Entry<String, Object> me : old.entrySet()) {

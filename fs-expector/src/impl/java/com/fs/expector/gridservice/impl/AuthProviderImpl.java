@@ -7,10 +7,10 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
-import com.fs.expector.dataservice.api.wrapper.Session;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
 
@@ -20,7 +20,7 @@ import com.fs.gridservice.commons.api.session.AuthProviderI;
  */
 public class AuthProviderImpl extends ConfigurableSupport implements AuthProviderI {
 
-	protected DataServiceI dataService;
+	protected DataServiceFactoryI factory;
 
 	public AuthProviderImpl() {
 	}
@@ -29,7 +29,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 	public void active(ActiveContext ac) {
 		//
 		super.active(ac);
-		this.dataService = this.container.find(DataServiceI.class, true);
+		this.factory = this.container.find(DataServiceFactoryI.class, true);
 	}
 
 	@Override
@@ -45,23 +45,24 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 
 			String email = (String) credential.getProperty("email", true);
 			rt.setProperty("email", email);
-			AccountInfo ai = this.dataService.getNewest(AccountInfo.class, AccountInfo.EMAIL, email, false);
+			AccountInfo ai = this.factory.getDataService().getNewest(AccountInfo.class, AccountInfo.EMAIL,
+					email, false);
 			if (ai == null) {// not found account by email.
 
 				return null;
 			}
 			accountId = ai.getAccountId();
-			
+
 		} else {
 			accountId = (String) credential.getProperty("accountId", true);
 		}
 
-		Account acc = this.dataService.getNewestById(Account.class, accountId, false);
+		Account acc = this.factory.getDataService().getNewestById(Account.class, accountId, false);
 
 		if (acc == null) {// no this account or password
 			return null;
 		}
-		
+
 		String nick = acc.getNick();
 		rt.setProperty("isAnonymous", acc.getIsAnonymous());
 		rt.setProperty(SessionGd.ACCID, accountId);

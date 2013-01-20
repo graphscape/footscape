@@ -27,7 +27,7 @@ public class DataServiceCoreSPI extends SPISupport {
 	 */
 	@Override
 	public void doActive(ActiveContext ac) {
-		ac.active("dataService");
+		ac.active("dataServiceFactory");
 
 	}
 

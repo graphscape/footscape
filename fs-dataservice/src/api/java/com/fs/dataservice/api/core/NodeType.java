@@ -4,8 +4,6 @@
  */
 package com.fs.dataservice.api.core;
 
-import java.util.List;
-
 import com.fs.commons.api.Enum;
 
 /**

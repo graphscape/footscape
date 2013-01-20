@@ -6,7 +6,7 @@ package com.fs.dataservice.api.core;
 
 import java.util.List;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
@@ -68,6 +68,6 @@ public interface DataServiceI {
 	
 	public <T extends NodeWrapper> int deleteById(Class<T> wpcls, String id);
 	
-	public NodeConfigurations getConfigurations();
+	public DataSchema getConfigurations();
 
 }

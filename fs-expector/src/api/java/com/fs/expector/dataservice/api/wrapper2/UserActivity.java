@@ -5,8 +5,8 @@
 package com.fs.expector.dataservice.api.wrapper2;
 
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -29,8 +29,8 @@ public class UserActivity extends NodeWrapper {
 		super(TYPE);
 	}
 
-	public static void config(NodeConfigurations cfs) {
-		NodeConfig nc = cfs.addConfig(TYPE, UserActivity.class).field(PK_ACCOUNT_ID).field(PK_ACTIVITY_ID);
+	public static void config(DataSchema cfs) {
+		NodeMeta nc = cfs.addConfig(TYPE, UserActivity.class).field(PK_ACCOUNT_ID).field(PK_ACTIVITY_ID);
 
 	}
 

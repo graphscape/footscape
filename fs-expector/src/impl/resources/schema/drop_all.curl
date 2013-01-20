@@ -1,0 +1,6 @@
+
+curl -XDELETE 'http://localhost:9200/node-index/'
+curl -XDELETE 'http://localhost:9200/_template/node-template-0'
+curl -XDELETE 'http://localhost:9200/_template/node-template-1'
+
+curl -XDELETE 'http://localhost:9200/datas-meta/'

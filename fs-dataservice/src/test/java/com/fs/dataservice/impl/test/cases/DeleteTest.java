@@ -17,6 +17,7 @@ public class DeleteTest extends TestBase {
 		MockNode mn = new MockNode().forCreate(this.datas);
 		mn.setProperty(MockNode.FIELD1, "value1");
 		mn.setProperty(MockNode.FIELD2, "value2");
+		mn.setProperty(MockNode.FIELD3, "value3");
 		mn.save(true);
 		String uid = mn.getUniqueId();
 		MockNode mn2 = this.datas.getByUid(MockNode.class, uid, false);
@@ -35,12 +36,16 @@ public class DeleteTest extends TestBase {
 		mn1.setId(id);
 		mn1.setProperty(MockNode.FIELD1, "value1");
 		mn1.setProperty(MockNode.FIELD2, "value2");
+		mn1.setProperty(MockNode.FIELD3, "value3");
+		
 		mn1.save(true);
 
 		MockNode mn2 = new MockNode().forCreate(this.datas);
 		mn2.setId(id);
 		mn2.setProperty(MockNode.FIELD1, "value1");
 		mn2.setProperty(MockNode.FIELD2, "value2");
+		mn2.setProperty(MockNode.FIELD3, "value3");
+		
 		mn2.save(true);
 		int count = this.datas.deleteById(MockNode.class, id);
 

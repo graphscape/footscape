@@ -5,23 +5,18 @@
 package com.fs.dataservice.core.impl.elastic;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.callback.CallbackI;
-import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.lang.ClassUtil;
-import com.fs.commons.api.lang.FsException;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.OperationI;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
@@ -32,7 +27,6 @@ import com.fs.dataservice.api.core.operations.RefreshOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.support.DataServiceSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.dataservice.core.impl.ElasticTimeFormat;
 import com.fs.dataservice.core.impl.elastic.operations.DeleteAllOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.DumpOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeCreateOperationE;
@@ -48,15 +42,25 @@ import com.fs.dataservice.core.impl.elastic.operations.RefreshOperationE;
 public class ElasticDataServiceImpl extends DataServiceSupport implements ElasticClientI {
 	private static final Logger LOG = LoggerFactory.getLogger(ElasticDataServiceImpl.class);
 
-	protected Client client;
-
 	protected String dataVersion = "0.1";
 
-	protected MetaInfo metaInfo;
+	protected Client client;
 
-	public ElasticDataServiceImpl() {
-		// iso8601
+	protected String index;
 
+	// iso8601
+	public ElasticDataServiceImpl(DataSchema ds, Client client, String index) {
+		super(ds);
+		this.client = client;
+		this.index = index;
+
+		this.registerOperation("core.nodeget", NodeGetOperationI.class, NodeGetOperationE.class);
+		this.registerOperation("core.nodecreate", NodeCreateOperationI.class, NodeCreateOperationE.class);
+		this.registerOperation("core.nodequery", NodeQueryOperationI.class, NodeQueryOperationE.class);
+		this.registerOperation("core.deleteall", DeleteAllOperationI.class, DeleteAllOperationE.class);
+		this.registerOperation("core.dump", DumpOperationI.class, DumpOperationE.class);
+		this.registerOperation("core.refresh", RefreshOperationI.class, RefreshOperationE.class);
+		this.registerOperation("core.delete", NodeDeleteOperationI.class, NodeDeleteOperationE.class);
 	}
 
 	/*
@@ -68,61 +72,6 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 		T rt = ClassUtil.newInstance(cls2, new Class[] { DataServiceI.class }, new Object[] { this });
 
 		return rt;
-	}
-
-	/*
-	 * Oct 27, 2012
-	 */
-	@Override
-	public void configure(Configuration cfg) {
-		//
-		super.configure(cfg);
-	}
-
-	/*
-	 * Oct 27, 2012
-	 */
-	@Override
-	public void active(ActiveContext ac) {
-		//
-		super.active(ac);
-
-		TransportClient tc = new TransportClient();
-		String host = this.getHost();
-		int port = this.getPort();
-		tc.addTransportAddress(new InetSocketTransportAddress(host, port));
-
-		MetaInfo mi = MetaInfo.load(tc);
-		LOG.info("meta info readed from data base:" + mi);
-		if ("0.1".equals(mi.getVersion())) {
-			LOG.info("data version is ok:" + mi.getVersion());
-		} else {
-			throw new FsException("data version not supported:" + mi.getVersion()
-					+ ",please make sure your elastic server configureation is correct.");
-		}
-		this.metaInfo = mi;
-		this.client = tc;
-		//register building operations.
-		this.registerOperation("core.nodeget", NodeGetOperationI.class, NodeGetOperationE.class);
-		this.registerOperation("core.nodecreate", NodeCreateOperationI.class, NodeCreateOperationE.class);
-		this.registerOperation("core.nodequery", NodeQueryOperationI.class, NodeQueryOperationE.class);
-		this.registerOperation("core.deleteall", DeleteAllOperationI.class, DeleteAllOperationE.class);
-		this.registerOperation("core.dump", DumpOperationI.class, DumpOperationE.class);
-		this.registerOperation("core.refresh", RefreshOperationI.class, RefreshOperationE.class);
-		this.registerOperation("core.delete", NodeDeleteOperationI.class, NodeDeleteOperationE.class);
-		//
-		boolean ci = this.config.getPropertyAsBoolean("cleanAtInit", false);
-		if (ci) {
-			this.deleteAll();
-		}
-	}
-
-	private String getHost() {
-		return this.config.getProperty("host", "locahost");
-	}
-
-	private int getPort() {
-		return this.config.getPropertyAsInt("port", 9300);//
 	}
 
 	/*
@@ -150,7 +99,7 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 	@Override
 	public String getIndex() {
 		//
-		return this.metaInfo.getNodeIndex();
+		return this.index;
 	}
 
 	/*
@@ -159,15 +108,6 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 	@Override
 	public void refresh() {
 		this.prepareOperation(RefreshOperationI.class).execute().getResult().assertNoError();
-	}
-
-	/*
-	 * Nov 18, 2012
-	 */
-	@Override
-	public String getTimestampString() {
-		String rt = ElasticTimeFormat.format(new Date());
-		return rt;
 	}
 
 	/*

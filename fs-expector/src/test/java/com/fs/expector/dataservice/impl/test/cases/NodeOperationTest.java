@@ -21,8 +21,7 @@ public class NodeOperationTest extends TestBase {
 
 	public void testNodeOperations() {
 
-		NodeCreateOperationI nco = this.datas
-				.prepareOperation(NodeCreateOperationI.class);
+		NodeCreateOperationI nco = this.datas.prepareOperation(NodeCreateOperationI.class);
 		nco.nodeType(NodeTypes.SIGNUP_REQUEST);
 		nco.uniqueId(null);//
 		nco.property(SignupRequest.PK_CONFIRM_CODE, "test1");
@@ -37,10 +36,8 @@ public class NodeOperationTest extends TestBase {
 		assertNotNull("uid is null", uid);
 
 		//
-		NodeGetOperationI ngo = this.datas
-				.prepareOperation(NodeGetOperationI.class)
-				.nodeType(NodeTypes.SIGNUP_REQUEST).uniqueId(uid).execute()
-				.cast();
+		NodeGetOperationI ngo = this.datas.prepareOperation(NodeGetOperationI.class)
+				.nodeType(NodeTypes.SIGNUP_REQUEST).uniqueId(uid).execute().cast();
 		NodeResultI rst2 = ngo.getResult().cast();
 
 		NodeI node = rst2.getNode(true);
@@ -50,7 +47,4 @@ public class NodeOperationTest extends TestBase {
 		assertEquals("property issue.", "test1", uname);
 	}
 
-	public void testBulk() {
-		// BulkResponse br = null;
-	}
 }

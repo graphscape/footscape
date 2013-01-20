@@ -5,7 +5,7 @@
 package com.fs.expector.dataservice.api;
 
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -26,7 +26,7 @@ public abstract class AuthedNode extends NodeWrapper {
 		super(ntype);
 	}
 
-	protected static void config(NodeConfig nf) {
+	protected static void config(NodeMeta nf) {
 		nf.field(ACCOUNT_ID);
 	}
 

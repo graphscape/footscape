@@ -8,13 +8,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.OperationI;
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
@@ -26,16 +25,16 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  * @author wu
  * 
  */
-public abstract class DataServiceSupport extends ConfigurableSupport implements DataServiceI {
+public abstract class DataServiceSupport implements DataServiceI {
 
-	private NodeConfigurations configurations;
+	private DataSchema configurations;
 
 	protected Map<String, Class<? extends OperationI>> operationInterfaceMap;
 
 	protected Map<Class<? extends OperationI>, Class<? extends OperationI>> operationInterfaceImplementMap;
 
-	public DataServiceSupport() {
-		this.configurations = new NodeConfigurations();
+	public DataServiceSupport(DataSchema ds) {
+		this.configurations = ds;
 		this.operationInterfaceImplementMap = new HashMap<Class<? extends OperationI>, Class<? extends OperationI>>();
 		this.operationInterfaceMap = new HashMap<String, Class<? extends OperationI>>();
 	}
@@ -143,7 +142,7 @@ public abstract class DataServiceSupport extends ConfigurableSupport implements 
 	}
 
 	@Override
-	public NodeConfigurations getConfigurations() {
+	public DataSchema getConfigurations() {
 		return configurations;
 	}
 

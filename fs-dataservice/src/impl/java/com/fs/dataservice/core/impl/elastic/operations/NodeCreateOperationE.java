@@ -4,6 +4,8 @@
  */
 package com.fs.dataservice.core.impl.elastic.operations;
 
+import java.util.Date;
+
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -26,9 +28,8 @@ import com.fs.dataservice.core.impl.elastic.ElasticClientI;
  * @author wu
  * 
  */
-public class NodeCreateOperationE extends
-		NodeOperationSupport<NodeCreateOperationI, NodeCreateResultI> implements
-		NodeCreateOperationI {
+public class NodeCreateOperationE extends NodeOperationSupport<NodeCreateOperationI, NodeCreateResultI>
+		implements NodeCreateOperationI {
 
 	private ElasticClientI elastic;
 
@@ -60,7 +61,7 @@ public class NodeCreateOperationE extends
 			nw = this.wrapper;
 		}
 
-		// validate against NodeConfig
+		// validate against NodeMeta
 		nw.validate(this.nodeConfig, rst.getErrorInfo());//
 		if (rst.getErrorInfo().hasError()) {
 			return;
@@ -84,7 +85,7 @@ public class NodeCreateOperationE extends
 			pts.setProperty(NodeI.PK_ID, id);//
 		}
 		// timestamp
-		pts.setProperty(NodeI.PK_TIMESTAMP, elastic.getTimestampString());//
+		pts.setProperty(NodeI.PK_TIMESTAMP, new Date());//
 		// build properties
 		XContentBuilder jb = JsonXContent.contentBuilder();
 		jb.startObject();
@@ -103,8 +104,7 @@ public class NodeCreateOperationE extends
 
 		String idx = this.elastic.getIndex();
 		// idx = "index1";
-		IndexResponse response = client.prepareIndex(idx, type, uid)
-				.setSource(jb).execute().actionGet();
+		IndexResponse response = client.prepareIndex(idx, type, uid).setSource(jb).execute().actionGet();
 		String rid = response.getId();
 
 		rst.set(rid);//
@@ -119,8 +119,7 @@ public class NodeCreateOperationE extends
 	@Override
 	public NodeCreateOperationI execute(NodeType type, PropertiesI<Object> pts) {
 		//
-		return (NodeCreateOperationI) this.nodeType(type).properties(pts)
-				.execute();
+		return (NodeCreateOperationI) this.nodeType(type).properties(pts).execute();
 
 	}
 
@@ -133,8 +132,7 @@ public class NodeCreateOperationE extends
 		return (NodeCreateOperationI) super.execute();
 	}
 
-	public static class ResultImpl extends
-			ResultSupport<NodeCreateResultI, String> implements
+	public static class ResultImpl extends ResultSupport<NodeCreateResultI, String> implements
 			NodeCreateResultI {
 
 		public ResultImpl(DataServiceI ds) {
@@ -154,8 +152,7 @@ public class NodeCreateOperationE extends
 
 	public boolean isRefreshAfterCreate() {
 
-		return this.parameters.getPropertyAsBoolean(
-				NodeCreateOperationI.PK_REFRESH_AFTER_CREATE, false);
+		return this.parameters.getPropertyAsBoolean(NodeCreateOperationI.PK_REFRESH_AFTER_CREATE, false);
 
 	}
 
@@ -164,8 +161,7 @@ public class NodeCreateOperationE extends
 	 */
 	@Override
 	public NodeCreateOperationI refreshAfterCreate(boolean refreshAfterCreate) {
-		this.parameter(NodeCreateOperationI.PK_REFRESH_AFTER_CREATE,
-				refreshAfterCreate);
+		this.parameter(NodeCreateOperationI.PK_REFRESH_AFTER_CREATE, refreshAfterCreate);
 		return this;
 	}
 

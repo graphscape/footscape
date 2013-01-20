@@ -4,7 +4,7 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.expector.dataservice.api.NodeTypes;
 
@@ -27,7 +27,7 @@ public class Account extends NodeWrapper {
 		super(NodeTypes.ACCOUNT);
 	}
 
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 		cfs.addConfig(NodeTypes.ACCOUNT, Account.class)
 				.field(PASSWORD).field(NICK).field(ISANONYMOUS);
 

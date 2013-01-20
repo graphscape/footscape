@@ -1,6 +1,6 @@
 
 <config>
-	<config name="dataService" class="com.fs.dataservice.core.impl.elastic.ElasticDataServiceImpl">
+	<config name="dataServiceFactory" class="com.fs.dataservice.core.impl.elastic.ElasticDataServiceFactoryImpl">
 
 		<host value="$elastic.host" />
 		<port value="$elastic.port" />

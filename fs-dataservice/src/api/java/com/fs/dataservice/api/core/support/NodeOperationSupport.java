@@ -10,7 +10,7 @@ import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.NodeOperationI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.ResultI;
-import com.fs.dataservice.api.core.conf.NodeConfig;
+import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -27,7 +27,7 @@ public abstract class NodeOperationSupport<O extends NodeOperationI<O, T>, T ext
 	public static final String PK_PROPERTIES = "properties";// node
 															// propertiesKey
 
-	protected NodeConfig nodeConfig;
+	protected NodeMeta nodeConfig;
 
 	/**
 	 * @param ds
@@ -40,7 +40,7 @@ public abstract class NodeOperationSupport<O extends NodeOperationI<O, T>, T ext
 	@Override
 	public O nodeType(NodeType ntype) {
 
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(
 				ntype, true);
 
 		return this.nodeType(nc);
@@ -48,13 +48,13 @@ public abstract class NodeOperationSupport<O extends NodeOperationI<O, T>, T ext
 
 	@Override
 	public O nodeType(Class<? extends NodeWrapper> cls) {
-		NodeConfig nc = this.dataService.getConfigurations().getNodeConfig(cls,
+		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(cls,
 				true);
 
 		return this.nodeType(nc);
 	}
 
-	protected O nodeType(NodeConfig nc) {
+	protected O nodeType(NodeMeta nc) {
 		this.nodeConfig = nc;
 		this.parameter(PK_NODETYPE, nc.getNodeType());
 		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());

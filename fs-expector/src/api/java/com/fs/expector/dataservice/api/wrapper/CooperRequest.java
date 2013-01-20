@@ -4,7 +4,7 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
-import com.fs.dataservice.api.core.conf.NodeConfigurations;
+import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.expector.dataservice.api.NodeTypes;
 
@@ -50,7 +50,7 @@ public class CooperRequest extends NodeWrapper {
 	/**
 	 * Nov 2, 2012
 	 */
-	public static void config(NodeConfigurations cfs) {
+	public static void config(DataSchema cfs) {
 		cfs.addConfig(NodeTypes.COOPER_REQUEST, CooperRequest.class).field(EXP_ID1).field(EXP_ID2)
 				.field(ACCOUNT_ID2).field(ACCOUNT_ID1);
 

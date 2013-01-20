@@ -80,4 +80,9 @@ public class PropertiesWrapper<O, T extends PropertiesI<O>> {
 		NodeWrapper nw = (NodeWrapper) obj;
 		return ObjectUtil.nullSafeEquals(this.target, nw.target);
 	}
+
+	@Override
+	public String toString() {
+		return "wrapper of:" + this.target;
+	}
 }

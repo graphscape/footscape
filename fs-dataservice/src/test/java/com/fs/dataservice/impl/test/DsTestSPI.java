@@ -6,7 +6,7 @@ package com.fs.dataservice.impl.test;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.dataservice.api.core.DataServiceI;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 
 /**
  * @author wu
@@ -26,8 +26,10 @@ public class DsTestSPI extends SPISupport {
 	 */
 	@Override
 	public void doActive(ActiveContext ac) {
-		DataServiceI ds = ac.getContainer().find(DataServiceI.class, true);
-		MockNode.config(ds.getConfigurations());
+		DataServiceFactoryI dsf = ac.getContainer().find(DataServiceFactoryI.class, true);
+		
+		MockNode.config(dsf.getSchema());
+		
 	}
 
 	/*
