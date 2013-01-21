@@ -9,7 +9,6 @@ import junit.framework.TestCase;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
-import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 
 /**
@@ -29,14 +28,6 @@ public class TestBase extends TestCase {
 
 		DataServiceFactoryI dsf = sm.getContainer().finder(DataServiceFactoryI.class).find(true);
 		this.datas = dsf.getDataService();//
-		this.deleteAll();
-	}
-
-	protected void deleteAll() {
-		DeleteAllOperationI dao = this.datas.prepareOperation(DeleteAllOperationI.class);
-
-		dao.execute().getResult().get(true);
-
 	}
 
 	protected void dump() {

@@ -125,3 +125,9 @@ curl -XGET 'http://localhost:9200/node_index/account/_search' -d '{
     }
 }'
 
+curl -XGET 'http://localhost:9200/nodes/signup-request/_search' -d '{
+    "query": {
+        "term":{ "email" : "user1@domain.com" }
+    }
+}'
+

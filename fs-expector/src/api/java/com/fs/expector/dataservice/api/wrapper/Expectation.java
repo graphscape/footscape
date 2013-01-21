@@ -4,6 +4,7 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
+import com.fs.dataservice.api.core.meta.AnalyzerType;
 import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.expector.dataservice.api.AuthedNode;
 import com.fs.expector.dataservice.api.NodeTypes;
@@ -36,8 +37,8 @@ public class Expectation extends AuthedNode {
 	 * Nov 2, 2012
 	 */
 	public static void config(DataSchema cfs) {
-		AuthedNode.config(cfs.addConfig(NodeTypes.EXPECTATION,
-				Expectation.class).field(BODY));
+		AuthedNode.config(cfs.addConfig(NodeTypes.EXPECTATION, Expectation.class).field(BODY,
+				AnalyzerType.TEXT));
 	}
 
 }

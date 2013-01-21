@@ -21,7 +21,7 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 	public MockExpectorClient(MockClient mc) {
 		super(mc);
 	}
-	
+
 	public abstract MessageI syncSendMessage(MessageI msg);
 
 	public abstract void signup(String email, String nick, String pass);
@@ -44,6 +44,9 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 	 * Dec 30, 2012
 	 */
 	public abstract List<MockActivity> refreshActivity();
+
+	public abstract List<MockExpItem> search(boolean includeMine, int from, int max, String expId,
+			String phrase);
 
 	/**
 	 * Dec 30, 2012

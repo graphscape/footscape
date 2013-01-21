@@ -69,6 +69,8 @@ public interface MessageI {
 
 	public String getString(String key, String def);
 
+	public boolean getBoolean(String key, boolean def);
+	
 	public void setPayload(String key, Object value);
 
 	public void setPayload(Object pl);

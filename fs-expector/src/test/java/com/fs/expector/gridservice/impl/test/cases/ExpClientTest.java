@@ -15,7 +15,7 @@ import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
  * @author wu
  * 
  */
-public class ExpTest extends AuthedTestBase {
+public class ExpClientTest extends AuthedTestBase {
 
 	private MockExpectorClient client1;
 

@@ -248,6 +248,9 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		ResponseI res = this.engine.service(req);
 
 		this.onResponse(ep, req, res);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("end of event handling,evt:" + evt);
+		}
 	}
 
 	protected void onResponse(Path ep, MessageI req, ResponseI res) {

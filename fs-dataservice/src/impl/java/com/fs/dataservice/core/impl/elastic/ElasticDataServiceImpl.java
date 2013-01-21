@@ -17,7 +17,6 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.meta.DataSchema;
-import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
@@ -27,7 +26,6 @@ import com.fs.dataservice.api.core.operations.RefreshOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.support.DataServiceSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
-import com.fs.dataservice.core.impl.elastic.operations.DeleteAllOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.DumpOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeCreateOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeDeleteOperationE;
@@ -57,7 +55,7 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 		this.registerOperation("core.nodeget", NodeGetOperationI.class, NodeGetOperationE.class);
 		this.registerOperation("core.nodecreate", NodeCreateOperationI.class, NodeCreateOperationE.class);
 		this.registerOperation("core.nodequery", NodeQueryOperationI.class, NodeQueryOperationE.class);
-		this.registerOperation("core.deleteall", DeleteAllOperationI.class, DeleteAllOperationE.class);
+
 		this.registerOperation("core.dump", DumpOperationI.class, DumpOperationE.class);
 		this.registerOperation("core.refresh", RefreshOperationI.class, RefreshOperationE.class);
 		this.registerOperation("core.delete", NodeDeleteOperationI.class, NodeDeleteOperationE.class);
@@ -163,15 +161,6 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 		NodeQueryResultI<T> rst = qo.execute().getResult();
 
 		return rst.list();
-	}
-
-	/**
-	 * Jan 5, 2013
-	 */
-	public void deleteAll() {
-		DeleteAllOperationI da = this.prepareOperation(DeleteAllOperationI.class);
-		da.execute().getResult().assertNoError();
-
 	}
 
 }

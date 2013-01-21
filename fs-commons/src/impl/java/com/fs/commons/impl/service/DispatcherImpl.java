@@ -107,7 +107,7 @@ public class DispatcherImpl<T> extends HasContainerSupport implements Dispatcher
 		}
 
 		if (count == 0) {
-			LOG.warn("no handler/s for ctx:" + ctx + " with path:" + p + " in dispatcher:" + this.name);
+			LOG.warn("dispatcher:" + this.name + " has no handler/s for ctx:" + ctx + " with path:" + p);
 		}
 	}
 

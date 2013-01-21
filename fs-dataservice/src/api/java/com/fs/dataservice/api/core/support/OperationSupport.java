@@ -14,7 +14,6 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.InterceptorI;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.ResultI;
-import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 
 /**
  * @author wu

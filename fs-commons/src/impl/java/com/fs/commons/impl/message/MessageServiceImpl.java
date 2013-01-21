@@ -32,12 +32,10 @@ import com.fs.commons.impl.message.converter.ResponseC;
  * @author wuzhen
  * 
  */
-public class MessageServiceImpl extends
-		ServiceSupport<MessageI, ResponseI, MessageContext> implements
+public class MessageServiceImpl extends ServiceSupport<MessageI, ResponseI, MessageContext> implements
 		MessageServiceI {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(MessageServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	public static final String FILTER = "filter";
 
@@ -62,18 +60,16 @@ public class MessageServiceImpl extends
 	public void active(ActiveContext ac) {
 		super.active(ac);
 
-		this.dispatcher = this.top.find(DispatcherI.FactoryI.class, true)
-				.create("dispatcher-" + name);
+		this.dispatcher = this.top.find(DispatcherI.FactoryI.class, true).create("dispatcher-" + name);
 
 		this.chain = this.container.getTop().find(ChainI.FactoryI.class, true)
 				.createChain(ac, MessageI.class, ResponseI.class);
 
 		FilterI<MessageI, ResponseI> lf = new LastFilter(this);
 		this.chain.addFilter(ac.getSpi(), "LAST_FILTER", lf);
-		
+
 		//
-		ConverterI.FactoryI cf = top.find(
-				ConverterI.FactoryI.class, true);
+		ConverterI.FactoryI cf = top.find(ConverterI.FactoryI.class, true);
 
 		cf.addConverter(new RequestC(cf));
 		cf.addConverter(new ResponseC(cf));//
@@ -93,7 +89,7 @@ public class MessageServiceImpl extends
 
 		try {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("path:" + req.getPath());
+				LOG.debug("message service:" + this.name + " is processing message:" + req);
 			}
 			this.chain.service(req, res);
 

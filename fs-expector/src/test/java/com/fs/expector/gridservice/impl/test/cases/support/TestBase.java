@@ -12,7 +12,6 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
-import com.fs.dataservice.api.core.operations.DeleteAllOperationI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
 
@@ -39,12 +38,6 @@ public class TestBase extends TestCase {
 		this.dataService = dsf.getDataService();//
 
 		this.cfactory = MockExpectorClientFactory.getInstance(this.container);//
-		this.cleanDb();
-	}
-
-	protected void cleanDb() {
-		DeleteAllOperationI dao = this.dataService.prepareOperation(DeleteAllOperationI.class);
-		dao.execute().getResult().assertNoError();
 
 	}
 

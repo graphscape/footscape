@@ -279,4 +279,19 @@ public class MessageSupport implements MessageI {
 		return this.getHeader(HK_RESPONSE_ADDRESS);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.message.MessageI#getBoolean(java.lang.String,
+	 * boolean)
+	 */
+	@Override
+	public boolean getBoolean(String key, boolean def) {
+		Object obj = this.getPayload(key);
+		if (obj == null) {
+			return def;
+		}
+		return (Boolean) obj;
+	}
+
 }

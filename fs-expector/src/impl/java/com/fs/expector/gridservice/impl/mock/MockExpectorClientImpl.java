@@ -17,6 +17,7 @@ import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.gridservice.api.TestHelperI;
+import com.fs.expector.gridservice.api.mock.MockExpItem;
 import com.fs.expector.gridservice.api.mock.MockActivity;
 import com.fs.expector.gridservice.api.mock.MockActivityDetail;
 import com.fs.expector.gridservice.api.mock.MockExpInfo;
@@ -80,7 +81,8 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		this.dispatcher.addHandler(Path.valueOf("/signup/submit"), qh);
 
 		this.sendMessage(req);
-		qh.take().getRequest();//
+
+		qh.take().getResponse().assertNoError();
 		TestHelperI th = MockExpectorClientImpl.this.container.find(TestHelperI.class);
 		String rt = th.getConfirmCode(email, true);
 
@@ -97,7 +99,8 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		this.dispatcher.addHandler(Path.valueOf("/signup/confirm"), qh);
 
 		this.sendMessage(req);
-		qh.take();
+		qh.take().getResponse().assertNoError();
+
 	}
 
 	protected MessageI newRequest(String path) {
@@ -210,7 +213,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 	public MockActivityDetail getActivityDetail(String actId) {
 		//
 
-		MessageI req = this.newRequest("/activity/detail");
+		MessageI req = this.newRequest("/activity/refresh");
 		req.setPayload("actId", actId);
 
 		MessageI i = this.syncSendMessage(req);
@@ -235,4 +238,26 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		return rt;
 	}
 
+	@Override
+	public List<MockExpItem> search(boolean includeMine, int firstResult, int maxResult, String expId,
+			String phrase) {
+
+		MessageI req = this.newRequest("/exps/search");
+		req.setPayload("includeMine", includeMine);
+		req.setPayload("firstResult", firstResult);
+		req.setPayload("maxResult", maxResult);
+		req.setPayload("expId", expId);
+		req.setPayload("phrase", phrase);
+
+		MessageI i = this.syncSendMessage(req);
+
+		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) i.getPayload("expectations");
+		List<MockExpItem> rt = new ArrayList<MockExpItem>();
+		for (PropertiesI<Object> pts : el) {
+			MockExpItem me = new MockExpItem(pts);
+
+			rt.add(me);
+		}
+		return rt;
+	}
 }

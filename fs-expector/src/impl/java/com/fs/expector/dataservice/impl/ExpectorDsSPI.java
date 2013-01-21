@@ -7,9 +7,7 @@ package com.fs.expector.dataservice.impl;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
-import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.meta.DataSchema;
-import com.fs.expector.dataservice.api.operations.ExpSearchOperationI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.Activity;
@@ -23,7 +21,6 @@ import com.fs.expector.dataservice.api.wrapper.User;
 import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.dataservice.api.wrapper2.UserActivity;
 import com.fs.expector.dataservice.api.wrapper2.UserSnapshot;
-import com.fs.expector.dataservice.impl.elastic.RandomExpSearchOperationE;
 
 /**
  * @author wu
@@ -61,10 +58,6 @@ public class ExpectorDsSPI extends SPISupport {
 		Profile.config(cfs);
 		AccountInfo.config(cfs);//
 		UserSnapshot.config(cfs);
-
-		DataServiceI ds = dsf.getDataService();
-		// TODO move to factory
-		ds.registerOperation("expapp.expsearch1", ExpSearchOperationI.class, RandomExpSearchOperationE.class);
 
 	}
 
