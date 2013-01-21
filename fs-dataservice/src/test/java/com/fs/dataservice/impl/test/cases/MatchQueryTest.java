@@ -17,8 +17,17 @@ import com.fs.dataservice.impl.test.cases.support.TestBase;
 public class MatchQueryTest extends TestBase {
 	/**
 	 * <code>
-	 
-curl -XGET 'http://localhost:9200/node-index/mockNode/_search?pretty=true' -d '
+curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '{
+    "query": {
+        "match_all":{}
+    }
+}'
+
+curl -XGET 'localhost:9200/nodes/_analyze?analyzer=text&pretty=true' -d '{value13 value132}'
+
+curl -XGET 'localhost:9200/nodes/_analyze?analyzer=text&pretty=true' -d '{value13 and value131 value132 value133}'
+
+curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 {
   "from" : 0,
   "size" : 100,
@@ -32,7 +41,9 @@ curl -XGET 'http://localhost:9200/node-index/mockNode/_search?pretty=true' -d '
       "must" : {
         "match" : {
           "field3" : {
-            "query" : "value13",
+            "query" : "value13 value132",
+            "type" : "phrase",
+            "slop" : 0,
             "operator" : "AND"
           }
         }
@@ -41,54 +52,69 @@ curl -XGET 'http://localhost:9200/node-index/mockNode/_search?pretty=true' -d '
   },
   "explain" : false
 }'
-
-
-curl -XGET 'http://localhost:9200/node-index/expectation/_search?pretty=true' -d '
+curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 {
   "from" : 0,
   "size" : 100,
   "query" : {
     "bool" : {
-      "must" : {
+      "must" : [ {
         "term" : {
-          "type_" : "expectation"
+          "type_" : "mockNode"
         }
-      },
-      "must" : {
+      }, {
         "match" : {
-          "body" : {
-            "query" : "hello",
-            "operator" : "AND"
+          "field3" : {
+            "query" : "value13 value132",
+            "type" : "phrase",
+            "operator" : "AND",
+            "slop" : 0
           }
         }
-      }
+      } ]
     }
   },
-  "explain" : false
+  "explain" : true
+}'
+curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
+{
+  "from" : 0,
+  "size" : 100,
+  "query" : {
+    "bool" : {
+      "must" : [ {
+        "term" : {
+          "type_" : "mockNode"
+        }
+      }]
+    }
+  },
+  "explain" : true
 }'
 
-curl -XGET 'http://localhost:9200/node-index/expectation/_search?pretty=true' -d '
+curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 {
   "from" : 0,
   "size" : 100,
   "query" : {
     "bool" : {
-      "must" : {
+      "must" : [ {
         "term" : {
-          "_type" : "expectation"
+          "type_" : "mockNode"
         }
-      },
-      "must" : {
+      }, {
         "match" : {
-          "body" : {
-            "query" : "hello,this is a check for",
-            "operator" : "AND"
+          "field3" : {
+            "query" : "value13 value132",
+            "type" : "phrase",
+            "operator" : "AND",
+            "slop" : 3
           }
         }
-      }
+      } ]
     }
   },
-  "explain" : false
+  "explain" : true
 }'
 </code> Jan 19, 2013
 	 */
@@ -106,8 +132,15 @@ curl -XGET 'http://localhost:9200/node-index/expectation/_search?pretty=true' -d
 		mn2.save(true);
 		NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
 		qo.propertyMatch(MockNode.FIELD3, "value13 value132");
-		List<MockNode> mnl = qo.execute().getResult().list();
-		assertEquals(1, mnl.size());
+		List<MockNode> mnl = qo.execute().getResult().assertNoError().list();
+
+		assertEquals("slop=0,should not match", 0, mnl.size());
+
+		qo = this.datas.prepareNodeQuery(MockNode.class);
+		qo.propertyMatch(MockNode.FIELD3, "value13 value132", 2);
+		mnl = qo.execute().getResult().assertNoError().list();
+		assertEquals("slop=3,should match one", 1, mnl.size());
+
 		MockNode mn = mnl.get(0);
 		assertEquals(mn1, mn);
 	}

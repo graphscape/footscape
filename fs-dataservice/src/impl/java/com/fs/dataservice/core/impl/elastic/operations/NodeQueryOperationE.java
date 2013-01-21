@@ -17,6 +17,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
+import org.elasticsearch.index.query.MatchQueryBuilder.Type;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -46,8 +47,14 @@ import com.fs.dataservice.core.impl.elastic.SearchHitNode;
 public class NodeQueryOperationE<W extends NodeWrapper> extends
 		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements NodeQueryOperationI<W> {
 
+	private static class Term {
+		String field;
+		Object value;
+		Boolean mustOrNot;
+	}
+
 	private static class Range {
-		String name;
+		String field;
 		Object from;
 		boolean includeFrom;
 		Object to;
@@ -57,6 +64,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	private static class Match {
 		String field;
 		String pharse;
+		int slop;
 	}
 
 	private static class Sort {
@@ -68,9 +76,9 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 
 	private static final String PK_WRAPPER_CLS = "wrapperClass";
 
-	private static final String PK_TERMS_EQUAL = "termsEquals";
+	private static final String PK_TERMS = "terms";
 
-	private static final String PK_TERMS_RANGES = "termsRanges";
+	private static final String PK_RANGES = "ranges";
 
 	private static final String PK_MATCHES = "matches";
 
@@ -86,8 +94,8 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	public NodeQueryOperationE(DataServiceI ds) {
 		super(new NodeQueryResult<W>(ds));
 		this.elastic = (ElasticClientI) ds;
-		this.parameters.setProperties(PK_TERMS_EQUAL, new MapProperties<Object>());
-		this.parameters.setProperties(PK_TERMS_RANGES, new MapProperties<Range>());
+		this.parameters.setProperties(PK_TERMS, new ArrayList<Term>());
+		this.parameters.setProperties(PK_RANGES, new ArrayList<Range>());
 		this.parameters.setProperties(PK_MATCHES, new MapProperties<Match>());
 
 	}
@@ -131,44 +139,47 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 																			// out.
 		qb.must(typeQ);
 		// fields equals
-		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters.getProperty(PK_TERMS_EQUAL);
+		List<Term> teL = (List<Term>) this.parameters.getProperty(PK_TERMS);
 
-		this.validateKeyIsConfigedInType(ntype, tes.keyList(), rst.getErrorInfo());
-		if (rst.hasError()) {
-			return;
-		}
-		for (String key : tes.keyList()) {
-			Object value = tes.getProperty(key);
-			TermQueryBuilder qbi = new TermQueryBuilder(key, value);
-			qb.must(qbi);//
+		for (Term tm : teL) {
+
+			this.validateKeyIsConfigedInType(tm.field, rst.getErrorInfo());
+			TermQueryBuilder qbi = new TermQueryBuilder(tm.field, tm.value);
+			if (tm.mustOrNot == null) {
+				qb.should(qbi);
+			} else if (tm.mustOrNot) {
+				qb.must(qbi);
+			} else {
+				qb.mustNot(qbi);
+			}
 		}
 		// end of equals
 		// ranges
-		PropertiesI<Range> rgs = (PropertiesI<Range>) this.parameters.getProperty(PK_TERMS_RANGES);
-
-		this.validateKeyIsConfigedInType(ntype, rgs.keyList(), rst.getErrorInfo());
-		if (rst.hasError()) {
-			return;
-		}
-		for (String key : rgs.keyList()) {
-			Range rg = rgs.getProperty(key);
-			RangeQueryBuilder qbi = new RangeQueryBuilder(key);
+		
+		
+		for (Range rg : this.rangeList()) {
+			RangeQueryBuilder qbi = new RangeQueryBuilder(rg.field);
 			qbi.from(rg.from);
 			qbi.to(rg.to);
 			qb.must(qbi);//
 		}
-
+		if (rst.hasError()) {
+			return;
+		}
+		
 		// end of ranges
 		// matches
 		PropertiesI<Match> mts = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
 
-		this.validateKeyIsConfigedInType(ntype, mts.keyList(), rst.getErrorInfo());
+		this.validateKeyIsConfigedInType(mts.keyList(), rst.getErrorInfo());
 		if (rst.hasError()) {
 			return;
 		}
 		for (String key : mts.keyList()) {
 			Match rg = mts.getProperty(key);
 			MatchQueryBuilder qbi = new MatchQueryBuilder(key, rg.pharse);
+			qbi.type(Type.PHRASE);
+			qbi.slop(rg.slop);
 			qbi.operator(Operator.AND);//
 			qb.must(qbi);//
 		}
@@ -182,6 +193,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		for (Sort s : this.sortList) {
 			srb.addSort(s.field, s.order);
 		}
+		
 		SearchResponse response = srb.execute()//
 				.actionGet();
 		SearchHits shs = response.getHits();
@@ -198,15 +210,22 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		rst.set(nL);//
 	}
 
+	private void validateKeyIsConfigedInType(String field, ErrorInfos errorInfo) {
+
+		if (null == this.nodeConfig.getField(field, false)) {
+			errorInfo.add(new ErrorInfo("no field:" + field + ",in type:" + this.nodeConfig.getNodeType()));
+		}
+	}
+
 	/**
 	 * Nov 3, 2012
 	 */
-	private void validateKeyIsConfigedInType(NodeType ntype, List<String> keyList, ErrorInfos errorInfo) {
-		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(ntype, true);
+
+	private void validateKeyIsConfigedInType(List<String> keyList, ErrorInfos errorInfo) {
+
 		for (String k : keyList) {
-			if (null == nc.getField(k, false)) {
-				errorInfo.add(new ErrorInfo("no field:" + k + ",in type:" + ntype));
-			}
+
+			this.validateKeyIsConfigedInType(k, errorInfo);
 		}
 	}
 
@@ -220,38 +239,63 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	}
 
 	@Override
+	public NodeQueryOperationI<W> propertyNotEq(String key, Object value) {
+		//
+		Term tm = this.addTerm(key, value);
+		tm.mustOrNot = Boolean.FALSE;
+		return this;
+	}
+
+	@Override
 	public NodeQueryOperationI<W> propertyEq(String key, Object value) {
 		//
-		PropertiesI<Object> tes = (PropertiesI<Object>) this.parameters.getProperty(PK_TERMS_EQUAL);
-		tes.setProperty(key, value);
+		Term tm = this.addTerm(key, value);
+		tm.mustOrNot = Boolean.TRUE;
 		return this;
+	}
+
+	private List<Term> termList() {
+		List<Term> rt = (List<Term>) this.parameters.getProperty(PK_TERMS);
+		return rt;
+	}
+
+	private Term addTerm(String key, Object value) {
+
+		Term rt = new Term();
+		rt.field = key;
+		rt.value = value;
+		this.termList().add(rt);
+
+		return rt;
+
 	}
 
 	@Override
 	public NodeQueryOperationI<W> propertyGt(String key, Object value, boolean include) {
 		//
-		Range rg = this.getOrCreateRange(key);
+		Range rg = this.addRange(key);
 		rg.from = value;
 		rg.includeFrom = include;
 		return this;
 	}
 
-	public Range getOrCreateRange(String key) {
-		PropertiesI<Range> tes = (PropertiesI<Range>) this.parameters.getProperty(PK_TERMS_RANGES);
+	private List<Range> rangeList() {
+		List<Range> tes = (List<Range>) this.parameters.getProperty(PK_RANGES);
+		return tes;
+	}
 
-		Range rt = tes.getProperty(key);
-		if (rt == null) {
-			rt = new Range();
-			rt.name = key;
-			tes.setProperty(key, rt);
-		}
+	private Range addRange(String key) {
+
+		Range rt = new Range();
+		rt.field = key;
+		this.rangeList().add(rt);
 		return rt;
 
 	}
 
 	@Override
 	public NodeQueryOperationI<W> propertyLt(String key, Object value, boolean include) {
-		Range rg = this.getOrCreateRange(key);
+		Range rg = this.addRange(key);
 		rg.to = value;
 		rg.includeTo = include;
 		return this;
@@ -415,12 +459,19 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	 */
 	@Override
 	public NodeQueryOperationI<W> propertyMatch(String key, String pharse) {
+		return this.propertyMatch(key, pharse, 0);
+
+	}
+
+	@Override
+	public NodeQueryOperationI<W> propertyMatch(String key, String pharse, int slop) {
 		//
 		PropertiesI<Match> tes = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
 		Match m = tes.getProperty(key);
 		if (m == null) {
 			m = new Match();
 			m.field = key;
+			m.slop = slop;
 			tes.setProperty(key, m);
 		}
 		m.pharse = pharse;

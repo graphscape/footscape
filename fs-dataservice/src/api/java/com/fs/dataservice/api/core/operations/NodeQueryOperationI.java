@@ -23,11 +23,15 @@ public interface NodeQueryOperationI<W extends NodeWrapper> extends
 
 	public NodeQueryOperationI<W> nodeType(Class<W> cls);
 
+	public NodeQueryOperationI<W> propertyNotEq(String key, Object value);
+	
 	public NodeQueryOperationI<W> propertyEq(String key, Object value);
 
 	public NodeQueryOperationI<W> propertyGt(String key, Object value, boolean include);
 
 	public NodeQueryOperationI<W> propertyMatch(String key, String pharse);
+
+	public NodeQueryOperationI<W> propertyMatch(String key, String pharse, int slop);
 
 	public NodeQueryOperationI<W> propertyLt(String key, Object value, boolean include);
 

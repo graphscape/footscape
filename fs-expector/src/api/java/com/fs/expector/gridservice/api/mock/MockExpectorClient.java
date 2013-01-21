@@ -46,7 +46,7 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 	public abstract List<MockActivity> refreshActivity();
 
 	public abstract List<MockExpItem> search(boolean includeMine, int from, int max, String expId,
-			String phrase);
+			String phrase, int slop);
 
 	/**
 	 * Dec 30, 2012

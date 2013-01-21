@@ -240,7 +240,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 
 	@Override
 	public List<MockExpItem> search(boolean includeMine, int firstResult, int maxResult, String expId,
-			String phrase) {
+			String phrase, int slop) {
 
 		MessageI req = this.newRequest("/exps/search");
 		req.setPayload("includeMine", includeMine);
@@ -248,7 +248,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("maxResult", maxResult);
 		req.setPayload("expId", expId);
 		req.setPayload("phrase", phrase);
-
+		req.setPayload("slop",slop);
 		MessageI i = this.syncSendMessage(req);
 
 		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) i.getPayload("expectations");

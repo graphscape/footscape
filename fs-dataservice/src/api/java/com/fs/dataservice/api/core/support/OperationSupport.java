@@ -32,6 +32,7 @@ public abstract class OperationSupport<O extends OperationI<O, T>, T extends Res
 
 	protected DataServiceI dataService;
 
+	@Deprecated
 	protected PropertiesI<Object> parameters;
 
 	protected T result;

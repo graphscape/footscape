@@ -34,6 +34,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		Integer from = (Integer) req.getPayload("firstResult", true);
 		Integer max = (Integer) req.getPayload("maxResult", true);
 		boolean includeMe = req.getBoolean("includeMine", true);
+		int slop = (Integer) req.getPayload("slop", 0);
 
 		String expId = (String) req.getPayload("expId");// may null
 
@@ -43,7 +44,11 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		qo.first(from);
 		qo.maxSize(max);
-		qo.propertyMatch(Expectation.BODY, phrase);
+		if (!includeMe) {
+			String thisAccId = this.getAccountId(ew, true);//
+			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);
+		}
+		qo.propertyMatch(Expectation.BODY, phrase, slop);
 
 		NodeQueryResultI<Expectation> rst = qo.execute().getResult().assertNoError();
 		// convert
