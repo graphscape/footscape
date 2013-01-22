@@ -22,7 +22,7 @@ public class MockWSCFactory {
 	}
 
 	public MockWSC newClient(String id, URI uri) {
-		MockWSC rt = new MockWSC(uri);
+		MockWSC rt = new MockWSC(id, uri);
 		WebSocketClient wsc = factory.newWebSocketClient(rt);
 		rt.init(wsc);
 		return rt;

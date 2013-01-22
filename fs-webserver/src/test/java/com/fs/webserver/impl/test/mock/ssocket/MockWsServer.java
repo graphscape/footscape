@@ -63,7 +63,9 @@ public class MockWsServer extends ManagerWsListener {
 	public void onConnect(WebSocketI ws) {
 		super.onConnect(ws);
 		String sid = ws.getId();// sessionId
-		ws.sendMessage("server,client," + sid);
+		String msg = "server,client," + sid;
+		LOG.debug("send sessionId to client by message:" + msg);
+		ws.sendMessage(msg);
 	}
 
 	/*

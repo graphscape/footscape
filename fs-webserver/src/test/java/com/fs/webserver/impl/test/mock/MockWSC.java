@@ -51,7 +51,10 @@ public class MockWSC implements WebSocketListener {
 
 	protected String sessionId;
 
-	public MockWSC(URI uri) {
+	protected String name;
+
+	public MockWSC(String name, URI uri) {
+		this.name = name;
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
 	}
@@ -85,11 +88,12 @@ public class MockWSC implements WebSocketListener {
 	 */
 	public void init(WebSocketClient wsc) {
 		this.client = wsc;
+		this.sessioned = new Semaphore(0);
 	}
 
 	@Override
 	public void onWebSocketText(String message) {
-		LOG.info("msg:" + message);
+		LOG.info(this.name + ".onWebSocketText,message:" + message);
 		MockMessage ms = MockMessage.parse(message);
 
 		if (this.sessionId == null) {
@@ -98,6 +102,9 @@ public class MockWSC implements WebSocketListener {
 			}
 
 			this.sessionId = ms.getText();//
+			if (this.sessionId == null) {
+				throw new FsException("session id is null.");
+			}
 			this.sessioned.release();
 			return;
 		}
@@ -176,17 +183,19 @@ public class MockWSC implements WebSocketListener {
 	}
 
 	public void syncSession() {
-		this.sessioned = new Semaphore(0);
-		this.sessioned.acquireUninterruptibly();
 
+		LOG.debug(this.name + " is in acquireSession...");
+		this.sessioned.acquireUninterruptibly();
+		LOG.debug(this.name + " has done of acquireSession.");
 	}
 
 	public void syncConnect() {
 		try {
 			this.connected = new Semaphore(0);
 			FutureCallback<UpgradeResponse> fc = this.client.connect(this.uri);
+			LOG.debug(this.name + " is in acquireConnect...");
 			this.connected.acquireUninterruptibly();
-
+			LOG.debug(this.name + " has done of acquireConnect");
 		} catch (IOException e) {
 			throw FsException.toRtE(e);//
 		}
