@@ -81,6 +81,16 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 
 	}
 
+	@Override
+	public void deactive(ActiveContext ac) {
+		super.deactive(ac);
+		if (this.dataService == null) {
+			return;
+		}
+		this.dataService.close();
+		this.dataService = null;
+	}
+
 	private String getHost() {
 		return this.config.getProperty("host", "locahost");
 	}

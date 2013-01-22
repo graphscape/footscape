@@ -42,16 +42,22 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		this.dispatcher = this.getDispatcher();
 	}
 
-	@Override
 	public MessageI syncSendMessage(MessageI msg) {
+		return this.syncSendMessage(msg, 5 * 1000);//
+	}
+
+	@Override
+	public MessageI syncSendMessage(MessageI msg, int timeout) {
 		Path mp = msg.getPath();
 
 		QueueMessageHandler qh = new QueueMessageHandler();
 		this.dispatcher.addHandler(mp, qh);
 		this.sendMessage(msg);
 
-		MessageContext mc = qh.take();
-
+		MessageContext mc = qh.poll(timeout);
+		if (mc == null) {
+			throw new FsException("timeout:" + timeout + " to wait the success response for request:" + msg);
+		}
 		MessageI rt = mc.getRequest();
 		Path rp = rt.getPath();
 		if (!"success".equals(rp.getName())) {
@@ -248,7 +254,7 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 		req.setPayload("maxResult", maxResult);
 		req.setPayload("expId", expId);
 		req.setPayload("phrase", phrase);
-		req.setPayload("slop",slop);
+		req.setPayload("slop", slop);
 		MessageI i = this.syncSendMessage(req);
 
 		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) i.getPayload("expectations");
@@ -259,5 +265,15 @@ public class MockExpectorClientImpl extends MockExpectorClient {
 			rt.add(me);
 		}
 		return rt;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.expector.gridservice.api.mock.MockExpectorClient#close()
+	 */
+	@Override
+	public void close() {
+
 	}
 }

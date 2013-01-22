@@ -22,7 +22,7 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 		super(mc);
 	}
 
-	public abstract MessageI syncSendMessage(MessageI msg);
+	public abstract MessageI syncSendMessage(MessageI msg, int timeout);
 
 	public abstract void signup(String email, String nick, String pass);
 
@@ -52,5 +52,7 @@ public abstract class MockExpectorClient extends ProxyMockClient {
 	 * Dec 30, 2012
 	 */
 	public abstract MockActivityDetail getActivityDetail(String actId);
+	
+	public abstract void close();
 
 }

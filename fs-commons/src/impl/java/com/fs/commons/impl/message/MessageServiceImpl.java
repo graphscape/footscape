@@ -102,7 +102,10 @@ public class MessageServiceImpl extends ServiceSupport<MessageI, ResponseI, Mess
 			if (es.hasError()) {
 				this.processError(req, res, es);
 			}
-
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("message service:" + this.name + " have processed message:" + req + ",response:"
+						+ res);
+			}
 		}
 
 	}
