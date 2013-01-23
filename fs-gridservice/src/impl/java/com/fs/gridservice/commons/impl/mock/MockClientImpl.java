@@ -3,7 +3,6 @@
  */
 package com.fs.gridservice.commons.impl.mock;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
@@ -11,14 +10,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
-
-import javax.net.websocket.RemoteEndpoint;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.api.WebSocketConnection;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.eclipse.jetty.websocket.client.WebSocketClientFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -47,8 +44,8 @@ import com.fs.gridservice.commons.api.mock.MockClient;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockClientBase extends MockClient implements WebSocketListener {
-	private static final Logger LOG = LoggerFactory.getLogger(MockClientBase.class);
+public class MockClientImpl extends MockClient implements WebSocketListener {
+	private static final Logger LOG = LoggerFactory.getLogger(MockClientImpl.class);
 
 	protected URI uri;
 
@@ -78,7 +75,7 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 
 	protected String name;
 
-	public MockClientBase(String name, WebSocketClientFactory f, ContainerI c, URI uri) {
+	public MockClientImpl(String name, ContainerI c, URI uri) {
 		this.uri = uri;
 		this.name = name;
 
@@ -88,20 +85,20 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 		this.messageReceived = new LinkedBlockingQueue<MessageI>();
 		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 
-		this.client = f.newWebSocketClient(this);
+		this.client = new WebSocketClient();
 
 		this.getDispatcher().addHandler(null, Path.valueOf("/terminal/auth/success"), new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockClientBase.this.onAuthSuccess(sc);
+				MockClientImpl.this.onAuthSuccess(sc);
 			}
 		});
 		this.getDispatcher().addHandler(null, Path.valueOf(WebSocketGoI.P_READY), new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockClientBase.this.onConnected(sc);
+				MockClientImpl.this.onServerIsReady(sc);
 			}
 		});
 	}
@@ -113,16 +110,16 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 			@Override
 			public Object call() throws Exception {
 				//
-				MockClientBase.this.run();
+				MockClientImpl.this.run();
 				return "stoped";
 			}
 		});
 		this.connected = new Semaphore(0);
-
 		try {
-			this.client.connect(this.uri);
+			this.client.start();
+			this.client.connect(this, this.uri);
 
-			this.connected.acquire();
+			this.connected.tryAcquire(10, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			throw new FsException(e);
 		}
@@ -130,7 +127,7 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 
 	}
 
-	private void onConnected(MessageContext sc) {
+	private void onServerIsReady(MessageContext sc) {
 
 		MessageI msg = sc.getRequest();//
 		this.terminalId = msg.getString("terminalId", true);
@@ -181,13 +178,13 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 			throw new FsException("no terminalId");
 		}
 		msg.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + this.terminalId);
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
+
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
-			endpoint.sendString(code);
-		} catch (IOException e) {
-			throw new FsException(e);
+			this.connection.write(code);
+		} catch (Exception e) {
+			throw FsException.toRtE(e);
 		}
 	}
 
@@ -246,13 +243,13 @@ public class MockClientBase extends MockClient implements WebSocketListener {
 		return this.sessionId;
 	}
 
-	/**
-	 * Dec 12, 2012
-	 */
+	@Override
 	public void close() {
 		try {
 			this.connection.close();
-		} catch (IOException e) {
+			this.connection = null;
+			this.client.stop();
+		} catch (Exception e) {
 			throw new FsException(e);
 		}
 	}

@@ -54,12 +54,19 @@ public class MockWSC implements WebSocketListener {
 
 	protected ExecutorService executor;
 
-	public MockWSC(String name, URI uri) {
+	protected Semaphore serverIsReady;
+
+	public MockWSC(String name, URI uri, boolean serverWillReadyMessage) {
 		this.executor = Executors.newCachedThreadPool();
 		this.name = name;
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
 		this.client = new WebSocketClient();
+		if (serverWillReadyMessage) {
+
+			this.serverIsReady = new Semaphore(0);
+			throw new FsException("not supported,to be discussed later.");
+		}
 	}
 
 	public void sendMessage(String to, String text) {
@@ -92,9 +99,23 @@ public class MockWSC implements WebSocketListener {
 	public void onWebSocketText(String message) {
 		LOG.info(this.name + ".onWebSocketText,message:" + message);
 		MockMessage ms = MockMessage.parse(message);
+		if (this.serverIsReady != null) {// first
+											// message
+											// must
+											// be
+											// server
+											// is
+			// ready.
 
-		if (this.appSessionId == null) {
-			if (!ms.getFrom().equals("server")) {// appSessionId got
+			ms.assertEquals("server", "client", "server-is-ready");
+			this.serverIsReady.release();
+			return;
+
+		}
+
+		if (this.appSessionGot != null) {//
+
+			if (!ms.getFrom().equals("server")) {//
 				throw new FsException("first message must appSessionId from server");
 			}
 
@@ -102,6 +123,7 @@ public class MockWSC implements WebSocketListener {
 			if (this.appSessionId == null) {
 				throw new FsException("session id is null.");
 			}
+
 			this.appSessionGot.release();
 			return;
 		}
@@ -173,6 +195,7 @@ public class MockWSC implements WebSocketListener {
 		this.sendMessage("client", "server", "create-session");
 		this.appSessionGot.acquireUninterruptibly();
 		LOG.debug(this.name + " has done of acquireSession.");
+		this.appSessionGot = null;
 		return this.appSessionId;
 	}
 
@@ -188,8 +211,14 @@ public class MockWSC implements WebSocketListener {
 			this.session = sf.get(10, TimeUnit.SECONDS);
 			this.connected.acquireUninterruptibly();
 
+			if (this.serverIsReady != null) {
+				if (!this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS)) {
+					throw new FsException("timeout for waiting server-is-ready");
+				}
+				this.serverIsReady = null;//
+			}
 		} catch (Exception e) {
-			throw new FsException(e);
+			throw FsException.toRtE(e);
 		}
 	}
 

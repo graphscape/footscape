@@ -63,4 +63,12 @@ public class ProxyMockClient extends MockClient {
 		return this.target.getDispatcher();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.gridservice.commons.api.mock.MockClient#close()
+	 */
+	@Override
+	public void close() {
+		this.target.close();
+	}
+
 }

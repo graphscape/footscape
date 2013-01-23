@@ -42,15 +42,18 @@ public class WebSocketBenchmark {
 
 	private List<MockWSC> clientList;
 
+	private boolean sendReadyMessageAtConnection;
+
 	public WebSocketBenchmark(int cc, int mc) {
 		this.concurrent = cc;
 		this.messages = mc;
 		this.clientList = new ArrayList<MockWSC>();
+		this.sendReadyMessageAtConnection = false;
 	}
 
 	public static void main(String[] args) {
-		//TODO cmd line argument
-		new WebSocketBenchmark(300, 1).start();
+		// TODO cmd line argument
+		new WebSocketBenchmark(100, 1).start();
 	}
 
 	public void start() {
@@ -92,7 +95,7 @@ public class WebSocketBenchmark {
 		}
 
 		for (int i = 0; i < this.concurrent; i++) {
-			MockWSC client = new MockWSC("client-" + i, uri);
+			MockWSC client = new MockWSC("client-" + i, uri, this.sendReadyMessageAtConnection);
 			this.clientList.add(client);
 		}
 		this.inExecutorForEachClient(new CallbackI<MockWSC, Object>() {
@@ -171,7 +174,7 @@ public class WebSocketBenchmark {
 	}
 
 	public void startServer() {
-		this.server = new MockWsServer("testws", this.container);
+		this.server = new MockWsServer("testws", this.container, this.sendReadyMessageAtConnection);
 		this.server.start();
 
 	}

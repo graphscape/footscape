@@ -21,6 +21,8 @@ public class WebSocketTest extends TestBase {
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebSocketTest.class);
 
+	private static final boolean srmac = false;
+
 	public void testClients() throws Exception {
 		MockWsServer mserver = this.prepareServer();
 
@@ -28,7 +30,7 @@ public class WebSocketTest extends TestBase {
 		int CLS = 2;
 		MockWSC[] clients = new MockWSC[CLS];
 		for (int i = 0; i < CLS; i++) {
-			MockWSC ci = new MockWSC("client-" + i, uri);
+			MockWSC ci = new MockWSC("client-" + i, uri, srmac);
 			clients[i] = ci;
 			ci.connect();//
 			// sessionID
@@ -61,7 +63,7 @@ public class WebSocketTest extends TestBase {
 	}
 
 	private MockWsServer prepareServer() {
-		MockWsServer rt = new MockWsServer("testws", this.container);
+		MockWsServer rt = new MockWsServer("testws", this.container, srmac);
 		rt.start();
 		return rt;
 	}

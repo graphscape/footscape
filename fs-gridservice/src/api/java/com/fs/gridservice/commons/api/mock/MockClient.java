@@ -28,4 +28,6 @@ public abstract class MockClient {
 
 	public abstract String getAccountId();
 
+	public abstract void close() ;
+
 }

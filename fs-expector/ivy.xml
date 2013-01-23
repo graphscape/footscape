@@ -11,7 +11,7 @@
 	
 		<artifact name="fs-expector-api" type="jar" conf="api" ext="jar" />
 		<artifact name="fs-expector-impl" type="jar" conf="impl" ext="jar" />
-		
+	
 	</publications>
 	<dependencies>
 

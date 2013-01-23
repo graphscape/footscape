@@ -7,8 +7,6 @@ package com.fs.gridservice.commons.impl.mock;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.jetty.websocket.client.WebSocketClientFactory;
-
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.gridservice.commons.api.mock.MockClient;
@@ -20,19 +18,12 @@ import com.fs.gridservice.commons.api.mock.MockClientFactory;
  */
 public class MockClientFactoryImpl extends MockClientFactory {
 
-	protected WebSocketClientFactory cf = new WebSocketClientFactory();
-
 	protected ContainerI container;
 
 	protected int nextClient;
 
 	public MockClientFactoryImpl start(ContainerI c) {
 		this.container = c;
-		try {
-			cf.start();
-		} catch (Exception e) {
-			throw FsException.toRtE(e);
-		}
 		return this;
 	}
 
@@ -52,8 +43,7 @@ public class MockClientFactoryImpl extends MockClientFactory {
 			throw new FsException(e);
 		}
 		String name = "client" + this.nextClient++;
-		MockClientBase rt = new MockClientBase(name, this.cf, this.container,
-				uri);
+		MockClientImpl rt = new MockClientImpl(name, this.container, uri);
 		return rt;
 	}
 

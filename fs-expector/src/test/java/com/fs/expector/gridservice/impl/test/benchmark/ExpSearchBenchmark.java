@@ -118,7 +118,7 @@ public class ExpSearchBenchmark {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new ExpSearchBenchmark(100, 100).start();
+		new ExpSearchBenchmark(10, 10).start();
 	}
 
 	public void start() {
