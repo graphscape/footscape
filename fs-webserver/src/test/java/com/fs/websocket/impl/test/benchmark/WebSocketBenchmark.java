@@ -53,7 +53,7 @@ public class WebSocketBenchmark {
 
 	public static void main(String[] args) {
 		// TODO cmd line argument
-		new WebSocketBenchmark(100, 1).start();
+		new WebSocketBenchmark(1000, 1).start();
 	}
 
 	public void start() {

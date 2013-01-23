@@ -4,9 +4,7 @@
 package com.fs.expector.gridservice.impl.test.benchmark;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +15,7 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
@@ -27,71 +26,6 @@ import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
  * 
  */
 public class ExpSearchBenchmark {
-	static class Metric {
-
-		public String name;
-		public long amount = 1;
-		public long start;
-		public long end;
-
-		public long avg() {
-
-			return this.total() / this.amount;
-		}
-
-		public long total() {
-			return this.end - this.start;
-		}
-
-		/**
-		 * Jan 22, 2013
-		 */
-		public void end() {
-			this.end = System.currentTimeMillis();
-		}
-
-		public String toString() {
-			return "metric," + ",\tavg:" + this.avg() + ",\tname:" + name + ",\tstart:" + start + ",\tend:"
-					+ end + ",\tamount:" + amount + ",\ttotal:" + this.total();
-		}
-	}
-
-	static class Metrics {
-		Map<String, Metric> metricMap = new HashMap<String, Metric>();
-
-		public void start(String name) {
-			get(name).start = System.currentTimeMillis();
-		}
-
-		public synchronized Metric get(String name) {
-
-			Metric m = this.metricMap.get(name);
-			if (m == null) {
-				m = new Metric();
-				m.name = name;
-				this.metricMap.put(name, m);
-			}
-
-			return m;
-		}
-
-		public void end(String name, int ammount) {
-
-			Metric m = get(name);
-			m.amount = ammount;
-			m.end();
-		}
-
-		public void end(String name) {
-			this.get(name).end();
-		}
-
-		public void print() {
-			for (Metric m : this.metricMap.values()) {
-				System.out.println(m);
-			}
-		}
-	}
 
 	protected SPIManagerI sm;
 
@@ -109,40 +43,39 @@ public class ExpSearchBenchmark {
 
 	protected List<MockExpectorClient> clientList;
 
-	protected Metrics metrics;
-
 	public ExpSearchBenchmark(int cc, int ec) {
 		this.clientCount = cc;
 		this.expCountForEachUser = ec;
-		this.metrics = new Metrics();
 	}
 
 	public static void main(String[] args) throws Exception {
-		new ExpSearchBenchmark(10, 10).start();
+		new ExpSearchBenchmark(300, 10).start();
 	}
 
 	public void start() {
 		String metric = "init";
-		this.metrics.start(metric);
+		TimeMeasures tm = new TimeMeasures();
+
+		tm.start(metric);
 		this.init();
-		this.metrics.end(metric);
+		tm.end(metric);
 
 		metric = "start-clients";
-		this.metrics.start(metric);
+		tm.start(metric);
 		this.startClients();
-		this.metrics.end(metric, this.clientCount);
+		tm.end(metric, this.clientCount);
 
 		metric = "exp-create";
-		this.metrics.start(metric);
+		tm.start(metric);
 		this.populateExpData();
-		this.metrics.end(metric, this.clientCount * this.expCountForEachUser);
+		tm.end(metric, this.clientCount * this.expCountForEachUser);
 
 		metric = "search";
-		this.metrics.start(metric);
+		tm.start(metric);
 		this.searchExpData();
-		this.metrics.end(metric, this.clientCount);
+		tm.end(metric, this.clientCount);
 		this.sm.shutdown();
-		this.metrics.print();
+		tm.print();
 		// TODO remove this code:
 		System.exit(0);//
 	}
