@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.lang.FsException;
 import com.fs.webserver.impl.test.mock.MockMessage;
 import com.fs.websocket.api.WebSocketI;
 import com.fs.websocket.api.WsFactoryI;
@@ -40,12 +41,30 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onMessage(WebSocketI ws, String msg) {
 		super.onMessage(ws, msg);
+		LOG.debug("server received message:" + msg);
 		MockMessage mm = MockMessage.parse(msg);
 
 		String toSid = mm.getTo();
-		WebSocketI toWs = this.manager.getSocket(toSid, true);
-		toWs.sendMessage(msg);//
+		if (toSid.equals("server")) {
+			this.processToServerMessage(ws, mm);
+		} else {
+			WebSocketI toWs = this.manager.getSocket(toSid, true);
+			toWs.sendMessage(msg);//
+		}
 
+	}
+
+	protected void processToServerMessage(WebSocketI ws, MockMessage mm) {
+		String cmd = mm.getText();
+		if ("create-session".equals(cmd)) {
+			String sid = ws.getId();//
+			String msg = "server,client," + sid;
+			ws.sendMessage(msg);//
+			// LOG.debug(msg);
+
+		} else {
+			throw new FsException("cmd not support:" + cmd + ",for message:" + mm);
+		}
 	}
 
 	/*
@@ -62,10 +81,7 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onConnect(WebSocketI ws) {
 		super.onConnect(ws);
-		String sid = ws.getId();// sessionId
-		String msg = "server,client," + sid;
-		LOG.debug("send sessionId to client by message:" + msg);
-		ws.sendMessage(msg);
+
 	}
 
 	/*
@@ -74,7 +90,7 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onClose(WebSocketI ws, int statusCode, String reason) {
 		super.onClose(ws, statusCode, reason);
-
+		LOG.debug("onClose of ws:" + ws + ",statusCode:" + statusCode + ",reason:" + reason);
 	}
 
 	public void waitClientClose() {

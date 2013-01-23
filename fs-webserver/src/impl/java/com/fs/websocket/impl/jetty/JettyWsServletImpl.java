@@ -57,25 +57,21 @@ public class JettyWsServletImpl extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		try {
-			String bs = getInitParameter("bufferSize");
+			String bs = getInitParameter("inputBufferSize");
 			WebSocketPolicy policy = new WebSocketPolicy(WebSocketBehavior.SERVER);
 			if (bs != null) {
-				policy.setBufferSize(Integer.parseInt(bs));
+				policy.setInputBufferSize(Integer.parseInt(bs));
 			}
 
 			String max = getInitParameter("maxIdleTime", true);
 
 			policy.setIdleTimeout(Integer.parseInt(max));
 			LOG.info("maxIdleTime:" + max);//
-			max = getInitParameter("maxTextMessageSize");
+			max = getInitParameter("maxMessageSize");
 			if (max != null) {
-				policy.setMaxTextMessageSize(Integer.parseInt(max));
+				policy.setMaxMessageSize(Integer.parseInt(max));
 			}
 
-			max = getInitParameter("maxBinaryMessageSize");
-			if (max != null) {
-				policy.setMaxBinaryMessageSize(Integer.parseInt(max));
-			}
 			WebSocketServletFactory baseFactory = this.getBaseFactory();
 			factory = baseFactory.createFactory(policy);
 

@@ -22,7 +22,6 @@ import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.webserver.impl.test.mock.MockWSC;
-import com.fs.webserver.impl.test.mock.MockWSCFactory;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
 
 /**
@@ -34,8 +33,6 @@ public class WebSocketBenchmark {
 	private ContainerI container;
 
 	private MockWsServer server;
-
-	private MockWSCFactory cf;
 
 	private int concurrent;
 
@@ -52,7 +49,8 @@ public class WebSocketBenchmark {
 	}
 
 	public static void main(String[] args) {
-		new WebSocketBenchmark(11, 1).start();
+		//TODO cmd line argument
+		new WebSocketBenchmark(300, 1).start();
 	}
 
 	public void start() {
@@ -65,11 +63,6 @@ public class WebSocketBenchmark {
 		name = "startServer";
 		tm.start(name);
 		this.startServer();
-		tm.end(name);
-
-		name = "clientFactory";
-		tm.start(name);
-		this.startClientFactory();
 		tm.end(name);
 
 		name = "startClients";
@@ -99,22 +92,17 @@ public class WebSocketBenchmark {
 		}
 
 		for (int i = 0; i < this.concurrent; i++) {
-			MockWSC client = cf.newClient("client-" + i, uri);
+			MockWSC client = new MockWSC("client-" + i, uri);
 			this.clientList.add(client);
 		}
 		this.inExecutorForEachClient(new CallbackI<MockWSC, Object>() {
 
 			@Override
 			public Object execute(MockWSC ci) {
-				Future<MockWSC> fc = ci.connect();//
-				MockWSC c;
-				try {
-					c = fc.get(1000, TimeUnit.MILLISECONDS);
-					fc = ci.session();
-					c = fc.get(1000, TimeUnit.MILLISECONDS);
-				} catch (Exception e) {
-					throw FsException.toRtE(e);
-				}
+				ci.connect();//
+
+				ci.createSession();
+
 				// sessionID
 				return null;
 			}
@@ -150,15 +138,20 @@ public class WebSocketBenchmark {
 	private void inExecutor(int loop, final CallbackI<Integer, Object> cb) {
 		ExecutorService executor = Executors.newCachedThreadPool();
 
+		List<Future<Object>> fL = new ArrayList<Future<Object>>();
+
 		for (int i = 0; i < loop; i++) {
 			final int fI = i;
-			executor.submit(new Callable<Object>() {
+			Future<Object> f = executor.submit(new Callable<Object>() {
 
 				@Override
 				public Object call() throws Exception {
+
 					return cb.execute(fI);
+
 				}
 			});
+			fL.add(f);
 
 		}
 		executor.shutdown();
@@ -168,11 +161,13 @@ public class WebSocketBenchmark {
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}
-	}
-
-	public void startClientFactory() {
-		cf = new MockWSCFactory();
-		cf.start();
+		for (Future<Object> f : fL) {
+			try {
+				f.get(10, TimeUnit.SECONDS);
+			} catch (Exception e) {
+				throw FsException.toRtE(e);
+			}
+		}
 	}
 
 	public void startServer() {

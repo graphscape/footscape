@@ -4,8 +4,6 @@
 package com.fs.websocket.impl.test.cases;
 
 import java.net.URI;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.fs.webserver.impl.test.cases.support.TestBase;
 import com.fs.webserver.impl.test.mock.MockMessage;
 import com.fs.webserver.impl.test.mock.MockWSC;
-import com.fs.webserver.impl.test.mock.MockWSCFactory;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
 
 /**
@@ -27,19 +24,15 @@ public class WebSocketTest extends TestBase {
 	public void testClients() throws Exception {
 		MockWsServer mserver = this.prepareServer();
 
-		MockWSCFactory cf = new MockWSCFactory();
-		cf.start();
-
 		URI uri = new URI("ws://localhost:8080/wsa/testws");
 		int CLS = 2;
 		MockWSC[] clients = new MockWSC[CLS];
 		for (int i = 0; i < CLS; i++) {
-			clients[i] = cf.newClient("client-" + i, uri);
-			Future<MockWSC> fc = clients[i].connect();//
-			MockWSC c = fc.get(1000, TimeUnit.MILLISECONDS);
+			MockWSC ci = new MockWSC("client-" + i, uri);
+			clients[i] = ci;
+			ci.connect();//
 			// sessionID
-			fc = clients[i].session();
-			c = fc.get(1000, TimeUnit.MILLISECONDS);
+			ci.createSession();
 
 		}
 		for (int i = 0; i < CLS; i++) {
@@ -54,7 +47,7 @@ public class WebSocketTest extends TestBase {
 		// each client will receive a message;
 		for (int i = 0; i < CLS; i++) {
 			MockMessage mm = clients[i].nextMessage(1000000);
-			assertNotNull("message not got",mm);
+			assertNotNull("message not got", mm);
 			LOG.info("msg:" + mm);
 		}
 

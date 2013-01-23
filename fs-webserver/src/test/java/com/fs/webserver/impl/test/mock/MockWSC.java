@@ -3,20 +3,17 @@
  */
 package com.fs.webserver.impl.test.mock;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.websocket.RemoteEndpoint;
-
-import org.eclipse.jetty.util.FutureCallback;
-import org.eclipse.jetty.websocket.api.UpgradeResponse;
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketConnection;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -47,32 +44,40 @@ public class MockWSC implements WebSocketListener {
 
 	protected Semaphore connected;
 
-	protected Semaphore sessioned;
+	protected Semaphore appSessionGot;
 
-	protected String sessionId;
+	protected Session session;
+
+	protected String appSessionId;
 
 	protected String name;
 
+	protected ExecutorService executor;
+
 	public MockWSC(String name, URI uri) {
+		this.executor = Executors.newCachedThreadPool();
 		this.name = name;
 		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
+		this.client = new WebSocketClient();
 	}
 
 	public void sendMessage(String to, String text) {
+		if (this.appSessionId == null) {
+			throw new FsException("session not got.");
+		}
+		this.sendMessage(this.appSessionId, to, text);
+	}
+
+	public void sendMessage(String from, String to, String text) {
 		if (this.connection == null) {
 			throw new FsException("not connected");
 		}
-		if (this.sessionId == null) {
-			throw new FsException("session not got.");
-		}
-		MockMessage mm = new MockMessage(this.sessionId, to, text);
-		RemoteEndpoint<Object> endpoint = this.client.getWebSocket().getSession().getRemote();
-		try {
-			endpoint.sendString(mm.forSending());
-		} catch (IOException e) {
-			throw new FsException(e);
-		}
+
+		MockMessage mm = new MockMessage(from, to, text);
+
+		this.connection.write(mm.forSending());
+
 	}
 
 	public MockMessage nextMessage(long timeout) {
@@ -83,32 +88,24 @@ public class MockWSC implements WebSocketListener {
 		}
 	}
 
-	/**
-	 * @param wsc
-	 */
-	public void init(WebSocketClient wsc) {
-		this.client = wsc;
-		this.sessioned = new Semaphore(0);
-	}
-
 	@Override
 	public void onWebSocketText(String message) {
 		LOG.info(this.name + ".onWebSocketText,message:" + message);
 		MockMessage ms = MockMessage.parse(message);
 
-		if (this.sessionId == null) {
-			if (!ms.getFrom().equals("server")) {// sessionId got
-				throw new FsException("first message must sessionId from server");
+		if (this.appSessionId == null) {
+			if (!ms.getFrom().equals("server")) {// appSessionId got
+				throw new FsException("first message must appSessionId from server");
 			}
 
-			this.sessionId = ms.getText();//
-			if (this.sessionId == null) {
+			this.appSessionId = ms.getText();//
+			if (this.appSessionId == null) {
 				throw new FsException("session id is null.");
 			}
-			this.sessioned.release();
+			this.appSessionGot.release();
 			return;
 		}
-		if (!ms.getTo().equals(this.sessionId)) {
+		if (!ms.getTo().equals(this.appSessionId)) {
 			throw new FsException("message send to error:" + ms);
 		}
 		this.messageReceived.add(ms);
@@ -151,53 +148,48 @@ public class MockWSC implements WebSocketListener {
 		LOG.error("", error);
 	}
 
-	/**
-	 * @return
-	 */
-	public Future<MockWSC> connect() {
-		FutureTask<MockWSC> rt = new FutureTask<MockWSC>(new Callable<MockWSC>() {
+	public void createSession() {
+
+		Future<Object> rt = this.executor.submit(new Callable<Object>() {
 
 			@Override
-			public MockWSC call() throws Exception {
-				MockWSC.this.syncConnect();
-				return MockWSC.this;
+			public Object call() throws Exception {
+
+				return MockWSC.this.doCreateSession();
 			}
 		});
-		rt.run();
-		return rt;
 
-	}
-
-	public Future<MockWSC> session() {
-		FutureTask<MockWSC> rt = new FutureTask<MockWSC>(new Callable<MockWSC>() {
-
-			@Override
-			public MockWSC call() throws Exception {
-				MockWSC.this.syncSession();
-				return MockWSC.this;
-			}
-		});
-		rt.run();
-		return rt;
-
-	}
-
-	public void syncSession() {
-
-		LOG.debug(this.name + " is in acquireSession...");
-		this.sessioned.acquireUninterruptibly();
-		LOG.debug(this.name + " has done of acquireSession.");
-	}
-
-	public void syncConnect() {
 		try {
+			rt.get(10, TimeUnit.SECONDS);
+		} catch (Exception e) {
+			throw FsException.toRtE(e);
+		}
+
+	}
+
+	public String doCreateSession() {
+		LOG.debug(this.name + " is in acquireSession...");
+		this.appSessionGot = new Semaphore(0);
+		this.sendMessage("client", "server", "create-session");
+		this.appSessionGot.acquireUninterruptibly();
+		LOG.debug(this.name + " has done of acquireSession.");
+		return this.appSessionId;
+	}
+
+	/**
+	 * @param wsc
+	 */
+	public void connect() {
+		try {
+			this.client.start();
 			this.connected = new Semaphore(0);
-			FutureCallback<UpgradeResponse> fc = this.client.connect(this.uri);
-			LOG.debug(this.name + " is in acquireConnect...");
+			Future<Session> sf = this.client.connect(this, this.uri);
+
+			this.session = sf.get(10, TimeUnit.SECONDS);
 			this.connected.acquireUninterruptibly();
-			LOG.debug(this.name + " has done of acquireConnect");
-		} catch (IOException e) {
-			throw FsException.toRtE(e);//
+
+		} catch (Exception e) {
+			throw new FsException(e);
 		}
 	}
 
@@ -205,7 +197,7 @@ public class MockWSC implements WebSocketListener {
 	 * @return
 	 */
 	public String getSessionId() {
-		return this.sessionId;
+		return this.appSessionId;
 	}
 
 	/**
@@ -214,7 +206,8 @@ public class MockWSC implements WebSocketListener {
 	public void close() {
 		try {
 			this.connection.close();
-		} catch (IOException e) {
+			this.client.stop();
+		} catch (Exception e) {
 			throw new FsException(e);
 		}
 	}
