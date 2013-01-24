@@ -26,8 +26,12 @@ public class MockWsServer extends ManagerWsListener {
 	private static final Logger LOG = LoggerFactory.getLogger(MockWsServer.class);
 
 	protected ContainerI container;
-	
+
 	protected boolean sendReadyMessageAtConnection;
+
+	public MockWsServer(String manager, ContainerI c) {
+		this(manager, c, false);
+	}
 
 	public MockWsServer(String manager, ContainerI c, boolean srmac) {
 		super(c.find(WsFactoryI.class, true), manager);
@@ -84,7 +88,7 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onConnect(WebSocketI ws) {
 		super.onConnect(ws);
-		if(this.sendReadyMessageAtConnection){
+		if (this.sendReadyMessageAtConnection) {
 			ws.sendMessage("server,client,server-is-ready");
 		}
 	}

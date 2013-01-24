@@ -26,7 +26,10 @@ import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         This benchmark collect the basic performance metrics that depend on
+ *         the concurrent clients. Open them(include send message), and Close
+ *         them.
  */
 public class WebSocketBenchmark {
 	private SPIManagerI sm;

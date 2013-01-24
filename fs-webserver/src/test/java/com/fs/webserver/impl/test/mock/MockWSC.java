@@ -46,6 +46,8 @@ public class MockWSC implements WebSocketListener {
 
 	protected Semaphore appSessionGot;
 
+	protected Semaphore closed;
+
 	protected Session session;
 
 	protected String appSessionId;
@@ -141,7 +143,12 @@ public class MockWSC implements WebSocketListener {
 
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
-		LOG.info("closed:" + statusCode + "," + reason);
+		LOG.info(this.name + " closed:" + statusCode + "," + reason);
+		if (this.closed != null) {
+			this.closed.release();
+		} else {// closing for other reason?
+			LOG.warn("client closed for some other reason(may close from server),there is no one to wait this event.");
+		}
 
 	}
 
@@ -154,6 +161,7 @@ public class MockWSC implements WebSocketListener {
 	 */
 	@Override
 	public void onWebSocketConnect(WebSocketConnection connection) {
+		LOG.info(this.name + " onWebSocketConnect");
 		this.connection = connection;
 		this.connected.release();
 	}
@@ -167,7 +175,7 @@ public class MockWSC implements WebSocketListener {
 	 */
 	@Override
 	public void onWebSocketException(WebSocketException error) {
-		LOG.error("", error);
+		LOG.error(this.name + " onWebSocketException", error);
 	}
 
 	public void createSession() {
@@ -234,7 +242,12 @@ public class MockWSC implements WebSocketListener {
 	 */
 	public void close() {
 		try {
+			this.closed = new Semaphore(0);
 			this.connection.close();
+			// TODO replace with timeout for avoiding deadlock
+			this.closed.acquire();
+			// should not call this.client.stop(),for that case the onCloseEvent
+			// will not notified.
 			this.client.stop();
 		} catch (Exception e) {
 			throw new FsException(e);
