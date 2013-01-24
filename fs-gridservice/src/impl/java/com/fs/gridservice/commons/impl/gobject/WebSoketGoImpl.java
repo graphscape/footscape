@@ -77,7 +77,7 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 		this.terminalId = termId;
 		this.clientId = clientId;
 		MessageI msg = new MessageSupport();
-		msg.setHeader(MessageI.HK_PATH, P_READY);
+		msg.setHeader(MessageI.HK_PATH, P_SERVER_IS_READY.toString());
 		msg.setPayload("terminalId", termId);
 		msg.setPayload("clientId", clientId);
 		this.sendMessage(msg);

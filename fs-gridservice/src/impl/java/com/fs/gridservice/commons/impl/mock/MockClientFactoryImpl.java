@@ -35,14 +35,14 @@ public class MockClientFactoryImpl extends MockClientFactory {
 	 * lang.String)
 	 */
 	@Override
-	public MockClient newClient(String url) {
+	public MockClient newClient(String name, String url) {
 		URI uri;
 		try {
 			uri = new URI(url);
 		} catch (URISyntaxException e) {
 			throw new FsException(e);
 		}
-		String name = "client" + this.nextClient++;
+
 		MockClientImpl rt = new MockClientImpl(name, this.container, uri);
 		return rt;
 	}

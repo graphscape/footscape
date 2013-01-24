@@ -22,11 +22,11 @@ public abstract class MockClientFactory {
 
 	public abstract MockClientFactory start(ContainerI c);
 
-	public MockClient newClient() {
+	public MockClient newClient(String name) {
 		String url = "ws://localhost:8080/wsa/default";
-		return newClient(url);
+		return newClient(name, url);
 	}
 
-	public abstract MockClient newClient(String url);
+	protected abstract MockClient newClient(String name, String url);
 
 }

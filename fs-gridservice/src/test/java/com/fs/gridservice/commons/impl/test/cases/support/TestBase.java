@@ -59,7 +59,7 @@ public class TestBase extends TestCase {
 	protected MockClient newClientAndAuth(String accId) throws Exception {
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty(SessionGd.ACCID, accId);//
-		MockClient rt = this.factory.newClient();
+		MockClient rt = this.factory.newClient("client-for-" + accId);
 		rt.connect();
 		rt.auth(cre);
 		return rt;

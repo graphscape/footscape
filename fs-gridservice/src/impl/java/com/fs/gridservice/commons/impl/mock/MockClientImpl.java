@@ -8,10 +8,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketConnection;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
@@ -53,11 +55,17 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 
 	protected BlockingQueue<MessageI> messageReceived;
 
-	protected WebSocketConnection connection;
+	//protected WebSocketConnection connection;
+
+	protected Session session;// ws session not app level.
 
 	protected Semaphore connected;
 
+	protected Semaphore serverIsReady;
+
 	protected Semaphore authed;
+
+	protected Semaphore closed;
 
 	protected String clientId;
 
@@ -65,7 +73,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 
 	protected String accountId;
 
-	protected String sessionId;
+	protected String sessionId;// app level session.
 
 	protected CodecI messageCodec;
 
@@ -86,7 +94,13 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 		this.messageCodec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 
 		this.client = new WebSocketClient();
+		this.getDispatcher().addHandler(null, WebSocketGoI.P_SERVER_IS_READY, new MessageHandlerI() {
 
+			@Override
+			public void handle(MessageContext sc) {
+				MockClientImpl.this.onServerIsReady(sc);
+			}
+		});
 		this.getDispatcher().addHandler(null, Path.valueOf("/terminal/auth/success"), new MessageHandlerI() {
 
 			@Override
@@ -94,17 +108,14 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 				MockClientImpl.this.onAuthSuccess(sc);
 			}
 		});
-		this.getDispatcher().addHandler(null, Path.valueOf(WebSocketGoI.P_READY), new MessageHandlerI() {
-
-			@Override
-			public void handle(MessageContext sc) {
-				MockClientImpl.this.onServerIsReady(sc);
-			}
-		});
+		
 	}
 
 	@Override
 	public MockClient connect() {
+		this.connected = new Semaphore(0);// note both the onConnect release
+		// this and serverisReady release
+		// this.
 		this.executor.submit(new Callable<Object>() {
 
 			@Override
@@ -114,15 +125,27 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 				return "stoped";
 			}
 		});
-		this.connected = new Semaphore(0);
+
 		try {
 			this.client.start();
-			this.client.connect(this, this.uri);
+			Future<Session> sf = this.client.connect(this, this.uri);
+			this.session = sf.get(10, TimeUnit.SECONDS);
+			//TODO remove?
+			if (!this.connected.tryAcquire(10, TimeUnit.SECONDS)) {
+				throw new FsException("timeout to wait the connection");
+			}
+			//
+			this.serverIsReady = new Semaphore(0);
+			MessageI msg = new MessageSupport(WebSocketGoI.P_CLIENT_IS_READY.toString());// cause
+																							// serverIsReady
+			this.sendMessageDirect(msg);
+			
+			this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS);//
 
-			this.connected.tryAcquire(10, TimeUnit.SECONDS);
 		} catch (Exception e) {
-			throw new FsException(e);
+			throw FsException.toRtE(e);
 		}
+
 		return this;
 
 	}
@@ -133,7 +156,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 		this.terminalId = msg.getString("terminalId", true);
 		this.clientId = msg.getString("clientId", true);
 
-		this.connected.release();
+		this.serverIsReady.release();
 	}
 
 	@Override
@@ -171,18 +194,23 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 
 	@Override
 	public void sendMessage(MessageI msg) {
-		if (this.connection == null) {
-			throw new FsException("not connected");
-		}
+
 		if (this.terminalId == null) {
 			throw new FsException("no terminalId");
 		}
 		msg.setHeader(MessageI.HK_RESPONSE_ADDRESS, "tid://" + this.terminalId);
+		this.sendMessageDirect(msg);
+	}
 
+	private void sendMessageDirect(MessageI msg) {
+		if (this.session == null) {
+			throw new FsException("not connected");
+		}
 		try {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
-			this.connection.write(code);
+			this.session.getRemote().sendString(code);
+			//this.connection.write(code);
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
 		}
@@ -205,7 +233,11 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 	@Override
 	public void onWebSocketClose(int statusCode, String reason) {
 		LOG.info("closed:" + statusCode + "," + reason);
-
+		if (this.closed != null) {
+			this.closed.release();
+		} else {
+			LOG.warn("web socket client closed unexpected,may from server?");
+		}
 	}
 
 	/*
@@ -217,8 +249,9 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 	 */
 	@Override
 	public void onWebSocketConnect(WebSocketConnection connection) {
-		this.connection = connection;
-
+		//this.connection = connection;
+		
+		this.connected.release();
 	}
 
 	/*
@@ -246,8 +279,11 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 	@Override
 	public void close() {
 		try {
-			this.connection.close();
-			this.connection = null;
+			this.closed = new Semaphore(0);
+			this.session.close();
+			//this.connection.close();
+			//this.connection = null;
+			this.closed.acquireUninterruptibly();// TODO allow timeout.
 			this.client.stop();
 		} catch (Exception e) {
 			throw new FsException(e);

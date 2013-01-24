@@ -55,18 +55,18 @@ public class TerminalBenchmark {
 		metric = "startClients";
 		tm.start(metric);
 		this.startClients();
-		tm.end(metric,this.clients);
-		
+		tm.end(metric, this.clients);
+
 		metric = "closeClients";
 		tm.start(metric);
 		this.closeClients();
-		tm.end(metric,this.clients);
-		
+		tm.end(metric, this.clients);
+
 		this.sm.shutdown();
-		
+
 		tm.print();
-		
-		System.exit(0);//TODO remove
+
+		System.exit(0);// TODO remove
 	}
 
 	public void init() {
@@ -78,7 +78,7 @@ public class TerminalBenchmark {
 
 	public void startClients() {
 		for (int i = 0; i < this.clients; i++) {
-			MockClient ci = this.factory.newClient();
+			MockClient ci = this.factory.newClient("client-" + i);
 			this.clientList.add(ci);
 		}
 		this.inExecutorForEachClient(new CallbackI<MockClient, Object>() {
