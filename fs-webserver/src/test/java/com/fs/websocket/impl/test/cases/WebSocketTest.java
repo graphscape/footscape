@@ -30,7 +30,7 @@ public class WebSocketTest extends TestBase {
 		int CLS = 2;
 		MockWSC[] clients = new MockWSC[CLS];
 		for (int i = 0; i < CLS; i++) {
-			MockWSC ci = new MockWSC("client-" + i, uri, srmac);
+			MockWSC ci = new MockWSC("client-" + i, uri);
 			clients[i] = ci;
 			ci.connect();//
 			// sessionID
@@ -42,7 +42,7 @@ public class WebSocketTest extends TestBase {
 			String to = clients[(i + 1 == CLS) ? 0 : (i + 1)].getSessionId();
 
 			String text = "hello " + to;
-			clients[i].sendMessage(to, text);
+			clients[i].sendMessage(new MockMessage(clients[i].getSessionId(), to, text).forSending());
 
 		}
 		// send from one to another,

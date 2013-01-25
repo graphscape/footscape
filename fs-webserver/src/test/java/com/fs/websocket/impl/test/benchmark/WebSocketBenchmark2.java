@@ -7,6 +7,7 @@ package com.fs.websocket.impl.test.benchmark;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
+import com.fs.websocket.api.mock.AbstractWSClientManager;
+import com.fs.websocket.api.mock.WSClient;
 
 /**
  * @author wu
@@ -35,18 +38,20 @@ public class WebSocketBenchmark2 {
 
 	private int time;// ms
 
-	private WsClientsKeeper clients;
+	private AbstractWSClientManager<WSClient> clients;
 
 	private int workRate;
 
 	private int max;
+
+	private int maxErrors = 1;
 
 	public WebSocketBenchmark2(int cc, int max, int rate, int duration) {
 		this.concurrent = cc;
 		this.max = max;
 		this.workRate = rate;
 		this.time = duration;
-		this.clients = new WsClientsKeeper();
+		this.clients = new WSClientManagerImpl();
 	}
 
 	public static void main(String[] args) {
@@ -90,6 +95,7 @@ public class WebSocketBenchmark2 {
 
 		final long start = System.currentTimeMillis();
 		ExecutorService executor = Executors.newCachedThreadPool();
+		final AtomicInteger errs = new AtomicInteger();
 
 		Runnable cmd = new Runnable() {
 
@@ -98,6 +104,7 @@ public class WebSocketBenchmark2 {
 				try {
 					WebSocketBenchmark2.this.tryOpenOrCloseClient();
 				} catch (Throwable t) {
+					errs.incrementAndGet();
 					WebSocketBenchmark2.LOG.error("", t);
 				}
 			}
@@ -118,6 +125,10 @@ public class WebSocketBenchmark2 {
 			if (this.clients.total() > this.max) {
 				break;
 			}
+			if (errs.get() >= this.maxErrors) {
+				LOG.warn("break for too many error:" + errs.get());
+				break;
+			}
 
 			// LOG.info("waiting timeout:" + remain);
 
@@ -127,6 +138,7 @@ public class WebSocketBenchmark2 {
 
 			}
 		}
+
 		executor.shutdown();
 		int timeout = 1000;
 		try {
@@ -134,6 +146,7 @@ public class WebSocketBenchmark2 {
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}
+
 		LOG.info("done of doWork");
 
 	}

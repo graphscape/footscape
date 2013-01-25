@@ -9,8 +9,7 @@ import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
- * @author wuzhen
- * 
+ * @author wuzhen TODO move to web socket
  */
 public abstract class MockClient {
 
@@ -28,6 +27,6 @@ public abstract class MockClient {
 
 	public abstract String getAccountId();
 
-	public abstract void close() ;
+	public abstract void close();
 
 }

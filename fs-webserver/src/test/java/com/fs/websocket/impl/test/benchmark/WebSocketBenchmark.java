@@ -98,7 +98,7 @@ public class WebSocketBenchmark {
 		}
 
 		for (int i = 0; i < this.concurrent; i++) {
-			MockWSC client = new MockWSC("client-" + i, uri, this.sendReadyMessageAtConnection);
+			MockWSC client = new MockWSC("client-" + i, uri);
 			this.clientList.add(client);
 		}
 		this.inExecutorForEachClient(new CallbackI<MockWSC, Object>() {

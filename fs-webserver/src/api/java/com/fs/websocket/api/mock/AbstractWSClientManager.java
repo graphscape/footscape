@@ -1,7 +1,7 @@
 /**
  *  Jan 24, 2013
  */
-package com.fs.websocket.impl.test.benchmark;
+package com.fs.websocket.api.mock;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,36 +9,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.fs.commons.api.lang.FsException;
-import com.fs.webserver.impl.test.mock.MockWSC;
 
 /**
  * @author wuzhen
  * 
  */
-public class WsClientsKeeper {
+public abstract class AbstractWSClientManager<T extends WSClient> extends WSClientManager<T> {
 
-	private List<MockWSC> clientList;
+	private List<T> clientList;
 
 	private int next;
 
-	private boolean sendReadyMessageAtConnection = false;
+	protected URI uri;
 
-	private URI uri;
-
-	private ExecutorService executor;
-
-	public WsClientsKeeper() {
+	public AbstractWSClientManager() {
 		try {
 			uri = new URI("ws://localhost:8080/wsa/testws");
 		} catch (URISyntaxException e) {
 			throw new FsException(e);
 		}
-		this.executor = Executors.newCachedThreadPool();
-		this.clientList = new ArrayList<MockWSC>();
+		this.clientList = new ArrayList<T>();
 		this.clientList = Collections.synchronizedList(this.clientList);
 
 	}
@@ -47,7 +39,7 @@ public class WsClientsKeeper {
 		return this.clientList.size();
 	}
 
-	public synchronized MockWSC getFirstClient() {
+	public synchronized T getFirstClient() {
 		synchronized (this.clientList) {
 			if (this.size() == 0) {
 				return null;
@@ -56,7 +48,7 @@ public class WsClientsKeeper {
 		}
 	}
 
-	public synchronized MockWSC getLastClient() {
+	public synchronized T getLastClient() {
 		synchronized (this.clientList) {
 			if (this.size() == 0) {
 				return null;
@@ -65,7 +57,7 @@ public class WsClientsKeeper {
 		}
 	}
 
-	public MockWSC getRandomClient() {
+	public T getRandomClient() {
 		synchronized (this.clientList) {
 
 			if (this.size() == 0) {
@@ -77,38 +69,29 @@ public class WsClientsKeeper {
 	}
 
 	public void removeRandomClient(boolean close) {
-		MockWSC c = this.getRandomClient();
+		T c = this.getRandomClient();
 		this.removeClient(c, close);
 	}
 
-	public MockWSC createClient(boolean connect) {
-		return this.createClient(connect, false);
-	}
+	public T createClient(boolean connect) {
 
-	public MockWSC createClient(boolean connect, boolean session) {
-
-		final MockWSC client = new MockWSC("client-" + next, uri, this.sendReadyMessageAtConnection);
-		this.clientList.add(client);
+		final T client = this.newClient(this.next++);
 		if (connect) {
 			client.connect();
 		}
-		if (session) {
-			if (!connect) {
-				throw new FsException("must connect firstly before session");
-			}
-			client.createSession();
-		}
-
-		this.next++;
+		//
+		this.clientList.add(client);
 		return client;
 	}
 
+	protected abstract T newClient(int idx);
+
 	public void removeClient(boolean close) {
-		MockWSC c = this.getFirstClient();
+		T c = this.getFirstClient();
 		this.removeClient(c, close);
 	}
 
-	public void removeClient(MockWSC client, boolean close) {
+	public void removeClient(T client, boolean close) {
 		boolean removed = this.clientList.remove(client);
 		if (!removed) {
 			throw new FsException("no this client:" + client);

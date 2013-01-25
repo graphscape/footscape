@@ -13,15 +13,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketConnection;
+import org.eclipse.jetty.io.ChannelEndPoint;
+import org.eclipse.jetty.io.EndPoint;
 import org.eclipse.jetty.websocket.api.WebSocketException;
-import org.eclipse.jetty.websocket.api.WebSocketListener;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.eclipse.jetty.websocket.common.LogicalConnection;
+import org.eclipse.jetty.websocket.common.WebSocketSession;
+import org.eclipse.jetty.websocket.common.io.AbstractWebSocketConnection;
+import org.eclipse.jetty.websocket.common.io.IOState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.websocket.impl.mock.MockWSClientImpl;
 
 /**
  * @author wuzhen
@@ -31,62 +34,23 @@ import com.fs.commons.api.lang.FsException;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWSC implements WebSocketListener {
+public class MockWSC extends MockWSClientImpl {
 	private static final Logger LOG = LoggerFactory.getLogger(MockWSC.class);
-
-	protected URI uri;
-
-	protected WebSocketClient client;
 
 	protected BlockingQueue<MockMessage> messageReceived;
 
-	protected WebSocketConnection connection;
-
-	protected Semaphore connected;
-
 	protected Semaphore appSessionGot;
 
-	protected Semaphore closed;
-
-	protected Session session;
-
 	protected String appSessionId;
-
-	protected String name;
 
 	protected ExecutorService executor;
 
 	protected Semaphore serverIsReady;
 
-	public MockWSC(String name, URI uri, boolean serverWillReadyMessage) {
+	public MockWSC(String name, URI uri) {
+		super(name, uri);
 		this.executor = Executors.newCachedThreadPool();
-		this.name = name;
-		this.uri = uri;
 		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
-		this.client = new WebSocketClient();
-		if (serverWillReadyMessage) {
-
-			this.serverIsReady = new Semaphore(0);
-			throw new FsException("not supported,to be discussed later.");
-		}
-	}
-
-	public void sendMessage(String to, String text) {
-		if (this.appSessionId == null) {
-			throw new FsException("session not got.");
-		}
-		this.sendMessage(this.appSessionId, to, text);
-	}
-
-	public void sendMessage(String from, String to, String text) {
-		if (this.connection == null) {
-			throw new FsException("not connected");
-		}
-
-		MockMessage mm = new MockMessage(from, to, text);
-
-		this.connection.write(mm.forSending());
-
 	}
 
 	public MockMessage nextMessage(long timeout) {
@@ -99,7 +63,7 @@ public class MockWSC implements WebSocketListener {
 
 	@Override
 	public void onWebSocketText(String message) {
-		LOG.info(this.name + ".onWebSocketText,message:" + message);
+		super.onWebSocketText(message);
 		MockMessage ms = MockMessage.parse(message);
 		if (this.serverIsReady != null) {// first
 											// message
@@ -136,48 +100,6 @@ public class MockWSC implements WebSocketListener {
 
 	}
 
-	@Override
-	public void onWebSocketBinary(byte[] payload, int offset, int len) {
-		LOG.info(payload + "," + offset + "," + len);
-	}
-
-	@Override
-	public void onWebSocketClose(int statusCode, String reason) {
-		LOG.info(this.name + " closed:" + statusCode + "," + reason);
-		if (this.closed != null) {
-			this.closed.release();
-		} else {// closing for other reason?
-			LOG.warn("client closed for some other reason(may close from server),there is no one to wait this event.");
-		}
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jetty.websocket.api.WebSocketListener#onWebSocketConnect(
-	 * org.eclipse.jetty.websocket.api.WebSocketConnection)
-	 */
-	@Override
-	public void onWebSocketConnect(WebSocketConnection connection) {
-		LOG.info(this.name + " onWebSocketConnect");
-		this.connection = connection;
-		this.connected.release();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.jetty.websocket.api.WebSocketListener#onWebSocketException
-	 * (org.eclipse.jetty.websocket.api.WebSocketException)
-	 */
-	@Override
-	public void onWebSocketException(WebSocketException error) {
-		LOG.error(this.name + " onWebSocketException", error);
-	}
-
 	public void createSession() {
 
 		Future<Object> rt = this.executor.submit(new Callable<Object>() {
@@ -200,58 +122,36 @@ public class MockWSC implements WebSocketListener {
 	public String doCreateSession() {
 		LOG.debug(this.name + " is in acquireSession...");
 		this.appSessionGot = new Semaphore(0);
-		this.sendMessage("client", "server", "create-session");
+		this.sendMessage(new MockMessage("client", "server", "create-session").forSending());
 		this.appSessionGot.acquireUninterruptibly();
 		LOG.debug(this.name + " has done of acquireSession.");
 		this.appSessionGot = null;
 		return this.appSessionId;
 	}
 
-	/**
-	 * @param wsc
-	 */
-	public void connect() {
-		try {
-			this.client.start();
-			this.connected = new Semaphore(0);
-			Future<Session> sf = this.client.connect(this, this.uri);
-
-			this.session = sf.get(10, TimeUnit.SECONDS);
-			this.connected.acquireUninterruptibly();
-
-			if (this.serverIsReady != null) {
-				if (!this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS)) {
-					throw new FsException("timeout for waiting server-is-ready");
-				}
-				this.serverIsReady = null;//
-			}
-		} catch (Exception e) {
-			throw FsException.toRtE(e);
-		}
-	}
-
-	/**
-	 * @return
-	 */
 	public String getSessionId() {
 		return this.appSessionId;
 	}
+	
+	@Override
+	protected void onCloseException(Exception e) {
+		WebSocketSession wss = (WebSocketSession) this.connection;
 
-	/**
-	 * Dec 12, 2012
-	 */
-	public void close() {
-		try {
-			this.closed = new Semaphore(0);
-			this.connection.close();
-			// TODO replace with timeout for avoiding deadlock
-			this.closed.acquire();
-			// should not call this.client.stop(),for that case the onCloseEvent
-			// will not notified.
-			this.client.stop();
-		} catch (Exception e) {
-			throw new FsException(e);
-		}
+		LogicalConnection lc = wss.getConnection();
+		IOState iso = lc.getIOState();
+		iso.getConnectionState();
+
+		AbstractWebSocketConnection wsc = (AbstractWebSocketConnection) lc;
+
+		EndPoint ep = wsc.getEndPoint();
+		ChannelEndPoint cep = (ChannelEndPoint) ep;
+		// cep.isOpen();
+
+		throw new FsException("close error for client:" + this.name + ",[iostate,state:" + iso.getState()
+				+ ",isInputClosed:" + iso.isInputClosed() + ",isOutputClosed:" + iso.isOutputClosed() + ","
+				+ " ],[,channelEndpoint:,isopen:" + cep.isOpen() + ",isInputShutdown:"
+				+ cep.isInputShutdown() + "," + cep.isOutputShutdown() + ",]", e);
 	}
+
 
 }
