@@ -55,7 +55,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 
 	protected BlockingQueue<MessageI> messageReceived;
 
-	//protected WebSocketConnection connection;
+	// protected WebSocketConnection connection;
 
 	protected Session session;// ws session not app level.
 
@@ -108,7 +108,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 				MockClientImpl.this.onAuthSuccess(sc);
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 			this.client.start();
 			Future<Session> sf = this.client.connect(this, this.uri);
 			this.session = sf.get(10, TimeUnit.SECONDS);
-			//TODO remove?
+			// TODO remove?
 			if (!this.connected.tryAcquire(10, TimeUnit.SECONDS)) {
 				throw new FsException("timeout to wait the connection");
 			}
@@ -139,8 +139,11 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 			MessageI msg = new MessageSupport(WebSocketGoI.P_CLIENT_IS_READY.toString());// cause
 																							// serverIsReady
 			this.sendMessageDirect(msg);
-			
-			this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS);//
+
+			if (!this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS)) {
+				throw new FsException("timeout to wait the server is ready");
+				
+			}//
 
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
@@ -210,7 +213,7 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 			JSONArray jsm = (JSONArray) this.messageCodec.encode(msg);//
 			String code = jsm.toJSONString();
 			this.session.getRemote().sendString(code);
-			//this.connection.write(code);
+			// this.connection.write(code);
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
 		}
@@ -249,8 +252,8 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 	 */
 	@Override
 	public void onWebSocketConnect(WebSocketConnection connection) {
-		//this.connection = connection;
-		
+		// this.connection = connection;
+
 		this.connected.release();
 	}
 
@@ -281,8 +284,8 @@ public class MockClientImpl extends MockClient implements WebSocketListener {
 		try {
 			this.closed = new Semaphore(0);
 			this.session.close();
-			//this.connection.close();
-			//this.connection = null;
+			// this.connection.close();
+			// this.connection = null;
 			this.closed.acquireUninterruptibly();// TODO allow timeout.
 			this.client.stop();
 		} catch (Exception e) {

@@ -3,7 +3,6 @@
  */
 package com.fs.webserver.impl.test.mock;
 
-import java.net.URI;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -13,18 +12,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.jetty.io.ChannelEndPoint;
-import org.eclipse.jetty.io.EndPoint;
-import org.eclipse.jetty.websocket.api.WebSocketException;
-import org.eclipse.jetty.websocket.common.LogicalConnection;
-import org.eclipse.jetty.websocket.common.WebSocketSession;
-import org.eclipse.jetty.websocket.common.io.AbstractWebSocketConnection;
-import org.eclipse.jetty.websocket.common.io.IOState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.lang.FsException;
-import com.fs.websocket.impl.mock.MockWSClientImpl;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageI;
+import com.fs.websocket.api.mock.WSClient;
+import com.fs.websocket.api.mock.WsClientWrapper;
 
 /**
  * @author wuzhen
@@ -34,10 +29,10 @@ import com.fs.websocket.impl.mock.MockWSClientImpl;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWSC extends MockWSClientImpl {
-	private static final Logger LOG = LoggerFactory.getLogger(MockWSC.class);
+public class MockWSClientWrapper extends WsClientWrapper {
+	private static final Logger LOG = LoggerFactory.getLogger(MockWSClientWrapper.class);
 
-	protected BlockingQueue<MockMessage> messageReceived;
+	protected BlockingQueue<MockMessageWrapper> messageReceived;
 
 	protected Semaphore appSessionGot;
 
@@ -47,13 +42,13 @@ public class MockWSC extends MockWSClientImpl {
 
 	protected Semaphore serverIsReady;
 
-	public MockWSC(String name, URI uri) {
-		super(name, uri);
+	public MockWSClientWrapper(WSClient t) {
+		super(t);
 		this.executor = Executors.newCachedThreadPool();
-		this.messageReceived = new LinkedBlockingQueue<MockMessage>();
+		this.messageReceived = new LinkedBlockingQueue<MockMessageWrapper>();
 	}
 
-	public MockMessage nextMessage(long timeout) {
+	public MockMessageWrapper nextMessage(long timeout) {
 		try {
 			return this.messageReceived.poll(timeout, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
@@ -62,9 +57,10 @@ public class MockWSC extends MockWSClientImpl {
 	}
 
 	@Override
-	public void onWebSocketText(String message) {
-		super.onWebSocketText(message);
-		MockMessage ms = MockMessage.parse(message);
+	protected void onMessage(MessageContext mc) {
+		MessageI msg = mc.getRequest();
+		MockMessageWrapper ms = MockMessageWrapper.valueOf(msg);
+
 		if (this.serverIsReady != null) {// first
 											// message
 											// must
@@ -107,7 +103,7 @@ public class MockWSC extends MockWSClientImpl {
 			@Override
 			public Object call() throws Exception {
 
-				return MockWSC.this.doCreateSession();
+				return MockWSClientWrapper.this.doCreateSession();
 			}
 		});
 
@@ -122,7 +118,7 @@ public class MockWSC extends MockWSClientImpl {
 	public String doCreateSession() {
 		LOG.debug(this.name + " is in acquireSession...");
 		this.appSessionGot = new Semaphore(0);
-		this.sendMessage(new MockMessage("client", "server", "create-session").forSending());
+		this.sendMessage(MockMessageWrapper.valueOf("client", "server", "create-session"));
 		this.appSessionGot.acquireUninterruptibly();
 		LOG.debug(this.name + " has done of acquireSession.");
 		this.appSessionGot = null;
@@ -132,26 +128,5 @@ public class MockWSC extends MockWSClientImpl {
 	public String getSessionId() {
 		return this.appSessionId;
 	}
-	
-	@Override
-	protected void onCloseException(Exception e) {
-		WebSocketSession wss = (WebSocketSession) this.connection;
-
-		LogicalConnection lc = wss.getConnection();
-		IOState iso = lc.getIOState();
-		iso.getConnectionState();
-
-		AbstractWebSocketConnection wsc = (AbstractWebSocketConnection) lc;
-
-		EndPoint ep = wsc.getEndPoint();
-		ChannelEndPoint cep = (ChannelEndPoint) ep;
-		// cep.isOpen();
-
-		throw new FsException("close error for client:" + this.name + ",[iostate,state:" + iso.getState()
-				+ ",isInputClosed:" + iso.isInputClosed() + ",isOutputClosed:" + iso.isOutputClosed() + ","
-				+ " ],[,channelEndpoint:,isopen:" + cep.isOpen() + ",isInputShutdown:"
-				+ cep.isInputShutdown() + "," + cep.isOutputShutdown() + ",]", e);
-	}
-
 
 }

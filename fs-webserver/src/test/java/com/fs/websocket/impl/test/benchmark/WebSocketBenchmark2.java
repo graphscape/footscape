@@ -16,9 +16,9 @@ import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
+import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
-import com.fs.websocket.api.mock.AbstractWSClientManager;
-import com.fs.websocket.api.mock.WSClient;
+import com.fs.websocket.api.mock.WSClientManager;
 
 /**
  * @author wu
@@ -38,7 +38,7 @@ public class WebSocketBenchmark2 {
 
 	private int time;// ms
 
-	private AbstractWSClientManager<WSClient> clients;
+	private WSClientManager<MockWSClientWrapper> clients;
 
 	private int workRate;
 
@@ -51,12 +51,12 @@ public class WebSocketBenchmark2 {
 		this.max = max;
 		this.workRate = rate;
 		this.time = duration;
-		this.clients = new WSClientManagerImpl();
+
 	}
 
 	public static void main(String[] args) {
 		// TODO cmd line argument
-		new WebSocketBenchmark2(100, 100000, 10, 100 * 3600 * 1000).start();
+		new WebSocketBenchmark2(5, 100000, 10, 100 * 3600 * 1000).start();
 	}
 
 	public void start() {
@@ -179,6 +179,7 @@ public class WebSocketBenchmark2 {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
+		this.clients = WSClientManager.newInstance(MockWSClientWrapper.class, this.container);
 	}
 
 	public void shutdown() {

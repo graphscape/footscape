@@ -9,20 +9,19 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
-import com.fs.webserver.impl.test.mock.MockWSC;
+import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
+import com.fs.websocket.api.mock.WSClientManager;
 
 /**
  * @author wu
@@ -32,7 +31,9 @@ import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
  *         them.
  */
 public class WebSocketBenchmark {
+
 	private SPIManagerI sm;
+
 	private ContainerI container;
 
 	private MockWsServer server;
@@ -43,20 +44,19 @@ public class WebSocketBenchmark {
 
 	private URI uri;
 
-	private List<MockWSC> clientList;
-
 	private boolean sendReadyMessageAtConnection;
+
+	private WSClientManager<MockWSClientWrapper> manager;
 
 	public WebSocketBenchmark(int cc, int mc) {
 		this.concurrent = cc;
 		this.messages = mc;
-		this.clientList = new ArrayList<MockWSC>();
 		this.sendReadyMessageAtConnection = false;
 	}
 
 	public static void main(String[] args) {
 		// TODO cmd line argument
-		new WebSocketBenchmark(1000, 1).start();
+		new WebSocketBenchmark(100, 1).start();
 	}
 
 	public void start() {
@@ -98,13 +98,13 @@ public class WebSocketBenchmark {
 		}
 
 		for (int i = 0; i < this.concurrent; i++) {
-			MockWSC client = new MockWSC("client-" + i, uri);
-			this.clientList.add(client);
+
+			MockWSClientWrapper client = this.manager.createClient(false);
 		}
-		this.inExecutorForEachClient(new CallbackI<MockWSC, Object>() {
+		this.inExecutorForEachClient(new CallbackI<MockWSClientWrapper, Object>() {
 
 			@Override
-			public Object execute(MockWSC ci) {
+			public Object execute(MockWSClientWrapper ci) {
 				ci.connect();//
 
 				ci.createSession();
@@ -118,10 +118,10 @@ public class WebSocketBenchmark {
 
 	public void closeClients() {
 
-		this.inExecutorForEachClient(new CallbackI<MockWSC, Object>() {
+		this.inExecutorForEachClient(new CallbackI<MockWSClientWrapper, Object>() {
 
 			@Override
-			public Object execute(MockWSC ci) {
+			public Object execute(MockWSClientWrapper ci) {
 				ci.close();
 				return null;
 			}
@@ -129,12 +129,13 @@ public class WebSocketBenchmark {
 
 	}
 
-	private void inExecutorForEachClient(final CallbackI<MockWSC, Object> cb) {
-		this.inExecutor(this.clientList.size(), new CallbackI<Integer, Object>() {
+	private void inExecutorForEachClient(final CallbackI<MockWSClientWrapper, Object> cb) {
+		final List<MockWSClientWrapper> cl = this.manager.getClientList();
+		this.inExecutor(cl.size(), new CallbackI<Integer, Object>() {
 
 			@Override
 			public Object execute(Integer i) {
-				MockWSC client = WebSocketBenchmark.this.clientList.get(i);
+				MockWSClientWrapper client = cl.get(i);
 				return cb.execute(client);
 			}
 
@@ -186,6 +187,7 @@ public class WebSocketBenchmark {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
+		this.manager = WSClientManager.newInstance(MockWSClientWrapper.class, this.container);
 	}
 
 	public void shutdown() {
