@@ -22,6 +22,7 @@ import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
 import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.impl.test.WebSocketTestSPI;
 
 /**
  * @author wu
@@ -187,7 +188,8 @@ public class WebSocketBenchmark {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.manager = WSClientManager.newInstance(MockWSClientWrapper.class, this.container);
+		this.manager = WSClientManager.newInstance(WebSocketTestSPI.TEST_WS_URI, MockWSClientWrapper.class,
+				this.container);
 	}
 
 	public void shutdown() {

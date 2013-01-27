@@ -19,7 +19,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.websocket.api.mock.WSClient;
-import com.fs.websocket.api.mock.WsClientWrapper;
+import com.fs.websocket.api.mock.WSClientWrapper;
 
 /**
  * @author wuzhen
@@ -29,7 +29,7 @@ import com.fs.websocket.api.mock.WsClientWrapper;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWSClientWrapper extends WsClientWrapper {
+public class MockWSClientWrapper extends WSClientWrapper {
 	private static final Logger LOG = LoggerFactory.getLogger(MockWSClientWrapper.class);
 
 	protected BlockingQueue<MockMessageWrapper> messageReceived;

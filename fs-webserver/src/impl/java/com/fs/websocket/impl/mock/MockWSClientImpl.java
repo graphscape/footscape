@@ -137,7 +137,9 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 				throw new FsException("timeout to get session for connect");
 			}
 
-			this.connected.acquireUninterruptibly();
+			if (!this.connected.tryAcquire(10, TimeUnit.SECONDS)) {
+				throw new FsException(this.name + "timeout to wait the connected signal");
+			}
 
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
@@ -150,9 +152,9 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 		this.closed = new Semaphore(0);
 
 		try {
-			
+
 			this.connection.close();
-			
+
 		} catch (Throwable e) {
 			this.onCloseException(e);
 		}
@@ -208,7 +210,11 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 	 */
 	@Override
 	public void addHandler(Path p, HandlerI<MessageContext> mh) {
-		this.engine.getDispatcher().addHandler(p, mh);
+		this.addHandler(p, false, mh);
+	}
+	@Override
+	public void addHandler(Path p, boolean strict,HandlerI<MessageContext> mh) {
+		this.engine.getDispatcher().addHandler(p, strict, mh);
 	}
 
 }

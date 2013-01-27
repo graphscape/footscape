@@ -3,8 +3,6 @@
  */
 package com.fs.gridservice.commons.impl.test.cases;
 
-import java.util.ArrayList;
-
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.QueueMessageHandler;
 import com.fs.commons.api.struct.Path;
@@ -12,7 +10,7 @@ import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.SessionGd;
-import com.fs.gridservice.commons.api.mock.MockClient;
+import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
@@ -29,7 +27,7 @@ public class GdSessionTest extends TestBase {
 		SessionManagerI sm = this.facade.getSessionManager();
 
 		// assert websocket is refed.
-		MockClient client = this.newClientAndAuth("acc1");
+		MockClientWrapper client = this.newClientAndAuth("acc1");
 		String sid = client.getSessionId();
 		String tid = client.getTerminalId();
 		{
@@ -54,7 +52,7 @@ public class GdSessionTest extends TestBase {
 			String text = "this is a text message from server.";
 
 			QueueMessageHandler mh = new QueueMessageHandler();
-			client.getDispatcher().addHandler(Path.ROOT, mh);
+			client.getTarget().addHandler(Path.ROOT, mh);
 			tm.sendTextMessage(tid, text);
 
 			// assert the client received.

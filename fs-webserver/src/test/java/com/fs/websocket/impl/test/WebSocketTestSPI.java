@@ -3,6 +3,9 @@
  */
 package com.fs.websocket.impl.test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
@@ -23,6 +26,14 @@ import com.fs.websocket.api.WsManagerI;
 public class WebSocketTestSPI extends SPISupport {
 
 	private static Logger LOG = Log.getLog();//
+	public static final URI TEST_WS_URI;
+	static {
+		try {
+			TEST_WS_URI = new URI("ws://localhost:8080/wsa/testws");
+		} catch (URISyntaxException e) {
+			throw new FsException(e);
+		}
+	}
 
 	/** */
 	public WebSocketTestSPI(String id) {

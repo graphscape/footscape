@@ -19,6 +19,8 @@ public abstract class WSClient {
 
 	public abstract void addHandler(Path p, HandlerI<MessageContext> mh);
 
+	public abstract void addHandler(Path p, boolean strict, HandlerI<MessageContext> mh);
+
 	public abstract void sendMessage(MessageI msg);
 
 	public abstract void close();

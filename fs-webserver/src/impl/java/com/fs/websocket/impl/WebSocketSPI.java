@@ -3,7 +3,11 @@
  */
 package com.fs.websocket.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;

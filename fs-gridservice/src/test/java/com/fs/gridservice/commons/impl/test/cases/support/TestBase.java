@@ -13,10 +13,11 @@ import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.SessionGd;
-import com.fs.gridservice.commons.api.mock.MockClient;
-import com.fs.gridservice.commons.api.mock.MockClientFactory;
+import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
+import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
+import com.fs.websocket.api.mock.WSClientManager;
 
 /**
  * @author wu
@@ -30,7 +31,7 @@ public class TestBase extends TestCase {
 
 	protected GridFacadeI facade;
 
-	protected MockClientFactory factory;
+	protected WSClientManager<MockClientWrapper> factory;
 
 	protected SessionManagerI smanager;
 
@@ -46,7 +47,8 @@ public class TestBase extends TestCase {
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
-		factory = MockClientFactory.getInstance(this.container);
+		factory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class,
+				this.container);
 		this.smanager = this.container.find(SessionManagerI.class, true);
 		this.cmanager = facade.getEntityManager(ClientManagerI.class);
 		this.tmanager = facade.getEntityManager(TerminalManagerI.class);
@@ -56,11 +58,10 @@ public class TestBase extends TestCase {
 
 	}
 
-	protected MockClient newClientAndAuth(String accId) throws Exception {
+	protected MockClientWrapper newClientAndAuth(String accId) throws Exception {
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty(SessionGd.ACCID, accId);//
-		MockClient rt = this.factory.newClient("client-for-" + accId);
-		rt.connect();
+		MockClientWrapper rt = this.factory.createClient(true);
 		rt.auth(cre);
 		return rt;
 

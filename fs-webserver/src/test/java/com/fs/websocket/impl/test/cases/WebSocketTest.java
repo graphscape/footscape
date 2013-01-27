@@ -13,6 +13,7 @@ import com.fs.webserver.impl.test.mock.MockMessageWrapper;
 import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
 import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.impl.test.WebSocketTestSPI;
 
 /**
  * @author wuzhen
@@ -27,8 +28,8 @@ public class WebSocketTest extends TestBase {
 	public void testClients() throws Exception {
 
 		MockWsServer mserver = this.prepareServer();
-		WSClientManager<MockWSClientWrapper> manager = WSClientManager.newInstance(MockWSClientWrapper.class,
-				this.container);
+		WSClientManager<MockWSClientWrapper> manager = WSClientManager.newInstance(
+				WebSocketTestSPI.TEST_WS_URI, MockWSClientWrapper.class, this.container);
 
 		int CLS = 2;
 		for (int i = 0; i < CLS; i++) {

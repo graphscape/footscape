@@ -3,7 +3,11 @@
  */
 package com.fs.gridservice.commons.impl.test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.gridservice.commons.impl.test.mock.server.MockAuthProvider;
 
@@ -12,6 +16,17 @@ import com.fs.gridservice.commons.impl.test.mock.server.MockAuthProvider;
  * 
  */
 public class GsCommonsTestSPI extends SPISupport {
+
+	public static final URI DEFAULT_WS_URI;
+
+	static {
+		try {
+			DEFAULT_WS_URI = new URI("ws://localhost:8080/wsa/default");
+		} catch (URISyntaxException e) {
+			throw new FsException(e);
+		}
+
+	}
 
 	/**
 	 * @param id

@@ -16,7 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.fs.gridservice.commons.impl.mock.MockClientImpl;
+import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 
 /**
  * @author wu
@@ -25,7 +25,7 @@ import com.fs.gridservice.commons.impl.mock.MockClientImpl;
  */
 public class MockWeb20Client {
 
-	protected MockClientImpl websocket;
+	protected MockClientWrapper websocket;
 
 	public String connect() {
 		// todo

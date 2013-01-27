@@ -16,8 +16,9 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
-import com.fs.gridservice.commons.api.mock.MockClient;
-import com.fs.gridservice.commons.api.mock.MockClientFactory;
+import com.fs.gridservice.commons.api.mock.MockClientWrapper;
+import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
+import com.fs.websocket.api.mock.WSClientManager;
 
 /**
  * @author wuzhen
@@ -28,9 +29,9 @@ public class TerminalBenchmark {
 	protected SPIManagerI sm;
 	protected ContainerI container;
 
-	protected MockClientFactory factory;
+	protected WSClientManager<MockClientWrapper> factory;
 
-	private List<MockClient> clientList;
+	private List<MockClientWrapper> clientList;
 
 	protected int clients;
 	protected int messages;
@@ -38,11 +39,11 @@ public class TerminalBenchmark {
 	public TerminalBenchmark(int clients, int messages) {
 		this.clients = clients;
 		this.messages = messages;
-		this.clientList = new ArrayList<MockClient>();
+		this.clientList = new ArrayList<MockClientWrapper>();
 	}
 
 	public static void main(String[] args) throws Exception {
-		new TerminalBenchmark(300, 10).start();
+		new TerminalBenchmark(100, 10).start();
 	}
 
 	public void start() {
@@ -73,18 +74,21 @@ public class TerminalBenchmark {
 		this.sm = SPIManagerI.FACTORY.get();
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.factory = MockClientFactory.getInstance(this.container);
+		this.factory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class,
+				this.container);
+
 	}
 
 	public void startClients() {
 		for (int i = 0; i < this.clients; i++) {
-			MockClient ci = this.factory.newClient("client-" + i);
+			MockClientWrapper ci = this.factory.createClient(false);
+
 			this.clientList.add(ci);
 		}
-		this.inExecutorForEachClient(new CallbackI<MockClient, Object>() {
+		this.inExecutorForEachClient(new CallbackI<MockClientWrapper, Object>() {
 
 			@Override
-			public Object execute(MockClient ci) {
+			public Object execute(MockClientWrapper ci) {
 				ci.connect();
 				return null;
 			}
@@ -93,22 +97,22 @@ public class TerminalBenchmark {
 
 	public void closeClients() {
 
-		this.inExecutorForEachClient(new CallbackI<MockClient, Object>() {
+		this.inExecutorForEachClient(new CallbackI<MockClientWrapper, Object>() {
 
 			@Override
-			public Object execute(MockClient ci) {
+			public Object execute(MockClientWrapper ci) {
 				ci.close();
 				return null;
 			}
 		});
 	}
 
-	private void inExecutorForEachClient(final CallbackI<MockClient, Object> cb) {
+	private void inExecutorForEachClient(final CallbackI<MockClientWrapper, Object> cb) {
 		this.inExecutor(this.clientList.size(), new CallbackI<Integer, Object>() {
 
 			@Override
 			public Object execute(Integer i) {
-				MockClient client = TerminalBenchmark.this.clientList.get(i);
+				MockClientWrapper client = TerminalBenchmark.this.clientList.get(i);
 				return cb.execute(client);
 			}
 
