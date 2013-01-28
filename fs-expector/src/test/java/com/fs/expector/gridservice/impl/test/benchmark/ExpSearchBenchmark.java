@@ -3,190 +3,89 @@
  */
 package com.fs.expector.gridservice.impl.test.benchmark;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.callback.CallbackI;
-import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.message.MessageServiceI;
-import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
-import com.fs.expector.gridservice.api.mock.MockExpectorClientFactory;
+import com.fs.expector.gridservice.impl.test.ExpectorGsTestSPI;
+import com.fs.expector.gridservice.impl.test.cases.support.TestBase;
+import com.fs.websocket.api.mock.WSClientRunner;
 
 /**
  * @author wuzhen
  * 
  */
-public class ExpSearchBenchmark {
-
-	protected SPIManagerI sm;
-
-	protected ContainerI container;
+public class ExpSearchBenchmark extends WSClientRunner<MockExpectorClient> {
 
 	protected DataServiceI dataService;
 
-	protected MessageServiceI engine;
-
-	protected MockExpectorClientFactory cfactory;
-
 	protected int clientCount;
+
+	protected AtomicInteger nextClient;
+
+	protected AtomicBoolean expStage;
+
+	protected AtomicInteger nextSearch;
 
 	protected int expCountForEachUser;
 
-	protected List<MockExpectorClient> clientList;
-
-	public ExpSearchBenchmark(int cc, int ec) {
+	public ExpSearchBenchmark(int cc, int ec, int maxSearch, int dure) {
+		super(ExpectorGsTestSPI.DEFAULT_WS_URI, MockExpectorClient.class, 1, cc + 1 + maxSearch, dure);
+		this.nextClient = new AtomicInteger();
+		this.nextSearch = new AtomicInteger();
+		this.expStage = new AtomicBoolean();
 		this.clientCount = cc;
 		this.expCountForEachUser = ec;
+
 	}
 
-	public static void main(String[] args) throws Exception {
-		new ExpSearchBenchmark(300, 10).start();
-	}
+	@Override
+	public void init() {
+		super.init();
 
-	public void start() {
-		String metric = "init";
-		TimeMeasures tm = new TimeMeasures();
-
-		tm.start(metric);
-		this.init();
-		tm.end(metric);
-
-		metric = "start-clients";
-		tm.start(metric);
-		this.startClients();
-		tm.end(metric, this.clientCount);
-
-		metric = "exp-create";
-		tm.start(metric);
-		this.populateExpData();
-		tm.end(metric, this.clientCount * this.expCountForEachUser);
-
-		metric = "search";
-		tm.start(metric);
-		this.searchExpData();
-		tm.end(metric, this.clientCount);
-		this.sm.shutdown();
-		tm.print();
-		// TODO remove this code:
-		System.exit(0);//
-	}
-
-	private void init() {
-
-		this.sm = SPIManagerI.FACTORY.get();
-		this.sm.load("/boot/test-spim.properties");
-		this.container = sm.getContainer();
 		DataServiceFactoryI dsf = this.container.find(DataServiceFactoryI.class, true);
 		this.dataService = dsf.getDataService();//
 
-		this.cfactory = MockExpectorClientFactory.getInstance(this.container);//
-
-		this.clientList = new ArrayList<MockExpectorClient>();
 	}
 
-	private void populateExpData() {
-		this.inExecutorForEachClient(new CallbackI<MockExpectorClient, Object>() {
+	/*
+	 * Jan 28, 2013
+	 */
+	@Override
+	protected void work() {
 
-			@Override
-			public Object execute(MockExpectorClient client) {
-				ExpSearchBenchmark.this.populateExpForUser(client);//
-				return null;
+		if (this.clients.size() < this.clientCount) {
+			int idx = this.nextClient.getAndIncrement();
+			LOG.info("in stage of create client:" + idx);
 
-			}
-		});
-	}
+			String email = "user-" + idx + "@some.com";
+			String nick = "user-" + idx;
 
-	private void populateExpForUser(MockExpectorClient client) {
-		String accId = client.getAccountId();
-		for (int i = 0; i < this.expCountForEachUser; i++) {
-			String body1 = accId + " is exepecting number" + i + ",what is yours,";
-			client.newExp(body1);
+			TestBase.newClient(this.clients, email, nick);
+			return;
 		}
-
-	}
-
-	private void inExecutorForEachClient(final CallbackI<MockExpectorClient, Object> cb) {
-		this.inExecutor(this.clientList.size(), new CallbackI<Integer, Object>() {
-
-			@Override
-			public Object execute(Integer i) {
-				MockExpectorClient client = ExpSearchBenchmark.this.clientList.get(i);
-				return cb.execute(client);
-			}
-
-		});
-	}
-
-	private void inExecutor(int loop, final CallbackI<Integer, Object> cb) {
-		ExecutorService executor = Executors.newCachedThreadPool();
-
-		for (int i = 0; i < loop; i++) {
-			final int fI = i;
-			executor.submit(new Callable<Object>() {
-
-				@Override
-				public Object call() throws Exception {
-					return cb.execute(fI);
+		if (!this.expStage.get()) {
+			LOG.info("in stage of populate exp for each client");
+			List<MockExpectorClient> cL = this.clients.getClientList();
+			for (MockExpectorClient c : cL) {
+				String accId = c.getAccountId();
+				for (int i = 0; i < this.expCountForEachUser; i++) {
+					String body1 = accId + " is exepecting number" + i + ",what is yours,";
+					c.newExp(body1);
 				}
-			});
-
+			}
+			this.expStage.set(true);
+			return;
 		}
-		executor.shutdown();
-		int timeout = 1000;
-		try {
-			executor.awaitTermination(timeout, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			throw new FsException(e);
-		}
-	}
 
-	private void searchForUser(MockExpectorClient user) {
+		LOG.info("in stage of search:" + this.nextSearch.getAndIncrement());
+
+		MockExpectorClient c = this.clients.getRandomClient();
 		String phrase = "expecting number1";
-		user.search(false, 0, 10, null, phrase, 3);
-	}
-
-	private void searchExpData() {
-
-		this.inExecutorForEachClient(new CallbackI<MockExpectorClient, Object>() {
-
-			@Override
-			public Object execute(MockExpectorClient client) {
-				ExpSearchBenchmark.this.searchForUser(client);//
-				return null;
-
-			}
-		});
-
-	}
-
-	private void startClients() {
-
-		for (int i = 0; i < this.clientCount; i++) {
-			MockExpectorClient client = ExpSearchBenchmark.this.cfactory.newClient();
-			this.clientList.add(client);
-		}
-
-		this.inExecutor(this.clientCount, new CallbackI<Integer, Object>() {
-
-			@Override
-			public Object execute(Integer i) {
-				String user = "user" + i;
-				String email = user + "@domin.com";
-				String nick = user;
-				MockExpectorClient client = ExpSearchBenchmark.this.clientList.get(i);
-				client.start(email, nick, nick);
-				return client;
-			}
-		});
+		c.search(false, 0, 10, null, phrase, 3);
 
 	}
 

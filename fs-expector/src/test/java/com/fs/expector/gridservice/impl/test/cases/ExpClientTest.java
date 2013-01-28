@@ -22,8 +22,8 @@ public class ExpClientTest extends AuthedTestBase {
 	private MockExpectorClient client2;
 
 	public void testExpAndCooperAndActivity() {
-		this.client1 = this.startClient("user1@domain1.com", "user1");
-		this.client2 = this.startClient("user2@domain2.com", "user2");
+		this.client1 = this.newClient("user1@domain1.com", "user1");
+		this.client2 = this.newClient("user2@domain2.com", "user2");
 
 		String body1 = "I expecting 1 ...";
 		String body2 = "I expecting 2 ...";

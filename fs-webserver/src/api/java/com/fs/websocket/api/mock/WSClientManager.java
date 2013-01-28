@@ -38,7 +38,7 @@ public abstract class WSClientManager<T extends WSClientWrapper> {
 	public abstract int total();
 
 	public abstract List<T> getClientList();
-
+	
 	public static <T extends WSClientWrapper> WSClientManager<T> newInstance(URI uri,
 			Class<? extends T> wcls, ContainerI c) {
 		WSClientManager<T> rt = (WSClientManager<T>) ClassUtil

@@ -68,9 +68,9 @@ public class ExpSearchTest extends AuthedTestBase {
 
 	public void testExpSearch() {
 
-		this.client1 = this.startClient("user1@domain1.com", "user1");
+		this.client1 = this.newClient("user1@domain1.com", "user1");
 
-		this.client2 = this.startClient("user2@domain2.com", "user2");
+		this.client2 = this.newClient("user2@domain2.com", "user2");
 
 		int max = totalExp * 3;
 

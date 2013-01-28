@@ -13,12 +13,10 @@ import com.fs.expector.gridservice.impl.test.cases.support.TestBase;
 public class SignupTest extends TestBase {
 
 	public void testSignup() throws Exception {
-		MockExpectorClient client = this.cfactory.newClient();
 
 		String nick = "user1";
-		String pass = nick;
 		String email = nick + "@domain.com";
-		client.start(email, nick, pass);
+		MockExpectorClient client = this.newClient(email, nick);
 
 		String accId = client.getAccountId();
 		assertNotNull(accId);

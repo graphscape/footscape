@@ -3,7 +3,11 @@
  */
 package com.fs.expector.gridservice.impl.test;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.support.SPISupport;
@@ -18,7 +22,14 @@ import com.fs.gridservice.commons.api.GlobalEventDispatcherI;
  * 
  */
 public class ExpectorGsTestSPI extends SPISupport {
-
+	public static final URI DEFAULT_WS_URI;
+	static {
+		try {
+			DEFAULT_WS_URI = new URI("ws://localhost:8080/wsa/default");
+		} catch (URISyntaxException e) {
+			throw new FsException(e);
+		}
+	}
 	/** */
 	public ExpectorGsTestSPI(String id) {
 		super(id);
