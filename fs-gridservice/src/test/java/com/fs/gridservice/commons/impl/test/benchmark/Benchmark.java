@@ -12,8 +12,8 @@ public class Benchmark {
 
 	public static void main(String[] args) throws Exception {
 
-		new GChatBenchmark(10000, 1 * 600 * 1000).start();
-		//new GChatBenchmark2(10, 100, 1 * 3600 * 1000).start();
+		//new GChatBenchmark(10000, 1 * 600 * 1000).start();
+		new GChatBenchmark2(100, 10000, 1 * 3600 * 1000).start();
 
 	}
 

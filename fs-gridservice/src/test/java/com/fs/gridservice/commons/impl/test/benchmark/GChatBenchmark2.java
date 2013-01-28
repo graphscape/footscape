@@ -60,12 +60,13 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 			int idx = this.nextGid.incrementAndGet();
 			String gid = "group-" + idx;
 			String aid = "acc-" + this.nextAid.incrementAndGet();
-			pts.setProperty("groupId", gid);
+			pts.setProperty(GChatClientWrapper.GROUPID, gid);
 
 			PropertiesI<Object> cre = new MapProperties<Object>();
 			cre.setProperty("accountId", aid);//
-			pts.setProperty("auth", true);
-			pts.setProperty("credential", cre);
+			pts.setProperty(GChatClientWrapper.AUTH_AT_CONNECT, true);
+			pts.setProperty(GChatClientWrapper.JOIN_AT_CONNECT, true);			
+			pts.setProperty(GChatClientWrapper.CREDENTIAL, cre);
 
 			GChatClientWrapper mc = this.clients.createClient(true, pts);
 
