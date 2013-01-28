@@ -46,7 +46,7 @@ public class WSClientRunner<T extends WSClientWrapper> {
 
 	protected int maxErrors = 1;
 
-	protected Semaphore workers;
+	protected Semaphore workers;// concurrent number of workers
 
 	public WSClientRunner(URI uri, Class<? extends T> wcls, int cc, int max, int duration) {
 		this.uri = uri;
@@ -65,7 +65,7 @@ public class WSClientRunner<T extends WSClientWrapper> {
 		this.init();
 		tm.end(name);
 
-		name = "openOrClose";
+		name = "doWork";
 		tm.start(name);
 		this.doWork();
 		tm.end(name, this.effort.get());
@@ -133,12 +133,12 @@ public class WSClientRunner<T extends WSClientWrapper> {
 				}
 			}
 
-			if (this.max > 0 && this.clients.total() > this.max) {
-				LOG.warn("break for max effort(loop)" + errs.get());
+			if (this.max > 0 && this.effort.get() > this.max) {
+				LOG.warn("break caused by max effort(loop)" + this.effort.get());
 				break;
 			}
 			if (errs.get() >= this.maxErrors) {
-				LOG.warn("break for too many error:" + errs.get());
+				LOG.warn("break caused by too many error:" + errs.get());
 				break;
 			}
 

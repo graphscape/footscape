@@ -17,6 +17,7 @@ import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
+import com.fs.gridservice.commons.impl.test.benchmark.GChatClientWrapper;
 import com.fs.websocket.api.mock.WSClientManager;
 
 /**
@@ -32,6 +33,8 @@ public class TestBase extends TestCase {
 	protected GridFacadeI facade;
 
 	protected WSClientManager<MockClientWrapper> factory;
+
+	protected WSClientManager<GChatClientWrapper> gcfactory;
 
 	protected SessionManagerI smanager;
 
@@ -49,6 +52,9 @@ public class TestBase extends TestCase {
 
 		factory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class,
 				this.container);
+		gcfactory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, GChatClientWrapper.class,
+				this.container);
+
 		this.smanager = this.container.find(SessionManagerI.class, true);
 		this.cmanager = facade.getEntityManager(ClientManagerI.class);
 		this.tmanager = facade.getEntityManager(TerminalManagerI.class);
@@ -56,6 +62,18 @@ public class TestBase extends TestCase {
 		// assertTrue("data grid should empty by destroyALl.", this.facade
 		// .getDataGrid().isEmpty());
 
+	}
+
+	protected GChatClientWrapper newGChatClientAndAuth(String accId, String gid) {
+		PropertiesI<Object> rt = new MapProperties<Object>();
+		rt.setProperty(GChatClientWrapper.AUTH_AT_CONNECT, Boolean.TRUE);
+		rt.setProperty(GChatClientWrapper.JOIN_AT_CONNECT, Boolean.FALSE);
+		rt.setProperty(GChatClientWrapper.GROUPID, gid);
+
+		PropertiesI<Object> cre = new MapProperties<Object>();
+		cre.setProperty(SessionGd.ACCID, accId);//
+		rt.setProperty(GChatClientWrapper.CREDENTIAL, cre);
+		return this.gcfactory.createClient(true, rt);
 	}
 
 	protected MockClientWrapper newClientAndAuth(String accId) throws Exception {

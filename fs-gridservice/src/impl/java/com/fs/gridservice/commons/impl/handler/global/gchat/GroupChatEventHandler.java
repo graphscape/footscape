@@ -86,10 +86,6 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 		// this is a nested message
 		this.onJoined(rt);//
 
-		// response
-		MessageI res = this.newResponseSuccessMessage(reqE);
-		res.setPayload("participantId", pid);//
-		this.sendMessage(res);
 	}
 
 	private void onJoined(ParticipantGd newJoined) {
@@ -163,9 +159,6 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 
 		this.broadcast("/gchat/exit", gid, p.getId(), msg2);
 
-		// response
-		MessageI res = this.newResponseSuccessMessage(reqE);
-		this.sendMessage(res);
 	}
 
 	@Handle("message")
@@ -198,8 +191,6 @@ public class GroupChatEventHandler extends TerminalMsgReseiveEventHandler {
 		String pid = p.getId();
 		MessageI msg2 = (MessageI) msg.getPayload("message", true);
 		this.broadcast("/gchat/message", gid, pid, msg2);//
-
-		this.sendResponseSuccessMessage(reqE);
 
 	}
 

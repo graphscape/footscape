@@ -20,7 +20,7 @@ public class PingHandler extends TerminalMsgReseiveEventHandler {
 		MessageI msg = reqE.getMessage();
 		String text = msg.getString("text", true);
 
-		this.sendResponseSuccessMessage(reqE, text);
+		//this.sendResponseSuccessMessage(reqE, text);
 
 	}
 }

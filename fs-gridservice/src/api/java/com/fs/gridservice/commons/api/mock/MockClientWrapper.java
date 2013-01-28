@@ -31,6 +31,11 @@ import com.fs.websocket.api.mock.WSClientWrapper;
 public class MockClientWrapper extends WSClientWrapper {
 	private static final Logger LOG = LoggerFactory.getLogger(MockClientWrapper.class);
 
+
+	public static final String AUTH_AT_CONNECT = "authAtConnect";
+	
+	public static final String CREDENTIAL = "credential";
+
 	protected Semaphore serverIsReady;
 
 	protected Semaphore authed;
@@ -85,9 +90,9 @@ public class MockClientWrapper extends WSClientWrapper {
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
 		}
-		boolean auth = this.properties.getPropertyAsBoolean("auth", false);
+		boolean auth = this.properties.getPropertyAsBoolean(MockClientWrapper.AUTH_AT_CONNECT, false);
 		if (auth) {
-			PropertiesI<Object> cred = (PropertiesI<Object>) this.properties.getProperty("credential", true);
+			PropertiesI<Object> cred = (PropertiesI<Object>) this.properties.getProperty(MockClientWrapper.CREDENTIAL, true);
 			this.auth(cred);
 		}
 		return this;
