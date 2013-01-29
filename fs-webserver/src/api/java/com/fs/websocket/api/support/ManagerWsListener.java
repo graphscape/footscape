@@ -28,6 +28,9 @@ public class ManagerWsListener extends AbstractWsListener {
 	public void start() {
 		this.manager = this.factory.getManager(this.name, true);
 		this.manager.addListener(this);
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("started manager ws listener:" + this.name);
+		}
 	}
 
 	/*

@@ -29,7 +29,7 @@ public class TerminalBenchmark2 extends WSClientRunner<MockClientWrapper> {
 	}
 
 	public TerminalBenchmark2(URI uri, Class<? extends MockClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, cc, max, duration);
+		super(uri, wcls, 0, cc, max, duration);
 	}
 
 	/*
@@ -38,6 +38,17 @@ public class TerminalBenchmark2 extends WSClientRunner<MockClientWrapper> {
 	@Override
 	public void init() {
 		super.init();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.websocket.api.mock.WSClientRunner#work(int)
+	 */
+	@Override
+	protected void work(int idx) {
+		// TODO Auto-generated method stub
 
 	}
 

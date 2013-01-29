@@ -23,7 +23,7 @@ import com.fs.commons.api.util.benchmark.TimeMeasures;
  * @author wu
  * 
  */
-public class WSClientRunner<T extends WSClientWrapper> {
+public abstract class WSClientRunner<T extends WSClientWrapper> {
 	protected static Logger LOG = LoggerFactory.getLogger(WSClientRunner.class);
 
 	protected SPIManagerI sm;
@@ -46,16 +46,20 @@ public class WSClientRunner<T extends WSClientWrapper> {
 
 	protected int maxErrors = 1;
 
+	protected int initClients;
+
 	protected Semaphore workers;// concurrent number of workers
 
-	public WSClientRunner(URI uri, Class<? extends T> wcls, int cc, int max, int duration) {
+	public WSClientRunner(URI uri, Class<? extends T> wcls, int initClients, int maxCon, int maxEffort,
+			int duration) {
 		this.uri = uri;
 		this.wcls = wcls;
-		this.concurrent = cc;
-		this.max = max;
+		this.concurrent = maxCon;
+		this.max = maxEffort;
 		this.time = duration;
 		this.workers = new Semaphore(this.concurrent);
 		this.effort = new AtomicInteger();
+		this.initClients = initClients;
 	}
 
 	public void start() {
@@ -64,6 +68,11 @@ public class WSClientRunner<T extends WSClientWrapper> {
 		tm.start(name);
 		this.init();
 		tm.end(name);
+
+		name = "initClients";
+		tm.start(name);
+		this.initClients();
+		tm.end(name, this.initClients);
 
 		name = "doWork";
 		tm.start(name);
@@ -85,29 +94,29 @@ public class WSClientRunner<T extends WSClientWrapper> {
 		System.exit(0);
 	}
 
+	protected void init() {
+		sm = SPIManagerI.FACTORY.get();
+		sm.load("/boot/test-spim.properties");
+		this.container = sm.getContainer();
+		this.clients = WSClientManager.newInstance(this.uri, this.wcls, this.container);
+	}
+
+	protected void initClients() {
+		for (int i = 0; i < this.initClients; i++) {
+			T t = this.createClient(i);//
+		}
+	}
+
+	protected T createClient(int idx) {
+		return this.clients.createClient(true);
+	}
+
 	protected void doWork() {
 		LOG.info("doWork...");
 
 		final long start = System.currentTimeMillis();
 		ExecutorService executor = Executors.newCachedThreadPool();
 		final AtomicInteger errs = new AtomicInteger();
-
-		Runnable cmd = new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					WSClientRunner.this.work();
-
-				} catch (Throwable t) {
-					errs.incrementAndGet();
-					WSClientRunner.LOG.error("", t);
-				} finally {
-					WSClientRunner.this.effort.incrementAndGet();
-					WSClientRunner.this.workers.release();
-				}
-			}
-		};
 
 		// wait timeout
 		while (true) {
@@ -120,6 +129,21 @@ public class WSClientRunner<T extends WSClientWrapper> {
 			} catch (InterruptedException e1) {
 				continue;
 			}
+			final int idx = WSClientRunner.this.effort.getAndIncrement();
+			Runnable cmd = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						WSClientRunner.this.work(idx);
+
+					} catch (Throwable t) {
+						errs.incrementAndGet();
+						WSClientRunner.LOG.error("", t);
+					} finally {
+						WSClientRunner.this.workers.release();
+					}
+				}
+			};
 			executor.submit(cmd);
 
 			if (this.time > 0) {
@@ -133,8 +157,8 @@ public class WSClientRunner<T extends WSClientWrapper> {
 				}
 			}
 
-			if (this.max > 0 && this.effort.get() > this.max) {
-				LOG.warn("break caused by max effort(loop)" + this.effort.get());
+			if (this.max > 0 && idx >= this.max) {
+				LOG.warn("break caused by max effort(loop)" + idx);
 				break;
 			}
 			if (errs.get() >= this.maxErrors) {
@@ -156,29 +180,13 @@ public class WSClientRunner<T extends WSClientWrapper> {
 
 	}
 
-	protected void work() {
-
-		LOG.debug("tryOpenOrCloseClient,size:" + this.clients.size());
-		if (this.concurrent > this.clients.size()) {
-			this.clients.createClient(true);
-		} else {
-			this.clients.removeClient(true);
-		}
-
-	}
+	protected abstract void work(int idx);
 
 	protected void closeRemains() {
 		LOG.debug("closeRemains,size:" + this.clients.size());
 		while (this.clients.size() > 0) {
 			this.clients.removeClient(true);
 		}
-	}
-
-	protected void init() {
-		sm = SPIManagerI.FACTORY.get();
-		sm.load("/boot/test-spim.properties");
-		this.container = sm.getContainer();
-		this.clients = WSClientManager.newInstance(this.uri, this.wcls, this.container);
 	}
 
 	protected void shutdown() {

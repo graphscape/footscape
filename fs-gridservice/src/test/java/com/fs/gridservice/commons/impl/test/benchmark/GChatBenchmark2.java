@@ -36,7 +36,7 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 	}
 
 	public GChatBenchmark2(URI uri, Class<? extends GChatClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, cc, max, duration);
+		super(uri, wcls, 0, cc, max, duration);
 		this.nextGid = new AtomicInteger();
 		this.nextAid = new AtomicInteger();
 
@@ -52,7 +52,7 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 	}
 
 	@Override
-	protected void work() {
+	protected void work(int i) {
 
 		LOG.debug("tryOpenOrCloseClient,size:" + this.clients.size());
 		if (this.concurrent > this.clients.size()) {
@@ -65,7 +65,7 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 			PropertiesI<Object> cre = new MapProperties<Object>();
 			cre.setProperty("accountId", aid);//
 			pts.setProperty(GChatClientWrapper.AUTH_AT_CONNECT, true);
-			pts.setProperty(GChatClientWrapper.JOIN_AT_CONNECT, true);			
+			pts.setProperty(GChatClientWrapper.JOIN_AT_CONNECT, true);
 			pts.setProperty(GChatClientWrapper.CREDENTIAL, cre);
 
 			GChatClientWrapper mc = this.clients.createClient(true, pts);

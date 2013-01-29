@@ -63,6 +63,8 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 
 	protected CodecI codec;
 
+	protected long lastSendMessageTs;
+
 	public MockWSClientImpl(String name, URI uri, MessageServiceI ms, CodecI codec) {
 		this.name = name;
 		this.uri = uri;
@@ -122,6 +124,7 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 		JSONArray jsm = (JSONArray) this.codec.encode(msg);//
 		String code = jsm.toJSONString();
 		this.connection.write(code);
+		this.lastSendMessageTs = System.currentTimeMillis();
 
 	}
 
@@ -212,9 +215,16 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 	public void addHandler(Path p, HandlerI<MessageContext> mh) {
 		this.addHandler(p, false, mh);
 	}
+
 	@Override
-	public void addHandler(Path p, boolean strict,HandlerI<MessageContext> mh) {
+	public void addHandler(Path p, boolean strict, HandlerI<MessageContext> mh) {
 		this.engine.getDispatcher().addHandler(p, strict, mh);
+	}
+
+	@Override
+	public int getIdleTime() {
+		long now = System.currentTimeMillis();
+		return (int) (now - this.lastSendMessageTs);
 	}
 
 }

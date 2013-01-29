@@ -19,8 +19,10 @@ import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.websocket.api.mock.WSClient;
+import com.fs.websocket.api.mock.WSClientKeepLive;
 import com.fs.websocket.api.mock.WSClientManager;
 import com.fs.websocket.api.mock.WSClientWrapper;
+import com.fs.websocket.api.mock.WSClientWrapper.KeepLiveI;
 
 /**
  * @author wu
@@ -42,11 +44,12 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 
 	protected MessageServiceI.FactoryI factory;
 
+	protected KeepLiveI keepLive;
+	
 	public WSClientManagerImpl() {
-
 		this.clientList = new ArrayList<T>();
 		this.clientList = Collections.synchronizedList(this.clientList);
-
+		this.keepLive = new WSClientKeepLive();
 	}
 
 	public int size() {
@@ -96,6 +99,7 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 	public T createClient(boolean connect, PropertiesI<Object> pts) {
 
 		final T client = this.newClient(this.next++, pts);
+		client.keepLive(this.keepLive);
 		if (connect) {
 			client.connect();
 		}
@@ -107,9 +111,11 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 	protected T newClient(int idx, PropertiesI<Object> pts) {
 		String name = "client-" + idx;
 		MessageServiceI engine = this.factory.create(name);
+		
 		WSClient client = new MockWSClientImpl(name, uri, engine, codec);
 		T rt = ClassUtil.newInstance(this.wcls, new Class[] { WSClient.class }, new Object[] { client });
 		rt.init(pts);
+		
 		return rt;
 	}
 

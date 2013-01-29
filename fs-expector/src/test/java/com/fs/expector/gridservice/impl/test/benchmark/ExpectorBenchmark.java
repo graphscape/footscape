@@ -8,9 +8,9 @@ package com.fs.expector.gridservice.impl.test.benchmark;
  * @author wu
  * 
  */
-public class Benchmark {
+public class ExpectorBenchmark {
 
 	public static void main(String[] args) {
-		new ExpSearchBenchmark(2, 2, 10, -1).start();
+		new ExpSearchBenchmark(100, 30, 10000, 10).start();
 	}
 }

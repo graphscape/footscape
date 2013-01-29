@@ -48,8 +48,6 @@ public class MockClientWrapper extends WSClientWrapper {
 
 	protected String sessionId;// app level session.
 
-	protected String name;
-
 	public MockClientWrapper(WSClient t) {
 		super(t);
 

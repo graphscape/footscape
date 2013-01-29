@@ -14,10 +14,16 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.message.MessageContext;
+import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.struct.Path;
 import com.fs.webserver.impl.test.mock.MockMessageWrapper;
 import com.fs.websocket.api.WebSocketI;
 import com.fs.websocket.api.WsFactoryI;
+import com.fs.websocket.api.mock.WSClientWrapper.KeepLiveI;
 import com.fs.websocket.api.support.AbstractWsListener;
 import com.fs.websocket.api.support.ManagerWsListener;
 
@@ -31,9 +37,9 @@ public class MockWsServer extends ManagerWsListener {
 
 	protected ContainerI container;
 
-	protected boolean sendReadyMessageAtConnection;
-
 	protected CodecI codec;
+
+	protected MessageServiceI engine;
 
 	public MockWsServer(String manager, ContainerI c) {
 		this(manager, c, false);
@@ -42,8 +48,59 @@ public class MockWsServer extends ManagerWsListener {
 	public MockWsServer(String manager, ContainerI c, boolean srmac) {
 		super(c.find(WsFactoryI.class, true), manager);
 		this.container = c;
-		this.sendReadyMessageAtConnection = srmac;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
+		MessageServiceI.FactoryI mf = c.find(MessageServiceI.FactoryI.class, true);
+		this.engine = mf.create("mock-ws-server");
+		this.addHandler(Path.valueOf("/client-is-ready"), true, new MessageHandlerI() {
+
+			@Override
+			public void handle(MessageContext sc) {
+				MockWsServer.this.clientIsReady(sc);
+			}
+		});
+
+		this.addHandler(Path.valueOf("/echo"), true, new MessageHandlerI() {
+
+			@Override
+			public void handle(MessageContext sc) {
+				MockWsServer.this.echo(sc);
+			}
+		});
+		this.addHandler(KeepLiveI.PATH, true, new MessageHandlerI() {
+
+			@Override
+			public void handle(MessageContext sc) {
+				LOG.debug("keepLive:" + sc.getRequest());
+			}
+		});
+	}
+
+	/**
+	 * @param sc
+	 */
+	protected void clientIsReady(MessageContext sc) {
+		MockMessageWrapper mm = MockMessageWrapper.valueOf(sc.getRequest());
+		String wsId = mm.getWsId(true);
+		MockMessageWrapper rt = MockMessageWrapper.valueOf("/server-is-ready", null);
+		rt.setHeader("wsId", wsId);
+		this.sendMessage(wsId, rt);
+
+	}
+
+	/**
+	 * @param sc
+	 */
+	protected void echo(MessageContext sc) {
+		MockMessageWrapper mm = MockMessageWrapper.valueOf(sc.getRequest());
+		String wsId = mm.getWsId(true);
+		String text = mm.getText();
+		MockMessageWrapper rt = MockMessageWrapper.valueOf("/echo-from-server", text);
+		this.sendMessage(wsId, rt);
+
+	}
+
+	public void addHandler(Path p, boolean strict, MessageHandlerI mh) {
+		this.engine.getDispatcher().addHandler(p, strict, mh);
 	}
 
 	/*
@@ -58,40 +115,21 @@ public class MockWsServer extends ManagerWsListener {
 		LOG.debug("server received message:" + msgS);
 		JSONArray ser = (JSONArray) JSONValue.parse(msgS);
 		MessageI msg = (MessageI) this.codec.decode(ser);
+		
 
-		MockMessageWrapper mm = MockMessageWrapper.valueOf(msg);
-
-		String toSid = mm.getTo();
-		if (toSid.equals("server")) {
-			this.processToServerMessage(ws, mm);
-		} else {
-			WebSocketI toWs = this.manager.getSocket(toSid, true);
-			this.sendMessage(toWs, msg);
-		}
+		msg.setHeader("wsId", ws.getId());
+		ResponseI res = this.engine.service(msg);
+		res.assertNoError();
 
 	}
 
-	public void sendMessage(WebSocketI ws, MessageI msg) {
+	public void sendMessage(String wsId, MessageI msg) {
+
+		WebSocketI toWs = this.manager.getSocket(wsId, true);
 		JSONArray jso = (JSONArray) this.codec.encode(msg);
 		String msgS = jso.toJSONString();
-		ws.sendMessage(msgS);//
+		toWs.sendMessage(msgS);//
 
-	}
-
-	protected void processToServerMessage(WebSocketI ws, MockMessageWrapper mm) {
-		String cmd = mm.getText();
-		if ("create-session".equals(cmd)) {
-			String sid = ws.getId();//
-			String from = "server";
-			String to = "client";
-			String text = sid;
-			MockMessageWrapper msg = MockMessageWrapper.valueOf(from, to, text);
-			this.sendMessage(ws, msg);
-			// LOG.debug(msg);
-
-		} else {
-			throw new FsException("cmd not support:" + cmd + ",for message:" + mm);
-		}
 	}
 
 	/*
@@ -100,6 +138,7 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onException(WebSocketI ws, Throwable t) {
 		super.onException(ws, t);
+		// LOG.debug("onConnect,ws:" + ws);
 	}
 
 	/*
@@ -108,9 +147,7 @@ public class MockWsServer extends ManagerWsListener {
 	@Override
 	public void onConnect(WebSocketI ws) {
 		super.onConnect(ws);
-		if (this.sendReadyMessageAtConnection) {
-			this.sendMessage(ws, MockMessageWrapper.valueOf("server", "client", "server-is-ready"));
-		}
+		// LOG.debug("onConnect,ws:" + ws);
 	}
 
 	/*

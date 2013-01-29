@@ -15,7 +15,7 @@ import com.fs.websocket.impl.test.WebSocketTestSPI;
  * @author wu
  * 
  */
-public class CustomWSClientRunner extends WSClientRunner<MockWSClientWrapper> {
+public abstract class WebSocketWSClientRunner extends WSClientRunner<MockWSClientWrapper> {
 
 	private MockWsServer server;
 
@@ -27,13 +27,15 @@ public class CustomWSClientRunner extends WSClientRunner<MockWSClientWrapper> {
 	 * @param rate
 	 * @param duration
 	 */
-	public CustomWSClientRunner(int cc, int max, int duration) {
-		this(WebSocketTestSPI.TEST_WS_URI, MockWSClientWrapper.class, cc, max, duration);
+	public WebSocketWSClientRunner(int initClients, int maxCon, int maxEffort, int duration) {
+		this(WebSocketTestSPI.TEST_WS_URI, MockWSClientWrapper.class, initClients, maxCon, maxEffort,
+				duration);
 
 	}
 
-	public CustomWSClientRunner(URI uri, Class<? extends MockWSClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, cc, max, duration);
+	public WebSocketWSClientRunner(URI uri, Class<? extends MockWSClientWrapper> wcls, int initClients,
+			int cc, int max, int duration) {
+		super(uri, wcls, initClients, cc, max, duration);
 	}
 
 	/*
@@ -41,11 +43,12 @@ public class CustomWSClientRunner extends WSClientRunner<MockWSClientWrapper> {
 	 */
 	@Override
 	public void init() {
+
+		// NOTE,super.init may connect, so the server must stared before this.
 		super.init();
 
 		this.server = new MockWsServer("testws", this.container);
 		this.server.start();
-
 	}
 
 }

@@ -6,11 +6,8 @@ package com.fs.expector.gridservice.api.mock;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.commons.api.message.support.QueueMessageHandler;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
@@ -33,56 +30,42 @@ public class MockExpectorClient extends MockClientWrapper {
 
 	public static final String SIGNUP_PASS = "pass";
 
-	protected QueueMessageHandler queueMessageHandler;
-
 	/**
 	 * @param c
 	 */
 	public MockExpectorClient(WSClient mc) {
 		super(mc);
-		queueMessageHandler = new QueueMessageHandler();
-		this.addHandler(Path.ROOT, queueMessageHandler);
 
 	}
 
-	public MessageI syncSendMessage(MessageI msg) {
-		return this.syncSendMessage(msg, 5 * 1000);//
-	}
+	/*
+	 * Jan 28, 2013
+	 */
+	@Override
+	public MockClientWrapper connect() {
 
-	public MessageI syncSendMessage(MessageI msg, int timeout) {
+		super.connect();
+		boolean signup = this.properties.getPropertyAsBoolean(SIGNUP_AT_CONNECT, false);
+		if (signup) {
+			String email = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_EMAIL, true);
+			String nick = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_NICK, true);
+			String pass = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_PASS, true);
 
-		this.drainQueue();
+			this.signup(email, nick, pass);
+			boolean auth = this.properties.getPropertyAsBoolean(AUTH_WITH_SIGNUP, true);
+			if (auth) {
+				PropertiesI<Object> cre = new MapProperties<Object>();
+				cre.setProperty("type", "registered");
+				cre.setProperty("email", email);
+				cre.setProperty("password", pass);
 
-		this.sendMessage(msg);
-
-		return this.acquireNextMessage(timeout);
-
-	}
-
-	public List<MessageContext> drainQueue() {
-		List<MessageContext> rt = new ArrayList<MessageContext>();
-		this.queueMessageHandler.getQueue().drainTo(rt);
-		return rt;
-
-	}
-
-	public MessageI acquireNextMessage(int timeout) {
-
-		MessageContext mc = this.queueMessageHandler.poll(timeout);
-
-		if (mc == null) {
-			throw new FsException("timeout:" + timeout + " to wait the next message");
+				this.auth(cre);
+			}
 		}
+		return this;
 
-		MessageI rt = mc.getRequest();
-		Path rp = rt.getPath();
-		if ("failure".equals(rp.getName())) {
-			throw new FsException("failure response:" + rt);
-		}
-
-		return rt;
 	}
-
+	
 	public void signup(final String email, String nick, String pass) {
 		String ccode = this.signupRequest(email, nick, pass);
 		this.signupConfirm(email, ccode);
@@ -122,33 +105,6 @@ public class MockExpectorClient extends MockClientWrapper {
 		return rt;
 	}
 
-	/*
-	 * Jan 28, 2013
-	 */
-	@Override
-	public MockClientWrapper connect() {
-
-		super.connect();
-		boolean signup = this.properties.getPropertyAsBoolean(SIGNUP_AT_CONNECT, false);
-		if (signup) {
-			String email = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_EMAIL, true);
-			String nick = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_NICK, true);
-			String pass = (String) this.properties.getProperty(MockExpectorClient.SIGNUP_PASS, true);
-
-			this.signup(email, nick, pass);
-			boolean auth = this.properties.getPropertyAsBoolean(AUTH_WITH_SIGNUP, true);
-			if (auth) {
-				PropertiesI<Object> cre = new MapProperties<Object>();
-				cre.setProperty("type", "registered");
-				cre.setProperty("email", email);
-				cre.setProperty("password", pass);
-
-				this.auth(cre);
-			}
-		}
-		return this;
-
-	}
 
 	/*
 	 * Dec 30, 2012

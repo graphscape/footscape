@@ -25,4 +25,6 @@ public abstract class WSClient {
 
 	public abstract void close();
 
+	public abstract int getIdleTime();
+
 }
