@@ -225,4 +225,13 @@ public class ProxyMessageSupport implements MessageI {
 		return this.target.getBoolean(key, def);
 	}
 
+	/*
+	 * Jan 29, 2013
+	 */
+	@Override
+	public boolean isSilence() {
+		//
+		return this.target.isSilence();
+	}
+
 }

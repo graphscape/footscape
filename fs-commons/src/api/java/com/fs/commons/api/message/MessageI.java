@@ -21,6 +21,8 @@ public interface MessageI {
 	public static final String HK_ID = "_id";
 
 	public static final String HK_SOURCE = "_source";
+	
+	public static final String HK_SILENCE = "_silence";
 
 	public static final String HK_ERROR_PROCESSOR = "_eprocessor";
 
@@ -38,6 +40,8 @@ public interface MessageI {
 	public String getId();
 
 	public String getResponseAddress();
+	
+	public boolean isSilence();
 
 	public PropertiesI<String> getHeaders();
 

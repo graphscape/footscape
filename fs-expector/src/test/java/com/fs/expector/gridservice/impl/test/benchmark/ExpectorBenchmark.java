@@ -11,6 +11,6 @@ package com.fs.expector.gridservice.impl.test.benchmark;
 public class ExpectorBenchmark {
 
 	public static void main(String[] args) {
-		new ExpSearchBenchmark(100, 30, 10000, 10).start();
+		new ExpSearchBenchmark(1000, 100, 100000, 20).start();
 	}
 }

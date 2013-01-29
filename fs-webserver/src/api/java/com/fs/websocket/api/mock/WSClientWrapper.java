@@ -130,7 +130,7 @@ public class WSClientWrapper {
 	protected void sendKeepLiveMessage() {
 		MessageI rt = new MessageSupport(KeepLiveI.PATH.toString());// not
 																	// response?
-		rt.setHeader("silence", "true");
+		rt.setHeader(MessageI.HK_SILENCE, "true");
 		this.sendMessage(rt);
 	}
 

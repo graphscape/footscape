@@ -294,4 +294,15 @@ public class MessageSupport implements MessageI {
 		return (Boolean) obj;
 	}
 
+	/*
+	 * Jan 29, 2013
+	 */
+	@Override
+	public boolean isSilence() {
+		//
+		String h = this.getHeader(HK_SILENCE, "false");
+		return "true".equalsIgnoreCase(h) || "yes".equalsIgnoreCase(h);
+
+	}
+
 }

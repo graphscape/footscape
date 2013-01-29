@@ -247,25 +247,25 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 
 		ResponseI res = this.engine.service(req);
 
-		this.onResponse(ep, req, res);
+		this.tryResponse(ep, req, res);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("end of event handling,evt:" + evt);
 		}
 	}
 
-	protected void onResponse(Path ep, MessageI req, ResponseI res) {
+	protected void tryResponse(Path ep, MessageI req, ResponseI res) {
 
 		ErrorInfos eis = res.getErrorInfos();
 
-		Path path = ep;
 		// process error
 		if (eis.hasError()) {
 			LOG.error("response contains error for request:" + req, res);
-			path = path.getSubPath("failure");
-
-		} else {
-			path = path.getSubPath("success");
 		}
+		if (req.isSilence()) {
+			return;
+		}
+
+		Path path = ep.getSubPath(eis.hasError() ? "failure" : "success");
 
 		res.setHeader(MessageI.HK_PATH, path.toString());
 		String ra = req.getResponseAddress();

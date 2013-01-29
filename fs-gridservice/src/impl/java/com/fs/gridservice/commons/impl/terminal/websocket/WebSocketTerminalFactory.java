@@ -90,7 +90,6 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 	public void onMessage(WebSocketI ws, String ms) {
 		//
 		if (LOG.isDebugEnabled()) {
-
 			LOG.debug("onMessage,wsId:" + ws.getId() + ",ms:" + ms);
 		}
 		JSONArray js = (JSONArray) JSONValue.parse(ms);
@@ -114,6 +113,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 		// RequestI->payload:EventGd->payload:Message
 		//
 		ew.getTarget().setHeader(MessageI.HK_RESPONSE_ADDRESS, msg.getHeader(MessageI.HK_RESPONSE_ADDRESS));
+		ew.getTarget().setHeader(MessageI.HK_SILENCE, msg.getHeader(MessageI.HK_SILENCE));
 
 		// send to global event queue
 		this.global.offer(ew.getTarget());
