@@ -8,8 +8,12 @@ import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
  * @author wu
- *
+ * 
  */
-public interface FrwkModelI extends ModelI{
+public interface FrwkModelI extends ModelI {
+
 	public HeaderModelI getHeader();
+
+	public BodyModelI getBody();
+
 }

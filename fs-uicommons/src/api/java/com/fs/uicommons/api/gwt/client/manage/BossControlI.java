@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
- *
+ * @deprecated
  */
 public interface BossControlI extends ControlI{
 

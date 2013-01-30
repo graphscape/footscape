@@ -4,6 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
+import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -29,6 +30,13 @@ public class FrwkModelImpl extends ModelSupport implements FrwkModelI {
 	public HeaderModelI getHeader() {
 		//
 		return this.getParent().getChild(HeaderModelI.class, true);
+
+	}
+	
+	@Override
+	public BodyModelI getBody() {
+		//
+		return this.getParent().getChild(BodyModelI.class, true);
 
 	}
 

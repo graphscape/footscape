@@ -6,7 +6,7 @@ package com.fs.uicommons.api.gwt.client.manage;
 
 /**
  * @author wu
- *
+ * @deprecated
  */
 public interface ManagableI {
 

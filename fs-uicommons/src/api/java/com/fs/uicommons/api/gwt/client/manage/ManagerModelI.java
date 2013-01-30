@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public interface ManagerModelI extends ModelI {
 
