@@ -3,8 +3,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.signup;
 
-import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
-import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;

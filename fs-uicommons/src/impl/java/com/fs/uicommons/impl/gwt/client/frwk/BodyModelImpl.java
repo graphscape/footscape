@@ -7,6 +7,7 @@ package com.fs.uicommons.impl.gwt.client.frwk;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fs.uicommons.api.gwt.client.event.BodyItemCreatedEvent;
 import com.fs.uicommons.api.gwt.client.event.BodyItemSelectEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
@@ -43,7 +44,7 @@ public class BodyModelImpl extends ModelSupport implements BodyModelI {
 		if (w instanceof ViewReferenceI.AwareI) {
 			((ViewReferenceI.AwareI) w).setViewReference(rt);
 		}
-
+		new BodyItemCreatedEvent(this, p).dispatch();
 		return rt;
 	}
 

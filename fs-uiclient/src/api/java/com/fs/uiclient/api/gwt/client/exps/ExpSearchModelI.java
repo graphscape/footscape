@@ -15,9 +15,9 @@ import com.fs.uicore.api.gwt.client.ModelI;
 public interface ExpSearchModelI extends ModelI {
 
 
-	public static final Location L_PAGENUMBER = Location.valueOf("pageFrom");
+	public static final Location L_FIRSTRESULT= Location.valueOf("firstResult");
 
-	public static final Location L_PAGESIZE = Location.valueOf("pageSize");
+	public static final Location L_MAXRESULT = Location.valueOf("maxResult");
 
 	public String getKeyword();
 
@@ -27,11 +27,9 @@ public interface ExpSearchModelI extends ModelI {
 
 	public List<ExpItemModel> getExpItemList();
 
-	public int getPageNumber();
+	public int getFirstResult();
 
-	public int getPageSize();
-
-	public void pageNumber(int pg);
+	public int getMaxResult();
 
 	public boolean nextPage();
 

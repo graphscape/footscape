@@ -44,7 +44,7 @@ public class ExpSearchControl extends ControlSupport implements
 		Mvc uel = mc.getLazyObject(MainControlI.LZ_UE_LIST, true);
 
 		// listen to the page number
-		this.getModel().addValueHandler(ExpSearchModelI.L_PAGENUMBER,
+		this.getModel().addValueHandler(ExpSearchModelI.L_FIRSTRESULT,
 				new EventHandlerI<ModelValueEvent>() {
 
 					@Override

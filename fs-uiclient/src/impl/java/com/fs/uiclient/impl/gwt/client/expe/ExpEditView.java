@@ -5,9 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.expe;
 
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -18,9 +16,9 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
  * @author wu
  * 
  */
-public class ExpEditView extends FormsView implements ManagableI {
+public class ExpEditView extends FormsView implements ViewReferenceI.AwareI {
 
-	private ManagedModelI managed;
+	private ViewReferenceI managed;
 
 	/**
 	 * @param ctn
@@ -46,29 +44,19 @@ public class ExpEditView extends FormsView implements ManagableI {
 		this.managed.select(e.getValue(Boolean.FALSE));// open this view.
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
-	 * #getManager()
-	 */
-	@Override
-	public String getManager() {
-		return BossModelI.M_POPUP;
-	}
+
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ViewReferenceI.AwareI
 	 * #
 	 * setManaged(com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI
-	 * .ManagedModelI)
+	 * .ViewReferenceI)
 	 */
 	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 

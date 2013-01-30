@@ -27,10 +27,10 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		ExpSearchModelI sm = (ExpSearchModelI) c.getModel();
 		String expId = sm.getExpId(true);
 
-		int pg = sm.getPageNumber();
+		int pg = sm.getFirstResult();
 		MsgWrapper req = this.newRequest(Path.valueOf("/exps/search"));
-		req.setPayload("pageNumber", Integer.valueOf(pg));
-		req.setPayload("pageSize", Integer.valueOf(sm.getPageSize()));
+		req.setPayload("firstResult", Integer.valueOf(pg));
+		req.setPayload("maxResult", Integer.valueOf(sm.getMaxResult()));
 
 		// the selected expId for matching.
 		req.getPayloads().setProperty("expId", (expId));

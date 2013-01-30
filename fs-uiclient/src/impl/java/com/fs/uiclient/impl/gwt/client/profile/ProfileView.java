@@ -7,11 +7,9 @@ package com.fs.uiclient.impl.gwt.client.profile;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
@@ -24,13 +22,13 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class ProfileView extends FormsView implements ManagableI {
+public class ProfileView extends FormsView implements ViewReferenceI.AwareI {
 
 	public static String HEADER_ITEM_PROFILE = "profile";//
 
 	protected ItemModel headerItem;
 
-	private ManagedModelI managed;
+	private ViewReferenceI managed;
 
 	private Element image;
 
@@ -70,7 +68,7 @@ public class ProfileView extends FormsView implements ManagableI {
 	//
 	// SimpleValueDeliver<Boolean, Boolean> sd = new SimpleValueDeliver<Boolean,
 	// Boolean>(
-	// this.managed, ManagedModelI.L_SELECTED, this.model,
+	// this.managed, ViewReferenceI.L_SELECTED, this.model,
 	// ProfileModelI.L_VIEW_OPENED);
 	// sd.mapDefaultDirect();
 	// sd.start();
@@ -124,25 +122,13 @@ public class ProfileView extends FormsView implements ManagableI {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ManagableI#setManaged
-	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ManagedModelI)
+	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI.AwareI
+	 * #setManaged
+	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI)
 	 */
 	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
-	 * #getManager()
-	 */
-	@Override
-	public String getManager() {
-
-		return BossModelI.M_POPUP;
 	}
 
 }

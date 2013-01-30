@@ -65,15 +65,15 @@ public class BodyView extends LightWeightView {
 	 * @param t
 	 */
 	protected void onBodyItemCreatedEvent(BodyItemCreatedEvent t) {
-		final PanelWI p = this.factory.create(PanelWI.class);
+		final PanelWI prt = this.factory.create(PanelWI.class);
 		Path path = t.getPath();
-		String tname = p.toString();
-		final TabWI sitem = this.tabber.addTab(tname, p);
+		String tname = path.toString();
+		final TabWI sitem = this.tabber.addTab(tname, prt);
 
 		// model is already the child of panelModel.
 		ViewReferenceI vr = this.getModel().getManaged(path);
 		WidgetI w = vr.getManagedWidget();
-		w.parent(p);
+		w.parent(prt);
 
 	}
 
@@ -84,9 +84,8 @@ public class BodyView extends LightWeightView {
 		if (!t.isSelected()) {
 			return;
 		}
-		final PanelWI p = this.factory.create(PanelWI.class);
 		Path path = t.getPath();
-		String tname = p.toString();
+		String tname = path.toString();
 		final TabWI sitem = this.tabber.getTab(tname, true);
 		sitem.select();
 	}

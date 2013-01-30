@@ -6,13 +6,9 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
-import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 
@@ -20,13 +16,13 @@ import com.fs.uicore.api.gwt.client.ModelI;
  * @author wu
  * 
  */
-public class UserExpListView extends SimpleView implements ManagableI {
+public class UserExpListView extends SimpleView implements ViewReferenceI.AwareI {
 
 	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp list
 
 	protected ListI list;
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	/**
 	 * @param ctn
@@ -76,12 +72,7 @@ public class UserExpListView extends SimpleView implements ManagableI {
 	}
 
 	@Override
-	public String getManager() {
-		return BossModelI.M_LEFT;
-	}
-
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 

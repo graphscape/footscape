@@ -68,26 +68,22 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 * Dec 1, 2012
 	 */
 	@Override
-	public int getPageNumber() {
+	public int getFirstResult() {
 		//
-		return this.getValue(Integer.class, L_PAGENUMBER, 0);
+		return this.getValue(Integer.class, L_FIRSTRESULT, 0);
 	}
 
 	/*
 	 * Dec 1, 2012
 	 */
 	@Override
-	public int getPageSize() {
+	public int getMaxResult() {
 		//
 		return 15;// TODO
 	}
 
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public void pageNumber(int pg) {
-		this.setValue(L_PAGENUMBER, pg);
+	public void setFirstResult(int pg) {
+		this.setValue(L_FIRSTRESULT, pg);
 	}
 
 	/*
@@ -95,8 +91,8 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 */
 	@Override
 	public boolean nextPage() {
-		int pg = this.getPageNumber();
-		this.pageNumber(pg + 1);
+		int fr = this.getFirstResult();
+		this.setFirstResult(this.getMaxResult() + fr);
 		return true;
 	}
 
@@ -105,11 +101,12 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 */
 	@Override
 	public boolean previousPage() {
-		int pg = this.getPageNumber();
-		if (pg == 0) {
-			return false;
+		int fr = this.getFirstResult();
+		fr = fr - this.getMaxResult();
+		if (fr < 0) {
+			fr = 0;
 		}
-		this.pageNumber(pg - 1);
+		this.setFirstResult(fr);
 		return true;
 	}
 

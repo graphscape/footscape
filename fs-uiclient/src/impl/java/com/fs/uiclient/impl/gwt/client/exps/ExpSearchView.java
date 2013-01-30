@@ -8,9 +8,7 @@ import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -25,7 +23,7 @@ import com.fs.uicore.api.gwt.client.support.SimpleModel;
  * @author wu
  * 
  */
-public class ExpSearchView extends SimpleView implements ManagableI {
+public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 
 	protected StringEditorI statement;// keywords?
 
@@ -35,7 +33,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 
 	protected ButtonI previousPage;
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	/**
 	 * @param ele
@@ -45,7 +43,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 
 		super(name, ctn);
 
-		this.statement = this.factory.create(StringEditorI.class,"search");
+		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
 
 		this.list = this.factory.create(ListI.class);
@@ -53,20 +51,17 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 		this.list.setName("itemList");// for testing
 		this.list.parent(this);
 		//
-		this.previousPage = this.factory.create(ButtonI.class,
-				SimpleModel.valueOf("", "<<"));
+		this.previousPage = this.factory.create(ButtonI.class, SimpleModel.valueOf("", "<<"));
 		this.previousPage.parent(this);
-		this.previousPage.addHandler(ClickEvent.TYPE,
-				new EventHandlerI<ClickEvent>() {
+		this.previousPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
-					@Override
-					public void handle(ClickEvent e) {
-						ExpSearchView.this.onPreviousPage();
-					}
-				});
+			@Override
+			public void handle(ClickEvent e) {
+				ExpSearchView.this.onPreviousPage();
+			}
+		});
 
-		this.nextPage = this.factory.create(ButtonI.class,
-				SimpleModel.valueOf("", ">>"));
+		this.nextPage = this.factory.create(ButtonI.class, SimpleModel.valueOf("", ">>"));
 		this.nextPage.parent(this);
 		this.nextPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -110,27 +105,13 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
-	 * #getManager()
+	 * @see com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.
+	 * ViewReferenceI.AwareI #
+	 * setManaged(com.fs.uicommons.api.gwt.client.frwk.commons
+	 * .manage.ManagerModelI .ViewReferenceI)
 	 */
 	@Override
-	public String getManager() {
-		// TODO Auto-generated method stub
-		return BossModelI.M_CENTER;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
-	 * #
-	 * setManaged(com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI
-	 * .ManagedModelI)
-	 */
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 
@@ -182,8 +163,7 @@ public class ExpSearchView extends SimpleView implements ManagableI {
 	 */
 	private void processChildExpItemModelRemove(ExpItemModel cm) {
 		String vname = viewName(cm);
-		ExpItemView ev = (ExpItemView) this.list.getChild(ViewI.class, vname,
-				false);
+		ExpItemView ev = (ExpItemView) this.list.getChild(ViewI.class, vname, false);
 
 		if (ev == null) {
 			return;

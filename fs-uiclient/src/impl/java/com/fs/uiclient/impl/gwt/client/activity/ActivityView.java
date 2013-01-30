@@ -5,9 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.activity;
 
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
@@ -18,9 +16,9 @@ import com.fs.uicore.api.gwt.client.ModelI;
  * @author wu
  * 
  */
-public class ActivityView extends SimpleView implements ManagableI {
+public class ActivityView extends SimpleView implements ViewReferenceI.AwareI {
 
-	private ManagedModelI managed;
+	private ViewReferenceI managed;
 	
 	protected ListI list;
 
@@ -50,20 +48,12 @@ public class ActivityView extends SimpleView implements ManagableI {
 		lb.getModel().setDefaultValue("expId:"+expId+",accId:"+accId);
 		lb.parent(this.list);
 	}
+	
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
-	public String getManager() {
-		//
-		return BossModelI.M_CENTER;// TODO FRONT
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 
