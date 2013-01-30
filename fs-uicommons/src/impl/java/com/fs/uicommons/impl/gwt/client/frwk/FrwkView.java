@@ -7,14 +7,16 @@ package com.fs.uicommons.impl.gwt.client.frwk;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
+import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
+import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
@@ -47,7 +49,7 @@ public class FrwkView extends ViewSupport {
 
 		this.managerTdElements = new HashMap<String, Element>();
 
-		Element top = this.createDivForPosition(BossModelI.M_TOP, this.element);
+		Element top = this.createDivForPosition(FrwkModelI.M_TOP, this.element);
 
 		{
 			TableWrapper table = new TableWrapper();
@@ -55,17 +57,31 @@ public class FrwkView extends ViewSupport {
 
 			TRWrapper tr = table.addTr();
 
-			this.createTDForPosition(BossModelI.M_LEFT, tr);
-			this.createTDForPosition(BossModelI.M_CENTER, tr);
-			this.createTDForPosition(BossModelI.M_RIGHT, tr);
+			this.createTDForPosition(FrwkModelI.M_LEFT, tr);
+			this.createTDForPosition(FrwkModelI.M_CENTER, tr);
+			this.createTDForPosition(FrwkModelI.M_RIGHT, tr);
 		}
 
-		Element bot = this.createDivForPosition(BossModelI.M_BOTTOM, this.element);
+		Element bot = this.createDivForPosition(FrwkModelI.M_BOTTOM, this.element);
 
 		bot.setInnerHTML("This is the bottom.");
 
 		// popup
-		Element pop = this.createDivForPosition(BossModelI.M_POPUP, this.element);
+		Element pop = this.createDivForPosition(FrwkModelI.M_POPUP, this.element);
+	}
+
+	@Override
+	public FrwkModelI getModel() {
+		return (FrwkModelI) this.model;
+	}
+
+	/*
+	 * Jan 30, 2013
+	 */
+	@Override
+	protected void doModel(ModelI model) {
+		//
+		super.doModel(model);
 	}
 
 	private Element createTDForPosition(String position, TRWrapper tr) {
@@ -96,11 +112,15 @@ public class FrwkView extends ViewSupport {
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 
 		ModelI cm = ((WidgetI) cw).getModel();
-		if (!(cm instanceof ManagerModelI)) {
-			throw new UiException("not a manager model for:" + cw);
-		}
 
-		String mname = cm.getName();// the manager name,
+		String mname = null;
+		if (cm instanceof HeaderModelI) {
+			mname = FrwkModelI.M_TOP;
+		} else if (cm instanceof BodyModelI) {
+			mname = FrwkModelI.M_CENTER;
+		} else {
+			throw new UiException("not supported to add child model:" + cm);
+		}
 
 		Element td = managerTdElements.get(mname);
 
@@ -116,22 +136,27 @@ public class FrwkView extends ViewSupport {
 	@Override
 	public void processChildModelAdd(ModelI parent, ModelI cm) {
 		super.processChildModelAdd(parent, cm);
-		if (cm instanceof ManagerModelI) {
-			this.processChildManagerModelAdd((ManagerModelI) cm);
+		if (cm instanceof HeaderModelI) {
+			this.processChildHeaderModelAdd((HeaderModelI) cm);
+		} else if (cm instanceof BodyModelI) {
+			this.processChildBodyModelAdd((BodyModelI) cm);
 		}
+
+	}
+
+	private void processChildBodyModelAdd(BodyModelI cm) {
+		ViewI mv = new BodyView("body", this.getContainer());
+		Mvc mvc = new Mvc(cm, mv);
+		mvc.start(this.model, this);
+
 	}
 
 	/**
 	 * Nov 24, 2012
 	 */
 
-	private void processChildManagerModelAdd(ManagerModelI cm) {
-		ViewI mv = null;
-		if (cm.getName().equals(BossModelI.M_POPUP)) {
-			mv = new PopupManagerView("manager", this.getContainer());
-		} else {
-			mv = new ManagerView("manager", this.getContainer());
-		}
+	private void processChildHeaderModelAdd(HeaderModelI cm) {
+		ViewI mv = new HeaderView("header", this.getContainer());
 		Mvc mvc = new Mvc(cm, mv);
 		mvc.start(this.model, this);
 

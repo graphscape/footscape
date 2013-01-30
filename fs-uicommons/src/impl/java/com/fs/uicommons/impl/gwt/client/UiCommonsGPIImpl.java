@@ -15,7 +15,9 @@ import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageFileUrlDataEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI.PropertyModel;
+import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.WindowModelI;
@@ -30,9 +32,6 @@ import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
-import com.fs.uicommons.api.gwt.client.manage.BossControlI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
@@ -67,7 +66,11 @@ import com.fs.uicommons.impl.gwt.client.editor.basic.StringEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.file.ImageFileUrlDataEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.image.ImageCropEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.properties.PropertiesEditorImpl;
+import com.fs.uicommons.impl.gwt.client.frwk.BodyModelImpl;
+import com.fs.uicommons.impl.gwt.client.frwk.BodyView;
+import com.fs.uicommons.impl.gwt.client.frwk.FrwkControlImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.FrwkModelImpl;
+import com.fs.uicommons.impl.gwt.client.frwk.FrwkView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicommons.impl.gwt.client.frwk.console.ConsoleModel;
@@ -85,9 +88,6 @@ import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
 import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
-import com.fs.uicommons.impl.gwt.client.manage.BossControlImpl;
-import com.fs.uicommons.impl.gwt.client.manage.BossModelImpl;
-import com.fs.uicommons.impl.gwt.client.manage.BossView;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;
 import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.AnchorWImpl;
@@ -139,14 +139,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		// mvc start from here
 		new ControlManagerImpl().parent(client);
 
-		// boss mvc
-		new Mvc(new BossModelImpl("boss"), new BossView("boss", c), new BossControlImpl("boss")).start(rootM,
-				client.getRoot());
-		//
-
-		new Mvc(new FrwkModelImpl("frwk")).start(rootM);//
+		Mvc fmvc = new Mvc(new FrwkModelImpl("frwk"), new FrwkView("frwk", c), new FrwkControlImpl("frwk"))
+				.start(rootM, client.getRoot());
 		// Headers
-		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM);//
+		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM, fmvc.getView());//
+
+		new Mvc(new BodyModelImpl("body"), new BodyView("body", c)).start(rootM, fmvc.getView());//
+
 		//
 		this.activeLogin(c);
 
@@ -162,7 +161,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH());
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP());
 		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH());
-		
+
 		//
 		eb.addHandler(Actions.A_GCHAT_JOIN, new JoinAP());
 		eb.addHandler(Actions.A_GCHAT_SEND, new SendAP());
@@ -485,12 +484,12 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ControlManagerI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(BossModelI.class) {
+		InstanceOf.addChecker(new CheckerSupport(BodyModelI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof BossModelI;
+				return o instanceof BodyModelI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(HeaderModelI.class) {
@@ -730,15 +729,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof LoginControlI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(ManagerModelI.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof ManagerModelI;
-			}
-		});
-		
 		InstanceOf.addChecker(new CheckerSupport(HeaderView.class) {
 
 			@Override
@@ -819,12 +810,12 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof FrwkModelI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(BossControlI.class) {
+		InstanceOf.addChecker(new CheckerSupport(FrwkControlI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof BossControlI;
+				return o instanceof FrwkControlI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(PopupWI.class) {

@@ -4,10 +4,8 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.mvc;
 
+import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
-import com.fs.uicommons.api.gwt.client.manage.BossControlI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
@@ -31,9 +29,7 @@ public class EchoTest extends TestBase {
 		this.finishing.add("action");
 		this.finishing.add("response");
 
-		BossControlI fc = this.manager.getControl(BossControlI.class, true);
-
-		ManagerModelI cm = fc.getManager(BossModelI.M_CENTER);
+		BodyModelI cm = this.rootModel.find(BodyModelI.class, true);
 
 		System.out.println(this.client.dump());
 		System.out.println(this.root.dump());
@@ -78,7 +74,7 @@ public class EchoTest extends TestBase {
 		EditorI fE = view.getEditor("field1");
 		fE.input(this.field1Data);
 
-		//view.clickAction("echo");// cause action
+		// view.clickAction("echo");// cause action
 
 	}
 

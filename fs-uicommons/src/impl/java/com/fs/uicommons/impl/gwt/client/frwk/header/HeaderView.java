@@ -5,9 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -17,9 +15,9 @@ import com.fs.uicore.api.gwt.client.ModelI;
  * @author wu
  * 
  */
-public class HeaderView extends SimpleView implements ManagableI {
+public class HeaderView extends SimpleView implements ViewReferenceI.AwareI {
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	private BarWidgetI itemList;
 
@@ -57,16 +55,7 @@ public class HeaderView extends SimpleView implements ManagableI {
 	 * Nov 23, 2012
 	 */
 	@Override
-	public String getManager() {
-		//
-		return BossModelI.M_TOP;
-	}
-
-	/*
-	 * Nov 23, 2012
-	 */
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 

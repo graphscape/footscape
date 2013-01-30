@@ -155,7 +155,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	}
 
-	protected void assertSocketOpen() {
+	protected void assertSocketOpen(boolean appLevel) {
 		if (this.socket == null) {
 			throw new UiException("socket is null");
 
@@ -166,8 +166,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 			throw new UiException("socket is not open,readyState:" + rs);
 		}
 
-		if (!this.serverIsReady) {
-			throw new UiException("socket is not ready,server is not ready");
+		if (appLevel && !this.serverIsReady) {
+			throw new UiException("server is not ready");
 		}
 
 	}
@@ -177,12 +177,19 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	 */
 	@Override
 	public void sendMessage(MessageData req) {
-		//
-		this.assertSocketOpen();
+		this.assertSocketOpen(true);//
 		if (this.userInfo != null) {
 			req.setHeader("sessionId", this.getSessionId());//
 		}
+
 		req.setHeader("_resonse_address", "tid://" + this.terminalId);
+
+		this.sendMessageDirect(req);
+
+	}
+
+	private void sendMessageDirect(MessageData req) {
+		//
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.socket.send(jsS);
@@ -190,6 +197,10 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	protected void onWsOpen(Object evt) {
 		// wait server is ready
+		LOG.info("ws open, send client is ready to server,and wait server is ready.");
+		MessageData req = new MessageData("/control/status/clientIsReady"); 
+		this.sendMessageDirect(req);
+		
 	}
 
 	protected void onWsClose(EventJSO evt) {

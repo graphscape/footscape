@@ -4,7 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.manage;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.manage.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
@@ -41,12 +41,12 @@ public class ManagerView extends SimpleView {
 	@Override
 	public void processChildModelAdd(ModelI p, ModelI cm) {
 		super.processChildModelAdd(p, cm);
-		if (cm instanceof ManagedModelI) {
-			this.processChildManagedModelAdd((ManagedModelI) cm);
+		if (cm instanceof ViewReferenceI) {
+			this.processChildManagedModelAdd((ViewReferenceI) cm);
 		}
 	}
 
-	private void processChildManagedModelAdd(ManagedModelI cm) {
+	private void processChildManagedModelAdd(ViewReferenceI cm) {
 
 		final PanelWI p = this.factory.create(PanelWI.class);
 		String tname = cm.getName();//
@@ -56,7 +56,7 @@ public class ManagerView extends SimpleView {
 		WidgetI w = cm.getManagedWidget();
 		w.parent(p);
 
-		cm.addValueHandler(ManagedModelI.L_SELECTED,
+		cm.addValueHandler(ViewReferenceI.L_SELECTED,
 				new ModelValueHandler<Boolean>() {
 
 					@Override

@@ -4,11 +4,11 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.frwk;
 
+import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
-import com.fs.uicommons.api.gwt.client.manage.BossControlI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
@@ -28,9 +28,10 @@ public class FormTest extends TestBase {
 		this.finishing.add("field1");
 		this.finishing.add("form");
 
-		BossControlI fc = this.manager.getControl(BossControlI.class, true);
+		FrwkControlI fc = this.manager.getControl(FrwkControlI.class, true);
 		
-		ManagerModelI cm = fc.getManager(BossModelI.M_CENTER);
+		FrwkModelI md = fc.getModel();
+		BodyModelI cm = md.getBody();
 
 		System.out.println(this.client.dump());
 		System.out.println(this.root.dump());

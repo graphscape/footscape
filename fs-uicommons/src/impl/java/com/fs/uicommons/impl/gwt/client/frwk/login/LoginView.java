@@ -1,10 +1,8 @@
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -19,13 +17,13 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
  * @author wu
  * 
  */
-public class LoginView extends FormsView implements ManagableI {
+public class LoginView extends FormsView implements ViewReferenceI.AwareI {
 
 	// note: this is not the child of this view,
 
 	// it is add to the header view.
 
-	private ManagedModelI managed;
+	private ViewReferenceI managed;
 
 	private LabelI accountLabel;
 
@@ -75,21 +73,8 @@ public class LoginView extends FormsView implements ManagableI {
 	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ManagedI)
 	 */
 	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI
-	 * #getManager()
-	 */
-	@Override
-	public String getManager() {
-		// TODO Auto-generated method stub
-		return BossModelI.M_POPUP;
 	}
 
 }

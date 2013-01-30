@@ -4,7 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.manage;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.manage.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -48,15 +48,15 @@ public class ManagerControl extends ControlSupport {
 	@Override
 	public void processChildModelAdd(ModelI p, ModelI cm) {
 		super.processChildModelAdd(p, cm);
-		if (cm instanceof ManagedModelI) {
-			this.processChildManagedModelAdd((ManagedModelI) cm);
+		if (cm instanceof ViewReferenceI) {
+			this.processChildManagedModelAdd((ViewReferenceI) cm);
 		}
 	}
 
 	/**
 	 * @param cm
 	 */
-	private void processChildManagedModelAdd(ManagedModelI cm) {
+	private void processChildManagedModelAdd(ViewReferenceI cm) {
 		cm.addValueHandler(ModelI.L_DEFAULT, new ModelValueHandler<Boolean>() {
 
 			@Override

@@ -4,7 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.manage;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.manage.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -35,12 +35,12 @@ public class PopupManagerView extends SimpleView {
 	@Override
 	public void processChildModelAdd(ModelI p, ModelI cm) {
 		super.processChildModelAdd(p, cm);
-		if (cm instanceof ManagedModelI) {
-			this.processChildManagedModelAdd((ManagedModelI) cm);
+		if (cm instanceof ViewReferenceI) {
+			this.processChildManagedModelAdd((ViewReferenceI) cm);
 		}
 	}
 
-	private void processChildManagedModelAdd(final ManagedModelI cm) {
+	private void processChildManagedModelAdd(final ViewReferenceI cm) {
 
 		final PanelWI p = this.factory.create(PanelWI.class);
 		p.parent(this);//NOTE attach 
@@ -50,7 +50,7 @@ public class PopupManagerView extends SimpleView {
 
 		final PopupEO pe = new PopupEO(p.getElement());
 		pe.parent(this);//
-		cm.addValueHandler(ManagedModelI.L_SELECTED,
+		cm.addValueHandler(ViewReferenceI.L_SELECTED,
 				new ModelValueHandler<Boolean>() {
 
 					@Override
@@ -66,7 +66,7 @@ public class PopupManagerView extends SimpleView {
 	/**
 	 * Nov 24, 2012
 	 */
-	protected void select(PopupEO pp, ManagedModelI cm, Boolean value) {
+	protected void select(PopupEO pp, ViewReferenceI cm, Boolean value) {
 		pp.setVisible(value);//
 	}
 

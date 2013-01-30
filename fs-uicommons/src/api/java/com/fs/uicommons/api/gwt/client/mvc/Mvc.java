@@ -4,8 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
-import com.fs.uicommons.api.gwt.client.manage.util.BossUtil;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
+import com.fs.uicommons.api.gwt.client.frwk.util.FrwkUtil;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -26,7 +26,7 @@ public class Mvc {
 	protected ViewI view;
 	protected ControlI control;
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	public Mvc(ViewI v) {
 		this(null, v);
@@ -71,12 +71,8 @@ public class Mvc {
 				this.view.parent(pview);
 			} else {// managed by boss
 
-				this.managed = BossUtil.manage(this.model, this.view);
+				this.managed = FrwkUtil.manage(this.model, this.view);
 
-				SimpleValueDeliver<Boolean, Boolean> sd = new SimpleValueDeliver<Boolean, Boolean>(
-						this.managed, ManagedModelI.L_SELECTED, this.model, Mvc.L_VIEW_OPENED);
-				sd.mapDefaultDirect();
-				sd.start();
 			}
 		}
 		if (this.control != null) {
@@ -112,7 +108,7 @@ public class Mvc {
 		return (T) control;
 	}
 
-	public ManagedModelI getManaged() {
+	public ViewReferenceI getManaged() {
 		return this.managed;
 	}
 

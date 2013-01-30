@@ -4,11 +4,10 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.support.ModelValueHandler;
 
 /**
  * @author wu
@@ -48,22 +47,16 @@ public class BodyControl extends ControlSupport {
 	@Override
 	public void processChildModelAdd(ModelI p, ModelI cm) {
 		super.processChildModelAdd(p, cm);
-		if (cm instanceof ManagedModelI) {
-			this.processChildManagedModelAdd((ManagedModelI) cm);
+		if (cm instanceof ViewReferenceI) {
+			this.processChildManagedModelAdd((ViewReferenceI) cm);
 		}
 	}
 
 	/**
 	 * @param cm
 	 */
-	private void processChildManagedModelAdd(ManagedModelI cm) {
-		cm.addValueHandler(ModelI.L_DEFAULT, new ModelValueHandler<Boolean>() {
+	private void processChildManagedModelAdd(ViewReferenceI cm) {
 
-			@Override
-			public void handleValue(Boolean value) {
-
-			}
-		});
 	}
 
 }

@@ -4,9 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.blank;
 
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -14,9 +12,9 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  * @author wu
  * 
  */
-public class BlankView extends SimpleView implements ManagableI {
+public class BlankView extends SimpleView implements ViewReferenceI.AwareI {
 
-	private ManagedModelI managed;
+	private ViewReferenceI managed;
 
 	/**
 	 * @param ctn
@@ -29,21 +27,12 @@ public class BlankView extends SimpleView implements ManagableI {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ManagableI#setManaged
-	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ManagedModelI)
+	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI.AwareI#setManaged
+	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI)
 	 */
 	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.ManagableI#getManager()
-	 */
-	@Override
-	public String getManager() {
-		// TODO Auto-generated method stub
-		return BossModelI.M_CENTER;
 	}
 
 }

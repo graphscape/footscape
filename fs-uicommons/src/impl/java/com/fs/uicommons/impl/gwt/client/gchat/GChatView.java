@@ -5,12 +5,10 @@
 package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
+import com.fs.uicommons.api.gwt.client.frwk.util.FrwkUtil;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
-import com.fs.uicommons.api.gwt.client.manage.util.BossUtil;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
@@ -24,13 +22,13 @@ import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
  * @author wu
  * 
  */
-public class GChatView extends SimpleView implements ManagableI {
+public class GChatView extends SimpleView implements ViewReferenceI.AwareI {
 
 	protected TabberWI groups;
 
 	protected StringEditorI groupIdEditor;
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	public static final String TESTING_ROOM_NAME_EDITOR = "groupIdEditor";
 
@@ -46,14 +44,13 @@ public class GChatView extends SimpleView implements ManagableI {
 		this.groupIdEditor.setName(TESTING_ROOM_NAME_EDITOR);// FOR testing to
 																// find this
 																// widget.
-		this.groupIdEditor.getModel().addDefaultValueHandler(
-				new EventHandlerI<ModelValueEvent>() {
+		this.groupIdEditor.getModel().addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
-					@Override
-					public void handle(ModelValueEvent e) {
-						GChatView.this.onGroupIdChange(e);
-					}
-				});
+			@Override
+			public void handle(ModelValueEvent e) {
+				GChatView.this.onGroupIdChange(e);
+			}
+		});
 		this.child(this.groupIdEditor);
 	}
 
@@ -81,18 +78,7 @@ public class GChatView extends SimpleView implements ManagableI {
 	 * Oct 21, 2012
 	 */
 	@Override
-	public String getManager() {
-		//
-
-		return BossModelI.M_CENTER; // TODO popup manager.
-
-	}
-
-	/*
-	 * Oct 21, 2012
-	 */
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 
@@ -128,13 +114,13 @@ public class GChatView extends SimpleView implements ManagableI {
 
 				@Override
 				public void handle(SelectEvent t) {
-					if(t.isSelected()){
+					if (t.isSelected()) {
 						GChatView.this.getModel().setCurrentGroupId(gid);//
 					}
 				}
 			});
 		} else {
-			BossUtil.manage(cm, rv);
+			FrwkUtil.manage(cm, rv);
 		}
 	}
 

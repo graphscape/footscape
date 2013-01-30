@@ -4,7 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.manage;
 
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.manage.ViewReferenceI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
@@ -12,14 +12,14 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * @author wu
  * 
  */
-public class ManagedModelImpl extends ModelSupport implements ManagedModelI {
+public class ViewReferenceImpl extends ModelSupport implements ViewReferenceI {
 
 	private WidgetI managedWidget;
 
 	/**
 	 * @param name
 	 */
-	public ManagedModelImpl(String name, WidgetI mw) {
+	public ViewReferenceImpl(String name, WidgetI mw) {
 		super(name);
 		this.managedWidget = mw;
 	}

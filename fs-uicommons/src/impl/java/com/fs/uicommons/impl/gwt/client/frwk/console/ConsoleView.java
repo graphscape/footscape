@@ -4,9 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.console;
 
-import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagableI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -20,9 +18,9 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class ConsoleView extends SimpleView implements ManagableI {
+public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
 
-	protected ManagedModelI managed;
+	protected ViewReferenceI managed;
 
 	protected Element table;
 
@@ -50,16 +48,15 @@ public class ConsoleView extends SimpleView implements ManagableI {
 	@Override
 	protected void doModel(ModelI model) {
 		super.doModel(model);
-		Console.getInstance().addMessageCallback(
-				new UiCallbackI<Object, Boolean>() {
+		Console.getInstance().addMessageCallback(new UiCallbackI<Object, Boolean>() {
 
-					@Override
-					public Boolean execute(Object t) {
-						//
-						ConsoleView.this.processConsoleMessage(t);//
-						return null;
-					}
-				});
+			@Override
+			public Boolean execute(Object t) {
+				//
+				ConsoleView.this.processConsoleMessage(t);//
+				return null;
+			}
+		});
 	}
 
 	/**
@@ -89,8 +86,7 @@ public class ConsoleView extends SimpleView implements ManagableI {
 			if (this.size <= this.maxSize) {
 				break;
 			}
-			com.google.gwt.dom.client.Element ele = this.tbody.getElement()
-					.getFirstChildElement();
+			com.google.gwt.dom.client.Element ele = this.tbody.getElement().getFirstChildElement();
 			if (ele == null) {
 				break;
 			}
@@ -104,16 +100,7 @@ public class ConsoleView extends SimpleView implements ManagableI {
 	 * Nov 11, 2012
 	 */
 	@Override
-	public String getManager() {
-		//
-		return BossModelI.M_POPUP;//
-	}
-
-	/*
-	 * Nov 11, 2012
-	 */
-	@Override
-	public void setManaged(ManagedModelI mgd) {
+	public void setViewReference(ViewReferenceI mgd) {
 		this.managed = mgd;
 	}
 

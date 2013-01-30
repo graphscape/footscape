@@ -10,7 +10,6 @@ import java.util.List;
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemDisplayNameUpdateEvent;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -74,7 +73,7 @@ public interface HeaderModelI extends ModelI {
 			return rt;
 		}
 
-		public ItemModel addItem(String name, final ManagedModelI mgd) {
+		public ItemModel addItem(String name, final ViewReferenceI mgd) {
 			final ItemModel rt = this.addItem(name);
 			this.addHandler(HeaderItemEvent.TYPE, new EventHandlerI<HeaderItemEvent>() {
 
@@ -151,7 +150,7 @@ public interface HeaderModelI extends ModelI {
 
 	public ItemModel addItem(String name, Position pos);
 
-	public ItemModel addItem(String name, Position pos, ManagedModelI mgd);
+	public ItemModel addItem(String name, Position pos, ViewReferenceI mgd);
 
 	public ItemModel getItem(String name, boolean force);
 

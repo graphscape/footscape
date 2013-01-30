@@ -7,7 +7,7 @@ package com.fs.uicommons.impl.gwt.client.frwk.header;
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -33,7 +33,7 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	}
 
 	@Override
-	public ItemModel addItem(String name, Position pos, final ManagedModelI mgd) {
+	public ItemModel addItem(String name, Position pos, final ViewReferenceI mgd) {
 		final ItemModel rt = new ItemModel(name);
 		rt.setPosition(pos);
 		rt.addHandler(HeaderItemEvent.TYPE,
@@ -61,7 +61,7 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	/**
 	 * Nov 26, 2012
 	 */
-	protected void onItemTrigger(ManagedModelI mgd, ItemModel rt) {
+	protected void onItemTrigger(ViewReferenceI mgd, ItemModel rt) {
 		//
 		rt.select(!rt.isSelected());//
 		if (mgd != null) {

@@ -6,7 +6,7 @@ package com.fs.uicommons.api.gwt.client.manage.util;
 
 import com.fs.uicommons.api.gwt.client.manage.BossControlI;
 import com.fs.uicommons.api.gwt.client.manage.BossModelI;
-import com.fs.uicommons.api.gwt.client.manage.ManagedModelI;
+import com.fs.uicommons.api.gwt.client.manage.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.manage.ManagerModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -31,7 +31,7 @@ public class BossUtil {
 		getCenterModel(view.getModel()).manage(view.getModel(), view);
 	}
 	
-	public static ManagedModelI manage(ModelI model, ViewI view){
+	public static ViewReferenceI manage(ModelI model, ViewI view){
 		BossControlI bc = getBossControl(model);
 		return bc.manage(model, view);
 	}
