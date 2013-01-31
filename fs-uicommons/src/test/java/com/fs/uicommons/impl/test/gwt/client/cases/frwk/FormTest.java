@@ -5,7 +5,6 @@
 package com.fs.uicommons.impl.test.gwt.client.cases.frwk;
 
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
@@ -28,9 +27,7 @@ public class FormTest extends TestBase {
 		this.finishing.add("field1");
 		this.finishing.add("form");
 
-		FrwkControlI fc = this.manager.getControl(FrwkControlI.class, true);
-		
-		FrwkModelI md = fc.getModel();
+		FrwkModelI md = this.rootModel.find(FrwkModelI.class, true);
 		BodyModelI cm = md.getBody();
 
 		System.out.println(this.client.dump());
@@ -71,8 +68,7 @@ public class FormTest extends TestBase {
 	protected void onDataValue(ModelValueEvent e) {
 		System.out.println("field1:" + e.getValueWrapper().getValue());
 
-		ObjectPropertiesData d = (ObjectPropertiesData) e.getValueWrapper()
-				.getValue();
+		ObjectPropertiesData d = (ObjectPropertiesData) e.getValueWrapper().getValue();
 		assertNotNull("form data is null", d);
 		String sd = (String) d.getProperty("field1");
 		assertNotNull("field1 is null", sd);
@@ -84,8 +80,7 @@ public class FormTest extends TestBase {
 	protected void onField1Value(ModelValueEvent e) {
 		System.out.println("field1:" + e.getValueWrapper().getValue());
 
-		assertEquals("field1 data error", this.field1Data, e.getValueWrapper()
-				.getValue());
+		assertEquals("field1 data error", this.field1Data, e.getValueWrapper().getValue());
 		this.tryFinish("field1");
 	}
 

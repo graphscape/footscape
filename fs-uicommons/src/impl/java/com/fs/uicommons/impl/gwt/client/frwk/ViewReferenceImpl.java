@@ -19,14 +19,14 @@ public class ViewReferenceImpl implements ViewReferenceI {
 
 	private boolean selected;
 
-	private BodyModelImpl body;
+	private BodyModel body;
 
 	private Path path;
 
 	/**
 	 * @param name
 	 */
-	public ViewReferenceImpl(Path path, WidgetI mw, BodyModelImpl bm) {
+	public ViewReferenceImpl(Path path, WidgetI mw, BodyModel bm) {
 		this.path = path;
 		this.managedWidget = mw;
 		this.body = bm;

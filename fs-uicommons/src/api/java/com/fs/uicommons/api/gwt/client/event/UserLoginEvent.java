@@ -4,8 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.event;
 
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
 /**
@@ -21,11 +21,11 @@ public class UserLoginEvent extends Event {
 	/**
 	 * @param type
 	 */
-	public UserLoginEvent(LoginControlI src, UserInfo ui) {
+	public UserLoginEvent(UiObjectI src, UserInfo ui) {
 		this(TYPE, src, ui);
 	}
 
-	public UserLoginEvent(Type<? extends UserLoginEvent> type, LoginControlI src, UserInfo ui) {
+	public UserLoginEvent(Type<? extends UserLoginEvent> type, UiObjectI src, UserInfo ui) {
 		super(type, src);
 		this.userInfo = ui;
 	}

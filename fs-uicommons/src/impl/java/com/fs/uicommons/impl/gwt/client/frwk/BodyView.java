@@ -4,18 +4,17 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
-import com.fs.uicommons.api.gwt.client.event.BodyItemCreatedEvent;
-import com.fs.uicommons.api.gwt.client.event.BodyItemSelectEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
-import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
@@ -26,34 +25,15 @@ public class BodyView extends LightWeightView {
 
 	private TabberWI tabber;// TODO replace by a stack and a menu view.
 
+	private Map<Path, WidgetI> itemMap = new HashMap<Path, WidgetI>();
+
 	/**
 	 * @param ctn
 	 */
-	public BodyView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public BodyView(String name, ContainerI ctn, BodyModelI mb) {
+		super(name, ctn, mb);
 		this.tabber = this.factory.create(TabberWI.class);//
 		this.tabber.parent(this);
-	}
-
-	@Override
-	public void doModel(ModelI model) {
-		super.doModel(model);
-		BodyModelI bm = (BodyModelI) model;
-		bm.addHandler(BodyItemCreatedEvent.TYPE, new EventHandlerI<BodyItemCreatedEvent>() {
-
-			@Override
-			public void handle(BodyItemCreatedEvent t) {
-				BodyView.this.onBodyItemCreatedEvent(t);
-			}
-		});
-
-		bm.addHandler(BodyItemSelectEvent.TYPE, new EventHandlerI<BodyItemSelectEvent>() {
-
-			@Override
-			public void handle(BodyItemSelectEvent t) {
-				BodyView.this.onBodyViewSelect(t);
-			}
-		});
 	}
 
 	@Override
@@ -64,30 +44,49 @@ public class BodyView extends LightWeightView {
 	/**
 	 * @param t
 	 */
-	protected void onBodyItemCreatedEvent(BodyItemCreatedEvent t) {
+	public <T extends WidgetI> T addItem(Path path, T w) {
+		WidgetI old = this.getItem(path, false);
+
+		if (old != null) {
+			throw new UiException("already exist:" + path + ",widget:" + old);
+		}
 		final PanelWI prt = this.factory.create(PanelWI.class);
-		Path path = t.getPath();
 		String tname = path.toString();
 		final TabWI sitem = this.tabber.addTab(tname, prt);
-
-		// model is already the child of panelModel.
-		ViewReferenceI vr = this.getModel().getManaged(path);
-		WidgetI w = vr.getManagedWidget();
 		w.parent(prt);
-
+		this.itemMap.put(path, w);
+		return w;
 	}
 
 	/**
 	 * @param t
 	 */
-	protected void onBodyViewSelect(BodyItemSelectEvent t) {
-		if (!t.isSelected()) {
-			return;
-		}
-		Path path = t.getPath();
+	public void select(Path path) {
+
 		String tname = path.toString();
 		final TabWI sitem = this.tabber.getTab(tname, true);
 		sitem.select();
+	}
+
+	/**
+	 * @param b
+	 */
+	public <T extends WidgetI> T getItem(Path path, boolean force) {
+		WidgetI rt = this.itemMap.get(path);
+		if (rt == null && force) {
+			throw new UiException("not found item in body view,path:" + path);
+		}
+		return (T) rt;
+	}
+
+	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt) {
+		T rt = this.getItem(path, false);
+		if (rt != null) {
+			return rt;
+		}
+		rt = crt.create(this.getContainer());
+		this.addItem(path, rt);
+		return rt;
 	}
 
 }

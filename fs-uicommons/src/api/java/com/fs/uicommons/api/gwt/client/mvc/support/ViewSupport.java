@@ -16,6 +16,7 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
+import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -23,15 +24,31 @@ import com.google.gwt.user.client.Element;
  * 
  */
 public class ViewSupport extends LayoutSupport implements ViewI {
+	protected ContainerI container;
 
 	public ViewSupport(Element ele, ContainerI ctn) {
 		this(null, ele, ctn);
 	}
 
 	public ViewSupport(String name, Element ele, ContainerI ctn) {
-		super(name, ele);
-		this.factory = getWidgetFactory(ctn);
 
+		this(name, ele, ctn, new SimpleModel("unkown"));
+	}
+
+	public ViewSupport(Element ele, ContainerI ctn, ModelI model) {
+		this(null, ele, ctn, model);
+	}
+
+	public ViewSupport(String name, Element ele, ContainerI ctn, ModelI model) {
+		super(name, ele);
+		this.container = ctn;
+		this.factory = getWidgetFactory(ctn);
+		this.model(model);
+	}
+
+	@Override
+	public ContainerI getContainer() {
+		return this.container;
 	}
 
 	public static WidgetFactoryI getWidgetFactory(ContainerI ctn) {

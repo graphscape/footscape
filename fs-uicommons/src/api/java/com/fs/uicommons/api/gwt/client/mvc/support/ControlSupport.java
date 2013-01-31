@@ -3,8 +3,13 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
+import com.fs.uicommons.api.gwt.client.CreaterI;
+import com.fs.uicommons.impl.gwt.client.frwk.BodyView;
+import com.fs.uicommons.impl.gwt.client.frwk.FrwkView;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
@@ -13,12 +18,8 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class ControlSupport extends AbstractControl {
 
-	public ControlSupport(String name) {
-		super(name);
-	}
-
-	public void triggerAction(Path action) {
-		ControlUtil.triggerAction(this.model, action);
+	public ControlSupport(ContainerI c, String name) {
+		super(c, name);
 	}
 
 	/*
@@ -30,11 +31,37 @@ public class ControlSupport extends AbstractControl {
 
 	}
 
+	public <T extends ModelI> T getOrCreateModel(ModelI parent, Class<T> cls, CreaterI<T> crt) {
+		T rt = parent.getChild(cls, false);
+		if (rt != null) {
+			return rt;
+		}
+		rt = crt.create(this.container);
+		rt.parent(parent);
+		return rt;
+	}
+
+	public RootI getRootView() {
+		return this.getClient(true).getRoot();
+	}
+
+	public ModelI getRootModel() {
+		return this.getClient(true).getRootModel();
+	}
+
 	protected MsgWrapper newRequest(Path path) {
 		return new MsgWrapper(path);
 	}
 
 	protected void sendMessage(MsgWrapper req) {
 		this.getClient(true).getEndpoint().sendMessage(req);//
+	}
+
+	protected FrwkView getFrwkView() {
+		return this.getRootView().getChild(FrwkView.class, true);
+	}
+
+	protected BodyView getBodyView() {
+		return this.getFrwkView().getBodyView();
 	}
 }

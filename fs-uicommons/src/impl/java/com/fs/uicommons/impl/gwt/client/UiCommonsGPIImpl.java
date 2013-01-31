@@ -15,6 +15,9 @@ import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageFileUrlDataEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI.PropertyModel;
+import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
+import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
@@ -27,7 +30,6 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.LineModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.frwk.support.LazyMvcHeaderItemHandler;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
@@ -35,12 +37,7 @@ import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvSupport;
-import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
@@ -66,24 +63,22 @@ import com.fs.uicommons.impl.gwt.client.editor.basic.StringEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.file.ImageFileUrlDataEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.image.ImageCropEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.properties.PropertiesEditorImpl;
-import com.fs.uicommons.impl.gwt.client.frwk.BodyModelImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.BodyView;
 import com.fs.uicommons.impl.gwt.client.frwk.FrwkControlImpl;
-import com.fs.uicommons.impl.gwt.client.frwk.FrwkModelImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.FrwkView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
-import com.fs.uicommons.impl.gwt.client.frwk.console.ConsoleModel;
-import com.fs.uicommons.impl.gwt.client.frwk.console.ConsoleView;
-import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderModel;
 import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderView;
-import com.fs.uicommons.impl.gwt.client.frwk.login.LoginControl;
-import com.fs.uicommons.impl.gwt.client.frwk.login.LoginModel;
+import com.fs.uicommons.impl.gwt.client.frwk.login.LoginControlImpl;
 import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
-import com.fs.uicommons.impl.gwt.client.gchat.JoinAP;
-import com.fs.uicommons.impl.gwt.client.gchat.SendAP;
-import com.fs.uicommons.impl.gwt.client.handler.action.LoginAutoAH;
+import com.fs.uicommons.impl.gwt.client.handler.ClientStartedHandler;
+import com.fs.uicommons.impl.gwt.client.handler.EndpointBondHandler;
+import com.fs.uicommons.impl.gwt.client.handler.HeaderItemHandler;
+import com.fs.uicommons.impl.gwt.client.handler.UserLoginHandler;
+import com.fs.uicommons.impl.gwt.client.handler.action.AutoLoginHandler;
+import com.fs.uicommons.impl.gwt.client.handler.action.GChatJoinAP;
+import com.fs.uicommons.impl.gwt.client.handler.action.GChatSendAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
@@ -108,10 +103,10 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.support.WidgetCreaterSupport;
@@ -133,38 +128,40 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		this.activeWidgetCreater(c);
 		//
 		this.activeActionHandlers(c, client);
+
+		this.activeOtherHandlers(c, client);
 		//
 		new DraggerImpl().parent(client);
 
-		// mvc start from here
-		new ControlManagerImpl().parent(client);
-
-		Mvc fmvc = new Mvc(new FrwkModelImpl("frwk"), new FrwkView("frwk", c), new FrwkControlImpl("frwk"))
-				.start(rootM, client.getRoot());
-		// Headers
-		new Mvc(new HeaderModel("header"), new HeaderView("header", c)).start(rootM, fmvc.getView());//
-
-		new Mvc(new BodyModelImpl("body"), new BodyView("body", c)).start(rootM, fmvc.getView());//
-
-		//
-		this.activeLogin(c);
-
-		this.activeConsole(c);
-
 		this.activeMessageHandlers(c, client);
+		//
+
+		// controls
+		ControlManagerI manager = new ControlManagerImpl();
+		manager.parent(client);
+		manager.child(new FrwkControlImpl(c, "frwk"));
+		manager.child(new GChatControlImpl(c, "gchat"));
+		manager.child(new LoginControlImpl(c, "login"));
+
+		// start frwk view.
+		FrwkControlI fc = manager.getControl(FrwkControlI.class, true);
+		fc.open();
+		fc.addHeaderItem(Path.valueOf("user/login"));
+		fc.addHeaderItem(Path.valueOf("user/logout"));
+		fc.addHeaderItem(Path.valueOf("user/profile"));
+
 	}
 
 	public void activeActionHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 
-		eb.addHandler(Actions.A_LOGIN_AUTO, new LoginAutoAH());
-		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH());
-		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP());
-		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH());
+		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
+		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
+		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH(c));
 
 		//
-		eb.addHandler(Actions.A_GCHAT_JOIN, new JoinAP());
-		eb.addHandler(Actions.A_GCHAT_SEND, new SendAP());
+		eb.addHandler(Actions.A_GCHAT_JOIN, new GChatJoinAP(c));
+		eb.addHandler(Actions.A_GCHAT_SEND, new GChatSendAP(c));
 
 	}
 
@@ -174,88 +171,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				new SignupAnonymousMsgHandler());
 	}
 
-	/**
-	 * Nov 19, 2012
-	 */
-
-	public void activeLogin(final ContainerI c) {
-
-		UiClientI client = c.get(UiClientI.class, true);
-
-		ControlManagerI cm = client.getChild(ControlManagerI.class, true);
-
-		ModelI rootModel = c.get(ModelI.class, true);// ROOT moddel
-
-		final LazyMvcI login = new LazyMvcSupport(rootModel, "login") {
-
-			@Override
-			protected ModelI createModel(String name) {
-				//
-				return new LoginModel(name);
-			}
-
-			@Override
-			protected ViewI createView(String name, ContainerI c) {
-				//
-				return new LoginView(name, c);
-			}
-
-			@Override
-			protected ControlI createControl(String name) {
-				//
-				return new LoginControl(name);
-			}
-		};
-		//
-
-		cm.addLazy("loginLazyMvc", login);
-
-		// click by user.
-		new LazyMvcHeaderItemHandler(login, "user").start(rootModel);
-
-		// Control
-
-		// auto auth after session got
-		client.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
-
-			@Override
-			public void handle(AfterClientStartEvent e) {
-				//
-				ControlUtil.triggerAction(login.get().getModel(), Actions.A_LOGIN_AUTO);//
-			}
-		});
-
-		//
-		// gchat
-		LazyMvcI gchat = GChatControlImpl.createLazyMvc(rootModel, "gchat");
-		// add 'gchat' to 'tools' menu item.
-		new LazyMvcHeaderItemHandler(gchat, "tools").start(rootModel);
-		gchat.get();// not lazy?
-
-	}
-
-	public void activeConsole(final ContainerI c) {
-
-		ModelI rootModel = c.get(ModelI.class, true);// ROOT moddel
-
-		LazyMvcI console = new LazyMvSupport(rootModel, "console") {
-
-			@Override
-			protected ModelI createModel(String name) {
-				//
-				return new ConsoleModel(name);
-			}
-
-			@Override
-			protected ViewI createView(String name, ContainerI c) {
-				//
-				return new ConsoleView(name, c);
-			}
-		};
-
-		new LazyMvcHeaderItemHandler(console, "admin").start(rootModel);
-		//
-
+	public void activeOtherHandlers(ContainerI c, UiClientI client) {
+		EventBusI eb = client.getEventBus(true);
+		eb.addHandler(EndpointBondEvent.TYPE, new EndpointBondHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE, new HeaderItemHandler(c));
+		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));
+		eb.addHandler(UserLoginEvent.TYPE, new UserLoginHandler(c));
+		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 	}
 
 	public void activeWidgetCreater(ContainerI c) {
@@ -864,6 +786,30 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof MessageModel;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(FrwkView.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof FrwkView;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(BodyView.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof BodyView;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(HeaderView.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof HeaderView;
 			}
 		});
 

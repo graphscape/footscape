@@ -1,13 +1,16 @@
 package com.fs.uicommons.impl.gwt.client.handler.action;
 
 import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
+import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
@@ -16,16 +19,25 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  *         <p>
  *         Submit the login email and password
  */
-public class LoginAutoAH extends ActionHandlerSupport {
+public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<AutoLoginRequireEvent> {
+
+	/**
+	 * @param c
+	 */
+	public AutoLoginHandler(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
-	public void handle(ActionEvent ae) {
+	public void handle(AutoLoginRequireEvent ae) {
 		//
+		LoginControlI lc = this.getControl(LoginControlI.class, true);
 
-		LoginModelI lm = ae.findModel(LoginModelI.class, true);//
+		LoginModelI lm = lc.getOrCreateLoginModel();
+
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit
@@ -50,14 +62,11 @@ public class LoginAutoAH extends ActionHandlerSupport {
 
 		} else {// has not saved account,create it first and then call this
 				// submit again.
-
-			ControlUtil.triggerAction(lm, Actions.A_LOGIN_ANONYMOUS);
-			// break the current request
-			// req.setIsLocal(true);// NOTE break this request,
+			new ActionEvent(lm,Actions.A_LOGIN_ANONYMOUS).dispatch();
 			return;
 		}
 
-		this.getEndpoint(ae).auth(req);
+		this.getEndpoint().auth(req);
 	}
 
 }

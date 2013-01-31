@@ -7,7 +7,7 @@ package com.fs.uicommons.impl.test.gwt.client.cases.gchat;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.Actions;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
@@ -16,7 +16,6 @@ import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -39,7 +38,6 @@ public class GChatTest extends TestBase {
 		this.finishing.add("message");
 
 		this.delayTestFinish(this.timeoutMillis * 100);
-
 
 	}
 
@@ -76,23 +74,21 @@ public class GChatTest extends TestBase {
 			}
 		});
 
-		cc.addHandler(GChatConnectEvent.TYPE,
-				new EventHandlerI<GChatConnectEvent>() {
+		cc.addHandler(GChatConnectEvent.TYPE, new EventHandlerI<GChatConnectEvent>() {
 
-					@Override
-					public void handle(GChatConnectEvent t) {
-						GChatTest.this.onGChatConnect(t);
-					}
-				});
+			@Override
+			public void handle(GChatConnectEvent t) {
+				GChatTest.this.onGChatConnect(t);
+			}
+		});
 
-		cc.addHandler(GChatMessageEvent.TYPE,
-				new EventHandlerI<GChatMessageEvent>() {
+		cc.addHandler(GChatMessageEvent.TYPE, new EventHandlerI<GChatMessageEvent>() {
 
-					@Override
-					public void handle(GChatMessageEvent t) {
-						GChatTest.this.onMessage(t);
-					}
-				});
+			@Override
+			public void handle(GChatMessageEvent t) {
+				GChatTest.this.onMessage(t);
+			}
+		});
 		if (cc.isConnected()) {
 			this.join();//
 		}
@@ -120,13 +116,13 @@ public class GChatTest extends TestBase {
 		if (!t.isConnected()) {
 			return;//
 		}
+
 		this.join();
 	}
 
 	protected void join() {
-		GChatModel cm = this.rootModel.find(GChatModel.class, true);
-		cm.setGroupIdToJoin(GROUPID);
-		ControlUtil.triggerAction(cm, Actions.A_GCHAT_JOIN);
+		GChatControlI cc = this.client.find(GChatControlI.class, true);
+		cc.join(GROUPID);
 	}
 
 	/**
@@ -143,7 +139,7 @@ public class GChatTest extends TestBase {
 		cm.setCurrentGroupId(gid);
 		ChatGroupModel gm = cm.getGroup(gid, true);
 		gm.setMessageToSend(TEXT);
-		ControlUtil.triggerAction(cm, Actions.A_GCHAT_SEND);
+		new ActionEvent(cm, Actions.A_GCHAT_SEND).dispatch();
 	}
 
 }

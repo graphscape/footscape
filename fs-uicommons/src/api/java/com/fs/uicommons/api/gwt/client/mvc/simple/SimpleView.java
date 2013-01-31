@@ -21,6 +21,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.efilter.ClickEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
+import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -46,12 +47,16 @@ public class SimpleView extends ViewSupport {
 		this(null, ctn);
 	}
 
-	public SimpleView(String name, ContainerI ctn) {
-		this(name, DOM.createDiv(), ctn);
+	public SimpleView(String name, ContainerI ctn, ModelI md) {
+		this(name, DOM.createDiv(), ctn, md);
 	}
 
-	public SimpleView(String name, Element ele, ContainerI ctn) {
-		super(name, ele, ctn);
+	public SimpleView(String name, ContainerI ctn) {
+		this(name, DOM.createDiv(), ctn, new SimpleModel("unkown"));
+	}
+
+	public SimpleView(String name, Element ele, ContainerI ctn, ModelI md) {
+		super(name, ele, ctn, md);
 
 		// BODY:
 		this.header = DOM.createDiv();
@@ -106,10 +111,9 @@ public class SimpleView extends ViewSupport {
 		// deliver the action's hidden to the button's visible.
 		// see widget base class,there will set the class name of the element.
 		// see the css file also.
-		SimpleValueDeliver<Boolean, Boolean> svd = new SimpleValueDeliver<Boolean, Boolean>(
-				cm, ActionModelI.L_HIDDEN, bm, WidgetI.IS_VISIBLE);
-		svd.mapValue(Boolean.TRUE, Boolean.FALSE).mapDefault(Boolean.TRUE)
-				.start();
+		SimpleValueDeliver<Boolean, Boolean> svd = new SimpleValueDeliver<Boolean, Boolean>(cm,
+				ActionModelI.L_HIDDEN, bm, WidgetI.IS_VISIBLE);
+		svd.mapValue(Boolean.TRUE, Boolean.FALSE).mapDefault(Boolean.TRUE).start();
 		// widget for render the model
 
 	}
@@ -165,8 +169,7 @@ public class SimpleView extends ViewSupport {
 			}
 		}
 		if (ab == null) {
-			throw new UiException("widget not found for action:" + ap
-					+ " in view:" + this);
+			throw new UiException("widget not found for action:" + ap + " in view:" + this);
 		}
 		ab.getElementWrapper().click();
 	}

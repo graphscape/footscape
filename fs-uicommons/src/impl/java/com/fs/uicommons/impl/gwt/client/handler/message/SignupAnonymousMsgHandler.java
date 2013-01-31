@@ -4,10 +4,9 @@
  */
 package com.fs.uicommons.impl.gwt.client.handler.message;
 
-import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -43,7 +42,9 @@ public class SignupAnonymousMsgHandler implements MessageHandlerI<EndpointMessag
 		AnonymousAccountLDW aal = sai.getAnonymous();
 		aal.save(accId, password);// save anonymous
 														// account.
-		ControlUtil.triggerAction(lm, Actions.A_LOGIN_AUTO);//
+		new AutoLoginRequireEvent(t.getSource()).dispatch();
+
+		
 	}
 
 }

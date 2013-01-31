@@ -3,13 +3,13 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.efilter.ModelValueEventFilter;
@@ -25,24 +25,11 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 
 	protected String name;
 
-	protected ModelI model;
+	protected ContainerI container;
 
-	public AbstractControl(String name) {
+	public AbstractControl(ContainerI c, String name) {
+		this.container = c;
 		this.name = name;
-	}
-
-	@Override
-	public ControlI model(ModelI cm) {
-		if (this.isAttached()) {
-			throw new UiException("NOT support after already attached:" + this);
-		}
-		this.model = cm;
-		this.doModel(cm);
-		return this;
-	}
-
-	protected void doModel(ModelI cm) {
-
 	}
 
 	/*
@@ -53,7 +40,6 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-		ModelChildProcessorI.Helper.onAttach(this.model, this);//
 	}
 
 	@Override
@@ -98,15 +84,6 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 
 		}
 
-	}
-
-	/*
-	 * Jan 2, 2013
-	 */
-	@Override
-	public <T extends ModelI> T getModel() {
-		//
-		return (T) this.model;
 	}
 
 }

@@ -1,8 +1,9 @@
 package com.fs.uicommons.impl.gwt.client.handler.action;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
@@ -12,6 +13,13 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  *         Submit the login email and password
  */
 public class LoginSubmitAH extends ActionHandlerSupport {
+
+	/**
+	 * @param c
+	 */
+	public LoginSubmitAH(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Jan 2, 2013
@@ -34,7 +42,7 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 		req.setProperty("email", (email));
 		req.setProperty("password", (password));
 
-		this.getEndpoint(ae).auth(req);
+		this.getEndpoint().auth(req);
 	}
 
 }

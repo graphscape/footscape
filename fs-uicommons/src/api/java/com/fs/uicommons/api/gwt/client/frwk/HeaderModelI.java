@@ -48,10 +48,6 @@ public interface HeaderModelI extends ModelI {
 			this.addValueHandler(L_ISSELECTED, eh);
 		}
 
-		public void trigger() {
-			new HeaderItemEvent(this).dispatch();
-		}
-
 		public String getName() {
 			return name;
 		}
@@ -153,9 +149,11 @@ public interface HeaderModelI extends ModelI {
 	public ItemModel addItem(String name, Position pos, ViewReferenceI mgd);
 
 	public ItemModel getItem(String name, boolean force);
+	
+	public ItemModel getItem(Path p,boolean force);
 
 	public ItemModel getOrAdd(String name, Position pos);
 
-	public ItemModel addItem(String[] path, Position pos);
+	public ItemModel addItem(Path path, Position pos);
 
 }

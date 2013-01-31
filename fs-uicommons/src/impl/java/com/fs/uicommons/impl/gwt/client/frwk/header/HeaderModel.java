@@ -4,11 +4,14 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
+import java.util.List;
+
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -36,14 +39,13 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	public ItemModel addItem(String name, Position pos, final ViewReferenceI mgd) {
 		final ItemModel rt = new ItemModel(name);
 		rt.setPosition(pos);
-		rt.addHandler(HeaderItemEvent.TYPE,
-				new EventHandlerI<HeaderItemEvent>() {
+		rt.addHandler(HeaderItemEvent.TYPE, new EventHandlerI<HeaderItemEvent>() {
 
-					@Override
-					public void handle(HeaderItemEvent e) {
-						HeaderModel.this.onItemTrigger(mgd, rt);
-					}
-				});
+			@Override
+			public void handle(HeaderItemEvent e) {
+				HeaderModel.this.onItemTrigger(mgd, rt);
+			}
+		});
 		rt.parent(this).cast();
 
 		// exclusive trigger
@@ -96,6 +98,39 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 		return this.getChild(ItemModel.class, name, force);
 	}
 
+	@Override
+	public ItemModel getItem(Path p, boolean force) {
+
+		ItemModel rt = this.getItem(null, p);
+		if (rt == null && force) {
+			throw new UiException("not found item in header with path:" + p);
+		}
+
+		return rt;
+	}
+
+	protected ItemModel getItem(ItemModel prt, Path path) {
+
+		List<String> names = path.getNameList();
+
+		if (names.isEmpty()) {
+			return prt;
+		}
+		String name = names.get(0);
+		ItemModel rt = null;
+		if (prt == null) {
+			rt = this.getItem(name, false);
+		} else {
+			rt = prt.getItem(name, false);
+		}
+		if (rt == null) {
+
+			return null;
+		}
+		names = names.subList(1, names.size());
+		return getItem(rt, Path.valueOf(names));
+	}
+
 	/*
 	 * Nov 22, 2012
 	 */
@@ -113,14 +148,15 @@ public class HeaderModel extends ModelSupport implements HeaderModelI {
 	 * Nov 22, 2012
 	 */
 	@Override
-	public ItemModel addItem(String[] path, Position pos) {
+	public ItemModel addItem(Path path, Position pos) {
 		//
 		ItemModel rt = null;
-		if (path.length == 1) {
-			rt = this.addItem(path[0], pos);
-		} else if (path.length == 2) {
-			ItemModel parent = this.getOrAdd(path[0], pos);
-			rt = parent.addItem(path[1]);
+		if (path.size() == 1) {
+			rt = this.addItem(path.getName(), pos);
+		} else if (path.size() == 2) {
+			ItemModel parent = this.getOrAdd(path.getNameList().get(0), pos);
+			rt = parent.addItem(path.getNameList().get(1));
+
 		} else {
 			throw new UiException("not supported:" + path);
 		}

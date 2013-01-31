@@ -1,6 +1,7 @@
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
 import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.event.LoginCreatedEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
@@ -25,12 +26,8 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	public LoginModel(String name) {
 		super(name);
 
-		// auth is hidden action
-		ControlUtil.addAction(this, Actions.A_LOGIN_AUTO, true);
-		
 		ControlUtil.addAction(this, Actions.A_LOGIN_ANONYMOUS, true);// create
 																		// anonymous
-		
 
 		// client start,to login
 		// from cokies or web data
@@ -47,6 +44,12 @@ public class LoginModel extends FormsModel implements LoginModelI {
 		def.addField(FK_SAVINGACCOUNT, Boolean.class);
 		// actions
 		def.addAction(Actions.A_LOGIN_SUBMIT);//
+	}
+
+	@Override
+	protected void doAttach() {
+		super.doAttach();
+		new LoginCreatedEvent(this).dispatch();
 	}
 
 	/*

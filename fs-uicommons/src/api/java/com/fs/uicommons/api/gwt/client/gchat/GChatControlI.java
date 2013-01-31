@@ -14,6 +14,8 @@ public interface GChatControlI extends ControlI {
 
 	public static final String D_NAME = "gchat";//
 
+	public void setConnected(boolean c);
+
 	public void join();
 
 	public void join(String gid);
@@ -22,7 +24,7 @@ public interface GChatControlI extends ControlI {
 
 	public void send(String gid, String text);
 
-	public GChatModel getChatModel();
+	public GChatModel getOrCreateChatModel();
 
 	public boolean isConnected();
 

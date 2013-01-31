@@ -52,8 +52,4 @@ public class ControlUtil {
 
 	}
 
-	public static void triggerAction(ModelI model, Path apath) {
-		getAction(model, apath, true).trigger();
-	}
-
 }

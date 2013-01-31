@@ -10,11 +10,7 @@ import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectedEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatDisconnectedEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
-import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
-import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
 import com.fs.uicommons.impl.gwt.client.gchat.handler.JoinGMH;
 import com.fs.uicommons.impl.gwt.client.gchat.handler.MessageGMH;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -22,13 +18,9 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
-import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
@@ -48,8 +40,8 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	/**
 	 * @param name
 	 */
-	public GChatControlImpl(String name) {
-		super(name);
+	public GChatControlImpl(ContainerI c, String name) {
+		super(c, name);
 
 	}
 
@@ -60,36 +52,8 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	protected void doAttach() {
 		//
 		super.doAttach();
+
 		this.endpoint = this.getClient(true).getChild(EndPointI.class, true);
-		//
-
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
-
-			@Override
-			public void handle(EndpointOpenEvent t) {
-				GChatControlImpl.this.onEndpointOpen(t);
-			}
-		});
-
-		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
-
-			@Override
-			public void handle(EndpointCloseEvent t) {
-				GChatControlImpl.this.onEndpointClose(t);
-			}
-		});
-
-		this.endpoint.addHandler(EndpointBondEvent.TYPE, new EventHandlerI<EndpointBondEvent>() {
-
-			@Override
-			public void handle(EndpointBondEvent t) {
-				GChatControlImpl.this.onEndpointAuth(t);
-			}
-		});
-
-		if (this.endpoint.isBond()) {
-			this.setConnected(true);//
-		}
 		//
 
 		// side
@@ -116,6 +80,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 
 	}
 
+	@Override
 	public void setConnected(boolean c) {
 		if (this.connected == c) {
 			return;
@@ -131,28 +96,12 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 
 	}
 
-	protected void onEndpointAuth(EndpointBondEvent t) {
-		this.setConnected(true);
-	}
-
-	/**
-	 * Dec 23, 2012
-	 */
-	protected void onEndpointOpen(EndpointOpenEvent t) {
-
-	}
-
-	protected void onEndpointClose(EndpointCloseEvent t) {
-		// TODO access server for auto establish some thing.
-		// TODO show view the connection to server is broke.
-	}
-
 	/*
 	 * Dec 23, 2012
 	 */
 	@Override
 	public void join(String gid) {
-		GChatModel m = this.getModel();
+		GChatModel m = this.getOrCreateChatModel();
 		m.setGroupIdToJoin(gid);
 		this.join();
 	}
@@ -160,7 +109,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	@Override
 	public void join() {
 		//
-		GChatModel m = this.getModel();
+		GChatModel m = this.getOrCreateChatModel();
 		String gid = m.getGroupIdToJoin(true);
 		ChatGroupModel gm = this.getOrCreateGroup(gid);
 		MessageData req = new MessageData("/gchat/join");
@@ -169,7 +118,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	}
 
 	public ChatGroupModel getOrCreateGroup(String gid) {
-		GChatModel m = this.getModel();
+		GChatModel m = this.getOrCreateChatModel();
 		ChatGroupModel gm = m.getGroup(gid, false);
 		if (gm == null) {//
 			gm = m.createGroup(gid);
@@ -178,62 +127,20 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		return gm;
 	}
 
-	public static LazyMvcI createLazyMvc(ModelI parent, String name) {
-		LazyMvcI rt = new LazyMvcSupport(parent, name) {
-
-			@Override
-			protected ModelI createModel(String name) {
-				//
-				return new GChatModel(name);
-			}
-
-			@Override
-			protected ViewI createView(String name, ContainerI c) {
-				//
-				return new GChatView(name, c);
-			}
-
-			@Override
-			protected ControlI createControl(String name) {
-				//
-				return new GChatControlImpl(name);
-			}
-		};
-		return rt;
-	}
-
 	/*
 	 * Dec 23, 2012
 	 */
 	@Override
-	public GChatModel getChatModel() {
+	public GChatModel getOrCreateChatModel() {
 		//
-		return (GChatModel) this.model;
-	}
-
-	/*
-	 * Dec 23, 2012
-	 */
-	@Override
-	protected void doModel(ModelI cm) {
-		super.doModel(cm);
-	}
-
-	/*
-	 * Dec 23, 2012
-	 */
-	@Override
-	public void processChildModelAdd(ModelI parent, ModelI cm) {
-		super.processChildModelAdd(parent, cm);
-		if (cm instanceof ChatGroupModel) {
-			this.onChildChatGroupModelAdd((ChatGroupModel) cm);
+		ModelI root = this.getClient(true).getRootModel();
+		GChatModel rt = root.find(GChatModel.class, false);
+		if (rt == null) {
+			rt = new GChatModel("gchat");
+			rt.parent(root);
 		}
-	}
+		return rt;
 
-	/**
-	 * Dec 23, 2012
-	 */
-	private void onChildChatGroupModelAdd(ChatGroupModel cm) {
 	}
 
 	/*
@@ -247,20 +154,20 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 
 	@Override
 	public void send(String gid, String text) {
-		GChatModel m = this.getChatModel();
+		GChatModel m = this.getOrCreateChatModel();
 		m.setCurrentGroupId(gid);
-		ChatGroupModel gm = this.getChatModel().getGroup(gid, true);
+		ChatGroupModel gm = this.getOrCreateChatModel().getGroup(gid, true);
 		gm.setMessageToSend(text);
 		this.send();
 	}
 
 	@Override
 	public void send() {
-		String cid = this.getChatModel().getCurrentGroupId();
+		String cid = this.getOrCreateChatModel().getCurrentGroupId();
 		if (cid == null) {
 			throw new UiException("please setCurrentGroupId() before send message");
 		}
-		ChatGroupModel gm = this.getChatModel().getGroup(cid, true);
+		ChatGroupModel gm = this.getOrCreateChatModel().getGroup(cid, true);
 		String text = gm.getMessageToSend();
 		if (text == null) {
 			throw new UiException("message to send is null");

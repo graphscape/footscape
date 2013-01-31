@@ -2,17 +2,25 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 23, 2012
  */
-package com.fs.uicommons.impl.gwt.client.gchat;
+package com.fs.uicommons.impl.gwt.client.handler.action;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
  * 
  */
-public class JoinAP extends ActionHandlerSupport {
+public class GChatJoinAP extends ActionHandlerSupport {
+
+	/**
+	 * @param c
+	 */
+	public GChatJoinAP(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Jan 2, 2013

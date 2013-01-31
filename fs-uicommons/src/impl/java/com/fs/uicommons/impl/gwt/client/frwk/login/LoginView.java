@@ -47,7 +47,6 @@ public class LoginView extends FormsView implements ViewReferenceI.AwareI {
 	@Override
 	protected void doModel(ModelI model) {
 		super.doModel(model);
-
 	}
 
 	/**

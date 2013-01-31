@@ -34,7 +34,7 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 		String gid = mw.getGroupId();
 		String pid = mw.getParticipantId();
 
-		GChatModel cm = this.control.getChatModel();
+		GChatModel cm = this.control.getOrCreateChatModel();
 		ChatGroupModel group = cm.getGroup(gid, true);
 
 		MessageModel mm = new MessageModel("message", mw.getTarget());//

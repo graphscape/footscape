@@ -4,13 +4,12 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.mvc;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicommons.impl.test.gwt.client.echo.EchoControl;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoModel;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -46,9 +45,9 @@ public class EchoTest extends TestBase {
 			}
 		});
 
-		EchoControl control = new EchoControl("echo");
-		control.model(fm);//
-		control.parent(this.manager);// for attach
+		//EchoControl control = new EchoControl("echo");
+		
+		//control.parent(this.manager);// for attach
 		// listen to the control event
 
 		// view

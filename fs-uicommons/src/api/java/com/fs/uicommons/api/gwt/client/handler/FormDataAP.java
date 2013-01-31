@@ -2,12 +2,11 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 13, 2012
  */
-package com.fs.uicommons.api.gwt.client.mvc.simple;
+package com.fs.uicommons.api.gwt.client.handler;
 
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
@@ -21,11 +20,12 @@ public abstract class FormDataAP extends ActionHandlerSupport {
 
 	private String form;
 
-	public FormDataAP() {
-		this(null);
+	public FormDataAP(ContainerI c) {
+		this(c, null);
 	}
 
-	public FormDataAP(String form) {
+	public FormDataAP(ContainerI c, String form) {
+		super(c);
 		this.form = form;
 	}
 
@@ -37,7 +37,7 @@ public abstract class FormDataAP extends ActionHandlerSupport {
 	protected ObjectPropertiesData getFormData(ModelI fsm) {
 
 		if (!(fsm instanceof FormsModel)) {
-			throw new UiException("the model:" + fsm+ " not a FormsModel");
+			throw new UiException("the model:" + fsm + " not a FormsModel");
 		}
 
 		FormsModel fcm = (FormsModel) fsm;

@@ -3,7 +3,6 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc;
 
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 
 /**
@@ -14,10 +13,6 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
 public interface ControlI extends UiObjectI {
 
 	public String getName();
-
-	public <T extends ModelI> T getModel();
-
-	public ControlI model(ModelI model);
 
 	public ControlManagerI getManager();
 

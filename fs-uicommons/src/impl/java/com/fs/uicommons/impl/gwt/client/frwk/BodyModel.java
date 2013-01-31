@@ -20,14 +20,14 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * @author wu
  * 
  */
-public class BodyModelImpl extends ModelSupport implements BodyModelI {
+public class BodyModel extends ModelSupport implements BodyModelI {
 
 	protected Map<Path, ViewReferenceI> viewReferenceMap;
 
 	/**
 	 * @param name
 	 */
-	public BodyModelImpl(String name) {
+	public BodyModel(String name) {
 		super(name);
 		this.viewReferenceMap = new HashMap<Path, ViewReferenceI>();
 	}

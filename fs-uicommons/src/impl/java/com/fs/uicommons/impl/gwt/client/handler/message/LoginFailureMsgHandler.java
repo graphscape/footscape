@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.handler.message;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.ErrorCodes;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
@@ -49,14 +50,14 @@ public class LoginFailureMsgHandler implements MessageHandlerI<EndpointMessageEv
 				if (type.equals("registered")) {//
 					RegisteredAccountLDW acc1 = accs.getRegistered();
 					acc1.invalid();// try using the anonymous login.
-					ControlUtil.triggerAction(lm, Actions.A_LOGIN_SUBMIT);// try
+					new ActionEvent(lm, Actions.A_LOGIN_SUBMIT).dispatch();// try
 					// again
 
 				} else if (type.equals("anonymous")) {
 					AnonymousAccountLDW acc2 = accs.getAnonymous();
 					acc2.invalid();// clean and try again: create a new
 									// anonymous and login
-					ControlUtil.triggerAction(lm, Actions.A_LOGIN_SUBMIT);// try
+					new ActionEvent(lm, Actions.A_LOGIN_SUBMIT).dispatch();// try
 					// again
 
 				} else {
