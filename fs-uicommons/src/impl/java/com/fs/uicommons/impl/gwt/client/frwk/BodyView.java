@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
@@ -21,7 +22,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  * @author wu
  * 
  */
-public class BodyView extends LightWeightView {
+public class BodyView extends LightWeightView implements BodyViewI{
 
 	private TabberWI tabber;// TODO replace by a stack and a menu view.
 

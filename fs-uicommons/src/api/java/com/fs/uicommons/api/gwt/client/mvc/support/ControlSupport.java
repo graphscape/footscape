@@ -4,8 +4,8 @@
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
 import com.fs.uicommons.api.gwt.client.CreaterI;
-import com.fs.uicommons.impl.gwt.client.frwk.BodyView;
-import com.fs.uicommons.impl.gwt.client.frwk.FrwkView;
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -57,11 +57,11 @@ public class ControlSupport extends AbstractControl {
 		this.getClient(true).getEndpoint().sendMessage(req);//
 	}
 
-	protected FrwkView getFrwkView() {
-		return this.getRootView().getChild(FrwkView.class, true);
+	protected FrwkViewI getFrwkView() {
+		return this.getRootView().getChild(FrwkViewI.class, true);
 	}
 
-	protected BodyView getBodyView() {
+	protected BodyViewI getBodyView() {
 		return this.getFrwkView().getBodyView();
 	}
 }
