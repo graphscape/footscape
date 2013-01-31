@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
@@ -15,6 +16,14 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  */
 public class ExpEditSubmitMH extends MHSupport {
 
+	/**
+	 * @param c
+	 */
+	public ExpEditSubmitMH(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * Jan 3, 2013
 	 */
@@ -23,7 +32,7 @@ public class ExpEditSubmitMH extends MHSupport {
 		MessageData res = t.getMessage();
 		String expId = res.getString("expId", true);
 
-		UserExpListControlI c = this.getControl(t, UserExpListControlI.class, true);
+		UserExpListControlI c = this.getControl( UserExpListControlI.class, true);
 
 		c.refresh(expId);
 

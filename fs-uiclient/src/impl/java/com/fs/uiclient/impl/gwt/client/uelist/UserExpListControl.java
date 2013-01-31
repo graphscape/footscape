@@ -13,10 +13,8 @@ import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpControl;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
-import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -30,8 +28,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 	/**
 	 * @param name
 	 */
-	public UserExpListControl(String name) {
-		super(name);
+	public UserExpListControl(ContainerI c, String name) {
+		super(c, name);
 		// changing.
 
 	}
@@ -42,8 +40,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 
 		// listen to the cooper model for incoming cooperrequest.
 		MainControlI mc = this.getManager().getControl(MainControlI.class, true);
-		Mvc mvc = mc.getLazyObject(MainControlI.LZ_COOPER, true);
-		CooperModelI cpm = mvc.getModel();
+
+		CooperModelI cpm = mc.getCooperModel();
 	}
 
 	public void detailExp(String expId) {
@@ -65,32 +63,9 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		return this.getManager().getControl(MainControlI.class, true);
 	}
 
-	@Override
 	public UserExpListModelI getModel() {
-		return (UserExpListModelI) this.model;
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public void processChildModelAdd(ModelI p, ModelI cm) {
-		super.processChildModelAdd(p, cm);
-		if (cm instanceof UserExpModel) {
-			this.processChildUserExpModelAdd((UserExpModel) cm);
-		}
-	}
-
-	/**
-	 * Oct 20, 2012
-	 */
-	private void processChildUserExpModelAdd(UserExpModel cm) {
-		// when new item added,listen to the select value, because zero or only
-		// one should be selected.
-		// control it
-
-		this.getManager().addControl(new UserExpControl(cm.getName()).model(cm));
-
+		//TODO create
+		return this.getRootModel().find(UserExpListModelI.class, true);
 	}
 
 	/*

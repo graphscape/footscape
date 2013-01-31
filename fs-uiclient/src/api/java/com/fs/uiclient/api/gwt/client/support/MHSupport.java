@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.support;
 
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
@@ -13,5 +14,12 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * 
  */
 public abstract class MHSupport extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+
+	/**
+	 * @param c
+	 */
+	public MHSupport(ContainerI c) {
+		super(c);
+	}
 
 }

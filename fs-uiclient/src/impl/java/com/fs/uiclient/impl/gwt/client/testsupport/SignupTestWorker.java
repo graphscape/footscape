@@ -5,9 +5,7 @@ package com.fs.uiclient.impl.gwt.client.testsupport;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
-import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -32,8 +30,8 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 	protected String password;
 
 	protected String nick;
-	
-	private boolean signingUp=false;
+
+	private boolean signingUp = false;
 
 	public SignupTestWorker(String nick, String email, String pass) {
 		this.nick = nick;
@@ -53,26 +51,27 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		super.start(client);
 		this.doStart();
 	}
-	protected void doStart(){
+
+	protected void doStart() {
 		UserInfo ui = this.endpoint.getUserInfo();
 		if (!ui.isAnonymous()) {//
 			throw new UiException("user info not anonymous,ui:" + ui);
 		}
-		Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_SIGNUP, true);
-		this.signupView = mvc.getView();
-		if(this.signupView.isAttached()){
+		this.signupView = this.mcontrol.getSignupView();
+		if (this.signupView.isAttached()) {
 			this.trySignup();
 		}
 	}
+
 	/*
-	 *Jan 13, 2013
+	 * Jan 13, 2013
 	 */
 	@Override
 	protected void onAttachedEvent(AttachedEvent ae) {
-		// 
+		//
 		super.onAttachedEvent(ae);
 		UiObjectI src = ae.getSource();
-		if(src instanceof SignupView){
+		if (src instanceof SignupView) {
 			this.trySignup();
 		}
 	}
@@ -98,15 +97,15 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 			this.onSignup(this.email, this.password);
 		}
 	}
-	
+
 	/**
 	 * @param obj
 	 */
 	private void trySignup() {
-		if(this.signingUp ){
+		if (this.signingUp) {
 			return;
 		}
-		
+
 		this.signingUp = true;
 
 		FormView fv = this.signupView.find(FormView.class, "default", true);
@@ -135,5 +134,4 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 
 	protected abstract void onSignup(String email, String pass);
 
-	
 }

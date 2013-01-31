@@ -5,11 +5,9 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
-import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -17,20 +15,20 @@ import com.fs.uicore.api.gwt.client.UiException;
  */
 public class UserExpOpenActivityAP extends ActionHandlerSupport {
 
+	/**
+	 * @param c
+	 */
+	public UserExpOpenActivityAP(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI)ae.getSource();
-		UserExpModel uem = (UserExpModel) c.getModel();
-
-		String actId = uem.getActivityId();
-		if (actId == null) {
-			throw new UiException("no activity id for exp:" + uem.getExpId());
-		}
-		ActivitiesControlI ac = c.getManager().getControl(
-				ActivitiesControlI.class, true);//
+		String actId = (String) ae.getProperty("actId", true);
+		ActivitiesControlI ac = getControl(ActivitiesControlI.class, true);//
 		ac.openActivity(actId);
 
 	}

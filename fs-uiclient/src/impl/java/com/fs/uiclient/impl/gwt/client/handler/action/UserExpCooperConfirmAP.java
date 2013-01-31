@@ -5,27 +5,32 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uiclient.api.gwt.client.support.ActionHandlerSupport2;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
  * 
  */
-public class UserExpCooperConfirmAP extends ActionHandlerSupport {
+public class UserExpCooperConfirmAP extends ActionHandlerSupport2 {
+
+	/**
+	 * @param c
+	 */
+	public UserExpCooperConfirmAP(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
 
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI)ae.getSource();
-		UserExpModel m = c.getModel();
-		CooperControlI cc = c.getManager().getControl(
-				CooperControlI.class, true);//
-		String crId = m.getIncomingCrId();
+		CooperControlI cc = this.getControl(CooperControlI.class, true);//
+		String crId = (String) ae.getProperty("incomingCrId", true);
+
 		cc.cooperConfirm(crId);
 	}
 

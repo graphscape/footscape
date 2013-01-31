@@ -112,6 +112,11 @@ public class Event extends MsgWrapper {
 		return (T) this.source;
 	}
 
+	public <T extends Event> T property(String name, Object value) {
+		this.setProperty(name, value);
+		return (T) this;
+	}
+
 	public <E extends Event> E dispatch() {
 		this.source.dispatch(this);
 		return (E) this;

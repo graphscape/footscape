@@ -15,6 +15,8 @@ public interface ActivitiesControlI extends ControlI {
 
 	public void openActivity(String actId);
 
+	public void refresh();
+	
 	public void refresh(String actId);
 	
 	public ActivityModelI getActivity(String actId, boolean force);

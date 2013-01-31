@@ -14,6 +14,7 @@ import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -24,17 +25,24 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  */
 public class ActivitiesRefreshMH extends MHSupport {
 
+	/**
+	 * @param c
+	 */
+	public ActivitiesRefreshMH(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		// TODO provide a general way for this.
-		ActivitiesModelI asm = this.getModel(t, ActivitiesModelI.class, true);
+		ActivitiesModelI asm = this.getModel(ActivitiesModelI.class, true);
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"activities");
-		ActivitiesControlI c = this.getControl(t, ActivitiesControlI.class, true);
+		ActivitiesControlI c = this.getControl(ActivitiesControlI.class, true);
 		for (int i = 0; i < ld.size(); i++) {
 
 			// TODO general way,converter from ObjectPropertiesData to Model.
@@ -42,8 +50,8 @@ public class ActivitiesRefreshMH extends MHSupport {
 			ObjectPropertiesData oi = ld.get(i);
 			String actIdD = (String) oi.getProperty("id");
 			String actId = actIdD;
-			List<String> expL = this.getExpIdList((List<ObjectPropertiesData>) oi
-					.getProperty("expectations"));
+			List<String> expL = this
+					.getExpIdList((List<ObjectPropertiesData>) oi.getProperty("expectations"));
 			ItemModel im = asm.getItem(actId, false);
 			if (im == null) {
 				im = new ItemModel(actId, expL);//
@@ -60,8 +68,7 @@ public class ActivitiesRefreshMH extends MHSupport {
 	 * Jan 6, 2013.getValue()
 	 */
 	private void tryLinkActivityToUserExp(EndpointMessageEvent t, String actId, List<String> expL) {
-		UserExpListControlI uec = this.getControl(t, UserExpListControlI.class, true);
-		UserExpListModelI uem = uec.getModel();
+		UserExpListModelI uem = this.getModel(UserExpListModelI.class, true);
 		for (String expId : expL) {
 			UserExpModel um = uem.getUserExp(expId, false);
 			if (um == null) {
@@ -72,9 +79,9 @@ public class ActivitiesRefreshMH extends MHSupport {
 	}
 
 	protected List<String> getExpIdList(List<ObjectPropertiesData> ptsL) {// TODO
-																				// move
-																				// to
-																				// Util.
+																			// move
+																			// to
+																			// Util.
 		List<String> rt = new ArrayList<String>();
 		for (int i = 0; i < ptsL.size(); i++) {
 			ObjectPropertiesData pts = ptsL.get(i);

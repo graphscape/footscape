@@ -13,6 +13,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 /**
  * @author wu
  * 
+ * 
  */
 public class BondHandler implements EventHandlerI<EndpointBondEvent> {
 	MainControlI control;
@@ -29,17 +30,10 @@ public class BondHandler implements EventHandlerI<EndpointBondEvent> {
 		ModelI rootM = t.getSource().getClient(true).getRootModel();//
 		UserInfo ui = t.getChannel().getUserInfo();
 
-		this.control.getLazyObject(MainControlI.LZ_EXP_SEARCH, true);//
-		if (!ui.isAnonymous()) {// TODO acc change
+		this.control.openExpSearch();//
+		if (!ui.isAnonymous()) {//
 
-			// command/data from server side.
-			// after auth,active activities control.
-			this.control.getLazyObject(MainControlI.LZ_ACTIVITIES, true);
-			// active search
-			// active user exp list
-			this.control.getLazyObject(MainControlI.LZ_UE_LIST, true);
-			// active cooper control.
-			this.control.getLazyObject(MainControlI.LZ_COOPER, true);
+			this.control.openUeList();
 
 		}
 	}

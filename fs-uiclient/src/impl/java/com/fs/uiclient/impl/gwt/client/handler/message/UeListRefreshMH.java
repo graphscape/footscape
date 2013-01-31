@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -21,6 +22,14 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  */
 public class UeListRefreshMH extends MHSupport {
 
+	/**
+	 * @param c
+	 */
+	public UeListRefreshMH(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * Jan 2, 2013
 	 */
@@ -30,7 +39,7 @@ public class UeListRefreshMH extends MHSupport {
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"userExpList");
 
-		UserExpListModelI elm = this.getModel(t, UserExpListModelI.class, true);
+		UserExpListModelI elm = this.getModel( UserExpListModelI.class, true);
 
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);

@@ -19,10 +19,13 @@ import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.WindowModelI;
 import com.fs.uicommons.api.gwt.client.frwk.blank.BlankModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
@@ -63,9 +66,7 @@ import com.fs.uicommons.impl.gwt.client.editor.basic.StringEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.file.ImageFileUrlDataEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.image.ImageCropEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.properties.PropertiesEditorImpl;
-import com.fs.uicommons.impl.gwt.client.frwk.BodyView;
 import com.fs.uicommons.impl.gwt.client.frwk.FrwkControlImpl;
-import com.fs.uicommons.impl.gwt.client.frwk.FrwkView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderView;
@@ -788,28 +789,28 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof MessageModel;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(FrwkView.class) {
+		InstanceOf.addChecker(new CheckerSupport(FrwkViewI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof FrwkView;
+				return o instanceof FrwkViewI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(BodyView.class) {
+		InstanceOf.addChecker(new CheckerSupport(BodyViewI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof BodyView;
+				return o instanceof BodyViewI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(HeaderView.class) {
+		InstanceOf.addChecker(new CheckerSupport(HeaderViewI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof HeaderView;
+				return o instanceof HeaderViewI;
 			}
 		});
 

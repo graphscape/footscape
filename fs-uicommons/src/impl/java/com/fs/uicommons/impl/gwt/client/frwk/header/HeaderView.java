@@ -5,6 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
@@ -15,9 +16,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * @author wu
  * 
  */
-public class HeaderView extends SimpleView implements ViewReferenceI.AwareI {
-
-	protected ViewReferenceI managed;
+public class HeaderView extends SimpleView implements HeaderViewI {
 
 	private BarWidgetI itemList;
 
@@ -36,14 +35,6 @@ public class HeaderView extends SimpleView implements ViewReferenceI.AwareI {
 
 	public void addItem(Path path) {
 		this.itemList.addItem(BarWidgetI.P_RIGHT, new ItemView(this.getContainer(), path));
-	}
-
-	/*
-	 * Nov 23, 2012
-	 */
-	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
 	}
 
 }

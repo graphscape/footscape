@@ -4,11 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -16,8 +15,8 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
  */
 public class OpenChatRoomAP extends ActionHandlerSupport {
 
-	public OpenChatRoomAP() {
-
+	public OpenChatRoomAP(ContainerI c) {
+		super(c);
 	}
 
 	/*
@@ -25,13 +24,11 @@ public class OpenChatRoomAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI) ae.getSource();//
-		// this AP service for activity.
-		// open a chat room for the activity.
-		ActivityModelI am = (ActivityModelI) c.getModel();
-		GChatControlI gc = ae.getControl(GChatControlI.class);
+		String actId = (String) ae.getProperty("actId", true);
 
-		gc.join(am.getActivityId());
+		GChatControlI gc = this.getControl(GChatControlI.class, true);
+
+		gc.join(actId);
 
 	}
 

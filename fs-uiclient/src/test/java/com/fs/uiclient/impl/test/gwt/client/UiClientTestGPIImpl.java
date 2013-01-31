@@ -8,6 +8,7 @@ import com.fs.uiclient.impl.gwt.client.testsupport.CollectionTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.ExpTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -32,15 +33,13 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 	public void active(ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);//
 		ModelI rootModel = client.getRootModel();
-		FrwkModelI fc = rootModel.getChild(FrwkModelI.class, true);
-		HeaderModelI hm = fc.getHeader();
+		FrwkControlI fc = client.find(FrwkControlI.class, true);
 
-		HeaderModelI.ItemModel him = hm.addItem(HI_EXP.getNameList().toArray(new String[] {}),
-				HeaderModelI.ItemModel.P_RIGHT);
-		HeaderModelI.ItemModel him2 = hm.addItem(HI_ACTIVITY.getNameList().toArray(new String[] {}),
-				HeaderModelI.ItemModel.P_RIGHT);
+		fc.addHeaderItem(HI_EXP);
+		fc.addHeaderItem(HI_ACTIVITY);
 
 		EventBusI eb = c.getEventBus();
+
 		eb.addHandler(HeaderItemEvent.TYPE, new EventHandlerI<HeaderItemEvent>() {
 
 			@Override
@@ -54,7 +53,7 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 	 * Jan 13, 2013
 	 */
 	protected void onHeaderItemEvent(UiClientI client, HeaderItemEvent t) {
-		Path path = t.getModel().getMenuPath();//
+		Path path = t.getPath();
 		if (HI_ACTIVITY.equals(path)) {
 			CollectionTestWorker worker = new CollectionTestWorker()//
 					.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//

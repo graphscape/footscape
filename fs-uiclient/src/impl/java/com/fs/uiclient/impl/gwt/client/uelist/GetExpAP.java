@@ -4,9 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -15,14 +16,21 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
 public class GetExpAP extends ActionHandlerSupport {
 
 	/**
+	 * @param c
+	 */
+	public GetExpAP(ContainerI c) {
+		super(c);
+	}
+
+	/**
 	 * Nov 28, 2012
 	 * <p>
 	 * Get the detail of the exp,user click in the list, to open the detail.
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI)ae.getSource();
-		
+		ControlI c = (ControlI) ae.getSource();
+
 	}
 
 }

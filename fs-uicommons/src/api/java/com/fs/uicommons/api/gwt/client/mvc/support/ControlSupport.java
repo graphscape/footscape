@@ -31,6 +31,16 @@ public class ControlSupport extends AbstractControl {
 
 	}
 
+	public <T extends ModelI> T getOrCreateModel(ModelI parent, Class<T> cls, String name, CreaterI<T> crt) {
+		T rt = parent.getChild(cls, name, false);
+		if (rt != null) {
+			return rt;
+		}
+		rt = crt.create(this.container);
+		rt.parent(parent);
+		return rt;
+	}
+
 	public <T extends ModelI> T getOrCreateModel(ModelI parent, Class<T> cls, CreaterI<T> crt) {
 		T rt = parent.getChild(cls, false);
 		if (rt != null) {

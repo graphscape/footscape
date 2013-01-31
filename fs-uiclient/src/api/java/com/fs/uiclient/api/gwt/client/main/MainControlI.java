@@ -4,6 +4,10 @@
  */
 package com.fs.uiclient.api.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
+import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -12,12 +16,16 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public interface MainControlI extends ControlI {
 
-	public static String LZ_EXP_EDIT = "expEditLazyMvc";
-	public static String LZ_UE_LIST = "userExpListLazyMvc";
-	public static String LZ_EXP_SEARCH = "expSearchLazyMvc";
-	public static String LZ_SIGNUP = "signupLazyMvc";
-	public static String LZ_PROFILE = "profileLazyMvc";
-	public static String LZ_ACTIVITIES = "activitiesLazyMvc";
-	public static String LZ_COOPER = "cooperLazyMvc";
+	public ExpSearchModelI getExpSearchModel();
+
+	public ExpEditModelI getExpExitModel();
+
+	public CooperModelI getCooperModel();
+
+	public void openExpSearch();
+
+	public void openUeList();
+
+	public SignupView getSignupView();
 
 }

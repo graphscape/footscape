@@ -4,14 +4,22 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uiclient.api.gwt.client.support.ActionHandlerSupport2;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
  * 
  */
-public class UserExpListRefreshAP extends ActionHandlerSupport {
+public class UserExpListRefreshAP extends ActionHandlerSupport2 {
+
+	/**
+	 * @param c
+	 */
+	public UserExpListRefreshAP(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Oct 20, 2012
@@ -20,7 +28,6 @@ public class UserExpListRefreshAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		
 	}
 
 }

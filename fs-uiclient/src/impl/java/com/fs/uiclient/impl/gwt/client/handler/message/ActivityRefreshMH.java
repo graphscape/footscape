@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -20,6 +21,14 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  */
 public class ActivityRefreshMH extends MHSupport {
 
+	/**
+	 * @param c
+	 */
+	public ActivityRefreshMH(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * Jan 3, 2013
 	 */
@@ -27,7 +36,7 @@ public class ActivityRefreshMH extends MHSupport {
 	public void handle(EndpointMessageEvent t) {
 		MessageData res = t.getMessage();
 		String actId = res.getString("actId", true);
-		ActivitiesControlI ac = this.getControl(t, ActivitiesControlI.class, true);
+		ActivitiesControlI ac = this.getControl( ActivitiesControlI.class, true);
 		// activity refresh by the view of activity,so the activity model must
 		// be exist for now.
 		ActivityModelI asm = ac.getActivity(actId, true);//

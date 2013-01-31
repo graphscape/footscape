@@ -8,8 +8,10 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -20,18 +22,17 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	/**
 	 * @param name
 	 */
-	public CooperControl(String name) {
-		super(name);
-	
+	public CooperControl(ContainerI c, String name) {
+		super(c, name);
+
 	}
 
 	public MainControlI getMainControl() {
 		return this.getManager().getControl(MainControlI.class, true);
 	}
 
-	@Override
 	public CooperModelI getModel() {
-		return (CooperModelI) this.model;
+		return (CooperModelI) this.getRootModel().find(CooperModelI.class, true);
 	}
 
 	/*
@@ -40,7 +41,8 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	@Override
 	public void refreshIncomingCr(String crId) {
 		//
-		this.triggerAction(Actions.A_COOP_REFRESH_INCOMING_CR);
+		new ActionEvent(this, Actions.A_COOP_REFRESH_INCOMING_CR).dispatch();
+
 	}
 
 	/*
@@ -55,7 +57,7 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 		CooperModelI cm = this.getModel();
 		ActionModelI am = cm.getChild(ActionModelI.class, Actions.A_COOP_CONFIRM.getName(), true);
 		am.setValue("crId", crId);//
-		this.triggerAction(Actions.A_COOP_CONFIRM);
+		new ActionEvent(this, Actions.A_COOP_CONFIRM).dispatch();
 	}
 
 	/*

@@ -4,12 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
@@ -18,22 +16,25 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class CooperConfirmAP extends ActionHandlerSupport {
 
+	/**
+	 * @param c
+	 */
+	public CooperConfirmAP(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		String action = ae.getAction();
-		ControlI c = (ControlI) ae.getSource();
-		ActionModelI am = c.getModel().getChild(ActionModelI.class, action, true);
 
-		String crId = (String) am.getValue("crId");
-		if (crId == null) {
-			throw new UiException("missing action parameter crId");
-		}
+		String crId = (String) ae.getProperty("crId", true);
+
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
 		req.getPayloads().setProperty("cooperRequestId", (crId));
-		this.sendMessage(ae, req);
+		this.sendMessage(req);
 	}
 
 }

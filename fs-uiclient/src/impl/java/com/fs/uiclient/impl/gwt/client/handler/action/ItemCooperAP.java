@@ -5,16 +5,12 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -22,31 +18,33 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
  */
 public class ItemCooperAP extends ActionHandlerSupport {
 
+	/**
+	 * @param c
+	 */
+	public ItemCooperAP(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
 		// find the coper model and perform action
-		ControlManagerI mgr = ae.getSource().getClient(true)
-				.getChild(ControlManagerI.class, true);
+		ControlManagerI mgr = ae.getSource().getClient(true).getChild(ControlManagerI.class, true);
 
 		MainControlI mc = mgr.getControl(MainControlI.class, true);
 
-		Mvc mvc = (Mvc) mc.getLazyObject(MainControlI.LZ_COOPER, true);
-
-		CooperModelI cm = mvc.getModel();
-		ControlI c = (ControlI)ae.getSource();
-		ExpItemModel eim = (ExpItemModel) c.getModel();
-		String expId2 = eim.getExpId();
+		String expId2 = (String) ae.getProperty("expId2", true);
 
 		//
-		ExpSearchModelI sm = (ExpSearchModelI) eim.getParent();
+		ExpSearchModelI sm = mc.getExpSearchModel();
+
 		String expId1 = sm.getExpId(true);
 
-		cm.cooper(expId1, expId2);
 		// this is just forward to CoperContorl's submit action
-		ControlUtil.triggerAction(cm, Actions.A_COOP_REQUEST);
+		new ActionEvent(ae.getSource(), Actions.A_COOP_REQUEST).property("expId1", expId1)
+				.property("expId2", expId2).dispatch();
 
 		// CooperControlI cc= c.getManager().find(CooperControlI.class, true);
 

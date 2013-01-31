@@ -8,18 +8,15 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
-import com.fs.uiclient.impl.gwt.client.activity.ActivityControl;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
-import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.LazyMvcI;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
-import com.fs.uicommons.api.gwt.client.mvc.ViewI;
+import com.fs.uicommons.api.gwt.client.CreaterI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
-import com.fs.uicommons.api.gwt.client.mvc.support.LazyMvcSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
  * @author wu
@@ -30,8 +27,8 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	/**
 	 * @param name
 	 */
-	public ActivitiesControl(String name) {
-		super(name);
+	public ActivitiesControl(ContainerI c, String name) {
+		super(c, name);
 	}
 
 	/*
@@ -44,15 +41,14 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 
 	}
 
-	@Override
-	public ActivitiesModelI getModel() {
-		return super.getModel();
+	public ActivitiesModelI getActivitiesModel() {
+		return this.getRootModel().find(ActivitiesModelI.class, true);
 	}
 
 	public ActivityModelI getActivity(String actId, boolean force) {
 
 		String lname = this.activityModelName(actId);
-		ActivityModelI rt = this.getModel().getChild(ActivityModelI.class, lname, false);
+		ActivityModelI rt = this.getActivitiesModel().getChild(ActivityModelI.class, lname, false);
 		if (rt == null) {
 			if (force) {
 				throw new UiException("no activity with id:" + actId);
@@ -74,36 +70,16 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	@Override
 	public void openActivity(final String actId) {
 		//
-		String lname = this.activityModelName(actId);
-		Mvc mvc = this.getLazyObject(lname, false);
-		if (mvc != null) {
-			// TODO focus
-			return;
-		}
 
-		LazyMvcI lmvc = new LazyMvcSupport(this.model, lname) {
+		ActivityModelI am = this.getOrCreateModel(this.getActivitiesModel(), ActivityModelI.class, actId,
+				new CreaterI<ActivityModelI>() {
 
-			@Override
-			protected ModelI createModel(String name) {
-				//
-				return new ActivityModel(name, actId);
-			}
-
-			@Override
-			protected ViewI createView(String name, ContainerI c) {
-				//
-				return new ActivityView(name, c);
-			}
-
-			@Override
-			protected ControlI createControl(String name) {
-				//
-				return new ActivityControl(name);
-			}
-
-		};
-		this.addLazy(lname, lmvc);
-		lmvc.get();//
+					@Override
+					public ActivityModelI create(ContainerI ct) {
+						//
+						return new ActivityModel(actId, actId);
+					}
+				});
 
 	}
 
@@ -116,6 +92,16 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	 */
 	@Override
 	public void refresh(String actId) {
-		this.triggerAction(Actions.A_ACTS_ACTIVITIES);
+
+		MsgWrapper req = this.newRequest(Path.valueOf("/activity/refresh"));
+		req.setPayload("actId", actId);
+		this.sendMessage(req);
+
 	}
+
+	@Override
+	public void refresh() {
+		new ActionEvent(this, Actions.A_ACTS_ACTIVITIES).dispatch();
+	}
+
 }

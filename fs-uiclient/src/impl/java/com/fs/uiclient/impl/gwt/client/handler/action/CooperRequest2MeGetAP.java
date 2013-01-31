@@ -4,8 +4,9 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -14,6 +15,14 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * 
  */
 public class CooperRequest2MeGetAP extends ActionHandlerSupport {
+
+	/**
+	 * @param c
+	 */
+	public CooperRequest2MeGetAP(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
 
 	/*
 	 * Oct 20, 2012

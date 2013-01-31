@@ -8,6 +8,7 @@ import com.fs.uiclient.api.gwt.client.activity.ActivityControlI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -21,8 +22,8 @@ public class ActivityControl extends ControlSupport implements ActivityControlI 
 	/**
 	 * @param name
 	 */
-	public ActivityControl(String name) {
-		super(name);
+	public ActivityControl(ContainerI c, String name) {
+		super(c, name);
 
 	}
 
@@ -44,11 +45,6 @@ public class ActivityControl extends ControlSupport implements ActivityControlI 
 		}
 	}
 
-	@Override
-	public ActivityModelI getModel() {
-		return super.getModel();
-	}
-
 	/**
 	 * @param cm
 	 */
@@ -63,11 +59,7 @@ public class ActivityControl extends ControlSupport implements ActivityControlI 
 	@Override
 	public void refresh() {
 
-		String actId = this.getModel().getActivityId();
-
-		MsgWrapper req = this.newRequest(Path.valueOf("/activity/refresh"));
-		req.setPayload("actId", actId);
-		this.sendMessage(req);
+		
 	}
 
 }

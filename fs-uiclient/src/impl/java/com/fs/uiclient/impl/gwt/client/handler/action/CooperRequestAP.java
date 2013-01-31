@@ -5,9 +5,9 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -18,20 +18,26 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class CooperRequestAP extends ActionHandlerSupport {
 
+	/**
+	 * @param c
+	 */
+	public CooperRequestAP(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI)ae.getSource();
-		CooperModelI cm = c.getModel();
+		CooperModelI cm = this.getRootModel().find(CooperModelI.class, true);
 		String id1 = cm.getExpId1();
 		String id2 = cm.getExpId2();
-		
+
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/request"));
 		req.getPayloads().setProperty("expId1", (id1));
 		req.getPayloads().setProperty("expId2", (id2));
-		this.sendMessage(ae, req);
+		this.sendMessage(req);
 	}
 
 }

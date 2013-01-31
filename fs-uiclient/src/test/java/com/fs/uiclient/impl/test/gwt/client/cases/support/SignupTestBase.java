@@ -5,10 +5,7 @@ package com.fs.uiclient.impl.test.gwt.client.cases.support;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
-import com.fs.uiclient.api.gwt.client.main.MainControlI;
-import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -43,8 +40,7 @@ public abstract class SignupTestBase extends TestBase {
 		UserInfo ui = e.getChannel().getUserInfo();
 		if (ui.isAnonymous()) {//
 			// open signup view
-			Mvc mvc = this.mcontrol.getLazyObject(MainControlI.LZ_SIGNUP, true);
-
+			this.mcontrol.getSignupView();
 		} else {
 
 		}

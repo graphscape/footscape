@@ -4,7 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client;
 
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**

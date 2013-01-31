@@ -7,9 +7,9 @@ package com.fs.uiclient.impl.gwt.client.handler.action;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uiclient.api.gwt.client.support.ActionHandlerSupport2;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -20,21 +20,27 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  *         <p>
  * 
  */
-public class RefreshIncomingCrAP extends ActionHandlerSupport {
+public class RefreshIncomingCrAP extends ActionHandlerSupport2 {
+
+	/**
+	 * @param c
+	 */
+	public RefreshIncomingCrAP(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI)ae.getSource();
-		CooperModelI cm = c.getModel();
+		CooperModelI cm = this.getMainControl().getCooperModel();
 		List<String> crIdL = null;
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
 
 		req.getPayloads().setProperty("cooperRequestIdList", (crIdL));
 
-		this.sendMessage(ae, req);
+		this.sendMessage(req);
 	}
 
 }

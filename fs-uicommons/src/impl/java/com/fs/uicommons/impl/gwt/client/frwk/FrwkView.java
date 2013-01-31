@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
@@ -29,7 +30,7 @@ import com.google.gwt.user.client.Element;
  *         <p>
  *         There is no need to provide a complex but fixed layout for FrwkView.
  */
-public class FrwkView extends ViewSupport {
+public class FrwkView extends ViewSupport implements FrwkViewI{
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(FrwkView.class);
 
 	protected Map<String, Element> managerTdElements;

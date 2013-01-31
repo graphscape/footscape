@@ -51,15 +51,11 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
-import com.fs.uiclient.impl.gwt.client.main.MainControl;
-import com.fs.uiclient.impl.gwt.client.main.MainModel;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
-import com.fs.uiclient.impl.gwt.client.signup.SignupControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.Mvc;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -97,7 +93,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeOtherHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
-		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler());
+		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler(c));
 	}
 
 	/**
@@ -105,32 +101,33 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeActionHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
-		eb.addHandler(Actions.A_ACTS_ACTIVITIES, new ActivitiesRefreshAP());
+		eb.addHandler(Actions.A_ACTS_ACTIVITIES, new ActivitiesRefreshAP(c));
 		// this.addActionEventHandler(ActivityModelI.A_REFRESH, new
-		// ActivityRefreshAP());
-		eb.addHandler(Actions.A_ACT_OPEN_CHAT_ROOM, new OpenChatRoomAP());
+		// ActivityRefreshAP(c));
+		eb.addHandler(Actions.A_ACT_OPEN_CHAT_ROOM, new OpenChatRoomAP(c));
 		// this.localMap.put(ActivityModelI.A_REFRESH, true);
 
-		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP());
-		eb.addHandler(Actions.A_COOP_CONFIRM, new CooperConfirmAP());
-		eb.addHandler(Actions.A_COOP_REFRESH_INCOMING_CR, new RefreshIncomingCrAP());
-		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP());//
+		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP(c));
+		eb.addHandler(Actions.A_COOP_CONFIRM, new CooperConfirmAP(c));
+		eb.addHandler(Actions.A_COOP_REFRESH_INCOMING_CR, new RefreshIncomingCrAP(c));
+		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP(c));//
 
-		eb.addHandler(Actions.A_EXPS_COOPER, new ItemCooperAP());
+		eb.addHandler(Actions.A_EXPS_COOPER, new ItemCooperAP(c));
 
-		eb.addHandler(Actions.A_EXPS_SEARCH, new ExpSearchAP());
+		eb.addHandler(Actions.A_EXPS_SEARCH, new ExpSearchAP(c));
 
-		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP("/profile/init"));
-		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP());
-		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP("/signup/submit"));
-		eb.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH());
-		eb.addHandler(Actions.A_SIGNUP_CONFIRM, new FormSubmitAP("/signup/confirm", SignupModelI.F_CONFIRM));
+		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP(c, "/profile/init"));
+		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
+		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP(c, Path.valueOf("/signup/submit")));
+		eb.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));
+		eb.addHandler(Actions.A_SIGNUP_CONFIRM, new FormSubmitAP(c, Path.valueOf("/signup/confirm"),
+				SignupModelI.F_CONFIRM));
 
-		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP());
+		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 
-		eb.addHandler(Actions.A_UEXP_OPEN_ACTIVITY, new UserExpOpenActivityAP());
-		eb.addHandler(Actions.A_UEXP_SELECT, new UserExpSelectAP());
-		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP());
+		eb.addHandler(Actions.A_UEXP_OPEN_ACTIVITY, new UserExpOpenActivityAP(c));
+		eb.addHandler(Actions.A_UEXP_SELECT, new UserExpSelectAP(c));
+		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP(c));
 	}
 
 	/**
@@ -138,27 +135,28 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI dis = client.getEndpoint();
-		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH());
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH());// create
+		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH(c));
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH(c));// create
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH());// refresh
+		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"), new CooperRequestSuccessMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"),
+				new CooperRequestSuccessMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new IncomingCrNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new IncomingCrNotifyMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"), new IncomingCrRefreshMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"),
+				new IncomingCrRefreshMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"), new CooperConfirmSuccessMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
+				new CooperConfirmSuccessMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"), new ActivityCreatedNotifyMH());// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/activity"), new ActivityCreatedNotifyMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/activities/activities/success"),
-				new ActivitiesRefreshMH());// search
-		dis.addHandler(Path.valueOf("/endpoint/message/activity/refresh/success"),
-				new ActivityRefreshMH());// search
-		
+				new ActivitiesRefreshMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/activity/refresh/success"), new ActivityRefreshMH(c));// search
 
 	}
 
@@ -167,8 +165,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		//
 		ModelI rootModel = client.getRootModel();
 
-		Mvc mvc = new Mvc(new MainModel("main"), null, new MainControl("main"));
-		mvc.start(rootModel);//
+		// Mvc mvc = new Mvc(new MainModel("main"), null, new
+		// MainControl("main"));
+		// mvc.start(rootModel);//
 		// main has no view.
 
 	}
@@ -242,16 +241,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 		});
 
-		InstanceOf.addChecker(new CheckerSupport(SignupControl.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof SignupControl;
-
-			}
-
-		});
 		InstanceOf.addChecker(new CheckerSupport(UserExpListControlI.class) {
 
 			@Override

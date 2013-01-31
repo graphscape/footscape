@@ -5,9 +5,9 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -17,14 +17,21 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class ExpSearchAP extends ActionHandlerSupport {
 
+	/**
+	 * @param c
+	 */
+	public ExpSearchAP(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Oct 20, 2012
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
 		//
-		ControlI c = (ControlI) ae.getSource();
-		ExpSearchModelI sm = (ExpSearchModelI) c.getModel();
+		ExpSearchModelI sm = (ExpSearchModelI) this.getRootModel().find(ExpSearchModelI.class, true);
+
 		String expId = sm.getExpId(true);
 
 		int pg = sm.getFirstResult();
@@ -39,7 +46,7 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		req.getPayloads().setProperty("keywords", (""));
 
 		// TODO keywords
-		this.sendMessage(ae, req);
+		this.sendMessage(req);
 	}
 
 }

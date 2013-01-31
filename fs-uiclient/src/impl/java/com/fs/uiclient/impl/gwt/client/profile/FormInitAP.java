@@ -8,6 +8,7 @@ import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -22,7 +23,8 @@ public class FormInitAP extends MHSupport {
 
 	private String payload;// key in payload
 
-	public FormInitAP(String form, String payload) {
+	public FormInitAP(ContainerI c, String form, String payload) {
+		super(c);
 		this.form = form;
 		this.payload = payload;
 	}
@@ -30,7 +32,7 @@ public class FormInitAP extends MHSupport {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 
-		ProfileModelI pm = this.getModel(t, ProfileModelI.class, true);
+		ProfileModelI pm = this.getModel(ProfileModelI.class, true);
 
 		FormsModel fcm = (FormsModel) pm;
 		FormModel fm = null;

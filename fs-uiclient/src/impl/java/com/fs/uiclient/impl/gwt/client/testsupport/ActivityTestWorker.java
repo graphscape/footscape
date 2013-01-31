@@ -13,8 +13,8 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event;
@@ -92,7 +92,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 		String id = model.getExpId();//
 		this.expIdSelected = id;
 
-		ControlUtil.triggerAction(model, Actions.A_UEXP_SELECT);
+		new ActionEvent(client, Actions.A_UEXP_SELECT).dispatch();
 		// select exp will cause select event and
 		// then
 		// exp search.

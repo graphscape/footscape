@@ -6,12 +6,12 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -27,13 +27,19 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  */
 public class IncomingCrRefreshMH extends MHSupport {
 
+	/**
+	 * @param c
+	 */
+	public IncomingCrRefreshMH(ContainerI c) {
+		super(c);
+	}
+
 	/*
 	 * Jan 2, 2013
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		CooperControlI c = this.getControl(t, CooperControlI.class, true);
-		CooperModelI cm = c.getModel();
+		CooperModelI cm = this.getModel(CooperModelI.class, true);
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> crL = (List<ObjectPropertiesData>) res.getPayload("cooperRequestList",
 				true);
@@ -63,7 +69,7 @@ public class IncomingCrRefreshMH extends MHSupport {
 	 * Jan 4, 2013
 	 */
 	private void onIncomingCr(EndpointMessageEvent t, IncomingCrModel crm) {
-		UserExpListControlI c = this.getControl(t, UserExpListControlI.class, true);
+		UserExpListControlI c = this.getControl(UserExpListControlI.class, true);
 		c.incomingCr(crm);
 	}
 

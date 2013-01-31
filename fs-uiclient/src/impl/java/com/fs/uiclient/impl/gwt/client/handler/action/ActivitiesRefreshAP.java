@@ -6,8 +6,9 @@ package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import java.util.List;
 
-import com.fs.uicommons.api.gwt.client.mvc.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ActionHandlerSupport;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
@@ -16,6 +17,13 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * 
  */
 public class ActivitiesRefreshAP extends ActionHandlerSupport {
+
+	/**
+	 * @param c
+	 */
+	public ActivitiesRefreshAP(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Oct 21, 2012
@@ -27,7 +35,7 @@ public class ActivitiesRefreshAP extends ActionHandlerSupport {
 		MsgWrapper req = this.newRequest(Path.valueOf("/activities/activities"));
 
 		req.setPayload("idList", actIdL);//
-		this.sendMessage(ae, req);
+		this.sendMessage(req);
 	}
 
 	/*
