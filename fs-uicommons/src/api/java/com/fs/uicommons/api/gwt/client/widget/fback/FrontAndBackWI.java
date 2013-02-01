@@ -4,12 +4,10 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.fback;
 
-import com.fs.uicore.api.gwt.client.CompositeI;
-
 /**
  * @author wu
  * 
  */
-public interface FrontAndBackWI extends CompositeI{
+public interface FrontAndBackWI {
 
 }

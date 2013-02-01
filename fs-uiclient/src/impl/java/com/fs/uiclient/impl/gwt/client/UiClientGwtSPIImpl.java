@@ -24,7 +24,9 @@ import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.activities.ActivitiesControl;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperControl;
+import com.fs.uiclient.impl.gwt.client.exps.ExpSearchControl;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
@@ -195,6 +197,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		manager.addControl(new MainControl(c, "main"));
 		manager.addControl(new CooperControl(c, "cooper"));
 		manager.addControl(new UserExpListControl(c, "uelist"));
+		manager.addControl(new ExpSearchControl(c,"exps"));
+		manager.addControl(new ActivitiesControl(c,"activities"));
 
 	}
 

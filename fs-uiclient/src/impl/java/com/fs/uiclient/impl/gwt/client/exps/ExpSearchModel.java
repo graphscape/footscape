@@ -49,12 +49,9 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 * Oct 20, 2012
 	 */
 	@Override
-	public ExpItemModel addExpItem(String id) {
+	public void addExpItem(ExpItemModel ei) {
 		//
-		ExpItemModel rt = new ExpItemModel(id);
-
-		rt.parent(this);
-		return rt;
+		ei.parent(this);
 	}
 
 	/*
@@ -150,8 +147,12 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 		return this.phrase;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#setPhrase(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#setPhrase(java.lang
+	 * .String)
 	 */
 	@Override
 	public void setPhrase(String phrase) {

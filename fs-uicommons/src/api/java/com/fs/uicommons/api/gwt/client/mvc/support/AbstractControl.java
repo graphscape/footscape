@@ -30,6 +30,7 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 	public AbstractControl(ContainerI c, String name) {
 		this.container = c;
 		this.name = name;
+
 	}
 
 	/*
@@ -53,6 +54,10 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 
 		return (ControlManagerI) this.parent;
 
+	}
+
+	protected <T extends ControlI> T getControl(Class<T> cls, boolean force) {
+		return this.getManager().getControl(cls, force);
 	}
 
 	@Override

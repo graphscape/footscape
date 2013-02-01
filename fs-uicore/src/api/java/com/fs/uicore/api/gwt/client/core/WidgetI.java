@@ -39,6 +39,9 @@ public interface WidgetI extends ElementObjectI {
 
 	public WidgetI model(ModelI ctx);
 
+	@Deprecated
+	// widget should not have model,other words:there are not only one model for
+	// a widget?
 	public ModelI getModel();
 
 	// public AdjusterI addAdjuster(String name);//

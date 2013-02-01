@@ -3,13 +3,13 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.list;
 
-import com.fs.uicore.api.gwt.client.CompositeI;
+import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
  * 
  */
-public interface ListI extends CompositeI {
+public interface ListI extends WidgetI {
 
 	public int getSize();
 }

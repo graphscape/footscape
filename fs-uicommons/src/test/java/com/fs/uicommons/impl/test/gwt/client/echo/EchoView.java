@@ -18,7 +18,7 @@ public class EchoView extends FormView {
 	 * @param ctn
 	 */
 	public EchoView(ContainerI ctn, FormModel fm) {
-		super(ctn, fm);
+		super("echo", ctn, fm);
 	}
 
 }

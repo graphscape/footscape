@@ -9,11 +9,12 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
+import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -23,7 +24,7 @@ import com.fs.uicore.api.gwt.client.data.basic.DateData;
  * @author wu
  * 
  */
-public class UserExpListControl extends ControlSupport implements UserExpListControlI {
+public class UserExpListControl extends ControlSupport2 implements UserExpListControlI {
 
 	/**
 	 * @param name
@@ -51,21 +52,8 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 		this.sendMessage(req);
 	}
 
-	protected MsgWrapper newRequest(Path path) {
-		return new MsgWrapper(path);
-	}
-
-	protected void sendMessage(MsgWrapper req) {
-		this.getClient(true).getEndpoint().sendMessage(req);//
-	}
-
-	public MainControlI getMainControl() {
-		return this.getManager().getControl(MainControlI.class, true);
-	}
-
 	public UserExpListModelI getModel() {
-		//TODO create
-		return this.getRootModel().find(UserExpListModelI.class, true);
+		return this.getMainControl().getUeListModel();
 	}
 
 	/*
@@ -74,16 +62,19 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 	@Override
 	public void select(String expId) {
 
+		//model
 		List<UserExpModel> ueL = this.getModel().getChildList(UserExpModel.class);
 		for (UserExpModel ue : ueL) {
 			boolean sel = ue.getExpId().equals(expId);
 			ue.select(sel);
 		}
+		//view
+		UserExpListViewI uelv = this.getMainControl().openUeList();
+		uelv.select(expId);
 
 		// call search
 		ExpSearchControlI sc = this.getManager().getControl(ExpSearchControlI.class, true);
 		sc.search(expId);
-
 	}
 
 	/*
@@ -105,13 +96,18 @@ public class UserExpListControl extends ControlSupport implements UserExpListCon
 	 */
 	@Override
 	public void incomingCr(IncomingCrModel cr) {
+
 		UserExpListModelI uelm = this.getModel();
 		String crId = cr.getCrId();
-		String expId = cr.getExpId2();// to this exp
-		UserExpModel uem = uelm.getUserExp(expId, true);//
-		String expId1 = cr.getExpId1();
+		String expId2 = cr.getExpId2();// to this exp
 
+		UserExpModel uem = uelm.getUserExp(expId2, true);//
+		String expId1 = cr.getExpId1();// from expId1
 		uem.setIncomingCrId(crId);// FROM exp id
+
+		// update view
+		UserExpListViewI uev = this.getMainControl().openUeList();
+		uev.incomingCr(expId2, crId);
 
 	}
 

@@ -135,7 +135,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 			return;// only cooper one
 		}
 
-		String expId = src.getModel().getExpId();
+		String expId = src.getExpId();
 
 		if (this.expIdSelected.equals(expId)) {
 			return;// not cooper to the same exp,wait the next one

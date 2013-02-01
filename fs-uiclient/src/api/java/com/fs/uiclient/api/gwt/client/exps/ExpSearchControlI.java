@@ -17,4 +17,8 @@ public interface ExpSearchControlI extends ControlI {
 	 */
 	public void search(String expId);
 
+	public void addOrUpdateExpItem(ExpItemModel ei);
+
+	public void reset();
+
 }

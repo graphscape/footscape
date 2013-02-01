@@ -14,7 +14,8 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
- * 
+ * @deprecated model should not exist,it is too complicated,we should relay on
+ *             language's feature:class,method to building things.
  */
 public interface ModelI extends UiObjectI {
 
@@ -56,8 +57,7 @@ public interface ModelI extends UiObjectI {
 			this(Path.valueOf(new String[] {}), pro, idx, last, key);
 		}
 
-		private Location(Path path, String pro, Integer idx, Boolean last,
-				String key) {
+		private Location(Path path, String pro, Integer idx, Boolean last, String key) {
 			this.path = path;
 			this.property = pro;
 			this.index = idx;
@@ -129,9 +129,8 @@ public interface ModelI extends UiObjectI {
 		@Override
 		public String toString() {
 			//
-			return "class:" + this.getClass() + "," + "property:"
-					+ this.property + ",key:" + this.key + ",index:"
-					+ this.index;
+			return "class:" + this.getClass() + "," + "property:" + this.property + ",key:" + this.key
+					+ ",index:" + this.index;
 		}
 
 	}
@@ -207,14 +206,31 @@ public interface ModelI extends UiObjectI {
 																		// debuging,
 																		// to be
 																		// removed
-	public static final Location L_WIDGET_FACTORY = Location
-			.valueOf("_widgetFactory");
+	public static final Location L_WIDGET_FACTORY = Location.valueOf("_widgetFactory");
 
-	public static final Location L_LAST_WIDGET = Location
-			.valueOf("_lastWidget");// related widiget for debuging.if test code
-									// want to no the related widget,there can
-									// listen this value for any changing.see
-									// WidgetBase.model for more evidence.
+	public static final Location L_LAST_WIDGET = Location.valueOf("_lastWidget");// related
+																					// widiget
+																					// for
+																					// debuging.if
+																					// test
+																					// code
+																					// want
+																					// to
+																					// no
+																					// the
+																					// related
+																					// widget,there
+																					// can
+																					// listen
+																					// this
+																					// value
+																					// for
+																					// any
+																					// changing.see
+																					// WidgetBase.model
+																					// for
+																					// more
+																					// evidence.
 
 	public String getName();
 
@@ -222,11 +238,9 @@ public interface ModelI extends UiObjectI {
 
 	public void addValueHandler(Location loc, EventHandlerI<ModelValueEvent> eh);
 
-	public void addValueHandler(Location loc, Object value,
-			EventHandlerI<ModelValueEvent> eh);
+	public void addValueHandler(Location loc, Object value, EventHandlerI<ModelValueEvent> eh);
 
-	public void handleValueWhenAvailable(Location loc,
-			UiCallbackI<Object, Object> callback);
+	public void handleValueWhenAvailable(Location loc, UiCallbackI<Object, Object> callback);
 
 	// not report event when set value.
 
@@ -273,8 +287,7 @@ public interface ModelI extends UiObjectI {
 	// TODO remove
 	public ReplayerI createReplayer(String key);
 
-	public <T extends ModelI> void childProcessor(Class<T> cls, String name,
-			ModelChildProcessorI cp);
+	public <T extends ModelI> void childProcessor(Class<T> cls, String name, ModelChildProcessorI cp);
 
 	/**
 	 * When value equals the parameter value. call lazy.get() method. Dec 2,
@@ -283,7 +296,7 @@ public interface ModelI extends UiObjectI {
 	public <T> void addValueProcessor(Location loc, Object value, LazyI<T> lazy);
 
 	public void commit();
-	
+
 	public <X extends ModelI> void addCommitProcessor(UiCallbackI<X, Object> cb);
 
 }

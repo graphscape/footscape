@@ -40,7 +40,11 @@ public class FormsView extends SimpleView implements FormsViewI {
 	}
 
 	public FormsView(String name, ContainerI ctn, FormsModel fm) {
-		super(name, ctn, fm);
+		this(null, name, ctn, fm);
+	}
+
+	public FormsView(Path agp, String name, ContainerI ctn, FormsModel fm) {
+		super(agp, name, ctn, fm);
 		this.tabber = this.factory.create(TabberWI.class);
 		this.tabber.parent(this);//
 		for (FormModel f : fm.getChildList(FormModel.class)) {
@@ -55,8 +59,8 @@ public class FormsView extends SimpleView implements FormsViewI {
 
 	@Override
 	public void addForm(final FormModel cm) {
-
-		FormView fv = new FormView(this.getContainer(), cm);
+		String fname = cm.getName();
+		FormView fv = new FormView(fname, this.getContainer(), cm);
 
 		TabWI tb = this.tabber.addTab(tabName(cm), fv, false);
 		tb.addSelectEventHandler(new EventHandlerI<SelectEvent>() {

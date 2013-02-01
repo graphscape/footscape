@@ -30,9 +30,8 @@ public class CooperRequestAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		CooperModelI cm = this.getRootModel().find(CooperModelI.class, true);
-		String id1 = cm.getExpId1();
-		String id2 = cm.getExpId2();
+		String id1 = (String) ae.getProperty("expId1", true);
+		String id2 = (String) ae.getProperty("expId2", true);
 
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/request"));
 		req.getPayloads().setProperty("expId1", (id1));

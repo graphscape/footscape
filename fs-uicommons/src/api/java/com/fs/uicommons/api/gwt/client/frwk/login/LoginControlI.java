@@ -9,6 +9,6 @@ public interface LoginControlI extends ControlI {
 	 */
 	public LoginModelI getOrCreateLoginModel();
 
-	public void openLoginView();
-	
+	public LoginViewI openLoginView();
+
 }

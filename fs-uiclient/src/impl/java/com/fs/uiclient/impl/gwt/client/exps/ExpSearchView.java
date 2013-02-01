@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.gwt.client.exps;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
@@ -25,7 +26,7 @@ import com.fs.uicore.api.gwt.client.support.SimpleModel;
  * @author wu
  * 
  */
-public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
+public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 
 	protected StringEditorI statement;// keywords?
 
@@ -43,7 +44,7 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 	 */
 	public ExpSearchView(ContainerI ctn, ExpSearchModelI m) {
 
-		super(Actions.A_EXPS.getName(), ctn, m);
+		super(Actions.A_EXPS, "exps", ctn, m);
 
 		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
@@ -101,22 +102,7 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 		return this.findModel(ExpSearchModelI.class, true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicommons.api.gwt.client.frwk.commons.manage.ManagerModelI.
-	 * ViewReferenceI.AwareI #
-	 * setManaged(com.fs.uicommons.api.gwt.client.frwk.commons
-	 * .manage.ManagerModelI .ViewReferenceI)
-	 */
 	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
-	}
-
-	/**
-	 * Oct 20, 2012
-	 */
 	public void addExpItem(ExpItemModel cm) {
 		String vname = viewName(cm);
 		ExpItemView vi = new ExpItemView(vname, this.getContainer(), cm);

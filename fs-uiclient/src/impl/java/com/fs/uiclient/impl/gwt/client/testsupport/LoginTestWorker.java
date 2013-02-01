@@ -31,17 +31,8 @@ public final class LoginTestWorker extends SignupTestWorker {
 
 	@Override
 	protected void onSignup(String email, String pass) {
-		this.loginView = this.client.getRoot().find(new UiCallbackI<UiObjectI, LoginView>() {
+		this.loginView = (LoginView) this.manager.getControl(LoginControlI.class, true).openLoginView();
 
-			@Override
-			public LoginView execute(UiObjectI t) {
-				//
-				if (!(t instanceof LoginView)) {
-					return null;
-				}
-				return (LoginView) t;
-			}
-		});
 		LoginModelI lm = this.loginView.getModel();
 
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);

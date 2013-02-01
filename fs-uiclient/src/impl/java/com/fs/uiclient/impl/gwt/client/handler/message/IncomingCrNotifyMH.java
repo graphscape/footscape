@@ -28,7 +28,6 @@ public class IncomingCrNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		MessageData msg = t.getMessage();
 		CooperControlI cc = this.getControl( CooperControlI.class, true);
 		cc.refreshIncomingCr(null);
 	}

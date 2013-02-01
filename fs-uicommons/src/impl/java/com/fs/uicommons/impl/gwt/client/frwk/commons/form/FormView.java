@@ -50,8 +50,8 @@ public class FormView extends ViewSupport implements FormViewI {
 	/**
 	 * @param ctn
 	 */
-	public FormView(ContainerI ctn, FormModel fm) {
-		super(DOM.createDiv(), ctn, fm);
+	public FormView(String name, ContainerI ctn, FormModel fm) {
+		super(name, DOM.createDiv(), ctn, fm);
 		this.propertiesEditor = this.factory.create(PropertiesEditorI.class);
 		this.propertiesEditor.parent(this);//
 

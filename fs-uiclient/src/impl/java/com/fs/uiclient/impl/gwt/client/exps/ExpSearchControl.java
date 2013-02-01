@@ -5,17 +5,19 @@
 package com.fs.uiclient.impl.gwt.client.exps;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
  * 
  */
-public class ExpSearchControl extends ControlSupport implements ExpSearchControlI {
+public class ExpSearchControl extends ControlSupport2 implements ExpSearchControlI {
 
 	/**
 	 * @param name
@@ -38,6 +40,32 @@ public class ExpSearchControl extends ControlSupport implements ExpSearchControl
 		es.setExpId(expId);//
 
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
+	}
+
+	public ExpSearchModelI getModel() {
+		ExpSearchModelI es = this.getMainControl().getExpSearchModel();
+		return es;
+	}
+
+	/*
+	 * Feb 1, 2013
+	 */
+	@Override
+	public void addOrUpdateExpItem(ExpItemModel ei) {
+		ExpSearchModelI esm = this.getModel();
+		esm.addExpItem(ei);
+		ExpSearchViewI esv = this.getMainControl().openExpSearch();
+		esv.addExpItem(ei);
+	}
+
+	/*
+	 * Feb 1, 2013
+	 */
+	@Override
+	public void reset() {
+		ExpSearchModelI es = this.getModel();
+		es.clean(ExpItemModel.class);
+
 	}
 
 }

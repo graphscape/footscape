@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
@@ -17,7 +18,6 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
@@ -83,17 +83,8 @@ public class ExpTestWorker extends AbstractTestWorker {
 	public void start(UiClientI client) {
 		super.start(client);
 		this.userInfo = this.getRegisterUserInfo(true);//
-		this.ueListView = this.client.getRoot().find(new UiCallbackI<UiObjectI, UserExpListView>() {
+		this.ueListView = (UserExpListView) this.manager.getControl(MainControlI.class, true).openUeList();
 
-			@Override
-			public UserExpListView execute(UiObjectI t) {
-				//
-				if (!(t instanceof UserExpListView)) {
-					return null;
-				}
-				return (UserExpListView) t;
-			}
-		});
 		this.tryFinish("founduelistview");
 		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit
 

@@ -40,34 +40,32 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 
 		EventBusI eb = c.getEventBus();
 
-		eb.addHandler(HeaderItemEvent.TYPE, new EventHandlerI<HeaderItemEvent>() {
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HI_EXP), new EventHandlerI<HeaderItemEvent>() {
 
 			@Override
 			public void handle(HeaderItemEvent t) {
-				UiClientTestGPIImpl.this.onHeaderItemEvent(client, (HeaderItemEvent) t);
+				CollectionTestWorker worker = new CollectionTestWorker()//
+						.addTestWorker(new LoginTestWorker("user2", "user2@other.com", "user2"))//
+						.addTestWorker(new ExpTestWorker(6))//
+
+				;
+				worker.start(client);
 			}
 		});
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HI_ACTIVITY),
+				new EventHandlerI<HeaderItemEvent>() {
+
+					@Override
+					public void handle(HeaderItemEvent t) {
+						CollectionTestWorker worker = new CollectionTestWorker()//
+								.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//
+								.addTestWorker(new ExpTestWorker(6))//
+								.addTestWorker(new ActivityTestWorker())//
+						;
+						worker.start(client);
+					}
+				});
+
 	}
 
-	/**
-	 * Jan 13, 2013
-	 */
-	protected void onHeaderItemEvent(UiClientI client, HeaderItemEvent t) {
-		Path path = t.getPath();
-		if (HI_ACTIVITY.equals(path)) {
-			CollectionTestWorker worker = new CollectionTestWorker()//
-					.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//
-					.addTestWorker(new ExpTestWorker(6))//
-					.addTestWorker(new ActivityTestWorker())//
-			;
-			worker.start(client);
-		} else if (HI_EXP.equals(path)) {
-			CollectionTestWorker worker = new CollectionTestWorker()//
-					.addTestWorker(new LoginTestWorker("user2", "user2@other.com", "user2"))//
-					.addTestWorker(new ExpTestWorker(6))//
-
-			;
-			worker.start(client);
-		}
-	}
 }

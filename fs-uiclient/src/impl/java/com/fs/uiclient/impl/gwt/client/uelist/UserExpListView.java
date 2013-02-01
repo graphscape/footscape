@@ -5,9 +5,10 @@
 package com.fs.uiclient.impl.gwt.client.uelist;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
-import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -16,48 +17,57 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  * @author wu
  * 
  */
-public class UserExpListView extends SimpleView implements ViewReferenceI.AwareI {
+public class UserExpListView extends SimpleView implements UserExpListViewI {
 
 	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp list
 
 	protected ListI list;
 
-	protected ViewReferenceI managed;
-
 	/**
 	 * @param ctn
 	 */
-	public UserExpListView(ContainerI ctn) {
-		super(Actions.A_UELIST.getName(), ctn);
+	public UserExpListView(ContainerI ctn, UserExpListModelI uem) {
+		super(Actions.A_UELIST, "uelist", ctn, uem);
 
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("expListContainer");
 		this.list.parent(this);
-
-	}
-
-	@Override
-	public void doAttach() {
-		super.doAttach();
-
+		for (UserExpModel ue : uem.getChildList(UserExpModel.class)) {
+			this.addUserExpModel(ue);
+		}
 	}
 
 	/**
 	 * @param cm
 	 */
-	private void processChildUserExpModelAdd(UserExpModel cm) {
+	public void addUserExpModel(UserExpModel cm) {
 		String expId = cm.getExpId();
-		UserExpView ue = new UserExpView(this.getContainer());
-		ue.setName("userExpView-" + expId);
-		ue.model(cm);
-
+		UserExpView ue = new UserExpView(expId, this.getContainer(), cm);
 		ue.parent(this.list);
 
 	}
 
+	public UserExpView getUserExpView(String expId, boolean force) {
+		return this.list.find(UserExpView.class, expId, force);
+
+	}
+
+	/*
+	 * Feb 1, 2013
+	 */
 	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
+	public void incomingCr(String expId, String crId) {
+		UserExpView ue = this.getUserExpView(expId, true);
+		ue.update();
+	}
+
+	/*
+	 * Feb 1, 2013
+	 */
+	@Override
+	public void select(String expId) {
+		UserExpView ue = this.getUserExpView(expId, true);
+		ue.update();
 	}
 
 }

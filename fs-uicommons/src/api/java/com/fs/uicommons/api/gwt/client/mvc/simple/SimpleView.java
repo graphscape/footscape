@@ -33,13 +33,19 @@ import com.google.gwt.user.client.Element;
  */
 public class SimpleView extends ViewSupport {
 
+	private static final String ACTION_LIST = "actionList";
+
 	private ListI actionList;// TODO ActionsELement
+
 	private ErrorInfosWidgetI errorInfoDisplay;
+
 	protected Element header;
+
 	protected Element body;
+
 	protected Element footer;
 
-	private static final String ACTION_LIST = "actionList";
+	protected Path actionGroupPath;
 
 	/**
 	 * @param ctn
@@ -49,7 +55,11 @@ public class SimpleView extends ViewSupport {
 	}
 
 	public SimpleView(String name, ContainerI ctn, ModelI md) {
-		this(name, DOM.createDiv(), ctn, md);
+		this(null, name, ctn, md);
+	}
+
+	public SimpleView(Path agp, String name, ContainerI ctn, ModelI md) {
+		this(agp, name, DOM.createDiv(), ctn, md);
 	}
 
 	public SimpleView(String name, ContainerI ctn) {
@@ -57,7 +67,14 @@ public class SimpleView extends ViewSupport {
 	}
 
 	public SimpleView(String name, Element ele, ContainerI ctn, ModelI md) {
+		this(null, name, ele, ctn, md);
+	}
+
+	public SimpleView(Path agp, String name, Element ele, ContainerI ctn, ModelI md) {
+
 		super(name, ele, ctn, md);
+
+		this.actionGroupPath = agp == null ? Actions.ACTION.getSubPath(name) : agp;
 
 		// BODY:
 		this.header = DOM.createDiv();
@@ -127,8 +144,8 @@ public class SimpleView extends ViewSupport {
 
 	//
 	protected ActionEvent newActionEvent(String aname) {
-		Path ap = Actions.ACTION.getSubPath(this.name).getSubPath(aname);
-		ActionEvent rt = new ActionEvent(this, ap);
+		ActionEvent rt = new ActionEvent(this, this.actionGroupPath.getSubPath(aname));
+
 		return rt;
 	}
 

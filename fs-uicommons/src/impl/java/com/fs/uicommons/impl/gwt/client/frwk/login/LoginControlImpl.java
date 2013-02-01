@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.frwk.login;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -44,9 +45,9 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	 * com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI#openLoginView()
 	 */
 	@Override
-	public void openLoginView() {
+	public LoginViewI openLoginView() {
 		LoginModelI lm = this.getOrCreateLoginModel();
-		this.getOrCreateLoginView((LoginModel) lm);
+		return this.getOrCreateLoginView((LoginModel) lm);
 	}
 
 	public LoginView getOrCreateLoginView(LoginModel lm) {

@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.signup;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
+import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
@@ -19,7 +20,7 @@ import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
  * @author wu
  * 
  */
-public class SignupView extends FormsView implements ViewReferenceI.AwareI {
+public class SignupView extends FormsView implements SignupViewI {
 
 	private static UiLoggerI LOG = UiLoggerFactory.getLogger(SignupView.class);
 
@@ -55,17 +56,5 @@ public class SignupView extends FormsView implements ViewReferenceI.AwareI {
 		this.managed.select(sr);//
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI.AwareI
-	 * #setManaged
-	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI)
-	 */
-	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
-	}
 
 }

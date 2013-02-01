@@ -5,6 +5,7 @@ package com.fs.uiclient.impl.gwt.client.testsupport;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
+import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
@@ -23,7 +24,7 @@ import com.fs.uicore.api.gwt.client.event.AttachedEvent;
  */
 public abstract class SignupTestWorker extends AbstractTestWorker {
 
-	protected SignupView signupView;
+	protected SignupViewI signupView;
 
 	protected String email;
 
@@ -57,9 +58,8 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		if (!ui.isAnonymous()) {//
 			throw new UiException("user info not anonymous,ui:" + ui);
 		}
-		
-		this.signupView = 
-		this.mcontrol.openSignup();
+
+		this.signupView = this.mcontrol.openSignup();
 		if (this.signupView.isAttached()) {
 			this.trySignup();
 		}

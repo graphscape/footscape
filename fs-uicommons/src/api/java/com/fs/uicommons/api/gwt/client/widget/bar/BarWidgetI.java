@@ -5,15 +5,14 @@
 package com.fs.uicommons.api.gwt.client.widget.bar;
 
 import com.fs.uicommons.api.gwt.client.Position;
-import com.fs.uicore.api.gwt.client.CompositeI;
+import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
  * 
  */
-public interface BarWidgetI extends CompositeI {
-	
+public interface BarWidgetI extends WidgetI{
 
 	public static final Position P_LEFT = Position.valueOf("left");
 
@@ -21,7 +20,6 @@ public interface BarWidgetI extends CompositeI {
 
 	public static final Position P_CENTER = Position.valueOf("center");
 
-
 	public void addItem(Position pos, WidgetI cw);
-	
+
 }

@@ -6,13 +6,18 @@ package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
+import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditModel;
+import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
@@ -144,7 +149,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Jan 31, 2013
 	 */
 	@Override
-	public void openExpSearch() {
+	public ExpSearchViewI openExpSearch() {
 		//
 		final ExpSearchModelI exps = this.getExpSearchModel();
 
@@ -156,6 +161,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 						return new ExpSearchView(ct, exps);
 					}
 				});
+		return esv;
 
 	}
 
@@ -163,18 +169,35 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Jan 31, 2013
 	 */
 	@Override
-	public void openUeList() {
+	public UserExpListViewI openUeList() {
 		//
-		UserExpListModelI uel = this.getUeListModel();
+		final UserExpListModelI uel = this.getUeListModel();
 
-		UserExpListView uelv = this.gorOrCreateViewInBody(Path.valueOf("/uelist"),
+		UserExpListViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/uelist"),
 				new CreaterI<UserExpListView>() {
 
 					@Override
 					public UserExpListView create(ContainerI ct) {
-						return new UserExpListView(ct);
+						return new UserExpListView(ct, uel);
 					}
 				});
+		return uelv;
+
+	}
+
+	@Override
+	public ExpEditViewI openExpEditView() {
+		//
+		final ExpEditModelI uel = this.getExpEditModel();
+
+		ExpEditViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/expe"), new CreaterI<ExpEditViewI>() {
+
+			@Override
+			public ExpEditViewI create(ContainerI ct) {
+				return new ExpEditView(ct, (ExpEditModel) uel);
+			}
+		});
+		return uelv;
 
 	}
 
@@ -182,7 +205,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Jan 31, 2013
 	 */
 	@Override
-	public SignupView openSignup() {
+	public SignupViewI openSignup() {
 		//
 		final SignupModelI sm = this.getSignupModel();
 		SignupView rt = this.gorOrCreateViewInBody(Path.valueOf("/signup"), new CreaterI<SignupView>() {

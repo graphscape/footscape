@@ -4,16 +4,16 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps.item;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.ModelI.Location;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
@@ -29,37 +29,10 @@ public class ExpItemView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public ExpItemView(String name, ContainerI ctn, ExpItemModel m) {
-		super(name, ctn, m);
+	public ExpItemView(String name, ContainerI ctn, ExpItemModel ei) {
 
-	}
+		super(Actions.A_EXPS, name, ctn, ei);
 
-	@Override
-	public ExpItemModel getModel() {
-		return (ExpItemModel) this.model;
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	protected void doModel(ModelI model) {
-		super.doModel(model);
-		model.addCommitProcessor(new UiCallbackI<ExpItemModel, Object>() {
-
-			@Override
-			public Object execute(ExpItemModel t) {
-				ExpItemView.this.onModelCommit(t);
-				return null;
-			}
-		});
-
-	}
-
-	/**
-	 * Dec 2, 2012
-	 */
-	protected void onModelCommit(ExpItemModel t) {
 		//
 		if (this.table != null) {
 			this.table.getElement().removeFromParent();//
@@ -76,7 +49,7 @@ public class ExpItemView extends SimpleView {
 			td0.addClassName("icon");
 			td0.setAttribute("rowspan", "4");
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
-			image.setAttribute("src", t.getIconDataUrl());
+			image.setAttribute("src", ei.getIconDataUrl());
 			td0.append(image);
 
 		}
@@ -87,7 +60,7 @@ public class ExpItemView extends SimpleView {
 
 			td1.addClassName("expBody");
 			td1.setAttribute("colspan", "1");//
-			td1.getElement().setInnerText(t.getExpBody());
+			td1.getElement().setInnerText(ei.getExpBody());
 			// td1,1
 		}
 
@@ -95,7 +68,7 @@ public class ExpItemView extends SimpleView {
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();
 			td.addClassName("timestamp");
-			String dateS = DateUtil.format(t.getTimestamp(), false);
+			String dateS = DateUtil.format(ei.getTimestamp(), false);
 			td.getElement().setInnerText(dateS);
 
 		}
@@ -103,19 +76,24 @@ public class ExpItemView extends SimpleView {
 		{
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
-			td.getElement().setInnerText(t.getActivityId());
+			td.getElement().setInnerText(ei.getActivityId());
 
 		}
 
 	}
 
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	protected void processModelValue(Location loc, ValueWrapper vw) {
-		super.processModelValue(loc, vw);
-
+	public String getExpId() {
+		ExpItemModel em = (ExpItemModel) this.model;
+		return em.getExpId();
 	}
 
+	/*
+	 * Feb 1, 2013
+	 */
+	@Override
+	protected void beforeActionEvent(ActionEvent ae) {
+		//
+		super.beforeActionEvent(ae);
+		ae.setProperty("expId2", this.getExpId());
+	}
 }

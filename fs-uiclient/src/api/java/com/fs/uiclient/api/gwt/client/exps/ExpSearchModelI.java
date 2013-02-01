@@ -24,7 +24,7 @@ public interface ExpSearchModelI extends ModelI {
 	
 	public void setPhrase(String phrase);
 
-	public ExpItemModel addExpItem(String id);
+	public void addExpItem(ExpItemModel ei);
 
 	public List<ExpItemModel> getExpItemList();
 
