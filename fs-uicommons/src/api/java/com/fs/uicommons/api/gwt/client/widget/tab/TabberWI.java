@@ -18,9 +18,13 @@ public interface TabberWI extends CompositeI {
 	public static final Location L_SELECTED_TABNAME = Location
 			.valueOf("selectedTabName");
 
+	public TabWI getSelected(boolean force);
+	
 	public TabWI addTab(String name);
-
+	
 	public TabWI addTab(String name, WidgetI content);
+	
+	public TabWI addTab(String name, WidgetI content, boolean sel);
 
 	public TabWI getTab(String name, boolean force);
 

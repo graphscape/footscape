@@ -5,6 +5,7 @@ package com.fs.uicommons.impl.gwt.client;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.AdjusterI;
+import com.fs.uicommons.api.gwt.client.HeaderItems;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.drag.DraggerI;
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
@@ -75,7 +76,8 @@ import com.fs.uicommons.impl.gwt.client.frwk.login.LoginView;
 import com.fs.uicommons.impl.gwt.client.gchat.GChatControlImpl;
 import com.fs.uicommons.impl.gwt.client.handler.ClientStartedHandler;
 import com.fs.uicommons.impl.gwt.client.handler.EndpointBondHandler;
-import com.fs.uicommons.impl.gwt.client.handler.HeaderItemHandler;
+import com.fs.uicommons.impl.gwt.client.handler.LoginHeaderItemHandler;
+import com.fs.uicommons.impl.gwt.client.handler.LogoutHeaderItemHandler;
 import com.fs.uicommons.impl.gwt.client.handler.UserLoginHandler;
 import com.fs.uicommons.impl.gwt.client.handler.action.AutoLoginHandler;
 import com.fs.uicommons.impl.gwt.client.handler.action.GChatJoinAP;
@@ -147,9 +149,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		// start frwk view.
 		FrwkControlI fc = manager.getControl(FrwkControlI.class, true);
 		fc.open();
-		fc.addHeaderItem(Path.valueOf("user/login"));
-		fc.addHeaderItem(Path.valueOf("user/logout"));
-		fc.addHeaderItem(Path.valueOf("user/profile"));
+		fc.addHeaderItem(HeaderItems.USER_LOGIN);
+		fc.addHeaderItem(HeaderItems.USER_LOGOUT);
 
 	}
 
@@ -175,7 +176,11 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	public void activeOtherHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 		eb.addHandler(EndpointBondEvent.TYPE, new EndpointBondHandler(c));
-		eb.addHandler(HeaderItemEvent.TYPE, new HeaderItemHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderItems.USER_LOGIN),
+				new LoginHeaderItemHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderItems.USER_LOGOUT),
+				new LogoutHeaderItemHandler(c));
+
 		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));
 		eb.addHandler(UserLoginEvent.TYPE, new UserLoginHandler(c));
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));

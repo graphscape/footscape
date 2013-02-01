@@ -22,6 +22,8 @@ public class ItemView extends LightWeightView {
 
 	private Path path;
 
+	private boolean selected;
+
 	public ItemView(ContainerI ctn, Path path) {
 		super("item", DOM.createSpan(), ctn);
 		this.path = path;
@@ -37,9 +39,28 @@ public class ItemView extends LightWeightView {
 
 			@Override
 			public void handle(ClickEvent e) {
-				ItemView.this.select(true);
+				ItemView.this.onClick();
 			}
 		});
+	}
+
+	public MenuItemWI getOrAddMenuItem(final String name) {
+
+		MenuItemWI rt = this.menu.addItem(name);
+		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+			@Override
+			public void handle(ClickEvent t) {
+				ItemView.this.onMenuItemClick(name);
+			}
+		});
+		return rt;
+	}
+
+	protected void onMenuItemClick(String name) {
+		new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path.getSubPath(name)))
+				.dispatch();
+
 	}
 
 	/**
@@ -51,11 +72,23 @@ public class ItemView extends LightWeightView {
 		this.anchor.getModel().setDefaultValue(dname);// TODO ValueDeliverI.
 	}
 
+	private void onClick() {
+		this.select(!this.selected);
+	}
+
 	public void select(boolean sel) {
+		if (this.selected == sel) {
+			return;
+		}
+		this.selected = sel;
+
+		this.tryOpenCloseMenu(sel);
 
 		this.anchor.getElementWrapper().addAndRemoveClassName(sel, "selected", "unselected");
-		this.tryOpenCloseMenu(sel);
-		new HeaderItemEvent(this, this.path).dispatch();
+
+		if (this.selected) {
+			new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path)).dispatch();
+		}
 	}
 
 	protected boolean hasMenu() {

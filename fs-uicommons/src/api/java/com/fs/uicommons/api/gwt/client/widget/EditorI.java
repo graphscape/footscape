@@ -14,9 +14,5 @@ public interface EditorI<T> extends WidgetI {
 	public T getData();
 
 	public void input(T d);
-	/*
-	 * public void addListener(Event.Type<EditEvent<D>> type,
-	 * ListenerI<EditEvent<D>> l);
-	 */
 
 }

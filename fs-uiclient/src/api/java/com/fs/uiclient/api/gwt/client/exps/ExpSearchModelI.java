@@ -14,14 +14,15 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public interface ExpSearchModelI extends ModelI {
 
-
-	public static final Location L_FIRSTRESULT= Location.valueOf("firstResult");
+	public static final Location L_FIRSTRESULT = Location.valueOf("firstResult");
 
 	public static final Location L_MAXRESULT = Location.valueOf("maxResult");
 
-	public String getKeyword();
-
 	public String getExpId(boolean force);
+
+	public String getPhrase(boolean force);
+	
+	public void setPhrase(String phrase);
 
 	public ExpItemModel addExpItem(String id);
 
@@ -35,8 +36,8 @@ public interface ExpSearchModelI extends ModelI {
 
 	public boolean previousPage();
 
-	public void setExpId(String expId);//for search parameter
+	public void setExpId(String expId);// for search parameter
 
-	public String getExpId();//for search parameter
+	public String getExpId();// for search parameter
 
 }

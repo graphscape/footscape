@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
@@ -17,6 +18,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
 
 /**
@@ -39,12 +41,20 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 	 * @param ele
 	 * @param ctn
 	 */
-	public ExpSearchView(String name, ContainerI ctn) {
+	public ExpSearchView(ContainerI ctn, ExpSearchModelI m) {
 
-		super(name, ctn);
+		super(Actions.A_EXPS.getName(), ctn, m);
 
 		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
+		this.statement.getModel().addValueHandler(ModelI.L_DEFAULT, new EventHandlerI<ModelValueEvent>() {
+
+			@Override
+			public void handle(ModelValueEvent t) {
+				String text = (String) t.getValue();
+				ExpSearchView.this.onPhraseChange(text);
+			}
+		});
 
 		this.list = this.factory.create(ListI.class);
 		//
@@ -73,6 +83,10 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 
 	}
 
+	protected void onPhraseChange(String text) {
+		this.getModel().setPhrase(text);
+	}
+
 	protected void onPreviousPage() {
 		ExpSearchModelI m = this.getModel();
 		m.previousPage();
@@ -83,23 +97,8 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 		m.nextPage();
 	}
 
-	@Override
 	public ExpSearchModelI getModel() {
-		return this.model.cast();
-	}
-
-	@Override
-	public void doAttach() {
-		super.doAttach();
-
-		this.statement.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
-
-			@Override
-			public void handle(ClickEvent e) {
-				// TODO call action search action
-			}
-		});
-
+		return this.findModel(ExpSearchModelI.class, true);
 	}
 
 	/*
@@ -115,24 +114,12 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 		this.managed = mgd;
 	}
 
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public void processChildModelAdd(ModelI p, ModelI cm) {
-		super.processChildModelAdd(p, cm);
-		if (cm instanceof ExpItemModel) {
-			this.processChildExpItemModelAdd((ExpItemModel) cm);
-		}
-	}
-
 	/**
 	 * Oct 20, 2012
 	 */
-	private void processChildExpItemModelAdd(ExpItemModel cm) {
+	public void addExpItem(ExpItemModel cm) {
 		String vname = viewName(cm);
-		ExpItemView vi = new ExpItemView(vname, this.getContainer());
-		vi.model(cm);
+		ExpItemView vi = new ExpItemView(vname, this.getContainer(), cm);
 		vi.parent(this.list);// item view in list not this.
 
 	}
@@ -146,22 +133,10 @@ public class ExpSearchView extends SimpleView implements ViewReferenceI.AwareI {
 		return (ExpItemView) this.list.getChild(ModelI.class, vname, force);
 	}
 
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public void processChildModelRemove(ModelI parent, ModelI cm) {
-		//
-		super.processChildModelRemove(parent, cm);
-		if (cm instanceof ExpItemModel) {
-			this.processChildExpItemModelRemove((ExpItemModel) cm);
-		}
-	}
-
 	/**
 	 * Dec 1, 2012
 	 */
-	private void processChildExpItemModelRemove(ExpItemModel cm) {
+	public void removeExpItem(ExpItemModel cm) {
 		String vname = viewName(cm);
 		ExpItemView ev = (ExpItemView) this.list.getChild(ViewI.class, vname, false);
 

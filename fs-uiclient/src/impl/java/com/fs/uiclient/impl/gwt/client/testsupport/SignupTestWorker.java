@@ -57,7 +57,9 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		if (!ui.isAnonymous()) {//
 			throw new UiException("user info not anonymous,ui:" + ui);
 		}
-		this.signupView = this.mcontrol.getSignupView();
+		
+		this.signupView = 
+		this.mcontrol.openSignup();
 		if (this.signupView.isAttached()) {
 			this.trySignup();
 		}

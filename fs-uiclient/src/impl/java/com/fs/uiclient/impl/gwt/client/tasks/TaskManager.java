@@ -30,18 +30,7 @@ public class TaskManager extends UiObjectSupport {
 	 */
 	protected void onAuthedEvent(ModelValueEvent e) {
 		// start the scheduler
-		String secS = this.getClient(true).getParameter("refresh.interval", "60S");
-		if (secS.endsWith("S")) {
-			secS = secS.substring(0, secS.length() - 1);
-		} else {
-			throw new UiException("TODO:" + secS);
-		}
-		int intervalMS = Integer.parseInt(secS) * 1000;// ms
-
-		SchedulerI sc = this.getContainer().get(SchedulerI.class, true);
-
-		sc.scheduleRepeat("activity-refresh", intervalMS,// 2 sec
-				new ActivityRefreshHandler());
+		
 
 	}
 

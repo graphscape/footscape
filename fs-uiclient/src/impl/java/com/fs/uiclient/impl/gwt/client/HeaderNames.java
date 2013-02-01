@@ -4,15 +4,18 @@
  */
 package com.fs.uiclient.impl.gwt.client;
 
+import com.fs.uicore.api.gwt.client.commons.Path;
+
 /**
  * @author wu
  * 
  */
 public class HeaderNames {
 
-	public static final String H1_USER = "user";
-	public static final String H2_PROFILE = "profile";
-	public static final String H2_SIGNUP = "signup";
-	public static final String H2_LOGIN = "login";
-	
+	public static final Path H1_USER = Path.valueOf("user");
+
+	public static final Path H2_PROFILE = H1_USER.getSubPath("profile");
+
+	public static final Path H2_SIGNUP = H1_USER.getSubPath("signup");
+
 }

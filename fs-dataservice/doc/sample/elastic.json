@@ -108,6 +108,21 @@ curl -XGET 'http://localhost:9200/node-test/account/_search' -d '{
     }
 }'
 
+curl -XGET 'http://localhost:9200/nodes/expectation/_search' -d '
+{"from":0,"size":15,"query":{"bool":{"must":[{"term":{"type_":"expectation"}},{"match":{"body":{"query":null,"type":"phrase","operator":"AND","slop":0}}}]}},"explain":true}
+'
+
+curl -XGET 'http://localhost:9200/nodes/expectation/_search' -d '
+{"from":0,"size":15,"query":{
+	"bool":{
+		"must":[
+			{"term":{"type_":"expectation"}},
+			{"match":{"body":{"query":"hello","type":"phrase","operator":"AND","slop":0}}}
+			]}
+	
+	},"explain":true}
+'
+
 curl -XGET 'http://localhost:9200/node-test/account/_search' -d '{
     "query": {
         "term":{ "user" : "user1" }

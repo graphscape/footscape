@@ -21,21 +21,14 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 
 	private String expId;
 
+	private String phrase;
+
 	/**
 	 * @param name
 	 */
 	public ExpSearchModel(String name) {
 		super(name);
 		ControlUtil.addAction(this, Actions.A_EXPS_SEARCH);//
-	}
-
-	/*
-	 * Oct 20, 2012
-	 */
-	@Override
-	public String getKeyword() {
-		//
-		return null;
 	}
 
 	/*
@@ -140,6 +133,29 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public String getExpId() {
 		return this.expId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#getPhrase(boolean)
+	 */
+	@Override
+	public String getPhrase(boolean force) {
+		if (force && this.phrase == null) {
+			throw new UiException("no phrase provided by user");
+		}
+
+		return this.phrase;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#setPhrase(java.lang.String)
+	 */
+	@Override
+	public void setPhrase(String phrase) {
+		this.phrase = phrase;
 	}
 
 }

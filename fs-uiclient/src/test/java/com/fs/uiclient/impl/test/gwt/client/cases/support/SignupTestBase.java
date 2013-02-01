@@ -40,7 +40,7 @@ public abstract class SignupTestBase extends TestBase {
 		UserInfo ui = e.getChannel().getUserInfo();
 		if (ui.isAnonymous()) {//
 			// open signup view
-			this.mcontrol.getSignupView();
+			this.mcontrol.openSignup();
 		} else {
 
 		}

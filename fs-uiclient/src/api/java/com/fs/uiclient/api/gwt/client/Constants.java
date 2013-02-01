@@ -9,5 +9,6 @@ package com.fs.uiclient.api.gwt.client;
  */
 public class Constants {
 	public static final String IS_LOCAL = "_is_local";
+	public static final String AK_FORMS_MODEL = "formsModel";
 
 }

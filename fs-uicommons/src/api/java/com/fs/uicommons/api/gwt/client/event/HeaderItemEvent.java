@@ -16,18 +16,11 @@ public class HeaderItemEvent extends Event {
 
 	public static final Type<HeaderItemEvent> TYPE = new Type<HeaderItemEvent>("header-item");
 
-	protected Path path;
-
 	/**
 	 * @param type
 	 */
 	public HeaderItemEvent(UiObjectI src, Path path) {
-		super(TYPE, src);
-		this.path = path;
-	}
-
-	public Path getPath() {
-		return path;
+		super(TYPE, src, path);
 	}
 
 }

@@ -80,6 +80,7 @@ public class BodyView extends LightWeightView implements BodyViewI{
 		return (T) rt;
 	}
 
+	@Override
 	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt) {
 		T rt = this.getItem(path, false);
 		if (rt != null) {

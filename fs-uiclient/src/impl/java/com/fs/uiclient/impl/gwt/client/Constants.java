@@ -12,11 +12,11 @@ package com.fs.uiclient.impl.gwt.client;
  * 
  */
 public class Constants {
-	
+
 	public static final String X_FS_TEST_CASE = "X_FS_TEST_CASE";
-	
+
 	public static final String X_FS_SESSION_ID = "X_FS_SESSION_ID";// header
-	
+
 	public static final String SESSION = "_SESSION";//
 
 	public static class IndexControlConstants {

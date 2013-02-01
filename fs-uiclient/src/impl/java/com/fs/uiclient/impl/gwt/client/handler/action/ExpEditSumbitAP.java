@@ -30,8 +30,7 @@ public class ExpEditSumbitAP extends FormDataAP {
 	@Override
 	public void handle(ActionEvent ae) {
 		MsgWrapper req = this.newRequest(Path.valueOf("/expe/submit"));
-		ModelI m = (ModelI) ae.getProperty("expModel", true);
-		this.processFormData(m, req);
+		this.processFormData(ae, req);
 		this.sendMessage(req);
 	}
 

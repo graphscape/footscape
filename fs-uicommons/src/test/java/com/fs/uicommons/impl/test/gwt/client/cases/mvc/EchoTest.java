@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
-import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
+import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicommons.impl.test.gwt.client.echo.EchoModel;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -45,14 +45,13 @@ public class EchoTest extends TestBase {
 			}
 		});
 
-		//EchoControl control = new EchoControl("echo");
-		
-		//control.parent(this.manager);// for attach
+		// EchoControl control = new EchoControl("echo");
+
+		// control.parent(this.manager);// for attach
 		// listen to the control event
 
 		// view
-		FormView view = new FormView(this.container);
-		view.model(fm);
+		FormsView view = new FormsView(this.container, fm);
 
 		cm.manage(fm, view);
 
@@ -70,8 +69,8 @@ public class EchoTest extends TestBase {
 		});
 		;
 
-		EditorI fE = view.getEditor("field1");
-		fE.input(this.field1Data);
+		// EditorI fE = view.getEditor("field1");
+		// fE.input(this.field1Data);
 
 		// view.clickAction("echo");// cause action
 

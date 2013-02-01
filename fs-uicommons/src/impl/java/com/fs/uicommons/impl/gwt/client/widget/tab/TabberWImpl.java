@@ -86,18 +86,32 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		}
 	}
 
+	public List<TabWI> getTabList() {
+		return this.getChildList(TabWI.class);
+	}
+
 	/**
 	 * 
 	 */
 	@Override
 	public TabWI addTab(String name) {
+		return this.addTab(name, false);
+
+	}
+
+	public TabWI addTab(String name, boolean sel) {
+
 		TabWI old = this.getTab(name, false);
 		if (old != null) {
 			throw new UiException("duplicated:" + name + ",in tabber:" + this);
 		}
 
+		// first must select
+		sel = sel || this.getTabList().isEmpty();
+
 		PanelWI pw = this.factory.create(PanelWI.class);
-		StackWI.ItemModel sitem = this.stack.insert(pw, true);//
+
+		StackWI.ItemModel sitem = this.stack.insert(pw, sel);//
 
 		TabWImpl rt = new TabWImpl(name, pw, sitem, this);// TODO not is a
 															// widget.
@@ -105,8 +119,9 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 		this.child(rt);//
 
-		rt.select();// todo only select the first one,or default one.
-
+		if (sel) {
+			rt.select();// todo only select the first one,or default one.
+		}
 		return rt;
 	}
 
@@ -117,6 +132,11 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	@Override
 	public TabWI addTab(String name, WidgetI content) {
+		return this.addTab(name, content, true);
+	}
+
+	@Override
+	public TabWI addTab(String name, WidgetI content, boolean sel) {
 		TabWI rt = this.addTab(name);
 		rt.getPanel().child(content);
 		return rt;
@@ -170,6 +190,26 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 		return tb.getPanel();
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.widget.tab.TabberWI#getSelected(boolean)
+	 */
+	@Override
+	public TabWI getSelected(boolean force) {
+		List<TabWI> tl = this.getChildList(TabWI.class);
+		for (TabWI t : tl) {
+			if (t.isSelected()) {
+				return t;
+			}
+		}
+		if (force) {
+			throw new UiException("empty or bug,there is no tab selected?");
+		}
+		return null;
 	}
 
 }

@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
+import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
@@ -37,8 +38,8 @@ public class ProfileView extends FormsView implements ViewReferenceI.AwareI {
 	/**
 	 * @param ctn
 	 */
-	public ProfileView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public ProfileView(ContainerI ctn, ProfileModel pm) {
+		super(Actions.A_PROFILE.getName(), ctn, pm);
 		if (this.listenIcon) {
 			this.image = DOM.createImg();
 			DOM.appendChild(this.body, this.image);
@@ -86,10 +87,9 @@ public class ProfileView extends FormsView implements ViewReferenceI.AwareI {
 	 * Nov 17, 2012
 	 */
 	@Override
-	protected void processChildFormModelAdd(FormModel fm) {
+	public void addForm(FormModel fm) {
 		//
-		super.processChildFormModelAdd(fm);
-		// listen to the icon value inf field model
+		super.addForm(fm);
 		if (this.listenIcon) {
 			OffspringValueDeliver<String, String> ovd = new OffspringValueDeliver<String, String>(fm,
 					FieldModel.class, ProfileModelI.L_ICON.getProperty(), FieldModel.L_DEFAULT, this.model,

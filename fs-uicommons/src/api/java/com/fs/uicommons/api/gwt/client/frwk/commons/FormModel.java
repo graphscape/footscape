@@ -32,33 +32,34 @@ public class FormModel extends ModelSupport {
 		super(name);
 	}
 
-	public FieldModel addField(String name, Class<? > dcls) {
+	public List<FieldModel> getFieldModelList() {
+		return this.getChildList(FieldModel.class);
+	}
+
+	public FieldModel addField(String name, Class<?> dcls) {
 		return this.addField(name, dcls, null);// default editor class
 	}
 
-	public <T extends EditorI> FieldModel addField(String name,
-			Class<? > dcls, Class<T> editorClass) {
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass) {
 		return this.addField(name, dcls, editorClass, null);
 	}
 
-	public <T extends EditorI> FieldModel addField(String name,
-			Class<? > dcls, Class<T> editorClass,
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback) {
 		FieldModel rt = new FieldModel(name);
 		rt.setEditorClass(editorClass);
 		rt.setFieldType(dcls);
 		if (editorCallback != null) {// this should be some thing like
 										// "EditorInitializer".
-			rt.addValueHandler(FieldModel.L_EDITOR,
-					new EventHandlerI<ModelValueEvent>() {
+			rt.addValueHandler(FieldModel.L_EDITOR, new EventHandlerI<ModelValueEvent>() {
 
-						@Override
-						public void handle(ModelValueEvent e) {
-							T editor = (T) e.getValue();
-							editorCallback.execute(editor);
+				@Override
+				public void handle(ModelValueEvent e) {
+					T editor = (T) e.getValue();
+					editorCallback.execute(editor);
 
-						}
-					});// TODO add a direct value callbackI?
+				}
+			});// TODO add a direct value callbackI?
 		}
 		rt.parent(this);
 		return rt;

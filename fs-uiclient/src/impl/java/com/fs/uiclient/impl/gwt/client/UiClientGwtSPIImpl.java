@@ -19,10 +19,12 @@ import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.main.MainModelI;
+import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.cooper.CooperControl;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
@@ -51,11 +53,18 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
+import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
+import com.fs.uiclient.impl.gwt.client.uelist.UserExpListControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
+import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -63,7 +72,6 @@ import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -82,10 +90,24 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		UiClientI client = c.get(UiClientI.class, true);//
 
 		this.activeInstanceOfChecker(c);
+
 		this.activeActionHandlers(c, client);
-		this.activeMainControl(c, client);
 		this.activeMessageHandlers(c, client);
 		this.activeOtherHandlers(c, client);
+
+		this.activeControls(c, client);
+		this.activeHeaderItems(c, client);
+
+	}
+
+	/**
+	 * @param c
+	 * @param client
+	 */
+	private void activeHeaderItems(ContainerI c, UiClientI client) {
+		FrwkControlI fc = client.find(FrwkControlI.class, true);
+		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
+		fc.addHeaderItem(HeaderNames.H2_PROFILE);
 	}
 
 	/**
@@ -94,6 +116,11 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	private void activeOtherHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_SIGNUP),
+				new SignupHeaderItemHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_PROFILE),
+				new ProfileHeaderItemHandler(c));
+
 	}
 
 	/**
@@ -160,15 +187,14 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 	}
 
-	private void activeMainControl(ContainerI c, UiClientI client) {
+	private void activeControls(ContainerI c, UiClientI client) {
 		//
 		//
-		ModelI rootModel = client.getRootModel();
+		ControlManagerI manager = client.getChild(ControlManagerI.class, true);
 
-		// Mvc mvc = new Mvc(new MainModel("main"), null, new
-		// MainControl("main"));
-		// mvc.start(rootModel);//
-		// main has no view.
+		manager.addControl(new MainControl(c, "main"));
+		manager.addControl(new CooperControl(c, "cooper"));
+		manager.addControl(new UserExpListControl(c, "uelist"));
 
 	}
 
@@ -451,6 +477,26 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof ActivitiesControlI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(SignupModelI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof SignupModelI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(ProfileModelI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof ProfileModelI;
 
 			}
 

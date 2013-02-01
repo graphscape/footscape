@@ -6,6 +6,8 @@ package com.fs.uicommons.api.gwt.client.mvc.simple;
 
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -18,7 +20,6 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.efilter.ClickEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
@@ -97,15 +98,11 @@ public class SimpleView extends ViewSupport {
 
 		b.parent(this.actionList);
 		// click event is raised in button,not button's model
-		b.addHandler(new ClickEventFilter(b), new EventHandlerI<ClickEvent>() {
+		b.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
-
-				cm.setState(ActionModelI.TRIGGERED);// this will triger the
-													// AModel's handler,which is
-													// add by control
-				// dispatch event.
+				SimpleView.this.onActionClick(cm.getName());
 			}
 		});
 		// deliver the action's hidden to the button's visible.
@@ -115,6 +112,27 @@ public class SimpleView extends ViewSupport {
 				ActionModelI.L_HIDDEN, bm, WidgetI.IS_VISIBLE);
 		svd.mapValue(Boolean.TRUE, Boolean.FALSE).mapDefault(Boolean.TRUE).start();
 		// widget for render the model
+
+	}
+
+	/**
+	 * @param name
+	 */
+	protected void onActionClick(String name) {
+		ActionEvent ae = this.newActionEvent(name);
+		this.beforeActionEvent(ae);
+		ae.dispatch();
+
+	}
+
+	//
+	protected ActionEvent newActionEvent(String aname) {
+		Path ap = Actions.ACTION.getSubPath(this.name).getSubPath(aname);
+		ActionEvent rt = new ActionEvent(this, ap);
+		return rt;
+	}
+
+	protected void beforeActionEvent(ActionEvent ae) {
 
 	}
 

@@ -6,26 +6,26 @@ package com.fs.uicommons.impl.gwt.client.frwk.commons.form;
 
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.Constants;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.simple.SyncValueDeliver;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wu
  * 
  */
-public class FormsView extends SimpleView {
+public class FormsView extends SimpleView implements FormsViewI {
 
 	// private static final String PK_TAB_FORMMODEL = FormsView.class.getName()
 	// + "_formModel";
@@ -35,76 +35,66 @@ public class FormsView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public FormsView(ContainerI ctn) {
-		this(null, ctn);
+	public FormsView(ContainerI ctn, FormsModel fm) {
+		this(null, ctn, fm);
 	}
 
-	public FormsView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public FormsView(String name, ContainerI ctn, FormsModel fm) {
+		super(name, ctn, fm);
 		this.tabber = this.factory.create(TabberWI.class);
 		this.tabber.parent(this);//
+		for (FormModel f : fm.getChildList(FormModel.class)) {
+			this.addForm(f);
+		}
 
 	}
 
-	@Override
-	public WidgetI model(ModelI model) {
-		super.model(model);
-
-		return this;
-	}
-
-	private FormsModel concreteModel() {
+	public FormsModel concreteModel() {
 		return (FormsModel) this.model;
 	}
 
 	@Override
-	public void processChildModelAdd(final ModelI p, final ModelI cm) {
-		super.processChildModelAdd(p, cm);
-		if (cm instanceof FormModel) {
-			this.processChildFormModelAdd((FormModel) cm);
+	public void addForm(final FormModel cm) {
+
+		FormView fv = new FormView(this.getContainer(), cm);
+
+		TabWI tb = this.tabber.addTab(tabName(cm), fv, false);
+		tb.addSelectEventHandler(new EventHandlerI<SelectEvent>() {
+
+			@Override
+			public void handle(SelectEvent t) {
+				if (!t.isSelected()) {
+					return;
+				}
+				FormsView.this.onSelectedFromTab(cm);
+			}
+		});
+		// first?
+		if (tb.isSelected()) {
+			this.setCurrentForm(cm);
 		}
+
 	}
 
 	/**
 	 * @param cm
 	 */
-	protected void processChildFormModelAdd(final FormModel cm) {
+	protected void onSelectedFromTab(FormModel cm) {
+		this.setCurrentForm(cm);
+	}
 
-		FormView fv = new FormView(this.getContainer());
-		fv.setName(cm.getName());// for testing/debug
-		fv.model(cm);
-		TabWI tb = this.tabber.addTab(tabName(cm), fv);
+	@Override
+	protected void beforeActionEvent(ActionEvent ae) {
 
-		// tab select cause form model current change.
-		SyncValueDeliver<Boolean, String> mvd = new SyncValueDeliver<Boolean, String>(
-				tb.getModel(), TabWI.MK_SELECTED, this.concreteModel(),
-				FormsModel.L_CURRENT_FORM)//
-				.mapValue(Boolean.TRUE, cm.getName())// if tab selected,then the
-														// current form selected
-														// is the Name of the
-														// cm.
-				.reverseMapDefault(Boolean.FALSE);// if the name not match the
-													// map reversely,set the tab
-													// unselected.
-													// the
-													// value
-													// is
-		// false,@see:
-		mvd.start();//
-		// actions for this form
-
+		ae.property(Constants.AK_FORMS_MODEL, this.concreteModel());
 	}
 
 	private String tabName(FormModel fm) {
 		return "tab-" + fm.getName();
 	}
 
-	@Override
-	protected void processModelValue(Location loc, ValueWrapper vw) {
-		super.processModelValue(loc, vw);
-		if (loc.equals(FormsModel.L_CURRENT_FORM)) {
-			this.processModelValueCurrentForm(vw);
-		}
+	public FormModel getCurrentForm() {
+		return this.concreteModel().getCurrentForm();
 	}
 
 	/**
@@ -112,8 +102,7 @@ public class FormsView extends SimpleView {
 	 * 
 	 * @param e
 	 */
-	protected void processModelValueCurrentForm(ValueWrapper e) {
-		FormModel fm = this.concreteModel().getCurrentForm();
+	public void setCurrentForm(FormModel fm) {
 		this.updateActionHidden(fm);// for current form,only should required
 									// actions.
 		// may have not yet add to tabber?
@@ -123,13 +112,15 @@ public class FormsView extends SimpleView {
 			return;// see the processChildFormModelAdd,there should process the
 					// current form issue.
 		}
-		tab.select();//
+
+		if (!tab.isSelected()) {
+			tab.select();//
+		}
 	}
 
 	protected void updateActionHidden(FormModel fm) {
 		List<Path> actions = fm.getActionList();
-		List<ActionModelI> amL = ControlUtil
-				.getActionList(this.concreteModel());
+		List<ActionModelI> amL = ControlUtil.getActionList(this.concreteModel());
 
 		for (ActionModelI am : amL) {
 			Path name = am.getActionPath();

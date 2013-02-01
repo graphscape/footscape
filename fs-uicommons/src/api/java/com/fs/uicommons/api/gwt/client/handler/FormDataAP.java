@@ -4,10 +4,11 @@
  */
 package com.fs.uicommons.api.gwt.client.handler;
 
+import com.fs.uicommons.api.gwt.client.Constants;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -29,12 +30,13 @@ public abstract class FormDataAP extends ActionHandlerSupport {
 		this.form = form;
 	}
 
-	protected void processFormData(ModelI md, MsgWrapper req) {
+	protected void processFormData(ActionEvent ae, MsgWrapper req) {
+		FormsModel md = (FormsModel) ae.getProperty(Constants.AK_FORMS_MODEL);
 		ObjectPropertiesData dt = this.getFormData(md);
 		req.setPayloads(dt);
 	}
 
-	protected ObjectPropertiesData getFormData(ModelI fsm) {
+	protected ObjectPropertiesData getFormData(FormsModel fsm) {
 
 		if (!(fsm instanceof FormsModel)) {
 			throw new UiException("the model:" + fsm + " not a FormsModel");

@@ -32,8 +32,8 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		//
 		ExpSearchModelI sm = (ExpSearchModelI) this.getRootModel().find(ExpSearchModelI.class, true);
 
-		String expId = sm.getExpId(true);
-
+		String expId = sm.getExpId(false);
+		String phrase = sm.getPhrase(false);
 		int pg = sm.getFirstResult();
 		MsgWrapper req = this.newRequest(Path.valueOf("/exps/search"));
 		req.setPayload("firstResult", Integer.valueOf(pg));
@@ -43,7 +43,7 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		req.getPayloads().setProperty("expId", (expId));
 
 		// user input keywords.
-		req.getPayloads().setProperty("keywords", (""));
+		req.getPayloads().setProperty("phrase", phrase);
 
 		// TODO keywords
 		this.sendMessage(req);

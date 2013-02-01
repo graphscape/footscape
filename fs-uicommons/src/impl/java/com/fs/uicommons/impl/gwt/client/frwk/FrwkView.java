@@ -7,8 +7,10 @@ package com.fs.uicommons.impl.gwt.client.frwk;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
@@ -114,16 +116,15 @@ public class FrwkView extends ViewSupport implements FrwkViewI{
 		DOM.appendChild(td, cw.getElement());
 	}
 
-	/**
-	 * @return
-	 */
-	public BodyView getBodyView() {
-		return this.getChild(BodyView.class, true);
+	@Override
+	public BodyViewI getBodyView() {
+		return this.getChild(BodyViewI.class, true);
 
 	}
 
-	public HeaderView getHeader() {
-		return this.getChild(HeaderView.class, true);
+	@Override
+	public HeaderViewI getHeader() {
+		return this.getChild(HeaderViewI.class, true);
 	}
 
 }

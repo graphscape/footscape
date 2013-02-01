@@ -104,6 +104,14 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	}
 
+	protected <T extends ModelI> T findModel(Class<T> cls, boolean force) {
+		return this.getRootModel().find(cls, force);
+	}
+
+	protected ModelI getRootModel() {
+		return this.getClient(true).getRootModel();
+	}
+
 	//
 	// @Override
 	// public CompositeI child(WidgetI w) {

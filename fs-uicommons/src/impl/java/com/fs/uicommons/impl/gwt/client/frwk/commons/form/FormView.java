@@ -5,6 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.frwk.commons.form;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
@@ -14,6 +15,7 @@ import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI.PropertyModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -30,7 +32,7 @@ import com.google.gwt.user.client.DOM;
  * @author wu
  * 
  */
-public class FormView extends ViewSupport {
+public class FormView extends ViewSupport implements FormViewI {
 
 	private static Map<Class, Class<? extends EditorI>> typeEditorMap = new HashMap<Class, Class<? extends EditorI>>();
 
@@ -48,18 +50,18 @@ public class FormView extends ViewSupport {
 	/**
 	 * @param ctn
 	 */
-	public FormView(ContainerI ctn) {
-		super(DOM.createDiv(), ctn);
+	public FormView(ContainerI ctn, FormModel fm) {
+		super(DOM.createDiv(), ctn, fm);
 		this.propertiesEditor = this.factory.create(PropertiesEditorI.class);
 		this.propertiesEditor.parent(this);//
-	}
 
-	@Override
-	public void doModel(ModelI model) {
-		super.doModel(model);
+		List<FieldModel> fmL = fm.getFieldModelList();
+		for (FieldModel mi : fmL) {
+			this.addField(mi);
+		}
+
 		SyncValueDeliver<ObjectPropertiesData, ObjectPropertiesData> svd = new SyncValueDeliver<ObjectPropertiesData, ObjectPropertiesData>(
-				this.propertiesEditor.getModel(), ModelI.L_DEFAULT, this.model,
-				ModelI.L_DEFAULT);
+				this.propertiesEditor.getModel(), ModelI.L_DEFAULT, fm, ModelI.L_DEFAULT);
 		svd.mapDefaultDirect();
 		svd.getReverseValueDeliver().mapDefaultDirect();//
 		svd.start();
@@ -70,23 +72,11 @@ public class FormView extends ViewSupport {
 		return this.propertiesEditor.getPropertyEditor(name);
 	}
 
-	@Override
-	public void processChildModelAdd(final ModelI p, final ModelI cm) {
-		super.processChildModelAdd(p, cm);
-		if (cm instanceof FieldModel) {
-			this.processChildFieldModelAdd((FieldModel) cm);
-		}
-	}
-
-	/**
-	 * @param cm
-	 */
-	private void processChildFieldModelAdd(FieldModel cm) {
+	protected void addField(FieldModel cm) {
 
 		Class<? extends EditorI> etype = this.resolveEditorClass(cm);//
 
-		PropertyModel pm = this.propertiesEditor.addFieldModel(cm.getName(),
-				etype);
+		PropertyModel pm = this.propertiesEditor.addFieldModel(cm.getName(), etype);
 		pm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 
 			@Override
@@ -97,8 +87,8 @@ public class FormView extends ViewSupport {
 		});
 		// pipe the editor from property model to field model,then listened by
 		// the sub view impl such as SignupView.
-		new SimpleValueDeliver<EditorI, EditorI>(pm, PropertyModel.L_EDITOR,
-				cm, FieldModel.L_EDITOR).mapDefaultDirect().start();
+		new SimpleValueDeliver<EditorI, EditorI>(pm, PropertyModel.L_EDITOR, cm, FieldModel.L_EDITOR)
+				.mapDefaultDirect().start();
 	}
 
 	protected Class<? extends EditorI> resolveEditorClass(FieldModel fm) {
@@ -117,8 +107,7 @@ public class FormView extends ViewSupport {
 		Class<?> fType = fm.getFieldType();
 		rt = typeEditorMap.get(fType);
 		if (rt == null) {
-			throw new UiException("no editor is configured for field:" + fname
-					+ ",type:" + fType);
+			throw new UiException("no editor is configured for field:" + fname + ",type:" + fType);
 		}
 		return rt;
 	}
@@ -130,5 +119,16 @@ public class FormView extends ViewSupport {
 		FieldModel fm = ((FormModel) this.model).getFieldModel(name, true);
 		fm.setFieldValue(fv);
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#getFormModel()
+	 */
+	@Override
+	public FormModel getFormModel() {
+		return (FormModel) this.model;
 	}
 }

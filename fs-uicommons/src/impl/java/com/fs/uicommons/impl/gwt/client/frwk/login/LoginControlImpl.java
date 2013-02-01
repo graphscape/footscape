@@ -46,15 +46,15 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	@Override
 	public void openLoginView() {
 		LoginModelI lm = this.getOrCreateLoginModel();
-		this.getOrCreateLoginView(lm);
+		this.getOrCreateLoginView((LoginModel) lm);
 	}
 
-	public LoginView getOrCreateLoginView(LoginModelI lm) {
+	public LoginView getOrCreateLoginView(LoginModel lm) {
 		BodyViewI bv = this.getBodyView();
 		Path path = Path.valueOf("/login/view");
 		LoginView lv = bv.getItem(path, false);
 		if (lv == null) {
-			lv = new LoginView("login", this.getContainer());
+			lv = new LoginView("login", this.getContainer(), lm);
 			lv.model(lm);
 			bv.addItem(path, lv);
 		}

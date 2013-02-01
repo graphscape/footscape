@@ -4,11 +4,16 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uiclient.impl.gwt.client.tasks.ActivityRefreshHandler;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
+import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 
 /**
  * @author wu
@@ -29,10 +34,38 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 	 */
 	@Override
 	public void handle(UserLoginEvent t) {
+		// update header item
+		UserInfo ui = t.getUserInfo();
 		HeaderModelI hm = this.getModel(HeaderModelI.class, true);
 		HeaderModelI.ItemModel hi = hm.getItem("user", true);
 		String dname = t.getUserInfo().getString("nick", true);
 		hi.setDisplayName(dname);
+
+		// open exp search view
+		MainControlI mc = this.getControl(MainControlI.class, true);
+		mc.openExpSearch();//
+		// open user exp list view.
+		if (!ui.isAnonymous()) {//
+			mc.openUeList();
+		}
+
+		//
+		// this.activeTasks();
+	}
+
+	private void activeTasks() {
+		String secS = this.getClient(true).getParameter("refresh.interval", "60S");
+		if (secS.endsWith("S")) {
+			secS = secS.substring(0, secS.length() - 1);
+		} else {
+			throw new UiException("TODO:" + secS);
+		}
+		int intervalMS = Integer.parseInt(secS) * 1000;// ms
+
+		SchedulerI sc = this.container.get(SchedulerI.class, true);
+
+		sc.scheduleRepeat("activity-refresh", intervalMS,// 2 sec
+				new ActivityRefreshHandler());
 	}
 
 }

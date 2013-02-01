@@ -155,8 +155,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		}
 		// end of equals
 		// ranges
-		
-		
+
 		for (Range rg : this.rangeList()) {
 			RangeQueryBuilder qbi = new RangeQueryBuilder(rg.field);
 			qbi.from(rg.from);
@@ -166,7 +165,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		if (rst.hasError()) {
 			return;
 		}
-		
+
 		// end of ranges
 		// matches
 		PropertiesI<Match> mts = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
@@ -177,6 +176,10 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		}
 		for (String key : mts.keyList()) {
 			Match rg = mts.getProperty(key);
+			if (rg.pharse == null) {
+				//
+				continue;
+			}
 			MatchQueryBuilder qbi = new MatchQueryBuilder(key, rg.pharse);
 			qbi.type(Type.PHRASE);
 			qbi.slop(rg.slop);
@@ -193,7 +196,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		for (Sort s : this.sortList) {
 			srb.addSort(s.field, s.order);
 		}
-		
+
 		SearchResponse response = srb.execute()//
 				.actionGet();
 		SearchHits shs = response.getHits();

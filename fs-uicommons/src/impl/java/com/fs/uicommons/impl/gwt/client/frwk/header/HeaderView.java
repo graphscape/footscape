@@ -4,12 +4,15 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
-import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
@@ -20,6 +23,8 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 
 	private BarWidgetI itemList;
 
+	private Map<Path, ItemView> itemViewMap = new HashMap<Path, ItemView>();
+
 	/**
 	 * @param ctn
 	 */
@@ -27,14 +32,34 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		super(name, ctn, hm);
 		this.itemList = this.factory.create(BarWidgetI.class);
 		this.itemList.parent(this);//
+
 	}
 
-	public void doAttach() {
-		super.doAttach();
+	public ItemView getOrCreateItem(Path path) {
+
+		ItemView rt = this.itemViewMap.get(path);
+		if (rt != null) {
+			return rt;
+		}
+		rt = new ItemView(this.getContainer(), path);
+		this.itemList.addItem(BarWidgetI.P_RIGHT, rt);
+		this.itemViewMap.put(path, rt);
+		return rt;
 	}
 
 	public void addItem(Path path) {
-		this.itemList.addItem(BarWidgetI.P_RIGHT, new ItemView(this.getContainer(), path));
+
+		if (path.size() == 1) {
+			ItemView rt =this.getOrCreateItem(path);
+		} else if (path.size() == 2) {
+			ItemView rt =this.getOrCreateItem(path.getParent());
+			
+			rt.getOrAddMenuItem(path.getName());
+			
+		} else {
+			throw new UiException("not support deeper menu for path:" + path);
+		}
+
 	}
 
 }

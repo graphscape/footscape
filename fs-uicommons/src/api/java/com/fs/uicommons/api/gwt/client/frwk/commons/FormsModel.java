@@ -14,9 +14,8 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
 public class FormsModel extends ModelSupport {
 
 	public static final String DEFAULT_FORM = "default";
-
-	public static final Location L_CURRENT_FORM = Location
-			.valueOf("_currentForm");
+	
+	private FormModel currentForm;
 
 	/**
 	 * @param name
@@ -36,23 +35,11 @@ public class FormsModel extends ModelSupport {
 	}
 
 	public void setCurrentFormName(String name) {
-		this.setValue(L_CURRENT_FORM, name);
-	}
-
-	public String getCurrentFormName() {
-		return this.getValue(String.class, L_CURRENT_FORM, DEFAULT_FORM);
+		this.currentForm = this.getForm(name, true);
 	}
 
 	public FormModel getCurrentForm() {
-		String fname = this.getCurrentFormName();
-		return this.getForm(fname, true);
-	}
-
-	public void trySetCurrentFormName(String fname) {
-		if (fname.equals(this.getCurrentFormName())) {
-			return;
-		}
-		this.setValue(L_CURRENT_FORM, fname);
+		return this.currentForm;
 	}
 
 	public FormModel addForm(String name) {
@@ -61,8 +48,6 @@ public class FormsModel extends ModelSupport {
 		}
 		FormModel rt = new FormModel(name);
 		rt.parent(this);//
-		this.setValue(L_CURRENT_FORM, name);// TODO policy of select the current
-											// form.
 		// this will cause the view updated into the right screen.
 		return rt;
 	}

@@ -42,8 +42,7 @@ public class FormTest extends TestBase {
 			}
 		});
 
-		FormView fv = new FormView(this.container);
-		fv.model(fm);
+		FormView fv = new FormView(this.container, fm);
 
 		cm.manage(fm, fv);
 		assertTrue("form view should attached.", fv.isAttached());

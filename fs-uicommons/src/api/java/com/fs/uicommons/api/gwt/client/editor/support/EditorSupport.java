@@ -50,11 +50,16 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 	protected void setData(T d, boolean dispatch) {
 		// TODO for dispatch
 		boolean iss = this.model.isSilent();
+		// TODO specific model type.
 		this.model.silent(!dispatch);
 		try {
 			this.model.setValue(ModelI.L_DEFAULT, d);
 		} finally {
 			this.model.silent(iss);//
+		}
+		//
+		if (dispatch) {
+
 		}
 	}
 

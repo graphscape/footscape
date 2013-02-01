@@ -28,8 +28,8 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 	 * @param name
 	 */
 
-	public CooperModel(String name) {
-		super(name);
+	public CooperModel() {
+		super(Actions.A_COOPER.getName());
 
 		ControlUtil.addAction(this, Actions.A_COOP_REQUEST);
 		ControlUtil.addAction(this, Actions.A_COOP_CONFIRM);

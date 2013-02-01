@@ -28,7 +28,7 @@ public class OpenExpEditAP extends ActionHandlerSupport {
 		ControlI c = (ControlI)ae.getSource();
 		MainControlI mc = c.getManager().getControl(MainControlI.class, true);
 
-		ExpEditModelI eem = mc.getExpExitModel();
+		ExpEditModelI eem = mc.getExpEditModel();
 		// TODO by control.
 		eem.setValue(ExpEditModelI.L_ISOPEN, true);// listen by the view of the
 													// model.

@@ -11,6 +11,7 @@ import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wuzhen
@@ -49,6 +50,21 @@ public class ControlSupport extends AbstractControl {
 		rt = crt.create(this.container);
 		rt.parent(parent);
 		return rt;
+	}
+
+	public <T extends WidgetI> T getOrCreateView(WidgetI parent, Class<T> cls, CreaterI<T> crt) {
+		T rt = parent.getChild(cls, false);
+		if (rt != null) {
+			return rt;
+		}
+		rt = crt.create(this.container);
+		rt.parent(parent);
+		return rt;
+	}
+
+	public <T extends WidgetI> T gorOrCreateViewInBody(Path path, CreaterI<T> crt) {
+		return this.getBodyView().getOrCreateItem(path, crt);
+
 	}
 
 	public RootI getRootView() {

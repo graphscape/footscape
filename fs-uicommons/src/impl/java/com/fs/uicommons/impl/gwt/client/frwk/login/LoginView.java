@@ -31,8 +31,8 @@ public class LoginView extends FormsView implements ViewReferenceI.AwareI {
 
 	protected ItemModel headerLoginItem;
 
-	public LoginView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public LoginView(String name, ContainerI ctn, LoginModel lm) {
+		super(name, ctn, lm);
 
 		this.accountLabel = this.factory.create(LabelI.class);
 		this.accountLabel.parent(this);

@@ -29,8 +29,8 @@ public class ExpItemView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public ExpItemView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public ExpItemView(String name, ContainerI ctn, ExpItemModel m) {
+		super(name, ctn, m);
 
 	}
 
@@ -78,33 +78,33 @@ public class ExpItemView extends SimpleView {
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
 			image.setAttribute("src", t.getIconDataUrl());
 			td0.append(image);
-	
+
 		}
 		//
 		{
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
-			
+
 			td1.addClassName("expBody");
 			td1.setAttribute("colspan", "1");//
 			td1.getElement().setInnerText(t.getExpBody());
 			// td1,1
 		}
-		
-		{	
+
+		{
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();
 			td.addClassName("timestamp");
-			String dateS = DateUtil.format(t.getTimestamp(),false);
+			String dateS = DateUtil.format(t.getTimestamp(), false);
 			td.getElement().setInnerText(dateS);
-					
+
 		}
-		
+
 		{
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
 			td.getElement().setInnerText(t.getActivityId());
-			
+
 		}
 
 	}
