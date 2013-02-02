@@ -7,8 +7,11 @@ package com.fs.uiclient.impl.gwt.client.activities;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
+import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
@@ -42,13 +45,14 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	}
 
 	public ActivitiesModelI getActivitiesModel() {
-		return this.getRootModel().find(ActivitiesModelI.class, true);
+
+		return this.getControl(MainControlI.class, true).getActivitiesModel();
+
 	}
 
 	public ActivityModelI getActivity(String actId, boolean force) {
 
-		String lname = this.activityModelName(actId);
-		ActivityModelI rt = this.getActivitiesModel().getChild(ActivityModelI.class, lname, false);
+		ActivityModelI rt = this.getActivitiesModel().getChild(ActivityModelI.class, actId, false);
 		if (rt == null) {
 			if (force) {
 				throw new UiException("no activity with id:" + actId);
@@ -59,25 +63,27 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 
 	}
 
-	private String activityModelName(String actId) {
-		String rt = "activity-" + actId;
-		return rt;
-	}
-
 	/*
 	 * Nov 24, 2012
 	 */
 	@Override
-	public void openActivity(final String actId) {
+	public void openActivity(final ActivityModelI am) {
 		//
+		final String actId = am.getActivityId();
+		ActivitiesModelI asm = this.getActivitiesModel();
+		ActivityModelI old = this.getActivitiesModel().getActivity(actId);
+		if (old != null) {
+			old.parent(null);// remove
+		}
+		asm.child(am);
 
-		ActivityModelI am = this.getOrCreateModel(this.getActivitiesModel(), ActivityModelI.class, actId,
-				new CreaterI<ActivityModelI>() {
+		ActivityView av = this.getBodyView().getOrCreateItem(Path.valueOf("/activity-view/" + actId),
+				new CreaterI<ActivityView>() {
 
 					@Override
-					public ActivityModelI create(ContainerI ct) {
+					public ActivityView create(ContainerI ct) {
 						//
-						return new ActivityModel(actId, actId);
+						return new ActivityView(actId, ct, am);
 					}
 				});
 
@@ -100,8 +106,25 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 	}
 
 	@Override
-	public void refresh() {
+	public void refresh() {// refresh index.
 		new ActionEvent(this, Actions.A_ACTS_ACTIVITIES).dispatch();
+	}
+
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public ItemModel getActivityItem(String actId, boolean b) {
+		//
+		return this.getActivitiesModel().getItem(actId, b);
+	}
+
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public void addActivityItem(ItemModel im) {
+		this.getActivitiesModel().addItem(im);
 	}
 
 }

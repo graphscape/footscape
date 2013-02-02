@@ -29,7 +29,8 @@ public class UserExpOpenActivityAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		String actId = (String) ae.getProperty("actId", true);
 		ActivitiesControlI ac = getControl(ActivitiesControlI.class, true);//
-		ac.openActivity(actId);
+
+		ac.refresh(actId);
 
 	}
 

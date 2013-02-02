@@ -27,9 +27,9 @@ public class ActivityCreatedNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		ActivitiesControlI cc = this.getControl(ActivitiesControlI.class,
-				true);
-		cc.refresh(null);
+		ActivitiesControlI cc = this.getControl(ActivitiesControlI.class, true);
+		cc.refresh();// refresh index id and exp info,dispatch to the specific
+						// exp in uelist.
 
 	}
 

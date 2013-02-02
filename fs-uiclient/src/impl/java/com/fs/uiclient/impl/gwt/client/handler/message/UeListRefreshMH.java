@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
@@ -38,9 +39,8 @@ public class UeListRefreshMH extends MHSupport {
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"userExpList");
-
-		UserExpListModelI elm = this.getModel( UserExpListModelI.class, true);
-
+		UserExpListControlI uec = this.getControl(UserExpListControlI.class, true);
+		
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);
 			String expId = (String) oi.getProperty(NodeFields.PK_ID, true);
@@ -51,12 +51,12 @@ public class UeListRefreshMH extends MHSupport {
 
 			DateData dd = (DateData) oi.getProperty(NodeFields.PK_TIMESTAMP, true);
 
-			UserExpModel uem = elm.getOrAddUserExp(expId);
+			UserExpModel uem = new UserExpModel(expId);
 
 			uem.setBody(body);//
 			uem.setTimestamp(dd);
 			uem.setActivityId(actId == null ? null : actId);
-			uem.commit();//
+			uec.addOrUpdateUserExp(uem);
 		}
 	}
 

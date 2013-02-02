@@ -3,7 +3,9 @@
  */
 package com.fs.uicommons.impl.gwt.client.handler;
 
+import com.fs.uicommons.api.gwt.client.HeaderItems;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -29,5 +31,13 @@ public class UserLoginHandler extends UiHandlerSupport implements EventHandlerI<
 		UserInfo ui = e.getUserInfo();
 		GChatControlI gc = this.getControl(GChatControlI.class, true);
 		gc.setConnected(true);//
+		//
+		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		String nick = (String) ui.getProperty("nick");
+		if (nick == null) {
+			nick = ui.getAccountId();//
+		}
+		fc.getHeaderView().setItemDisplayText(HeaderItems.H1_USER, nick);
+
 	}
 }

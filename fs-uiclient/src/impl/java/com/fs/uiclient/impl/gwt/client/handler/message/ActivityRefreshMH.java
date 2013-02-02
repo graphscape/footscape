@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.activity.PartnerModel;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -39,7 +40,7 @@ public class ActivityRefreshMH extends MHSupport {
 		ActivitiesControlI ac = this.getControl( ActivitiesControlI.class, true);
 		// activity refresh by the view of activity,so the activity model must
 		// be exist for now.
-		ActivityModelI asm = ac.getActivity(actId, true);//
+		ActivityModelI asm = new ActivityModel(actId);
 
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"participants");
@@ -59,6 +60,8 @@ public class ActivityRefreshMH extends MHSupport {
 			// TODO other properties?
 
 		}
+		//
+		ac.openActivity(asm);
 	}
 
 }

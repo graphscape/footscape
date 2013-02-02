@@ -62,13 +62,13 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void select(String expId) {
 
-		//model
+		// model
 		List<UserExpModel> ueL = this.getModel().getChildList(UserExpModel.class);
 		for (UserExpModel ue : ueL) {
 			boolean sel = ue.getExpId().equals(expId);
 			ue.select(sel);
 		}
-		//view
+		// view
 		UserExpListViewI uelv = this.getMainControl().openUeList();
 		uelv.select(expId);
 
@@ -124,6 +124,25 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 
 		UserExpModel uem = ulm.getUserExpByIncomingCrId(crId, true);
 		uem.incomingCrConfirmed(crId);//
+	}
+
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public void addOrUpdateUserExp(UserExpModel uem) {
+		String id = uem.getExpId();
+		UserExpListModelI ulm = this.getModel();
+		UserExpModel old = ulm.getUserExp(id, false);
+		if (old == null) {
+			ulm.addUserExp(uem);
+		}else{
+			old.setBody(uem.getBody());
+			old.setActivityId(uem.getActivityId());
+			old.setIncomingCrId(uem.getIncomingCrId());
+		}
+		UserExpListViewI uelv = this.getMainControl().openUeList();
+		uelv.update(uem);
 	}
 
 }

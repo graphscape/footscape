@@ -108,18 +108,29 @@ public class UserExpView extends SimpleView {
 	public UserExpModel getModel() {
 		return (UserExpModel) this.model;
 	}
-	
-	public String getExpId(){
+
+	public String getExpId() {
 		return this.getModel().getExpId();
 	}
+
+	public String getIncomingCrId() {
+		return this.getModel().getIncomingCrId();
+	}
+
+	public String getActivityId() {
+		return this.getModel().getActivityId();
+	}
+
 	/*
-	 *Feb 1, 2013
+	 * Feb 1, 2013
 	 */
 	@Override
 	protected void beforeActionEvent(ActionEvent ae) {
-		// 
+		//
 		super.beforeActionEvent(ae);
 		ae.setProperty("expId", this.getExpId());
+		ae.setProperty("incomingCrId", this.getIncomingCrId());
+		ae.setProperty("actId", this.getActivityId());
 	}
 
 }

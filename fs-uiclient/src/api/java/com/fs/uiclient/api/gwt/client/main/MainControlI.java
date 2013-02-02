@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
@@ -28,6 +29,8 @@ public interface MainControlI extends ControlI {
 	public CooperModelI getCooperModel();
 
 	public UserExpListModelI getUeListModel();
+	
+	public ActivitiesModelI getActivitiesModel();
 
 	public SignupModelI getSignupModel();
 

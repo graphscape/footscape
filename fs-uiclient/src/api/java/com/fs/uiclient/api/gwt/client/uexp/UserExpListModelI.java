@@ -26,7 +26,7 @@ public interface UserExpListModelI extends ModelI {
 	public static final Location L_SELECTED_EXP_ID = Location
 			.valueOf("selectedExpId");
 
-	public UserExpModel getOrAddUserExp(String id);
+	public void addUserExp(UserExpModel uem);
 
 	public UserExpModel getSelected(boolean force);
 

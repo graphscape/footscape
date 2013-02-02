@@ -16,7 +16,4 @@ public interface CooperControlI extends ControlI {
 
 	public void removeIncomingCr(String crId);
 
-	public void cooperConfirm(String crId);
-
-
 }

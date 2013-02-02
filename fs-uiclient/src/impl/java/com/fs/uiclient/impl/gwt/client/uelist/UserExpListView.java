@@ -70,4 +70,19 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 		ue.update();
 	}
 
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public void update(UserExpModel uem) {
+		String expId = uem.getExpId();
+		UserExpView ue = this.getUserExpView(expId, false);
+		if (ue == null) {
+			this.addUserExpModel(uem);
+		} else {
+			ue.update();
+		}
+
+	}
+
 }

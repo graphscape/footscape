@@ -38,8 +38,6 @@ public class Actions {
 
 	public static final Path A_COOP_REQUEST = A_COOPER.getSubPath("request");
 
-	public static final Path A_COOP_CONFIRM = A_COOPER.getSubPath("confirm");
-
 	public static final Path A_COOP_REFRESH_INCOMING_CR = A_COOPER.getSubPath("refreshIncomingCr");
 	//
 

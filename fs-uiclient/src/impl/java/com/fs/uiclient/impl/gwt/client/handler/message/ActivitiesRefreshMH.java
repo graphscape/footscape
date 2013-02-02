@@ -10,6 +10,7 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesControlI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -38,7 +39,6 @@ public class ActivitiesRefreshMH extends MHSupport {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		// TODO provide a general way for this.
-		ActivitiesModelI asm = this.getModel(ActivitiesModelI.class, true);
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> ld = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"activities");
@@ -52,10 +52,10 @@ public class ActivitiesRefreshMH extends MHSupport {
 			String actId = actIdD;
 			List<String> expL = this
 					.getExpIdList((List<ObjectPropertiesData>) oi.getProperty("expectations"));
-			ItemModel im = asm.getItem(actId, false);
+			ItemModel im = c.getActivityItem(actId, false);
 			if (im == null) {
 				im = new ItemModel(actId, expL);//
-				asm.child(im);
+				c.addActivityItem(im);
 				// new ActivityCreatedEvent((ActivitiesControlI) c,
 				// actId).dispatch();
 				this.tryLinkActivityToUserExp(t, actId, expL);
@@ -68,14 +68,22 @@ public class ActivitiesRefreshMH extends MHSupport {
 	 * Jan 6, 2013.getValue()
 	 */
 	private void tryLinkActivityToUserExp(EndpointMessageEvent t, String actId, List<String> expL) {
-		UserExpListModelI uem = this.getModel(UserExpListModelI.class, true);
+
+		MainControlI mc = this.getControl(MainControlI.class, true);
+
+		UserExpListModelI uel = mc.getUeListModel();
+
 		for (String expId : expL) {
-			UserExpModel um = uem.getUserExp(expId, false);
+			UserExpModel um = uel.getUserExp(expId, false);
 			if (um == null) {
 				continue;
 			}
 			um.setActivityId(actId);//
+			//view update
+			mc.openUeList().update(um);
+
 		}
+
 	}
 
 	protected List<String> getExpIdList(List<ObjectPropertiesData> ptsL) {// TODO

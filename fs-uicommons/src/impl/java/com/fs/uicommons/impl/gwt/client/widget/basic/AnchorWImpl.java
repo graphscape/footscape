@@ -20,16 +20,13 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 
 	public AnchorWImpl(String name) {
 		super(name, (Element) Document.get().createAnchorElement().cast());
-		this.addGwtHandler(
-				com.google.gwt.event.dom.client.ClickEvent.getType(),
-				new ClickHandler() {
+		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
 
-					@Override
-					public void onClick(
-							com.google.gwt.event.dom.client.ClickEvent event) {
-						AnchorWImpl.this.onGwtClick(event);
-					}//
-				});
+			@Override
+			public void onClick(com.google.gwt.event.dom.client.ClickEvent event) {
+				AnchorWImpl.this.onGwtClick(event);
+			}//
+		});
 	}
 
 	@Override
@@ -37,9 +34,7 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 
 		AnchorElement ae = this.getElement().cast();
 		String sd = (String) vw.getValue();
-		ae.setInnerText(sd);//
-		ae.setTitle(sd);// TODO replace this
-
+		this.setDisplayText(sd);
 	}
 
 	public void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
@@ -51,6 +46,17 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 	public void click() {
 		this.assertAttached();
 		this.getElementWrapper().click();
+	}
+
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public void setDisplayText(String txt) {
+		//
+		AnchorElement ae = this.getElement().cast();
+		ae.setInnerText(txt);//
+		ae.setTitle(txt);// TODO replace this
 	}
 
 }

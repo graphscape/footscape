@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
@@ -15,6 +16,7 @@ import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
+import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
@@ -229,6 +231,24 @@ public class MainControl extends ControlSupport implements MainControlI {
 			}
 		});
 
+	}
+
+	/*
+	 *Feb 2, 2013
+	 */
+	@Override
+	public ActivitiesModelI getActivitiesModel() {
+		//
+		ActivitiesModelI rt = this.getOrCreateModel(this.getRootModel(), ActivitiesModelI.class,
+				new CreaterI<ActivitiesModelI>() {
+
+					@Override
+					public ActivitiesModelI create(ContainerI ct) {
+						// TODO Auto-generated method stub
+						return new ActivitiesModel("activities");
+					}
+				});
+		return rt;
 	}
 
 }

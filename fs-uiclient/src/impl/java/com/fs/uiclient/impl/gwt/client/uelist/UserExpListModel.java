@@ -33,23 +33,11 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI#addUserExp(java
-	 * .lang.String)
+	 * Feb 2, 2013
 	 */
 	@Override
-	public UserExpModel getOrAddUserExp(String id) {
-
-		UserExpModel rt = this.getUserExp(id, false);
-		if (rt == null) {
-			rt = new UserExpModel(id, id);// NOTE the name must be the id,see
-											// the getUserExp();
-			rt.parent(this);
-		}
-		return rt;
-
+	public void addUserExp(UserExpModel uem) {
+		uem.parent(this);
 	}
 
 	/*
@@ -164,13 +152,11 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 		}
 		if (rt.isEmpty()) {
 			if (force) {
-				throw new UiException("no user exp with incoming cr:" + crId
-						+ ",all userexp:" + ueL);
+				throw new UiException("no user exp with incoming cr:" + crId + ",all userexp:" + ueL);
 			}
 			return null;
 		} else if (rt.size() > 1) {
-			throw new UiException("to many user exp for crId:" + crId
-					+ ", all:" + rt);
+			throw new UiException("to many user exp for crId:" + crId + ", all:" + rt);
 		} else {
 			return rt.get(0);
 

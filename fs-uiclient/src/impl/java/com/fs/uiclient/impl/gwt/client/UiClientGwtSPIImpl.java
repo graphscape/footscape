@@ -29,7 +29,6 @@ import com.fs.uiclient.impl.gwt.client.cooper.CooperControl;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchControl;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.handler.action.ActivitiesRefreshAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
@@ -137,7 +136,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		// this.localMap.put(ActivityModelI.A_REFRESH, true);
 
 		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP(c));
-		eb.addHandler(Actions.A_COOP_CONFIRM, new CooperConfirmAP(c));
 		eb.addHandler(Actions.A_COOP_REFRESH_INCOMING_CR, new RefreshIncomingCrAP(c));
 		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP(c));//
 

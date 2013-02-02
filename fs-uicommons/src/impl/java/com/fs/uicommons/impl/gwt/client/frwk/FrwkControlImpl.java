@@ -7,6 +7,7 @@ import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
@@ -70,5 +71,14 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
 		return lc.openLoginView();
 
+	}
+
+	/*
+	 *Feb 2, 2013
+	 */
+	@Override
+	public HeaderViewI getHeaderView() {
+		// 
+		return this.getFrwkView().getHeader();
 	}
 }

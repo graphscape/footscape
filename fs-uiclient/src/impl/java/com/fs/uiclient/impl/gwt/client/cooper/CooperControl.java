@@ -9,7 +9,6 @@ import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -43,21 +42,6 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 		//
 		new ActionEvent(this, Actions.A_COOP_REFRESH_INCOMING_CR).dispatch();
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.api.gwt.client.coper.CooperControlI#cooperConfirm(java
-	 * .lang.String)
-	 */
-	@Override
-	public void cooperConfirm(String crId) {
-		CooperModelI cm = this.getModel();
-		ActionModelI am = cm.getChild(ActionModelI.class, Actions.A_COOP_CONFIRM.getName(), true);
-		am.setValue("crId", crId);//
-		new ActionEvent(this, Actions.A_COOP_CONFIRM).dispatch();
 	}
 
 	/*

@@ -52,6 +52,10 @@ public interface ActivitiesModelI extends ModelI {
 
 	public List<ActivityModelI> getActivityList();
 
+	public ActivityModelI getActivity(String actId);
+
 	public ItemModel getItem(String actId, boolean force);
+
+	public void addItem(ItemModel im);
 
 }

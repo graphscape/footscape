@@ -23,4 +23,6 @@ public interface UserExpListControlI extends ControlI {
 
 	public void select(String expId);
 
+	public void addOrUpdateUserExp(UserExpModel uem);
+
 }

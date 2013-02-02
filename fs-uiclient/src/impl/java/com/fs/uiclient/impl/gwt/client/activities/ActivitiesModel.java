@@ -60,4 +60,23 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 		return this.getChildList(ActivityModelI.class);
 	}
 
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public ActivityModelI getActivity(String actId) {
+		//
+		return this.getChild(ActivityModelI.class, actId, false);
+
+	}
+
+	/*
+	 * Feb 2, 2013
+	 */
+	@Override
+	public void addItem(ItemModel im) {
+		//
+		im.parent(this);
+	}
+
 }

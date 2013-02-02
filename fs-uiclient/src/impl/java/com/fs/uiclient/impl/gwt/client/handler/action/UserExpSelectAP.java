@@ -7,7 +7,6 @@ package com.fs.uiclient.impl.gwt.client.handler.action;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
@@ -28,7 +27,6 @@ public class UserExpSelectAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		ControlI c = (ControlI) ae.getSource();
 		String expId = (String) ae.getProperty("expId", true);
 		UserExpListControlI uc = this.getControl(UserExpListControlI.class, true);
 		uc.select(expId);

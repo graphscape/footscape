@@ -1,8 +1,6 @@
 package com.fs.uicommons.impl.gwt.client.frwk.header;
 
-import com.fs.uicommons.api.gwt.client.event.HeaderItemDisplayNameUpdateEvent;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
@@ -66,10 +64,9 @@ public class ItemView extends LightWeightView {
 	/**
 	 * Jan 13, 2013
 	 */
-	protected void onHeaderItemDisplayNameUpdateEvent(HeaderItemDisplayNameUpdateEvent t) {
+	public void setDisplayText(String txt) {
 		//
-		String dname = ((HeaderModelI.ItemModel) t.getSource()).getDisplayName();
-		this.anchor.getModel().setDefaultValue(dname);// TODO ValueDeliverI.
+		this.anchor.setDisplayText(txt);// TODO ValueDeliverI.
 	}
 
 	private void onClick() {

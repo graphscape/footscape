@@ -62,4 +62,13 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 
 	}
 
+	/*
+	 *Feb 2, 2013
+	 */
+	@Override
+	public void setItemDisplayText(Path path, String text) {
+		ItemView iv = this.getOrCreateItem(path);
+		iv.setDisplayText(text);
+	}
+
 }

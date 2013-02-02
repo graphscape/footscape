@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
 
 /**
  * @author wu
- * 
+ * @deprecated remove
  */
 public class HeaderItemDisplayNameUpdateEvent extends ModelUpdateEvent {
 
