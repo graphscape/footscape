@@ -29,9 +29,10 @@ public class GChatJoinAP extends ActionHandlerSupport {
 	public void handle(ActionEvent t) {
 		//
 		// ep.s
+		String gid = (String) t.getProperty("groupId", true);
 		GChatControlI gc = t.getSource().getClient(true).find(GChatControlI.class, true);
-		gc.join();
-		
+		gc.join(gid);
+
 	}
 
 }

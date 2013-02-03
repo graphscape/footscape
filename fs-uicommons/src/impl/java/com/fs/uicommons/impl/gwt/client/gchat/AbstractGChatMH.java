@@ -6,27 +6,24 @@ package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.GChatMW;
+import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
-import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
  * @author wu
  * 
  */
-public abstract class AbstractGChatMH<T extends GChatMW> implements MessageHandlerI<MsgWrapper> {
+public abstract class AbstractGChatMH<T extends GChatMW> extends UiHandlerSupport implements
+		MessageHandlerI<MsgWrapper> {
 
-	protected GChatControlI control;
-
-	public AbstractGChatMH(GChatControlI gcc) {
-		this.control = gcc;
+	public AbstractGChatMH(ContainerI c) {
+		super(c);
 	}
 
-	/*
-	 * Dec 23, 2012
-	 */
 	@Override
 	public void handle(MsgWrapper evt) {
 		//
@@ -34,9 +31,13 @@ public abstract class AbstractGChatMH<T extends GChatMW> implements MessageHandl
 		T mw = this.wrap(msg);
 		this.handle(mw);
 	}
-
+	protected GChatControlI getGChatControl(){
+		return this.getControl(GChatControlI.class, true);
+	}
+	
 	protected UserInfo getUserInfo() {
-		return this.control.getClient(true).getEndpoint().getUserInfo();
+		
+		return this.getClient(true).getEndpoint().getUserInfo();
 	}
 
 	protected abstract T wrap(MessageData msg);

@@ -5,15 +5,11 @@
 package com.fs.uicommons.impl.gwt.client.gchat.handler;
 
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
-import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatYouJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.JoinMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
-import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
 /**
  * @author wu
@@ -24,7 +20,7 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 	/**
 	 * @param gcc
 	 */
-	public JoinGMH(GChatControlI gcc) {
+	public JoinGMH(ContainerI gcc) {
 		super(gcc);
 	}
 
@@ -36,19 +32,14 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 		String gid = mw.getGroupId();
 		String pid = mw.getJoinParticipantId();
 		String accId = mw.getAccountId();
-		GChatModel cm = this.control.getOrCreateChatModel();
-		ChatGroupModel group = cm.getGroup(gid, true);//
-		ParticipantModel p = new ParticipantModel(pid);
+
+		ChatGroupModel group = new ChatGroupModel(gid);
+		ParticipantModel p = new ParticipantModel(pid, gid);
 		p.setAccountId(accId);
 		p.setNick(accId);// TODO nick
 		p.setRole(mw.getRole());
-		group.addParticipant(p);
 
-		new GChatJoinEvent(this.control, gid, pid).dispatch();//
-		UserInfo ui = this.getUserInfo();
-		if (ui.getAccountId().equals(accId)) {
-			new GChatYouJoinEvent(this.control, gid, pid).dispatch();
-		}
+		this.getGChatControl().addParticipant(p);
 
 	}
 

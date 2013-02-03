@@ -17,12 +17,15 @@ public class ParticipantModel extends ModelSupport {
 	protected String nick;
 
 	protected String role;
+	
+	protected String groupId;
 
 	/**
 	 * @param name
 	 */
-	public ParticipantModel(String name) {
-		super(name);
+	public ParticipantModel(String id,String gid) {
+		super(id,id);
+		this.groupId = gid;
 	}
 
 	public String getId() {
@@ -72,6 +75,13 @@ public class ParticipantModel extends ModelSupport {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	/**
+	 * @return the groupId
+	 */
+	public String getGroupId() {
+		return groupId;
 	}
 
 }

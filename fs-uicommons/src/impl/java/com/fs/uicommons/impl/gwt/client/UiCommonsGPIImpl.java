@@ -35,8 +35,8 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.LineModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
+import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
@@ -770,14 +770,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof GChatControlI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(GChatModel.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof GChatModel;
-			}
-		});
 		InstanceOf.addChecker(new CheckerSupport(ChatGroupModel.class) {
 
 			@Override
@@ -816,6 +809,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof HeaderViewI;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(ChatGroupViewI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof ChatGroupViewI;
 			}
 		});
 

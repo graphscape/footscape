@@ -16,16 +16,18 @@ public interface GChatControlI extends ControlI {
 
 	public void setConnected(boolean c);
 
-	public void join();
-
 	public void join(String gid);
-
-	public void send();
 
 	public void send(String gid, String text);
 
-	public GChatModel getOrCreateChatModel();
+	public ChatGroupModel getOrCreateGroup(String gid);
+
+	public ChatGroupViewI openChatgroup(String id);
 
 	public boolean isConnected();
+
+	public void addParticipant(ParticipantModel p);
+
+	public void addMessage(MessageModel mm);
 
 }

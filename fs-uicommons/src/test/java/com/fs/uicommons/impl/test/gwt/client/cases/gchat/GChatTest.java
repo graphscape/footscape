@@ -6,16 +6,11 @@ package com.fs.uicommons.impl.test.gwt.client.cases.gchat;
 
 import java.util.List;
 
-import com.fs.uicommons.api.gwt.client.Actions;
-import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
+import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
-import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -66,13 +61,14 @@ public class GChatTest extends TestBase {
 	private void onGChatAttached() {
 		GChatControlI cc = this.client.find(GChatControlI.class, true);
 
-		cc.addHandler(GChatJoinEvent.TYPE, new EventHandlerI<GChatJoinEvent>() {
-
-			@Override
-			public void handle(GChatJoinEvent t) {
-				GChatTest.this.onJoinEvent(t);
-			}
-		});
+		// cc.addHandler(GChatJoinEvent.TYPE, new
+		// EventHandlerI<GChatJoinEvent>() {
+		//
+		// @Override
+		// public void handle(GChatJoinEvent t) {
+		// GChatTest.this.onJoinEvent(t);
+		// }
+		// });
 
 		cc.addHandler(GChatConnectEvent.TYPE, new EventHandlerI<GChatConnectEvent>() {
 
@@ -82,13 +78,14 @@ public class GChatTest extends TestBase {
 			}
 		});
 
-		cc.addHandler(GChatMessageEvent.TYPE, new EventHandlerI<GChatMessageEvent>() {
-
-			@Override
-			public void handle(GChatMessageEvent t) {
-				GChatTest.this.onMessage(t);
-			}
-		});
+		// cc.addHandler(GChatMessageEvent.TYPE, new
+		// EventHandlerI<GChatMessageEvent>() {
+		//
+		// @Override
+		// public void handle(GChatMessageEvent t) {
+		// GChatTest.this.onMessage(t);
+		// }
+		// });
 		if (cc.isConnected()) {
 			this.join();//
 		}
@@ -97,16 +94,15 @@ public class GChatTest extends TestBase {
 	/**
 	 * @param t
 	 */
-	protected void onMessage(GChatMessageEvent t) {
-		String gid = t.getGroupId();
+	protected void onMessage(MessageModel mm) {
+		String gid = mm.getGroupId();
 		assertEquals("groupId not correct", GROUPID, gid);
-		MessageMW wp = t.getGChatMessage();
-		String pid = wp.getParticipantId();
-		GChatModel cm = this.rootModel.find(GChatModel.class, true);
-		ChatGroupModel gm = cm.getGroup(gid, true);
+		String pid = mm.getParticipantId();
+
+		GChatControlI gc = this.manager.getControl(GChatControlI.class, true);
+		ChatGroupModel gm = gc.getOrCreateGroup(gid);
 		List<MessageModel> ml = gm.getMessageModelList();
 		assertEquals("message list size issue", 1, ml.size());
-		MessageModel mm = ml.get(0);
 		String text = mm.getText();
 		assertEquals("message content issue", TEXT, text);
 		this.tryFinish("message");
@@ -128,18 +124,16 @@ public class GChatTest extends TestBase {
 	/**
 	 * Dec 23, 2012
 	 */
-	protected void onJoinEvent(GChatJoinEvent t) {
+	protected void onJoinEvent(ParticipantModel t) {
 		System.out.println("joinevent:" + t);
 		String gid = t.getGroupId();
-		String pid = t.getParticipantId();
+		String pid = t.getId();
 		assertEquals("join event recevied with a different gid.", GROUPID, gid);
 		this.tryFinish("join");
 		// send message
-		GChatModel cm = this.rootModel.find(GChatModel.class, true);
-		cm.setCurrentGroupId(gid);
-		ChatGroupModel gm = cm.getGroup(gid, true);
-		gm.setMessageToSend(TEXT);
-		new ActionEvent(cm, Actions.A_GCHAT_SEND).dispatch();
+
+		GChatControlI gc = this.manager.getControl(GChatControlI.class, true);
+		gc.send(gid, TEXT);
 	}
 
 }

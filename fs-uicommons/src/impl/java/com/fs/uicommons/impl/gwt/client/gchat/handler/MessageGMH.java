@@ -4,13 +4,10 @@
  */
 package com.fs.uicommons.impl.gwt.client.gchat.handler;
 
-import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
-import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatModel;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
@@ -22,8 +19,8 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 	/**
 	 * @param gcc
 	 */
-	public MessageGMH(GChatControlI gcc) {
-		super(gcc);
+	public MessageGMH(ContainerI c) {
+		super(c);
 	}
 
 	/*
@@ -34,13 +31,10 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 		String gid = mw.getGroupId();
 		String pid = mw.getParticipantId();
 
-		GChatModel cm = this.control.getOrCreateChatModel();
-		ChatGroupModel group = cm.getGroup(gid, true);
-
 		MessageModel mm = new MessageModel("message", mw.getTarget());//
-
-		group.addMessage(mm);
-		new GChatMessageEvent(this.control, gid, pid, mw).dispatch();
+		
+		this.getGChatControl().addMessage(mm);
+		
 	}
 
 	/*

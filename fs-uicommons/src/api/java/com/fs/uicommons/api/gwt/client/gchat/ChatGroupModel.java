@@ -14,8 +14,6 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class ChatGroupModel extends ModelSupport {
 
-	private String messageToSend;
-
 	/**
 	 * @param name
 	 */
@@ -27,22 +25,15 @@ public class ChatGroupModel extends ModelSupport {
 		this.child(mm);
 	}
 
-	public List<MessageModel> getMessageModelList(){
+	public List<MessageModel> getMessageModelList() {
 		return this.getChildList(MessageModel.class);
 	}
+
 	/**
 	 * Dec 23, 2012
 	 */
 	public void addParticipant(ParticipantModel p) {
 		this.child(p);
-	}
-
-	public String getMessageToSend() {
-		return messageToSend;
-	}
-
-	public void setMessageToSend(String messageToSend) {
-		this.messageToSend = messageToSend;
 	}
 
 }

@@ -28,8 +28,11 @@ public class GChatSendAP extends ActionHandlerSupport {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
+		String gid = (String) ae.getProperty("groupId", true);
+		String text = (String) ae.getProperty("text");
+
 		GChatControlI gc = ae.getSource().getClient(true).find(GChatControlI.class, true);
-		gc.send();
+		gc.send(gid, text);
 
 	}
 
