@@ -24,8 +24,6 @@ public class ActivityModel extends ModelSupport implements ActivityModelI {
 	public ActivityModel(String id) {
 		super(id, id);//
 
-		ControlUtil.addAction(this, Actions.A_ACT_OPEN_CHAT_ROOM);//
-
 		this.setActivityId(id);
 	}
 

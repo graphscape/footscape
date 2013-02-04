@@ -31,8 +31,9 @@ public class ExpItemView extends SimpleView {
 	 */
 	public ExpItemView(String name, ContainerI ctn, ExpItemModel ei) {
 
-		super(Actions.A_EXPS, name, ctn, ei);
+		super(name, ctn, ei);
 
+		this.addAction(Actions.A_EXPS_COOPER);//
 		//
 		if (this.table != null) {
 			this.table.getElement().removeFromParent();//

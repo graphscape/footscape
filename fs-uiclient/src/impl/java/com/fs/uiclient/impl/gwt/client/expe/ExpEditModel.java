@@ -22,8 +22,6 @@ public class ExpEditModel extends FormsModel implements ExpEditModelI {
 	public ExpEditModel(String name) {
 		super(name);
 
-		ControlUtil.addAction(this, Actions.A_EXPE_SUBMIT);//
-
 		FormModel fm = this.getDefaultForm();
 		fm.addField(F_BODY, String.class);
 		fm.addAction(Actions.A_EXPE_SUBMIT);//

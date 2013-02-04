@@ -40,9 +40,7 @@ public class UserExpModel extends ModelSupport {
 
 	public UserExpModel(String id) {
 		super(id);
-		ControlUtil.addAction(this, Actions.A_UEXP_SELECT);//
-		ControlUtil.addAction(this, Actions.A_UEXP_OPEN_ACTIVITY);//
-		ControlUtil.addAction(this, Actions.A_UEXP_COOPER_CONFIRM);
+		
 		this.expId = id;
 	}
 

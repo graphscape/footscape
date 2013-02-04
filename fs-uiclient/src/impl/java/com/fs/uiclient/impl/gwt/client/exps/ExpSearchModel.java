@@ -28,7 +28,7 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 */
 	public ExpSearchModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, Actions.A_EXPS_SEARCH);//
+		
 	}
 
 	/*

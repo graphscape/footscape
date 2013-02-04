@@ -1,5 +1,6 @@
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
+import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
@@ -33,6 +34,17 @@ public class LoginView extends FormsView implements LoginViewI {
 
 		this.accountLabel = this.factory.create(LabelI.class);
 		this.accountLabel.parent(this);
+
+		this.addAction(Actions.A_LOGIN_ANONYMOUS, true);// create
+		// anonymous
+
+		// client start,to login
+		// from cokies or web data
+
+		this.addAction(Actions.A_LOGIN_LOGOUT);// logout is hidden
+		// action
+
+		this.addAction(Actions.A_LOGIN_SUBMIT);
 
 	}
 

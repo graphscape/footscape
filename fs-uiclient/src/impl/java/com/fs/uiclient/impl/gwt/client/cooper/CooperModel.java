@@ -31,8 +31,6 @@ public class CooperModel extends ModelSupport implements CooperModelI {
 	public CooperModel() {
 		super(Actions.A_COOPER.getName());
 
-		ControlUtil.addAction(this, Actions.A_COOP_REQUEST);
-		ControlUtil.addAction(this, Actions.A_COOP_REFRESH_INCOMING_CR);
 
 	}
 

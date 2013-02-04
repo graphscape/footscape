@@ -5,7 +5,6 @@ import com.fs.uicommons.api.gwt.client.event.LoginCreatedEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 
 public class LoginModel extends FormsModel implements LoginModelI {
 
@@ -26,17 +25,7 @@ public class LoginModel extends FormsModel implements LoginModelI {
 	public LoginModel(String name) {
 		super(name);
 
-		ControlUtil.addAction(this, Actions.A_LOGIN_ANONYMOUS, true);// create
-																		// anonymous
-
-		// client start,to login
-		// from cokies or web data
-
-		ControlUtil.addAction(this, Actions.A_LOGIN_LOGOUT);// logout is hidden
-															// action
-
-		ControlUtil.addAction(this, Actions.A_LOGIN_SUBMIT);
-
+		
 		FormModel def = this.getDefaultForm();
 
 		def.addField(FK_EMAIL, String.class);//

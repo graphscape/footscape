@@ -4,9 +4,11 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.simple;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -34,6 +36,8 @@ public class SimpleView extends ViewSupport {
 
 	private ListI actionList;// TODO ActionsELement
 
+	protected Map<Path, ButtonI> actionMap;
+
 	private ErrorInfosWidgetI errorInfoDisplay;
 
 	protected Element header;
@@ -42,8 +46,6 @@ public class SimpleView extends ViewSupport {
 
 	protected Element footer;
 
-	protected Path actionGroupPath;
-
 	/**
 	 * @param ctn
 	 */
@@ -51,27 +53,18 @@ public class SimpleView extends ViewSupport {
 		this(null, ctn);
 	}
 
-	public SimpleView(String name, ContainerI ctn, ModelI md) {
-		this(null, name, ctn, md);
-	}
-
-	public SimpleView(Path agp, String name, ContainerI ctn, ModelI md) {
-		this(agp, name, DOM.createDiv(), ctn, md);
-	}
-
 	public SimpleView(String name, ContainerI ctn) {
-		this(name, DOM.createDiv(), ctn, new SimpleModel("unkown"));
+		this(name, ctn, new SimpleModel("unkown"));
+	}
+
+	public SimpleView(String name, ContainerI ctn, ModelI md) {
+		this(name, DOM.createDiv(), ctn, md);
 	}
 
 	public SimpleView(String name, Element ele, ContainerI ctn, ModelI md) {
-		this(null, name, ele, ctn, md);
-	}
-
-	public SimpleView(Path agp, String name, Element ele, ContainerI ctn, ModelI md) {
 
 		super(name, ele, ctn, md);
-
-		this.actionGroupPath = agp == null ? Actions.ACTION.getSubPath(name) : agp;
+		this.actionMap = new HashMap<Path, ButtonI>();
 
 		// BODY:
 		this.header = DOM.createDiv();
@@ -98,14 +91,22 @@ public class SimpleView extends ViewSupport {
 
 	}
 
-	public void addAction(final String aname) {
+	public void addAction(final Path aname) {
+		this.addAction(aname, false);
+	}
+
+	public void addAction(final Path aname, boolean hide) {
 		// listen to the button clicked event,which is button state is changed.
+		ButtonI b = this.actionMap.get(aname);
+		if (b != null) {
+			throw new UiException("already exist action:" + name + " in view:" + this);
+		}
 
 		ModelI bm = this.addModel("button-" + aname);// TODO button's
 														// model is added
 														// into the view's
 														// model?
-		ButtonI b = this.factory.create(ButtonI.class, bm);// TODO,
+		b = this.factory.create(ButtonI.class, bm);// TODO,
 		b.getModel().setDefaultValue("%" + aname);
 
 		b.parent(this.actionList);
@@ -117,13 +118,23 @@ public class SimpleView extends ViewSupport {
 				SimpleView.this.onActionClick(aname);
 			}
 		});
+		this.actionMap.put(aname, b);
+		this.hideAction(aname, hide);
 
+	}
+
+	protected void hideAction(Path aname, boolean hide) {
+		ButtonI b = this.actionMap.get(aname);
+		if (b == null) {
+			throw new UiException("no action:" + aname + " in view:" + this);
+		}
+		b.setVisible(!hide);
 	}
 
 	/**
 	 * @param name
 	 */
-	protected void onActionClick(String name) {
+	protected void onActionClick(Path name) {
 		ActionEvent ae = this.newActionEvent(name);
 		this.beforeActionEvent(ae);
 		ae.dispatch();
@@ -131,8 +142,8 @@ public class SimpleView extends ViewSupport {
 	}
 
 	//
-	protected ActionEvent newActionEvent(String aname) {
-		ActionEvent rt = new ActionEvent(this, this.actionGroupPath.getSubPath(aname));
+	protected ActionEvent newActionEvent(Path aname) {
+		ActionEvent rt = new ActionEvent(this, (aname));
 
 		return rt;
 	}
@@ -160,6 +171,11 @@ public class SimpleView extends ViewSupport {
 		super.onAddChild(parent, cw);
 	}
 
+	protected List<Path> getActionList() {
+		return new ArrayList<Path>(this.actionMap.keySet());
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -183,14 +199,7 @@ public class SimpleView extends ViewSupport {
 	}
 
 	private void doClickAction(Path ap) {
-		List<ButtonI> btl = this.actionList.getChildList(ButtonI.class);
-		String a = ap.getName();//
-		ButtonI ab = null;
-		for (ButtonI bt : btl) {
-			if (bt.getModel().getName().equals("button-" + a)) {
-				ab = bt;
-			}
-		}
+		ButtonI ab = this.actionMap.get(ap);
 		if (ab == null) {
 			throw new UiException("widget not found for action:" + ap + " in view:" + this);
 		}

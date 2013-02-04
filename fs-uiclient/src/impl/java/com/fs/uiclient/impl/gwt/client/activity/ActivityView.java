@@ -25,7 +25,10 @@ public class ActivityView extends SimpleView {
 	 * @param ctn
 	 */
 	public ActivityView(String id, ContainerI ctn, ActivityModelI am) {
-		super(Actions.A_ACT, id, ctn, am);
+		super(id, ctn, am);
+
+		this.addAction(Actions.A_ACT_OPEN_CHAT_ROOM);//
+
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("partnerList");
 		this.list.parent(this);

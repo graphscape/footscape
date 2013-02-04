@@ -35,7 +35,7 @@ public class ExpItemModel extends ModelSupport {
 	 */
 	public ExpItemModel(String id) {
 		super(id);
-		ControlUtil.addAction(this, Actions.A_EXPS_COOPER);//
+		
 		this.setValue(L_EXP_ID, id);//
 	}
 

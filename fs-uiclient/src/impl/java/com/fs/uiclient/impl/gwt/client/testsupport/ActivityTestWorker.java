@@ -92,7 +92,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 		String id = model.getExpId();//
 		this.expIdSelected = id;
 
-		new ActionEvent(client, Actions.A_UEXP_SELECT).dispatch();
+		new ActionEvent(client, Actions.A_UEXP_SELECT).property("expId", id).dispatch();
 		// select exp will cause select event and
 		// then
 		// exp search.

@@ -11,9 +11,7 @@ import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
-import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
@@ -40,11 +38,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 	}
 
 	public FormsView(String name, ContainerI ctn, FormsModel fm) {
-		this(null, name, ctn, fm);
-	}
-
-	public FormsView(Path agp, String name, ContainerI ctn, FormsModel fm) {
-		super(agp, name, ctn, fm);
+		super(name, ctn, fm);
 		this.tabber = this.factory.create(TabberWI.class);
 		this.tabber.parent(this);//
 		for (FormModel f : fm.getChildList(FormModel.class)) {
@@ -123,14 +117,12 @@ public class FormsView extends SimpleView implements FormsViewI {
 	}
 
 	protected void updateActionHidden(FormModel fm) {
-		List<Path> actions = fm.getActionList();
-		List<ActionModelI> amL = ControlUtil.getActionList(this.concreteModel());
+		List<Path> actions = this.getActionList();
+		List<Path> actions2 = getActionList();
 
-		for (ActionModelI am : amL) {
-			Path name = am.getActionPath();
-			boolean show = actions.contains(name);
-			am.setHidden(!show);// this value is listen by the super
-								// class:SimpleView.
+		for (Path am : actions) {
+			boolean show = actions2.contains(am);
+			this.hideAction(am, !show);
 		}
 		// change the actions display
 

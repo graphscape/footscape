@@ -27,8 +27,7 @@ public class SignupModel extends FormsModel implements SignupModelI {
 	 */
 	public SignupModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, Actions.A_SIGNUP_SUBMIT);
-		ControlUtil.addAction(this, Actions.A_SIGNUP_CONFIRM);
+		
 		//
 
 		// form1

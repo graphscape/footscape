@@ -44,8 +44,8 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 	 */
 	public ExpSearchView(ContainerI ctn, ExpSearchModelI m) {
 
-		super(Actions.A_EXPS, "exps", ctn, m);
-
+		super("exps", ctn, m);
+		this.addAction( Actions.A_EXPS_SEARCH);//
 		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
 		this.statement.getModel().addValueHandler(ModelI.L_DEFAULT, new EventHandlerI<ModelValueEvent>() {

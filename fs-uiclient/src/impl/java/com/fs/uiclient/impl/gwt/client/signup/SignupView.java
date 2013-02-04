@@ -36,7 +36,8 @@ public class SignupView extends FormsView implements SignupViewI {
 	public SignupView(ContainerI ctn, SignupModel sm) {
 		super(Actions.A_SIGNUP.getName(), ctn, sm);
 		//
-
+		this.addAction( Actions.A_SIGNUP_SUBMIT);
+		this.addAction( Actions.A_SIGNUP_CONFIRM);
 	}
 
 	@Override

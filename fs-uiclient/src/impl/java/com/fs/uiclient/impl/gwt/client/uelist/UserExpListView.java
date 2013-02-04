@@ -27,7 +27,9 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 	 * @param ctn
 	 */
 	public UserExpListView(ContainerI ctn, UserExpListModelI uem) {
-		super(Actions.A_UELIST, "uelist", ctn, uem);
+		super("uelist", ctn, uem);
+		this.addAction(Actions.A_UEL_CREATE);
+		// click and open one exp,enter the exp's main view.
 
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("expListContainer");

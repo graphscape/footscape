@@ -23,7 +23,7 @@ public class ActivitiesModel extends ModelSupport implements ActivitiesModelI {
 	 */
 	public ActivitiesModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, Actions.A_ACTS_ACTIVITIES);
+	
 	}
 
 	/*

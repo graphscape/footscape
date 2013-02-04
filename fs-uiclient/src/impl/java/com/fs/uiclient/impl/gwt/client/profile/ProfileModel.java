@@ -27,8 +27,7 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 	 */
 	public ProfileModel(String name) {
 		super(name);
-		ControlUtil.addAction(this, Actions.A_PROFILE_INIT);
-		ControlUtil.addAction(this, Actions.A_PROFILE_SUBMIT);
+		
 		//
 		FormModel def = this.getDefaultForm();
 		def.addField("email", String.class);

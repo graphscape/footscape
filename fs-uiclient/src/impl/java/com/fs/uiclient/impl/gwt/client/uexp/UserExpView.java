@@ -31,7 +31,10 @@ public class UserExpView extends SimpleView {
 	 * @param ctn
 	 */
 	public UserExpView(String name, ContainerI ctn, UserExpModel um) {
-		super(Actions.A_USEREXP, name, ctn, um);
+		super(name, ctn, um);
+		this.addAction(Actions.A_UEXP_SELECT);//
+		this.addAction(Actions.A_UEXP_OPEN_ACTIVITY);//
+		this.addAction(Actions.A_UEXP_COOPER_CONFIRM);
 		this.update();
 	}
 

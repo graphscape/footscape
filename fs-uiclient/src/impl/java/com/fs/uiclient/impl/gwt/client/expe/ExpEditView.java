@@ -22,7 +22,9 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 	 * @param ctn
 	 */
 	public ExpEditView(ContainerI ctn, ExpEditModel em) {
-		super(Actions.A_EXPE, "expe", ctn, em);
+		super("expe", ctn, em);
+		this.addAction(Actions.A_EXPE_SUBMIT);//
+
 	}
 
 }

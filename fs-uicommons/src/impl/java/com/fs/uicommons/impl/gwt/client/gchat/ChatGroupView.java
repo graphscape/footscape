@@ -9,15 +9,11 @@ import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
-import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
 /**
  * @author wu
@@ -37,8 +33,8 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 	 * @param ctn
 	 */
 	public ChatGroupView(ContainerI ctn, ChatGroupModel cm) {
-		super(Actions.A_GCHAT, "chatgroup", ctn, cm);
-		this.addAction(Actions.A_GCHAT_SEND.getName());
+		super("chatgroup", ctn, cm);
+		this.addAction(Actions.A_GCHAT_SEND);
 		this.groupId = cm.getId();
 		this.participantList = factory.create(ListI.class);
 		this.child(this.participantList);
@@ -48,14 +44,12 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 
 		this.messageEditor = factory.create(StringEditorI.class);
 		this.child(this.messageEditor);//
-		
 
 	}
 
 	public ChatGroupModel getModel() {
 		return (ChatGroupModel) this.model;
 	}
-
 
 	@Override
 	public void addParticipant(ParticipantModel om) {
@@ -84,7 +78,7 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 	protected void beforeActionEvent(ActionEvent ae) {
 		super.beforeActionEvent(ae);
 		ae.setProperty("groupId", this.groupId);
-		//for send action
+		// for send action
 		String text = this.messageEditor.getData();
 		ae.setProperty("text", text);
 	}

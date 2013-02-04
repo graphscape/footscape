@@ -39,7 +39,9 @@ public class ProfileView extends FormsView implements ViewReferenceI.AwareI {
 	 * @param ctn
 	 */
 	public ProfileView(ContainerI ctn, ProfileModel pm) {
-		super(Actions.A_PROFILE.getName(), ctn, pm);
+		super("profile", ctn, pm);
+		this.addAction( Actions.A_PROFILE_INIT);
+		this.addAction( Actions.A_PROFILE_SUBMIT);
 		if (this.listenIcon) {
 			this.image = DOM.createImg();
 			DOM.appendChild(this.body, this.image);

@@ -27,9 +27,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	public UserExpListModel(String name) {
 		super(name);
 		// new open the other view:ExpEditModel.
-		ControlUtil.addAction(this, Actions.A_UEL_CREATE);
-		// click and open one exp,enter the exp's main view.
-
+		
 	}
 
 	/*
