@@ -4,7 +4,6 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.simple;
 
-import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -37,12 +36,6 @@ public class LightWeightView extends ViewSupport {
 
 	public LightWeightView(String name, Element ele, ContainerI ctn, ModelI md) {
 		super(name, ele, ctn, md);
-
-	}
-
-	@Override
-	protected void processChildActionModelAdd(final ActionModelI cm) {
-		super.processChildActionModelAdd(cm);
 
 	}
 

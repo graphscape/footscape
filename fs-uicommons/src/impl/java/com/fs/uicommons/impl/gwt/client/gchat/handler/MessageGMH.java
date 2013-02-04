@@ -5,6 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.gchat.handler;
 
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -32,9 +33,10 @@ public class MessageGMH extends AbstractGChatMH<MessageMW> {
 		String pid = mw.getParticipantId();
 
 		MessageModel mm = new MessageModel("message", mw.getTarget());//
-		
+
 		this.getGChatControl().addMessage(mm);
-		
+
+		new GChatMessageEvent(this.getGChatControl(), gid, pid).dispatch();
 	}
 
 	/*

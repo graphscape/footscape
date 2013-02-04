@@ -66,44 +66,6 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 		return this;
 	}
 
-	@Override
-	public void processChildModelAdd(final ModelI parent, final ModelI cm) {
-		if (cm instanceof ActionModelI) {
-			this.processChildActionModelAdd((ActionModelI) cm);
-		}
-	}
-
-	protected void processChildActionModelAdd(final ActionModelI amodel) {
-		amodel.addHandler(new ModelValueEventFilter(ActionModelI.L_STATE),
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						ViewSupport.this.handleActionState(e);
-					}
-				});
-	}
-
-	protected void handleActionState(ModelValueEvent e) {
-		ActionModelI am = (ActionModelI) e.getSource();
-		ValueWrapper vw = e.getValueWrapper();
-
-		if (vw.isValue(ActionModelI.PROCESSING)) {
-			this.handleActionProcessing(am);
-		} else if (vw.isValue(ActionModelI.PROCESSED)) {
-			this.handleActionProcessed(am);
-		}
-
-	}
-
-	protected void handleActionProcessing(ActionModelI am) {
-
-	}
-
-	protected void handleActionProcessed(ActionModelI am) {
-
-	}
-
 	protected <T extends ModelI> T findModel(Class<T> cls, boolean force) {
 		return this.getRootModel().find(cls, force);
 	}

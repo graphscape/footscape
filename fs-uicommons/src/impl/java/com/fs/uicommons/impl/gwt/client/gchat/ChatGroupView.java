@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
@@ -37,6 +38,7 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 	 */
 	public ChatGroupView(ContainerI ctn, ChatGroupModel cm) {
 		super(Actions.A_GCHAT, "chatgroup", ctn, cm);
+		this.addAction(Actions.A_GCHAT_SEND.getName());
 		this.groupId = cm.getId();
 		this.participantList = factory.create(ListI.class);
 		this.child(this.participantList);
@@ -46,13 +48,7 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 
 		this.messageEditor = factory.create(StringEditorI.class);
 		this.child(this.messageEditor);//
-		messageEditor.getModel().addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent e) {
-				ChatGroupView.this.onMessageEditorValue(e);
-			}
-		});
+		
 
 	}
 
@@ -60,14 +56,6 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 		return (ChatGroupModel) this.model;
 	}
 
-	/**
-	 * @param e
-	 */
-	protected void onMessageEditorValue(ModelValueEvent e) {
-		String sd = (String) e.getValueWrapper().getValue();
-		//
-
-	}
 
 	@Override
 	public void addParticipant(ParticipantModel om) {
@@ -87,6 +75,18 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 		LabelI msgW = this.factory.create(LabelI.class);
 		msgW.getModel().setDefaultValue(msg);//
 		this.messageList.child(msgW);
+	}
+
+	/*
+	 * Feb 4, 2013
+	 */
+	@Override
+	protected void beforeActionEvent(ActionEvent ae) {
+		super.beforeActionEvent(ae);
+		ae.setProperty("groupId", this.groupId);
+		//for send action
+		String text = this.messageEditor.getData();
+		ae.setProperty("text", text);
 	}
 
 }

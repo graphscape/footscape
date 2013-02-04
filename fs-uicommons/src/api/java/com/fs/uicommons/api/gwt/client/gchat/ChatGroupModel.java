@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
@@ -16,15 +17,15 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class ChatGroupModel extends ModelSupport {
 
-	protected Map<String,ParticipantModel> pMap ;
-	
+	protected Map<String, ParticipantModel> pMap;
+
 	/**
 	 * @param name
 	 */
-	public ChatGroupModel(String name) {
-		super(name);
-		this.pMap = new HashMap<String,ParticipantModel>();
-		
+	public ChatGroupModel(String id) {
+		super(id, id);
+		this.pMap = new HashMap<String, ParticipantModel>();
+
 	}
 
 	public void addMessage(MessageModel mm) {
@@ -41,9 +42,15 @@ public class ChatGroupModel extends ModelSupport {
 	public void addParticipant(ParticipantModel p) {
 		this.pMap.put(p.getId(), p);
 	}
-	
-	public ParticipantModel getParticipant(String pid, boolean force){
-		this.getChild(cls, force)
+
+	public ParticipantModel getParticipant(String pid, boolean force) {
+		ParticipantModel rt = this.pMap.get(pid);
+		if (force && rt == null) {
+			throw new UiException("no participant:" + pid + " in group:" + this.id);
+
+		}
+		return rt;
+
 	}
 
 }

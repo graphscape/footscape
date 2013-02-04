@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.ActionModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
@@ -19,9 +18,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
 import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
@@ -101,17 +98,15 @@ public class SimpleView extends ViewSupport {
 
 	}
 
-	@Override
-	protected void processChildActionModelAdd(final ActionModelI cm) {
-		super.processChildActionModelAdd(cm);
+	public void addAction(final String aname) {
 		// listen to the button clicked event,which is button state is changed.
 
-		ModelI bm = this.addModel("button-" + cm.getName());// TODO button's
-															// model is added
-															// into the view's
-															// model?
+		ModelI bm = this.addModel("button-" + aname);// TODO button's
+														// model is added
+														// into the view's
+														// model?
 		ButtonI b = this.factory.create(ButtonI.class, bm);// TODO,
-		b.getModel().setDefaultValue("%" + cm.getName());
+		b.getModel().setDefaultValue("%" + aname);
 
 		b.parent(this.actionList);
 		// click event is raised in button,not button's model
@@ -119,16 +114,9 @@ public class SimpleView extends ViewSupport {
 
 			@Override
 			public void handle(ClickEvent e) {
-				SimpleView.this.onActionClick(cm.getName());
+				SimpleView.this.onActionClick(aname);
 			}
 		});
-		// deliver the action's hidden to the button's visible.
-		// see widget base class,there will set the class name of the element.
-		// see the css file also.
-		SimpleValueDeliver<Boolean, Boolean> svd = new SimpleValueDeliver<Boolean, Boolean>(cm,
-				ActionModelI.L_HIDDEN, bm, WidgetI.IS_VISIBLE);
-		svd.mapValue(Boolean.TRUE, Boolean.FALSE).mapDefault(Boolean.TRUE).start();
-		// widget for render the model
 
 	}
 
@@ -207,28 +195,6 @@ public class SimpleView extends ViewSupport {
 			throw new UiException("widget not found for action:" + ap + " in view:" + this);
 		}
 		ab.getElementWrapper().click();
-	}
-
-	/*
-	 * Nov 13, 2012
-	 */
-	@Override
-	protected void handleActionProcessing(ActionModelI am) {
-		super.handleActionProcessing(am);
-		this.errorInfoDisplay.clear();
-		// TODO disable input?
-	}
-
-	/*
-	 * Nov 13, 2012
-	 */
-	@Override
-	protected void handleActionProcessed(ActionModelI am) {
-		super.handleActionProcessed(am);
-		// display errors
-
-		this.errorInfoDisplay.addErrorInfos(am.getErrorInfos());
-
 	}
 
 }
