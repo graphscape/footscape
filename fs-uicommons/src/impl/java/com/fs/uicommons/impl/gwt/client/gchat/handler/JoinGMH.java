@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.gchat.handler;
 
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
+import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.JoinMW;
 import com.fs.uicommons.impl.gwt.client.gchat.AbstractGChatMH;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -40,6 +41,7 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 		p.setRole(mw.getRole());
 
 		this.getGChatControl().addParticipant(p);
+		new GChatJoinEvent(this.getGChatControl(), gid, pid).dispatch();
 
 	}
 

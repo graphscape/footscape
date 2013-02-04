@@ -16,9 +16,9 @@ import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.TestWorker;
 import com.fs.uiclient.impl.test.gwt.client.cases.signup.ActivityTest;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
+import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatConnectEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatGroupCreatedEvent;
-import com.fs.uicommons.api.gwt.client.gchat.event.GChatMessageEvent;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatYouJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.MessageMW;
 import com.fs.uicore.api.gwt.client.core.Event;
@@ -74,9 +74,6 @@ public class AChatTest extends ActivityTest {
 
 		} else if (e instanceof GChatGroupCreatedEvent) {
 			this.onChatGroupCreated((GChatGroupCreatedEvent) e);
-		} else if (e instanceof GChatMessageEvent) {
-			this.onGChatMessage((GChatMessageEvent) e);
-
 		} else if (e instanceof GChatYouJoinEvent) {
 			this.onYouJoin((GChatYouJoinEvent) e);
 		}
@@ -161,12 +158,10 @@ public class AChatTest extends ActivityTest {
 
 	}
 
-	protected void onGChatMessage(GChatMessageEvent e) {
+	protected void onGChatMessage(MessageModel e) {
 		// echo to message
-		MessageMW mw = e.getGChatMessage();
-		MessageData md = (MessageData) mw.getTarget().getPayload("message");
 
-		String body = md.getString("text", true);
+		String body = e.getText();
 		assertEquals(TEXT, body);
 		this.tryFinish("hello.exp2");
 	}
