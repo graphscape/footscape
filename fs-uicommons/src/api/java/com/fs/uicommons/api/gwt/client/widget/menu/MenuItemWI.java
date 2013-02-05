@@ -12,8 +12,10 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface MenuItemWI extends WidgetI {
 
+	public void setText(String text);
+
 	public void _click();
-	
+
 	public void _select();
 
 }

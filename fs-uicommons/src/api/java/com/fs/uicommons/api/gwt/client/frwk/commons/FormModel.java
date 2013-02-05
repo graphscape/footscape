@@ -36,39 +36,6 @@ public class FormModel extends ModelSupport {
 		return this.getChildList(FieldModel.class);
 	}
 
-	public FieldModel addField(String name, Class<?> dcls) {
-		return this.addField(name, dcls, null);// default editor class
-	}
-
-	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass) {
-		return this.addField(name, dcls, editorClass, null);
-	}
-
-	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
-			final UiCallbackI<T, Object> editorCallback) {
-		FieldModel rt = new FieldModel(name);
-		rt.setEditorClass(editorClass);
-		rt.setFieldType(dcls);
-		if (editorCallback != null) {// this should be some thing like
-										// "EditorInitializer".
-			rt.addValueHandler(FieldModel.L_EDITOR, new EventHandlerI<ModelValueEvent>() {
-
-				@Override
-				public void handle(ModelValueEvent e) {
-					T editor = (T) e.getValue();
-					editorCallback.execute(editor);
-
-				}
-			});// TODO add a direct value callbackI?
-		}
-		rt.parent(this);
-		return rt;
-	}
-
-	public ObjectPropertiesData getData() {
-		return (ObjectPropertiesData) this.getDefaultValue();
-
-	}
 
 	public <T> T getFieldValue(String fname, T def) {
 		FieldModel fm = this.getFieldModel(fname, false);

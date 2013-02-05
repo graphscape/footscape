@@ -5,7 +5,7 @@ package com.fs.uicommons.impl.gwt.client.widget.basic;
 
 import com.fs.uicommons.api.gwt.client.widget.basic.DateWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.dom.client.Element;
@@ -18,16 +18,16 @@ import com.google.gwt.user.client.DOM;
 public class DateWImpl extends WidgetSupport implements DateWI {
 
 	/** */
-	public DateWImpl(String name) {
-		super(name, DOM.createLabel());
+	public DateWImpl(ContainerI c, String name) {
+		super(c, name, DOM.createLabel());
 	}
 
 	@Override
-	protected void processModelDefaultValue(ValueWrapper vw) {
+	public void setDate(DateData date) {
 
 		Element ele = this.getElement();
 
-		DateData sd = (DateData) vw.getValue();
+		DateData sd = date;
 		String str = DateUtil.format(sd, false);
 		ele.setInnerText(str);//
 

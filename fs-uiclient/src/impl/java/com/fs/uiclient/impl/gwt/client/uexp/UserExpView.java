@@ -27,11 +27,14 @@ public class UserExpView extends SimpleView {
 
 	protected TDWrapper incomingCrExpId1;// incoming cooper request exp id from.
 
+	protected UserExpModel model;
+
 	/**
 	 * @param ctn
 	 */
-	public UserExpView(String name, ContainerI ctn, UserExpModel um) {
-		super(name, ctn, um);
+	public UserExpView(ContainerI ctn, String name, UserExpModel um) {
+		super(ctn, name);
+		this.model = um;
 		this.addAction(Actions.A_UEXP_SELECT);//
 		this.addAction(Actions.A_UEXP_OPEN_ACTIVITY);//
 		this.addAction(Actions.A_UEXP_COOPER_CONFIRM);
@@ -107,21 +110,16 @@ public class UserExpView extends SimpleView {
 		new ViewUpdateEvent(this).dispatch();
 	}
 
-	@Override
-	public UserExpModel getModel() {
-		return (UserExpModel) this.model;
-	}
-
 	public String getExpId() {
-		return this.getModel().getExpId();
+		return this.model.getExpId();
 	}
 
 	public String getIncomingCrId() {
-		return this.getModel().getIncomingCrId();
+		return this.model.getIncomingCrId();
 	}
 
 	public String getActivityId() {
-		return this.getModel().getActivityId();
+		return this.model.getActivityId();
 	}
 
 	/*

@@ -12,8 +12,6 @@ import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
@@ -26,13 +24,15 @@ public class ExpItemView extends SimpleView {
 
 	protected TableWrapper table;
 
+	ExpItemModel model;
+
 	/**
 	 * @param ctn
 	 */
-	public ExpItemView(String name, ContainerI ctn, ExpItemModel ei) {
+	public ExpItemView(String name, ContainerI ctn,ExpItemModel ei) {
 
-		super(name, ctn, ei);
-
+		super(ctn, name);
+		this.model = ei;
 		this.addAction(Actions.A_EXPS_COOPER);//
 		//
 		if (this.table != null) {

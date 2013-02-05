@@ -19,13 +19,12 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
-import com.fs.uicore.api.gwt.client.simple.SimpleValueDeliver;
-import com.fs.uicore.api.gwt.client.simple.SyncValueDeliver;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -40,6 +39,8 @@ public class FormView extends ViewSupport implements FormViewI {
 
 	private PropertiesEditorI propertiesEditor;
 
+	private FormModel form;
+
 	static {
 		typeEditorMap.put(String.class, StringEditorI.class);
 		typeEditorMap.put(Boolean.class, BooleanEditorI.class);
@@ -50,45 +51,16 @@ public class FormView extends ViewSupport implements FormViewI {
 	/**
 	 * @param ctn
 	 */
-	public FormView(String name, ContainerI ctn, FormModel fm) {
-		super(name, DOM.createDiv(), ctn, fm);
+	public FormView(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
+		this.form = new FormModel(name);
 		this.propertiesEditor = this.factory.create(PropertiesEditorI.class);
 		this.propertiesEditor.parent(this);//
-
-		List<FieldModel> fmL = fm.getFieldModelList();
-		for (FieldModel mi : fmL) {
-			this.addField(mi);
-		}
-
-		SyncValueDeliver<ObjectPropertiesData, ObjectPropertiesData> svd = new SyncValueDeliver<ObjectPropertiesData, ObjectPropertiesData>(
-				this.propertiesEditor.getModel(), ModelI.L_DEFAULT, fm, ModelI.L_DEFAULT);
-		svd.mapDefaultDirect();
-		svd.getReverseValueDeliver().mapDefaultDirect();//
-		svd.start();
 
 	}
 
 	public EditorI getEditor(String name) {
 		return this.propertiesEditor.getPropertyEditor(name);
-	}
-
-	protected void addField(FieldModel cm) {
-
-		Class<? extends EditorI> etype = this.resolveEditorClass(cm);//
-
-		PropertyModel pm = this.propertiesEditor.addFieldModel(cm.getName(), etype);
-		pm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent e) {
-
-				FormView.this.onEditorPropertyValueChange(e);
-			}
-		});
-		// pipe the editor from property model to field model,then listened by
-		// the sub view impl such as SignupView.
-		new SimpleValueDeliver<EditorI, EditorI>(pm, PropertyModel.L_EDITOR, cm, FieldModel.L_EDITOR)
-				.mapDefaultDirect().start();
 	}
 
 	protected Class<? extends EditorI> resolveEditorClass(FieldModel fm) {
@@ -112,15 +84,6 @@ public class FormView extends ViewSupport implements FormViewI {
 		return rt;
 	}
 
-	private void onEditorPropertyValueChange(ModelValueEvent e) {
-		String name = ((PropertyModel) e.getSource()).getName();
-		Object fv = e.getValueWrapper().getValue();
-		// move value from property to field:
-		FieldModel fm = ((FormModel) this.model).getFieldModel(name, true);
-		fm.setFieldValue(fv);
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -129,6 +92,68 @@ public class FormView extends ViewSupport implements FormViewI {
 	 */
 	@Override
 	public FormModel getFormModel() {
-		return (FormModel) this.model;
+		// TODO Auto-generated method stub
+		return this.form;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#getData()
+	 */
+	@Override
+	public ObjectPropertiesData getData() {
+
+		return this.propertiesEditor.getData();
+
+	}
+
+	@Override
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls) {
+		return this.addField(name, dcls, null);// default editor class
+	}
+
+	@Override
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass) {
+		return this.addField(name, dcls, editorClass, null);
+	}
+
+	@Override
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
+			final UiCallbackI<T, Object> editorCallback) {
+		FieldModel rt = new FieldModel(name);
+		rt.setEditorClass(editorClass);
+		rt.setFieldType(dcls);
+		if (editorCallback != null) {// this should be some thing like
+										// "EditorInitializer".
+			rt.addValueHandler(FieldModel.L_EDITOR, new EventHandlerI<ModelValueEvent>() {
+
+				@Override
+				public void handle(ModelValueEvent e) {
+					T editor = (T) e.getValue();
+					editorCallback.execute(editor);
+
+				}
+			});// TODO add a direct value callbackI?
+		}
+		this.form.child(rt);
+
+		Class<? extends EditorI> etype = this.resolveEditorClass(rt);//
+
+		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype);
+		return rt;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#getActionList()
+	 */
+	@Override
+	public List<Path> getActionList() {
+
+		return this.form.getActionList();
+	}
+
 }

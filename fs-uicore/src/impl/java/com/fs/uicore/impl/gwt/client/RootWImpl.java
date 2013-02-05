@@ -16,11 +16,9 @@ import com.google.gwt.user.client.Element;
  */
 public class RootWImpl extends WidgetBase implements RootI, ContainerI.AwareI {
 
-	protected ContainerI container;
-
 	/** */
-	public RootWImpl(String name) {
-		super(name, getRootElement());
+	public RootWImpl(ContainerI c, String name) {
+		super(c,name, getRootElement());
 	}
 
 	/* */
@@ -62,7 +60,7 @@ public class RootWImpl extends WidgetBase implements RootI, ContainerI.AwareI {
 	 * .api.gwt.client.ContainerI)
 	 */
 	@Override
-	public void setContainer(ContainerI c) {
+	public void init(ContainerI c) {
 		this.container = c;
 
 	}

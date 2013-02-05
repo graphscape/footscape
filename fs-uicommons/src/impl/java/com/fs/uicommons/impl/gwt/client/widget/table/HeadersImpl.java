@@ -11,8 +11,8 @@ import java.util.Map;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.HeaderI;
 import com.fs.uicommons.impl.gwt.client.widget.table.support.TableHelper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -24,8 +24,8 @@ public class HeadersImpl extends TableHelper implements TableI.HeadersI {
 	protected Map<String, HeaderI> headerMap = new HashMap<String, HeaderI>();
 
 	/** */
-	public HeadersImpl(TableImpl t) {
-		super(DOM.createTHead(), t);
+	public HeadersImpl(ContainerI c, TableImpl t) {
+		super(c, DOM.createTHead(), t);
 	}
 
 	public HeaderI getHeader(String name) {
@@ -39,8 +39,7 @@ public class HeadersImpl extends TableHelper implements TableI.HeadersI {
 		if (old != null) {
 			throw new UiException("duplicated header:" + name);
 		}
-		HeaderI rt = new HeaderImpl(this.table, name);
-		this.factory.initilize(rt, new SimpleModel(""));
+		HeaderI rt = new HeaderImpl(this.container, this.table, name);
 		this.headerMap.put(name, rt);
 		return rt;
 

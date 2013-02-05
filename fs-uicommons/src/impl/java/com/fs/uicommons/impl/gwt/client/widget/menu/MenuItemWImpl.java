@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.menu;
 
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.google.gwt.dom.client.AnchorElement;
@@ -23,19 +24,16 @@ public class MenuItemWImpl extends WidgetSupport implements MenuItemWI {
 	/**
 	 * @param ele
 	 */
-	public MenuItemWImpl() {
-		super(DOM.createAnchor());
+	public MenuItemWImpl(ContainerI c) {
+		super(c, DOM.createAnchor());
 
-		this.addGwtHandler(
-				com.google.gwt.event.dom.client.ClickEvent.getType(),
-				new ClickHandler() {
+		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
 
-					@Override
-					public void onClick(
-							com.google.gwt.event.dom.client.ClickEvent event) {
-						MenuItemWImpl.this.onGwtClick(event);
-					}//
-				});
+			@Override
+			public void onClick(com.google.gwt.event.dom.client.ClickEvent event) {
+				MenuItemWImpl.this.onGwtClick(event);
+			}//
+		});
 	}
 
 	public void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
@@ -43,11 +41,10 @@ public class MenuItemWImpl extends WidgetSupport implements MenuItemWI {
 	}
 
 	@Override
-	protected void processModelDefaultValue(ValueWrapper vw) {
+	public void setText(String text) {
 
 		AnchorElement ele = this.concreteElement();
 
-		String text = (String) vw.getValue();
 		ele.setHref("#");
 		ele.setInnerText(text);
 		ele.setTitle(text);
@@ -69,8 +66,7 @@ public class MenuItemWImpl extends WidgetSupport implements MenuItemWI {
 		AnchorElement ae = this.getElement().cast();
 		// this.archorClick(ae);//TODO
 		// see com.google.gwt.user.client.ui.CustomButton
-		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false,
-				false, false, false);
+		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false, false, false, false);
 		ae.dispatchEvent(evt);
 	}
 

@@ -25,8 +25,8 @@ public class ManagerView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public ManagerView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public ManagerView(ContainerI c, String name) {
+		super(c,name);
 		this.tabber = this.factory.create(TabberWI.class);//
 		this.tabber.parent(this);
 	}

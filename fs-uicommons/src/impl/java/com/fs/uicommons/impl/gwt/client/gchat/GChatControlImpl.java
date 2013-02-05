@@ -5,7 +5,6 @@
 package com.fs.uicommons.impl.gwt.client.gchat;
 
 import com.fs.uicommons.api.gwt.client.CreaterI;
-import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
@@ -103,22 +102,9 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	@Override
 	public void join(String gid) {
 
-		ChatGroupModel gm = this.getOrCreateGroup(gid);
 		MessageData req = new MessageData("/gchat/join");
 		req.setHeader("groupId", gid);
 		this.endpoint.sendMessage(req);
-	}
-
-	@Override
-	public ChatGroupModel getOrCreateGroup(String gid) {
-
-		ChatGroupModel gm = this.getRootModel().find(ChatGroupModel.class, gid, false);
-
-		if (gm == null) {// getOrCreateGroup
-			gm = new ChatGroupModel(gid);
-			this.getRootModel().child(gm);
-		}
-		return gm;
 	}
 
 	/*
@@ -132,8 +118,6 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 
 	@Override
 	public void send(String gid, String text) {
-
-		ChatGroupModel gm = this.getOrCreateGroup(gid);
 
 		MessageData req = new MessageData("/gchat/message");
 		req.setHeader("groupId", gid);
@@ -151,7 +135,6 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	@Override
 	public ChatGroupViewI openChatgroup(final String gid) {
 		//
-		final ChatGroupModel m = this.getOrCreateGroup(gid);
 
 		ChatGroupViewI rt = this.getBodyView().getOrCreateItem(Path.valueOf("chatgroup/" + id),
 				new CreaterI<ChatGroupViewI>() {
@@ -159,7 +142,7 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 					@Override
 					public ChatGroupViewI create(ContainerI ct) {
 						//
-						return new ChatGroupView(ct, m);
+						return new ChatGroupView(ct, gid);
 					}
 				});
 		return rt;
@@ -172,8 +155,6 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	public void addParticipant(ParticipantModel p) {
 		//
 		String gid = p.getGroupId();
-		ChatGroupModel m = this.getOrCreateGroup(gid);
-		m.addParticipant(p);
 		ChatGroupViewI v = this.openChatgroup(gid);
 		v.addParticipant(p);
 	}
@@ -184,11 +165,8 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 	@Override
 	public void addMessage(MessageModel mm) {
 		String gid = mm.getGroupId();
-		ChatGroupModel m = this.getOrCreateGroup(gid);
-		m.addMessage(mm);
 		ChatGroupViewI v = this.openChatgroup(gid);
-		String text = mm.getText();
-		v.addMessage(text);
+		v.addMessage(mm);
 	}
 
 }

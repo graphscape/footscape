@@ -5,6 +5,7 @@ package com.fs.uicommons.impl.gwt.client.widget.table.support;
 
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.impl.gwt.client.widget.table.TableImpl;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -17,8 +18,8 @@ public class TableHelper extends LayoutSupport {
 
 	protected Element element;
 
-	public TableHelper(Element ele, TableImpl t) {
-		super(ele);
+	public TableHelper(ContainerI c, Element ele, TableImpl t) {
+		super(c, ele);
 		this.table = t;
 	}
 

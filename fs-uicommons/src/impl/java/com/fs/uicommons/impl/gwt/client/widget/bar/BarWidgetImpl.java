@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.bar;
 import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -35,8 +36,8 @@ public class BarWidgetImpl extends LayoutSupport implements BarWidgetI {
 	private Element rightTd;
 
 	/** */
-	public BarWidgetImpl(String name) {
-		super(name, DOM.createTable());
+	public BarWidgetImpl(ContainerI c,String name) {
+		super(c,name, DOM.createTable());
 		this.table = this.getElement();
 		this.elementWrapper.setAttribute("cellspacing", "0");
 		this.elementWrapper.setAttribute("cellspading", "0");

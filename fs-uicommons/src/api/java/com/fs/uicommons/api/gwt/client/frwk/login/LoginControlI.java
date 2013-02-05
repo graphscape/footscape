@@ -7,8 +7,6 @@ public interface LoginControlI extends ControlI {
 	/**
 	 * @return
 	 */
-	public LoginModelI getOrCreateLoginModel();
-
 	public LoginViewI openLoginView();
 
 }

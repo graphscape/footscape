@@ -11,4 +11,9 @@ import com.fs.uicommons.api.gwt.client.widget.BasicI;
  */
 public interface LabelI extends BasicI {
 
+	/**
+	 * @param key
+	 */
+	public void setText(String key);
+
 }

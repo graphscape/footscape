@@ -29,28 +29,7 @@ public class ProfileModel extends FormsModel implements ProfileModelI {
 		super(name);
 		
 		//
-		FormModel def = this.getDefaultForm();
-		def.addField("email", String.class);
-		def.addField("age", Integer.class);
-		FieldModel genderFM = def.addField("gender", String.class, EnumEditorI.class,
-				new UiCallbackI<EnumEditorI, Object>() {
-
-					@Override
-					public Object execute(EnumEditorI t) {
-						t.addOption("n/a");//
-						t.addOption("male");//
-						t.addOption("female");
-						return null;
-					}
-				});
-
-		// options
-		// FieldModel iconFM = def.addField("icon", String.class,
-		// ImageFileUrlDataEditorI.class);
-
-		FieldModel iconFM = def.addField("icon", String.class, ImageCropEditorI.class);
-
-		def.addAction(Actions.A_PROFILE_SUBMIT);//
+		
 
 	}
 

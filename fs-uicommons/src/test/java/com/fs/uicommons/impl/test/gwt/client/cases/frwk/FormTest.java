@@ -33,22 +33,13 @@ public class FormTest extends TestBase {
 		System.out.println(this.client.dump());
 		System.out.println(this.root.dump());
 
-		FormModel fm = new FormModel("");
-		fm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent e) {
-				FormTest.this.onDataValue(e);
-			}
-		});
-
-		FormView fv = new FormView(fm.getName(),this.container, fm);
-
-		cm.manage(fm, fv);
+	
+		FormView fv = new FormView(this.container, "testform");
+		//TODO add to body
 		assertTrue("form view should attached.", fv.isAttached());
 
 		this.delayTestFinish(timeoutMillis);
-		FieldModel f1m = fm.addField("field1", String.class);
+		FieldModel f1m = fv.addField("field1", String.class);
 
 		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 

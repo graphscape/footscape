@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface BodyModelI extends ModelI {
 
-	public ViewReferenceI manage(ModelI model, WidgetI w);
+	public ViewReferenceI manage(Path p, WidgetI w);
 
 	public ViewReferenceI getManaged(Path p);
 

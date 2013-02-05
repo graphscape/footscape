@@ -6,6 +6,7 @@ package com.fs.uicommons.api.gwt.client.widget.support;
 import java.util.List;
 
 import com.fs.uicore.api.gwt.client.CompositeI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -15,12 +16,12 @@ import com.google.gwt.user.client.Element;
  * @author wu TODO rename to LayoutWidgetSupport
  */
 public class LayoutSupport extends WidgetSupport implements CompositeI {
-	public LayoutSupport(Element ele) {
-		this(null, ele);
+	public LayoutSupport(ContainerI c, Element ele) {
+		this(c, null, ele);
 	}
 
-	public LayoutSupport(String name, Element ele) {
-		super(name, ele);
+	public LayoutSupport(ContainerI c, String name, Element ele) {
+		super(c, name, ele);
 	}
 
 	@Override

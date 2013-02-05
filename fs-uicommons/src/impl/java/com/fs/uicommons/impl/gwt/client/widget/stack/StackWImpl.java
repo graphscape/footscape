@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
+import com.fs.uicommons.api.gwt.client.widget.stack.StackWI.ItemModel;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
@@ -26,12 +28,16 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 
 	private List<ItemModel> selectedStack;
 
+	private List<ItemModel> itemList;
+
 	/**
 	 * @param ele
 	 */
-	public StackWImpl() {
-		super(DOM.createDiv());
+	public StackWImpl(ContainerI c) {
+		super(c, DOM.createDiv());
 		this.selectedStack = new ArrayList<ItemModel>();
+		this.itemList = new ArrayList<ItemModel>();
+
 	}
 
 	/*
@@ -42,7 +48,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	public ItemModel getSelected(boolean force) {
 
-		List<ItemModel> iml = this.model.getChildList(ItemModel.class);
+		List<ItemModel> iml = this.itemList;
 		ItemModel rt = null;
 		for (ItemModel im : iml) {
 			if (im.isSelected()) {
@@ -64,7 +70,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	public ItemModel getDefaultItem(boolean force) {
 
-		List<ItemModel> iml = this.model.getChildList(ItemModel.class);
+		List<ItemModel> iml = this.itemList;
 		ItemModel rt = null;
 		for (ItemModel im : iml) {
 			if (im.isDefaultItem()) {
@@ -93,11 +99,9 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	public ItemModel insert(WidgetI child, boolean select) {
 
-		ItemModel rt = new ItemModel("item-" + child.getName());
+		ItemModel rt = new ItemModel(this, child);
 
-		rt.setValue(ItemModel.L_WIDGET, child);
-
-		this.model.child(rt);// NOTE,rt is the child of the widget's model
+		this.itemList.add(rt);// NOTE,rt is the child of the widget's model
 
 		this.child(child);
 
@@ -114,37 +118,6 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		DOM.appendChild(this.element, ele);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicore.api.gwt.client.support.WidgetSupport#processChildModelAdd
-	 * (com.fs.uicore.api.gwt.client.ModelI)
-	 */
-	@Override
-	public void processChildModelAdd(ModelI p, ModelI cm) {
-		super.processChildModelAdd(p, cm);
-		if (cm instanceof ItemModel) {
-			this.processChildItemModelAdd((ItemModel) cm);
-		}
-	}
-
-	/**
-	 * @param cm
-	 */
-	private void processChildItemModelAdd(final ItemModel cm) {
-		cm.addValueHandler(ItemModel.L_SELECTED,
-				new ModelValueHandler<Boolean>(Boolean.FALSE) {
-
-					@Override
-					public void handleValue(Boolean value) {
-						StackWImpl.this.onItemSelectChanging(cm);
-					}
-				});
-		// TODO by override processModelValue?
-		this.onItemSelectChanging(cm);//
-	}
-
 	protected ItemModel peek() {
 		if (this.selectedStack.isEmpty()) {
 			return null;
@@ -152,10 +125,8 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		return this.selectedStack.get(0);//
 	}
 
-	/**
-	 * @param value
-	 */
-	protected void onItemSelectChanging(ItemModel im) {
+	@Override
+	public void updateSelect(ItemModel im) {
 
 		// reset selected
 
@@ -165,7 +136,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 
 			this.selectedStack.add(0, im);// TODO shrink
 
-			List<ItemModel> iml = this.model.getChildList(ItemModel.class);
+			List<ItemModel> iml = this.itemList;
 			for (ItemModel imm : iml) {
 				if (imm != im) {// unselect all the other
 								// item if its selected.
@@ -190,7 +161,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 
 	@Override
 	public int getSize() {
-		return this.getChildList(ItemModel.class).size();
+		return this.itemList.size();
 	}
 
 }

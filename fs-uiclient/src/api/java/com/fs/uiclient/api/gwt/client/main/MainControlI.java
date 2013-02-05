@@ -6,7 +6,6 @@ package com.fs.uiclient.api.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
@@ -23,8 +22,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 public interface MainControlI extends ControlI {
 
 	public ExpSearchModelI getExpSearchModel();
-
-	public ExpEditModelI getExpEditModel();
 
 	public CooperModelI getCooperModel();
 

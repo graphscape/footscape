@@ -32,7 +32,7 @@ public class StandardView extends ViewSupport {
 	 * @param ctn
 	 */
 	public StandardView(ContainerI ctn) {
-		super(DOM.createDiv(), ctn);
+		super(ctn, DOM.createDiv());
 	}
 
 	// TODO PanelI or CenterI
@@ -66,8 +66,8 @@ public class StandardView extends ViewSupport {
 		}
 
 		// TODO model
-		rt = factory.create(ButtonI.class,
-				SimpleModel.valueOf("unknown", a.getName()));// TODO title i18n
+		rt = factory.create(ButtonI.class);
+		rt.setText(a.getName());// TODO title i18n
 		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

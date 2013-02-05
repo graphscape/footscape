@@ -20,8 +20,6 @@ public interface GChatControlI extends ControlI {
 
 	public void send(String gid, String text);
 
-	public ChatGroupModel getOrCreateGroup(String gid);
-
 	public ChatGroupViewI openChatgroup(String id);
 
 	public boolean isConnected();

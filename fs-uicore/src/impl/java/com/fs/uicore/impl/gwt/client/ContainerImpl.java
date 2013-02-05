@@ -51,7 +51,7 @@ public class ContainerImpl implements ContainerI {
 	public void add(Object obj) {
 		this.objects.add(obj);
 		if (obj instanceof ContainerI.AwareI) {
-			((ContainerI.AwareI) obj).setContainer(this);
+			((ContainerI.AwareI) obj).init(this);
 		}
 	}
 

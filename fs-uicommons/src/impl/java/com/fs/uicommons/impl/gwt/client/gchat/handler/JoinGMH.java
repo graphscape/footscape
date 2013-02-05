@@ -4,7 +4,6 @@
  */
 package com.fs.uicommons.impl.gwt.client.gchat.handler;
 
-import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ParticipantModel;
 import com.fs.uicommons.api.gwt.client.gchat.event.GChatJoinEvent;
 import com.fs.uicommons.api.gwt.client.gchat.wrapper.JoinMW;
@@ -34,7 +33,6 @@ public class JoinGMH extends AbstractGChatMH<JoinMW> {
 		String pid = mw.getJoinParticipantId();
 		String accId = mw.getAccountId();
 
-		ChatGroupModel group = new ChatGroupModel(gid);
 		ParticipantModel p = new ParticipantModel(pid, gid);
 		p.setAccountId(accId);
 		p.setNick(accId);// TODO nick

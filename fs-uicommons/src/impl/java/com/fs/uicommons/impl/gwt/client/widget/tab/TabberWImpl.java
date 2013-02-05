@@ -11,6 +11,7 @@ import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
@@ -36,8 +37,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	/**
 	 * @param ele
 	 */
-	public TabberWImpl(String name) {
-		super(name, DOM.createTable());
+	public TabberWImpl(ContainerI c, String name) {
+		super(c, name, DOM.createTable());
 		Element table = this.element;
 		Element tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
@@ -47,6 +48,9 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		this.middleTd = this.createTrTd(tbody, "position-middle");
 
 		this.bodyTd = this.createTrTd(tbody, "position-body");
+
+		this.stack = this.factory.create(StackWI.class);
+		this.child(this.stack);//
 
 	}
 
@@ -59,22 +63,6 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 		td.addClassName(cname);
 		return td;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicore.api.gwt.client.support.WidgetBase#setWidgetFactory(com.
-	 * fs.uicore.api.gwt.client.WidgetFactoryI)
-	 */
-	@Override
-	public WidgetI model(ModelI model) {
-		super.model(model);
-
-		this.stack = this.factory.create(StackWI.class);
-		this.child(this.stack);//
-		return this;
 	}
 
 	@Override
@@ -113,9 +101,11 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 		StackWI.ItemModel sitem = this.stack.insert(pw, sel);//
 
-		TabWImpl rt = new TabWImpl(name, pw, sitem, this);// TODO not is a
-															// widget.
-		this.factory.initilize(rt, SimpleModel.valueOf(name, name));// TODO
+		TabWImpl rt = new TabWImpl(this.container, name, pw, sitem, this);// TODO
+																			// not
+																			// is
+																			// a
+		// widget.
 
 		this.child(rt);//
 

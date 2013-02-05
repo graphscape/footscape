@@ -34,7 +34,6 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.LineModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
@@ -191,85 +190,85 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		//
 		wf.addCreater(new WidgetCreaterSupport<AnchorWI>(AnchorWI.class) {
 			@Override
-			public AnchorWI create(String name) {
+			public AnchorWI create(ContainerI c, String name) {
 
-				return new AnchorWImpl(name);
+				return new AnchorWImpl(c, name);
 
 			}
 		});
 		//
 		wf.addCreater(new WidgetCreaterSupport<ListI>(ListI.class) {
 			@Override
-			public ListI create(String name) {
+			public ListI create(ContainerI c, String name) {
 
-				return new ListImpl(name);
+				return new ListImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<PanelWI>(PanelWI.class) {
 			@Override
-			public PanelWI create(String name) {
+			public PanelWI create(ContainerI c, String name) {
 
-				return new PanelWImpl(name);
+				return new PanelWImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<StackWI>(StackWI.class) {
 			@Override
-			public StackWI create(String name) {
+			public StackWI create(ContainerI c, String name) {
 
-				return new StackWImpl();
+				return new StackWImpl(c);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<TabberWI>(TabberWI.class) {
 			@Override
-			public TabberWI create(String name) {
+			public TabberWI create(ContainerI c, String name) {
 
-				return new TabberWImpl(name);
+				return new TabberWImpl(c, name);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<TableI>(TableI.class) {
 			@Override
-			public TableI create(String name) {
+			public TableI create(ContainerI c, String name) {
 
-				return new TableImpl(name);
+				return new TableImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<ButtonI>(ButtonI.class) {
 			@Override
-			public ButtonI create(String name) {
+			public ButtonI create(ContainerI c, String name) {
 
-				return new ButtonImpl(name);
+				return new ButtonImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<LabelI>(LabelI.class) {
 			@Override
-			public LabelI create(String name) {
+			public LabelI create(ContainerI c, String name) {
 
-				return new LabelImpl(name);
+				return new LabelImpl(c, name);
 
 			}
 		});
 		//
 		wf.addCreater(new WidgetCreaterSupport<MenuWI>(MenuWI.class) {
 			@Override
-			public MenuWI create(String name) {
+			public MenuWI create(ContainerI c, String name) {
 
-				return new MenuWImpl(name);
+				return new MenuWImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<TabberWI>(TabberWI.class) {
 			@Override
-			public TabberWI create(String name) {
+			public TabberWI create(ContainerI c, String name) {
 
-				return new TabberWImpl(name);
+				return new TabberWImpl(c, name);
 
 			}
 		});
@@ -278,93 +277,93 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(StringEditorI.class) {
 			@Override
-			public StringEditorI create(String name) {
+			public StringEditorI create(ContainerI c, String name) {
 
-				return new StringEditorImpl(name);
+				return new StringEditorImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(BooleanEditorI.class) {
 			@Override
-			public BooleanEditorI create(String name) {
+			public BooleanEditorI create(ContainerI c, String name) {
 
-				return new BooleanEditorImpl(name);
+				return new BooleanEditorImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(IntegerEditorI.class) {
 			@Override
-			public IntegerEditorI create(String name) {
+			public IntegerEditorI create(ContainerI c, String name) {
 
-				return new IntegerEditorImpl(name);
+				return new IntegerEditorImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
 			@Override
-			public PropertiesEditorI create(String name) {
+			public PropertiesEditorI create(ContainerI c, String name) {
 
-				return new PropertiesEditorImpl(name);
+				return new PropertiesEditorImpl(c, name);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(WindowPanelWI.class) {
 			@Override
-			public WindowPanelWI create(String name) {
+			public WindowPanelWI create(ContainerI c, String name) {
 
-				return new WindowPanelWImpl(name);
+				return new WindowPanelWImpl(c, name);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<BarWidgetI>(BarWidgetI.class) {
 			@Override
-			public BarWidgetI create(String name) {
+			public BarWidgetI create(ContainerI c, String name) {
 
-				return new BarWidgetImpl(name);
+				return new BarWidgetImpl(c, name);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<EnumEditorI>(EnumEditorI.class) {
 			@Override
-			public EnumEditorI create(String name) {
+			public EnumEditorI create(ContainerI c, String name) {
 
-				return new EnumEditorImpl(name);
+				return new EnumEditorImpl(c, name);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
 			@Override
-			public ErrorInfosWidgetI create(String name) {
+			public ErrorInfosWidgetI create(ContainerI c, String name) {
 
-				return new ErrorInfosWidgetImpl(name);
+				return new ErrorInfosWidgetImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(ImageFileUrlDataEditorI.class) {
 			@Override
-			public ImageFileUrlDataEditorI create(String name) {
+			public ImageFileUrlDataEditorI create(ContainerI c, String name) {
 
-				return new ImageFileUrlDataEditorImpl(name);
+				return new ImageFileUrlDataEditorImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(ImageCropEditorI.class) {
 			@Override
-			public ImageCropEditorI create(String name) {
+			public ImageCropEditorI create(ContainerI c, String name) {
 
-				return new ImageCropEditorImpl(name);
+				return new ImageCropEditorImpl(c, name);
 
 			}
 		});
 		wf.addCreater(new WidgetCreaterSupport<DateWI>(DateWI.class) {
 			@Override
-			public DateWI create(String name) {
+			public DateWI create(ContainerI c, String name) {
 
-				return new DateWImpl(name);
+				return new DateWImpl(c, name);
 
 			}
 		});
@@ -771,14 +770,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			}
 		});
 
-		InstanceOf.addChecker(new CheckerSupport(ChatGroupModel.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof ChatGroupModel;
-			}
-		});
 		InstanceOf.addChecker(new CheckerSupport(MessageModel.class) {
 
 			@Override

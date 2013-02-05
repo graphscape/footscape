@@ -8,6 +8,7 @@ package com.fs.uicommons.api.gwt.client.editor.support;
 
 import com.fs.uicommons.api.gwt.client.html5.file.FileReaderJSO;
 import com.fs.uicommons.api.gwt.client.html5.file.FileRefJSO;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
@@ -34,12 +35,11 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 	/**
 	 * @param ele
 	 */
-	public FileUrlDataEditorSupport(String name) {
-		super(name, DOM.createDiv());
+	public FileUrlDataEditorSupport(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
 		this.dataRender = new ElementWrapper(DOM.createDiv());
 		this.elementWrapper.append(dataRender);//
-		this.input = this.helpers
-				.addHelper("input", DOM.createElement("input"));
+		this.input = this.helpers.addHelper("input", DOM.createElement("input"));
 		this.getMasterHelper().append(this.input);//
 		this.input.setAttribute("type", "file");
 
@@ -50,8 +50,7 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 
 		// ?multiple
 		// TODO add outer element.
-		this.input.addGwtHandler(
-				com.google.gwt.event.dom.client.ChangeEvent.getType(),
+		this.input.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(),
 				new GwtChangeHandler() {
 
 					@Override
@@ -68,8 +67,7 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 	 */
 	protected void onChange(com.google.gwt.event.dom.client.ChangeEvent evt) {
 
-		JsArray<FileRefJSO> flist = FileRefJSO.getFileList(this.input
-				.getElement());//
+		JsArray<FileRefJSO> flist = FileRefJSO.getFileList(this.input.getElement());//
 
 		if (flist.length() > 1) {
 			throw new UiException("multiple files is not supported");
@@ -81,8 +79,7 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 		}
 		FileRefJSO file = flist.get(0);
 		if (file.getSize() > this.maxSize) {
-			throw new UiException("not supported size:" + file.getSize()
-					+ ",max size:" + this.maxSize);
+			throw new UiException("not supported size:" + file.getSize() + ",max size:" + this.maxSize);
 		}
 		String name = file.getName();//
 		JsDate jsd = file.getLastModifiedDate();
@@ -110,9 +107,9 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 		String urlData = (dataUrl);//
 		this.onDataLoad(urlData);
 	}
-	
-	protected void onDataLoad(String urlData){
-		
+
+	protected void onDataLoad(String urlData) {
+
 		this.setData(urlData, true);//
 	}
 }

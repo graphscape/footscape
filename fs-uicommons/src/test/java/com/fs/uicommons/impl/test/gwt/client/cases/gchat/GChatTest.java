@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.gchat.ChatGroupModel;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
@@ -70,7 +69,8 @@ public class GChatTest extends TestBase {
 	 */
 	protected void onMessage(GChatMessageEvent me) {
 		String gid = me.getGroupId();
-		ChatGroupModel group = this.control.getOrCreateGroup(gid);
+		ChatGroupViewI group = this.control.openChatgroup(gid);
+		
 		List<MessageModel> mL = group.getMessageModelList();
 		assertEquals("should only one message for now", 1, mL.size());
 		MessageModel mm = mL.get(0);
@@ -79,8 +79,7 @@ public class GChatTest extends TestBase {
 		String pid = mm.getParticipantId();
 
 		GChatControlI gc = this.manager.getControl(GChatControlI.class, true);
-		ChatGroupModel gm = gc.getOrCreateGroup(gid);
-		List<MessageModel> ml = gm.getMessageModelList();
+		List<MessageModel> ml = group.getMessageModelList();
 		assertEquals("message list size issue", 1, ml.size());
 		String text = mm.getText();
 		assertEquals("message content issue", TEXT, text);
@@ -95,7 +94,7 @@ public class GChatTest extends TestBase {
 		String gid = e.getGroupId();
 		String pid = e.getParticipantId();
 
-		ChatGroupModel group = this.control.getOrCreateGroup(gid);
+		ChatGroupViewI group = this.control.openChatgroup(gid);
 		assertEquals("join event recevied with a different gid.", GROUPID, gid);
 
 		ParticipantModel pm = group.getParticipant(pid, false);

@@ -9,6 +9,7 @@ import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,26 +27,25 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 
 	protected StackWI.ItemModel stackItem;
 
+	protected boolean selected;
+
 	/**
 	 * @param ele
 	 */
-	public TabWImpl(String name, PanelWI panel, StackWI.ItemModel sitem,
-			TabberWImpl tabber) {
-		super(name, DOM.createDiv());
+	public TabWImpl(ContainerI c, String name, PanelWI panel, StackWI.ItemModel sitem, TabberWImpl tabber) {
+		super(c, name, DOM.createDiv());
 		this.panel = panel;
 		this.tabber = tabber;
 		this.stackItem = sitem;
 
-		this.addGwtHandler(
-				com.google.gwt.event.dom.client.ClickEvent.getType(),
-				new ClickHandler() {
+		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
 
-					@Override
-					public void onClick(
-							com.google.gwt.event.dom.client.ClickEvent event) {
-						TabWImpl.this.onGwtClick(event);
-					}//
-				});
+			@Override
+			public void onClick(com.google.gwt.event.dom.client.ClickEvent event) {
+				TabWImpl.this.onGwtClick(event);
+			}//
+		});
+		this.setText(name);
 	}
 
 	private void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
@@ -55,11 +55,10 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	// this not impact the tabber,only impact this widget itself
 	// please call select,it will connected with tabber.
 	public void setSelected(boolean sel) {
-		this.model.setValue(TabWI.MK_SELECTED, sel);
+		this.selected = sel;
 
-		this.getElementWrapper().addAndRemoveClassName(sel,
-				"position-selected", "position-unselected");
-		
+		this.getElementWrapper().addAndRemoveClassName(sel, "position-selected", "position-unselected");
+
 		new SelectEvent(this, sel).dispatch();//
 	}
 
@@ -72,7 +71,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	public void select() {
 
 		this.tabber._select(this.name);
-		
+
 	}
 
 	/*
@@ -105,8 +104,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	 * .api.gwt.client.core.ModelI)
 	 */
 	@Override
-	protected void processModelDefaultValue(ValueWrapper vw) {
-		String text = this.name;
+	public void setText(String text) {
 		if (this.isSelected()) {
 			text += "*";// TODO other way to show the selected tab.
 		}
@@ -121,10 +119,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	 */
 	@Override
 	public boolean isSelected() {
-		// return this.model
-		// .getProperty(Boolean.class, MK_SELECTED, Boolean.FALSE);
-
-		return this.model.getValue(Boolean.class, MK_SELECTED, Boolean.FALSE);
+		return this.selected;
 	}
 
 	/**

@@ -33,8 +33,6 @@ public final class LoginTestWorker extends SignupTestWorker {
 	protected void onSignup(String email, String pass) {
 		this.loginView = (LoginView) this.manager.getControl(LoginControlI.class, true).openLoginView();
 
-		LoginModelI lm = this.loginView.getModel();
-
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);
 		FormView fv = this.loginView.find(FormView.class, "default", true);
 

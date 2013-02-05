@@ -8,20 +8,20 @@ package com.fs.uicommons.impl.gwt.client.editor.file;
 
 import com.fs.uicommons.api.gwt.client.editor.image.ImageFileUrlDataEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.FileUrlDataEditorSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wuzhen
  * 
  */
-public class ImageFileUrlDataEditorImpl extends FileUrlDataEditorSupport
-		implements ImageFileUrlDataEditorI {
+public class ImageFileUrlDataEditorImpl extends FileUrlDataEditorSupport implements ImageFileUrlDataEditorI {
 	// private Element image;
 
 	/**
 	 * @param ele
 	 */
-	public ImageFileUrlDataEditorImpl(String name) {
-		super(name);
+	public ImageFileUrlDataEditorImpl(ContainerI c, String name) {
+		super(c, name);
 
 	}
 

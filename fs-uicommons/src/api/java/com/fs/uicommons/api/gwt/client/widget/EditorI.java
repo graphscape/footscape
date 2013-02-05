@@ -12,6 +12,8 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 public interface EditorI<T> extends WidgetI {
 
 	public T getData();
+	
+	public void setData(T d);
 
 	public void input(T d);
 

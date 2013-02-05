@@ -6,7 +6,6 @@ package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
-import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
@@ -18,7 +17,6 @@ import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
 import com.fs.uiclient.impl.gwt.client.cooper.CooperModel;
-import com.fs.uiclient.impl.gwt.client.expe.ExpEditModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
@@ -113,22 +111,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 		return rt;
 	}
 
-	/*
-	 * Jan 31, 2013
-	 */
-	@Override
-	public ExpEditModelI getExpEditModel() {
-		ExpEditModelI rt = this.getOrCreateModel(this.getRootModel(), ExpEditModelI.class,
-				new CreaterI<ExpEditModelI>() {
-
-					@Override
-					public ExpEditModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new ExpEditModel("exp-edit");
-					}
-				});
-		return rt;
-	}
 
 	/*
 	 * Jan 31, 2013
@@ -189,14 +171,12 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	@Override
 	public ExpEditViewI openExpEditView() {
-		//
-		final ExpEditModelI uel = this.getExpEditModel();
-
+	
 		ExpEditViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/expe"), new CreaterI<ExpEditViewI>() {
 
 			@Override
 			public ExpEditViewI create(ContainerI ct) {
-				return new ExpEditView(ct, (ExpEditModel) uel);
+				return new ExpEditView(ct);
 			}
 		});
 		return uelv;

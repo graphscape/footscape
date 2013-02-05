@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.support;
 
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.google.gwt.user.client.Element;
@@ -14,8 +15,8 @@ import com.google.gwt.user.client.Element;
 public class BasicSupport extends WidgetSupport {
 
 	/** */
-	public BasicSupport(Element ele) {
-		super(ele);
+	public BasicSupport(ContainerI c, Element ele) {
+		super(c, ele);
 
 	}
 

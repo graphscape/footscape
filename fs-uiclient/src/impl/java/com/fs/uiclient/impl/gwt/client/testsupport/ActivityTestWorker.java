@@ -162,8 +162,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 	 * @param e
 	 */
 	private void onUserExpViewUpdate(UserExpView v, ViewUpdateEvent e) {
-		UserExpModel uem = v.getModel();
-		String crId = uem.getIncomingCrId();
+		String crId = v.getIncomingCrId();
 		if (crId != null) {
 			Boolean pro = (Boolean) v.getProperty("incomingCrConfirmProcessing");
 			if (pro != null) {
@@ -179,7 +178,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 			v.clickAction(Actions.A_UEXP_COOPER_CONFIRM);
 			this.tryFinish("cooper.confirm");
 		}
-		String actId = uem.getActivityId();
+		String actId = v.getActivityId();
 		if (actId != null) {
 			Boolean pro = (Boolean) v.getProperty("activityOpened");
 			if (pro == null) {

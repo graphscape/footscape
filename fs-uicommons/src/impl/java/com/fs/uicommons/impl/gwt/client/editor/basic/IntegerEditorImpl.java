@@ -5,6 +5,7 @@ package com.fs.uicommons.impl.gwt.client.editor.basic;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.IntegerEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.DOM;
 
@@ -15,8 +16,8 @@ import com.google.gwt.user.client.DOM;
 public class IntegerEditorImpl extends EditorSupport<Integer> implements IntegerEditorI {
 
 	/** */
-	public IntegerEditorImpl(String name) {
-		super(name, DOM.createInputText());
+	public IntegerEditorImpl(ContainerI c, String name) {
+		super(c, name, DOM.createInputText());
 
 		this.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new ChangeHandler() {
 
@@ -42,9 +43,9 @@ public class IntegerEditorImpl extends EditorSupport<Integer> implements Integer
 
 	/* */
 	@Override
-	protected void processModelDefaultValue(Integer dt) {
+	public void setData(Integer dt) {
+		super.setData(dt);
 		String txt = dt == null ? "" : dt + "";
-
 		this.setText(txt);
 	}
 

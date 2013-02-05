@@ -35,30 +35,18 @@ public class EchoTest extends TestBase {
 
 		// model
 
-		EchoModel fm = new EchoModel("");// is a form model
-		// listen the form data
-		fm.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent e) {
-				EchoTest.this.onDataValue(e);
-			}
-		});
-
 		// EchoControl control = new EchoControl("echo");
 
 		// control.parent(this.manager);// for attach
 		// listen to the control event
 
 		// view
-		FormsView view = new FormsView(this.container, fm);
-
-		cm.manage(fm, view);
-
+		FormsView view = new FormsView(this.container, "echo");
+		//TODO add to parent.
 		assertTrue("form view should attached.", view.isAttached());
 
 		this.delayTestFinish(timeoutMillis);
-		FieldModel f1m = fm.getDefaultForm().addField("field1", String.class);
+		FieldModel f1m = view.getDefaultForm().addField("field1", String.class);
 
 		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
 

@@ -8,6 +8,7 @@ package com.fs.uicommons.impl.gwt.client.editor.image;
 
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.FileUrlDataEditorSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.DataEvent;
@@ -24,8 +25,8 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 
 	protected ImageCroper imageCroper;
 
-	public ImageCropEditorImpl(String name) {
-		super(name);
+	public ImageCropEditorImpl(ContainerI c, String name) {
+		super(c, name);
 
 		this.image = ElementWrapper.valueOf(DOM.createImg());
 		this.dataRender.append(this.image);//
@@ -47,8 +48,8 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 	 * Nov 21, 2012
 	 */
 	@Override
-	protected void processModelDefaultValue(String data) {
-		super.processModelDefaultValue(data);
+	public void setData(String data) {
+		super.setData(data);
 		this.image.setAttribute("src", data);
 	}
 

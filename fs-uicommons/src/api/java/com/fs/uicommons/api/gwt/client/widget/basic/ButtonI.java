@@ -22,4 +22,6 @@ public interface ButtonI extends BasicI {
 	
 	public State getState();
 	
+	public void setText(String text);
+	
 }

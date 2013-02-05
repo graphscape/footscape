@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.wpanel;
 
 import com.fs.uicommons.api.gwt.client.widget.wpanel.WindowPanelWI;
 import com.fs.uicommons.impl.gwt.client.widget.panel.AbstractPanelWImpl;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Size;
@@ -24,14 +25,13 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
  *         RootI.
  * @see AbsolutePanel
  */
-public class WindowPanelWImpl extends AbstractPanelWImpl implements
-		WindowPanelWI {
+public class WindowPanelWImpl extends AbstractPanelWImpl implements WindowPanelWI {
 
 	/**
 	 * @param ele
 	 */
-	public WindowPanelWImpl(String name) {
-		super(name, DOM.createDiv());
+	public WindowPanelWImpl(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
 
 		// DOM.setStyleAttribute(this.element, "position", "relative");//
 
@@ -50,14 +50,14 @@ public class WindowPanelWImpl extends AbstractPanelWImpl implements
 		super.doAttach();
 		WindowI w = this.getContainer().get(WindowI.class, true);
 		//
-		this.addHandler(SimpleEventFilter.valueOf(SizeChangeEvent.TYPE,
-				WindowI.class, w), new EventHandlerI<SizeChangeEvent>() {
+		this.addHandler(SimpleEventFilter.valueOf(SizeChangeEvent.TYPE, WindowI.class, w),
+				new EventHandlerI<SizeChangeEvent>() {
 
-			@Override
-			public void handle(SizeChangeEvent e) {
-				WindowPanelWImpl.this.onWindowSizeChange(e);
-			}
-		});
+					@Override
+					public void handle(SizeChangeEvent e) {
+						WindowPanelWImpl.this.onWindowSizeChange(e);
+					}
+				});
 	}
 
 	protected void onWindowSizeChange(SizeChangeEvent e) {

@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.error;
 import com.fs.uicommons.api.gwt.client.adjust.OverflowAdjustHandler;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfoData;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.google.gwt.user.client.DOM;
@@ -15,19 +16,18 @@ import com.google.gwt.user.client.Element;
  * @author wuzhen
  * 
  */
-public class ErrorInfosWidgetImpl extends WidgetSupport implements
-		ErrorInfosWidgetI {
+public class ErrorInfosWidgetImpl extends WidgetSupport implements ErrorInfosWidgetI {
 
 	protected Element tbody;
 
 	/**
 	 * @param ele
 	 */
-	public ErrorInfosWidgetImpl(String name) {
-		super(name, DOM.createDiv());
+	public ErrorInfosWidgetImpl(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
 		Element table = DOM.createTable();
 		DOM.appendChild(this.element, table);
-		
+
 		tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
 		// NOTE
@@ -61,7 +61,7 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements
 			appendMessageTD(tr, ei.getCode(), "errorCode");
 			appendMessageTD(tr, ei.getMessage(), "errorMessage");
 			appendMessageTD(tr, ei.getDetail().toString(), "errorDetail");// TODO
-																				// list
+																			// list
 
 		}
 

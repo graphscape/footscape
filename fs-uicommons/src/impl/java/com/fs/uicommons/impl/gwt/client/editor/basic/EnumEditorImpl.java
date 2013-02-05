@@ -8,9 +8,7 @@ import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 import com.google.gwt.dom.client.NodeList;
@@ -27,8 +25,8 @@ import com.google.gwt.user.client.DOM;
 public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI {
 
 	/** */
-	public EnumEditorImpl(String name) {
-		super(name, DOM.createSelect());
+	public EnumEditorImpl(ContainerI c, String name) {
+		super(c,name, DOM.createSelect());
 
 		this.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new ChangeHandler() {
 
@@ -47,25 +45,13 @@ public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI
 	}
 
 	@Override
-	protected void doModel(ModelI model) {
-		super.doModel(model);
-
-	}
-
-	@Override
-	protected void processModelValue(Location loc, ValueWrapper vw) {
-		super.processModelValue(loc, vw);
-
-	}
-
-	@Override
-	protected void processModelDefaultValue(ValueWrapper vw) {
-		super.processModelDefaultValue(vw);
+	public void setData(String data) {
+		super.setData(data);
 		this.updateElement();
 	}
 
 	protected void updateElement() {
-		String value = (String) this.model.getDefaultValue();
+		String value = this.getData();
 		OptionElement oe = this.getOptionElementByValue(value, false);
 		if (oe == null) {
 			return;
@@ -114,13 +100,6 @@ public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI
 
 	private SelectElement concreteElement() {
 		return getElement().cast();
-	}
-
-	/* */
-	@Override
-	protected void processModelDefaultValue(String dt) {
-		String txt = dt;
-
 	}
 
 }

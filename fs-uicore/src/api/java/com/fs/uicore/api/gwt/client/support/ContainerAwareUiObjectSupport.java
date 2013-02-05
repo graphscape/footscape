@@ -40,7 +40,7 @@ public class ContainerAwareUiObjectSupport extends StatefulUiObjectSupport
 	 * .api.gwt.client.ContainerI)
 	 */
 	@Override
-	public void setContainer(ContainerI c) {
+	public void init(ContainerI c) {
 		this.container = c;
 	}
 

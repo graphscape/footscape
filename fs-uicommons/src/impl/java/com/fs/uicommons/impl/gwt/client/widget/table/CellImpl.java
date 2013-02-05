@@ -7,6 +7,7 @@ import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.CellI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicommons.impl.gwt.client.widget.table.support.TableHelper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.google.gwt.user.client.DOM;
 
@@ -19,8 +20,8 @@ public class CellImpl extends TableHelper implements TableI.CellI {
 	protected RowI row;
 
 	/** */
-	public CellImpl(RowImpl r) {
-		super(DOM.createTD(), r.getTable());
+	public CellImpl(ContainerI c, RowImpl r) {
+		super(c, DOM.createTD(), r.getTable());
 		this.row = r;
 	}
 

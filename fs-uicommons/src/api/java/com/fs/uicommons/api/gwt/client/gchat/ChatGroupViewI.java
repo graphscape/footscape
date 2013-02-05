@@ -4,6 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.gchat;
 
+import java.util.List;
+
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 
 /**
@@ -12,8 +14,12 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  */
 public interface ChatGroupViewI extends ViewI {
 
-	public void addMessage(String msg);
+	public void addMessage(MessageModel msg);
 
 	public void addParticipant(ParticipantModel om);
+
+	public List<MessageModel> getMessageModelList();
+
+	public ParticipantModel getParticipant(String pid, boolean force);
 
 }

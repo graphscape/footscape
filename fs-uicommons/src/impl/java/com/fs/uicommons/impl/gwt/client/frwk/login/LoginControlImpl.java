@@ -24,20 +24,6 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 		super(c, name);
 	}
 
-	@Override
-	public LoginModelI getOrCreateLoginModel() {
-
-		LoginModelI rt = this.getClient(true).getRootModel().find(LoginModelI.class, false);
-		if (rt != null) {
-			return rt;
-		}
-		rt = new LoginModel("login");
-		this.getClient(true).getRootModel().child(rt);//
-
-		return rt;
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,17 +32,13 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	 */
 	@Override
 	public LoginViewI openLoginView() {
-		LoginModelI lm = this.getOrCreateLoginModel();
-		return this.getOrCreateLoginView((LoginModel) lm);
-	}
 
-	public LoginView getOrCreateLoginView(LoginModel lm) {
 		BodyViewI bv = this.getBodyView();
 		Path path = Path.valueOf("/login/view");
 		LoginView lv = bv.getItem(path, false);
 		if (lv == null) {
-			lv = new LoginView("login", this.getContainer(), lm);
-			lv.model(lm);
+			lv = new LoginView(this.getContainer(), "login");
+
 			bv.addItem(path, lv);
 		}
 		return lv;

@@ -7,7 +7,6 @@ import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Element;
@@ -21,25 +20,8 @@ public class ButtonTest extends TestBase {
 	public void testButtonWithModel() {
 
 		final ButtonI b = wf.create(ButtonI.class);
-		// hope this handler is called after the button's own handler for
-		// setting the element innerText.
-		b.getModel().addHandler(ModelValueEvent.TYPE, new EventHandlerI<ModelValueEvent>() {
 
-			@Override
-			public void handle(ModelValueEvent e) {
-				//
-				if (e.getLocation().isDefaultProperty()) {
-					String text = b.getElement().getInnerText();
-
-					assertEquals("clickme", text);
-					ButtonTest.this.finishTest();
-				}
-
-			}
-		});
 		this.delayTestFinish(timeoutMillis);
-
-		b.getModel().setDefaultValue("clickme");
 
 	}
 

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
-import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
@@ -99,7 +98,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 		String text = this.expText(this.nextExpIdx);
 		FormView fv = this.eeView.find(FormView.class, "default", true);
 
-		EditorI bodyE = fv.find(EditorI.class, ExpEditModelI.F_BODY, true);
+		EditorI bodyE = fv.find(EditorI.class, ExpEditView.F_BODY, true);
 
 		bodyE.input((text));//
 
@@ -127,8 +126,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 	public void onUserExpViewAttached(UserExpView v) {
 
 		int size = this.ueViewMap.size();
-		UserExpModel uem = v.getModel();
-		String expId = uem.getExpId();
+		String expId = v.getExpId();
 		this.ueViewMap.put(expId, v);//
 		int newSize = this.ueViewMap.size();
 		if (newSize > size) {

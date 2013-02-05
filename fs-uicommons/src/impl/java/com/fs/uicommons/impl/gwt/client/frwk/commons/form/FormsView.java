@@ -9,6 +9,7 @@ import java.util.List;
 import com.fs.uicommons.api.gwt.client.Constants;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
@@ -25,38 +26,32 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
  */
 public class FormsView extends SimpleView implements FormsViewI {
 
-	// private static final String PK_TAB_FORMMODEL = FormsView.class.getName()
-	// + "_formModel";
-
 	private TabberWI tabber;
+
+	private FormsModel formsModel;
 
 	/**
 	 * @param ctn
 	 */
-	public FormsView(ContainerI ctn, FormsModel fm) {
-		this(null, ctn, fm);
+	public FormsView(ContainerI ctn) {
+		this(ctn, null);
 	}
 
-	public FormsView(String name, ContainerI ctn, FormsModel fm) {
-		super(name, ctn, fm);
+	public FormsView(ContainerI ctn, String name) {
+		super(ctn, name);
+		this.formsModel = new FormsModel(null);
 		this.tabber = this.factory.create(TabberWI.class);
 		this.tabber.parent(this);//
-		for (FormModel f : fm.getChildList(FormModel.class)) {
-			this.addForm(f);
-		}
+		this.addForm(FM_DEFAULT);
 
-	}
-
-	public FormsModel concreteModel() {
-		return (FormsModel) this.model;
 	}
 
 	@Override
-	public void addForm(final FormModel cm) {
-		String fname = cm.getName();
-		FormView fv = new FormView(fname, this.getContainer(), cm);
+	public FormViewI addForm(final String fname) {
 
-		TabWI tb = this.tabber.addTab(tabName(cm), fv, false);
+		FormView fv = new FormView(this.getContainer(), fname);
+
+		TabWI tb = this.tabber.addTab(tabName(fname), fv, false);
 		tb.addSelectEventHandler(new EventHandlerI<SelectEvent>() {
 
 			@Override
@@ -64,35 +59,32 @@ public class FormsView extends SimpleView implements FormsViewI {
 				if (!t.isSelected()) {
 					return;
 				}
-				FormsView.this.onSelectedFromTab(cm);
+				FormsView.this.onSelectedFromTab(fname);
 			}
 		});
 		// first?
 		if (tb.isSelected()) {
-			this.setCurrentForm(cm);
+			this.setCurrentForm(fname);
 		}
+		return fv;
 
 	}
 
 	/**
 	 * @param cm
 	 */
-	protected void onSelectedFromTab(FormModel cm) {
-		this.setCurrentForm(cm);
+	protected void onSelectedFromTab(String fname) {
+		this.setCurrentForm(fname);
 	}
 
 	@Override
 	protected void beforeActionEvent(ActionEvent ae) {
 
-		ae.property(Constants.AK_FORMS_MODEL, this.concreteModel());
+		ae.property(Constants.AK_FORMS_VIEW, this);
 	}
 
-	private String tabName(FormModel fm) {
-		return "tab-" + fm.getName();
-	}
-
-	public FormModel getCurrentForm() {
-		return this.concreteModel().getCurrentForm();
+	private String tabName(String fname) {
+		return "tab-" + fname;
 	}
 
 	/**
@@ -100,12 +92,13 @@ public class FormsView extends SimpleView implements FormsViewI {
 	 * 
 	 * @param e
 	 */
-	public void setCurrentForm(FormModel fm) {
-		this.updateActionHidden(fm);// for current form,only should required
-									// actions.
+	public void setCurrentForm(String fname) {
+
+		this.updateActionHidden(fname);// for current form,only should required
+										// actions.
 		// may have not yet add to tabber?
 
-		TabWI tab = this.tabber.getTab(tabName(fm), false);
+		TabWI tab = this.tabber.getTab(tabName(fname), false);
 		if (tab == null) {// value set,but view have no chance to add the tab.
 			return;// see the processChildFormModelAdd,there should process the
 					// current form issue.
@@ -116,15 +109,42 @@ public class FormsView extends SimpleView implements FormsViewI {
 		}
 	}
 
-	protected void updateActionHidden(FormModel fm) {
+	protected void updateActionHidden(String fname) {
+
 		List<Path> actions = this.getActionList();
-		List<Path> actions2 = getActionList();
+
+		List<Path> actions2 = this.getActionList(fname);
 
 		for (Path am : actions) {
 			boolean show = actions2.contains(am);
 			this.hideAction(am, !show);
 		}
 		// change the actions display
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI#getForm(java.
+	 * lang.String)
+	 */
+	@Override
+	public FormViewI getForm(String name) {
+		// TODO Auto-generated method stub
+		return this.formViewMap.get(name);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI#getDefaultForm()
+	 */
+	@Override
+	public FormViewI getDefaultForm() {
+		return this.getForm(FM_DEFAULT);
 
 	}
 

@@ -37,15 +37,14 @@ public class UiCoreTestGPI implements GwtSPI {
 			}
 		});
 
-		c.get(WidgetFactoryI.class, true).addCreater(
-				new WidgetCreaterSupport<TestWI>(TestWI.class) {
+		c.get(WidgetFactoryI.class, true).addCreater(new WidgetCreaterSupport<TestWI>(TestWI.class) {
 
-					@Override
-					public TestWI create(String name) {
-						// TODO Auto-generated method stub
-						return new TestWidget(name);
-					}
-				});
+			@Override
+			public TestWI create(ContainerI c, String name) {
+				// TODO Auto-generated method stub
+				return new TestWidget(c, name);
+			}
+		});
 	}
 
 }

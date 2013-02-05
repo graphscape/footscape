@@ -13,7 +13,6 @@ import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
-import com.fs.uiclient.api.gwt.client.expe.ExpEditModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
@@ -195,8 +194,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		manager.addControl(new MainControl(c, "main"));
 		manager.addControl(new CooperControl(c, "cooper"));
 		manager.addControl(new UserExpListControl(c, "uelist"));
-		manager.addControl(new ExpSearchControl(c,"exps"));
-		manager.addControl(new ActivitiesControl(c,"activities"));
+		manager.addControl(new ExpSearchControl(c, "exps"));
+		manager.addControl(new ActivitiesControl(c, "activities"));
 
 	}
 
@@ -299,16 +298,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(ExpEditModelI.class) {
 
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof ExpEditModelI;
-
-			}
-
-		});
 		InstanceOf.addChecker(new CheckerSupport(ExpSearchModelI.class) {
 
 			@Override

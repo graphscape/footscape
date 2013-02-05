@@ -7,6 +7,8 @@ package com.fs.uiclient.impl.gwt.client.expe;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -16,15 +18,19 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class ExpEditView extends FormsView implements ExpEditViewI {
 
+	public static final String F_BODY = "body";
 	private ViewReferenceI managed;
 
 	/**
 	 * @param ctn
 	 */
-	public ExpEditView(ContainerI ctn, ExpEditModel em) {
-		super("expe", ctn, em);
+	public ExpEditView(ContainerI ctn) {
+		super(ctn, "expe");
 		this.addAction(Actions.A_EXPE_SUBMIT);//
 
+		FormViewI fv = this.addForm(FormsViewI.FM_DEFAULT);
+		fv.addField(F_BODY, String.class);
+		fv.getFormModel().addAction(Actions.A_EXPE_SUBMIT);//
 	}
 
 }

@@ -4,13 +4,12 @@
 package com.fs.uicommons.api.gwt.client.widget.support;
 
 import com.fs.uicommons.api.gwt.client.AdjusterI;
-import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.model.ModelChildProcessorI;
 import com.fs.uicore.api.gwt.client.support.WidgetBase;
 import com.google.gwt.user.client.Element;
 
@@ -18,16 +17,16 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class WidgetSupport extends WidgetBase implements ModelChildProcessorI {
+public class WidgetSupport extends WidgetBase {
 
 	protected AdjustersHelper adjustersHelper;
 
-	public WidgetSupport(Element ele) {
-		this(null, ele);
+	public WidgetSupport(ContainerI c, Element ele) {
+		this(c, null, ele);
 	}
 
-	public WidgetSupport(String name, Element ele) {
-		super(name, ele);
+	public WidgetSupport(ContainerI c, String name, Element ele) {
+		super(c, name, ele);
 
 	}
 
@@ -48,10 +47,8 @@ public class WidgetSupport extends WidgetBase implements ModelChildProcessorI {
 	protected void onSetParent(WidgetI old, WidgetI newP) {
 
 		if (old != null && newP != null) {
-			throw new UiException(
-					"changing parent not suported, current parent:" + old
-							+ ",new parent:" + newP + " for widget:" + this
-							+ "");
+			throw new UiException("changing parent not suported, current parent:" + old + ",new parent:"
+					+ newP + " for widget:" + this + "");
 		}
 
 		if (old != null && old.isAttached()) {
@@ -65,45 +62,18 @@ public class WidgetSupport extends WidgetBase implements ModelChildProcessorI {
 	}
 
 	@Override
-	public void doAttach() {
-		super.doAttach();
-
-		if (this.model == null) {
-			throw new UiException("bug,model is null for widget:" + this);
-		}
-		ModelChildProcessorI.Helper.onAttach(model, this);
-	}
-
-	@Override
-	public void processChildModelAdd(final ModelI parent, final ModelI cm) {
-
-	}
-
-	@Override
-	public void processChildModelRemove(final ModelI parent, final ModelI cm) {
-
-	}
-
-	@Override
 	public boolean isAttached() {
 		return attached;
 	}
 
-	@Override
-	public void setVisible(boolean v) {
-		super.setVisible(v);
-		this.model.setValue(IS_VISIBLE, v);
-	}
-
-
-	//@Override
+	// @Override
 	public AdjusterI addAdjuster(String name, EventHandlerI<ClickEvent> eh) {
 		AdjusterI rt = this.addAdjuster(name);
 		rt.addClickHandler(eh);
 		return rt;
 	}
 
-	//@Override
+	// @Override
 	public AdjusterI addAdjuster(String name) {
 		if (this.adjustersHelper == null) {
 			this.adjustersHelper = new AdjustersHelper();//

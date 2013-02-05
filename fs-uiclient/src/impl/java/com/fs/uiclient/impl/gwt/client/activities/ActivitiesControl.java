@@ -10,7 +10,6 @@ import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI.ItemModel;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
-import com.fs.uiclient.impl.gwt.client.activity.ActivityModel;
 import com.fs.uiclient.impl.gwt.client.activity.ActivityView;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
@@ -83,7 +82,7 @@ public class ActivitiesControl extends ControlSupport implements ActivitiesContr
 					@Override
 					public ActivityView create(ContainerI ct) {
 						//
-						return new ActivityView(actId, ct, am);
+						return new ActivityView(ct, am);
 					}
 				});
 

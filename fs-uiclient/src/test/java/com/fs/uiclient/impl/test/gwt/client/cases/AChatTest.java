@@ -36,7 +36,6 @@ public class AChatTest extends ActivityTest {
 
 	private static String TEXT = "hello exp2";
 
-	private ActivityModelI activityModel;
 	private ActivityView activityView;
 	private TestWorker worker;
 
@@ -107,10 +106,9 @@ public class AChatTest extends ActivityTest {
 	 */
 	protected void onActivityViewAttached(ActivityView src) {
 		this.activityView = src;
-		this.activityModel = (ActivityModelI) src.getModel();// for
-																// chat
-																// room
-																// to
+		// chat
+		// room
+		// to
 		// be open.
 		this.tryFinish("activity.open");
 		this.tryOpenChatGroup();
@@ -140,7 +138,7 @@ public class AChatTest extends ActivityTest {
 	protected void onChatGroupCreated(GChatGroupCreatedEvent e) {
 
 		String gid = e.getGroupId();
-		String actId = this.activityModel.getActivityId();
+		String actId = this.activityView.getActId();
 		assertEquals("room name not correct", actId, gid);//
 
 		this.tryFinish("group.created");

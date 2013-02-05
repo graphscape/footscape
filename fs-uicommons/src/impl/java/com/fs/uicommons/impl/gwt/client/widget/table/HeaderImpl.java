@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.table;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.HeaderI;
 import com.fs.uicommons.impl.gwt.client.widget.table.support.TableHelper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.google.gwt.user.client.DOM;
 
@@ -18,8 +19,8 @@ public class HeaderImpl extends TableHelper implements TableI.HeaderI {
 	protected String name;
 
 	/** */
-	public HeaderImpl(TableImpl t, String name) {
-		super(DOM.createTH(), t);
+	public HeaderImpl(ContainerI c, TableImpl t, String name) {
+		super(c, DOM.createTH(), t);
 		this.name = name;
 	}
 

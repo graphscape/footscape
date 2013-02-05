@@ -38,31 +38,27 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 
 	protected ViewReferenceI managed;
 
+	protected ExpSearchModelI model;
+
 	/**
 	 * @param ele
 	 * @param ctn
 	 */
 	public ExpSearchView(ContainerI ctn, ExpSearchModelI m) {
 
-		super("exps", ctn, m);
-		this.addAction( Actions.A_EXPS_SEARCH);//
+		super(ctn, "exps");
+		this.model = m;
+		this.addAction(Actions.A_EXPS_SEARCH);//
 		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
-		this.statement.getModel().addValueHandler(ModelI.L_DEFAULT, new EventHandlerI<ModelValueEvent>() {
-
-			@Override
-			public void handle(ModelValueEvent t) {
-				String text = (String) t.getValue();
-				ExpSearchView.this.onPhraseChange(text);
-			}
-		});
 
 		this.list = this.factory.create(ListI.class);
 		//
 		this.list.setName("itemList");// for testing
 		this.list.parent(this);
 		//
-		this.previousPage = this.factory.create(ButtonI.class, SimpleModel.valueOf("", "<<"));
+		this.previousPage = this.factory.create(ButtonI.class);
+		this.previousPage.setText("<<");
 		this.previousPage.parent(this);
 		this.previousPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -72,7 +68,9 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 			}
 		});
 
-		this.nextPage = this.factory.create(ButtonI.class, SimpleModel.valueOf("", ">>"));
+		this.nextPage = this.factory.create(ButtonI.class);
+		this.nextPage.setText(">>");
+
 		this.nextPage.parent(this);
 		this.nextPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -84,22 +82,12 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 
 	}
 
-	protected void onPhraseChange(String text) {
-		this.getModel().setPhrase(text);
-	}
-
 	protected void onPreviousPage() {
-		ExpSearchModelI m = this.getModel();
-		m.previousPage();
+		// TODO action
 	}
 
 	protected void onNextPage() {
-		ExpSearchModelI m = this.getModel();
-		m.nextPage();
-	}
-
-	public ExpSearchModelI getModel() {
-		return this.findModel(ExpSearchModelI.class, true);
+		// TODO action
 	}
 
 	@Override

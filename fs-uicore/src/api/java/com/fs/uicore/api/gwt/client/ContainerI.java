@@ -12,7 +12,7 @@ import java.util.List;
 public interface ContainerI {
 
 	public static interface AwareI {
-		public void setContainer(ContainerI c);
+		public void init(ContainerI c);
 	}
 
 	public <T> List<T> getList(Class<T> cls);

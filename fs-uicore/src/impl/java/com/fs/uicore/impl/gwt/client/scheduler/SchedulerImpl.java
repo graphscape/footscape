@@ -91,7 +91,7 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI, Contai
 	 * Oct 21, 2012
 	 */
 	@Override
-	public void setContainer(ContainerI c) {
+	public void init(ContainerI c) {
 		//
 		this.container = c;
 	}

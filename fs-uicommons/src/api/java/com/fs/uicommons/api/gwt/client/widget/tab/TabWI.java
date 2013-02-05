@@ -18,6 +18,8 @@ public interface TabWI extends WidgetI, SelectableI {
 	public static final Location MK_SELECTED = Location.valueOf("SELECTED");
 
 	public String getName();
+	
+	public void setText(String text);
 
 	public PanelWI getPanel();
 

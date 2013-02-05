@@ -5,9 +5,7 @@
 package com.fs.uicommons.api.gwt.client.widget.stack;
 
 import com.fs.uicore.api.gwt.client.CompositeI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
  * @author wu
@@ -15,29 +13,28 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public interface StackWI extends CompositeI {
 
-	public static class ItemModel extends ModelSupport {
+	public static class ItemModel {
 
-		public static final Location L_WIDGET = Location.valueOf("_widget");
-
-		public static final Location L_SELECTED = ModelI.L_DEFAULT;
-
-		public static final Location L_IS_DEFAULT_ITEM = Location
-				.valueOf("_defaultItem");
-
-		/**
-		 * @param name
-		 */
-		public ItemModel(String name) {
-			super(name);
+		private StackWI stack;
+		
+		private boolean isDefault;
+		
+		private boolean isSelected;
+		
+		private WidgetI managed;
+		
+		public ItemModel(StackWI stack,WidgetI managed) {
+			super();
+			this.stack = stack;
+			this.managed = managed;
 		}
 
 		public boolean isDefaultItem() {
-			return this.getValue(Boolean.class, L_IS_DEFAULT_ITEM,
-					Boolean.FALSE);
+			return this.isDefault;
 		}
 
 		public boolean isSelected() {
-			return this.getDefaultValue(Boolean.TRUE);
+			return this.isSelected;
 		}
 
 		public void trySelect(boolean sel) {
@@ -48,12 +45,12 @@ public interface StackWI extends CompositeI {
 		}
 
 		public void select(boolean sel) {
-
-			this.setDefaultValue(sel);
+			this.isSelected = sel;
+			this.stack.updateSelect(this);
 		}
 
 		public WidgetI getManagedWidget() {
-			return (WidgetI) this.getValue(L_WIDGET);
+			return this.managed;
 		}
 	}
 
@@ -64,5 +61,7 @@ public interface StackWI extends CompositeI {
 	public ItemModel insert(WidgetI child, boolean select);
 
 	public int getSize();
+	
+	public void updateSelect(ItemModel im);
 
 }

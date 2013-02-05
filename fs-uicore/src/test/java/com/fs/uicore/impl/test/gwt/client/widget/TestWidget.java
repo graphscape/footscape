@@ -4,7 +4,7 @@
  */
 package com.fs.uicore.impl.test.gwt.client.widget;
 
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.support.WidgetBase;
 import com.google.gwt.user.client.DOM;
 
@@ -17,8 +17,8 @@ public class TestWidget extends WidgetBase implements TestWI {
 	/**
 	 * @param ele
 	 */
-	public TestWidget(String name) {
-		super(name,DOM.createDiv());
+	public TestWidget(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
 	}
 
 	/*
@@ -29,10 +29,8 @@ public class TestWidget extends WidgetBase implements TestWI {
 	 * .api.gwt.client.ModelI)
 	 */
 	@Override
-	public void processModelDefaultValue(ValueWrapper e) {
-		super.processModelDefaultValue(e);
+	public void setText(String txt) {
 
-		String txt = "" + e.getValue();
 		this.element.setInnerText(txt);
 	}
 

@@ -33,8 +33,8 @@ public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
 	/**
 	 * @param ctn
 	 */
-	public ConsoleView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public ConsoleView(ContainerI c, String name) {
+		super(c,name);
 		table = DOM.createTable();
 		this.tbody = new ElementWrapper(DOM.createTBody());
 		DOM.appendChild(table, this.tbody.getElement());
@@ -42,12 +42,7 @@ public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
 
 	}
 
-	/*
-	 * Nov 11, 2012
-	 */
-	@Override
-	protected void doModel(ModelI model) {
-		super.doModel(model);
+	public void todoInInit(){
 		Console.getInstance().addMessageCallback(new UiCallbackI<Object, Boolean>() {
 
 			@Override

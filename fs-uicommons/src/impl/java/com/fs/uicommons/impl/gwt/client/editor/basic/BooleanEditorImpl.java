@@ -5,6 +5,7 @@ package com.fs.uicommons.impl.gwt.client.editor.basic;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.DOM;
@@ -18,8 +19,8 @@ public class BooleanEditorImpl extends EditorSupport<Boolean> implements Boolean
 	private InputElement element;
 
 	/** */
-	public BooleanEditorImpl(String name) {
-		super(name, DOM.createInputCheck());//
+	public BooleanEditorImpl(ContainerI c, String name) {
+		super(c,name, DOM.createInputCheck());//
 		this.element = super.element.cast();//
 		this.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new ChangeHandler() {
 
@@ -39,17 +40,14 @@ public class BooleanEditorImpl extends EditorSupport<Boolean> implements Boolean
 
 	/* */
 	@Override
-	protected void processModelDefaultValue(Boolean dt) {
+	public void setData(Boolean dt) {
+		super.setData(dt);
 		Boolean ck = dt == null ? false : dt;
-		this.setChecked(ck);
+		this.element.setChecked(ck);
 	}
 
 	public boolean isChecked() {
 		return this.element.isChecked();
-	}
-
-	public void setChecked(boolean checked) {
-		this.element.setChecked(checked);
 	}
 
 }

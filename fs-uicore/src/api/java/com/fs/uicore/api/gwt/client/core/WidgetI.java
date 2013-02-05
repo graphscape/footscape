@@ -3,8 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client.core;
 
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
+import com.fs.uicore.api.gwt.client.ContainerI;
 
 /**
  * @author wu
@@ -12,42 +11,16 @@ import com.fs.uicore.api.gwt.client.ModelI.Location;
  */
 public interface WidgetI extends ElementObjectI {
 
-	public static final Location IS_VISIBLE = Location.valueOf("_is_visible");
-
 	public static interface CreaterI<T extends WidgetI> {
 		public Class<T> getWidgetType();
 
-		public T create(String name);
+		public T create(ContainerI c, String name);
 	}
 
-	public static class ModelWrapper {
+	public void setVisible(boolean v);
 
-		private ModelI model;
-
-		public ModelWrapper(ModelI model) {
-			this.model = model;
-		}
-
-		public void setVisible(boolean v) {
-			this.model.setValue(IS_VISIBLE, v);
-		}
-
-		public boolean isVisible() {
-			return this.model.getValue(Boolean.class, IS_VISIBLE, Boolean.TRUE);
-		}
-	}
-
-	public WidgetI model(ModelI ctx);
-
-	@Deprecated
-	// widget should not have model,other words:there are not only one model for
-	// a widget?
-	public ModelI getModel();
-
-	// public AdjusterI addAdjuster(String name);//
-
-	// public AdjusterI addAdjuster(String name, EventHandlerI<ClickEvent> eh);
-
+	public boolean isVisible();
+	
 	@Deprecated
 	// use ElementWrapper.click()
 	public void _click();

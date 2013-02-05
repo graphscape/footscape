@@ -28,8 +28,8 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	/**
 	 * @param ctn
 	 */
-	public HeaderView(String name, ContainerI ctn, HeaderModelI hm) {
-		super(name, ctn, hm);
+	public HeaderView(ContainerI c) {
+		super(c, "header");
 		this.itemList = this.factory.create(BarWidgetI.class);
 		this.itemList.parent(this);//
 
@@ -50,12 +50,12 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	public void addItem(Path path) {
 
 		if (path.size() == 1) {
-			ItemView rt =this.getOrCreateItem(path);
+			ItemView rt = this.getOrCreateItem(path);
 		} else if (path.size() == 2) {
-			ItemView rt =this.getOrCreateItem(path.getParent());
-			
+			ItemView rt = this.getOrCreateItem(path.getParent());
+
 			rt.getOrAddMenuItem(path.getName());
-			
+
 		} else {
 			throw new UiException("not support deeper menu for path:" + path);
 		}
@@ -63,7 +63,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	}
 
 	/*
-	 *Feb 2, 2013
+	 * Feb 2, 2013
 	 */
 	@Override
 	public void setItemDisplayText(Path path, String text) {

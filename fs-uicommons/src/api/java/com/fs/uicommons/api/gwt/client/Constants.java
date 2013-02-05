@@ -9,7 +9,7 @@ package com.fs.uicommons.api.gwt.client;
  */
 public class Constants {
 
-	public static final String AK_FORMS_MODEL = "formsModel";// action property
+	public static final String AK_FORMS_VIEW = "formsView";// action property
 
 
 }

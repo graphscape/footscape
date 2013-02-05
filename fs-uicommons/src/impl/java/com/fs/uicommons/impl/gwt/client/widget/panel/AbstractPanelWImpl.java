@@ -5,6 +5,7 @@
 package com.fs.uicommons.impl.gwt.client.widget.panel;
 
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -18,8 +19,8 @@ public class AbstractPanelWImpl extends LayoutSupport {
 	/**
 	 * @param ele
 	 */
-	public AbstractPanelWImpl(String name, Element ele) {
-		super(name, ele);
+	public AbstractPanelWImpl(ContainerI c, String name, Element ele) {
+		super(c, name, ele);
 	}
 
 }

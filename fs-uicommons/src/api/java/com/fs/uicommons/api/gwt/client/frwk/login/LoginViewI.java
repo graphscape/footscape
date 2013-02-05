@@ -11,5 +11,13 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  * 
  */
 public interface LoginViewI extends ViewI {
+	public static final String FK_SAVINGACCOUNT = "savingAccount";// save in
+	// client
+	// side for
+	// auto
+	// auth.
 
+	public static final String FK_EMAIL = "email";
+
+	public static final String FK_PASSWORD = "password";
 }

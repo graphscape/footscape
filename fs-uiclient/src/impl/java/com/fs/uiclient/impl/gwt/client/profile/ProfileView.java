@@ -5,17 +5,16 @@
 package com.fs.uiclient.impl.gwt.client.profile;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
+import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
+import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.simple.OffspringValueDeliver;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -23,114 +22,51 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class ProfileView extends FormsView implements ViewReferenceI.AwareI {
+public class ProfileView extends FormsView {
 
 	public static String HEADER_ITEM_PROFILE = "profile";//
-
-	protected ItemModel headerItem;
-
-	private ViewReferenceI managed;
 
 	private Element image;
 
 	private boolean listenIcon;// listen icon data
 
+	ProfileModel model;
+
 	/**
 	 * @param ctn
 	 */
 	public ProfileView(ContainerI ctn, ProfileModel pm) {
-		super("profile", ctn, pm);
-		this.addAction( Actions.A_PROFILE_INIT);
-		this.addAction( Actions.A_PROFILE_SUBMIT);
+		super(ctn, "profile");
+		this.model = pm;
+		this.addAction(Actions.A_PROFILE_INIT);
+		this.addAction(Actions.A_PROFILE_SUBMIT);
 		if (this.listenIcon) {
 			this.image = DOM.createImg();
 			DOM.appendChild(this.body, this.image);
 		}
-	}
 
-	@Override
-	public ProfileModelI getModel() {
-		return (ProfileModelI) this.model;
-	}
+		FormViewI def = this.addForm(FormsViewI.FM_DEFAULT);
+		def.addField("email", String.class);
+		def.addField("age", Integer.class);
+		FieldModel genderFM = def.addField("gender", String.class, EnumEditorI.class,
+				new UiCallbackI<EnumEditorI, Object>() {
 
-	// @Override
-	// public void manage() {
-	// //
-	// ManagerModelI cm = this.getCenterModel();
-	// this.managed = cm.manage(this.model, this);// this view will be add to
-	// // the
-	// // child of center's some
-	// // child widgetI.
-	//
-	// // add sign up header.
-	// HeaderModelI hm = this.getFrwkModel().getHeader();
-	//
-	// this.headerItem = hm.addItem(HEADER_ITEM_PROFILE,
-	// HeaderModelI.ItemModel.P_RIGHT, this.managed);//
-	// // call init at control.
-	//
-	// SimpleValueDeliver<Boolean, Boolean> sd = new SimpleValueDeliver<Boolean,
-	// Boolean>(
-	// this.managed, ViewReferenceI.L_SELECTED, this.model,
-	// ProfileModelI.L_VIEW_OPENED);
-	// sd.mapDefaultDirect();
-	// sd.start();
-	// this.headerItem.setState(ItemModel.S_UP);// hiden login view.
-	//
-	// }
+					@Override
+					public Object execute(EnumEditorI t) {
+						t.addOption("n/a");//
+						t.addOption("male");//
+						t.addOption("female");
+						return null;
+					}
+				});
 
-	protected FrwkModelI getFrwkModel() {
-		FrwkModelI fc = this.getModel().getTopObject().getChild(FrwkModelI.class, true);
+		// options
+		// FieldModel iconFM = def.addField("icon", String.class,
+		// ImageFileUrlDataEditorI.class);
 
-		return fc;
-	}
+		FieldModel iconFM = def.addField("icon", String.class, ImageCropEditorI.class);
 
-	/*
-	 * Nov 17, 2012
-	 */
-	@Override
-	public void addForm(FormModel fm) {
-		//
-		super.addForm(fm);
-		if (this.listenIcon) {
-			OffspringValueDeliver<String, String> ovd = new OffspringValueDeliver<String, String>(fm,
-					FieldModel.class, ProfileModelI.L_ICON.getProperty(), FieldModel.L_DEFAULT, this.model,
-					ProfileModelI.L_ICON);
-			ovd.mapDefaultDirect();// NOTE
-			ovd.start();
-		}
-	}
-
-	@Override
-	protected void processModelValue(Location loc, ValueWrapper vw) {
-		super.processModelValue(loc, vw);
-		if (ProfileModelI.L_ICON.equals(loc)) {
-			this.processModelIconValue((String) vw.getValue());
-		}
-	}
-
-	/**
-	 * Nov 16, 2012
-	 */
-	protected void processModelIconValue(String value) {
-		if (this.image != null) {
-			this.image.setAttribute("src", value == null ? "null" : value);// TODO
-																			// none
-																			// image.
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI.AwareI
-	 * #setManaged
-	 * (com.fs.uicommons.api.gwt.client.frwk.CenterModelI.ViewReferenceI)
-	 */
-	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
+		def.getFormModel().addAction(Actions.A_PROFILE_SUBMIT);//
 	}
 
 }

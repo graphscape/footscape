@@ -11,7 +11,6 @@ import com.fs.uicommons.api.gwt.client.event.BodyItemCreatedEvent;
 import com.fs.uicommons.api.gwt.client.event.BodyItemSelectEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -33,14 +32,9 @@ public class BodyModel extends ModelSupport implements BodyModelI {
 	}
 
 	@Override
-	public ViewReferenceI manage(ModelI model, WidgetI w) {
-		String key = "managed-" + model.getName();
-		Path p = Path.valueOf(key);
+	public ViewReferenceI manage(Path p, WidgetI w) {
 		ViewReferenceImpl rt = new ViewReferenceImpl(p, w, this);
 		this.viewReferenceMap.put(p, rt);// TODO by a list?
-		if (model instanceof ViewReferenceI.AwareI) {
-			((ViewReferenceI.AwareI) model).setViewReference(rt);
-		}
 		if (w instanceof ViewReferenceI.AwareI) {
 			((ViewReferenceI.AwareI) w).setViewReference(rt);
 		}

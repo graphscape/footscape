@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.google.gwt.user.client.DOM;
 
@@ -19,8 +20,8 @@ public class ListImpl extends LayoutSupport implements ListI {
 
 	protected TableWrapper table;
 
-	public ListImpl(String name) {
-		super(name, DOM.createDiv());
+	public ListImpl(ContainerI c,String name) {
+		super(c,name, DOM.createDiv());
 		table = new TableWrapper();
 		this.elementWrapper.append(table);
 	}

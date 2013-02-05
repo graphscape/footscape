@@ -12,4 +12,6 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface TestWI extends WidgetI {
 
+	public void setText(String text);
+
 }

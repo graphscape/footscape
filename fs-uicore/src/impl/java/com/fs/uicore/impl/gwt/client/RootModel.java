@@ -26,7 +26,7 @@ public class RootModel extends ModelSupport implements ContainerI.AwareI{
 	 * @see com.fs.uicore.api.gwt.client.ContainerI.AwareI#setContainer(com.fs.uicore.api.gwt.client.ContainerI)
 	 */
 	@Override
-	public void setContainer(ContainerI c) {
+	public void init(ContainerI c) {
 		this.container = c;
 	}
 

@@ -10,18 +10,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
@@ -46,24 +45,23 @@ public class SimpleView extends ViewSupport {
 
 	protected Element footer;
 
+	protected Map<String, FormViewI> formViewMap;
+
 	/**
 	 * @param ctn
 	 */
 	public SimpleView(ContainerI ctn) {
-		this(null, ctn);
+		this(ctn, null);
 	}
 
-	public SimpleView(String name, ContainerI ctn) {
-		this(name, ctn, new SimpleModel("unkown"));
+	public SimpleView(ContainerI ctn, String name) {
+		this(ctn, name, DOM.createDiv());
 	}
 
-	public SimpleView(String name, ContainerI ctn, ModelI md) {
-		this(name, DOM.createDiv(), ctn, md);
-	}
+	public SimpleView(ContainerI c, String name, Element ele) {
 
-	public SimpleView(String name, Element ele, ContainerI ctn, ModelI md) {
-
-		super(name, ele, ctn, md);
+		super(c, name, ele);
+		this.formViewMap = new HashMap<String, FormViewI>();
 		this.actionMap = new HashMap<Path, ButtonI>();
 
 		// BODY:
@@ -102,12 +100,8 @@ public class SimpleView extends ViewSupport {
 			throw new UiException("already exist action:" + name + " in view:" + this);
 		}
 
-		ModelI bm = this.addModel("button-" + aname);// TODO button's
-														// model is added
-														// into the view's
-														// model?
-		b = this.factory.create(ButtonI.class, bm);// TODO,
-		b.getModel().setDefaultValue("%" + aname);
+		b = this.factory.create(ButtonI.class);// TODO,
+		b.setText("%" + aname);
 
 		b.parent(this.actionList);
 		// click event is raised in button,not button's model
@@ -174,6 +168,15 @@ public class SimpleView extends ViewSupport {
 	protected List<Path> getActionList() {
 		return new ArrayList<Path>(this.actionMap.keySet());
 
+	}
+
+	public FormViewI getFormView(String fname) {
+		return this.formViewMap.get(fname);
+	}
+
+	protected List<Path> getActionList(String fname) {
+
+		return this.getFormView(fname).getActionList();
 	}
 
 	/*

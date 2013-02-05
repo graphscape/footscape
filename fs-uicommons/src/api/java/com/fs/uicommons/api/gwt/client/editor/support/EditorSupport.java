@@ -5,9 +5,7 @@ package com.fs.uicommons.api.gwt.client.editor.support;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
-import com.fs.uicore.api.gwt.client.core.WidgetI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -16,24 +14,17 @@ import com.google.gwt.user.client.Element;
  */
 public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 
+	protected T data;
+
 	/** */
-	public EditorSupport(String name, Element ele) {
-		super(name, ele);
+	public EditorSupport(ContainerI c, String name, Element ele) {
+		super(c, name, ele);
 	}
 
 	/* */
 	@Override
 	public T getData() {
-
-		return (T) this.model.getValue(ModelI.L_DEFAULT);
-
-	}
-
-	@Override
-	public WidgetI model(ModelI mo) {
-		super.model(mo);
-		this.setData(this.newData(), false);//
-		return this;
+		return this.data;
 	}
 
 	protected T newData() {
@@ -47,29 +38,16 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 
 	}
 
+	@Override
+	public void setData(T d) {
+		this.setData(d, true);//
+	}
+
 	protected void setData(T d, boolean dispatch) {
-		// TODO for dispatch
-		boolean iss = this.model.isSilent();
-		// TODO specific model type.
-		this.model.silent(!dispatch);
-		try {
-			this.model.setValue(ModelI.L_DEFAULT, d);
-		} finally {
-			this.model.silent(iss);//
-		}
-		//
-		if (dispatch) {
+		this.data = d;
+		if (dispatch) {// TODO
 
 		}
-	}
-
-	protected void processModelDefaultValue(ValueWrapper vw) {
-		T data = (T) vw.getValue();
-		this.processModelDefaultValue(data);
-	}
-
-	protected void processModelDefaultValue(T data) {
-
 	}
 
 }

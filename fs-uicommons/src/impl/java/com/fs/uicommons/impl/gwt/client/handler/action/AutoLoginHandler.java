@@ -36,8 +36,6 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 		//
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
 
-		LoginModelI lm = lc.getOrCreateLoginModel();
-
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit
@@ -62,7 +60,7 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 
 		} else {// has not saved account,create it first and then call this
 				// submit again.
-			new ActionEvent(lm,Actions.A_LOGIN_ANONYMOUS).dispatch();
+			new ActionEvent(ae.getSource(), Actions.A_LOGIN_ANONYMOUS).dispatch();
 			return;
 		}
 

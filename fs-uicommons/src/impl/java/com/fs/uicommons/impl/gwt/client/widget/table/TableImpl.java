@@ -5,9 +5,7 @@ package com.fs.uicommons.impl.gwt.client.widget.table;
 
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -21,24 +19,15 @@ public class TableImpl extends LayoutSupport implements TableI {
 	protected BodyI body;
 
 	/** */
-	public TableImpl(String name) {
-		super(name, DOM.createTable());
+	public TableImpl(ContainerI c, String name) {
+		super(c,name, DOM.createTable());
 
-		this.headers = new HeadersImpl(this);
+		this.headers = new HeadersImpl(this.container,this);
 		this.child(this.headers);
-		this.body = new BodyImpl(this);
+		this.body = new BodyImpl(this.container,this);
 		this.child(this.body);//
 	}
 
-	@Override
-	public WidgetI model(ModelI model) {
-		super.model(model);
-
-		this.factory.initilize(this.headers, new SimpleModel("unkown"));
-		this.factory.initilize(this.body, new SimpleModel("unkown"));
-
-		return this;
-	}
 
 	/* */
 	@Override

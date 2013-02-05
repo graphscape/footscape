@@ -23,7 +23,7 @@ public class ItemView extends LightWeightView {
 	private boolean selected;
 
 	public ItemView(ContainerI ctn, Path path) {
-		super("item", DOM.createSpan(), ctn);
+		super(ctn, "item", DOM.createSpan());
 		this.path = path;
 
 		this.anchor = this.createLink();
@@ -107,8 +107,9 @@ public class ItemView extends LightWeightView {
 	protected AnchorWI createLink() {
 
 		String wname = "header-item-" + this.path.toString('-');
-		AnchorWI a = this.factory.create(AnchorWI.class, wname,
-				SimpleModel.valueOf(wname, this.path.toString()));
+		AnchorWI a = this.factory.create(AnchorWI.class, wname);
+		String txt = path.toString();
+		a.setDisplayText(txt);
 
 		return a;
 	}

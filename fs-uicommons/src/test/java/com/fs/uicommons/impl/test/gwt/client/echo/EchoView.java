@@ -4,7 +4,6 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.echo;
 
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -17,8 +16,8 @@ public class EchoView extends FormView {
 	/**
 	 * @param ctn
 	 */
-	public EchoView(ContainerI ctn, FormModel fm) {
-		super("echo", ctn, fm);
+	public EchoView(ContainerI ctn) {
+		super(ctn, "echo");
 	}
 
 }

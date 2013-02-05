@@ -130,7 +130,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 			}
 			if (this instanceof ContainerI.AwareI) {
 				ContainerI c = newParent.getContainer();
-				((ContainerI.AwareI) this).setContainer(null);// ?
+				((ContainerI.AwareI) this).init(null);// ?
 			}
 			this.parent = null;
 
@@ -143,7 +143,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 			if (this instanceof ContainerI.AwareI) {
 				ContainerI c = newParent.getContainer();
-				((ContainerI.AwareI) this).setContainer(c);//
+				((ContainerI.AwareI) this).init(c);//
 			}
 			newParent.addChild(this);
 			this.setParent(newParent);

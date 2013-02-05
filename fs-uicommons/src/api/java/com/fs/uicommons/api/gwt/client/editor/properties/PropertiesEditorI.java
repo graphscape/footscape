@@ -39,7 +39,7 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 		public EditorI getEditor(boolean force) {
 			return (EditorI) this.getValue(L_EDITOR, force);
 		}
-		
+
 		public void setEditorClass(Class<? extends EditorI> ecls) {
 			this.setValue(EDITOR_CLASS, ecls);
 		}
@@ -50,13 +50,14 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 
 	}
 
-	public PropertyModel addFieldModel(String key,
-			Class<? extends EditorI> etype);
+	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype);
 
 	public PropertyModel getFieldModel(String key);
 
 	public List<PropertyModel> getFieldModelList();
 
 	public EditorI getPropertyEditor(String name);
+
+	public void addProperty(final PropertyModel pm);
 
 }

@@ -21,8 +21,8 @@ public class PopupManagerView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public PopupManagerView(String name, ContainerI ctn) {
-		super(name, ctn);
+	public PopupManagerView(ContainerI c, String name) {
+		super(c,name);
 	}
 
 	/*

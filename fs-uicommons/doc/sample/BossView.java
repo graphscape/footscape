@@ -43,7 +43,7 @@ public class BossView extends ViewSupport {
 	 * @param ele
 	 * @param ctn
 	 */
-	public BossView(String name, ContainerI ctn) {
+	public BossView(ContainerI c, String name) {
 		super(name, DOM.createDiv(), ctn);
 
 		this.managerTdElements = new HashMap<String, Element>();

@@ -40,11 +40,10 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 
 	@Override
 	public void open() {
-		FrwkModelI fm = this.getOrCreateModel(this.getRootModel(), FrwkModelI.class, CREATER);
 		RootI root = this.getClient(true).getRoot();
 		FrwkView fv = root.getChild(FrwkView.class, false);
 		if (fv == null) {
-			fv = new FrwkView("frwk", this.container, fm);
+			fv = new FrwkView(this.container);
 			fv.parent(root);
 		}
 	}
@@ -74,11 +73,11 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	}
 
 	/*
-	 *Feb 2, 2013
+	 * Feb 2, 2013
 	 */
 	@Override
 	public HeaderViewI getHeaderView() {
-		// 
+		//
 		return this.getFrwkView().getHeader();
 	}
 }

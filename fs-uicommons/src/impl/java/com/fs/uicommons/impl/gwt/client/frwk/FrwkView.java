@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
@@ -32,7 +31,7 @@ import com.google.gwt.user.client.Element;
  *         <p>
  *         There is no need to provide a complex but fixed layout for FrwkView.
  */
-public class FrwkView extends ViewSupport implements FrwkViewI{
+public class FrwkView extends ViewSupport implements FrwkViewI {
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(FrwkView.class);
 
 	protected Map<String, Element> managerTdElements;
@@ -41,8 +40,8 @@ public class FrwkView extends ViewSupport implements FrwkViewI{
 	 * @param ele
 	 * @param ctn
 	 */
-	public FrwkView(String name, ContainerI ctn, FrwkModelI fm) {
-		super(name, DOM.createDiv(), ctn, fm);
+	public FrwkView(ContainerI c) {
+		super(c, "frwk", DOM.createDiv());
 
 		this.managerTdElements = new HashMap<String, Element>();
 
@@ -69,11 +68,11 @@ public class FrwkView extends ViewSupport implements FrwkViewI{
 
 		//
 
-		HeaderView hv = new HeaderView("header", this.container, fm.getHeader());
+		HeaderView hv = new HeaderView(this.container);
 
 		hv.parent(this);
 
-		BodyView bv = new BodyView("body", this.container, fm.getBody());
+		BodyView bv = new BodyView(this.container);
 		bv.parent(this);
 	}
 

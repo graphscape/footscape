@@ -47,7 +47,8 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 		// Root model
 		ModelI model = new RootModel("root");
 		c.add(model);//
-		RootI root = wf.create(RootI.class, model);// TODO
+		
+		RootI root = wf.create(RootI.class);// TODO
 		// root
 		// model
 		c.add(root);// TODO move to SPI.active();
@@ -73,13 +74,13 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 	}
 
 	protected void activeWidgetAndFactory(ContainerI c) {
-		WidgetFactoryI wf = new WidgetFactoryImpl();
+		WidgetFactoryI wf = new WidgetFactoryImpl(c);
 		c.add(wf);//
 		wf.addCreater(new WidgetCreaterSupport<RootI>(RootI.class) {
 
 			@Override
-			public RootI create(String name) {
-				return new RootWImpl(name);
+			public RootI create(ContainerI c,String name) {
+				return new RootWImpl(c,name);
 			}
 		});
 	}

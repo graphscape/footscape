@@ -23,11 +23,14 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 
 	protected ListI list;
 
+	UserExpListModelI model;
+
 	/**
 	 * @param ctn
 	 */
 	public UserExpListView(ContainerI ctn, UserExpListModelI uem) {
-		super("uelist", ctn, uem);
+		super(ctn, "uelist");
+		this.model = uem;
 		this.addAction(Actions.A_UEL_CREATE);
 		// click and open one exp,enter the exp's main view.
 
@@ -44,7 +47,7 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 	 */
 	public void addUserExpModel(UserExpModel cm) {
 		String expId = cm.getExpId();
-		UserExpView ue = new UserExpView(expId, this.getContainer(), cm);
+		UserExpView ue = new UserExpView(this.getContainer(), expId, cm);
 		ue.parent(this.list);
 
 	}

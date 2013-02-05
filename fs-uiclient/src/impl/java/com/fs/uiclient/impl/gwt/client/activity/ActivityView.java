@@ -21,20 +21,20 @@ public class ActivityView extends SimpleView {
 
 	protected ListI list;
 
+	protected ActivityModelI model;
+
 	/**
 	 * @param ctn
 	 */
-	public ActivityView(String id, ContainerI ctn, ActivityModelI am) {
-		super(id, ctn, am);
-
+	public ActivityView(ContainerI ctn, ActivityModelI am) {
+		super(ctn, am.getActivityId());
+		this.model = am;
 		this.addAction(Actions.A_ACT_OPEN_CHAT_ROOM);//
 
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("partnerList");
 		this.list.parent(this);
-		for (PartnerModel pm : am.getParticipantList()) {
-			this.addPartner(pm);
-		}
+
 	}
 
 	public ActivityModelI getActivityModel() {
@@ -52,7 +52,7 @@ public class ActivityView extends SimpleView {
 		String expId = cm.getExpId();
 		String accId = cm.getAccountId();
 		LabelI lb = this.factory.create(LabelI.class);
-		lb.getModel().setDefaultValue("expId:" + expId + ",accId:" + accId);
+		lb.setText("expId:" + expId + ",accId:" + accId);
 		lb.parent(this.list);
 	}
 
