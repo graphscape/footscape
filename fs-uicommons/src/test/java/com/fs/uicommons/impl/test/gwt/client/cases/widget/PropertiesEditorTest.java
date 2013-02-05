@@ -9,7 +9,6 @@ import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
@@ -19,7 +18,13 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  */
 public class PropertiesEditorTest extends TestBase {
 
+	public PropertiesEditorTest() {
+		this.start = false;
+	}
+
 	public void testPropertiesEditor() {
+
+		this.finishing.add("changed");
 
 		ObjectPropertiesData dt = new ObjectPropertiesData();
 		dt.setProperty("integer1", null);
@@ -33,37 +38,33 @@ public class PropertiesEditorTest extends TestBase {
 		edt.addFieldModel("string1", StringEditorI.class);
 		edt.addFieldModel("string2", StringEditorI.class);
 		edt.addFieldModel("boolean1", BooleanEditorI.class);
-		edt.parent(this.root);//attach
-		
-		assertTrue("should be attached.",edt.isAttached());
-		final Holder<ObjectPropertiesData> holder = new Holder<ObjectPropertiesData>();
+		edt.parent(this.root);// attach
 
-		edt.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
+		assertTrue("should be attached.", edt.isAttached());
+
+		final Integer expect = Integer.valueOf(1);
+		edt.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
 			@Override
-			public void handle(ChangeEvent<?> e) {
-				holder.setTarget((ObjectPropertiesData) e.getData());
+			public void handle(ChangeEvent e) {
+				PropertiesEditorTest.this.onChange(expect, e);
 
 			}
 		});
-		System.out.println(edt.dump());
+
+		this.delayTestFinish(this.timeoutMillis);
+		IntegerEditorI ie = edt.find(IntegerEditorI.class, false);
+		ie.input(expect);//
+	}
+
+	public void onChange(Integer expect, ChangeEvent e) {
 
 		// integer property
-		Integer expected1 = Integer.valueOf(1);
 
-		IntegerEditorI ie = edt.find(IntegerEditorI.class, false);
-		assertNotNull("no editor found.", ie);
-		ie.input(expected1);//
-		ObjectPropertiesData data = holder.getTarget();
+		ObjectPropertiesData data = e.getData();
 		Object actual = data.getProperty("integer1", false);
 		assertNotNull(actual);
-		assertEquals(expected1, actual);
-		// boolean property
-		Boolean expected2 = (true);
-		BooleanEditorI e2 = edt.find(BooleanEditorI.class, true);
-		e2.input(expected2);
-		actual = data.getProperty("boolean1", true);
-		assertEquals(expected2, actual);
-
+		assertEquals(expect, actual);
+		this.tryFinish("changed");
 	}
 }

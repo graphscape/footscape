@@ -43,8 +43,8 @@ public class IntegerEditorImpl extends EditorSupport<Integer> implements Integer
 
 	/* */
 	@Override
-	public void setData(Integer dt) {
-		super.setData(dt);
+	protected void setData(Integer dt, boolean dis) {
+		super.setData(dt, dis);
 		String txt = dt == null ? "" : dt + "";
 		this.setText(txt);
 	}

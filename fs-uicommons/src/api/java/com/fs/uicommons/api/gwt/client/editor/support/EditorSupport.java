@@ -4,6 +4,7 @@
 package com.fs.uicommons.api.gwt.client.editor.support;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
+import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.Element;
@@ -19,6 +20,7 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 	/** */
 	public EditorSupport(ContainerI c, String name, Element ele) {
 		super(c, name, ele);
+		this.data = this.newData();
 	}
 
 	/* */
@@ -35,7 +37,6 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 	@Override
 	public void input(T d) {
 		this.setData(d, true);//
-
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 	protected void setData(T d, boolean dispatch) {
 		this.data = d;
 		if (dispatch) {// TODO
-
+			new ChangeEvent(this).dispatch();
 		}
 	}
 

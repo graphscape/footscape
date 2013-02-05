@@ -27,6 +27,8 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
  */
 public class FormsView extends SimpleView implements FormsViewI {
 
+	private static final String FM_DEFAULT = "default";
+
 	private TabberWI tabber;
 
 	private FormsModel formsModel;
@@ -66,6 +68,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 				FormsView.this.onSelectedFromTab(fname);
 			}
 		});
+		this.formViewMap.put(fname, fv);
 		// first?
 		if (tb.isSelected()) {
 			this.setCurrentForm(fname);
@@ -75,7 +78,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 	}
 
 	public FormViewI getDefaultFormView() {
-		return this.getFormView(FormsViewI.FM_DEFAULT);
+		return this.getFormView(FormsView.FM_DEFAULT);
 	}
 
 	public FormViewI getFormView(String fname) {

@@ -5,12 +5,9 @@
 package com.fs.uicommons.impl.test.gwt.client.cases.mvc;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
-import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicommons.impl.test.gwt.client.echo.EchoModel;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -27,8 +24,6 @@ public class EchoTest extends TestBase {
 		this.finishing.add("form");
 		this.finishing.add("action");
 		this.finishing.add("response");
-
-		BodyModelI cm = this.rootModel.find(BodyModelI.class, true);
 
 		System.out.println(this.client.dump());
 		System.out.println(this.root.dump());

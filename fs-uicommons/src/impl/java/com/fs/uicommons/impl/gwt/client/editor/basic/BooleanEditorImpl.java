@@ -20,7 +20,7 @@ public class BooleanEditorImpl extends EditorSupport<Boolean> implements Boolean
 
 	/** */
 	public BooleanEditorImpl(ContainerI c, String name) {
-		super(c,name, DOM.createInputCheck());//
+		super(c, name, DOM.createInputCheck());//
 		this.element = super.element.cast();//
 		this.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new ChangeHandler() {
 
@@ -40,8 +40,8 @@ public class BooleanEditorImpl extends EditorSupport<Boolean> implements Boolean
 
 	/* */
 	@Override
-	public void setData(Boolean dt) {
-		super.setData(dt);
+	public void setData(Boolean dt, boolean dis) {
+		super.setData(dt, dis);
 		Boolean ck = dt == null ? false : dt;
 		this.element.setChecked(ck);
 	}

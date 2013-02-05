@@ -45,7 +45,7 @@ public class ProfileView extends FormsView {
 			DOM.appendChild(this.body, this.image);
 		}
 
-		FormViewI def = this.addForm(FormsViewI.FM_DEFAULT);
+		FormViewI def = this.getDefaultForm();
 		def.addField("email", String.class);
 		def.addField("age", Integer.class);
 		FieldModel genderFM = def.addField("gender", String.class, EnumEditorI.class,

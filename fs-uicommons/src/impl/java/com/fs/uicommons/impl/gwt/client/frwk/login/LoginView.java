@@ -39,8 +39,7 @@ public class LoginView extends FormsView implements LoginViewI {
 
 		this.addAction(Actions.A_LOGIN_SUBMIT);
 
-		FormViewI def = this.addForm(FormsViewI.FM_DEFAULT);
-
+		FormViewI def = this.getDefaultForm();
 		def.addField(FK_EMAIL, String.class);//
 		def.addField(FK_PASSWORD, String.class);//
 		def.addField(FK_SAVINGACCOUNT, Boolean.class);

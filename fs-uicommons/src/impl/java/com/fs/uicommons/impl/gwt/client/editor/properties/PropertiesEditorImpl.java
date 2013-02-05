@@ -12,12 +12,13 @@ import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
+import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.CellI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 import com.google.gwt.user.client.DOM;
@@ -40,6 +41,7 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		this.propertyList = new ArrayList<PropertyModel>();
 		this.propertyMap = new HashMap<String, PropertyModel>();
 		this.table = this.factory.create(TableI.class);
+
 		this.child(this.table);
 	}
 
@@ -55,15 +57,19 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 	@Override
 	public void setData(ObjectPropertiesData dt) {
 		super.setData(dt);
-		for (PropertyModel pm : this.getFieldModelList()) {
-			Object value = dt == null ? null : dt.getProperty(pm.getKey());//
-			Object old = (Object) pm.getDefaultValue();
+
+		for (PropertyModel pm : this.propertyList) {
+			String key = pm.getKey();
+			EditorI e = pm.getEditor(true);
+			Object value = dt == null ? null : dt.getProperty(key);//
+
+			Object old = e.getData();
 
 			// to avoid dead loop , reversely,property model's change will
 			// cause the data update also.
 
 			if (!ObjectUtil.nullSafeEquals(value, old)) {
-				pm.setDefaultValue(value);//
+				e.setData(value);//
 			}
 		}
 
@@ -71,10 +77,18 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 
 	@Override
 	public void addProperty(final PropertyModel pm) {
+		final String key = pm.getKey();
+		PropertyModel old = this.propertyMap.get(key);
+		if (old != null) {
+			throw new UiException("property exist:" + key + ",old:" + old);
+		}
+
+		this.propertyMap.put(key, pm);
+
+		this.propertyList.add(pm);
 
 		TableI.BodyI body = this.table.getBody();
 
-		final String key = pm.getKey();
 		Class<? extends EditorI> ecls = pm.getEditorClass();
 
 		RowI r = body.createRow();
@@ -99,9 +113,30 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		pm.setEditor(editor);// NOTE TODO remove,this should be replaced by a
 								// event
 								// notification,
-		pm.setValue(ModelI.L_WIDGET, editor);// TODO remove,for testting
 
+		editor.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
+
+			@Override
+			public void handle(ChangeEvent t) {
+				//
+				PropertiesEditorImpl.this.onChange(key, t);
+			}
+		});
 		//
+	}
+
+	/**
+	 * Feb 5, 2013
+	 */
+	protected void onChange(String key, ChangeEvent t) {
+		ObjectPropertiesData data = this.getData();
+		Object old = data.getProperty(key);
+		Object value = t.getData();
+		if (ObjectUtil.nullSafeEquals(old, value)) {
+			return;
+		}
+		data.setProperty(key, value);
+		this.setData(data, true);
 	}
 
 	/**
@@ -124,15 +159,10 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 
 	@Override
 	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype) {
-		PropertyModel old = this.propertyMap.get(key);
-		if (old != null) {
-			throw new UiException("property exist:" + key + ",old:" + old);
-		}
 
 		PropertyModel rt = new PropertyModel(key);
 		rt.setEditorClass(etype);
-		this.propertyMap.put(key, rt);
-		this.propertyList.add(rt);
+		this.addProperty(rt);
 		return rt;
 	}
 

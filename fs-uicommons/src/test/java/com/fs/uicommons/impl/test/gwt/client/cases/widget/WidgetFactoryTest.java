@@ -37,10 +37,10 @@ public class WidgetFactoryTest extends TestBase {
 	public void testStringEditor() {
 		StringEditorI se = wf.create(StringEditorI.class);
 		final Holder<String> sdH = new Holder<String>();
-		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
+		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
 			@Override
-			public void handle(ChangeEvent<?> e) {
+			public void handle(ChangeEvent e) {
 				sdH.setTarget((String) e.getData());
 			}
 		});
@@ -53,10 +53,10 @@ public class WidgetFactoryTest extends TestBase {
 	public void testIntegerEditor() {
 		IntegerEditorI se = wf.create(IntegerEditorI.class);
 		final Holder<Integer> sdH = new Holder<Integer>();
-		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent<?>>() {
+		se.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
 			@Override
-			public void handle(ChangeEvent<?> e) {
+			public void handle(ChangeEvent e) {
 				sdH.setTarget((Integer) e.getData());
 			}
 		});

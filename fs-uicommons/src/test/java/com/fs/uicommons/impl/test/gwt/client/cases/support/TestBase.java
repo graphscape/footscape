@@ -41,13 +41,13 @@ public class TestBase extends GWTTestCase {
 
 	protected RootI root;
 
-	protected ModelI rootModel;
-
 	protected int timeoutMillis = 10 * 1000;
 
 	protected boolean disableWebSocket;
 
 	protected Set<String> finishing = new HashSet<String>();
+
+	protected boolean start = true;
 
 	@Override
 	public String getModuleName() {
@@ -76,12 +76,13 @@ public class TestBase extends GWTTestCase {
 
 		this.wf = this.container.get(WidgetFactoryI.class, true);
 		this.root = this.container.get(UiClientI.class, true).getRoot();
-		this.rootModel = this.container.get(ModelI.class, true);
 		this.manager = this.client.getChild(ControlManagerI.class, true); // see
 		// xxxSPI.active
 		// this.client.attach();//
+		if (this.start) {
+			this.client.start();//
 
-		this.client.start();//
+		}
 	}
 
 	protected void onEvent(Event e) {
@@ -119,7 +120,6 @@ public class TestBase extends GWTTestCase {
 	}
 
 	public void dump() {
-		System.out.println(this.rootModel.dump());
 		System.out.println(this.root.dump());
 		System.out.println(this.client.dump());
 

@@ -28,7 +28,7 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 		super(ctn, "expe");
 		this.addAction(Actions.A_EXPE_SUBMIT);//
 
-		FormViewI fv = this.addForm(FormsViewI.FM_DEFAULT);
+		FormViewI fv = this.getDefaultForm();
 		fv.addField(F_BODY, String.class);
 		fv.getFormModel().addAction(Actions.A_EXPE_SUBMIT);//
 	}

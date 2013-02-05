@@ -36,8 +36,8 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 
 	/* */
 	@Override
-	public void setData(String dt) {
-		super.setData(dt);
+	public void setData(String dt, boolean dis) {
+		super.setData(dt, dis);
 		String txt = dt == null ? "" : dt;
 		this.setText(txt);
 	}

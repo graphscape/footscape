@@ -44,7 +44,7 @@ public class SignupView extends FormsView implements SignupViewI {
 		this.addAction(Actions.A_SIGNUP_CONFIRM);
 
 		// form1
-		FormViewI def = this.addForm(FormsViewI.FM_DEFAULT);
+		FormViewI def = this.getDefaultForm();
 		// actions for form1
 		def.getFormModel().addAction(Actions.A_SIGNUP_SUBMIT);
 

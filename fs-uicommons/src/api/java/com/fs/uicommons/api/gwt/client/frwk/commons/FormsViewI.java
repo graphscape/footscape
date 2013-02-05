@@ -11,11 +11,9 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  */
 public interface FormsViewI extends ViewI {
 
-	public static final String FM_DEFAULT = "default";
-	
 	public FormViewI addForm(String name);
-	
+
 	public FormViewI getForm(String name);
-	
+
 	public FormViewI getDefaultForm();
 }

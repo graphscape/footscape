@@ -5,6 +5,7 @@
 package com.fs.uicommons.api.gwt.client.handler;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -19,4 +20,7 @@ public abstract class ActionHandlerSupport extends UiHandlerSupport implements E
 		super(c);
 	}
 
+	protected <T extends ViewI> T findView(Class<T> vcls, boolean force) {
+		return this.getClient(true).getRoot().find(vcls, force);
+	}
 }

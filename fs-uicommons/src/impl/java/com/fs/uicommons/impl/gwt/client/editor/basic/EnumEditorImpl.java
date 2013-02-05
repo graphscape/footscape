@@ -26,7 +26,7 @@ public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI
 
 	/** */
 	public EnumEditorImpl(ContainerI c, String name) {
-		super(c,name, DOM.createSelect());
+		super(c, name, DOM.createSelect());
 
 		this.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new ChangeHandler() {
 
@@ -45,8 +45,8 @@ public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI
 	}
 
 	@Override
-	public void setData(String data) {
-		super.setData(data);
+	public void setData(String data, boolean dis) {
+		super.setData(data, dis);
 		this.updateElement();
 	}
 

@@ -33,6 +33,7 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.LineModel;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.gchat.ChatGroupViewI;
 import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.gchat.MessageModel;
@@ -799,7 +800,16 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof ChatGroupViewI;
 			}
 		});
+		InstanceOf.addChecker(new CheckerSupport(LoginViewI.class) {
 
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof LoginViewI;
+
+			}
+
+		});
 	}
 
 }

@@ -193,7 +193,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 	 * </code> Jan 20, 2013
 	 */
 	private void createIndex(Client client, String index) {
-
+		LOG.info("createIndex:" + index + ",...");
 		IndicesAdminClient iac = client.admin().indices();
 		{
 			CreateIndexRequestBuilder cib = iac.prepareCreate(index);
@@ -283,6 +283,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 			if (!res.acknowledged()) {
 				throw new FsException("failed mapping for type:" + type + " with config:" + nm);
 			}
+			LOG.info("mapping type:" + type + ",meta:" + nm);
 
 		}// end mapping
 			// create version meta info
@@ -302,6 +303,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 	}
 
 	private void deleteIndex(Client client, String index) {
+		LOG.warn("delete index:" + index);
 		IndicesAdminClient iac = client.admin().indices();
 		// this.dataService.refresh();//
 		DeleteIndexRequestBuilder rb = iac.prepareDelete(index);
