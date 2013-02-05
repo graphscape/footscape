@@ -19,12 +19,14 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class ExpSearchControl extends ControlSupport2 implements ExpSearchControlI {
 
+	private ExpSearchModelI model;
+
 	/**
 	 * @param name
 	 */
 	public ExpSearchControl(ContainerI c, String name) {
 		super(c, name);
-
+		this.model = new ExpSearchModel(name);
 	}
 
 	/*
@@ -36,7 +38,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 */
 	@Override
 	public void search(String expId) {
-		ExpSearchModelI es = this.getRootModel().find(ExpSearchModelI.class, true);
+		ExpSearchModelI es = this.model;
 		es.setExpId(expId);//
 
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
@@ -66,6 +68,54 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 		ExpSearchModelI es = this.getModel();
 		es.clean(ExpItemModel.class);
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getExpId(boolean)
+	 */
+	@Override
+	public String getExpId(boolean b) {
+		// TODO Auto-generated method stub
+		return this.model.getExpId(b);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getPhrase(boolean)
+	 */
+	@Override
+	public String getPhrase(boolean b) {
+		// TODO Auto-generated method stub
+		return this.model.getPhrase(b);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getFirstResult()
+	 */
+	@Override
+	public int getFirstResult() {
+		// TODO Auto-generated method stub
+		return this.model.getFirstResult();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getMaxResult()
+	 */
+	@Override
+	public int getMaxResult() {
+		// TODO Auto-generated method stub
+		return this.model.getMaxResult();
 	}
 
 }

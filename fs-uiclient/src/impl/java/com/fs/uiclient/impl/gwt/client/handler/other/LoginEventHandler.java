@@ -7,10 +7,11 @@ package com.fs.uiclient.impl.gwt.client.handler.other;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.impl.gwt.client.tasks.ActivityRefreshHandler;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
@@ -36,10 +37,10 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 	public void handle(UserLoginEvent t) {
 		// update header item
 		UserInfo ui = t.getUserInfo();
-		HeaderModelI hm = this.getModel(HeaderModelI.class, true);
-		HeaderModelI.ItemModel hi = hm.getItem("user", true);
+		HeaderViewI hm = this.getClient(true).getRoot().find(HeaderViewI.class, true);
+
 		String dname = t.getUserInfo().getString("nick", true);
-		hi.setDisplayName(dname);
+		hm.setItemDisplayText(Path.valueOf("user"), dname);
 
 		// open exp search view
 		MainControlI mc = this.getControl(MainControlI.class, true);

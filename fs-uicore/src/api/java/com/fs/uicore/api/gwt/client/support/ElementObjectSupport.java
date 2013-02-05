@@ -3,6 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client.support;
 
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.GwtHandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
@@ -24,8 +25,7 @@ import com.google.gwt.user.client.Element;
  * @author wuzhen
  * 
  */
-public abstract class ElementObjectSupport extends UiObjectSupport implements
-		ElementObjectI {
+public abstract class ElementObjectSupport extends UiObjectSupport implements ElementObjectI {
 
 	protected ObjectElementHelpers helpers;
 
@@ -41,12 +41,12 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements
 	protected static final String HK_MASTER = "_master";// helper for the top
 														// element
 
-	public ElementObjectSupport(Element element) {
-		this(null, element);
+	public ElementObjectSupport(ContainerI c, Element element) {
+		this(c, null, element);
 	}
 
-	public ElementObjectSupport(String name, Element element) {
-		super(name);
+	public ElementObjectSupport(ContainerI c, String name, Element element) {
+		super(c, name);
 		this.element = element;
 		this.elementWrapper = new ElementWrapper(this.element);
 		// STYLE class name:
@@ -80,7 +80,7 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements
 	public ElementWrapper getElementWrapper() {
 		return this.elementWrapper;
 	}
-	
+
 	/*
 	
 	 */
@@ -101,10 +101,9 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements
 	@Override
 	@Deprecated
 	// use another Method for error catch
-	public final <H extends EventHandler> HandlerRegistration addGwtHandler(
-			DomEvent.Type<H> type, final H handler) {
-		return this.helpers.getHelper(HK_MASTER, true)
-				.addHandler(type, handler);
+	public final <H extends EventHandler> HandlerRegistration addGwtHandler(DomEvent.Type<H> type,
+			final H handler) {
+		return this.helpers.getHelper(HK_MASTER, true).addHandler(type, handler);
 	}
 
 	protected Element removeChild() {
@@ -166,8 +165,7 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements
 
 	@Override
 	public void _click() {
-		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false,
-				false, false, false);
+		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false, false, false, false);
 		this.element.dispatchEvent(evt);
 	}
 

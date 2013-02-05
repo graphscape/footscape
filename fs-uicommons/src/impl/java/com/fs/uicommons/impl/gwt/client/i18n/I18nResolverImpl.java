@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.i18n.I18nResolverI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiResponse;
@@ -22,11 +23,15 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  */
 public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 
-	protected Map<String, Holder<String>> cache;
-
-	public I18nResolverImpl() {
-
+	/**
+	 * @param c
+	 */
+	public I18nResolverImpl(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
 	}
+
+	protected Map<String, Holder<String>> cache;
 
 	@Override
 	public void resolve(final String key, final UiCallbackI<String, String> callback) {

@@ -76,7 +76,7 @@ public class WidgetSupport extends WidgetBase {
 	// @Override
 	public AdjusterI addAdjuster(String name) {
 		if (this.adjustersHelper == null) {
-			this.adjustersHelper = new AdjustersHelper();//
+			this.adjustersHelper = new AdjustersHelper(this.container);//
 			this.adjustersHelper.parent(this);
 		}
 

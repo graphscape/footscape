@@ -10,14 +10,11 @@ import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
-import com.fs.uiclient.impl.gwt.client.testsupport.LoginTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.AbstractTestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
@@ -50,8 +47,6 @@ public class TestBase extends GWTTestCase {
 
 	protected ControlManagerI manager;
 
-	protected ModelI rootModel;
-
 	protected MainControlI mcontrol;
 
 	protected Set<String> finishing = new HashSet<String>();
@@ -63,7 +58,6 @@ public class TestBase extends GWTTestCase {
 	}
 
 	public void dump() {
-		System.out.println(this.rootModel.dump());
 		System.out.println(this.root.dump());
 		System.out.println(this.client.dump());
 
@@ -91,7 +85,6 @@ public class TestBase extends GWTTestCase {
 
 		this.wf = this.container.get(WidgetFactoryI.class, true);
 		this.root = this.container.get(UiClientI.class, true).getRoot();
-		this.rootModel = this.client.getRootModel();//
 		this.manager = this.client.getChild(ControlManagerI.class, true);
 		this.dump();
 		this.client.start();//
@@ -120,12 +113,12 @@ public class TestBase extends GWTTestCase {
 	}
 
 	/**
-	 *Jan 13, 2013
-	 *
+	 * Jan 13, 2013
+	 * 
 	 */
 	protected void onAnonymousUserLogin(UserLoginEvent le) {
-		// 
-		
+		//
+
 	}
 
 	/**

@@ -7,6 +7,7 @@ package com.fs.uicore.impl.gwt.client.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.config.ConfigurationFactoryI;
 import com.fs.uicore.api.gwt.client.config.UiConfiguration;
@@ -18,18 +19,17 @@ import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
  * @author wu
  * 
  */
-public class ConfigurationFactoryImpl extends ContainerAwareUiObjectSupport
-		implements ConfigurationFactoryI {
+public class ConfigurationFactoryImpl extends ContainerAwareUiObjectSupport implements ConfigurationFactoryI {
 
 	/**
 	 * @param name
 	 */
-	public ConfigurationFactoryImpl() {
-		this(null);
+	public ConfigurationFactoryImpl(ContainerI c) {
+		this(c, null);
 	}
 
-	public ConfigurationFactoryImpl(String name) {
-		super(name);
+	public ConfigurationFactoryImpl(ContainerI c, String name) {
+		super(c, name);
 	}
 
 	private Map<String, UiConfiguration> configMap = new HashMap<String, UiConfiguration>();
@@ -77,8 +77,7 @@ public class ConfigurationFactoryImpl extends ContainerAwareUiObjectSupport
 	 * (java.lang.String, com.fs.uicore.api.gwt.client.core.UiCallbackI)
 	 */
 	@Override
-	public void getConfiguration(String id,
-			UiCallbackI<UiConfiguration, Object> cb) {
+	public void getConfiguration(String id, UiCallbackI<UiConfiguration, Object> cb) {
 		throw new UiException("TODO");
 	}
 
@@ -90,8 +89,7 @@ public class ConfigurationFactoryImpl extends ContainerAwareUiObjectSupport
 	 * com.fs.uicore.api.gwt.client.core.UiCallbackI)
 	 */
 	@Override
-	public void getConfigurationList(String[] ids,
-			UiCallbackI<ConfigurationFactoryI, Object> cb) {
+	public void getConfigurationList(String[] ids, UiCallbackI<ConfigurationFactoryI, Object> cb) {
 		throw new UiException("TODO");
 
 	}

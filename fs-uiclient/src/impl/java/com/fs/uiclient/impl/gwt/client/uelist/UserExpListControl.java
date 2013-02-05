@@ -6,11 +6,9 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
-import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -33,16 +31,6 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		super(c, name);
 		// changing.
 
-	}
-
-	@Override
-	protected void doAttach() {
-		super.doAttach();
-
-		// listen to the cooper model for incoming cooperrequest.
-		MainControlI mc = this.getManager().getControl(MainControlI.class, true);
-
-		CooperModelI cpm = mc.getCooperModel();
 	}
 
 	public void detailExp(String expId) {
@@ -136,7 +124,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		UserExpModel old = ulm.getUserExp(id, false);
 		if (old == null) {
 			ulm.addUserExp(uem);
-		}else{
+		} else {
 			old.setBody(uem.getBody());
 			old.setActivityId(uem.getActivityId());
 			old.setIncomingCrId(uem.getIncomingCrId());

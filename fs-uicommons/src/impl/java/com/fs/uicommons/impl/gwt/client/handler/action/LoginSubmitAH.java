@@ -2,6 +2,7 @@ package com.fs.uicommons.impl.gwt.client.handler.action;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
@@ -28,7 +29,8 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		LoginModelI lm = ae.findModel(LoginModelI.class, true);//
+		LoginViewI lm = this.getClient(true).find(LoginViewI.class, true);
+		
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit

@@ -71,10 +71,6 @@ public class ControlSupport extends AbstractControl {
 		return this.getClient(true).getRoot();
 	}
 
-	public ModelI getRootModel() {
-		return this.getClient(true).getRootModel();
-	}
-
 	protected MsgWrapper newRequest(Path path) {
 		return new MsgWrapper(path);
 	}

@@ -60,23 +60,26 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	protected String id;
 
-	public UiObjectSupport() {
-		this(null);
+	protected ContainerI container;
+
+	public UiObjectSupport(ContainerI c) {
+		this(c, null);
 	}
 
-	public UiObjectSupport(String name) {
-		this.init(name, null, null);
+	public UiObjectSupport(ContainerI c, String name) {
+		this.init(c, name, null, null);
 	}
 
-	public UiObjectSupport(String name, String id) {
-		this.init(name, id, null);
+	public UiObjectSupport(ContainerI c, String name, String id) {
+		this.init(c, name, id, null);
 	}
 
-	public UiObjectSupport(String name, String id, UiLoggerI log) {
-		this.init(name, id, log);
+	public UiObjectSupport(ContainerI c, String name, String id, UiLoggerI log) {
+		this.init(c, name, id, log);
 	}
 
-	protected void init(String name, String id, UiLoggerI log) {
+	protected void init(ContainerI c, String name, String id, UiLoggerI log) {
+		this.container = c;
 		this.name = name == null ? "unkown" : name;
 		this.id = id == null ? OID.next("oid-") : id;
 		this.childList = new ArrayList<UiObjectI>();
@@ -518,10 +521,7 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	@Override
 	public ContainerI getContainer() {
-		if (this.parent == null) {
-			return null;//
-		}
-		return this.parent.getContainer();
+		return this.container;
 	}
 
 	@Override

@@ -7,6 +7,7 @@
 package com.fs.uicommons.api.gwt.client.widget.support;
 
 import com.fs.uicommons.api.gwt.client.AdjusterI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -24,21 +25,18 @@ import com.google.gwt.user.client.DOM;
 
 public class AdjusterImpl extends ElementObjectSupport implements AdjusterI {
 
-	public AdjusterImpl(String name) {
-		super(name, DOM.createDiv());
+	public AdjusterImpl(ContainerI c, String name) {
+		super(c, name, DOM.createDiv());
 		this.element.setInnerText(name);// TODO i18n/image
 		this.element.setTitle(name);// TODO title
 		this.element.addClassName("adjuster");
-		this.addGwtHandler(
-				com.google.gwt.event.dom.client.ClickEvent.getType(),
-				new ClickHandler() {
+		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
 
-					@Override
-					public void onClick(
-							com.google.gwt.event.dom.client.ClickEvent event) {
-						AdjusterImpl.this.onClick();
-					}
-				});
+			@Override
+			public void onClick(com.google.gwt.event.dom.client.ClickEvent event) {
+				AdjusterImpl.this.onClick();
+			}
+		});
 	}
 
 	protected void onClick() {

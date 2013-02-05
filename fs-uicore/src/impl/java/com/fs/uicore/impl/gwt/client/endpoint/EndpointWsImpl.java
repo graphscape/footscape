@@ -5,6 +5,7 @@
 package com.fs.uicore.impl.gwt.client.endpoint;
 
 import com.fs.uicore.api.gwt.client.CodecI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -58,7 +59,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	/**
 	 * @param md
 	 */
-	public EndpointWsImpl(MessageDispatcherI md) {
+	public EndpointWsImpl(ContainerI c, MessageDispatcherI md) {
+		super(c);
 		this.addHandler(
 				EndpointMessageEvent.TYPE.getAsPath().concat(
 						Path.valueOf("/control/status/serverIsReady", '/')),
@@ -198,9 +200,9 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	protected void onWsOpen(Object evt) {
 		// wait server is ready
 		LOG.info("ws open, send client is ready to server,and wait server is ready.");
-		MessageData req = new MessageData("/control/status/clientIsReady"); 
+		MessageData req = new MessageData("/control/status/clientIsReady");
 		this.sendMessageDirect(req);
-		
+
 	}
 
 	protected void onWsClose(EventJSO evt) {

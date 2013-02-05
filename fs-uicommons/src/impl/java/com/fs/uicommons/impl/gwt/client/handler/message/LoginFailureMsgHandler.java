@@ -7,11 +7,12 @@ package com.fs.uicommons.impl.gwt.client.handler.message;
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.ErrorCodes;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
+import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
@@ -23,7 +24,14 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class LoginFailureMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
+public class LoginFailureMsgHandler extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+
+	/**
+	 * @param c
+	 */
+	public LoginFailureMsgHandler(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Jan 2, 2013
@@ -42,7 +50,6 @@ public class LoginFailureMsgHandler implements MessageHandlerI<EndpointMessageEv
 			// 2)annonymous account is removed by serve side for some reason.
 			// then clean the saved info, and re run the procedure.
 
-			LoginModelI lm = t.getSource().getClient(true).getRootModel().find(LoginModelI.class, true);
 			Boolean isSaved = req.getBoolean("isSaved", true);
 			String type = req.getString("type", true);
 
@@ -50,14 +57,14 @@ public class LoginFailureMsgHandler implements MessageHandlerI<EndpointMessageEv
 				if (type.equals("registered")) {//
 					RegisteredAccountLDW acc1 = accs.getRegistered();
 					acc1.invalid();// try using the anonymous login.
-					new ActionEvent(lm, Actions.A_LOGIN_SUBMIT).dispatch();// try
+					new ActionEvent(t.getSource(), Actions.A_LOGIN_SUBMIT).dispatch();// try
 					// again
 
 				} else if (type.equals("anonymous")) {
 					AnonymousAccountLDW acc2 = accs.getAnonymous();
 					acc2.invalid();// clean and try again: create a new
 									// anonymous and login
-					new ActionEvent(lm, Actions.A_LOGIN_SUBMIT).dispatch();// try
+					new ActionEvent(t.getSource(), Actions.A_LOGIN_SUBMIT).dispatch();// try
 					// again
 
 				} else {

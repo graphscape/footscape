@@ -8,8 +8,10 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 
 /**
  * @author wu
- *
+ * 
  */
 public interface SignupViewI extends ViewI {
+
+	public void setConfirmCode(String cc);
 
 }

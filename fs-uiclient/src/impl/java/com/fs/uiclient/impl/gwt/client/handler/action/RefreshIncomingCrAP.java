@@ -6,7 +6,6 @@ package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.support.ActionHandlerSupport2;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -34,7 +33,7 @@ public class RefreshIncomingCrAP extends ActionHandlerSupport2 {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		CooperModelI cm = this.getMainControl().getCooperModel();
+
 		List<String> crIdL = null;
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/incomingCr"));
 

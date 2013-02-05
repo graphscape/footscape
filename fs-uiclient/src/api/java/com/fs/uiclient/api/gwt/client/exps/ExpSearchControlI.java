@@ -21,4 +21,11 @@ public interface ExpSearchControlI extends ControlI {
 
 	public void reset();
 
+	public String getExpId(boolean b);
+
+	public String getPhrase(boolean b);
+
+	public int getFirstResult();
+
+	public int getMaxResult();
 }

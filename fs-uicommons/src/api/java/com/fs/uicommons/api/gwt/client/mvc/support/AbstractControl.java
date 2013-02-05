@@ -28,6 +28,7 @@ public abstract class AbstractControl extends UiObjectSupport implements Control
 	protected ContainerI container;
 
 	public AbstractControl(ContainerI c, String name) {
+		super(c, name);
 		this.container = c;
 		this.name = name;
 

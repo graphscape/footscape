@@ -4,12 +4,6 @@
  */
 package com.fs.uicommons.api.gwt.client.frwk.util;
 
-import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 
 /**
  * @author wu
@@ -17,23 +11,5 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public class FrwkUtil {
 
-	public static FrwkModelI getFrwkModel(ModelI model) {
-		FrwkModelI fc = model.getTopObject().getChild(FrwkModelI.class, true);
-
-		return fc;
-	}
-
-	public static HeaderModelI getHeader(ModelI model) {
-		return getFrwkModel(model).getHeader();
-	}
-
-	public static FrwkControlI getFrwkControl(ModelI model) {
-		return model.getClient(true).getChild(ControlManagerI.class, true)
-				.getControl(FrwkControlI.class, true);
-	}
-
-	public static BodyModelI getBodyModel(ModelI model) {
-		return getFrwkModel(model).getBody();
-	}
 
 }

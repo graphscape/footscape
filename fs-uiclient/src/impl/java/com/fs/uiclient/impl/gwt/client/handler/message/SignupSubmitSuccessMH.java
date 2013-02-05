@@ -4,7 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
-import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
+import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
@@ -32,7 +32,7 @@ public class SignupSubmitSuccessMH extends MHSupport {
 		MessageData res = t.getMessage();
 		// in case of notify by 'resp'
 		String cc = res.getString("confirmCode");
-		this.getModel(SignupModelI.class, true).setConfirmCode(cc);//
+		this.getClient(true).find(SignupViewI.class, true).setConfirmCode(cc);//
 	}
 
 }

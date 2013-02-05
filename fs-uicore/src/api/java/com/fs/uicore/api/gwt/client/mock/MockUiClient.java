@@ -28,10 +28,11 @@ public class MockUiClient extends UiObjectSupport {
 	protected String email;
 
 	public MockUiClient(UiClientI client) {
+		super(client.getContainer());
+
 		this.client = client;
 		this.endpoint = this.client.getEndpoint();
-		this.endpoint.addHandler(
-				Path.valueOf("/endpoint/message/signup/submit/success"),
+		this.endpoint.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -39,8 +40,7 @@ public class MockUiClient extends UiObjectSupport {
 						MockUiClient.this.onSignupRequestSuccess(t);
 					}
 				});
-		this.endpoint.addHandler(
-				Path.valueOf("/endpoint/message/signup/confirm/success"),
+		this.endpoint.addHandler(Path.valueOf("/endpoint/message/signup/confirm/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -48,8 +48,7 @@ public class MockUiClient extends UiObjectSupport {
 						new MockSignupEvent(MockUiClient.this).dispatch();
 					}
 				});
-		this.endpoint.addHandler(
-				Path.valueOf("/endpoint/message/terminal/unbinding/success"),
+		this.endpoint.addHandler(Path.valueOf("/endpoint/message/terminal/unbinding/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
@@ -57,14 +56,13 @@ public class MockUiClient extends UiObjectSupport {
 						new MockSignupEvent(MockUiClient.this).dispatch();
 					}
 				});
-		this.endpoint.addHandler(EndpointBondEvent.TYPE,
-				new EventHandlerI<EndpointBondEvent>() {
+		this.endpoint.addHandler(EndpointBondEvent.TYPE, new EventHandlerI<EndpointBondEvent>() {
 
-					@Override
-					public void handle(EndpointBondEvent t) {
-						MockUiClient.this.onBond();
-					}
-				});
+			@Override
+			public void handle(EndpointBondEvent t) {
+				MockUiClient.this.onBond();
+			}
+		});
 	}
 
 	protected MsgWrapper newRequest(String path) {

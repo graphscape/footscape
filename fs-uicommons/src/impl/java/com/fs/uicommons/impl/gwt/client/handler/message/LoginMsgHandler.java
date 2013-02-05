@@ -5,9 +5,12 @@
 package com.fs.uicommons.impl.gwt.client.handler.message;
 
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.event.AfterAuthEvent;
+import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -17,7 +20,14 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class LoginMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
+public class LoginMsgHandler extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+
+	/**
+	 * @param c
+	 */
+	public LoginMsgHandler(ContainerI c) {
+		super(c);
+	}
 
 	/*
 	 * Jan 2, 2013
@@ -25,13 +35,11 @@ public class LoginMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 
-		LoginModelI lm = t.getSource().getClient(true).getRootModel().find(LoginModelI.class, true);
+		LoginViewI lm = this.getClient(true).find(LoginViewI.class, true);
 
 		MessageData res = t.getMessage();
 		boolean isSaved = res.getBoolean("isSaved", Boolean.FALSE);//
 		if (isSaved) {// successed for saved,do nothing,remain the same
-
-			
 
 		} else {// user provide info from view.
 				// String type = res.getRequest().getPayLoadAsString("type",
@@ -54,7 +62,7 @@ public class LoginMsgHandler implements MessageHandlerI<EndpointMessageEvent> {
 
 	}
 
-	private void doLoginSuccess(LoginModelI lm, EndpointMessageEvent evt) {
+	private void doLoginSuccess(LoginViewI lm, EndpointMessageEvent evt) {
 		MessageData res = evt.getMessage();
 		ObjectPropertiesData opd = res.getPayloads();
 

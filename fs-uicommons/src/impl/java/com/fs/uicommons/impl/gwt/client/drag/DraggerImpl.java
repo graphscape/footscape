@@ -8,6 +8,7 @@ package com.fs.uicommons.impl.gwt.client.drag;
 
 import com.fs.uicommons.api.gwt.client.drag.DragableI;
 import com.fs.uicommons.api.gwt.client.drag.DraggerI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
@@ -16,9 +17,17 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  */
 public class DraggerImpl extends UiObjectSupport implements DraggerI {
 
+	/**
+	 * @param c
+	 */
+	public DraggerImpl(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void addDragable(DragableI db) {
-		DragableWrapper di = new DragableWrapper(db);
+		DragableWrapper di = new DragableWrapper(this.container, db);
 		di.parent(this);
 
 	}

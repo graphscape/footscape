@@ -3,10 +3,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
-import com.fs.uicommons.api.gwt.client.CreaterI;
-import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
@@ -20,14 +17,6 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * 
  */
 public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
-
-	public static final CreaterI<FrwkModelI> CREATER = new CreaterI<FrwkModelI>() {
-
-		@Override
-		public FrwkModelI create(ContainerI c) {
-			return new FrwkModelImpl("frwk");
-		}
-	};
 
 	/**
 	 * @param c
@@ -48,15 +37,8 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 		}
 	}
 
-	public FrwkModelI getFrwkModel() {
-		return this.getRootModel().find(FrwkModelI.class, true);
-	}
-
 	@Override
 	public void addHeaderItem(Path path) {
-
-		this.getFrwkModel().getHeader().addItem(path, Position.valueOf("right"));
-
 		this.getFrwkView().getHeader().addItem(path);
 
 	}

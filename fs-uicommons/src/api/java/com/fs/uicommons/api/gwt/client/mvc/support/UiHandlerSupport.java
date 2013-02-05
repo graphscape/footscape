@@ -7,7 +7,6 @@ package com.fs.uicommons.api.gwt.client.mvc.support;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -43,14 +42,6 @@ public class UiHandlerSupport {
 
 	protected UiClientI getClient(boolean force) {
 		return this.container.get(UiClientI.class, force);
-	}
-
-	protected ModelI getRootModel() {
-		return this.getClient(true).getRootModel();
-	}
-
-	protected <T extends ModelI> T getModel(Class<T> cls, boolean force) {
-		return this.getClient(true).getRootModel().find(cls, force);
 	}
 
 	protected <T extends ControlI> T getControl(Class<T> cls, boolean force) {

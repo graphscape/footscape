@@ -4,6 +4,7 @@
  */
 package com.fs.uicore.api.gwt.client.support;
 
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.state.State;
 import com.fs.uicore.api.gwt.client.state.StatefulI;
@@ -12,18 +13,17 @@ import com.fs.uicore.api.gwt.client.state.StatefulI;
  * @author wu
  * 
  */
-public class StatefulUiObjectSupport extends UiObjectSupport implements
-		StatefulI {
+public class StatefulUiObjectSupport extends UiObjectSupport implements StatefulI {
 
 	/**
 	 * @param name
 	 */
-	public StatefulUiObjectSupport() {
-		this(null);
+	public StatefulUiObjectSupport(ContainerI c) {
+		this(c, null);
 	}
 
-	public StatefulUiObjectSupport(String name) {
-		super(name);
+	public StatefulUiObjectSupport(ContainerI c, String name) {
+		super(c, name);
 
 	}
 

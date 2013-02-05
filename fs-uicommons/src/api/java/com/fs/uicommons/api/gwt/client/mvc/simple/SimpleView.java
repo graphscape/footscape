@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
+import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
@@ -45,7 +46,6 @@ public class SimpleView extends ViewSupport {
 
 	protected Element footer;
 
-	protected Map<String, FormViewI> formViewMap;
 
 	/**
 	 * @param ctn
@@ -61,7 +61,7 @@ public class SimpleView extends ViewSupport {
 	public SimpleView(ContainerI c, String name, Element ele) {
 
 		super(c, name, ele);
-		this.formViewMap = new HashMap<String, FormViewI>();
+		
 		this.actionMap = new HashMap<Path, ButtonI>();
 
 		// BODY:
@@ -168,15 +168,6 @@ public class SimpleView extends ViewSupport {
 	protected List<Path> getActionList() {
 		return new ArrayList<Path>(this.actionMap.keySet());
 
-	}
-
-	public FormViewI getFormView(String fname) {
-		return this.formViewMap.get(fname);
-	}
-
-	protected List<Path> getActionList(String fname) {
-
-		return this.getFormView(fname).getActionList();
 	}
 
 	/*

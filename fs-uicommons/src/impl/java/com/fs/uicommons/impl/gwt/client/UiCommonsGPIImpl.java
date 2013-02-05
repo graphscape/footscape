@@ -23,7 +23,6 @@ import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
@@ -101,7 +100,6 @@ import com.fs.uicommons.impl.gwt.client.widget.table.TableImpl;
 import com.fs.uicommons.impl.gwt.client.widget.wpanel.WindowPanelWImpl;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -123,7 +121,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	@Override
 	public void active(ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);
-		ModelI rootM = client.getRootModel();
 
 		this.activeInstaneOf(c);
 
@@ -133,13 +130,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		this.activeOtherHandlers(c, client);
 		//
-		new DraggerImpl().parent(client);
+		new DraggerImpl(c).parent(client);
 
 		this.activeMessageHandlers(c, client);
 		//
 
 		// controls
-		ControlManagerI manager = new ControlManagerImpl();
+		ControlManagerI manager = new ControlManagerImpl(c);
 		manager.parent(client);
 		manager.child(new FrwkControlImpl(c, "frwk"));
 		manager.child(new GChatControlImpl(c, "gchat"));
@@ -727,14 +724,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof DraggerI;
-			}
-		});
-		InstanceOf.addChecker(new CheckerSupport(FrwkModelI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof FrwkModelI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(FrwkControlI.class) {

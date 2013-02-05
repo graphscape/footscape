@@ -2,6 +2,7 @@ package com.fs.uicommons.impl.gwt.client.mvc;
 
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
@@ -10,6 +11,14 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
  * 
  */
 public class ControlManagerImpl extends UiObjectSupport implements ControlManagerI {
+
+	/**
+	 * @param c
+	 */
+	public ControlManagerImpl(ContainerI c) {
+		super(c);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public ControlManagerI addControl(ControlI c) {

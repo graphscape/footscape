@@ -20,4 +20,17 @@ public interface LoginViewI extends ViewI {
 	public static final String FK_EMAIL = "email";
 
 	public static final String FK_PASSWORD = "password";
+
+	/**
+	 * @return
+	 */
+	public String getEmail();
+
+	/**
+	 * @return
+	 */
+	public String getPassword();
+
+	public boolean isSavingAccount();
+
 }

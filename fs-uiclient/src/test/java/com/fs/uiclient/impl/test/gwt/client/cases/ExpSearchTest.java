@@ -10,10 +10,7 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
-import com.fs.uiclient.api.gwt.client.main.MainModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
@@ -80,42 +77,16 @@ public class ExpSearchTest extends TestBase {
 		// listen to the main model for the activity model,all activity model
 		// will be the main model's children
 		//
-		MainModelI mm = this.rootModel.find(MainModelI.class, true);
-		mm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
-			@Override
-			public void handle(ModelChildEvent e) {
-				ExpSearchTest.this.onMainChildEvent(e);
-			}
-		});
-
-		this.listenToTheSearchItemBeforeSelect();//
-		//
 		UserExpModel ue = this.getTheUserExpModel();
 		ue.select(true);// select will cause the search control to refresh the
 						// recommended keywords and then search the result.
 
 	}
 
-	protected void listenToTheSearchItemBeforeSelect() {
-		ExpSearchModelI esm = this.rootModel.find(ExpSearchModelI.class, true);
-		esm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
-
-			@Override
-			public void handle(ModelChildEvent e) {
-				ExpSearchTest.this.onExpItemInSearchModel(e);
-			}
-		});
-	}
-
 	private UserExpModel getTheUserExpModel() {
-		UserExpListModelI uem = this.rootModel.find(UserExpListModelI.class, true);
+		return null;
 
-		// this.dump();
-		UserExpModel ue = uem.getUserExp(expId, true);
-
-		assertEquals("the selected exp should is the specified one", this.expId, ue.getExpId());
-		return ue;
 	}
 
 	/**
@@ -195,14 +166,7 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	protected void listenToTheActivityOpen() {
-		ActivitiesModelI asm = this.rootModel.find(ActivitiesModelI.class, true);
-		asm.addHandler(ModelChildEvent.TYPE, new EventHandlerI<ModelChildEvent>() {
 
-			@Override
-			public void handle(ModelChildEvent e) {
-				ExpSearchTest.this.onActivityModelAdd(e);
-			}
-		});
 	}
 
 	// the activity is opened.

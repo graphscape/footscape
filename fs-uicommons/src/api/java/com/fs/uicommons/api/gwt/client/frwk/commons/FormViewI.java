@@ -29,4 +29,11 @@ public interface FormViewI extends ViewI {
 	public ObjectPropertiesData getData();
 
 	public List<Path> getActionList();
+
+	public <T> T getFieldData(String fname, T def);
+
+	public <T> T getFieldData(String fname);
+
+	public void setFieldValue(String fname, Object value);
+
 }

@@ -32,7 +32,6 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 	@Override
 	public void active(ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);//
-		ModelI rootModel = client.getRootModel();
 		FrwkControlI fc = client.find(FrwkControlI.class, true);
 
 		fc.addHeaderItem(HI_EXP);

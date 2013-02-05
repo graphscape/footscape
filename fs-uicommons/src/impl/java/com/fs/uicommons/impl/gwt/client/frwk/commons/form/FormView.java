@@ -21,8 +21,8 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.google.gwt.user.client.DOM;
@@ -154,6 +154,51 @@ public class FormView extends ViewSupport implements FormViewI {
 	public List<Path> getActionList() {
 
 		return this.form.getActionList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#getFieldData(java
+	 * .lang.String, java.lang.Object)
+	 */
+	@Override
+	public <T> T getFieldData(String fname, T def) {
+		ObjectPropertiesData pts = this.getData();
+
+		return (T) pts.getProperty(fname, def);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#getFieldData(java
+	 * .lang.String)
+	 */
+	@Override
+	public <T> T getFieldData(String fname) {
+		// TODO Auto-generated method stub
+		return this.getFieldData(fname, null);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI#setFieldValue(
+	 * java.lang.String, java.lang.Object)
+	 */
+	@Override
+	public void setFieldValue(String fname, Object value) {
+		FieldModel fm = this.getFormModel().getFieldModel(fname, false);
+		if (fm == null) {
+			throw new UiException("no field with name:" + fname + " in view:" + this);
+		}
+		this.getData().setProperty(fname, value);
 	}
 
 }

@@ -4,10 +4,6 @@
  */
 package com.fs.uicommons.api.gwt.client.event;
 
-import com.fs.uicommons.api.gwt.client.mvc.ControlI;
-import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
@@ -34,23 +30,6 @@ public class ActionEvent extends Event {
 	 */
 	public String getAction() {
 		return this.getPath().getName();
-	}
-	@Deprecated
-	public UiClientI getClient(boolean force) {
-		return this.getSource().getClient(force);
-	}
-
-	@Deprecated
-	public ControlManagerI getManager() {
-		return this.getClient(true).getChild(ControlManagerI.class, true);
-	}
-	@Deprecated
-	public <T extends ModelI> T findModel(Class<T> cls, boolean force) {
-		return this.getClient(true).getRootModel().find(cls, force);
-	}
-	@Deprecated
-	public <T extends ControlI> T getControl(Class<T> cls) {
-		return this.getManager().getChild(cls, true);
 	}
 
 }

@@ -4,11 +4,12 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.commons.form;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.Constants;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
@@ -30,6 +31,8 @@ public class FormsView extends SimpleView implements FormsViewI {
 
 	private FormsModel formsModel;
 
+	protected Map<String, FormViewI> formViewMap;
+
 	/**
 	 * @param ctn
 	 */
@@ -39,6 +42,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 
 	public FormsView(ContainerI ctn, String name) {
 		super(ctn, name);
+		this.formViewMap = new HashMap<String, FormViewI>();
 		this.formsModel = new FormsModel(null);
 		this.tabber = this.factory.create(TabberWI.class);
 		this.tabber.parent(this);//
@@ -68,6 +72,19 @@ public class FormsView extends SimpleView implements FormsViewI {
 		}
 		return fv;
 
+	}
+
+	public FormViewI getDefaultFormView() {
+		return this.getFormView(FormsViewI.FM_DEFAULT);
+	}
+
+	public FormViewI getFormView(String fname) {
+		return this.formViewMap.get(fname);
+	}
+
+	protected List<Path> getActionList(String fname) {
+
+		return this.getFormView(fname).getActionList();
 	}
 
 	/**

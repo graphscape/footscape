@@ -29,7 +29,7 @@ import com.fs.uicore.api.gwt.client.util.UID;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public class ModelSupport extends UiObjectSupport implements ModelI {
 
@@ -43,7 +43,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	}
 
 	public ModelSupport(String name, String id) {
-		super(name, id);
+		super(null, name, id);
 	}
 
 	public <T extends ModelI> T defaultValue(Object def) {
@@ -59,8 +59,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	@Override
 	public UiObjectI parent(UiObjectI parent) {
 		if (parent != null && !(parent instanceof ModelI)) {
-			throw new UiException("parent of model must be model,but is:"
-					+ parent);
+			throw new UiException("parent of model must be model,but is:" + parent);
 		}
 		super.parent(parent);
 		return this;
@@ -99,8 +98,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	@Override
 	public void setValue(String pro, int idx, Object value) {
 
-		Location loc = idx >= 0 ? Location.valueOf(pro, idx) : Location
-				.valueOf(pro, Boolean.TRUE);
+		Location loc = idx >= 0 ? Location.valueOf(pro, idx) : Location.valueOf(pro, Boolean.TRUE);
 
 		this.setValue(loc, value);
 	}
@@ -124,8 +122,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 				this._setProperty(loc.getProperty(), ls);
 			} else {
 				if (!(obj instanceof List)) {
-					throw new UiException("loc:" + loc
-							+ " is point to the none-list property");
+					throw new UiException("loc:" + loc + " is point to the none-list property");
 				}
 				ls = (List<ValueWrapper>) obj;
 
@@ -187,15 +184,12 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 			List<ValueWrapper> l = (List<ValueWrapper>) obj;
 			Integer idx = loc.getIndex();
 			if (idx == null || idx < 0 || idx >= l.size()) {
-				throw new UiException(
-						"loc:"
-								+ loc
-								+ " contains invalid index infor,but point to a property which is a list");
+				throw new UiException("loc:" + loc
+						+ " contains invalid index infor,but point to a property which is a list");
 			}
 			return l.get(idx);
 		} else {
-			throw new UiException("loc:" + loc + " has value:" + obj
-					+ " of type unknown");
+			throw new UiException("loc:" + loc + " has value:" + obj + " of type unknown");
 		}
 
 	}
@@ -339,8 +333,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	}
 
 	@Override
-	public void addValueHandler(Location loc, Object value,
-			EventHandlerI<ModelValueEvent> eh) {
+	public void addValueHandler(Location loc, Object value, EventHandlerI<ModelValueEvent> eh) {
 		this.addHandler(new ModelValueEventFilter(loc, value), eh);
 
 	}
@@ -388,8 +381,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	 * Oct 23, 2012
 	 */
 	@Override
-	public void handleValueWhenAvailable(Location loc,
-			final UiCallbackI<Object, Object> callback) {
+	public void handleValueWhenAvailable(Location loc, final UiCallbackI<Object, Object> callback) {
 
 		Object value = this.getValue(loc);
 		if (value == null) {
@@ -409,8 +401,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	}
 
 	@Override
-	public <T extends ModelI> void childProcessor(Class<T> cls, String name,
-			final ModelChildProcessorI cp) {
+	public <T extends ModelI> void childProcessor(Class<T> cls, String name, final ModelChildProcessorI cp) {
 
 		T c = this.getChild(cls, name, false);
 		if (c != null) {
@@ -435,8 +426,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	 * Nov 24, 2012
 	 */
 	@Override
-	public <T> void addValueProcessor(Location loc, Object value,
-			final LazyI<T> lazy) {
+	public <T> void addValueProcessor(Location loc, Object value, final LazyI<T> lazy) {
 		Object v = this.getValue(loc);
 
 		if (ObjectUtil.nullSafeEquals(v, value)) {
@@ -456,8 +446,7 @@ public class ModelSupport extends UiObjectSupport implements ModelI {
 	 * Dec 2, 2012
 	 */
 	@Override
-	public <X extends ModelI> void addCommitProcessor(
-			final UiCallbackI<X, Object> cb) {
+	public <X extends ModelI> void addCommitProcessor(final UiCallbackI<X, Object> cb) {
 		Object v = this.getValue(L_COMMIT);
 		if (v != null) {
 			cb.execute((X) this);

@@ -83,7 +83,7 @@ public class ActivityTestWorker extends AbstractTestWorker {
 		super.start(client);
 		this.getRegisterUserInfo(true);//
 
-		UserExpListModelI uelm = client.getRootModel().find(UserExpListModelI.class, true);
+		UserExpListModelI uelm = this.mcontrol.getUeListModel();
 		List<UserExpModel> ueml = uelm.getChildList(UserExpModel.class);
 		if (ueml.size() == 0) {
 			throw new UiException("no user exp in list");

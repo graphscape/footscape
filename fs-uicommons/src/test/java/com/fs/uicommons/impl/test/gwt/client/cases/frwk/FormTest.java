@@ -4,10 +4,7 @@
  */
 package com.fs.uicommons.impl.test.gwt.client.cases.frwk;
 
-import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormModel;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
@@ -27,8 +24,6 @@ public class FormTest extends TestBase {
 		this.finishing.add("field1");
 		this.finishing.add("form");
 
-		FrwkModelI md = this.rootModel.find(FrwkModelI.class, true);
-		BodyModelI cm = md.getBody();
 
 		System.out.println(this.client.dump());
 		System.out.println(this.root.dump());

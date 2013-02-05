@@ -4,7 +4,7 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 public class ErrorModel extends ModelSupport {
 
-	public ErrorModel(String name) {
+	public ErrorModel(ContainerI c, String name) {
 		super(name);
 	}
 

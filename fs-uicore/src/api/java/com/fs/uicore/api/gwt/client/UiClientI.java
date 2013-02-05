@@ -3,7 +3,6 @@
  */
 package com.fs.uicore.api.gwt.client;
 
-import com.fs.commons.api.service.DispatcherI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 
@@ -18,8 +17,6 @@ public interface UiClientI extends UiObjectI {
 	public EndPointI getEndpoint();
 
 	public RootI getRoot();
-
-	public ModelI getRootModel();
 
 	public void setParameter(String key, String value);
 

@@ -23,6 +23,13 @@ import com.google.gwt.core.client.Scheduler.RepeatingCommand;
  */
 public class SchedulerImpl extends UiObjectSupport implements SchedulerI, ContainerI.AwareI {
 
+	/**
+	 * @param c
+	 */
+	public SchedulerImpl(ContainerI c) {
+		super(c);
+	}
+
 	private static class ScheduleTask implements RepeatingCommand {
 
 		public SchedulerImpl scheduler;

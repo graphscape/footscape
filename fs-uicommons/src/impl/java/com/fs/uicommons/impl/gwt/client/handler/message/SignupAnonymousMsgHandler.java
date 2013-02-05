@@ -5,7 +5,6 @@
 package com.fs.uicommons.impl.gwt.client.handler.message;
 
 import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
@@ -27,8 +26,6 @@ public class SignupAnonymousMsgHandler implements MessageHandlerI<EndpointMessag
 	public void handle(EndpointMessageEvent t) {
 		//
 		UiClientI client = t.getSource().getClient(true);
-		LoginModelI lm = client.getRootModel().find(LoginModelI.class, true);
-
 		ControlManagerI cm = client.getChild(ControlManagerI.class, true);
 		MessageData res = t.getMessage();//
 

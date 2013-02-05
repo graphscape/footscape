@@ -5,7 +5,7 @@ package com.fs.uicore.impl.gwt.client;
 
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
-import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -30,8 +30,7 @@ import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 /**
  * @author wu TOTO rename to UiCoreI and impl.
  */
-public class UiClientImpl extends ContainerAwareUiObjectSupport implements
-		UiClientI {
+public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
 
 	private String clientId;
 
@@ -43,11 +42,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	private EndPointI endpoint;
 
-	public UiClientImpl(RootI root) {
+	public UiClientImpl(ContainerI c, RootI root) {
+		super(c);
 		this.root = root;
 		this.parameters = new MapProperties<String>();
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
-		this.endpoint = new EndpointWsImpl(md);
+		this.endpoint = new EndpointWsImpl(c, md);
 		this.endpoint.parent(this);
 	}
 
@@ -61,16 +61,15 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 
 	@Override
 	public void start() {
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE,
-				new EventHandlerI<EndpointOpenEvent>() {
+		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
 
-					@Override
-					public void handle(EndpointOpenEvent t) {
-						UiClientImpl.this.onEndpointOpen();
-					}
-				});
-		this.endpoint.addHandler(
-				Path.valueOf("/endpoint/message/client/init/success"), new MessageHandlerI<MsgWrapper>() {
+			@Override
+			public void handle(EndpointOpenEvent t) {
+				UiClientImpl.this.onEndpointOpen();
+			}
+		});
+		this.endpoint.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
+				new MessageHandlerI<MsgWrapper>() {
 
 					@Override
 					public void handle(MsgWrapper t) {
@@ -92,8 +91,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 			throw new UiException("got a null sessionId");
 		}
 		this.clientId = sd;
-		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload(
-				"parameters", true);//
+		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
 		// parameters:
 
 		for (String key : opd.keyList()) {
@@ -159,17 +157,6 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements
 		this.root.detach();//
 		super.detach();
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicore.api.gwt.client.UiClientI#getRootModel()
-	 */
-	@Override
-	public ModelI getRootModel() {
-		// TODO Auto-generated method stub
-		return this.container.get(ModelI.class, false);//
 	}
 
 	/*

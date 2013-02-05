@@ -34,9 +34,9 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 
 		this.activeInstanceOfChecker();
 
-		c.add(new SchedulerImpl());
+		c.add(new SchedulerImpl(c));
 		// window
-		WindowI window = new WindowImpl();
+		WindowI window = new WindowImpl(c);
 		c.add(window);
 		//
 		this.activeWidgetAndFactory(c);
@@ -44,17 +44,13 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 		// RootI widget
 		WidgetFactoryI wf = c.get(WidgetFactoryI.class, true);
 
-		// Root model
-		ModelI model = new RootModel("root");
-		c.add(model);//
-		
 		RootI root = wf.create(RootI.class);// TODO
 		// root
 		// model
 		c.add(root);// TODO move to SPI.active();
 
 		// client
-		UiClientI client = new UiClientImpl(root);
+		UiClientI client = new UiClientImpl(c, root);
 		c.add(client);
 		//
 		// message df
@@ -68,7 +64,7 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 
 	protected void activeConfigFactory(ContainerI c) {
 
-		ConfigurationFactoryI cf = new ConfigurationFactoryImpl();
+		ConfigurationFactoryI cf = new ConfigurationFactoryImpl(c);
 		UiClientI client = c.get(UiClientI.class, true);
 		cf.parent(client);//
 	}
@@ -79,8 +75,8 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 		wf.addCreater(new WidgetCreaterSupport<RootI>(RootI.class) {
 
 			@Override
-			public RootI create(ContainerI c,String name) {
-				return new RootWImpl(c,name);
+			public RootI create(ContainerI c, String name) {
+				return new RootWImpl(c, name);
 			}
 		});
 	}

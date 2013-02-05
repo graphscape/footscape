@@ -3,7 +3,6 @@
  */
 package com.fs.uicore.api.gwt.client.support;
 
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -19,11 +18,8 @@ public abstract class WidgetBase extends ElementObjectSupport implements WidgetI
 
 	protected WidgetFactoryI factory;
 
-	protected ContainerI container;
-
 	protected WidgetBase(ContainerI c, String name, Element element) {
-		super(name, element);
-		this.container = c;
+		super(c, name, element);
 		this.factory = c.get(WidgetFactoryI.class, true);
 	}
 

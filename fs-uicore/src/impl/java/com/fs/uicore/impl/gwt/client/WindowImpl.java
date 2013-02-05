@@ -4,6 +4,7 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Size;
 import com.fs.uicore.api.gwt.client.event.SizeChangeEvent;
@@ -21,8 +22,8 @@ import com.google.gwt.user.client.Window.ClosingHandler;
  */
 public class WindowImpl extends StatefulUiObjectSupport implements WindowI {
 
-	public WindowImpl() {
-
+	public WindowImpl(ContainerI c) {
+		super(c);
 	}
 
 	/**
@@ -38,8 +39,7 @@ public class WindowImpl extends StatefulUiObjectSupport implements WindowI {
 	 * @param resizeevent
 	 */
 	protected void onGwtResize(ResizeEvent resizeevent) {
-		Size size = Size.valueOf(resizeevent.getWidth(),
-				resizeevent.getHeight());
+		Size size = Size.valueOf(resizeevent.getWidth(), resizeevent.getHeight());
 		new SizeChangeEvent(size, this).dispatch();
 
 	}

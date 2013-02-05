@@ -6,7 +6,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
+import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
@@ -39,7 +39,8 @@ public class IncomingCrRefreshMH extends MHSupport {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		CooperModelI cm = this.getModel(CooperModelI.class, true);
+		CooperControlI cc = this.getControl(CooperControlI.class, true);
+
 		MessageData res = t.getMessage();
 		List<ObjectPropertiesData> crL = (List<ObjectPropertiesData>) res.getPayload("cooperRequestList",
 				true);
@@ -60,7 +61,7 @@ public class IncomingCrRefreshMH extends MHSupport {
 			crm.setExpId1(expId1);
 			crm.setExpId2(expId2);
 			crm.commit();
-			cm.incomingCr(crm);
+			cc.incomingCr(crm);
 			this.onIncomingCr(t, crm);
 		}
 	}

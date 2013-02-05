@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
@@ -30,7 +31,7 @@ public class ExpSearchAP extends ActionHandlerSupport {
 	@Override
 	public void handle(ActionEvent ae) {
 		//
-		ExpSearchModelI sm = (ExpSearchModelI) this.getRootModel().find(ExpSearchModelI.class, true);
+		ExpSearchControlI sm = this.getControl(ExpSearchControlI.class, true);
 
 		String expId = sm.getExpId(false);
 		String phrase = sm.getPhrase(false);

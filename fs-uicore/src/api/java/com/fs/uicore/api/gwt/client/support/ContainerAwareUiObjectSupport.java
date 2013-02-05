@@ -11,25 +11,17 @@ import com.fs.uicore.api.gwt.client.EventBusI;
  * @author wu
  * 
  */
-public class ContainerAwareUiObjectSupport extends StatefulUiObjectSupport
-		implements ContainerI.AwareI {
+public class ContainerAwareUiObjectSupport extends StatefulUiObjectSupport implements ContainerI.AwareI {
 
 	/**
 	 * @param name
 	 */
-	public ContainerAwareUiObjectSupport() {
-		this(null);
+	public ContainerAwareUiObjectSupport(ContainerI c) {
+		this(c, null);
 	}
 
-	public ContainerAwareUiObjectSupport(String name) {
-		super(name);
-	}
-
-	protected ContainerI container;
-
-	@Override
-	public ContainerI getContainer() {
-		return this.container;
+	public ContainerAwareUiObjectSupport(ContainerI c, String name) {
+		super(c, name);
 	}
 
 	/*

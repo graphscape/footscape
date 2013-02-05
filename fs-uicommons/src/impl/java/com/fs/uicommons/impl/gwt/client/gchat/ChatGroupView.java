@@ -61,12 +61,18 @@ public class ChatGroupView extends SimpleView implements ChatGroupViewI {
 
 	@Override
 	public void addParticipant(ParticipantModel om) {
+		/*
+		 * LabelI pv = this.factory.create(LabelI.class); pv.setText(om.getId()
+		 * + "," + om.getAccountId()); this.participantList.child(pv);
+		 */
+		this.pMap.put(om.getId(), om);
 		// show a message in list.
 		LabelI msgW = this.factory.create(LabelI.class);
 		String accId = om.getAccountId();
 		msgW.setText(om.getNick() + " is joined  with accId:" + accId);//
 
 		this.messageList.child(msgW);
+
 	}
 
 	/*

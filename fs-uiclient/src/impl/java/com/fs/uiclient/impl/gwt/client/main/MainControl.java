@@ -5,24 +5,20 @@
 package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
-import com.fs.uiclient.api.gwt.client.signup.SignupModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
-import com.fs.uiclient.impl.gwt.client.cooper.CooperModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
-import com.fs.uiclient.impl.gwt.client.signup.SignupModel;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
@@ -37,40 +33,25 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class MainControl extends ControlSupport implements MainControlI {
 
+	ProfileModelI profile;
+	ExpSearchModelI search;
+
+	UserExpListModelI uelist;
+	ActivitiesModelI activities;
+
 	/**
 	 * @param name
 	 */
 	public MainControl(ContainerI c, String name) {
 		super(c, name);
-	}
-
-	@Override
-	public SignupModelI getSignupModel() {
-		//
-		SignupModelI rt = this.getOrCreateModel(this.getRootModel(), SignupModelI.class,
-				new CreaterI<SignupModelI>() {
-
-					@Override
-					public SignupModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new SignupModel("signup");
-					}
-				});
-		return rt;
+		this.profile = new ProfileModel("profile");
+		this.search = new ExpSearchModel("exp-search");
+		this.uelist = new UserExpListModel("ue-list");
+		this.activities = new ActivitiesModel("activities");
 	}
 
 	public ProfileModelI getProfileModel() {
-		//
-		ProfileModelI rt = this.getOrCreateModel(this.getRootModel(), ProfileModelI.class, name,
-				new CreaterI<ProfileModelI>() {
-
-					@Override
-					public ProfileModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new ProfileModel("signup");
-					}
-				});
-		return rt;
+		return this.profile;
 	}
 
 	/*
@@ -78,17 +59,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public ExpSearchModelI getExpSearchModel() {
-		//
-		ExpSearchModelI rt = this.getOrCreateModel(this.getRootModel(), ExpSearchModelI.class,
-				new CreaterI<ExpSearchModelI>() {
-
-					@Override
-					public ExpSearchModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new ExpSearchModel("exp-search");
-					}
-				});
-		return rt;
+		return this.search;
 	}
 
 	/*
@@ -98,35 +69,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public UserExpListModelI getUeListModel() {
-		//
-		UserExpListModelI rt = this.getOrCreateModel(this.getRootModel(), UserExpListModelI.class,
-				new CreaterI<UserExpListModelI>() {
-
-					@Override
-					public UserExpListModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new UserExpListModel("ue-list");
-					}
-				});
-		return rt;
-	}
-
-
-	/*
-	 * Jan 31, 2013
-	 */
-	@Override
-	public CooperModelI getCooperModel() {
-		CooperModelI rt = this.getOrCreateModel(this.getRootModel(), CooperModelI.class,
-				new CreaterI<CooperModelI>() {
-
-					@Override
-					public CooperModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new CooperModel();
-					}
-				});
-		return rt;
+		return this.uelist;
 	}
 
 	/*
@@ -171,7 +114,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	@Override
 	public ExpEditViewI openExpEditView() {
-	
+
 		ExpEditViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/expe"), new CreaterI<ExpEditViewI>() {
 
 			@Override
@@ -189,12 +132,12 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public SignupViewI openSignup() {
 		//
-		final SignupModelI sm = this.getSignupModel();
+
 		SignupView rt = this.gorOrCreateViewInBody(Path.valueOf("/signup"), new CreaterI<SignupView>() {
 
 			@Override
 			public SignupView create(ContainerI ct) {
-				return new SignupView(ct, (SignupModel) sm);
+				return new SignupView(ct);
 			}
 		});
 		return rt;
@@ -214,21 +157,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	}
 
 	/*
-	 *Feb 2, 2013
+	 * Feb 2, 2013
 	 */
 	@Override
 	public ActivitiesModelI getActivitiesModel() {
-		//
-		ActivitiesModelI rt = this.getOrCreateModel(this.getRootModel(), ActivitiesModelI.class,
-				new CreaterI<ActivitiesModelI>() {
-
-					@Override
-					public ActivitiesModelI create(ContainerI ct) {
-						// TODO Auto-generated method stub
-						return new ActivitiesModel("activities");
-					}
-				});
-		return rt;
+		return this.activities;
 	}
 
 }

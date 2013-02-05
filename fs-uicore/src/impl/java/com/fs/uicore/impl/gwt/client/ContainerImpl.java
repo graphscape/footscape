@@ -22,7 +22,7 @@ public class ContainerImpl implements ContainerI {
 	protected EventBusI eventBus;
 
 	public ContainerImpl() {
-		this.eventBus = new EventBusImpl();
+		this.eventBus = new EventBusImpl(this);
 	}
 
 	/* */

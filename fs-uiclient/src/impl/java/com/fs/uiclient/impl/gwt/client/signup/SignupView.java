@@ -34,14 +34,11 @@ public class SignupView extends FormsView implements SignupViewI {
 
 	private ViewReferenceI managed;
 
-	private SignupModel model;
-
 	/**
 	 * @param ctn
 	 */
-	public SignupView(ContainerI ctn, SignupModel sm) {
+	public SignupView(ContainerI ctn) {
 		super(ctn, "signup");
-		this.model = sm;
 		//
 		this.addAction(Actions.A_SIGNUP_SUBMIT);
 		this.addAction(Actions.A_SIGNUP_CONFIRM);
@@ -83,6 +80,15 @@ public class SignupView extends FormsView implements SignupViewI {
 	protected void onSignupRequired(ModelValueEvent e) {
 		boolean sr = e.getValue(Boolean.FALSE);
 		this.managed.select(sr);//
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.signup.SignupViewI#setConfirmCode(java.lang.String)
+	 */
+	@Override
+	public void setConfirmCode(String cc) {
+		//TODO
+		this.getDefaultFormView().setFieldValue("confirmCode",cc);
 	}
 
 }
