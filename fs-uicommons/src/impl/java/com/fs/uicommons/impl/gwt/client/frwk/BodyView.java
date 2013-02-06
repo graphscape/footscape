@@ -63,6 +63,12 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	 */
 	public <T extends WidgetI> T getItem(Path path, boolean force) {
 		TabWI ta = this.tabber.getTab(path, false);
+		if(ta == null){
+			if(force){
+				throw new UiException("no item found :"+path);
+			}
+			return null;
+		}
 		PanelWI p = (PanelWI)ta.getManaged();
 		return (T)p.getChildWidgetList().get(0);//
 		

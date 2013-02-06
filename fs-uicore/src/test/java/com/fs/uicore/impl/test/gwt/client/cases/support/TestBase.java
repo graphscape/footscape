@@ -34,6 +34,16 @@ public abstract class TestBase extends GWTTestCase {
 
 	protected Set<String> finishing;
 
+	protected boolean start = true;
+
+	public TestBase() {
+
+	}
+
+	public TestBase(boolean start) {
+		this.start = start;
+	}
+
 	/* */
 	@Override
 	public String getModuleName() {
@@ -61,7 +71,9 @@ public abstract class TestBase extends GWTTestCase {
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
 		this.endpoint = this.client.getEndpoint();
-		this.client.start();//
+		if (this.start) {
+			this.client.start();//
+		}
 
 	}
 

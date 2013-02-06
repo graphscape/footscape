@@ -91,6 +91,23 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	}
 
+	/*
+	 *Feb 6, 2013
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj == this){
+			return true;
+		}
+		if(obj == null || !(obj instanceof UiObjectI)){
+			return false;
+		}
+		
+		UiObjectI o2 = (UiObjectI)obj;
+		return this.id.equals(o2.getId());
+	}
+
 	@Override
 	public <T> T cast() {
 		return (T) this;
