@@ -57,7 +57,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 
 		FormView fv = new FormView(this.getContainer(), fname);
 
-		TabWI tb = this.tabber.addTab(tabName(fname), fv, false);
+		TabWI tb = this.tabber.addTab(tabPath(fname), fv, false);
 		tb.addSelectEventHandler(new EventHandlerI<SelectEvent>() {
 
 			@Override
@@ -103,8 +103,8 @@ public class FormsView extends SimpleView implements FormsViewI {
 		ae.property(Constants.AK_FORMS_VIEW, this);
 	}
 
-	private String tabName(String fname) {
-		return "tab-" + fname;
+	private Path tabPath(String fname) {
+		return Path.valueOf("tab-" + fname);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 										// actions.
 		// may have not yet add to tabber?
 
-		TabWI tab = this.tabber.getTab(tabName(fname), false);
+		TabWI tab = this.tabber.getTab(tabPath(fname), false);
 		if (tab == null) {// value set,but view have no chance to add the tab.
 			return;// see the processChildFormModelAdd,there should process the
 					// current form issue.

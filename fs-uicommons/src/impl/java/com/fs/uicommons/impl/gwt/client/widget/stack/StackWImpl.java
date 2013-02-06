@@ -7,10 +7,12 @@ package com.fs.uicommons.impl.gwt.client.widget.stack;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.widget.stack.StackItemI;
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
@@ -23,29 +25,24 @@ import com.google.gwt.user.client.Element;
  */
 public class StackWImpl extends LayoutSupport implements StackWI {
 
-	private List<ItemModel> itemList;
+	private List<StackItemI> itemList;
 
 	/**
 	 * @param ele
 	 */
 	public StackWImpl(ContainerI c) {
 		super(c, DOM.createDiv());
-		this.itemList = new ArrayList<ItemModel>();
+		this.itemList = new ArrayList<StackItemI>();
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uicommons.api.gwt.client.widget.stack.StackWI#getSelected()
-	 */
 	@Override
-	public ItemModel getSelected(boolean force) {
+	public StackItemI getSelected(boolean force) {
 
-		List<ItemModel> iml = this.itemList;
-		ItemModel rt = null;
-		for (ItemModel im : iml) {
-			if (im.isSelected()) {
+		List<StackItemI> iml = this.itemList;
+		StackItemI rt = null;
+		for (StackItemI im : iml) {
+			if (im.isSelect()) {
 				if (rt != null) {
 					throw new UiException("bug,more than one item is selected");
 				}
@@ -62,12 +59,12 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	}
 
 	@Override
-	public ItemModel getDefaultItem(boolean force) {
+	public StackItemI getDefaultItem(boolean force) {
 
-		List<ItemModel> iml = this.itemList;
-		ItemModel rt = null;
-		for (ItemModel im : iml) {
-			if (im.isDefaultItem()) {
+		List<StackItemI> iml = this.itemList;
+		StackItemI rt = null;
+		for (StackItemI im : iml) {
+			if (((StackItemRef) im).isDefaultItem()) {
 				if (rt != null) {
 					throw new UiException("bug,more than one item is default");
 				}
@@ -91,15 +88,40 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	 * .api.gwt.client.core.WidgetI)
 	 */
 	@Override
-	public ItemModel insert(WidgetI child, boolean select) {
-
-		ItemModel rt = new ItemModel(this, child);
+	public StackItemRef insert(Path path, WidgetI child, boolean select) {
+		if (null != this.getByPath(path, false)) {
+			throw new UiException("already exist:" + path);
+		}
+		StackItemRef rt = new StackItemRef(path, this, child);
 
 		this.itemList.add(rt);// NOTE,rt is the child of the widget's model
 		rt.select(select);
+		child.setProperty("_item_path", path);
 		this.child(child);
 
 		return rt;
+	}
+
+	@Override
+	public StackItemI getByPath(Path path, boolean force) {
+		for (StackItemI s : this.itemList) {
+			if (s.getPath().equals(path)) {
+				return s;
+			}
+		}
+		if (force) {
+			throw new UiException("no item found for path:" + path);
+		}
+		return null;
+
+	}
+
+	@Override
+	public void remove(Path path) {
+		StackItemI si = this.getByPath(path, false);
+		si.getManagedWidget().parent(null);
+		this.itemList.remove(si);
+
 	}
 
 	/*
@@ -108,24 +130,31 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 		Element ele = DOM.createDiv();
+
 		DOM.appendChild(ele, cw.getElement());//
 		DOM.appendChild(this.element, ele);
 	}
 
 	@Override
-	public void updateSelect(ItemModel im) {
+	protected void onRemoveChild(Element ele, WidgetI cw) {
+		Element ce = cw.getElement();
+		ce.getParentElement().removeFromParent();
+	}
+
+	@Override
+	public void updateSelect(StackItemI im) {
 
 		// reset selected
 
-		boolean sel = im.isSelected();//
+		boolean sel = im.isSelect();//
 
 		if (sel) {// push
 
-			List<ItemModel> iml = this.itemList;
-			for (ItemModel imm : iml) {
+			List<StackItemI> iml = this.itemList;
+			for (StackItemI imm : iml) {
 				if (imm != im) {// unselect all the other
 								// item if its selected.
-					imm.trySelect(false);//
+					((StackItemRef) imm).trySelect(false);//
 				}
 			}
 		} else {// unselect,do nothing.

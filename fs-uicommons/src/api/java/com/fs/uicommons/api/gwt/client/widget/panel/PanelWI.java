@@ -12,4 +12,6 @@ import com.fs.uicore.api.gwt.client.CompositeI;
  */
 public interface PanelWI extends CompositeI{
 
+	public void setClosable(boolean b);
+
 }

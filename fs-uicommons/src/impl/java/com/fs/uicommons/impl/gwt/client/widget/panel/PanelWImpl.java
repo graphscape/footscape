@@ -23,4 +23,6 @@ public class PanelWImpl extends AbstractPanelWImpl implements PanelWI {
 		super(c, name, DOM.createDiv());
 	}
 
+	
+
 }

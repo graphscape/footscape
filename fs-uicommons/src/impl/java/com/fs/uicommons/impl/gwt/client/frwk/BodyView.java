@@ -4,9 +4,6 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
@@ -25,7 +22,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 
 	private TabberWI tabber;// TODO replace by a stack and a menu view.
 
-	private Map<Path, WidgetI> itemMap = new HashMap<Path, WidgetI>();
+	//private Map<Path, WidgetI> itemMap = new HashMap<Path, WidgetI>();
 
 	/**
 	 * @param ctn
@@ -46,10 +43,9 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			throw new UiException("already exist:" + path + ",widget:" + old);
 		}
 		final PanelWI prt = this.factory.create(PanelWI.class);
-		String tname = path.toString();
-		final TabWI sitem = this.tabber.addTab(tname, prt);
+		final TabWI sitem = this.tabber.addTab(path, prt);
 		w.parent(prt);
-		this.itemMap.put(path, w);
+		//this.itemMap.put(path, w);
 		return w;
 	}
 
@@ -58,8 +54,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	 */
 	public void select(Path path) {
 
-		String tname = path.toString();
-		final TabWI sitem = this.tabber.getTab(tname, true);
+		final TabWI sitem = this.tabber.getTab(path, true);
 		sitem.select();
 	}
 
@@ -67,11 +62,10 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	 * @param b
 	 */
 	public <T extends WidgetI> T getItem(Path path, boolean force) {
-		WidgetI rt = this.itemMap.get(path);
-		if (rt == null && force) {
-			throw new UiException("not found item in body view,path:" + path);
-		}
-		return (T) rt;
+		TabWI ta = this.tabber.getTab(path, false);
+		PanelWI p = (PanelWI)ta.getManaged();
+		return (T)p.getChildWidgetList().get(0);//
+		
 	}
 
 	@Override

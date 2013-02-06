@@ -5,6 +5,7 @@
 package com.fs.uicommons.api.gwt.client.widget.stack;
 
 import com.fs.uicore.api.gwt.client.CompositeI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
@@ -13,55 +14,18 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface StackWI extends CompositeI {
 
-	public static class ItemModel {
+	public StackItemI getDefaultItem(boolean force);
 
-		private StackWI stack;
-		
-		private boolean isDefault;
-		
-		private boolean isSelected;
-		
-		private WidgetI managed;
-		
-		public ItemModel(StackWI stack,WidgetI managed) {
-			super();
-			this.stack = stack;
-			this.managed = managed;
-		}
+	public StackItemI getSelected(boolean force);
 
-		public boolean isDefaultItem() {
-			return this.isDefault;
-		}
+	public StackItemI insert(Path path, WidgetI child, boolean select);
 
-		public boolean isSelected() {
-			return this.isSelected;
-		}
+	public StackItemI getByPath(Path p, boolean force);
 
-		public void trySelect(boolean sel) {
-			if (this.isSelected() == sel) {
-				return;
-			}
-			this.select(sel);
-		}
-
-		public void select(boolean sel) {
-			this.isSelected = sel;
-			this.stack.updateSelect(this);
-		}
-
-		public WidgetI getManagedWidget() {
-			return this.managed;
-		}
-	}
-
-	public ItemModel getDefaultItem(boolean force);
-
-	public ItemModel getSelected(boolean force);
-
-	public ItemModel insert(WidgetI child, boolean select);
+	public void remove(Path path);
 
 	public int getSize();
-	
-	public void updateSelect(ItemModel im);
+
+	public void updateSelect(StackItemI im);
 
 }

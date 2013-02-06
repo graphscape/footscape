@@ -23,5 +23,6 @@ public interface ViewReferenceI {
 	public void select(boolean sel);
 
 	public boolean isSelect();
+	
 
 }

@@ -6,17 +6,19 @@ package com.fs.uicommons.impl.gwt.client.widget.tab;
 
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.widget.event.ClosingEvent;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
+import com.fs.uicommons.api.gwt.client.widget.stack.StackItemI;
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -76,6 +78,24 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		}
 	}
 
+	@Override
+	protected void onRemoveChild(Element ele, WidgetI cw) {
+		if (cw instanceof StackWI) {
+			// should not here
+		} else if (cw instanceof TabWI) {
+			cw.getElement().removeFromParent();
+		}
+	}
+
+	@Override
+	public void remove(Path path) {
+		// remove tab
+		TabWI t = this.getTab(path, true);
+		t.parent(null);
+		// remove panel
+		this.stack.remove(path);
+	}
+
 	public List<TabWI> getTabList() {
 		return this.getChildList(TabWI.class);
 	}
@@ -84,12 +104,13 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	 * 
 	 */
 	@Override
-	public TabWI addTab(String name) {
-		return this.addTab(name, false);
+	public TabWI addTab(Path name) {
+		return this.addTab(name, null, false);
 
 	}
 
-	public TabWI addTab(String name, boolean sel) {
+	@Override
+	public TabWI addTab(final Path name,WidgetI content, boolean sel) {
 
 		TabWI old = this.getTab(name, false);
 		if (old != null) {
@@ -97,13 +118,23 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		}
 
 		PanelWI pw = this.factory.create(PanelWI.class);
+		pw.setClosable(true);
+		pw.addHandler(ClosingEvent.TYPE, new EventHandlerI<ClosingEvent>(){
 
-		StackWI.ItemModel sitem = this.stack.insert(pw, sel);//
-
-		TabWImpl rt = new TabWImpl(this.container, name, pw, sitem, this);// TODO
-																			// not
-																			// is
-																			// a
+			@Override
+			public void handle(ClosingEvent t) {
+				TabberWImpl.this.remove(name);
+			}});
+		StackItemI sitem = this.stack.insert(name, pw, sel);//
+		
+		if(content !=null){
+			pw.child(content);
+		}
+		
+		TabWImpl rt = new TabWImpl(this.container, name.toString(), pw,content, sitem, this);// TODO
+		// not
+		// is
+		// a
 		// widget.
 		// first must select
 		this.child(rt);//
@@ -135,15 +166,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	@Override
-	public TabWI addTab(String name, WidgetI content) {
+	public TabWI addTab(Path name, WidgetI content) {
 		return this.addTab(name, content, true);
-	}
-
-	@Override
-	public TabWI addTab(String name, WidgetI content, boolean sel) {
-		TabWI rt = this.addTab(name);
-		rt.getPanel().child(content);
-		return rt;
 	}
 
 	public void _select(String name) {
@@ -151,13 +175,12 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		for (TabWI tb : tabL) {
 			boolean sel = tb.getName().equals(name);
 			TabWImpl ti = (TabWImpl) tb;
-			
+
 			ti.setSelected(sel, false);// change the tab title style.
-			
+
 			ti.getStackItem().select(sel);// pointer to stack item.
 
 		}
-		
 
 	}
 
@@ -169,25 +192,9 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	 * String)
 	 */
 	@Override
-	public TabWI getTab(String name, boolean force) {
+	public TabWI getTab(Path name, boolean force) {
 
-		return this.getChild(TabWI.class, name, force);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.widget.tab.TabberWI#getPanel(java.lang
-	 * .String)
-	 */
-	@Override
-	public PanelWI getPanel(String name, boolean force) {
-
-		TabWI tb = this.getTab(name, force);
-
-		return tb.getPanel();
-
+		return this.getChild(TabWI.class, name.toString(), force);
 	}
 
 	/*

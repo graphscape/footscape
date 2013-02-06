@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
+import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
  * @author wu
@@ -18,9 +19,9 @@ public class TabberTest extends TestBase {
 	public void testTabber() {
 		TabberWI tw = wf.create(TabberWI.class);
 		tw.parent(this.root);// TODO assert attached.
-		TabWI tab1 = tw.addTab("tab1");
+		TabWI tab1 = tw.addTab(Path.valueOf("tab1"));
 
-		TabWI tab2 = tw.addTab("tab2");
+		TabWI tab2 = tw.addTab(Path.valueOf("tab2"));
 
 		assertTrue("tab1 not attached", tab1.isAttached());
 

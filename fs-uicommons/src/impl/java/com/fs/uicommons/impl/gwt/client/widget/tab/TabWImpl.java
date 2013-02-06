@@ -4,14 +4,15 @@
  */
 package com.fs.uicommons.impl.gwt.client.widget.tab;
 
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.widget.event.SelectEvent;
 import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
-import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
+import com.fs.uicommons.api.gwt.client.widget.stack.StackItemI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.DOM;
 
@@ -25,16 +26,18 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 
 	protected PanelWI panel;
 
-	protected StackWI.ItemModel stackItem;
+	protected StackItemI stackItem;
 
 	protected boolean selected;
+	protected WidgetI managed;
 
 	/**
 	 * @param ele
 	 */
-	public TabWImpl(ContainerI c, String name, PanelWI panel, StackWI.ItemModel sitem, TabberWImpl tabber) {
+	public TabWImpl(ContainerI c, String name, PanelWI panel,WidgetI managed, StackItemI sitem, TabberWImpl tabber) {
 		super(c, name, DOM.createDiv());
 		this.panel = panel;
+		this.managed = managed;
 		this.tabber = tabber;
 		this.stackItem = sitem;
 
@@ -127,13 +130,29 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	/**
 	 * @return the stackItem
 	 */
-	public StackWI.ItemModel getStackItem() {
+	public ViewReferenceI getStackItem() {
 		return stackItem;
 	}
 
 	@Override
 	public void addSelectEventHandler(EventHandlerI<SelectEvent> eh) {
 		this.addHandler(SelectEvent.TYPE, eh);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#close()
+	 */
+	@Override
+	public void close() {
+		this.stackItem.remove();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uicommons.api.gwt.client.widget.tab.TabWI#getManaged()
+	 */
+	@Override
+	public WidgetI getManaged() {
+		return this.managed;
 	}
 
 }

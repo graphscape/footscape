@@ -26,6 +26,7 @@ import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
+import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.WindowModelI;
 import com.fs.uicommons.api.gwt.client.frwk.blank.BlankModelI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
@@ -679,12 +680,12 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof BarWidgetI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(StackWI.ItemModel.class) {
+		InstanceOf.addChecker(new CheckerSupport(ViewReferenceI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof StackWI.ItemModel;
+				return o instanceof ViewReferenceI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(EnumEditorI.class) {

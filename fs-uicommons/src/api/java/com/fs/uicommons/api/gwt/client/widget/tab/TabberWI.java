@@ -4,9 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.tab;
 
-import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
 import com.fs.uicore.api.gwt.client.CompositeI;
-import com.fs.uicore.api.gwt.client.ModelI.Location;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
@@ -15,19 +14,18 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
  */
 public interface TabberWI extends CompositeI {
 
-	public static final Location L_SELECTED_TABNAME = Location
-			.valueOf("selectedTabName");
-
 	public TabWI getSelected(boolean force);
-	
-	public TabWI addTab(String name);
-	
-	public TabWI addTab(String name, WidgetI content);
-	
-	public TabWI addTab(String name, WidgetI content, boolean sel);
 
-	public TabWI getTab(String name, boolean force);
+	public TabWI addTab(Path name);
 
-	public PanelWI getPanel(String name, boolean force);
+	public TabWI addTab(Path name, WidgetI content);
+
+	public TabWI addTab(Path name, WidgetI content, boolean sel);
+
+	public TabWI getTab(Path name, boolean force);
+
+	public void remove(Path path);
+
+	// public PanelWI getPanel(Path name, boolean force);
 
 }
