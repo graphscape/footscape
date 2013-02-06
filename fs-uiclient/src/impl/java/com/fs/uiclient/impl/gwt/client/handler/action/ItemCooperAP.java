@@ -5,7 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
@@ -38,7 +38,8 @@ public class ItemCooperAP extends ActionHandlerSupport {
 		String expId2 = (String) ae.getProperty("expId2", true);
 
 		//
-		ExpSearchModelI sm = mc.getExpSearchModel();
+		ExpSearchViewI sm = mc.openExpSearch();
+		
 
 		String expId1 = sm.getExpId(true);
 

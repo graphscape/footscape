@@ -4,7 +4,10 @@
  */
 package com.fs.uiclient.impl.gwt.client.cooper;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
@@ -24,16 +27,28 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 
 	private String expId2;
 
+	private Map<String, IncomingCrModel> incomingCrMap;
+
+	/**
+	 * @param name
+	 */
+	public CooperControl(ContainerI c, String name) {
+		super(c, name);
+
+		this.incomingCrMap = new HashMap<String, IncomingCrModel>();
+	}
+
 	@Override
 	public void cooper(String expId1, String expId2) {
 		this.expId1 = expId1;
 		this.expId2 = expId2;
+
 	}
 
 	@Override
 	public List<IncomingCrModel> getIncomingCooperRequestModelList() {
 		//
-		return this.getChildList(IncomingCrModel.class);
+		return new ArrayList<IncomingCrModel>(this.incomingCrMap.values());
 
 	}
 
@@ -56,7 +71,7 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	 */
 	@Override
 	public void incomingCr(IncomingCrModel crm) {
-		this.child(crm);
+		this.incomingCrMap.put(crm.getCrId(), crm);
 	}
 
 	/*
@@ -68,15 +83,7 @@ public class CooperControl extends ControlSupport implements CooperControlI {
 	 */
 	@Override
 	public void removeIncomingCr(String crId) {
-		IncomingCrModel cm = this.getChild(IncomingCrModel.class, crId, true);
-		cm.parent(null);//
-	}
-
-	/**
-	 * @param name
-	 */
-	public CooperControl(ContainerI c, String name) {
-		super(c, name);
+		this.incomingCrMap.remove(crId);
 
 	}
 

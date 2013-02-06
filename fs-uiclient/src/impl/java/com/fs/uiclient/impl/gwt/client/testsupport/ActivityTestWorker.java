@@ -39,6 +39,8 @@ public class ActivityTestWorker extends AbstractTestWorker {
 
 	protected ActivityView activityView;
 
+	protected String activityIdCreated;
+
 	/**
 	 * @param user
 	 * @param email
@@ -179,14 +181,13 @@ public class ActivityTestWorker extends AbstractTestWorker {
 			this.tryFinish("cooper.confirm");
 		}
 		String actId = v.getActivityId();
-		if (actId != null) {
-			Boolean pro = (Boolean) v.getProperty("activityOpened");
-			if (pro == null) {
-				v.setProperty("activityOpened", Boolean.TRUE);//
-				this.tryFinish("activity.created");//
-				v.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
+		// find one exp with actId;
+		if (actId != null && this.activityIdCreated == null) {
 
-			}
+			this.activityIdCreated = actId;
+			this.tryFinish("activity.created");//
+			v.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
+
 		}
 
 	}

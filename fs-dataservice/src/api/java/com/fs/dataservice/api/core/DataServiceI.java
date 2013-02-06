@@ -31,43 +31,37 @@ public interface DataServiceI {
 
 	public <T extends OperationI> T prepareOperation(Class<T> opc);
 
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(
-			Class<W> cls);
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls);
 
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(
-			NodeType ntype);
+	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype);
 
-	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls,
-			String[] fields, Object[] value, int from, int maxSize);
-	
-	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls,
-			String fields, Object value, int from, int maxSize);
+	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls, String[] fields,
+			Object[] value, int from, int maxSize);
+
+	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls, String fields, Object value,
+			int from, int maxSize);
 
 	// TODO remove
-	public <T extends NodeWrapper> T getByUid(Class<T> wpcls, String uid,
-			boolean force);
+	public <T extends NodeWrapper> T getByUid(Class<T> wpcls, String uid, boolean force);
 
-	public <T extends NodeWrapper> T getNewestById(Class<T> wpcls, String id,
-			boolean force);
+	public <T extends NodeWrapper> T getNewestById(Class<T> wpcls, String id, boolean force);
 
-	public <T extends NodeWrapper> List<T> getNewestListById(Class<T> wpcls,
-			List<String> idL, boolean force, boolean reserveNull);
+	public <T extends NodeWrapper> List<T> getNewestListById(Class<T> wpcls, List<String> idL, boolean force,
+			boolean reserveNull);
 
-	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String field,
-			Object value, boolean force);
+	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String field, Object value, boolean force);
 
-	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String[] field,
-			Object[] value, boolean force);
+	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String[] field, Object[] value, boolean force);
 
-	public <T extends OperationI> void registerOperation(String name,
-			Class<T> itfCls, Class<? extends T> impCls);
+	public <T extends OperationI> void registerOperation(String name, Class<T> itfCls,
+			Class<? extends T> impCls);
 
 	public void refresh();
 
 	public <T extends NodeWrapper> boolean deleteByUid(Class<T> wpcls, String uid);
-	
+
 	public <T extends NodeWrapper> int deleteById(Class<T> wpcls, String id);
-	
+
 	public DataSchema getConfigurations();
 
 }

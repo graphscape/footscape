@@ -186,12 +186,15 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 			qbi.operator(Operator.AND);//
 			qb.must(qbi);//
 		}
+		String idx = this.elastic.getIndex();
 		// end of matches
-		SearchRequestBuilder srb = client.prepareSearch().setSearchType(SearchType.DFS_QUERY_THEN_FETCH)//
+		SearchRequestBuilder srb = client.prepareSearch(idx)//
+				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)//
 				.setQuery(qb)//
 				.setFrom(this.getFrom())//
 				.setSize(this.getMaxSize())//
 				.setExplain(true)//
+
 		;
 		for (Sort s : this.sortList) {
 			srb.addSort(s.field, s.order);

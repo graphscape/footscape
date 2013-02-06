@@ -14,4 +14,22 @@ public interface ExpSearchViewI extends ViewI {
 
 	public void addExpItem(ExpItemModel ei);
 
+	public void reset();
+
+	public String getExpId(boolean b);
+
+	public void setExpId(String expId);
+
+	public String getPhrase(boolean b);
+
+	/**
+	 * @return
+	 */
+	public int getFirstResult();
+
+	/**
+	 * @return
+	 */
+	public int getMaxResult();
+
 }

@@ -19,14 +19,12 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class ExpSearchControl extends ControlSupport2 implements ExpSearchControlI {
 
-	private ExpSearchModelI model;
 
 	/**
 	 * @param name
 	 */
 	public ExpSearchControl(ContainerI c, String name) {
 		super(c, name);
-		this.model = new ExpSearchModel(name);
 	}
 
 	/*
@@ -38,15 +36,14 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 */
 	@Override
 	public void search(String expId) {
-		ExpSearchModelI es = this.model;
+		ExpSearchViewI es = this.getMainControl().openExpSearch();
 		es.setExpId(expId);//
 
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
 	}
-
-	public ExpSearchModelI getModel() {
-		ExpSearchModelI es = this.getMainControl().getExpSearchModel();
-		return es;
+	
+	protected ExpSearchViewI getView(){
+		return this.getMainControl().openExpSearch();
 	}
 
 	/*
@@ -54,8 +51,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 */
 	@Override
 	public void addOrUpdateExpItem(ExpItemModel ei) {
-		ExpSearchModelI esm = this.getModel();
-		esm.addExpItem(ei);
+
 		ExpSearchViewI esv = this.getMainControl().openExpSearch();
 		esv.addExpItem(ei);
 	}
@@ -65,9 +61,8 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 */
 	@Override
 	public void reset() {
-		ExpSearchModelI es = this.getModel();
-		es.clean(ExpItemModel.class);
-
+		ExpSearchViewI v = this.getMainControl().openExpSearch();
+		v.reset();
 	}
 
 	/*
@@ -79,7 +74,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	@Override
 	public String getExpId(boolean b) {
 		// TODO Auto-generated method stub
-		return this.model.getExpId(b);
+		return this.getView().getExpId(b);
 	}
 
 	/*
@@ -91,7 +86,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	@Override
 	public String getPhrase(boolean b) {
 		// TODO Auto-generated method stub
-		return this.model.getPhrase(b);
+		return this.getView().getPhrase(b);
 	}
 
 	/*
@@ -103,7 +98,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	@Override
 	public int getFirstResult() {
 		// TODO Auto-generated method stub
-		return this.model.getFirstResult();
+		return this.getView().getFirstResult();
 
 	}
 
@@ -115,7 +110,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	@Override
 	public int getMaxResult() {
 		// TODO Auto-generated method stub
-		return this.model.getMaxResult();
+		return this.getView().getMaxResult();
 	}
 
 }

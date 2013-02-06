@@ -34,6 +34,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	private Element bodyTd;
 
+	private TabWI first;
+
 	/**
 	 * @param ele
 	 */
@@ -94,9 +96,6 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 			throw new UiException("duplicated:" + name + ",in tabber:" + this);
 		}
 
-		// first must select
-		sel = sel || this.getTabList().isEmpty();
-
 		PanelWI pw = this.factory.create(PanelWI.class);
 
 		StackWI.ItemModel sitem = this.stack.insert(pw, sel);//
@@ -106,13 +105,28 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 																			// is
 																			// a
 		// widget.
-
+		// first must select
 		this.child(rt);//
 
-		if (sel) {
-			rt.select();// todo only select the first one,or default one.
+		if (this.first == null) {// first one
+			this.first = rt;
+			this.first.select();
+		} else {// not first one
+			if (sel) {
+				rt.select();
+			} else {
+				this.first.select();
+			}
 		}
+
 		return rt;
+	}
+
+	public TabWI getFirstTab(boolean force) {
+		if (this.first == null && force) {
+			throw new UiException("no tab");
+		}
+		return this.first;
 	}
 
 	public int getSize() {
@@ -133,23 +147,17 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	public void _select(String name) {
-		TabWImpl tab = null;
 		List<TabWI> tabL = this.getChildList(TabWI.class);
 		for (TabWI tb : tabL) {
-			boolean the = tb.getName().equals(name);
+			boolean sel = tb.getName().equals(name);
 			TabWImpl ti = (TabWImpl) tb;
-
-			if (the) {
-				tab = ti;
-			}
-
-			ti.setSelected(the);// change model value
+			
+			ti.setSelected(sel, false);// change the tab title style.
+			
+			ti.getStackItem().select(sel);// pointer to stack item.
 
 		}
-		if (tab == null) {
-			throw new UiException("no this tab:" + name);
-		}
-		tab.getStackItem().select(true);// pointer to stack item.
+		
 
 	}
 

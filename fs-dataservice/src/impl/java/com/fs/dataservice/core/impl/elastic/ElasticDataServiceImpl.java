@@ -163,7 +163,8 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 		return rst.list();
 	}
 
-	public void close(){
+	public void close() {
 		this.client.close();
 	}
+
 }

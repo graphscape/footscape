@@ -21,10 +21,10 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
  */
 public class UiClientTestGPIImpl implements UiClientTestGPI {
 
-	private static final Path HI_EXP = Path.valueOf(new String[] { "testers", "user2:signup-login-exp" });
+	private static final Path HI_EXP = Path.valueOf(new String[] { "testers", "user1:signup-login-exp" });
 
 	private static final Path HI_ACTIVITY = Path.valueOf(new String[] { "testers",
-			"user1:signup-login-exp-activities" });
+			"user2:signup-login-exp-activities" });
 
 	@Override
 	public void active(ContainerI c) {
@@ -41,7 +41,7 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 			@Override
 			public void handle(HeaderItemEvent t) {
 				CollectionTestWorker worker = new CollectionTestWorker()//
-						.addTestWorker(new LoginTestWorker("user2", "user2@other.com", "user2"))//
+						.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//
 						.addTestWorker(new ExpTestWorker(6))//
 
 				;
@@ -54,7 +54,7 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 					@Override
 					public void handle(HeaderItemEvent t) {
 						CollectionTestWorker worker = new CollectionTestWorker()//
-								.addTestWorker(new LoginTestWorker("user1", "user1@some.com", "user1"))//
+								.addTestWorker(new LoginTestWorker("user2", "user2@other.com", "user2"))//
 								.addTestWorker(new ExpTestWorker(6))//
 								.addTestWorker(new ActivityTestWorker())//
 						;

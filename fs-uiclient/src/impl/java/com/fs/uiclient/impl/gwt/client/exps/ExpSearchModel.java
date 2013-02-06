@@ -4,31 +4,39 @@
  */
 package com.fs.uiclient.impl.gwt.client.exps;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.support.ModelSupport;
 
 /**
  * @author wu
- * 
+ * @deprecated TODO remove this class
  */
-public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
+public class ExpSearchModel implements ExpSearchModelI {
 
 	private String expId;
 
 	private String phrase;
 
+	private int firstResult;
+
+	private int size = 15;
+
+	private List<ExpItemModel> itemList;
+
+	private Map<String, ExpItemModel> itemMap;
+
 	/**
 	 * @param name
 	 */
-	public ExpSearchModel(String name) {
-		super(name);
-		
+	public ExpSearchModel() {
+		this.itemList = new ArrayList<ExpItemModel>();
+		this.itemMap = new HashMap<String, ExpItemModel>();
 	}
 
 	/*
@@ -49,9 +57,26 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 * Oct 20, 2012
 	 */
 	@Override
-	public void addExpItem(ExpItemModel ei) {
+	public ExpItemModel addExpItem(ExpItemModel ei) {
 		//
-		ei.parent(this);
+		ExpItemModel old = this.getExpItemById(ei.getExpId());
+
+		if (old == null) {
+			this.itemList.add(ei);
+			this.itemMap.put(ei.getExpId(), ei);
+		} else {
+			// ignore?
+		}
+		return old;
+
+	}
+
+	/**
+	 * @param expId2
+	 * @return
+	 */
+	private ExpItemModel getExpItemById(String expId2) {
+		return this.itemMap.get(expId2);
 	}
 
 	/*
@@ -60,7 +85,7 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public int getFirstResult() {
 		//
-		return this.getValue(Integer.class, L_FIRSTRESULT, 0);
+		return this.firstResult;
 	}
 
 	/*
@@ -69,11 +94,11 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public int getMaxResult() {
 		//
-		return 15;// TODO
+		return this.firstResult + this.size;// TODO
 	}
 
 	public void setFirstResult(int pg) {
-		this.setValue(L_FIRSTRESULT, pg);
+		this.firstResult = pg;
 	}
 
 	/*
@@ -107,7 +132,7 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	 */
 	@Override
 	public List<ExpItemModel> getExpItemList() {
-		return this.getChildList(ExpItemModel.class);
+		return this.itemList;
 	}
 
 	/*
@@ -157,6 +182,17 @@ public class ExpSearchModel extends ModelSupport implements ExpSearchModelI {
 	@Override
 	public void setPhrase(String phrase) {
 		this.phrase = phrase;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#reset()
+	 */
+	@Override
+	public void reset() {
+		this.itemList.clear();
+		this.itemMap.clear();
 	}
 
 }

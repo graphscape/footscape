@@ -4,7 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.testsupport;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
@@ -40,11 +41,19 @@ public abstract class AbstractTestWorker extends TestWorker {
 
 	protected EndPointI endpoint;
 
-	protected Set<String> tasks = new HashSet<String>();
+	protected List<String> tasks = new ArrayList<String>();
 
 	protected void tryFinish(String item) {
-		this.tasks.remove(item);
-		System.out.println("finished:" + item + ",waiting:" + this.tasks);
+		if (this.tasks.isEmpty()) {
+			throw new UiException(this.getClass() + ",finished,but got:" + item);
+		}
+		String s = this.tasks.get(0);
+		if (!item.equals(s)) {
+			throw new UiException(this.getClass() + ",expecting:" + s + " but got:" + item + ",waiting:"
+					+ this.tasks);
+		}
+		this.tasks.remove(0);
+		System.out.println(this.getClass() + ",finished:" + item + ",waiting:" + this.tasks);
 		if (this.tasks.isEmpty()) {
 			super.allTaskDone();
 		}
@@ -136,7 +145,7 @@ public abstract class AbstractTestWorker extends TestWorker {
 	/**
 	 * @return the tasks
 	 */
-	public Set<String> getTasks() {
+	public List<String> getTasks() {
 		return tasks;
 	}
 

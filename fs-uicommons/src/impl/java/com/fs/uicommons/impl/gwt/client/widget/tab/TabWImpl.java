@@ -46,6 +46,7 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 			}//
 		});
 		this.setText(name);
+
 	}
 
 	private void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
@@ -54,12 +55,13 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 
 	// this not impact the tabber,only impact this widget itself
 	// please call select,it will connected with tabber.
-	public void setSelected(boolean sel) {
+	public void setSelected(boolean sel, boolean dis) {
 		this.selected = sel;
 
 		this.getElementWrapper().addAndRemoveClassName(sel, "position-selected", "position-unselected");
-
-		new SelectEvent(this, sel).dispatch();//
+		if (dis) {
+			new SelectEvent(this, sel).dispatch();//
+		}
 	}
 
 	/*

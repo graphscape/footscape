@@ -49,7 +49,6 @@ public class ExpTestWorker extends AbstractTestWorker {
 		this.tasks.add("editview");// 1
 		this.tasks.add("editrequest");// 1
 		this.tasks.add("editok");// 2
-		this.tasks.add("expcreated");// 3 the new item child event
 		this.tasks.add("allexpcreated");
 
 	}
@@ -129,19 +128,21 @@ public class ExpTestWorker extends AbstractTestWorker {
 		String expId = v.getExpId();
 		this.ueViewMap.put(expId, v);//
 		int newSize = this.ueViewMap.size();
-		if (newSize > size) {
+		
+		if (newSize > size) {//has new exp created
 			this.onNewExpView(size, v);//
 		}
+		
 		if (this.ueViewMap.size() == this.totalExp) {
-			this.tryFinish("expcreated");
+			this.tryFinish("allexpcreated");
 		}
+		
+		
 
 	}
 
 	protected void onNewExpView(int idx, UserExpView e) {
-		if (idx + 1 == this.totalExp) {
-			this.tryFinish("allexpcreated");
-		}
+		
 	}
 
 	/**

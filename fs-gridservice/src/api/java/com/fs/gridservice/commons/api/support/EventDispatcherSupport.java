@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,13 +46,20 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 
 	protected DgQueueI<EventGd> eventQueue;
 
-	protected ExecutorService executor;
+	// receive event and dispatch
+	protected ExecutorService mainExecutor;
+
+	// processing event by engine.
+	protected ExecutorService slaveExecutor;
 
 	private int eventCounter;
 
 	protected GridFacadeI facade;
 
 	protected Future<Object> future;
+
+	protected long jobTimeoutMs = 30 * 1000;// default timeout of message
+											// processing.
 
 	/*
 	 * Dec 16, 2012
@@ -120,12 +128,13 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	 */
 	@Override
 	protected void doStart() {
-		if (this.executor != null) {
+		if (this.mainExecutor != null) {
 			throw new FsException("already started?");
 		}
 		this.eventQueue = this.resolveEventQueue();
-		this.executor = Executors.newFixedThreadPool(1);// TODO
-		this.future = this.executor.submit(new Callable<Object>() {
+		this.mainExecutor = Executors.newFixedThreadPool(1);// TODO
+
+		this.future = this.mainExecutor.submit(new Callable<Object>() {
 
 			@Override
 			public Object call() throws Exception {
@@ -135,6 +144,8 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 
 			}
 		});
+		// slave executor
+		this.slaveExecutor = Executors.newFixedThreadPool(1);// NOTE?
 	}
 
 	/*
@@ -145,7 +156,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	@Override
 	protected void doShutdown() {
 
-		if (this.executor == null) {
+		if (this.mainExecutor == null) {
 			throw new FsException("already shutdown?");
 		}
 		try {
@@ -158,8 +169,10 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		} catch (ExecutionException e) {
 			this.onException(e.getCause());
 		}
-		this.executor.shutdown();//
-		this.executor = null;//
+		this.mainExecutor.shutdown();//
+		this.mainExecutor = null;//
+		this.slaveExecutor.shutdown();
+		this.slaveExecutor = null;//
 
 	}
 
@@ -195,12 +208,22 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 					break;//
 				}
 			}
+
+			int ec = this.eventCounter;
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + ec + "," + e);
+			}
+
 			try {
 				this.handleEvent(e);
 			} catch (Throwable t) {
 				this.onException(e, t);
 			} finally {
 				this.eventCounter++;
+			}
+
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("dispatcher:" + this.config.getName() + " have processed event#" + ec);
 			}
 		}
 	}
@@ -231,26 +254,52 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 
 	public void handleEvent(EventGd evt) {
 
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("dispatcher:" + this.config.getName() + " is processing event#" + this.eventCounter
-					+ "," + evt);
-		}
-
 		Path ep = evt.getPath();
 
 		Path p = Path.valueOf("events", ep);
 
-		MessageI req = new MessageSupport();
+		final MessageI req = new MessageSupport();
 		req.setHeaders(evt.getHeaders());//
 		req.setHeader(MessageI.HK_PATH, p.toString());// override the path;
 		req.setPayload(evt);
 
-		ResponseI res = this.engine.service(req);
+		Future<ResponseI> fres = this.slaveExecutor.submit(new Callable<ResponseI>() {
+
+			@Override
+			public ResponseI call() throws Exception {
+				return EventDispatcherSupport.this.handleInSlave(req);
+			}
+		});
+
+		ResponseI res = null;
+		Throwable t = null;
+		try {
+			res = fres.get(this.jobTimeoutMs, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
+			t = e;
+		} catch (ExecutionException e) {
+			t = e;
+		} catch (TimeoutException e) {
+			t = e;
+		}
+		if (t != null) {
+			fres.cancel(true);
+
+			this.onException(evt, t);
+			
+			String msg = t.getMessage();//
+			
+			res.getErrorInfos().addError("unknown", msg);
+		}
 
 		this.tryResponse(ep, req, res);
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("end of event handling,evt:" + evt);
-		}
+
+	}
+
+	protected ResponseI handleInSlave(MessageI req) {
+
+		ResponseI rt = this.engine.service(req);
+		return rt;
 	}
 
 	protected void tryResponse(Path ep, MessageI req, ResponseI res) {

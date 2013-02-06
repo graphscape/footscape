@@ -34,8 +34,6 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 public class MainControl extends ControlSupport implements MainControlI {
 
 	ProfileModelI profile;
-	ExpSearchModelI search;
-
 	UserExpListModelI uelist;
 	ActivitiesModelI activities;
 
@@ -45,21 +43,12 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public MainControl(ContainerI c, String name) {
 		super(c, name);
 		this.profile = new ProfileModel("profile");
-		this.search = new ExpSearchModel("exp-search");
 		this.uelist = new UserExpListModel("ue-list");
 		this.activities = new ActivitiesModel("activities");
 	}
 
 	public ProfileModelI getProfileModel() {
 		return this.profile;
-	}
-
-	/*
-	 * Jan 31, 2013
-	 */
-	@Override
-	public ExpSearchModelI getExpSearchModel() {
-		return this.search;
 	}
 
 	/*
@@ -77,15 +66,13 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public ExpSearchViewI openExpSearch() {
-		//
-		final ExpSearchModelI exps = this.getExpSearchModel();
-
+	
 		ExpSearchView esv = this.gorOrCreateViewInBody(Path.valueOf("/exp-search"),
 				new CreaterI<ExpSearchView>() {
 
 					@Override
 					public ExpSearchView create(ContainerI ct) {
-						return new ExpSearchView(ct, exps);
+						return new ExpSearchView(ct);
 					}
 				});
 		return esv;

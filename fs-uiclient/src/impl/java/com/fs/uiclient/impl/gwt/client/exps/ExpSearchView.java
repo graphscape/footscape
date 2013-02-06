@@ -19,8 +19,6 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
 
 /**
  * @author wu
@@ -44,10 +42,11 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 	 * @param ele
 	 * @param ctn
 	 */
-	public ExpSearchView(ContainerI ctn, ExpSearchModelI m) {
+	public ExpSearchView(ContainerI ctn) {
 
 		super(ctn, "exps");
-		this.model = m;
+
+		this.model = new ExpSearchModel();
 		this.addAction(Actions.A_EXPS_SEARCH);//
 		this.statement = this.factory.create(StringEditorI.class, "search");
 		this.statement.parent(this);
@@ -92,6 +91,11 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 
 	@Override
 	public void addExpItem(ExpItemModel cm) {
+		ExpItemModel old = this.model.addExpItem(cm);
+		if (old != null) {
+			return;// ignore?
+		}
+
 		String vname = viewName(cm);
 		ExpItemView vi = new ExpItemView(vname, this.getContainer(), cm);
 		vi.parent(this.list);// item view in list not this.
@@ -119,6 +123,73 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 		}
 		ev.parent(null);
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#reset()
+	 */
+	@Override
+	public void reset() {
+		this.model.reset();
+		this.clean(ExpItemView.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getExpId(boolean)
+	 */
+	@Override
+	public String getExpId(boolean b) {
+		// TODO Auto-generated method stub
+		return this.model.getExpId(b);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#setExpId(java.lang
+	 * .String)
+	 */
+	@Override
+	public void setExpId(String expId) {
+		this.model.setExpId(expId);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getPhrase(boolean)
+	 */
+	@Override
+	public String getPhrase(boolean force) {
+		return this.model.getPhrase(force);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getFirstResult()
+	 */
+	@Override
+	public int getFirstResult() {
+		// TODO Auto-generated method stub
+		return this.model.getFirstResult();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getMaxResult()
+	 */
+	@Override
+	public int getMaxResult() {
+		// TODO Auto-generated method stub
+		return this.model.getMaxResult();
 	}
 
 }

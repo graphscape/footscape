@@ -8,15 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
-import com.fs.uicommons.api.gwt.client.widget.stack.StackWI.ItemModel;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
-import com.fs.uicore.api.gwt.client.support.ModelValueHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -26,8 +23,6 @@ import com.google.gwt.user.client.Element;
  */
 public class StackWImpl extends LayoutSupport implements StackWI {
 
-	private List<ItemModel> selectedStack;
-
 	private List<ItemModel> itemList;
 
 	/**
@@ -35,7 +30,6 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	 */
 	public StackWImpl(ContainerI c) {
 		super(c, DOM.createDiv());
-		this.selectedStack = new ArrayList<ItemModel>();
 		this.itemList = new ArrayList<ItemModel>();
 
 	}
@@ -102,7 +96,7 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		ItemModel rt = new ItemModel(this, child);
 
 		this.itemList.add(rt);// NOTE,rt is the child of the widget's model
-
+		rt.select(select);
 		this.child(child);
 
 		return rt;
@@ -118,13 +112,6 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		DOM.appendChild(this.element, ele);
 	}
 
-	protected ItemModel peek() {
-		if (this.selectedStack.isEmpty()) {
-			return null;
-		}
-		return this.selectedStack.get(0);//
-	}
-
 	@Override
 	public void updateSelect(ItemModel im) {
 
@@ -133,8 +120,6 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 		boolean sel = im.isSelected();//
 
 		if (sel) {// push
-
-			this.selectedStack.add(0, im);// TODO shrink
 
 			List<ItemModel> iml = this.itemList;
 			for (ItemModel imm : iml) {
