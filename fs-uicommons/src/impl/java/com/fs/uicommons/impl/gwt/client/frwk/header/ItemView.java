@@ -106,8 +106,7 @@ public class ItemView extends LightWeightView {
 	// this is the item view itself.
 	protected AnchorWI createLink() {
 
-		String wname = "header-item-" + this.path.toString('-');
-		AnchorWI a = this.factory.create(AnchorWI.class, wname);
+		AnchorWI a = this.factory.create(AnchorWI.class);
 		String txt = path.toString();
 		a.setDisplayText(txt);
 

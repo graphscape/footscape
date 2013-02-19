@@ -11,6 +11,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.WindowI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.config.ConfigurationFactoryI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -75,7 +76,7 @@ public class UiCoreGwtSPIImpl implements UiCoreGwtSPI {
 		wf.addCreater(new WidgetCreaterSupport<RootI>(RootI.class) {
 
 			@Override
-			public RootI create(ContainerI c, String name) {
+			public RootI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 				return new RootWImpl(c, name);
 			}
 		});

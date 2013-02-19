@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fs.uicore.api.gwt.client.CompositeI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -22,6 +23,10 @@ public class LayoutSupport extends WidgetSupport implements CompositeI {
 
 	public LayoutSupport(ContainerI c, String name, Element ele) {
 		super(c, name, ele);
+	}
+
+	public LayoutSupport(ContainerI c, String name, Element ele, UiPropertiesI<Object> pts) {
+		super(c, name, ele, pts);
 	}
 
 	@Override

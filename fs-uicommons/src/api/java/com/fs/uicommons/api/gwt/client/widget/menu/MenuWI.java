@@ -9,7 +9,8 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
- * 
+ *         <p>
+ *         Context menu,pop up view.
  */
 public interface MenuWI extends CompositeI {
 
@@ -20,7 +21,7 @@ public interface MenuWI extends CompositeI {
 	public MenuItemWI getItem(String name);
 
 	public void openBy(WidgetI src);
-	
+
 	public void close();
 
 }

@@ -6,6 +6,7 @@ package com.fs.uicore.impl.test.gwt.client;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
@@ -40,7 +41,7 @@ public class UiCoreTestGPI implements GwtSPI {
 		c.get(WidgetFactoryI.class, true).addCreater(new WidgetCreaterSupport<TestWI>(TestWI.class) {
 
 			@Override
-			public TestWI create(ContainerI c, String name) {
+			public TestWI create(ContainerI c, String name,UiPropertiesI<Object> pts) {
 				// TODO Auto-generated method stub
 				return new TestWidget(c, name);
 			}

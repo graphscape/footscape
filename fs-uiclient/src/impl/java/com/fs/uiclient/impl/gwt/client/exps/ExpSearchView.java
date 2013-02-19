@@ -48,7 +48,7 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 
 		this.model = new ExpSearchModel();
 		this.addAction(Actions.A_EXPS_SEARCH);//
-		this.statement = this.factory.create(StringEditorI.class, "search");
+		this.statement = this.factory.create(StringEditorI.class);
 		this.statement.parent(this);
 
 		this.list = this.factory.create(ListI.class);

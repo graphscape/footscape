@@ -6,6 +6,7 @@ package com.fs.uicore.api.gwt.client.support;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.GwtHandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -46,7 +47,11 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	}
 
 	public ElementObjectSupport(ContainerI c, String name, Element element) {
-		super(c, name);
+		this(c, name, element, null);
+	}
+
+	public ElementObjectSupport(ContainerI c, String name, Element element, UiPropertiesI<Object> pts) {
+		super(c, name, pts);
 		this.element = element;
 		this.elementWrapper = new ElementWrapper(this.element);
 		// STYLE class name:

@@ -6,6 +6,7 @@ package com.fs.uicommons.api.gwt.client.widget.support;
 import com.fs.uicommons.api.gwt.client.AdjusterI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -28,6 +29,10 @@ public class WidgetSupport extends WidgetBase {
 	public WidgetSupport(ContainerI c, String name, Element ele) {
 		super(c, name, ele);
 
+	}
+
+	public WidgetSupport(ContainerI c, String name, Element ele, UiPropertiesI<Object> pts) {
+		super(c, name, ele, pts);
 	}
 
 	@Override

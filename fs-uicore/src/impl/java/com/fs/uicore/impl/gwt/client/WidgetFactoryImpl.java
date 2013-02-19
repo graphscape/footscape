@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.core.WidgetI.CreaterI;
 
@@ -35,13 +36,18 @@ public class WidgetFactoryImpl implements WidgetFactoryI {
 	}
 
 	@Override
-	public <T extends WidgetI> T create(Class<T> cls, String name) {
+	public <T extends WidgetI> T create(Class<T> cls, UiPropertiesI<Object> pts) {
+		return this.create(cls, null, pts);
+	}
+
+	@Override
+	public <T extends WidgetI> T create(Class<T> cls, String name, UiPropertiesI<Object> pts) {
 		WidgetI.CreaterI<T> wic = this.createrMap.get(cls);
 		if (wic == null) {
 			throw new UiException("no creater found for widget type:" + cls);
 		}
 
-		T rt = wic.create(this.container, name);
+		T rt = wic.create(this.container, name, pts);
 		return rt;
 	}
 

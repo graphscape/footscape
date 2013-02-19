@@ -18,6 +18,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.Event.Type;
@@ -67,18 +68,22 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 	}
 
 	public UiObjectSupport(ContainerI c, String name) {
-		this.init(c, name, null, null);
+		this.init(c, name, null, null, null);
 	}
 
 	public UiObjectSupport(ContainerI c, String name, String id) {
-		this.init(c, name, id, null);
+		this.init(c, name, id, null, null);
+	}
+
+	public UiObjectSupport(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		this.init(c, name, null, null, pts);
 	}
 
 	public UiObjectSupport(ContainerI c, String name, String id, UiLoggerI log) {
-		this.init(c, name, id, log);
+		this.init(c, name, id, log, null);
 	}
 
-	protected void init(ContainerI c, String name, String id, UiLoggerI log) {
+	protected void init(ContainerI c, String name, String id, UiLoggerI log, UiPropertiesI<Object> pts) {
 		this.container = c;
 		this.name = name == null ? "unkown" : name;
 		this.id = id == null ? OID.next("oid-") : id;
@@ -88,23 +93,25 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 		this.eventDispatcher = new MessageDispatcherImpl("unknow");//
 		this.lazyMap = new HashMap<String, LazyI>();
-
+		if (pts != null) {
+			this.setProperties(pts);
+		}
 	}
 
 	/*
-	 *Feb 6, 2013
+	 * Feb 6, 2013
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		
-		if(obj == this){
+
+		if (obj == this) {
 			return true;
 		}
-		if(obj == null || !(obj instanceof UiObjectI)){
+		if (obj == null || !(obj instanceof UiObjectI)) {
 			return false;
 		}
-		
-		UiObjectI o2 = (UiObjectI)obj;
+
+		UiObjectI o2 = (UiObjectI) obj;
 		return this.id.equals(o2.getId());
 	}
 

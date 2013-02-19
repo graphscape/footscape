@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wu
- * 
+ * @deprecated TODO remove this interface.
  */
 public interface MenuItemWI extends WidgetI {
 

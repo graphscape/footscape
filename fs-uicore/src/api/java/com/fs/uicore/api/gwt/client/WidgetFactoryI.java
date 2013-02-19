@@ -3,6 +3,7 @@
  */
 package com.fs.uicore.api.gwt.client;
 
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
@@ -16,8 +17,10 @@ public interface WidgetFactoryI {
 	}
 
 	public <T extends WidgetI> T create(Class<T> cls);
-	
-	public <T extends WidgetI> T create(Class<T> cls, String name);
+
+	public <T extends WidgetI> T create(Class<T> cls, UiPropertiesI<Object> pts);
+
+	public <T extends WidgetI> T create(Class<T> cls, String name, UiPropertiesI<Object> pts);
 
 	public <T extends WidgetI> void addCreater(WidgetI.CreaterI<T> wic);
 

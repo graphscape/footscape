@@ -105,6 +105,7 @@ import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
@@ -189,7 +190,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		//
 		wf.addCreater(new WidgetCreaterSupport<AnchorWI>(AnchorWI.class) {
 			@Override
-			public AnchorWI create(ContainerI c, String name) {
+			public AnchorWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new AnchorWImpl(c, name);
 
@@ -198,7 +199,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		//
 		wf.addCreater(new WidgetCreaterSupport<ListI>(ListI.class) {
 			@Override
-			public ListI create(ContainerI c, String name) {
+			public ListI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ListImpl(c, name);
 
@@ -206,7 +207,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<PanelWI>(PanelWI.class) {
 			@Override
-			public PanelWI create(ContainerI c, String name) {
+			public PanelWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new PanelWImpl(c, name);
 
@@ -214,7 +215,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<StackWI>(StackWI.class) {
 			@Override
-			public StackWI create(ContainerI c, String name) {
+			public StackWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new StackWImpl(c);
 
@@ -223,16 +224,16 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<TabberWI>(TabberWI.class) {
 			@Override
-			public TabberWI create(ContainerI c, String name) {
+			public TabberWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new TabberWImpl(c, name);
+				return new TabberWImpl(c, name, pts);
 
 			}
 		});
 
 		wf.addCreater(new WidgetCreaterSupport<TableI>(TableI.class) {
 			@Override
-			public TableI create(ContainerI c, String name) {
+			public TableI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new TableImpl(c, name);
 
@@ -240,7 +241,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<ButtonI>(ButtonI.class) {
 			@Override
-			public ButtonI create(ContainerI c, String name) {
+			public ButtonI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ButtonImpl(c, name);
 
@@ -248,7 +249,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<LabelI>(LabelI.class) {
 			@Override
-			public LabelI create(ContainerI c, String name) {
+			public LabelI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new LabelImpl(c, name);
 
@@ -257,17 +258,9 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		//
 		wf.addCreater(new WidgetCreaterSupport<MenuWI>(MenuWI.class) {
 			@Override
-			public MenuWI create(ContainerI c, String name) {
+			public MenuWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new MenuWImpl(c, name);
-
-			}
-		});
-		wf.addCreater(new WidgetCreaterSupport<TabberWI>(TabberWI.class) {
-			@Override
-			public TabberWI create(ContainerI c, String name) {
-
-				return new TabberWImpl(c, name);
 
 			}
 		});
@@ -276,7 +269,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<StringEditorI>(StringEditorI.class) {
 			@Override
-			public StringEditorI create(ContainerI c, String name) {
+			public StringEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new StringEditorImpl(c, name);
 
@@ -284,7 +277,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<BooleanEditorI>(BooleanEditorI.class) {
 			@Override
-			public BooleanEditorI create(ContainerI c, String name) {
+			public BooleanEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new BooleanEditorImpl(c, name);
 
@@ -292,7 +285,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<IntegerEditorI>(IntegerEditorI.class) {
 			@Override
-			public IntegerEditorI create(ContainerI c, String name) {
+			public IntegerEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new IntegerEditorImpl(c, name);
 
@@ -300,7 +293,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
 			@Override
-			public PropertiesEditorI create(ContainerI c, String name) {
+			public PropertiesEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new PropertiesEditorImpl(c, name);
 
@@ -309,7 +302,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<WindowPanelWI>(WindowPanelWI.class) {
 			@Override
-			public WindowPanelWI create(ContainerI c, String name) {
+			public WindowPanelWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new WindowPanelWImpl(c, name);
 
@@ -318,7 +311,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<BarWidgetI>(BarWidgetI.class) {
 			@Override
-			public BarWidgetI create(ContainerI c, String name) {
+			public BarWidgetI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new BarWidgetImpl(c, name);
 
@@ -327,7 +320,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<EnumEditorI>(EnumEditorI.class) {
 			@Override
-			public EnumEditorI create(ContainerI c, String name) {
+			public EnumEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new EnumEditorImpl(c, name);
 
@@ -336,7 +329,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		wf.addCreater(new WidgetCreaterSupport<ErrorInfosWidgetI>(ErrorInfosWidgetI.class) {
 			@Override
-			public ErrorInfosWidgetI create(ContainerI c, String name) {
+			public ErrorInfosWidgetI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ErrorInfosWidgetImpl(c, name);
 
@@ -344,7 +337,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<ImageFileUrlDataEditorI>(ImageFileUrlDataEditorI.class) {
 			@Override
-			public ImageFileUrlDataEditorI create(ContainerI c, String name) {
+			public ImageFileUrlDataEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ImageFileUrlDataEditorImpl(c, name);
 
@@ -352,7 +345,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<ImageCropEditorI>(ImageCropEditorI.class) {
 			@Override
-			public ImageCropEditorI create(ContainerI c, String name) {
+			public ImageCropEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ImageCropEditorImpl(c, name);
 
@@ -360,7 +353,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		});
 		wf.addCreater(new WidgetCreaterSupport<DateWI>(DateWI.class) {
 			@Override
-			public DateWI create(ContainerI c, String name) {
+			public DateWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new DateWImpl(c, name);
 

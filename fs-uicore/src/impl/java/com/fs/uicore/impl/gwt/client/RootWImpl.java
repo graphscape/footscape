@@ -18,7 +18,7 @@ public class RootWImpl extends WidgetBase implements RootI, ContainerI.AwareI {
 
 	/** */
 	public RootWImpl(ContainerI c, String name) {
-		super(c,name, getRootElement());
+		super(c, name, getRootElement());
 	}
 
 	/* */

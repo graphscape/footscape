@@ -16,6 +16,7 @@ import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -30,51 +31,35 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	private StackWI stack;
 
-	private Element headerTd;
-
-	private Element middleTd;
-
-	private Element bodyTd;
-
 	private TabWI first;
+
+	private TabberLayout layout;
 
 	/**
 	 * @param ele
 	 */
-	public TabberWImpl(ContainerI c, String name) {
-		super(c, name, DOM.createTable());
-		Element table = this.element;
-		Element tbody = DOM.createTBody();
-		DOM.appendChild(table, tbody);
+	public TabberWImpl(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		super(c, name, DOM.createTable(), pts);
+		boolean vertical = (Boolean) this.getProperty(TabberWI.PK_IS_VERTICAL, Boolean.FALSE);
 
-		this.headerTd = this.createTrTd(tbody, "position-header");
-
-		this.middleTd = this.createTrTd(tbody, "position-middle");
-
-		this.bodyTd = this.createTrTd(tbody, "position-body");
+		if (vertical) {
+			this.layout = new VerticalTabberLayout(this.element);
+		} else {
+			this.layout = new HorizentalTabberLayout(this.element);
+		}
 
 		this.stack = this.factory.create(StackWI.class);
+
 		this.child(this.stack);//
 
-	}
-
-	protected Element createTrTd(Element tbody, String cname) {
-		Element tr = DOM.createTR();
-		DOM.appendChild(tbody, tr);
-
-		Element td = DOM.createTD();
-		DOM.appendChild(tr, td);
-
-		td.addClassName(cname);
-		return td;
 	}
 
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 		if (cw instanceof StackWI) {
-			DOM.appendChild(this.bodyTd, cw.getElement());//
+			this.layout.setStack((StackWI) cw);
 		} else if (cw instanceof TabWI) {
-			this.headerTd.appendChild(cw.getElement());//
+			this.layout.addTab((TabWI) cw);
 		}
 	}
 
@@ -83,13 +68,13 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		if (cw instanceof StackWI) {
 			// should not here
 		} else if (cw instanceof TabWI) {
-			cw.getElement().removeFromParent();
+			this.layout.removeTab((TabWI) cw);
 		}
 	}
 
 	@Override
 	public void remove(Path path) {
-		// remove tab
+		// remove tabthis.
 		TabWI t = this.getTab(path, true);
 		t.parent(null);
 		// remove panel
@@ -110,7 +95,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	@Override
-	public TabWI addTab(final Path name,WidgetI content, boolean sel) {
+	public TabWI addTab(final Path name, WidgetI content, boolean sel) {
 
 		TabWI old = this.getTab(name, false);
 		if (old != null) {
@@ -119,19 +104,20 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 		PanelWI pw = this.factory.create(PanelWI.class);
 		pw.setClosable(true);
-		pw.addHandler(ClosingEvent.TYPE, new EventHandlerI<ClosingEvent>(){
+		pw.addHandler(ClosingEvent.TYPE, new EventHandlerI<ClosingEvent>() {
 
 			@Override
 			public void handle(ClosingEvent t) {
 				TabberWImpl.this.remove(name);
-			}});
+			}
+		});
 		StackItemI sitem = this.stack.insert(name, pw, sel);//
-		
-		if(content !=null){
+
+		if (content != null) {
 			pw.child(content);
 		}
-		
-		TabWImpl rt = new TabWImpl(this.container, name.toString(), pw,content, sitem, this);// TODO
+
+		TabWImpl rt = new TabWImpl(this.container, name.toString(), pw, content, sitem, this);// TODO
 		// not
 		// is
 		// a
