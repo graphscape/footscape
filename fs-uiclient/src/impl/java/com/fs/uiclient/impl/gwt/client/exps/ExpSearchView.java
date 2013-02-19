@@ -14,6 +14,7 @@ import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
+import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
@@ -50,7 +51,12 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 		this.addAction(Actions.A_EXPS_SEARCH);//
 		this.statement = this.factory.create(StringEditorI.class);
 		this.statement.parent(this);
+		this.statement.addHandler(ChangeEvent.TYPE,new EventHandlerI<ChangeEvent>(){
 
+			@Override
+			public void handle(ChangeEvent t) {
+				ExpSearchView.this.onPhraseChange(t);
+			}});
 		this.list = this.factory.create(ListI.class);
 		//
 		this.list.setName("itemList");// for testing
@@ -79,6 +85,14 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 			}
 		});
 
+	}
+
+	/**
+	 * @param t
+	 */
+	protected void onPhraseChange(ChangeEvent t) {
+		String phrase = this.statement.getData(); 
+		this.model.setPhrase(phrase);		
 	}
 
 	protected void onPreviousPage() {
@@ -133,7 +147,7 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 	@Override
 	public void reset() {
 		this.model.reset();
-		this.clean(ExpItemView.class);
+		this.list.clean(ExpItemView.class);
 	}
 
 	/*

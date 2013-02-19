@@ -320,12 +320,12 @@ Console View
 }
 
 /*Tab*/
-.wgt-TabberWImpl td.position-header {
+.wgt-TabberWImpl.layout-horizental td.position-header {
 	border-bottom: 1px solid #888;
 	padding: 0px;
 }
 
-.wgt-TabWImpl {
+.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl {
 	background: -moz-linear-gradient(top, #eee 100%, #fff 100%);
 	/* FF3.6+ */
 	background-color: #fff;
@@ -345,7 +345,8 @@ Console View
 	padding-bottom: 0px;
 }
 
-.wgt-TabWImpl.position-selected,.wgt-TabWImpl:hover {
+.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl.position-selected,
+.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl:hover {
 	background: -moz-linear-gradient(top, #eee 0%, #ccc 100%); /* FF3.6+ */
 	border-left: 1px solid #999;
 	border-right: 1px solid #999;
@@ -356,11 +357,39 @@ Console View
 	margin-bottom: 1px;
 }
 
-.wgt-TabWImpl.position-unselected {
+.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl.position-unselected {
 	border-left: 0px solid #ccc;
 	border-right: 0px solid #ccc;
 	border-top: 0px solid #ccc;
 	border-bottom: 0px;
 }
 
+/*Vertical Tabber*/
+.wgt-TabberWImpl.layout-vertical td.position-left{
+	vertical-align:top;
+	margin-top:10px;
+	width:179px;
+}
+
+.wgt-TabberWImpl.layout-vertical td.position-left ul {
+	list-style: none;
+	margin: 2px 0;
+	padding-left: 0;
+	background-color: #fff;
+}
+
+.wgt-TabberWImpl.layout-vertical td.position-left ul li {
+	color: #034F82;
+	cursor: pointer;
+	padding-top:3px;
+}
+
+.wgt-TabberWImpl.layout-vertical td.position-left ul .wgt-TabWImpl:hover,
+.wgt-TabberWImpl.layout-vertical td.position-left ul .wgt-TabWImpl.position-selected {
+	background: rgba(50, 90, 150, 0.3);
+}
+
+.wgt-TabberWImpl.layout-vertical td.position-right {
+	padding-left:15px;
+}
 /*End of CSS file*/

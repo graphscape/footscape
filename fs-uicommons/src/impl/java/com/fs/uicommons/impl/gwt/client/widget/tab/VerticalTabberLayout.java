@@ -1,0 +1,72 @@
+/**
+ *  Feb 8, 2013
+ */
+package com.fs.uicommons.impl.gwt.client.widget.tab;
+
+import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
+import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
+
+/**
+ * @author wuzhen
+ * 
+ */
+public class VerticalTabberLayout extends TabberLayout {
+
+	private Element leftTd;
+
+	private Element ul;
+
+	private Element bodyTd;
+
+	/**
+	 * @param c
+	 * @param element
+	 */
+	public VerticalTabberLayout(Element element) {
+		super(element,"layout-vertical");
+
+		Element table = this.element;
+		Element tbody = DOM.createTBody();
+		DOM.appendChild(table, tbody);
+		Element tr = this.createTr(tbody);
+		this.leftTd = this.createTd(tr, "position-left");
+
+		this.ul = (com.google.gwt.user.client.Element) Document.get().createULElement().cast();
+		DOM.appendChild(this.leftTd, this.ul);
+
+		this.bodyTd = this.createTd(tr, "position-right");
+	}
+
+	@Override
+	public void setStack(StackWI cw) {
+		DOM.appendChild(this.bodyTd, cw.getElement());//
+	}
+
+	@Override
+	public void addTab(TabWI cw) {
+		// TODO Auto-generated method stub
+		Element li = (com.google.gwt.user.client.Element) Document.get().createLIElement().cast();
+		this.ul.appendChild(li);//
+		li.appendChild(cw.getElement());
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.impl.gwt.client.widget.tab.TabberLayout#removeTab(com
+	 * .fs.uicommons.api.gwt.client.widget.tab.TabWI)
+	 */
+	@Override
+	public void removeTab(TabWI cw) {
+		Element li = cw.getElement().getParentElement().cast();
+		li.removeFromParent();
+		cw.getElement().removeFromParent();
+
+	}
+
+}

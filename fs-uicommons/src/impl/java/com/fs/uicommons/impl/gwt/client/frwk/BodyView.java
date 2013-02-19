@@ -12,7 +12,9 @@ import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
+import com.fs.uicore.api.gwt.client.support.MapProperties;
 
 /**
  * @author wu
@@ -22,14 +24,17 @@ public class BodyView extends LightWeightView implements BodyViewI {
 
 	private TabberWI tabber;// TODO replace by a stack and a menu view.
 
-	//private Map<Path, WidgetI> itemMap = new HashMap<Path, WidgetI>();
+	// private Map<Path, WidgetI> itemMap = new HashMap<Path, WidgetI>();
 
 	/**
 	 * @param ctn
 	 */
 	public BodyView(ContainerI c) {
 		super(c, "body");
-		this.tabber = this.factory.create(TabberWI.class);//
+		UiPropertiesI<Object> pts = new MapProperties<Object>();
+		pts.setProperty(TabberWI.PK_IS_VERTICAL, Boolean.TRUE);
+		pts.setProperty(TabberWI.PK_IS_CLOSABLE, Boolean.TRUE);
+		this.tabber = this.factory.create(TabberWI.class, pts);//
 		this.tabber.parent(this);
 	}
 
@@ -45,7 +50,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		final PanelWI prt = this.factory.create(PanelWI.class);
 		final TabWI sitem = this.tabber.addTab(path, prt);
 		w.parent(prt);
-		//this.itemMap.put(path, w);
+		// this.itemMap.put(path, w);
 		return w;
 	}
 
@@ -63,15 +68,15 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	 */
 	public <T extends WidgetI> T getItem(Path path, boolean force) {
 		TabWI ta = this.tabber.getTab(path, false);
-		if(ta == null){
-			if(force){
-				throw new UiException("no item found :"+path);
+		if (ta == null) {
+			if (force) {
+				throw new UiException("no item found :" + path);
 			}
 			return null;
 		}
-		PanelWI p = (PanelWI)ta.getManaged();
-		return (T)p.getChildWidgetList().get(0);//
-		
+		PanelWI p = (PanelWI) ta.getManaged();
+		return (T) p.getChildWidgetList().get(0);//
+
 	}
 
 	@Override

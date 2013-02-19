@@ -14,6 +14,9 @@ import com.google.gwt.user.client.DOM;
  * 
  */
 public class StringEditorImpl extends EditorSupport<String> implements StringEditorI {
+	
+	private boolean trim = true;
+	private boolean emptyAsNull = true;
 
 	/** */
 	public StringEditorImpl(ContainerI c, String name) {
@@ -43,7 +46,20 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 	}
 
 	public String getText() {
-		return DOM.getElementProperty(getElement(), "value");
+		String rt =	DOM.getElementProperty(getElement(), "value");
+		
+		if(this.trim){
+			if(rt != null){
+				rt = rt.trim();
+			}				
+		}
+		
+		if(this.emptyAsNull && "".equals(rt)){
+			rt = null;
+		}
+		
+		return rt;
+		
 	}
 
 	protected void setText(String txt) {

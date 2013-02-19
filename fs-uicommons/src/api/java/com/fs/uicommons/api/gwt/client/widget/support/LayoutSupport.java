@@ -42,18 +42,6 @@ public class LayoutSupport extends WidgetSupport implements CompositeI {
 
 	/* */
 	@Override
-	public void removeChild(UiObjectI c) {
-		super.removeChild(c);
-		WidgetI cw = (WidgetI) c;
-		this.onRemoveChild(this.element, cw);
-	}
-
-	protected void onRemoveChild(Element ele, WidgetI cw) {
-		cw.getElement().removeFromParent();// TODO
-	}
-
-	/* */
-	@Override
 	public CompositeI child(WidgetI w) {
 		w.parent(this);
 		return this;

@@ -15,6 +15,8 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 public interface TabberWI extends CompositeI {
 
 	public static final String PK_IS_VERTICAL = "isVertical";
+	
+	public static final String PK_IS_CLOSABLE = "isClosable";
 
 	public TabWI getSelected(boolean force);
 
