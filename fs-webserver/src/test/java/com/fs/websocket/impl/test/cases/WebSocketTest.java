@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.struct.Path;
 import com.fs.webserver.impl.test.cases.support.TestBase;
 import com.fs.webserver.impl.test.mock.MockMessageWrapper;
 import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
@@ -27,6 +28,7 @@ public class WebSocketTest extends TestBase {
 		int CLS = 2;
 		for (int i = 0; i < CLS; i++) {
 			MockWSClientWrapper ci = manager.createClient(false);
+			
 			ci.connect();//
 			// sessionID
 		}
@@ -38,15 +40,9 @@ public class WebSocketTest extends TestBase {
 
 			String text = "hello " + to;
 			String from = ci.getWsId(true);
-			// TODO send message
-
-		}
-		// send from one to another,
-		// each client will receive a message;
-		for (int i = 0; i < CLS; i++) {
-			MockMessageWrapper mm = null;// cl.get(i).tryAcquireNextMessage(10*1000);
-			assertNotNull("message not got", mm);
-			LOG.info("msg:" + mm);
+			String echo = ci.echo(text);
+			assertNotNull("message not got", echo);
+			assertEquals(text, echo);
 		}
 
 		// close all client.

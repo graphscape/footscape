@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageHandlerI;
+import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
 import com.fs.websocket.api.mock.WSClient;
 import com.fs.websocket.api.mock.WSClientWrapper;
@@ -82,9 +83,12 @@ public class MockWSClientWrapper extends WSClientWrapper {
 		}
 	}
 
-	public void echo(String text) {
+	public String echo(String text) {
 		MockMessageWrapper mw = MockMessageWrapper.valueOf("echo", text);
-		this.syncSendMessage(mw);
+		MessageI msg = this.syncSendMessage(mw);
+		MockMessageWrapper rtm = MockMessageWrapper.valueOf(msg);
+		String rt = rtm.getText();
+		return rt;
 	}
 
 	public String getWsId(boolean force) {

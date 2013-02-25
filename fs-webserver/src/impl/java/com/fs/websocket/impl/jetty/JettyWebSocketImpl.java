@@ -6,7 +6,7 @@ package com.fs.websocket.impl.jetty;
 
 import java.io.IOException;
 
-import org.eclipse.jetty.websocket.api.WebSocketConnection;
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.io.WebSocketBlockingConnection;
@@ -26,7 +26,7 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 
 	private static final Logger LOG = LoggerFactory.getLogger(JettyWebSocketImpl.class);
 
-	protected WebSocketConnection connection;
+	protected Session connection;
 
 	protected WebSocketBlockingConnection blocking;
 
@@ -66,7 +66,7 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 	}
 
 	@Override
-	public void onWebSocketConnect(WebSocketConnection connection) {
+	public void onWebSocketConnect(Session connection) {
 		LOG.info("onWebSocketConnect");
 		this.connection = connection;
 		this.blocking = new WebSocketBlockingConnection(this.connection);
@@ -77,7 +77,7 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onWebSocketException(WebSocketException error) {
+	public void onWebSocketError(Throwable error) {
 		LOG.error("onWebSocketException,error:" + error);
 		super.onException(this, error);
 	}

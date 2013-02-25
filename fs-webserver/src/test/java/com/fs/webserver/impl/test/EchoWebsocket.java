@@ -19,7 +19,7 @@ public class EchoWebsocket extends WebSocketAdapter {
 	public void onWebSocketText(String message) {
 
 		try {
-			getBlockingConnection().write(message);
+			this.getSession().getRemote().sendString(message);
 		} catch (IOException e) {
 			throw new FsException(e);
 		}

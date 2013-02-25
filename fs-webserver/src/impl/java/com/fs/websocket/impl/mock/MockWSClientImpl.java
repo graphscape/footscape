@@ -3,6 +3,7 @@
  */
 package com.fs.websocket.impl.mock;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
@@ -11,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jetty.io.ChannelEndPoint;
 import org.eclipse.jetty.io.EndPoint;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketConnection;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
@@ -49,7 +49,7 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 
 	protected WebSocketClient client;
 
-	protected WebSocketConnection connection;
+	protected Session connection;
 
 	protected Semaphore connected;
 
@@ -104,14 +104,14 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 	}
 
 	@Override
-	public void onWebSocketConnect(WebSocketConnection connection) {
+	public void onWebSocketConnect(Session connection) {
 		LOG.info(this.name + " onWebSocketConnect");
 		this.connection = connection;
 		this.connected.release();
 	}
 
 	@Override
-	public void onWebSocketException(WebSocketException error) {
+	public void onWebSocketError(Throwable error) {
 		LOG.error(this.name + " onWebSocketException", error);
 	}
 
@@ -123,7 +123,11 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 
 		JSONArray jsm = (JSONArray) this.codec.encode(msg);//
 		String code = jsm.toJSONString();
-		this.connection.write(code);
+		try {
+			this.connection.getRemote().sendString(code);
+		} catch (IOException e) {
+			throw new FsException(e);
+		}
 		this.lastSendMessageTs = System.currentTimeMillis();
 
 	}
