@@ -18,7 +18,7 @@
 
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 
-		<dependency org="org.elasticsearch" name="elasticsearch" rev="0.19.10" force="true" conf="impl->master,compile" />
+		<dependency org="org.elasticsearch" name="elasticsearch" rev="0.20.5" force="true" conf="impl->master,compile" />
 
 
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
