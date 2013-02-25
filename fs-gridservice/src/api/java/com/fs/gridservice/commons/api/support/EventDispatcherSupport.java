@@ -282,18 +282,13 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		} catch (TimeoutException e) {
 			t = e;
 		}
-		if (t != null) {
+
+		if (t == null) {//no error,got response
+			this.tryResponse(ep, req, res);
+		} else {//cannot got response
 			fres.cancel(true);
-
 			this.onException(evt, t);
-			
-			String msg = t.getMessage();//
-			
-			res.getErrorInfos().addError("unknown", msg);
 		}
-
-		this.tryResponse(ep, req, res);
-
 	}
 
 	protected ResponseI handleInSlave(MessageI req) {
