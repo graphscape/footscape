@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicommons.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 
@@ -37,16 +37,16 @@ public class EchoTest extends TestBase {
 
 		// view
 		FormsView view = new FormsView(this.container, "echo");
-		//TODO add to parent.
+		// TODO add to parent.
 		assertTrue("form view should attached.", view.isAttached());
 
 		this.delayTestFinish(timeoutMillis);
 		FieldModel f1m = view.getDefaultForm().addField("field1", String.class);
 
-		f1m.addDefaultValueHandler(new EventHandlerI<ModelValueEvent>() {
+		f1m.addValueHandler(new HandlerI<Object>() {
 
 			@Override
-			public void handle(ModelValueEvent e) {
+			public void handle(Object e) {
 				EchoTest.this.onField1Value(e);
 			}
 		});
@@ -77,10 +77,10 @@ public class EchoTest extends TestBase {
 	}
 
 	// field value
-	protected void onField1Value(ModelValueEvent e) {
-		System.out.println("field1:" + e.getValueWrapper().getValue());
+	protected void onField1Value(Object e) {
+		System.out.println("field1:" + e);
 
-		assertEquals("field1 data error", this.field1Data, e.getValueWrapper().getValue());
+		assertEquals("field1 data error", this.field1Data, e);
 		this.tryFinish("field1");
 	}
 

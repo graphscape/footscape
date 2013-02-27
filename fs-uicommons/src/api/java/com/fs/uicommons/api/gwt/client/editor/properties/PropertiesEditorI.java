@@ -15,17 +15,17 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 
-	public class PropertyModel extends ModelSupport {
-
-		public static String EDITOR_CLASS = "_editorClass";
-
-		public static final Location L_EDITOR = Location.valueOf("_editor");//
+	public class PropertyModel {
+		private String name;
+		private EditorI editor;
+		private Class<? extends EditorI> editorClass;
 
 		/**
 		 * @param name
 		 */
-		public PropertyModel(String name) {
-			super(name);
+		public PropertyModel(String name, Class<? extends EditorI> editorClass) {
+			this.name = name;
+			this.editorClass = editorClass;
 		}
 
 		public String getKey() {
@@ -33,19 +33,15 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 		}
 
 		public void setEditor(EditorI editor) {
-			this.setValue(L_EDITOR, editor);
+			this.editor = editor;
 		}
 
 		public EditorI getEditor(boolean force) {
-			return (EditorI) this.getValue(L_EDITOR, force);
-		}
-
-		public void setEditorClass(Class<? extends EditorI> ecls) {
-			this.setValue(EDITOR_CLASS, ecls);
+			return this.editor;
 		}
 
 		public Class<? extends EditorI> getEditorClass() {
-			return (Class<? extends EditorI>) this.getValue(EDITOR_CLASS);
+			return this.editorClass;
 		}
 
 	}

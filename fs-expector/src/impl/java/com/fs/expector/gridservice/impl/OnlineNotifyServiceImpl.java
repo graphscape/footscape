@@ -5,6 +5,9 @@ package com.fs.expector.gridservice.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
@@ -22,6 +25,8 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  */
 public class OnlineNotifyServiceImpl extends ConfigurableSupport implements OnlineNotifyServiceI {
 
+	private static final Logger LOG = LoggerFactory.getLogger(OnlineNotifyServiceImpl.class);
+
 	protected GridFacadeI facade;
 
 	protected SessionManagerI sessionManager;
@@ -30,19 +35,28 @@ public class OnlineNotifyServiceImpl extends ConfigurableSupport implements Onli
 
 	@Override
 	public void tryNotifyAccount(String accId, MessageI msg) {
-		//SessionManagerI sm = this.facade.getSessionManager();
+		// SessionManagerI sm = this.facade.getSessionManager();
 
 		List<SessionGd> sL = this.sessionManager.getEntityListByField(SessionGd.ACCID, accId);
-
+		boolean atleastone = false;
 		for (SessionGd s : sL) {
 			TerminalGd t2 = this.terminalManager.getTerminalBySessionId(s.getId(), false);
 			if (t2 == null) {// TODO
 				throw new FsException("TODO,remove old session when binding new session.");
 			}
-
-			this.terminalManager.sendMessage(t2.getId(), msg);
-
+			try {
+				this.terminalManager.sendMessage(t2.getId(), msg);
+				atleastone = true;
+			} catch (Exception e) {
+				LOG.warn("failed to notify the terminal " + t2.getId() + " for account:" + accId
+						+ ",message:" + msg);
+			}
 		}
+
+		if (!atleastone) {
+			LOG.warn("not able to notify any terminal for account:" + accId + ",message:" + msg);
+		}
+
 	}
 
 	@Override

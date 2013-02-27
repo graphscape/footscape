@@ -21,10 +21,8 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -121,26 +119,19 @@ public class FormView extends ViewSupport implements FormViewI {
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback) {
-		FieldModel rt = new FieldModel(name);
-		rt.setEditorClass(editorClass);
-		rt.setFieldType(dcls);
-		if (editorCallback != null) {// this should be some thing like
-										// "EditorInitializer".
-			rt.addValueHandler(FieldModel.L_EDITOR, new EventHandlerI<ModelValueEvent>() {
 
-				@Override
-				public void handle(ModelValueEvent e) {
-					T editor = (T) e.getValue();
-					editorCallback.execute(editor);
+		FieldModel rt = new FieldModel(name, dcls, editorClass);
 
-				}
-			});// TODO add a direct value callbackI?
-		}
-		this.form.child(rt);
+		this.form.addField(rt);
 
 		Class<? extends EditorI> etype = this.resolveEditorClass(rt);//
 
 		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype);
+		if (editorCallback != null) {
+
+			editorCallback.execute((T) pm.getEditor(true));
+
+		}
 		return rt;
 	}
 

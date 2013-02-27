@@ -5,59 +5,85 @@
 package com.fs.uicommons.api.gwt.client.frwk.commons;
 
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
-import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.support.ModelSupport;
+import com.fs.uicore.api.gwt.client.HandlerI;
+import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 
 /**
  * @author wu
  * 
  */
-public class FieldModel extends ModelSupport {
+public class FieldModel {
 
-	public static final Location L_FIELD_TYPE = Location.valueOf("_fieldType");
+	private String name;
 
-	public static final Location L_EDITOR = Location.valueOf("_editor");//
+	private EditorI editor;
+
+	private Class<?> type;
 
 	private Class<? extends EditorI> editorClass;
 
+	private Object value;
+
+	private UiCallbackI< EditorI, Object> editorCallback;
+	
 	/**
 	 * @param name
 	 */
-	public FieldModel(String name) {
-		super(name);
+	public FieldModel(String name, Class<?> type, Class<? extends EditorI> eclass,UiCallbackI< EditorI, Object> editorCallback) {
+		this.name = name;
+		this.type = type;
+		this.editorClass = eclass;
+		this.editorCallback = editorCallback;
 	}
-
-	public void setFieldType(Class<?> ftype) {
-		this.setValue(L_FIELD_TYPE, ftype);
-
+	public FieldModel(String name, Class<?> type, Class<? extends EditorI> eclass) {
+		this(name,type,eclass,null);
 	}
-
+	
 	public void setEditor(EditorI editor) {
-		this.setValue(L_EDITOR, editor);
+		this.editor = editor;
+		if(this.editorCallback!=null){
+			this.editorCallback.execute(this.editor);
+		}
 	}
 
 	public EditorI getEditor(boolean force) {
-		return (EditorI) this.getValue(L_EDITOR, force);
+		if (editor == null && force) {
+			throw new UiException("eidtor not init");
+		}
+		return this.editor;
 	}
 
 	public Class<?> getFieldType() {
-		return (Class<?>) this.getValue(L_FIELD_TYPE);
+		return this.type;
 	}
 
 	public void setFieldValue(Object fv) {
-		this.setValue(ModelI.L_DEFAULT, fv);
+		this.value = fv;
 	}
 
 	public Object getFieldValue() {
-		return this.getValue(ModelI.L_DEFAULT);
+		return this.value;
 	}
 
 	public Class<? extends EditorI> getEditorClass() {
 		return editorClass;
 	}
 
-	public void setEditorClass(Class<? extends EditorI> editorClass) {
-		this.editorClass = editorClass;
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
+	/**
+	 *Feb 23, 2013
+	 */
+	public void addValueHandler(HandlerI<Object> handlerI) {
+		//
+		throw new UiException("TODO");
+		
+	}
+
 
 }

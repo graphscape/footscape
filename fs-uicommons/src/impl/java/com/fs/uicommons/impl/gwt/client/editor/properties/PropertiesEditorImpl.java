@@ -160,9 +160,10 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 	@Override
 	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype) {
 
-		PropertyModel rt = new PropertyModel(key);
-		rt.setEditorClass(etype);
+		PropertyModel rt = new PropertyModel(key,etype);
+		
 		this.addProperty(rt);
+		
 		return rt;
 	}
 
@@ -187,7 +188,7 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 	@Override
 	public EditorI getPropertyEditor(String name) {
 		PropertyModel pm = this.getFieldModel(name);
-		return pm.getWidget(EditorI.class, true);
+		return pm.getEditor(true);
 
 	}
 

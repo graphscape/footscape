@@ -25,15 +25,17 @@ public class FormModel extends ModelSupport {
 
 	public static final Location L_ACTION_LIST = Location.valueOf("actionList");
 
+	private List<FieldModel> fieldList;
 	/**
 	 * @param name
 	 */
 	public FormModel(String name) {
 		super(name);
+		this.fieldList = new ArrayList<FieldModel>();
 	}
 
 	public List<FieldModel> getFieldModelList() {
-		return this.getChildList(FieldModel.class);
+		return this.fieldList;
 	}
 
 
@@ -47,7 +49,7 @@ public class FormModel extends ModelSupport {
 
 	public FieldModel getFieldModel(String name, boolean force) {
 
-		List<FieldModel> fmL = this.getChildList(FieldModel.class);
+		List<FieldModel> fmL = this.fieldList;
 		for (FieldModel fm : fmL) {
 			if (fm.getName().equals(name)) {
 				return fm;
@@ -69,6 +71,13 @@ public class FormModel extends ModelSupport {
 	public List<Path> getActionList() {
 		List<Path> rt = (List<Path>) this.getValue(L_ACTION_LIST);
 		return rt == null ? new ArrayList() : rt;
+	}
+
+	/**
+	 *Feb 23, 2013
+	 */
+	public void addField(FieldModel rt) {
+		this.fieldList.add(rt);
 	}
 
 }
