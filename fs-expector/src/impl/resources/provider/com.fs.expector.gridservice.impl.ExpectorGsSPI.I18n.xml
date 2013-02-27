@@ -1,7 +1,19 @@
 <config>
 	
-	<ok value="OK" />
 	<cancel value="Cancel" />
 	<failed.login value="Login failure, account or password not correct." />
+	<search.exp value="Expectation Search" />
+	<profile value="Profile"/>
+	<login value="Login" />
+	<uelist value="My Expectations" /> 
+	<default value="Default" />
+	<ok value="OK" />
+	<property name="/exp-search" value="Search" />
+	<property name="/signup" value="Signup" />
+	<property name="/login/view" value="Login View" />
+	<property name="/uelist" value="My Expectations" />
+	<property name="/expe" value="Edit Expectation" />
+	<property name="/profile" value="My Profile" />
+	
 	
 </config>

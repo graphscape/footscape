@@ -6,7 +6,7 @@
 		<conf name="runtime" extends="impl" />
 		<conf name="test" extends="runtime" />
 	</configurations>
-	
+
 	<publications>
 	
 		<artifact name="fs-expector-api" type="jar" conf="api" ext="jar" />

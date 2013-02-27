@@ -12,6 +12,9 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
  */
 public interface I18nResolverI extends UiObjectI {
 
+	@Deprecated
 	public void resolve(String key, UiCallbackI<String, String> callback);
+
+	public String resolve(String key);
 
 }

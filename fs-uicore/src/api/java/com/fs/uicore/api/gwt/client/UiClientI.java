@@ -25,7 +25,11 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, boolean force);
 
 	public CodecI.FactoryI getCodecFactory();
+	
+	public String getPreferedLocale() ;
 
+	public String localized(String key);
+	
 	public void start();//
 
 }

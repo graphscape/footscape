@@ -3,6 +3,9 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -42,10 +45,13 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	private EndPointI endpoint;
 
+	private UiPropertiesI<String> localized;
+
 	public UiClientImpl(ContainerI c, RootI root) {
 		super(c);
 		this.root = root;
 		this.parameters = new MapProperties<String>();
+		this.localized = new MapProperties<String>();
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
 		this.endpoint = new EndpointWsImpl(c, md);
 		this.endpoint.parent(this);
@@ -91,15 +97,30 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 			throw new UiException("got a null sessionId");
 		}
 		this.clientId = sd;
-		ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
-		// parameters:
+		{
+			ObjectPropertiesData opd = (ObjectPropertiesData) t.getPayload("parameters", true);//
+			// parameters:
 
-		for (String key : opd.keyList()) {
-			String valueS = (String) opd.getProperty(key);
+			for (String key : opd.keyList()) {
+				String valueS = (String) opd.getProperty(key);
 
-			this.parameters.setProperty(key, valueS);
+				this.parameters.setProperty(key, valueS);
 
+			}
 		}
+		{
+			// localized resource
+			ObjectPropertiesData opd2 = (ObjectPropertiesData) t.getPayload("localized", true);//
+			// parameters:
+
+			for (String key : opd2.keyList()) {
+				String valueS = (String) opd2.getProperty(key);
+
+				this.localized.setProperty(key, valueS);
+
+			}
+		}
+		// event
 
 		new AfterClientStartEvent(this).dispatch();
 	}
@@ -114,8 +135,19 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	}
 
-	protected String getPreferedLocale() {
+	@Override
+	public String getPreferedLocale() {
 		return null;//
+	}
+
+	@Override
+	public String localized(String key) {
+		// i18n
+		String rt = this.localized.getProperty(key);
+		if (rt == null) {
+			return key;
+		}
+		return rt;
 	}
 
 	/**

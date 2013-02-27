@@ -154,7 +154,7 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 		//
 		T rt = this.getProperty(key);
 		if (rt == null && force) {
-			throw new FsException("no property value for key:" + key);
+			throw new FsException("no property value for key:" + key + ",keyList:" + this.keyList());
 		}
 		return rt;
 	}

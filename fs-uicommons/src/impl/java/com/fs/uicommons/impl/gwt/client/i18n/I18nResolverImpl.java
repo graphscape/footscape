@@ -28,7 +28,7 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 	 */
 	public I18nResolverImpl(ContainerI c) {
 		super(c);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	protected Map<String, Holder<String>> cache;
@@ -72,6 +72,15 @@ public class I18nResolverImpl extends UiObjectSupport implements I18nResolverI {
 
 		}
 
+	}
+
+	/*
+	 *Feb 27, 2013
+	 */
+	@Override
+	public String resolve(String key) {
+		// 
+		return null;
 	}
 
 }

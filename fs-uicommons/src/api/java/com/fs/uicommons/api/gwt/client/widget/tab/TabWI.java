@@ -16,7 +16,7 @@ public interface TabWI extends WidgetI, SelectableI {
 
 	public String getName();
 	
-	public void setText(String text);
+	public void setText(boolean i18n, String text);
 
 	public PanelWI getPanel();
 	

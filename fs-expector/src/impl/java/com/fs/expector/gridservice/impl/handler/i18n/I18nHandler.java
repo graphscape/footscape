@@ -13,6 +13,7 @@ import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.ExpectorGsSPI;
+import com.fs.expector.gridservice.impl.util.I18nUtil;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -40,32 +41,11 @@ public class I18nHandler extends ExpectorTMREHSupport {
 	public void handleRefresh(TerminalMsgReceiveEW ew, MessageContext hc, MessageI req, ResponseI res) {
 		// Convert to Map's Map
 		String locale = this.getLocale(ew);
-		PropertiesI<String> pts = this.mergeResource(locale);
+		PropertiesI<String> pts = I18nUtil.resolveResource(locale);
 
 		res.setPayload(pts);
 
 	}
 
-	protected PropertiesI<String> mergeResource(String locale) {
-		PropertiesI<String> rt = this.loadResource(null);
-		if (locale != null) {
-			PropertiesI<String> rt2 = this.loadResource(locale);
-			rt.setProperties(rt2);
-		}
-		return rt;
-	}
-
-	protected PropertiesI<String> loadResource(String locale) {
-		PropertiesI<String> rt = new MapProperties<String>();
-
-		String id = ExpectorGsSPI.class.getName();
-		id += ".I18n";
-		if (locale != null) {// default configuration.
-			id += "." + locale;
-		}
-		Configuration cfg = Configuration.properties(id);
-		rt.setProperties(cfg);
-		return rt;
-	}
 
 }

@@ -264,17 +264,9 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 
 	@Override
 	public UiClientI getClient(boolean force) {
-		UiClientI rt = this.findParent(UiClientI.class, false);
-		if (rt == null) {
-			if (this.parent != null) {// may the parent known which client
-										// belongs to.
-				rt = this.parent.getClient(false);
-			}
-		}
-		if (rt == null && force) {
-			throw new UiException("no client found," + this.toDebugString());
-		}
-		return rt;
+		
+		return this.container.get(UiClientI.class, force);
+		
 	}
 
 	protected <T extends UiObjectI> T getTopObject(Class<T> cls) {

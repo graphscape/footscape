@@ -10,6 +10,7 @@ import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.expector.gridservice.impl.util.I18nUtil;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 
@@ -24,8 +25,7 @@ public class ClientHandler extends ExpectorTMREHSupport {
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		Configuration cfg = this.config.getPropertyAsConfiguration(
-				"client.parameters", true);
+		Configuration cfg = this.config.getPropertyAsConfiguration("client.parameters", true);
 		this.clientParameters = MapProperties.valueOf(cfg.getAsMap());// encode
 																		// as
 																		// PropertiesI
@@ -36,8 +36,7 @@ public class ClientHandler extends ExpectorTMREHSupport {
 	public void handleInit(MessageContext hc) {
 		// create session for client init.
 		// PropertiesI<Object> session = new MapProperties<Object>();
-		TerminalGd t = this.terminalManager.web20Terminal("todo",
-				new MapProperties<Object>());
+		TerminalGd t = this.terminalManager.web20Terminal("todo", new MapProperties<Object>());
 
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		String locale = this.resolveLocale(hc);
@@ -48,7 +47,9 @@ public class ClientHandler extends ExpectorTMREHSupport {
 		hc.getResponse().setPayload("clientId", cid);// TODO
 
 		hc.getResponse().setPayload("parameters", this.clientParameters);
+		PropertiesI<String> localized = I18nUtil.resolveResource(locale);
 
+		hc.getResponse().setPayload("localized", localized);//i18n
 	}
 
 	protected String resolveLocale(MessageContext hc) {

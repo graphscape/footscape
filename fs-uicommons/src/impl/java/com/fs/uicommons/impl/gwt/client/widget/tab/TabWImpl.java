@@ -48,7 +48,8 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 				TabWImpl.this.onGwtClick(event);
 			}//
 		});
-		this.setText(name);
+		
+		this.setText(true, name);
 
 	}
 
@@ -109,10 +110,16 @@ public class TabWImpl extends WidgetSupport implements TabWI {
 	 * .api.gwt.client.core.ModelI)
 	 */
 	@Override
-	public void setText(String text) {
+	public void setText(boolean i18n, String text) {
+		
+		if(i18n){
+			text = this.getClient(true).localized(text);
+		}
+		
 		if (this.isSelected()) {
 			text += "*";// TODO other way to show the selected tab.
 		}
+		
 		this.element.setInnerText(text);//
 
 	}
