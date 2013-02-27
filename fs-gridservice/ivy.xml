@@ -19,9 +19,9 @@
 		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="webserver" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 
-		<dependency org="com.hazelcast" name="hazelcast" rev="2.4" force="true" conf="impl,runtime->master" />
+		<dependency org="com.hazelcast" name="hazelcast" rev="2.5" force="true" conf="impl,runtime->master" />
 
-		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.4" force="true" conf="impl,runtime->master" />
+		<dependency org="com.hazelcast" name="hazelcast-client" rev="2.5" force="true" conf="impl,runtime->master" />
 
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 		<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.1" force="true" conf="test->master(default);test->runtime(*)" />

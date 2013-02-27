@@ -28,7 +28,7 @@ import com.hazelcast.core.Instance;
 public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DgFactoryHC.class);
-	
+
 	protected List<String> addressList;
 
 	protected HazelcastClient client;
@@ -38,7 +38,7 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 	protected CodecI propertiesCodec;
 
 	protected CodecI messageCodec;
-	
+
 	protected boolean cleanGridAtInit;
 
 	@Override
@@ -61,24 +61,29 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 		CodecI.FactoryI cf = this.container.find(CodecI.FactoryI.class, true);
 		this.propertiesCodec = cf.getCodec(PropertiesI.class, true);
 		this.messageCodec = cf.getCodec(MessageI.class, true);
-	
+
 		//
-		if(this.cleanGridAtInit){
+		if (this.cleanGridAtInit) {
 			this.destroyAll(client);//
 		}
 		this.instance = new DataGridHC(client, this);
 
 	}
-	
 
 	public void destroyAll(HazelcastClient client) {
 		LOG.warn("clean grid,detroy all the grid object.");
 		// clean remains
 		Collection<Instance> is = client.getInstances();
 		for (Instance ins : is) {
-			ins.destroy();
+			try {
+				ins.destroy();
+
+				LOG.info("instance destroyed,type:" + ins.getInstanceType());
+			} catch (Throwable t) {
+				LOG.error("cannot destroy,type:" + ins.getInstanceType(), t);
+			}
 		}
-		
+
 	}
 
 	@Override
@@ -89,16 +94,16 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 
 	@Override
 	public DataGridI getInstance() {
-		
+
 		return this.instance;
 	}
 
 	/*
-	 *Dec 24, 2012
+	 * Dec 24, 2012
 	 */
 	@Override
 	protected void doAttach() {
 		super.doAttach();
-		
+
 	}
 }
