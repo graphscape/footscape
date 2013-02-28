@@ -125,8 +125,8 @@ public class FormView extends ViewSupport implements FormViewI {
 		this.form.addField(rt);
 
 		Class<? extends EditorI> etype = this.resolveEditorClass(rt);//
-
-		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype);
+		String i18n = rt.getName();
+		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype, i18n);
 		if (editorCallback != null) {
 
 			editorCallback.execute((T) pm.getEditor(true));

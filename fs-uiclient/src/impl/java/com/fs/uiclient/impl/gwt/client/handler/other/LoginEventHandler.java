@@ -40,7 +40,7 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 		HeaderViewI hm = this.getClient(true).getRoot().find(HeaderViewI.class, true);
 
 		String dname = t.getUserInfo().getString("nick", true);
-		hm.setItemDisplayText(Path.valueOf("user"), dname);
+		hm.setItemDisplayText(Path.valueOf("user"), false,dname);
 
 		// open exp search view
 		MainControlI mc = this.getControl(MainControlI.class, true);

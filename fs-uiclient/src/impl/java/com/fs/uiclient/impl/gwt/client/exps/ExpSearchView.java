@@ -51,19 +51,20 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 		this.addAction(Actions.A_EXPS_SEARCH);//
 		this.statement = this.factory.create(StringEditorI.class);
 		this.statement.parent(this);
-		this.statement.addHandler(ChangeEvent.TYPE,new EventHandlerI<ChangeEvent>(){
+		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
 			@Override
 			public void handle(ChangeEvent t) {
 				ExpSearchView.this.onPhraseChange(t);
-			}});
+			}
+		});
 		this.list = this.factory.create(ListI.class);
 		//
 		this.list.setName("itemList");// for testing
 		this.list.parent(this);
 		//
 		this.previousPage = this.factory.create(ButtonI.class);
-		this.previousPage.setText("<<");
+		this.previousPage.setText(true, "previous.page");
 		this.previousPage.parent(this);
 		this.previousPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -74,7 +75,7 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 		});
 
 		this.nextPage = this.factory.create(ButtonI.class);
-		this.nextPage.setText(">>");
+		this.nextPage.setText(true, "next.page");
 
 		this.nextPage.parent(this);
 		this.nextPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
@@ -91,8 +92,8 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 	 * @param t
 	 */
 	protected void onPhraseChange(ChangeEvent t) {
-		String phrase = this.statement.getData(); 
-		this.model.setPhrase(phrase);		
+		String phrase = this.statement.getData();
+		this.model.setPhrase(phrase);
 	}
 
 	protected void onPreviousPage() {

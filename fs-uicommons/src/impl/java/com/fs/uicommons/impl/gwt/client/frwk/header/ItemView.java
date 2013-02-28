@@ -26,9 +26,9 @@ public class ItemView extends LightWeightView {
 		super(ctn, "item", DOM.createSpan());
 		this.path = path;
 
-		this.anchor = this.createLink();
+		this.anchor = this.factory.create(AnchorWI.class);
 		this.anchor.parent(this);//
-
+		this.setDisplayText(true, this.path.toString());//
 		this.menu = this.factory.create(MenuWI.class);
 		this.menu.setVisible(false);// init is not shown.
 		this.menu.parent(this);
@@ -45,6 +45,7 @@ public class ItemView extends LightWeightView {
 	public MenuItemWI getOrAddMenuItem(final String name) {
 
 		MenuItemWI rt = this.menu.addItem(name);
+		
 		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
@@ -64,8 +65,12 @@ public class ItemView extends LightWeightView {
 	/**
 	 * Jan 13, 2013
 	 */
-	public void setDisplayText(String txt) {
+	public void setDisplayText(boolean toloc, String txt) {
 		//
+		if (toloc) {
+			txt = this.getClient(true).localized(txt);
+		}
+
 		this.anchor.setDisplayText(txt);// TODO ValueDeliverI.
 	}
 
@@ -103,14 +108,5 @@ public class ItemView extends LightWeightView {
 
 	}
 
-	// this is the item view itself.
-	protected AnchorWI createLink() {
-
-		AnchorWI a = this.factory.create(AnchorWI.class);
-		String txt = path.toString();
-		a.setDisplayText(txt);
-
-		return a;
-	}
 
 }

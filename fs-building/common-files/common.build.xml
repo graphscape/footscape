@@ -125,17 +125,13 @@
 	</condition>
 </target>
 
+<target name="reclipse" depends="setup">
+	<antcall target="resolve" />
+	<!-- For gwt test in eclipse,copy java resource to classes folder;no need to compile package. -->
+	<antcall target="eclipse" />
+</target>
 
 <target name="eclipse" depends="setup">
-
-
-	<!-- For gwt test in eclipse,copy java resource to classes folder;no need to compile package. -->
-	<if>
-		<isset property="resolve" />
-		<then>
-			<antcall target="resolve" />
-		</then>
-	</if>
 
 	<copy todir="${dir.target}/eclipse/classes">
 		<fileset dir="${dir.src}/api/java">

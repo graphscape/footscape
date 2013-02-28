@@ -90,6 +90,10 @@ public class WidgetSupport extends WidgetBase {
 		return rt;
 	}
 
+	protected String localized(String key) {
+		return this.getClient(true).localized(key);
+	}
+
 	@Override
 	public void addChild(UiObjectI c) {
 		super.addChild(c);

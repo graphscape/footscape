@@ -14,6 +14,6 @@ public interface HeaderViewI extends ViewI {
 
 	public void addItem(Path path);
 
-	public void setItemDisplayText(Path path, String text);
+	public void setItemDisplayText(Path path,boolean toloc, String text);
 
 }

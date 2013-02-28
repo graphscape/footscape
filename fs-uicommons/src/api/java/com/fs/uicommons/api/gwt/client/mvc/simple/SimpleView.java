@@ -46,7 +46,6 @@ public class SimpleView extends ViewSupport {
 
 	protected Element footer;
 
-
 	/**
 	 * @param ctn
 	 */
@@ -61,7 +60,7 @@ public class SimpleView extends ViewSupport {
 	public SimpleView(ContainerI c, String name, Element ele) {
 
 		super(c, name, ele);
-		
+
 		this.actionMap = new HashMap<Path, ButtonI>();
 
 		// BODY:
@@ -101,7 +100,7 @@ public class SimpleView extends ViewSupport {
 		}
 
 		b = this.factory.create(ButtonI.class);// TODO,
-		b.setText("%" + aname);
+		b.setText(true, aname + "");
 
 		b.parent(this.actionList);
 		// click event is raised in button,not button's model

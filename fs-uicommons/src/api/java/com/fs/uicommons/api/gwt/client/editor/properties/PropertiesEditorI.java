@@ -19,12 +19,18 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 		private String name;
 		private EditorI editor;
 		private Class<? extends EditorI> editorClass;
+		private String i18nKey;
+
+		public String getI18nKey() {
+			return i18nKey;
+		}
 
 		/**
 		 * @param name
 		 */
-		public PropertyModel(String name, Class<? extends EditorI> editorClass) {
+		public PropertyModel(String name, String i18nKey, Class<? extends EditorI> editorClass) {
 			this.name = name;
+			this.i18nKey = i18nKey;
 			this.editorClass = editorClass;
 		}
 
@@ -47,6 +53,8 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 	}
 
 	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype);
+
+	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype, String i18nKey);
 
 	public PropertyModel getFieldModel(String key);
 

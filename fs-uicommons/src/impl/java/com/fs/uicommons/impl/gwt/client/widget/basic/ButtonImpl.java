@@ -33,7 +33,10 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 	}
 
 	@Override
-	public void setText(String txt) {
+	public void setText(boolean toloc, String txt) {
+		if (toloc) {
+			txt = this.localized(txt);//
+		}
 		Element ele = this.getElement();
 
 		ele.setInnerText(txt);//

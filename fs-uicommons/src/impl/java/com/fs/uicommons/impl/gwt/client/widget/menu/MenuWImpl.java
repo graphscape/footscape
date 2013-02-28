@@ -44,7 +44,7 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	public MenuItemWI addItem(String name) {
 
 		MenuItemWI rt = new MenuItemWImpl(this.container);
-		rt.setText(name);
+		rt.setText(true, name);
 
 		this.child(rt);
 		return rt;

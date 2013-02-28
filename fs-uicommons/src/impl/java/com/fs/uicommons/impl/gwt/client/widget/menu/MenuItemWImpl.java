@@ -41,7 +41,10 @@ public class MenuItemWImpl extends WidgetSupport implements MenuItemWI {
 	}
 
 	@Override
-	public void setText(String text) {
+	public void setText(boolean toloc, String text) {
+		if (toloc) {
+			text = this.getClient(true).localized(text);//
+		}
 
 		AnchorElement ele = this.concreteElement();
 

@@ -22,7 +22,7 @@ public class KeepLiveTest extends TestBase {
 		msg.setPayload("text", text);
 		client.sendMessage(msg);
 		try {
-			Thread.sleep(31 * 1000);//
+			Thread.sleep(60 * 1000);//
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}

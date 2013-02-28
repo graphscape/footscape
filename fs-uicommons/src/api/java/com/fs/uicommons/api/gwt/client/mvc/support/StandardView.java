@@ -67,7 +67,7 @@ public class StandardView extends ViewSupport {
 
 		// TODO model
 		rt = factory.create(ButtonI.class);
-		rt.setText(a.getName());// TODO title i18n
+		rt.setText(true, a.getName());// TODO title i18n
 		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

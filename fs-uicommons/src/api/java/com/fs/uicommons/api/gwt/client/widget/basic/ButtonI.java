@@ -13,11 +13,11 @@ import com.fs.uicore.api.gwt.client.state.State;
 public interface ButtonI extends BasicI {
 
 	public static State DOWN = State.valueOf("down");
-	
+
 	public static State UP = State.valueOf("up");
-	
+
 	public State getState();
-	
-	public void setText(String text);
-	
+
+	public void setText(boolean toloc, String text);
+
 }

@@ -42,6 +42,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 			return rt;
 		}
 		rt = new ItemView(this.getContainer(), path);
+
 		this.itemList.addItem(BarWidgetI.P_RIGHT, rt);
 		this.itemViewMap.put(path, rt);
 		return rt;
@@ -66,9 +67,12 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 	 * Feb 2, 2013
 	 */
 	@Override
-	public void setItemDisplayText(Path path, String text) {
+	public void setItemDisplayText(Path path, boolean toloc, String text) {
+		if (toloc) {
+			text = this.getClient(true).localized(text);
+		}
 		ItemView iv = this.getOrCreateItem(path);
-		iv.setDisplayText(text);
+		iv.setDisplayText(false, text);
 	}
 
 }

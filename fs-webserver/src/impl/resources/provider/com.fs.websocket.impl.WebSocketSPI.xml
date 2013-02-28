@@ -14,7 +14,7 @@
 				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
 			</prefix>
 			<config name="init-parameters">
-				<maxIdleTime value="36000000" />
+				<maxIdleTime value="3600000" />
 			</config>
 
 		</config>

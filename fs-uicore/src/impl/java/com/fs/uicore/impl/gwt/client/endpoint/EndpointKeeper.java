@@ -23,11 +23,11 @@ public class EndpointKeeper {
 
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EndpointKeeper.class);
 
-	protected static final int PING_INTERVAL = 15 * 1000;// the jetty's
-															// idleTimeout not
-															// work,it close
-															// websocket for
-															// 30s.
+	protected static final int PING_INTERVAL = (3600 - 30) * 1000;// max idle
+																	// set in
+																	// server
+																	// side, it
+																	// is 3600
 
 	protected EndPointI endpoint;
 

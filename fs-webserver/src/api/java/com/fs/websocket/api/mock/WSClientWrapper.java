@@ -46,7 +46,7 @@ public class WSClientWrapper {
 
 	protected TimerTask keepLiveTask;
 
-	protected int keepLiveTime = 20 * 1000;
+	protected int keepLiveTime = (3600 - 30) * 1000;
 
 	public WSClientWrapper(WSClient t) {
 		this.target = t;

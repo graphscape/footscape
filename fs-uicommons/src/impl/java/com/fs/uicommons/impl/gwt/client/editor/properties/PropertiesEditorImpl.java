@@ -95,8 +95,8 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 
 		LabelI l = this.factory.create(LabelI.class);// key
 														// i18n
-
-		l.setText(key);//
+		String text = this.localized(pm.getI18nKey());
+		l.setText(text);//
 
 		CellI cell1 = r.createCell();
 		cell1.getElement().addClassName("position-left");
@@ -159,11 +159,16 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 
 	@Override
 	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype) {
+		return this.addFieldModel(key, etype, key);
+	}
 
-		PropertyModel rt = new PropertyModel(key,etype);
-		
+	@Override
+	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype, String i18nKey) {
+
+		PropertyModel rt = new PropertyModel(key, i18nKey, etype);
+
 		this.addProperty(rt);
-		
+
 		return rt;
 	}
 
