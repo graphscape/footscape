@@ -145,11 +145,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		manager.child(new GChatControlImpl(c, "gchat"));
 		manager.child(new LoginControlImpl(c, "login"));
 
-		// start frwk view.
-		FrwkControlI fc = manager.getControl(FrwkControlI.class, true);
-		fc.open();
-		fc.addHeaderItem(HeaderItems.USER_LOGIN);
-		fc.addHeaderItem(HeaderItems.USER_LOGOUT);
+		
 
 	}
 

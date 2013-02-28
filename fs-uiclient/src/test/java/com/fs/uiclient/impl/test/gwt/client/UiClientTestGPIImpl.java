@@ -11,9 +11,11 @@ import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 
 /**
  * @author wuzhen
@@ -27,13 +29,8 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 			"user2:signup-login-exp-activities" });
 
 	@Override
-	public void active(ContainerI c) {
+	public void active(final ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);//
-		FrwkControlI fc = client.find(FrwkControlI.class, true);
-
-		fc.addHeaderItem(HI_EXP);
-		fc.addHeaderItem(HI_ACTIVITY);
-
 		EventBusI eb = c.getEventBus();
 
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HI_EXP), new EventHandlerI<HeaderItemEvent>() {
@@ -61,6 +58,21 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 						worker.start(client);
 					}
 				});
+		eb.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
+
+			@Override
+			public void handle(AfterClientStartEvent t) {
+				UiClientTestGPIImpl.this.onClientStart(c);
+			}
+		});
+	}
+
+	public void onClientStart(ContainerI c) {
+		final UiClientI client = c.get(UiClientI.class, true);//
+		FrwkControlI fc = client.find(FrwkControlI.class, true);
+
+		fc.addHeaderItem(HI_EXP);
+		fc.addHeaderItem(HI_ACTIVITY);
 
 	}
 

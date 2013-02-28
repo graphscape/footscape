@@ -52,6 +52,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.IncomingCrRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
@@ -62,8 +63,6 @@ import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
-import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -77,6 +76,7 @@ import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
 
@@ -97,18 +97,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		this.activeOtherHandlers(c, client);
 
 		this.activeControls(c, client);
-		this.activeHeaderItems(c, client);
 
-	}
-
-	/**
-	 * @param c
-	 * @param client
-	 */
-	private void activeHeaderItems(ContainerI c, UiClientI client) {
-		FrwkControlI fc = client.find(FrwkControlI.class, true);
-		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
-		fc.addHeaderItem(HeaderNames.H2_PROFILE);
 	}
 
 	/**
@@ -121,6 +110,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new SignupHeaderItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_PROFILE),
 				new ProfileHeaderItemHandler(c));
+		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));
 
 	}
 
