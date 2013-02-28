@@ -1,11 +1,14 @@
 <config>
 	
+	<age value="Age" />
 	<cancel value="Cancel" />
 	<confirmCode value="Confirm Code" />
 	<confirmCodeNotifier value="Confirm By" />
 	<default value="Default" />
 	<email value="Email" />
 	<failed.login value="Login failure, account or password not correct." />
+	<gender value="Gender" />
+	<icon value="Icon" />
 	<isAgree value="Agree" />
 	<login value="Login" />
 	<logout value="Logout" />
@@ -16,6 +19,7 @@
 	<password2 value="Password Again" />
 	<profile value="Profile"/>
 	<previous.page value="Previous"/>
+	<signup value="Signup" />
 	<search.exp value="Expectation Search" />
 	<savingAccount value="Remember Account" />
 	<uelist value="My Expectations" /> 
@@ -29,17 +33,19 @@
 	<property name="/testers" value="Test Cases"/>
 	<property name="/tab-default" value="Default"/>
 	<property name="/tab-confirm" value="Confirm"/>
+	<property name="/action/activity/openChatRoom" value="Chat" />
+	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/signup/submit" value="Signup Submit"/>
 	<property name="/action/signup/confirm" value="Confirm Signup"/>
 	<property name="/action/exps/search" value="Search"/>
 	<property name="/action/exps/cooper" value="Cooper With"/>
-	<property name="/action/login/submit" value="Login Submit"/>
+	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
 	<property name="/action/userexp/select" value="Select"/>
 	<property name="/action/userexp/activity" value="Open Activity"/>
 	<property name="/action/userexp/cooperConfirm" value="Cooper Confirm"/>
 	<property name="/action/uelist/create" value="New"/>
-	<property name="/action/expe/submit" value="Submit"/>
+	<property name="/action/expe/submit" value="Save"/>
 	
 	
 	

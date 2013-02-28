@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -29,4 +30,23 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 		throw new UiException("TODO");
 	}
 
+	/**
+	 * @param name
+	 */
+	protected void dispatchActionEvent(Path name) {
+		ActionEvent ae = this.newActionEvent(name);
+		this.beforeActionEvent(ae);
+		ae.dispatch();
+	}
+
+	//
+	protected ActionEvent newActionEvent(Path aname) {
+		ActionEvent rt = new ActionEvent(this, (aname));
+
+		return rt;
+	}
+
+	protected void beforeActionEvent(ActionEvent ae) {
+
+	}
 }

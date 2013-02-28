@@ -108,7 +108,7 @@ public class SimpleView extends ViewSupport {
 
 			@Override
 			public void handle(ClickEvent e) {
-				SimpleView.this.onActionClick(aname);
+				SimpleView.this.dispatchActionEvent(aname);
 			}
 		});
 		this.actionMap.put(aname, b);
@@ -124,26 +124,6 @@ public class SimpleView extends ViewSupport {
 		b.setVisible(!hide);
 	}
 
-	/**
-	 * @param name
-	 */
-	protected void onActionClick(Path name) {
-		ActionEvent ae = this.newActionEvent(name);
-		this.beforeActionEvent(ae);
-		ae.dispatch();
-
-	}
-
-	//
-	protected ActionEvent newActionEvent(Path aname) {
-		ActionEvent rt = new ActionEvent(this, (aname));
-
-		return rt;
-	}
-
-	protected void beforeActionEvent(ActionEvent ae) {
-
-	}
 
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {

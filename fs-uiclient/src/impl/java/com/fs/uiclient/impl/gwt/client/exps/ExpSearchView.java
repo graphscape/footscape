@@ -12,24 +12,32 @@ import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
-import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
+import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
+import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
  * 
  */
-public class ExpSearchView extends SimpleView implements ExpSearchViewI {
+public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 	protected StringEditorI statement;// keywords?
 
 	protected ListI list;
+
+	protected ListI header;
+
+	protected ButtonI search;
 
 	protected ButtonI nextPage;
 
@@ -45,12 +53,15 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 	 */
 	public ExpSearchView(ContainerI ctn) {
 
-		super(ctn, "exps");
+		super(ctn, "exps", DOM.createDiv());
 
 		this.model = new ExpSearchModel();
-		this.addAction(Actions.A_EXPS_SEARCH);//
+
+		this.header = this.factory.create(ListI.class);//
+		this.header.parent(this);
+
 		this.statement = this.factory.create(StringEditorI.class);
-		this.statement.parent(this);
+		this.statement.parent(this.header);
 		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
 			@Override
@@ -58,6 +69,18 @@ public class ExpSearchView extends SimpleView implements ExpSearchViewI {
 				ExpSearchView.this.onPhraseChange(t);
 			}
 		});
+		// search button
+		this.search = this.factory.create(ButtonI.class);
+		this.search.setText(true, "search");
+		this.search.parent(this.header);
+		this.search.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+			@Override
+			public void handle(ClickEvent e) {
+				ExpSearchView.this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
+			}
+		});
+
 		this.list = this.factory.create(ListI.class);
 		//
 		this.list.setName("itemList");// for testing
