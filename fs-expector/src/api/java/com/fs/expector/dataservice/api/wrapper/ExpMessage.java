@@ -14,7 +14,7 @@ import com.fs.expector.dataservice.api.NodeTypes;
  */
 public class ExpMessage extends NodeWrapper {
 
-	public static final String EXP_ID1 = "expId1";
+	public static final String EXP_ID1 = "expId";
 
 	public static final String EXP_ID2 = "expId2";
 
@@ -22,15 +22,18 @@ public class ExpMessage extends NodeWrapper {
 
 	public static final String ACCOUNT_ID2 = "accountId2";
 
+	public static final String PATH = "path";
+
 	public static final String HEADER = "header";
-	
+
 	public static final String BODY = "body";
 	
+
 	/**
 	 * @param ntype
 	 */
 	public ExpMessage() {
-		super(NodeTypes.CONNECT_REQUEST);
+		super(NodeTypes.EXPMESSAGE);
 	}
 
 	public void setExpId1(String expId) {
@@ -74,6 +77,30 @@ public class ExpMessage extends NodeWrapper {
 
 	public String getAccountId2() {
 		return this.getPropertyAsString(ACCOUNT_ID2);
+	}
+
+	public void setHeader(String header) {
+		this.setProperty(HEADER, header);
+	}
+
+	public String getHeader() {
+		return this.getPropertyAsString(HEADER);
+	}
+
+	public void setBody(String body) {
+		this.setProperty(BODY, body);
+	}
+
+	public String getBody() {
+		return this.getPropertyAsString(BODY);
+	}
+
+	public void setPath(String path) {
+		this.setProperty(PATH,path);
+	}
+
+	public String getPath() {
+		return this.getPropertyAsString(PATH);
 	}
 
 }

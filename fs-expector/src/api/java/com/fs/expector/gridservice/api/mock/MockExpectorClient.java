@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
@@ -181,6 +180,25 @@ public class MockExpectorClient extends MockClientWrapper {
 		List<MockExpItem> rt = new ArrayList<MockExpItem>();
 		for (PropertiesI<Object> pts : el) {
 			MockExpItem me = new MockExpItem(pts);
+
+			rt.add(me);
+		}
+		return rt;
+	}
+
+	/**
+	 *Mar 5, 2013
+	 */
+	public List<MockExpMessage> getExpMessage(String expId2) {
+		
+		//
+		List<MockExpMessage> rt = new ArrayList<MockExpMessage>();
+		MessageI req = this.newRequest("/expm/search");
+		req.setPayload("expId2", expId2);
+		MessageI res = this.syncSendMessage(req);
+		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) res.getPayload("exp-messages");
+		for (PropertiesI<Object> pts : el) {
+			MockExpMessage me = new MockExpMessage(pts);
 
 			rt.add(me);
 		}

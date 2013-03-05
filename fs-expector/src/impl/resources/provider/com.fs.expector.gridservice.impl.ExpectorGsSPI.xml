@@ -37,6 +37,7 @@
 				value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==" />
 
 		</config>
+		<config name="expe" path="/events/expm" class="com.fs.expector.gridservice.impl.handler.expm.ExpMessageHandler" />
 		<config name="cooper" path="/events/cooper" class="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
 		<config name="profile" path="/events/profile" class="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
 		<config name="uelist" path="/events/uelist" class="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />

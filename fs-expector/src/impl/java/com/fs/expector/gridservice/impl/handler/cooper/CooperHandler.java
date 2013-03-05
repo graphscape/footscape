@@ -15,6 +15,7 @@ import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
+import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -51,9 +52,19 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		res.setPayload("cooperRequestId", cid);//
 		// notify the exp2's account to refresh the incoming request,if he/she
 		// is online
-
-		MessageI msg = new MessageSupport();
-		msg.setHeader(MessageI.HK_PATH, "/notify/incomingCr");
+		
+		//TODO move below code to a service: ExpMessageServiceI?
+		ExpMessage em = new ExpMessage().forCreate(this.dataService);
+		em.setExpId1(expId1);
+		em.setExpId2(expId2);
+		em.setAccountId1(aid);
+		em.setAccountId2(accId2);
+		em.setPath("/connect/request");
+		em.setHeader("");
+		em.setBody("exp2.body:"+exp2.getBody());
+		em.save(true);
+		
+		MessageI msg = new MessageSupport("/notify/exp-message-created");
 
 		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 	}
