@@ -4,20 +4,15 @@
  */
 package com.fs.expector.gridservice.impl.test.mock;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.TestHelperI;
-import com.fs.expector.gridservice.api.mock.MockActivity;
 
 /**
  * @author wu
@@ -36,8 +31,6 @@ public class MockClient {
 	private ContainerI container;
 
 	private String nick;
-
-	public List<MockActivity> activityIdList = new ArrayList<MockActivity>();
 
 	protected DataServiceI dataService;
 
@@ -114,8 +107,7 @@ public class MockClient {
 	protected ResponseI service(MessageI req) {
 		ResponseI rt = this.engine.service(req);
 		if (rt.getErrorInfos().hasError()) {
-			DumpOperationI op = this.dataService
-					.prepareOperation(DumpOperationI.class);
+			DumpOperationI op = this.dataService.prepareOperation(DumpOperationI.class);
 			op.execute().getResult().assertNoError();
 		}
 		rt.assertNoError();
@@ -183,7 +175,7 @@ public class MockClient {
 
 		ResponseI res = this.service(req);
 		res.assertNoError();
-		String rt = (String) res.getPayload("cooperMessageId", true);
+		String rt = (String) res.getPayload("cooperRequestId", true);
 
 		return rt;
 	}
@@ -194,54 +186,11 @@ public class MockClient {
 	public void cooperConfirm(String cooperId, boolean findAct) {
 		MessageI req = this.newRequest("/uiserver/cooper/confirm");
 
-		req.setPayload("cooperMessageId", cooperId);
-
-		req.setPayload("useNewestActivityId", findAct);
+		req.setPayload("cooperRequestId", cooperId);
 
 		ResponseI res = this.service(req);
 		res.assertNoError();
 
 	}
 
-	/**
-	 * Nov 3, 2012
-	 */
-	public List<MockActivity> refreshActivity() {
-		// ActivitiesHandler
-		MessageI req = this.newRequest("/uiserver/activities/activities");
-		ResponseI res = this.service(req);
-		res.assertNoError();
-		PropertiesI pts = res.getPayloads();
-		List<PropertiesI> actList = (List<PropertiesI>) pts.getProperty(
-				"activities", true);
-		this.activityIdList.clear();//
-		for (PropertiesI apt : actList) {
-			MockActivity ma = new MockActivity();
-			ma.actId = (String) apt.getProperty("actId", true);
-			// ma.accId = (String) apt.getProperty("accountId", true);
-
-			this.activityIdList.add(ma);
-		}
-		return this.activityIdList;
-	}
-
-	public MockUserSnapshot getUserSnapshot(boolean forceRefresh) {
-		MessageI req = this.newRequest("/uiserver/usshot/snapshot");
-		req.setPayload("refresh", forceRefresh);
-		ResponseI res = this.service(req);
-
-		res.assertNoError();
-
-		PropertiesI<Object> pts = res.getPayloads();
-		List<String> activityIds = (List<String>) pts.getProperty(
-				"activityIdList", true);
-		List<String> expIds = (List<String>) pts.getProperty("expIdList", true);
-		List<String> corrIds = (List<String>) pts.getProperty(
-				"cooperMessageIdList", true);
-		MockUserSnapshot rt = new MockUserSnapshot(this.accountId);
-		rt.addActivityIdList(activityIds);
-		rt.addExpIdList(expIds);
-		rt.addCooperMessageIdList(corrIds);
-		return rt;
-	}
 }

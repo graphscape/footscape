@@ -22,13 +22,13 @@ public class NodeTypes {
 
 	public static final NodeType SESSION = NodeType.valueOf("session");
 
-	public static final NodeType USER = NodeType.valueOf("user");
-
-	public static final NodeType ACTIVITY = NodeType.valueOf("activity");
 	public static final NodeType EXPECTATION = NodeType.valueOf("expectation");
-	public static final NodeType COOPER_REQUEST = NodeType
-			.valueOf("cooper-request");
-	public static final NodeType COOPER_CONFIRM = NodeType
-			.valueOf("cooper-confirm");
+	public static final NodeType CONNECT_REQUEST = NodeType
+			.valueOf("connect-request");
+	public static final NodeType EXPMESSAGE = NodeType
+			.valueOf("exp-message");
+	
+	public static final NodeType CONNECTION = NodeType
+			.valueOf("connection");
 
 }

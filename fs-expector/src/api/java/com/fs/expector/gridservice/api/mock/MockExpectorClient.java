@@ -65,7 +65,7 @@ public class MockExpectorClient extends MockClientWrapper {
 		return this;
 
 	}
-	
+
 	public void signup(final String email, String nick, String pass) {
 		String ccode = this.signupRequest(email, nick, pass);
 		this.signupConfirm(email, ccode);
@@ -105,7 +105,6 @@ public class MockExpectorClient extends MockClientWrapper {
 		return rt;
 	}
 
-
 	/*
 	 * Dec 30, 2012
 	 */
@@ -137,6 +136,16 @@ public class MockExpectorClient extends MockClientWrapper {
 		return rt;
 	}
 
+	public List<MockExpItem> getConnectedExp(String expId) {
+		//
+		MessageI req = this.newRequest("/exps/connected");
+
+		req.setPayload("expId1", expId);
+		MessageI res = this.syncSendMessage(req);
+
+		return this.processExpItemResult(res);
+	}
+
 	/*
 	 * Dec 30, 2012
 	 */
@@ -147,74 +156,8 @@ public class MockExpectorClient extends MockClientWrapper {
 
 		req.setPayload("cooperRequestId", crid);
 
-		req.setPayload("useNewestActivityId", findAct);
 		MessageI i = this.syncSendMessage(req);
 
-	}
-
-	/*
-	 * Dec 30, 2012
-	 */
-
-	public List<MockActivity> refreshActivity() {
-		//
-		// ActivitiesHandler
-		MessageI req = this.newRequest("/activities/activities");
-		MessageI i = this.syncSendMessage(req);
-		Path path = i.getPath();
-
-		PropertiesI pts = i.getPayloads();
-		List<PropertiesI> actList = (List<PropertiesI>) pts.getProperty("activities", true);
-		List<MockActivity> rt = new ArrayList<MockActivity>();
-		for (PropertiesI apt : actList) {
-			MockActivity ma = new MockActivity();
-			ma.actId = (String) apt.getProperty("id", true);
-			List<MockExpInfo> expList = new ArrayList<MockExpInfo>();
-			List<PropertiesI<Object>> eL = (List<PropertiesI<Object>>) apt.getProperty("expectations", true);
-			for (PropertiesI<Object> pt : eL) {
-				MockExpInfo me = new MockExpInfo();
-				me.accId = (String) pt.getProperty("accountId", true);
-				me.expId = (String) pt.getProperty("expId", true);
-				me.body = (String) pt.getProperty("body", true);
-
-				expList.add(me);
-			}
-			ma.expList = expList;
-			rt.add(ma);
-		}
-		return rt;
-	}
-
-	/*
-	 * Dec 30, 2012
-	 */
-
-	public MockActivityDetail getActivityDetail(String actId) {
-		//
-
-		MessageI req = this.newRequest("/activity/refresh");
-		req.setPayload("actId", actId);
-
-		MessageI i = this.syncSendMessage(req);
-
-		PropertiesI pts = i.getPayloads();
-		List<PropertiesI> expList = (List<PropertiesI>) pts.getProperty("participants");
-		MockActivityDetail rt = new MockActivityDetail();
-		rt.activityUid = (String) pts.getProperty("actId", true);
-		for (PropertiesI pt : expList) {
-			String expId = (String) pt.getProperty("expId");
-			String accId = (String) pt.getProperty("accountId");
-			String body = (String) pt.getProperty("body");//
-
-			MockExpInfo exp = new MockExpInfo();
-			exp.accId = accId;
-			exp.body = body;
-			exp.expId = expId;
-
-			rt.expMap.put(expId, exp);
-
-		}
-		return rt;
 	}
 
 	public List<MockExpItem> search(boolean includeMine, int firstResult, int maxResult, String expId,
@@ -227,9 +170,14 @@ public class MockExpectorClient extends MockClientWrapper {
 		req.setPayload("expId", expId);
 		req.setPayload("phrase", phrase);
 		req.setPayload("slop", slop);
-		MessageI i = this.syncSendMessage(req);
+		MessageI res = this.syncSendMessage(req);
 
-		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) i.getPayload("expectations");
+		return this.processExpItemResult(res);
+
+	}
+
+	public List<MockExpItem> processExpItemResult(MessageI res) {
+		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) res.getPayload("expectations");
 		List<MockExpItem> rt = new ArrayList<MockExpItem>();
 		for (PropertiesI<Object> pts : el) {
 			MockExpItem me = new MockExpItem(pts);

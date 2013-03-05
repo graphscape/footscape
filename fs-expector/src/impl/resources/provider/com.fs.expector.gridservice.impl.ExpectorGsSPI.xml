@@ -23,10 +23,8 @@
 	</prefix>
 	<config name="globalEventDispatcher">
 
-		<handlers value="activities,activity,signup,client,i18n,imsg,expe,exps,cooper,profile,uelist" />
+		<handlers value="signup,client,i18n,imsg,expe,exps,cooper,profile,uelist" />
 
-		<config name="activities" path="/events/activities" class="com.fs.expector.gridservice.impl.handler.activities.ActivitiesHandler" />
-		<config name="activity" path="/events/activity" class="com.fs.expector.gridservice.impl.handler.activity.ActivityHandler" />
 		<config name="signup" path="/events/signup" class="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
 		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
 			<client.parameters value="com.fs.uiserver.impl.ClientParameters" />

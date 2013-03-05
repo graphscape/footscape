@@ -15,9 +15,8 @@ import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
-import com.fs.expector.dataservice.api.wrapper.CooperRequest;
+import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
-import com.fs.expector.dataservice.api.wrapper2.ExpActivity;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -40,10 +39,8 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	@Handle("get")
 	public void handleGet(MessageContext hc, MessageI req, ResponseI res) {
 		String expId = (String) req.getPayload("expId");
-		Expectation exp = this.dataService.getNewestById(Expectation.class,
-				expId, false);
-		NodeQueryOperationI<ExpActivity> nqo = this.dataService
-				.prepareNodeQuery(ExpActivity.class);
+		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, false);
+
 		// TODO add loginId,add interceptor?
 
 	}
@@ -52,53 +49,33 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	 * Refresh the summary list of ue. Nov 28, 2012
 	 */
 	@Handle("refresh")
-	public void handleRefresh(TerminalMsgReceiveEW ew,MessageContext hc, MessageI req, ResponseI res) {
+	public void handleRefresh(TerminalMsgReceiveEW ew, MessageContext hc, MessageI req, ResponseI res) {
 		SessionGd login = this.getSession(ew, true);
 
-		NodeQueryOperationI<Expectation> finder = this.dataService
-				.prepareNodeQuery(Expectation.class);
+		NodeQueryOperationI<Expectation> finder = this.dataService.prepareNodeQuery(Expectation.class);
 
 		// finder.addBeforeInterceptor(null);//TODO
 
 		finder.propertyEq(Expectation.ACCOUNT_ID, login.getAccountId());
-		NodeQueryResultI<Expectation> rst = finder.execute().getResult()
-				.assertNoError();
+		NodeQueryResultI<Expectation> rst = finder.execute().getResult().assertNoError();
 
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list());
 
 		// additional fields;TODO use snapshot
 		for (PropertiesI<Object> pts : el) {
 			String id = (String) pts.getProperty(NodeI.PK_ID, true);//
-			// act
-			ExpActivity act = this.getExpActivity(id);
-			if (act != null) {
-				pts.setProperty("activityId", act.getActivityId());
-			}
-			// req
-			List<PropertiesI<Object>> crL = this.getCooperRequestList(id);
-			pts.setProperty("cooperRequestList", crL);
-
 		}
 		res.setPayload("userExpList", el);
-	}
-
-	protected ExpActivity getExpActivity(String expId) {
-		ExpActivity rt = this.dataService.getNewest(ExpActivity.class,
-				ExpActivity.PK_EXP_ID, expId, false);
-
-		return rt;
 	}
 
 	// TODO how to process the already confirmed request.
 	protected List<PropertiesI<Object>> getCooperRequestList(String expId2) {
 		// TODO query the count of request
-		NodeQueryOperationI<CooperRequest> crq = this.dataService
-				.prepareNodeQuery(CooperRequest.class);
+		NodeQueryOperationI<ConnectRequest> crq = this.dataService.prepareNodeQuery(ConnectRequest.class);
 		// crq.first(0);
 		// crq.maxSize(10);//TODO limit from
-		crq.propertyEq(CooperRequest.EXP_ID2, expId2);//
-		NodeQueryResultI<CooperRequest> rst = crq.execute().getResult()
-				.assertNoError();
+		crq.propertyEq(ConnectRequest.EXP_ID2, expId2);//
+		NodeQueryResultI<ConnectRequest> rst = crq.execute().getResult().assertNoError();
 		List<PropertiesI<Object>> rt = NodeWrapperUtil.convert(rst.list());
 		return rt;
 

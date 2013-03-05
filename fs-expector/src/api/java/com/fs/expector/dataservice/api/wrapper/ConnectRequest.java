@@ -12,7 +12,7 @@ import com.fs.expector.dataservice.api.NodeTypes;
  * @author wu
  * 
  */
-public class CooperRequest extends NodeWrapper {
+public class ConnectRequest extends NodeWrapper {
 
 	public static final String EXP_ID1 = "expId1";
 
@@ -25,8 +25,8 @@ public class CooperRequest extends NodeWrapper {
 	/**
 	 * @param ntype
 	 */
-	public CooperRequest() {
-		super(NodeTypes.COOPER_REQUEST);
+	public ConnectRequest() {
+		super(NodeTypes.CONNECT_REQUEST);
 	}
 
 	public void setExpId1(String expId) {
@@ -51,7 +51,7 @@ public class CooperRequest extends NodeWrapper {
 	 * Nov 2, 2012
 	 */
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(NodeTypes.COOPER_REQUEST, CooperRequest.class).field(EXP_ID1).field(EXP_ID2)
+		cfs.addConfig(NodeTypes.CONNECT_REQUEST, ConnectRequest.class).field(EXP_ID1).field(EXP_ID2)
 				.field(ACCOUNT_ID2).field(ACCOUNT_ID1);
 
 	}

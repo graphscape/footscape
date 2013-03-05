@@ -4,8 +4,6 @@
  */
 package com.fs.expector.gridservice.impl.test.mock;
 
-import java.util.List;
-
 import com.fs.commons.api.ContainerI;
 
 /**
@@ -45,49 +43,6 @@ public class MockClients {
 				String body = "user" + i + " expecting exp" + j;
 				c.newExp(body);
 			}
-		}
-
-	}
-
-	public void cooperRequest(int maxSize, boolean refreshSnapshot) {
-		for (int i = 0; i < this.clients.length; i++) {
-
-			MockClient c1 = this.clients[i];
-			MockClient c2 = i == this.clients.length - 1 ? this.clients[0]
-					: this.clients[i + 1];
-
-			MockUserSnapshot us1 = c1.getUserSnapshot(refreshSnapshot);
-			MockUserSnapshot us2 = c2.getUserSnapshot(refreshSnapshot);
-
-			List<String> expList1 = us1.getExpIdList();
-			List<String> expList2 = us2.getExpIdList();
-
-			for (int j = 0; j < maxSize && j < expList1.size(); j++) {
-				String expId1 = expList1.get(j);
-				String expId2 = expList2.get(j);
-
-				c1.cooperRequest(expId1, expId2);
-			}
-		}
-
-	}
-
-	public void cooperConfirm(int maxSize, boolean refreshSnapshot, boolean findAct) {
-		for (int i = 0; i < this.clients.length; i++) {
-
-			MockClient c1 = this.clients[i];
-			MockClient c2 = i == this.clients.length - 1 ? this.clients[0]
-					: this.clients[i + 1];
-
-			MockUserSnapshot us1 = c1.getUserSnapshot(refreshSnapshot);
-
-			List<String> crIdL1 = us1.getCooperMessageIdList();
-			
-			for (int j = 0; j < maxSize; j++) {
-				String id = crIdL1.get(j);
-				c1.cooperConfirm(id,findAct);
-			}
-			//
 		}
 
 	}

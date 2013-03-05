@@ -4,6 +4,7 @@
  */
 package com.fs.expector.gridservice.impl.handler.exps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.commons.api.message.MessageContext;
@@ -16,6 +17,7 @@ import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
@@ -26,6 +28,25 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class ExpSearchHandler extends ExpectorTMREHSupport {
+
+	// query the connected exp from specified exp by exp id.
+	@Handle("connected")
+	public void handleConnected(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
+		MessageI req = ew.getMessage();//
+		String expId1 = req.getString("expId1", true);
+		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
+		qo.propertyEq(Connection.EXP_ID1, expId1);
+		NodeQueryResultI<Connection> rst = qo.execute().getResult().assertNoError();
+
+		List<Expectation> expL = new ArrayList<Expectation>();
+		for (Connection c : rst.list()) {
+			String id = c.getExpId2();
+			Expectation exp = this.dataService.getNewestById(Expectation.class, id, true);
+			expL.add(exp);
+		}
+		this.processExpsResult(res, expL);
+
+	}
 
 	@Handle("search")
 	public void handleSearch(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
@@ -51,8 +72,13 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		qo.propertyMatch(Expectation.BODY, phrase, slop);
 
 		NodeQueryResultI<Expectation> rst = qo.execute().getResult().assertNoError();
+		this.processExpsResult(res, rst.list());
+
+	}
+
+	private void processExpsResult(ResponseI res, List<Expectation> list) {
 		// convert
-		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list(), new String[] { NodeI.PK_ID,
+		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
 				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID },//
 				new boolean[] { true, true, true, true }, // force
 				new String[] { "id", "body", "timestamp", "accountId" }//
@@ -75,6 +101,5 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		}
 
 		res.setPayload("expectations", el);
-
 	}
 }
