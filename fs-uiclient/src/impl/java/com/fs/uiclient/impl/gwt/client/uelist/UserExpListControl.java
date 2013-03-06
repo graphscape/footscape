@@ -6,8 +6,9 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
+import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
+import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
@@ -93,6 +94,25 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		}
 		UserExpListViewI uelv = this.getMainControl().openUeList();
 		uelv.update(uem);
+	}
+
+	/*
+	 *Mar 6, 2013
+	 */
+	@Override
+	public void addOrUpdateExpMessage(ExpMessage msg) {
+		//get or open the ExpView
+		String expId = msg.getExpId2();
+		MyExpViewI me = this.openMyExpView(expId);
+		me.addOrUpdateMessage(msg);
+	}
+
+	/**
+	 *Mar 6, 2013
+	 */
+	private MyExpViewI openMyExpView(String expId) {
+		// 
+		return null;
 	}
 
 }

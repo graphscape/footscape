@@ -7,7 +7,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
-import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
+import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
@@ -42,36 +42,24 @@ public class ExpMessageRefreshMH extends MHSupport {
 		CooperControlI cc = this.getControl(CooperControlI.class, true);
 
 		MessageData res = t.getMessage();
-		List<ObjectPropertiesData> crL = (List<ObjectPropertiesData>) res.getPayload("cooperRequestList",
-				true);
-
+		List<ObjectPropertiesData> crL = (List<ObjectPropertiesData>) res.getPayload("expMessages", true);
+		UserExpListControlI c = this.getControl(UserExpListControlI.class, true);
 		for (int i = 0; i < crL.size(); i++) {
 			ObjectPropertiesData od = crL.get(i);
 			String crId = (String) od.getProperty(NodeFields.PK_ID);
 			String expId1 = (String) od.getProperty("expId1");
 			String expId2 = (String) od.getProperty("expId2");
-			String accountId1 = (String) od.getProperty("accountId1");// NOTE
-																		// TODO
-																		// 1
+			String accountId1 = (String) od.getProperty("accountId1");
 			String accountId2 = (String) od.getProperty("accountId2");
 
-			IncomingCrModel crm = new IncomingCrModel(crId);
+			ExpMessage crm = new ExpMessage(crId);
 			crm.setAccountId1(accountId1);
 			crm.setAccountId2(accountId2);
 			crm.setExpId1(expId1);
 			crm.setExpId2(expId2);
-			crm.commit();
-			cc.incomingCr(crm);
-			this.onIncomingCr(t, crm);
+
+			c.addOrUpdateExpMessage(crm);
 		}
-	}
-
-	/**
-	 * Jan 4, 2013
-	 */
-	private void onIncomingCr(EndpointMessageEvent t, IncomingCrModel crm) {
-		UserExpListControlI c = this.getControl(UserExpListControlI.class, true);
-
 	}
 
 }

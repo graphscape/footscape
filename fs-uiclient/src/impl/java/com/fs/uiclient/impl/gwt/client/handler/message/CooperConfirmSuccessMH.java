@@ -34,7 +34,7 @@ public class CooperConfirmSuccessMH extends MHSupport {
 
 		CooperControlI cc = this.getControl(CooperControlI.class, true);
 		String crId = t.getMessage().getString("crId", true);
-		cc.removeIncomingCr(crId);
+		//cc.removeIncomingCr(crId);
 		// uelist
 		UserExpListControlI uc = this.getControl(UserExpListControlI.class, true);
 

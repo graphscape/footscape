@@ -45,9 +45,6 @@ public class UeListRefreshMH extends MHSupport {
 			ObjectPropertiesData oi = ld.get(i);
 			String expId = (String) oi.getProperty(NodeFields.PK_ID, true);
 			String body = (String) oi.getProperty("body", true);
-			String actId = (String) oi.getProperty("activityId", false);//
-			List<ObjectPropertiesData> crL = (List<ObjectPropertiesData>) oi.getProperty(
-					"cooperRequestList", true);
 
 			DateData dd = (DateData) oi.getProperty(NodeFields.PK_TIMESTAMP, true);
 

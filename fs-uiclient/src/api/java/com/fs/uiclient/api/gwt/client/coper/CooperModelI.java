@@ -27,9 +27,9 @@ public interface CooperModelI extends ModelI {
 
 	public String getExpId2();
 
-	public List<IncomingCrModel> getIncomingCooperRequestModelList();
+	public List<ExpMessage> getIncomingCooperRequestModelList();
 
-	public void incomingCr(IncomingCrModel crm);
+	public void incomingCr(ExpMessage crm);
 
 	public void removeIncomingCr(String crId);
 

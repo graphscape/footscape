@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -19,5 +20,7 @@ public interface UserExpListControlI extends ControlI {
 	public void select(String expId);
 
 	public void addOrUpdateUserExp(UserExpModel uem);
+	
+	public void addOrUpdateExpMessage(ExpMessage msg);
 
 }

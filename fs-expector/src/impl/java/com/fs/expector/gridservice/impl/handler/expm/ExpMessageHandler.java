@@ -58,13 +58,19 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 	public void handleSearch(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 
-		String expId2 = req.getString("expId2", true);
+		String accountId2 = req.getString("accountId2", false);
+		String expId2 = req.getString("expId2", false);
 
 		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
 
 		qo.first(0);
 		qo.maxSize(Integer.MAX_VALUE);
-		qo.propertyEq(ExpMessage.EXP_ID2, expId2);
+		if (expId2 != null) {
+			qo.propertyEq(ExpMessage.EXP_ID2, expId2);
+		}
+		if (accountId2 != null) {
+			qo.propertyEq(ExpMessage.ACCOUNT_ID2, accountId2);
+		}
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 
 		NodeQueryResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();

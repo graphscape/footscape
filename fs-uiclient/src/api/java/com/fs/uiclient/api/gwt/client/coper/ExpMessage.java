@@ -10,7 +10,7 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  * @author wu
  * 
  */
-public class IncomingCrModel extends ModelSupport {
+public class ExpMessage extends ModelSupport {
 
 	private String crId;
 
@@ -25,7 +25,7 @@ public class IncomingCrModel extends ModelSupport {
 	/**
 	 * @param name
 	 */
-	public IncomingCrModel(String crId) {
+	public ExpMessage(String crId) {
 		super(crId);
 		this.crId = crId;
 	}

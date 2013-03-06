@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 
 /**
@@ -11,5 +12,10 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  * 
  */
 public interface MyExpViewI extends ViewI {
+
+	/**
+	 * Mar 6, 2013
+	 */
+	public void addOrUpdateMessage(ExpMessage msg);
 
 }

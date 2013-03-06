@@ -24,6 +24,7 @@
 	<savingAccount value="Remember Account" />
 	<uelist value="My Expectations" /> 
 	
+	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />
 	<property name="/signup" value="Signup" />
 	<property name="/login/view" value="Login View" />
@@ -33,6 +34,10 @@
 	<property name="/testers" value="Test Cases"/>
 	<property name="/tab-default" value="Default"/>
 	<property name="/tab-confirm" value="Confirm"/>
+	<property name="/expMessageCount" value="Messages" />
+	<property name="/myExp" value="My Expectations" />
+	
+	<!-- Actions -->
 	<property name="/action/activity/openChatRoom" value="Chat" />
 	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/signup/submit" value="Signup Submit"/>

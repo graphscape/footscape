@@ -4,23 +4,22 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
  * @author wu
  * 
  */
-public class IncomingCrNotifyMH extends NotifyMH {
+public class ExpMessageCreatedNotifyMH extends NotifyMH {
 
 	/**
 	 * @param c
 	 */
-	public IncomingCrNotifyMH(ContainerI c) {
+	public ExpMessageCreatedNotifyMH(ContainerI c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -28,8 +27,13 @@ public class IncomingCrNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		CooperControlI cc = this.getControl( CooperControlI.class, true);
-		cc.refreshIncomingCr(null);
+		String accId = this.getEndpoint().getUserInfo().getAccountId();
+
+		MsgWrapper req = this.newRequest(Path.valueOf("/expm/search"));
+		req.setPayload("accountId2", accId);//
+
+		this.sendMessage(req);
+
 	}
 
 }
