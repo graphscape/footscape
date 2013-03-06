@@ -114,51 +114,5 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 		return rt;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI#getUserExpByActivityId
-	 * (java.lang.String, boolean)
-	 */
-	@Override
-	public List<UserExpModel> getUserExpByActivityId(String actId) {
-		List<UserExpModel> ueL = this.getChildList(UserExpModel.class);
-		List<UserExpModel> rt = new ArrayList<UserExpModel>();
-		for (UserExpModel ue : ueL) {
-			if (actId.equals(ue.getActivityId())) {
-				rt.add(ue);
-			}
-		}
-		return rt;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI#
-	 * getUserExpByIncomingCrId(java.lang.String, boolean)
-	 */
-	@Override
-	public UserExpModel getUserExpByIncomingCrId(String crId, boolean force) {
-		List<UserExpModel> ueL = this.getChildList(UserExpModel.class);
-		List<UserExpModel> rt = new ArrayList<UserExpModel>();
-		for (UserExpModel ue : ueL) {
-			if (crId.equals(ue.getIncomingCrId())) {
-				rt.add(ue);
-			}
-		}
-		if (rt.isEmpty()) {
-			if (force) {
-				throw new UiException("no user exp with incoming cr:" + crId + ",all userexp:" + ueL);
-			}
-			return null;
-		} else if (rt.size() > 1) {
-			throw new UiException("to many user exp for crId:" + crId + ", all:" + rt);
-		} else {
-			return rt.get(0);
-
-		}
-	}
 
 }

@@ -78,42 +78,6 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		this.sendMessage(req);
 	}
 
-	/**
-	 * notify a incoming cr.
-	 * 
-	 */
-	@Override
-	public void incomingCr(IncomingCrModel cr) {
-
-		UserExpListModelI uelm = this.getModel();
-		String crId = cr.getCrId();
-		String expId2 = cr.getExpId2();// to this exp
-
-		UserExpModel uem = uelm.getUserExp(expId2, true);//
-		String expId1 = cr.getExpId1();// from expId1
-		uem.setIncomingCrId(crId);// FROM exp id
-
-		// update view
-		UserExpListViewI uev = this.getMainControl().openUeList();
-		uev.incomingCr(expId2, crId);
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI#removeIncomingCr
-	 * (java.lang.String)
-	 */
-	@Override
-	public void incomingCrConfirmed(String crId) {
-		UserExpListModelI ulm = this.getModel();
-
-		UserExpModel uem = ulm.getUserExpByIncomingCrId(crId, true);
-		uem.incomingCrConfirmed(crId);//
-	}
-
 	/*
 	 * Feb 2, 2013
 	 */
@@ -126,8 +90,6 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 			ulm.addUserExp(uem);
 		} else {
 			old.setBody(uem.getBody());
-			old.setActivityId(uem.getActivityId());
-			old.setIncomingCrId(uem.getIncomingCrId());
 		}
 		UserExpListViewI uelv = this.getMainControl().openUeList();
 		uelv.update(uem);

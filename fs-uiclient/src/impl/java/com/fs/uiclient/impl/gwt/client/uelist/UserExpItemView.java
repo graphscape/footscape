@@ -25,8 +25,6 @@ public class UserExpItemView extends SimpleView {
 
 	protected TableWrapper table;
 
-	protected TDWrapper incomingCrExpId1;// incoming cooper request exp id from.
-
 	protected UserExpModel model;
 
 	/**
@@ -36,8 +34,6 @@ public class UserExpItemView extends SimpleView {
 		super(ctn, name);
 		this.model = um;
 		this.addAction(Actions.A_UEXP_SELECT);//
-		this.addAction(Actions.A_UEXP_OPEN_ACTIVITY);//
-		this.addAction(Actions.A_UEXP_COOPER_CONFIRM);
 		this.update();
 	}
 
@@ -93,33 +89,11 @@ public class UserExpItemView extends SimpleView {
 
 		}
 
-		{// activity
-			TRWrapper tr = this.table.addTr();
-			TDWrapper td = tr.addTd();
-			this.incomingCrExpId1 = td;// TODO lazy
-			td.getElement().setInnerText(t.getIncomingCrId());//
-
-		}
-		{// activity
-			TRWrapper tr = this.table.addTr();
-			TDWrapper td = tr.addTd();
-			td.setAttribute("colspan", "2");//
-			td.getElement().setInnerText(t.getActivityId());
-
-		}
 		new ViewUpdateEvent(this).dispatch();
 	}
 
 	public String getExpId() {
 		return this.model.getExpId();
-	}
-
-	public String getIncomingCrId() {
-		return this.model.getIncomingCrId();
-	}
-
-	public String getActivityId() {
-		return this.model.getActivityId();
 	}
 
 	/*
@@ -130,8 +104,6 @@ public class UserExpItemView extends SimpleView {
 		//
 		super.beforeActionEvent(ae);
 		ae.setProperty("expId", this.getExpId());
-		ae.setProperty("incomingCrId", this.getIncomingCrId());
-		ae.setProperty("actId", this.getActivityId());
 	}
 
 }

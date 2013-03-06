@@ -32,14 +32,12 @@ public class CooperConfirmSuccessMH extends MHSupport {
 	public void handle(EndpointMessageEvent t) {
 		// remove cr from model
 
-		CooperControlI cc = this.getControl( CooperControlI.class, true);
+		CooperControlI cc = this.getControl(CooperControlI.class, true);
 		String crId = t.getMessage().getString("crId", true);
 		cc.removeIncomingCr(crId);
 		// uelist
-		UserExpListControlI uc = this.getControl( UserExpListControlI.class,
-				true);
+		UserExpListControlI uc = this.getControl(UserExpListControlI.class, true);
 
-		uc.incomingCrConfirmed(crId);
 	}
 
 }

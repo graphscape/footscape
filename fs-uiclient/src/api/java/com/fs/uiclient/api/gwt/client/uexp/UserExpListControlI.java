@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.coper.IncomingCrModel;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -15,11 +14,7 @@ public interface UserExpListControlI extends ControlI {
 
 	public void refresh(String expId);
 
-	public void incomingCr(IncomingCrModel crm);
-
 	public void detailExp(String expId);
-
-	public void incomingCrConfirmed(String crId);
 
 	public void select(String expId);
 

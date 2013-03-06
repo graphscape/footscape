@@ -25,12 +25,12 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  *         uelist, but in another message for calling
  *         UserExpListControlI.incomingCrConfirmed() by CooperConfirmSuccessMH
  */
-public class IncomingCrRefreshMH extends MHSupport {
+public class ExpMessageRefreshMH extends MHSupport {
 
 	/**
 	 * @param c
 	 */
-	public IncomingCrRefreshMH(ContainerI c) {
+	public ExpMessageRefreshMH(ContainerI c) {
 		super(c);
 	}
 
@@ -71,7 +71,7 @@ public class IncomingCrRefreshMH extends MHSupport {
 	 */
 	private void onIncomingCr(EndpointMessageEvent t, IncomingCrModel crm) {
 		UserExpListControlI c = this.getControl(UserExpListControlI.class, true);
-		c.incomingCr(crm);
+
 	}
 
 }

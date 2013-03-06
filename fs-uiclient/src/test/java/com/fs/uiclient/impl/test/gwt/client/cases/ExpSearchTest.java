@@ -143,12 +143,6 @@ public class ExpSearchTest extends TestBase {
 
 		assertEquals("the activity id set on the wrong exp", expId2, ue.getExpId());
 
-		// the selected item should have an activity with it.
-		String actId = ue.getActivityId();
-		assertNotNull("activity id is nulll for the exp model with id:" + ue.getExpId(), actId);
-
-		assertEquals("selected activity not correct or not selected.", actId1, actId);
-
 		this.tryFinish("activity.created");//
 
 		// listen to the activity open

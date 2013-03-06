@@ -24,13 +24,7 @@ public class UserExpModel extends ModelSupport {
 
 	public static final Location L_TIMESTAMP = Location.valueOf("timestamp");//
 
-	public static final Location L_ISEXPANDED = Location.valueOf("isExpanded");//
-
 	private String expId;
-
-	private String incomingCrId;
-
-	private String activityId;
 
 	private boolean selected;
 
@@ -40,7 +34,7 @@ public class UserExpModel extends ModelSupport {
 
 	public UserExpModel(String id) {
 		super(id);
-		
+
 		this.expId = id;
 	}
 
@@ -77,44 +71,4 @@ public class UserExpModel extends ModelSupport {
 		return (DateData) this.getValue(L_TIMESTAMP, force);
 	}
 
-	public void incomingCrConfirmed(String crId) {
-		if (!crId.equals(this.incomingCrId)) {
-			throw new UiException("crid:" + crId + " not same as:"
-					+ this.incomingCrId);
-		}
-		this.incomingCrId = null;
-		new UserExpCrConfirmEvent(this, crId).dispatch();
-	}
-
-	/**
-	 * Dec 4, 2012
-	 */
-	public void setIncomingCrId(String string) {// TODO list
-		this.incomingCrId = string;
-		new UserExpIncomingCrEvent(this, this.incomingCrId).dispatch();
-
-	}
-
-	/**
-	 * @return the cooperReqId
-	 */
-	public String getIncomingCrId() {
-		return this.incomingCrId;
-	}
-
-	/**
-	 * @return the activityId
-	 */
-	public String getActivityId() {
-		return activityId;
-	}
-
-	/**
-	 * @param activityId
-	 *            the activityId to set
-	 */
-	public void setActivityId(String activityId) {
-		this.activityId = activityId;
-		new UserExpActivityEvent(this, this.activityId).dispatch();
-	}
 }

@@ -55,7 +55,6 @@ public class UeListRefreshMH extends MHSupport {
 
 			uem.setBody(body);//
 			uem.setTimestamp(dd);
-			uem.setActivityId(actId == null ? null : actId);
 			uec.addOrUpdateUserExp(uem);
 		}
 	}

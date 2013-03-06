@@ -14,17 +14,15 @@ import com.fs.uicore.api.gwt.client.ModelI;
  */
 public interface UserExpListModelI extends ModelI {
 
-
 	// user.
 	// when new exp is created,this value is set and the control will get the
 	// content from server side.
 	// when one selected.
 	/**
-	 * see ExpSearchControl.onUserExpSelected()
-	 * see ExpSearchAP of ExpSearchControl
+	 * see ExpSearchControl.onUserExpSelected() see ExpSearchAP of
+	 * ExpSearchControl
 	 */
-	public static final Location L_SELECTED_EXP_ID = Location
-			.valueOf("selectedExpId");
+	public static final Location L_SELECTED_EXP_ID = Location.valueOf("selectedExpId");
 
 	public void addUserExp(UserExpModel uem);
 
@@ -34,8 +32,5 @@ public interface UserExpListModelI extends ModelI {
 
 	public void select(String expId);// the current user exp,use select this
 										// one,for search or open it.
-	public List<UserExpModel> getUserExpByActivityId(String actId);
-	
-	public UserExpModel getUserExpByIncomingCrId(String actId, boolean force);	
 
 }
