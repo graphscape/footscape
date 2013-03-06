@@ -11,8 +11,8 @@ import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
+import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormView;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -30,7 +30,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 
 	protected UserExpListView ueListView;
 
-	protected Map<String, UserExpView> ueViewMap;
+	protected Map<String, UserExpItemView> ueViewMap;
 
 	protected ExpEditView eeView;
 
@@ -44,7 +44,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 
 	public ExpTestWorker(int totalExp) {
 		this.totalExp = totalExp;
-		this.ueViewMap = new HashMap<String, UserExpView>();
+		this.ueViewMap = new HashMap<String, UserExpItemView>();
 		this.tasks.add("founduelistview");// 1
 		this.tasks.add("editview");// 1
 		this.tasks.add("editrequest");// 1
@@ -61,8 +61,8 @@ public class ExpTestWorker extends AbstractTestWorker {
 		if (obj instanceof ExpEditView) {
 			this.onExpEditViewAttached((ExpEditView) obj);
 		}
-		if (obj instanceof UserExpView) {
-			this.onUserExpViewAttached((UserExpView) obj);
+		if (obj instanceof UserExpItemView) {
+			this.onUserExpViewAttached((UserExpItemView) obj);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 
 	}
 
-	public void onUserExpViewAttached(UserExpView v) {
+	public void onUserExpViewAttached(UserExpItemView v) {
 
 		int size = this.ueViewMap.size();
 		String expId = v.getExpId();
@@ -141,7 +141,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 
 	}
 
-	protected void onNewExpView(int idx, UserExpView e) {
+	protected void onNewExpView(int idx, UserExpItemView e) {
 		
 	}
 

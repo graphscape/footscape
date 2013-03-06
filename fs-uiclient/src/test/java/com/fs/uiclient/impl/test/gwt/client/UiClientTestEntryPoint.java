@@ -5,7 +5,6 @@
 package com.fs.uiclient.impl.test.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
-import com.fs.uiclient.impl.gwt.client.testsupport.ActivityTestWorker;
 import com.fs.uiclient.impl.gwt.client.testsupport.AbstractTestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicore.api.gwt.client.ContainerI;

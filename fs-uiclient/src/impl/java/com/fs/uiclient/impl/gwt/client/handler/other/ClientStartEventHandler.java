@@ -32,6 +32,8 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		fc.addHeaderItem(HeaderNames.H2_PROFILE);
+		fc.addHeaderItem(HeaderNames.H1_MYEXP);
+		fc.addHeaderItem(HeaderNames.H1_EXPMESSAGECOUNT);
 	}
 
 }

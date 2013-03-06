@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 18, 2012
  */
-package com.fs.uiclient.impl.gwt.client.uexp;
+package com.fs.uiclient.impl.gwt.client.uelist;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
@@ -21,7 +21,7 @@ import com.google.gwt.user.client.DOM;
  * @author wu
  * 
  */
-public class UserExpView extends SimpleView {
+public class UserExpItemView extends SimpleView {
 
 	protected TableWrapper table;
 
@@ -32,7 +32,7 @@ public class UserExpView extends SimpleView {
 	/**
 	 * @param ctn
 	 */
-	public UserExpView(ContainerI ctn, String name, UserExpModel um) {
+	public UserExpItemView(ContainerI ctn, String name, UserExpModel um) {
 		super(ctn, name);
 		this.model = um;
 		this.addAction(Actions.A_UEXP_SELECT);//

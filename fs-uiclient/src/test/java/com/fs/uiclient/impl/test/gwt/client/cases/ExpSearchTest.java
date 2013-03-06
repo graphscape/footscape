@@ -7,15 +7,12 @@ package com.fs.uiclient.impl.test.gwt.client.cases;
 import org.junit.Before;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
-import com.fs.uiclient.api.gwt.client.activity.ActivityModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
-import com.fs.uiclient.impl.gwt.client.uexp.UserExpView;
+import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelChildEvent;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
@@ -160,7 +157,7 @@ public class ExpSearchTest extends TestBase {
 		String vname = "userExpView-" + expId;// the view name is same as the
 												// exp id;
 		this.dump();
-		UserExpView uev = this.root.find(UserExpView.class, vname, true);
+		UserExpItemView uev = this.root.find(UserExpItemView.class, vname, true);
 		uev.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
 
 	}
@@ -169,29 +166,4 @@ public class ExpSearchTest extends TestBase {
 
 	}
 
-	// the activity is opened.
-	protected void onActivityModelAdd(ModelChildEvent e) {
-		if (!(e.getChild() instanceof ActivityModelI)) {
-			return;
-		}
-		ActivityModelI am = (ActivityModelI) e.getChild();
-		String actId2 = am.getActivityId();
-		assertEquals("activity opened but the id not correct", this.actId1, actId2);
-		this.tryFinish("activity.open");
-	}
-
-	/**
-	 * Oct 20, 2012
-	 */
-	protected void onMainChildEvent(ModelChildEvent e) {
-		//
-		ModelI cm = e.getChild();
-		if (!(cm instanceof ActivityModelI)) {
-			return;
-		}
-		ActivityModelI am = (ActivityModelI) cm;
-		String actId = am.getActivityId();
-		assertEquals("new added activity id not correct.", this.actId1, actId);
-
-	}
 }

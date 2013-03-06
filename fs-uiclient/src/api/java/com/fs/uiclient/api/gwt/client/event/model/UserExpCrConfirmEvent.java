@@ -12,7 +12,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  *         This event is raised on user exp model, when it have received one
  *         incoming cr(cooper request).
  * @see UserExpModel
- * @see UserExpView
+ * @see UserExpItemView
  */
 public class UserExpCrConfirmEvent extends ModelUpdateEvent {
 	public static final Type<UserExpCrConfirmEvent> TYPE = new Type<UserExpCrConfirmEvent>(

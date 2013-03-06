@@ -4,18 +4,14 @@
  */
 package com.fs.uiclient.impl.gwt.client.main;
 
-import com.fs.uiclient.api.gwt.client.activities.ActivitiesModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
-import com.fs.uiclient.impl.gwt.client.activities.ActivitiesModel;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
-import com.fs.uiclient.impl.gwt.client.exps.ExpSearchModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
@@ -35,7 +31,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	ProfileModelI profile;
 	UserExpListModelI uelist;
-	ActivitiesModelI activities;
 
 	/**
 	 * @param name
@@ -44,7 +39,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 		super(c, name);
 		this.profile = new ProfileModel("profile");
 		this.uelist = new UserExpListModel("ue-list");
-		this.activities = new ActivitiesModel("activities");
 	}
 
 	public ProfileModelI getProfileModel() {
@@ -141,14 +135,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 			}
 		});
 
-	}
-
-	/*
-	 * Feb 2, 2013
-	 */
-	@Override
-	public ActivitiesModelI getActivitiesModel() {
-		return this.activities;
 	}
 
 }
