@@ -187,16 +187,16 @@ public class MockExpectorClient extends MockClientWrapper {
 	}
 
 	/**
-	 *Mar 5, 2013
+	 * Mar 5, 2013
 	 */
 	public List<MockExpMessage> getExpMessage(String expId2) {
-		
+
 		//
 		List<MockExpMessage> rt = new ArrayList<MockExpMessage>();
 		MessageI req = this.newRequest("/expm/search");
 		req.setPayload("expId2", expId2);
 		MessageI res = this.syncSendMessage(req);
-		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) res.getPayload("exp-messages");
+		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) res.getPayload("expMessages", true);
 		for (PropertiesI<Object> pts : el) {
 			MockExpMessage me = new MockExpMessage(pts);
 

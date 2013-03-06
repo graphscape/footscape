@@ -51,61 +51,44 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		em.setBody(body);
 		em.save(true);
 		String id = em.getId();
-		res.setPayload("expMessageId",id);
+		res.setPayload("expMessageId", id);
 	}
 
 	@Handle("search")
 	public void handleSearch(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 
-		Integer from = (Integer) req.getPayload("firstResult", true);
-		Integer max = (Integer) req.getPayload("maxResult", true);
-		boolean includeMe = req.getBoolean("includeMine", true);
-		int slop = (Integer) req.getPayload("slop", 0);
+		String expId2 = req.getString("expId2", true);
 
-		String expId = (String) req.getPayload("expId");// may null
+		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
 
-		String phrase = (String) req.getPayload("phrase");// may null
+		qo.first(0);
+		qo.maxSize(Integer.MAX_VALUE);
+		qo.propertyEq(ExpMessage.EXP_ID2, expId2);
+		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 
-		NodeQueryOperationI<Expectation> qo = this.dataService.prepareNodeQuery(Expectation.class);
-
-		qo.first(from);
-		qo.maxSize(max);
-		if (!includeMe) {
-			String thisAccId = this.getAccountId(ew, true);//
-			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);
-		}
-		qo.propertyMatch(Expectation.BODY, phrase, slop);
-
-		NodeQueryResultI<Expectation> rst = qo.execute().getResult().assertNoError();
+		NodeQueryResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
 
 	}
 
-	private void processExpsResult(ResponseI res, List<Expectation> list) {
+	private void processExpsResult(ResponseI res, List<ExpMessage> list) {
 		// convert
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
-				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID },//
-				new boolean[] { true, true, true, true }, // force
-				new String[] { "id", "body", "timestamp", "accountId" }//
+				ExpMessage.HEADER, ExpMessage.BODY, NodeI.PK_TIMESTAMP, ExpMessage.EXP_ID1,
+				ExpMessage.ACCOUNT_ID1 },//
+				new boolean[] { true, true, true, true, true, true }, // force
+				new String[] { "id", "header", "body", "timestamp", "expId1", "accountId1" }//
 				);
+
 		for (PropertiesI<Object> pts : el) {
-			String accId = (String) pts.getProperty("accountId");
+			String accId1 = (String) pts.getProperty("accountId1");
 			// account must be exist
-			Account acc = this.dataService.getNewestById(Account.class, accId, true);
-			pts.setProperty("nick", acc.getNick());
-
-			// profile may not exist.
-
-			Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
-			String icon = pf == null ? null : pf.getIcon();
-			if (icon == null) {
-				icon = this.config.getProperty("defaultIconDataUrl");//
-			}
-			pts.setProperty("iconDataUrl", icon);//
+			Account acc = this.dataService.getNewestById(Account.class, accId1, true);
+			pts.setProperty("nick1", acc.getNick());
 
 		}
 
-		res.setPayload("expectations", el);
+		res.setPayload("expMessages", el);
 	}
 }

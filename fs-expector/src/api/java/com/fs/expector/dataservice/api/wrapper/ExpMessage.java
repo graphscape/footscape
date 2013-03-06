@@ -27,7 +27,6 @@ public class ExpMessage extends NodeWrapper {
 	public static final String HEADER = "header";
 
 	public static final String BODY = "body";
-	
 
 	/**
 	 * @param ntype
@@ -59,7 +58,7 @@ public class ExpMessage extends NodeWrapper {
 	 */
 	public static void config(DataSchema cfs) {
 		cfs.addConfig(NodeTypes.EXPMESSAGE, ExpMessage.class).field(EXP_ID1).field(EXP_ID2)
-				.field(ACCOUNT_ID2).field(ACCOUNT_ID1).field(HEADER).field(BODY);
+				.field(ACCOUNT_ID2).field(ACCOUNT_ID1).field(PATH).field(HEADER).field(BODY);
 
 	}
 
@@ -96,7 +95,7 @@ public class ExpMessage extends NodeWrapper {
 	}
 
 	public void setPath(String path) {
-		this.setProperty(PATH,path);
+		this.setProperty(PATH, path);
 	}
 
 	public String getPath() {
