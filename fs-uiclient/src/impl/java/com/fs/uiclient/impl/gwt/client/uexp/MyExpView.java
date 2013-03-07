@@ -6,7 +6,6 @@ package com.fs.uiclient.impl.gwt.client.uexp;
 
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -24,7 +23,7 @@ public class MyExpView extends SimpleView implements MyExpViewI {
 	/**
 	 * @param ctn
 	 */
-	public MyExpView(ContainerI ctn, UserExpListModelI uem) {
+	public MyExpView(ContainerI ctn, String expId) {
 		super(ctn, "myexp");
 	}
 

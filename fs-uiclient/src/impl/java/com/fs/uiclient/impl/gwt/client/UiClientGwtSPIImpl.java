@@ -28,6 +28,7 @@ import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ItemCooperAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.RefreshIncomingCrAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpCooperConfirmAP;
@@ -134,7 +135,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 
-		eb.addHandler(Actions.A_UEXP_SELECT, new UserExpSelectAP(c));
+		eb.addHandler(Actions.A_UEXPI_SELECT, new UserExpSelectAP(c));
+		eb.addHandler(Actions.A_UEXPI_OPEN, new OpenMyExpAP(c));
+		
 		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP(c));
 	}
 

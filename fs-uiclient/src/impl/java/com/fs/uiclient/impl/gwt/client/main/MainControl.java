@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
@@ -18,6 +19,7 @@ import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
+import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -60,7 +62,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public ExpSearchViewI openExpSearch() {
-	
+
 		ExpSearchView esv = this.gorOrCreateViewInBody(Path.valueOf("/exp-search"),
 				new CreaterI<ExpSearchView>() {
 
@@ -135,6 +137,25 @@ public class MainControl extends ControlSupport implements MainControlI {
 			}
 		});
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.main.MainControlI#openMyExp(java.lang.
+	 * String)
+	 */
+	@Override
+	public MyExpViewI openMyExp(final String expId) {
+		MyExpView esv = this.gorOrCreateViewInBody(Path.valueOf("/exp-search"), new CreaterI<MyExpView>() {
+
+			@Override
+			public MyExpView create(ContainerI ct) {
+				return new MyExpView(ct, expId);
+			}
+		});
+		return esv;
 	}
 
 }

@@ -6,6 +6,7 @@ package com.fs.uiclient.api.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -22,6 +23,8 @@ public interface MainControlI extends ControlI {
 	public ExpSearchViewI openExpSearch();
 
 	public UserExpListViewI openUeList();
+	
+	public MyExpViewI openMyExp(String expId);
 
 	public SignupViewI openSignup();
 

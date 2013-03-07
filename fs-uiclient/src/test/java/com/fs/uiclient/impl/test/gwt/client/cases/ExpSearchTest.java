@@ -152,7 +152,7 @@ public class ExpSearchTest extends TestBase {
 												// exp id;
 		this.dump();
 		UserExpItemView uev = this.root.find(UserExpItemView.class, vname, true);
-		uev.clickAction(Actions.A_UEXP_OPEN_ACTIVITY);
+		uev.clickAction(Actions.A_UEXPI_OPEN);
 
 	}
 

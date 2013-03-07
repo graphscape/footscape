@@ -17,9 +17,9 @@ public class Actions {
 	// user exp
 	public static final Path A_USEREXP = ACTION.getSubPath("userexp");
 
-	public static final Path A_UEXP_OPEN_ACTIVITY = A_USEREXP.getSubPath("activity");
+	public static final Path A_UEXPI_OPEN = A_USEREXP.getSubPath("open");
 
-	public static final Path A_UEXP_SELECT = A_USEREXP.getSubPath("select");
+	public static final Path A_UEXPI_SELECT = A_USEREXP.getSubPath("select");
 
 	public static final Path A_UEXP_COOPER_CONFIRM = A_USEREXP.getSubPath("cooperConfirm");
 	// activities
