@@ -5,8 +5,6 @@ package com.fs.uiclient.impl.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
-import com.fs.uiclient.api.gwt.client.coper.CooperControlI;
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -37,7 +35,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
@@ -137,7 +135,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_UEXPI_SELECT, new UserExpSelectAP(c));
 		eb.addHandler(Actions.A_UEXPI_OPEN, new OpenMyExpAP(c));
-		
+
 		eb.addHandler(Actions.A_UEXP_COOPER_CONFIRM, new UserExpCooperConfirmAP(c));
 	}
 
@@ -156,10 +154,10 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"),
 				new CooperRequestSuccessMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/incomingCr"), new ExpMessageCreatedNotifyMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-message-created"),
+				new ExpMessageCreatedNotifyMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/incomingCr/success"),
-				new ExpMessageRefreshMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
 				new CooperConfirmSuccessMH(c));// search
@@ -327,16 +325,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			}
 
 		});
-		InstanceOf.addChecker(new CheckerSupport(CooperModelI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof CooperModelI;
-
-			}
-
-		});
 
 		InstanceOf.addChecker(new CheckerSupport(MyExpViewI.class) {
 
@@ -398,16 +386,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof ExpMessage;
-
-			}
-
-		});
-		InstanceOf.addChecker(new CheckerSupport(CooperControlI.class) {
-
-			@Override
-			public boolean isInstance(Object o) {
-
-				return o instanceof CooperControlI;
 
 			}
 

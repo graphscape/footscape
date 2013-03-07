@@ -111,8 +111,10 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	 *Mar 6, 2013
 	 */
 	private MyExpViewI openMyExpView(String expId) {
-		// 
-		return null;
+		//
+		MyExpViewI rt = this.getMainControl().openMyExp(expId);
+		
+		return rt;
 	}
 
 }

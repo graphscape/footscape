@@ -4,109 +4,58 @@
  */
 package com.fs.uiclient.api.gwt.client.coper;
 
-import com.fs.uicore.api.gwt.client.support.ModelSupport;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
  * @author wu
  * 
  */
-public class ExpMessage extends ModelSupport {
-
-	private String crId;
-
-	private String expId1;
-
-	private String expId2;
-
-	private String accountId1;
-
-	private String accountId2;
+public class ExpMessage extends MsgWrapper {
 
 	/**
 	 * @param name
 	 */
-	public ExpMessage(String crId) {
-		super(crId);
-		this.crId = crId;
-	}
-
-	public String getCrId() {
-		return crId;
+	public ExpMessage(MessageData msg) {
+		super(msg);
 	}
 
 	/**
 	 * @return the expId1
 	 */
 	public String getExpId1() {
-		return expId1;
-	}
-
-	/**
-	 * @param expId1
-	 *            the expId1 to set
-	 */
-	public void setExpId1(String expId1) {
-		this.expId1 = expId1;
+		return (String) this.getPayload("expId1", true);
 	}
 
 	/**
 	 * @return the expId2
 	 */
 	public String getExpId2() {
-		return expId2;
-	}
-
-	/**
-	 * @param expId2
-	 *            the expId2 to set
-	 */
-	public void setExpId2(String expId2) {
-		this.expId2 = expId2;
-	}
-
-	/**
-	 * @return the accountId
-	 */
-	public String getAccountId() {
-		return accountId1;
-	}
-
-	/**
-	 * @param accountId
-	 *            the accountId to set
-	 */
-	public void setAccountId(String accountId) {
-		this.accountId1 = accountId;
+		return (String) this.getPayload("expId2", true);
 	}
 
 	/**
 	 * @return the accountId1
 	 */
 	public String getAccountId1() {
-		return accountId1;
-	}
-
-	/**
-	 * @param accountId1
-	 *            the accountId1 to set
-	 */
-	public void setAccountId1(String accountId1) {
-		this.accountId1 = accountId1;
+		return (String) this.getPayload("accountId1", true);
 	}
 
 	/**
 	 * @return the accountId2
 	 */
 	public String getAccountId2() {
-		return accountId2;
+
+		return (String) this.getPayload("accountId2", true);
+
 	}
 
 	/**
-	 * @param accountId2
-	 *            the accountId2 to set
+	 * Mar 7, 2013
 	 */
-	public void setAccountId2(String accountId2) {
-		this.accountId2 = accountId2;
+	public String getBody() {
+		//
+		return (String) this.getPayload("body", true);
 	}
 
 }

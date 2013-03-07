@@ -148,13 +148,14 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public MyExpViewI openMyExp(final String expId) {
-		MyExpView esv = this.gorOrCreateViewInBody(Path.valueOf("/exp-search"), new CreaterI<MyExpView>() {
+		MyExpView esv = this.gorOrCreateViewInBody(Path.valueOf("/myexp/" + expId),
+				new CreaterI<MyExpView>() {
 
-			@Override
-			public MyExpView create(ContainerI ct) {
-				return new MyExpView(ct, expId);
-			}
-		});
+					@Override
+					public MyExpView create(ContainerI ct) {
+						return new MyExpView(ct, expId);
+					}
+				});
 		return esv;
 	}
 

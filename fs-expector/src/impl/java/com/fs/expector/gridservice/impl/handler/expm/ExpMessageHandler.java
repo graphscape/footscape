@@ -82,9 +82,10 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		// convert
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
 				ExpMessage.HEADER, ExpMessage.BODY, NodeI.PK_TIMESTAMP, ExpMessage.EXP_ID1,
-				ExpMessage.ACCOUNT_ID1 },//
-				new boolean[] { true, true, true, true, true, true }, // force
-				new String[] { "id", "header", "body", "timestamp", "expId1", "accountId1" }//
+				ExpMessage.ACCOUNT_ID1, ExpMessage.EXP_ID2, ExpMessage.ACCOUNT_ID2 },//
+				new boolean[] { true, true, true, true, true, true, true, true }, // force
+				new String[] { "id", "header", "body", "timestamp", "expId1", "accountId1", "expId2",
+						"accountId2" }//
 				);
 
 		for (PropertiesI<Object> pts : el) {

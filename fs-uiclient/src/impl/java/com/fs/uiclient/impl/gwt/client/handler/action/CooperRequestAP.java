@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.coper.CooperModelI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
