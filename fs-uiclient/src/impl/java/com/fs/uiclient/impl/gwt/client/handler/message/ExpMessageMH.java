@@ -33,18 +33,16 @@ public class ExpMessageMH extends MHSupport {
 	public void handle(EndpointMessageEvent t) {
 
 		MessageData res = t.getMessage();
-		
-		List<ObjectPropertiesData> expL = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
-				"expMessages", true);
+
+		List<MessageData> expL = (List<MessageData>) res.getPayloads().getProperty("expMessages", true);
+
 		UserExpListControlI c = this.getControl(UserExpListControlI.class, true);
 		for (int i = 0; i < expL.size(); i++) {
-			ObjectPropertiesData msgD = expL.get(i);
-			MessageData md = new MessageData("/exp/message");
-			md.setPayloads(msgD);
-			ExpMessage em = new ExpMessage(md);
+			MessageData msgD = expL.get(i);
+			ExpMessage em = new ExpMessage(msgD);
 			c.addOrUpdateExpMessage(em);
 		}
-		
+
 	}
 
 }

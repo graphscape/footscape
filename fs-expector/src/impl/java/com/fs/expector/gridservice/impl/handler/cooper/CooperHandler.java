@@ -6,11 +6,16 @@ package com.fs.expector.gridservice.impl.handler.cooper;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
+
+import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
@@ -25,6 +30,9 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class CooperHandler extends ExpectorTMREHSupport {
+
+	private CodecI codec;
+
 	// query activities by account.
 
 	@Handle("request")
@@ -52,8 +60,8 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		res.setPayload("cooperRequestId", cid);//
 		// notify the exp2's account to refresh the incoming request,if he/she
 		// is online
-		
-		//TODO move below code to a service: ExpMessageServiceI?
+
+		// TODO move below code to a service: ExpMessageServiceI?
 		ExpMessage em = new ExpMessage().forCreate(this.dataService);
 		em.setExpId1(expId1);
 		em.setExpId2(expId2);
@@ -61,12 +69,21 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		em.setAccountId2(accId2);
 		em.setPath("/connect/request");
 		em.setHeader("");
-		em.setBody("exp2.body:"+exp2.getBody());
+		PropertiesI<Object> pts = new MapProperties<Object>();
+		pts.setProperty("cooperRequestId", cid);
+		String body = this.encodeMessageBody(pts);
+		em.setBody(body);
 		em.save(true);
-		
+
 		MessageI msg = new MessageSupport("/notify/exp-message-created");
 
 		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
+	}
+
+	private String encodeMessageBody(PropertiesI<Object> pts) {
+
+		JSONArray jsn = (JSONArray) this.codec.encode(pts);
+		return jsn.toJSONString();
 	}
 
 	@Handle("confirm")
@@ -98,6 +115,18 @@ public class CooperHandler extends ExpectorTMREHSupport {
 				ConnectRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);
 		List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
 		res.setPayload("cooperRequestList", ptsL);
+	}
+
+	/*
+	 * Mar 9, 2013
+	 */
+	@Override
+	public void active(ActiveContext ac) {
+		//
+		super.active(ac);
+
+		this.codec = this.getContainer().getTop().find(CodecI.FactoryI.class, true)
+				.getCodec(PropertiesI.class);
 	}
 
 }

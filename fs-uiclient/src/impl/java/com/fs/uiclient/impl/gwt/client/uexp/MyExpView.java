@@ -4,6 +4,9 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
@@ -21,9 +24,9 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected ListI list;
 
+	protected Map<String, ExpMessageView> map;
+
 	protected String expId;
-	
-	
 
 	/**
 	 * @param ctn
@@ -33,6 +36,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 		this.list = this.factory.create(ListI.class);
 		this.list.parent(this);
+		this.map = new HashMap<String, ExpMessageView>();
+
 	}
 
 	/*
@@ -41,7 +46,12 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	@Override
 	public void addOrUpdateMessage(ExpMessage msg) {
 		//
-		ExpMessageView ev = new ExpMessageView(this.container, msg);
-		ev.parent(this.list);
+		String id = msg.getId();
+		ExpMessageView ev = this.map.get(id);
+		if (ev == null) {
+			ev = ExpMessageView.createViewForMessage(this.container, msg);
+			ev.parent(this.list);
+		}
+
 	}
 }

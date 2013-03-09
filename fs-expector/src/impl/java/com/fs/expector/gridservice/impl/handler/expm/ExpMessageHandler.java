@@ -4,11 +4,20 @@
  */
 package com.fs.expector.gridservice.impl.handler.expm;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.codec.CodecI;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeI;
@@ -18,7 +27,6 @@ import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
-import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -27,6 +35,29 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class ExpMessageHandler extends ExpectorTMREHSupport {
+
+	private CodecI codec;
+
+	@Override
+	public void active(ActiveContext ac) {
+		//
+		super.active(ac);
+
+		this.codec = this.getContainer().getTop().find(CodecI.FactoryI.class, true)
+				.getCodec(PropertiesI.class);
+	}
+
+	private PropertiesI<Object> decodeMessageExtend(String body) {
+		JSONArray jsn;
+		try {
+			jsn = (JSONArray) new JSONParser().parse(body);
+		} catch (ParseException e) {
+			throw new FsException(e);
+		}
+
+		PropertiesI<Object> rt = (PropertiesI<Object>) this.codec.decode(jsn);
+		return rt;
+	}
 
 	@Handle("create")
 	public void handleCreate(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
@@ -80,22 +111,30 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private void processExpsResult(ResponseI res, List<ExpMessage> list) {
 		// convert
-		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
-				ExpMessage.HEADER, ExpMessage.BODY, NodeI.PK_TIMESTAMP, ExpMessage.EXP_ID1,
-				ExpMessage.ACCOUNT_ID1, ExpMessage.EXP_ID2, ExpMessage.ACCOUNT_ID2 },//
-				new boolean[] { true, true, true, true, true, true, true, true }, // force
-				new String[] { "id", "header", "body", "timestamp", "expId1", "accountId1", "expId2",
-						"accountId2" }//
-				);
-
-		for (PropertiesI<Object> pts : el) {
-			String accId1 = (String) pts.getProperty("accountId1");
+		
+		List<MessageI> ml = new ArrayList<MessageI>();
+		for (ExpMessage em : list) {
+			MessageI msg = new MessageSupport(em.getPath());
+			msg.setHeader("id", em.getId());
+			msg.setHeader("accountId1", em.getAccountId1());
+			msg.setHeader("accountId2", em.getAccountId2());
+			msg.setHeader("expId1", em.getExpId1());
+			msg.setHeader("expId2", em.getExpId2());
+			
+			
+			String accId1 = em.getAccountId1();
+			
 			// account must be exist
 			Account acc = this.dataService.getNewestById(Account.class, accId1, true);
-			pts.setProperty("nick1", acc.getNick());
-
+			
+			msg.setPayload("nick1", acc.getNick());
+			String body = em.getBody();
+			
+			PropertiesI<Object> pls = this.decodeMessageExtend(body);
+			msg.setPayloads(pls);
+			ml.add(msg);
 		}
 
-		res.setPayload("expMessages", el);
+		res.setPayload("expMessages", ml);
 	}
 }

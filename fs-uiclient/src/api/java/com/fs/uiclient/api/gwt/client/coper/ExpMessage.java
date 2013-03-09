@@ -20,25 +20,29 @@ public class ExpMessage extends MsgWrapper {
 		super(msg);
 	}
 
+	public String getId() {
+		return (String) this.getHeader("id", true);
+	}
+
 	/**
 	 * @return the expId1
 	 */
 	public String getExpId1() {
-		return (String) this.getPayload("expId1", true);
+		return (String) this.getHeader("expId1", true);
 	}
 
 	/**
 	 * @return the expId2
 	 */
 	public String getExpId2() {
-		return (String) this.getPayload("expId2", true);
+		return (String) this.getHeader("expId2", true);
 	}
 
 	/**
 	 * @return the accountId1
 	 */
 	public String getAccountId1() {
-		return (String) this.getPayload("accountId1", true);
+		return (String) this.getHeader("accountId1", true);
 	}
 
 	/**
@@ -46,16 +50,8 @@ public class ExpMessage extends MsgWrapper {
 	 */
 	public String getAccountId2() {
 
-		return (String) this.getPayload("accountId2", true);
+		return (String) this.getHeader("accountId2", true);
 
-	}
-
-	/**
-	 * Mar 7, 2013
-	 */
-	public String getBody() {
-		//
-		return (String) this.getPayload("body", true);
 	}
 
 }

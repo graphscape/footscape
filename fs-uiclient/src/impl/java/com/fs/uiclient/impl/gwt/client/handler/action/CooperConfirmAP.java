@@ -14,12 +14,12 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  * @author wu
  * 
  */
-public class UserExpCooperConfirmAP extends ActionHandlerSupport2 {
+public class CooperConfirmAP extends ActionHandlerSupport2 {
 
 	/**
 	 * @param c
 	 */
-	public UserExpCooperConfirmAP(ContainerI c) {
+	public CooperConfirmAP(ContainerI c) {
 		super(c);
 		// TODO Auto-generated constructor stub
 	}
@@ -29,7 +29,7 @@ public class UserExpCooperConfirmAP extends ActionHandlerSupport2 {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
-		String crId = (String) ae.getProperty("incomingCrId", true);
+		String crId = (String) ae.getProperty("cooperRequestId", true);
 
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/confirm"));
 		req.getPayloads().setProperty("cooperRequestId", (crId));
