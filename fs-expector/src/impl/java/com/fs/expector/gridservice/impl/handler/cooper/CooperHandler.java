@@ -90,19 +90,36 @@ public class CooperHandler extends ExpectorTMREHSupport {
 	public void handleConfirm(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		String crid = (String) req.getPayload("cooperRequestId", true);
-
 		ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crid, true);
+		String accId1 = cr.getAccountId1();
+		String accId2 = cr.getAccountId2();
+		
+		//from one to another
 		Connection c = new Connection().forCreate(this.dataService);
 		c.setAccountId1(cr.getAccountId1());
 		c.setAccountId2(cr.getAccountId2());
 		c.setExpId1(cr.getExpId1());
 		c.setExpId2(cr.getExpId2());
 		c.save(true);
+		
+		//the reverse connect
+		c = new Connection().forCreate(this.dataService);
+		c.setAccountId1(cr.getAccountId2());
+		c.setAccountId2(cr.getAccountId1());
+		c.setExpId1(cr.getExpId2());
+		c.setExpId2(cr.getExpId1());
+		c.save(true);
 
 		this.dataService.deleteById(ConnectRequest.class, crid);// delete this
 																// cr,if
 
 		res.setPayload("crId", crid);//
+		
+		MessageI msg = new MessageSupport("/notify/exp-connect-created");
+
+		this.onlineNotifyService.tryNotifyAccount(accId1, msg);
+		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
+		
 	}
 
 	// TODO replace by server notifier to client.

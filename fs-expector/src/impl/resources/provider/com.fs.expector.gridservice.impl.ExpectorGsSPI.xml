@@ -23,7 +23,7 @@
 	</prefix>
 	<config name="globalEventDispatcher">
 
-		<handlers value="signup,client,i18n,imsg,expe,exps,expm,cooper,profile,uelist" />
+		<handlers value="signup,client,i18n,imsg,expc,expe,exps,expm,cooper,profile,uelist" />
 
 		<config name="signup" path="/events/signup" class="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
 		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
@@ -31,6 +31,7 @@
 		</config>
 		<config name="i18n" path="/events/i18n" class="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
 		<config name="imsg" path="/events/imsg" class="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />
+		<config name="expc" path="/events/expc" class="com.fs.expector.gridservice.impl.handler.expc.ExpConnectHandler" />
 		<config name="expe" path="/events/expe" class="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />
 		<config name="exps" path="/events/exps" class="com.fs.expector.gridservice.impl.handler.exps.ExpSearchHandler">
 			<defaultIconDataUrl

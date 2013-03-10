@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
+import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
@@ -97,24 +98,36 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	}
 
 	/*
-	 *Mar 6, 2013
+	 * Mar 6, 2013
 	 */
 	@Override
 	public void addOrUpdateExpMessage(ExpMessage msg) {
-		//get or open the ExpView
+		// get or open the ExpView
 		String expId = msg.getExpId2();
 		MyExpViewI me = this.openMyExpView(expId);
 		me.addOrUpdateMessage(msg);
 	}
 
 	/**
-	 *Mar 6, 2013
+	 * Mar 6, 2013
 	 */
 	private MyExpViewI openMyExpView(String expId) {
 		//
 		MyExpViewI rt = this.getMainControl().openMyExp(expId);
-		
+
 		return rt;
+	}
+
+	/*
+	 * Mar 10, 2013
+	 */
+	@Override
+	public void addOrUpdateExpConnect(ExpConnect ec) {
+		//
+
+		String expId = ec.getExpId1();
+		MyExpViewI me = this.openMyExpView(expId);
+		me.addOrUpdateConnected(ec);
 	}
 
 }

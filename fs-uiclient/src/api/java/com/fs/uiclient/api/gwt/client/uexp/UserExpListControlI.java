@@ -22,5 +22,7 @@ public interface UserExpListControlI extends ControlI {
 	public void addOrUpdateUserExp(UserExpModel uem);
 	
 	public void addOrUpdateExpMessage(ExpMessage msg);
+	
+	public void addOrUpdateExpConnect(ExpConnect ec);
 
 }

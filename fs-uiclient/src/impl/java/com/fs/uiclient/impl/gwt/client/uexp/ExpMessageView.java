@@ -70,6 +70,8 @@ public abstract class ExpMessageView extends ViewSupport {
 		this.actionsDiv = new ElementWrapper(ele);
 		this.actions = this.factory.create(ListI.class);//
 		this.actions.parent(this);
+		//
+		
 	}
 
 	public static ExpMessageView createViewForMessage(ContainerI c, ExpMessage msg) {

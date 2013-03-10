@@ -33,6 +33,8 @@ import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectCreatedNotifyMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
@@ -156,12 +158,19 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-message-created"),
 				new ExpMessageCreatedNotifyMH(c));// search
+		
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-connect-created"),
+				new ExpConnectCreatedNotifyMH(c));// search
+		
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
 				new CooperConfirmSuccessMH(c));// search
-
+		//
+		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"),
+				new ExpConnectSearchMH(c));// search
+		
 	}
 
 	private void activeControls(ContainerI c, UiClientI client) {
