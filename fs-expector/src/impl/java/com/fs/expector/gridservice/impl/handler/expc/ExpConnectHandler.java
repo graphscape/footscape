@@ -30,6 +30,8 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpConnectHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
+	
+	private int maxSizeOfConnectQuery = 10000;//TODO remove this
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -50,7 +52,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
 
 		qo.first(0);
-		qo.maxSize(Integer.MAX_VALUE);
+		qo.maxSize(this.maxSizeOfConnectQuery);//TODO application determine this?
 		if (expId1 != null) {
 			qo.propertyEq(ExpMessage.EXP_ID1, expId1);
 		}

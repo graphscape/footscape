@@ -28,7 +28,6 @@ import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ItemCooperAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.RefreshIncomingCrAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
@@ -119,7 +118,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		EventBusI eb = client.getEventBus(true);
 
 		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP(c));
-		eb.addHandler(Actions.A_COOP_REFRESH_INCOMING_CR, new RefreshIncomingCrAP(c));
 		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP(c));//
 
 		eb.addHandler(Actions.A_EXPS_COOPER, new ItemCooperAP(c));

@@ -37,6 +37,8 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
+	
+	private int maxSizeOfMessageQuery = 10000;
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -95,7 +97,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
 
 		qo.first(0);
-		qo.maxSize(Integer.MAX_VALUE);
+		qo.maxSize(this.maxSizeOfMessageQuery);
 		if (expId2 != null) {
 			qo.propertyEq(ExpMessage.EXP_ID2, expId2);
 		}

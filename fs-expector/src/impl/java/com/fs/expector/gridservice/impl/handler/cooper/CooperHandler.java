@@ -93,16 +93,16 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crid, true);
 		String accId1 = cr.getAccountId1();
 		String accId2 = cr.getAccountId2();
-		
-		//from one to another
+
+		// from one to another
 		Connection c = new Connection().forCreate(this.dataService);
 		c.setAccountId1(cr.getAccountId1());
 		c.setAccountId2(cr.getAccountId2());
 		c.setExpId1(cr.getExpId1());
 		c.setExpId2(cr.getExpId2());
 		c.save(true);
-		
-		//the reverse connect
+
+		// the reverse connect
 		c = new Connection().forCreate(this.dataService);
 		c.setAccountId1(cr.getAccountId2());
 		c.setAccountId2(cr.getAccountId1());
@@ -114,25 +114,26 @@ public class CooperHandler extends ExpectorTMREHSupport {
 																// cr,if
 
 		res.setPayload("crId", crid);//
-		
+
 		MessageI msg = new MessageSupport("/notify/exp-connect-created");
 
 		this.onlineNotifyService.tryNotifyAccount(accId1, msg);
 		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
-		
+
 	}
 
-	// TODO replace by server notifier to client.
-	@Handle("incomingCr")
-	public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, ResponseI res) {
-
-		String accId = this.getAccountId(ew, true);
-
-		List<ConnectRequest> crL = this.dataService.getListNewestFirst(ConnectRequest.class,
-				ConnectRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);
-		List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
-		res.setPayload("cooperRequestList", ptsL);
-	}
+	// @Handle("incomingCr")
+	// public void handleRefreshIncomingCr(TerminalMsgReceiveEW ew, ResponseI
+	// res) {
+	//
+	// String accId = this.getAccountId(ew, true);
+	//
+	// List<ConnectRequest> crL =
+	// this.dataService.getListNewestFirst(ConnectRequest.class,
+	// ConnectRequest.ACCOUNT_ID2, accId, 0, Integer.MAX_VALUE);
+	// List<PropertiesI<Object>> ptsL = NodeWrapperUtil.convert(crL);
+	// res.setPayload("cooperRequestList", ptsL);
+	// }
 
 	/*
 	 * Mar 9, 2013

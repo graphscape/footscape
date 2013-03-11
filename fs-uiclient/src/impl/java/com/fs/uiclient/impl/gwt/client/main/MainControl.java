@@ -23,7 +23,9 @@ import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
 /**
  * @author wu
@@ -156,7 +158,37 @@ public class MainControl extends ControlSupport implements MainControlI {
 						return new MyExpView(ct, expId);
 					}
 				});
+
+		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
+		if (b) {
+			this.refreshExpConnect(expId);
+			this.refreshExpMessage(expId);//
+			esv.setProperty("isNew", Boolean.FALSE);
+		}
 		return esv;
+	}
+	
+	@Override
+	public void refreshExpMessage(String expId){
+		//TODO filter expId
+		String accId = this.getUserInfo().getAccountId();
+
+		MsgWrapper req = this.newRequest(Path.valueOf("/expm/search"));
+		req.setPayload("accountId2", accId);//
+
+		this.sendMessage(req);
+	}
+	@Override
+	public void refreshExpConnect(String expId){
+		//TODO expId filter
+		String accId = this.getUserInfo().getAccountId();
+		MsgWrapper req = this.newRequest(Path.valueOf("/expc/search"));
+		req.setPayload("accountId1", accId);//
+		this.sendMessage(req);
+	}
+
+	public UserInfo getUserInfo() {
+		return this.getClient(true).getEndpoint().getUserInfo();
 	}
 
 }

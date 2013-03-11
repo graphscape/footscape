@@ -32,4 +32,7 @@ public interface MainControlI extends ControlI {
 
 	public void openProfile();
 
+	public void refreshExpConnect(String expId);
+	
+	public void refreshExpMessage(String expId);
 }

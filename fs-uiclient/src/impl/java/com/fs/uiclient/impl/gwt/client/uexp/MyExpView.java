@@ -14,6 +14,8 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -34,6 +36,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	protected Map<String, ExpConnect> map2;
 
 	protected String expId;
+	
+	protected boolean isNew = true;
 
 	/**
 	 * @param ctn
@@ -50,7 +54,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
-
+	
 	/*
 	 * Mar 6, 2013
 	 */

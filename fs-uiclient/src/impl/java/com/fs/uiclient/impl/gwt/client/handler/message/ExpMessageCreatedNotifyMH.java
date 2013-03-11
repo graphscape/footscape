@@ -4,9 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
@@ -27,12 +26,8 @@ public class ExpMessageCreatedNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		String accId = this.getEndpoint().getUserInfo().getAccountId();
 
-		MsgWrapper req = this.newRequest(Path.valueOf("/expm/search"));
-		req.setPayload("accountId2", accId);//
-
-		this.sendMessage(req);
+		this.getControl(MainControlI.class, true).refreshExpMessage(null);
 
 	}
 
