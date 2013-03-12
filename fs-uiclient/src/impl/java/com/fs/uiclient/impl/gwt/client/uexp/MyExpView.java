@@ -14,8 +14,8 @@ import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
+import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -24,10 +24,12 @@ import com.google.gwt.user.client.DOM;
  */
 public class MyExpView extends ViewSupport implements MyExpViewI {
 
-	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp list
+	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp msglist
 
-	// message list
-	protected ListI list;
+	protected ListI outer;
+
+	// message msglist
+	protected ListI msglist;
 
 	protected ListI connected;
 
@@ -36,7 +38,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	protected Map<String, ExpConnect> map2;
 
 	protected String expId;
-	
+
 	protected boolean isNew = true;
 
 	/**
@@ -45,16 +47,21 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	public MyExpView(ContainerI ctn, String expId) {
 		super(ctn, "myexp", DOM.createDiv());
 
-		this.list = this.factory.create(ListI.class);
-		this.list.parent(this);
+		UiPropertiesI<Object> pts = new MapProperties<Object>();
+		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
+		this.outer = this.factory.create(ListI.class, pts);
+		this.outer.parent(this);
+
+		this.msglist = this.factory.create(ListI.class);
+		this.msglist.parent(this.outer);
 		this.map = new HashMap<String, ExpMessage>();
 
 		this.connected = this.factory.create(ListI.class);
-		this.connected.parent(this);
+		this.connected.parent(this.outer);
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
-	
+
 	/*
 	 * Mar 6, 2013
 	 */
@@ -67,7 +74,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			return;//
 		}
 		ExpMessageView ev = ExpMessageView.createViewForMessage(this.container, msg);
-		ev.parent(this.list);
+		ev.parent(this.msglist);
 		this.map.put(id, msg);
 
 	}
@@ -76,18 +83,18 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	 * Mar 10, 2013
 	 */
 	@Override
-	public void addOrUpdateConnected(ExpConnect exp) {
+	public void addOrUpdateConnected(ExpConnect ec) {
 		//
-		String cid = exp.getConnectId();
-		ExpConnect ec = this.map2.get(cid);
-		if (ec != null) {
+		String cid = ec.getConnectId();
+		ExpConnect old = this.map2.get(cid);
+		if (old != null) {
 			return;
 		}
-		LabelI l = this.factory.create(LabelI.class);
-		l.setText("connect:" + exp);
+		ConnectedExpView l = new ConnectedExpView(this.container, ec);
+
 		l.parent(this.connected);
 
-		this.map2.put(cid, exp);
+		this.map2.put(cid, ec);
 
 	}
 }

@@ -145,8 +145,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		manager.child(new GChatControlImpl(c, "gchat"));
 		manager.child(new LoginControlImpl(c, "login"));
 
-		
-
 	}
 
 	public void activeActionHandlers(ContainerI c, UiClientI client) {
@@ -197,7 +195,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public ListI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new ListImpl(c, name);
+				return new ListImpl(c, name, pts);
 
 			}
 		});

@@ -53,7 +53,7 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	// auth event will be monitored by the
-	// UserExpListControl and then init its list of
+	// UserExpListControl and then init its msglist of
 	// model.
 	protected void listenToTheUserExpInitBeforeAuth() {
 
@@ -66,7 +66,7 @@ public class ExpSearchTest extends TestBase {
 	}
 
 	// init action should get value from server side,then
-	// // the UserExpListControl should init action and the list is filled
+	// // the UserExpListControl should init action and the msglist is filled
 	// already.
 
 	// find the user exp and select it, this will cause the search and result

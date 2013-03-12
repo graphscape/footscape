@@ -45,7 +45,7 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 		// open exp search view
 		MainControlI mc = this.getControl(MainControlI.class, true);
 		mc.openExpSearch();//
-		// open user exp list view.
+		// open user exp msglist view.
 		if (!ui.isAnonymous()) {//
 			mc.openUeList();
 		}

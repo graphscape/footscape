@@ -37,7 +37,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
-	
+
 	private int maxSizeOfMessageQuery = 10000;
 
 	@Override
@@ -113,30 +113,48 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private void processExpsResult(ResponseI res, List<ExpMessage> list) {
 		// convert
-		
+
 		List<MessageI> ml = new ArrayList<MessageI>();
 		for (ExpMessage em : list) {
+			String expId1 = em.getExpId1();
+			String expId2 = em.getExpId2();
+
 			MessageI msg = new MessageSupport(em.getPath());
 			msg.setHeader("id", em.getId());
 			msg.setHeader("accountId1", em.getAccountId1());
 			msg.setHeader("accountId2", em.getAccountId2());
 			msg.setHeader("expId1", em.getExpId1());
 			msg.setHeader("expId2", em.getExpId2());
-			
-			
-			String accId1 = em.getAccountId1();
-			
-			// account must be exist
-			Account acc = this.dataService.getNewestById(Account.class, accId1, true);
-			
-			msg.setPayload("nick1", acc.getNick());
-			String body = em.getBody();
-			
-			PropertiesI<Object> pls = this.decodeMessageExtend(body);
-			msg.setPayloads(pls);
+
+			{// account
+				String accId1 = em.getAccountId1();
+				// account must be exist
+				Account acc = this.dataService.getNewestById(Account.class, accId1, true);
+
+				msg.setPayload("nick1", acc.getNick());
+			}
+			{// exp1 body
+				Expectation exp1 = this.getExpectation(expId1);
+				msg.setPayload("expBody1", exp1.getBody());
+
+			}
+			{// exp2 body
+				Expectation exp2 = this.getExpectation(expId2);
+				msg.setPayload("expBody2", exp2.getBody());
+
+			}
+			{// body,extends properties
+				String body = em.getBody();
+				PropertiesI<Object> pls = this.decodeMessageExtend(body);
+				msg.setPayloads(pls);
+			}
 			ml.add(msg);
 		}
 
 		res.setPayload("expMessages", ml);
+	}
+
+	private Expectation getExpectation(String expId) {
+		return this.dataService.getNewestById(Expectation.class, expId, true);
 	}
 }

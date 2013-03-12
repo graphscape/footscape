@@ -65,7 +65,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 			}
 		}
 		if (force) {
-			throw new UiException("no selected exp in user exp list:" + rtL);
+			throw new UiException("no selected exp in user exp msglist:" + rtL);
 		}
 		return null;
 	}

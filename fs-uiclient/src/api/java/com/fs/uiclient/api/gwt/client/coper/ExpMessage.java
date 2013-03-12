@@ -35,7 +35,7 @@ public class ExpMessage extends MsgWrapper {
 	 * @return the expId1
 	 */
 	public String getExpBody1() {
-		return (String) this.getHeader("expBody1", true);
+		return (String) this.getPayload("expBody1", true);
 	}
 
 	/**
@@ -51,6 +51,12 @@ public class ExpMessage extends MsgWrapper {
 	public String getAccountId1() {
 		return (String) this.getHeader("accountId1", true);
 	}
+	
+	public String getNick1() {
+		return (String) this.getPayload("nick1", true);
+	}
+	
+	
 
 	/**
 	 * @return the accountId2

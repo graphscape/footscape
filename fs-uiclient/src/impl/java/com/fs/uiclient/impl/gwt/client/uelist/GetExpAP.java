@@ -25,7 +25,7 @@ public class GetExpAP extends ActionHandlerSupport {
 	/**
 	 * Nov 28, 2012
 	 * <p>
-	 * Get the detail of the exp,user click in the list, to open the detail.
+	 * Get the detail of the exp,user click in the msglist, to open the detail.
 	 */
 	@Override
 	public void handle(ActionEvent ae) {

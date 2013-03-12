@@ -43,7 +43,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public MainControl(ContainerI c, String name) {
 		super(c, name);
 		this.profile = new ProfileModel("profile");
-		this.uelist = new UserExpListModel("ue-list");
+		this.uelist = new UserExpListModel("ue-msglist");
 	}
 
 	public ProfileModelI getProfileModel() {

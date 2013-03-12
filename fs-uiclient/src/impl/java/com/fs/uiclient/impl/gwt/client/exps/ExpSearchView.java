@@ -136,7 +136,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 		String vname = viewName(cm);
 		ExpItemView vi = new ExpItemView(vname, this.getContainer(), cm);
-		vi.parent(this.list);// item view in list not this.
+		vi.parent(this.list);// item view in msglist not this.
 
 	}
 

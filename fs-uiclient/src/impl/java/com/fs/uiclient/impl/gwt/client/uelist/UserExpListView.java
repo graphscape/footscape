@@ -18,7 +18,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class UserExpListView extends SimpleView implements UserExpListViewI {
 
-	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp list
+	public static final String HEADER_ITEM_USEREXP = "uelist";// my exp msglist
 
 	protected ListI list;
 

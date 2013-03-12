@@ -9,6 +9,7 @@ import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.google.gwt.user.client.DOM;
 
@@ -20,10 +21,18 @@ public class ListImpl extends LayoutSupport implements ListI {
 
 	protected TableWrapper table;
 
-	public ListImpl(ContainerI c,String name) {
-		super(c,name, DOM.createDiv());
+	protected boolean vertical;
+
+	protected TRWrapper firstTRForHorizental;
+
+	public ListImpl(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		super(c, name, DOM.createDiv(), pts);
 		table = new TableWrapper();
 		this.elementWrapper.append(table);
+		this.vertical = (Boolean) this.getProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
+		if (!this.vertical) {
+			this.firstTRForHorizental = this.table.addTr();
+		}
 	}
 
 	/*
@@ -38,8 +47,13 @@ public class ListImpl extends LayoutSupport implements ListI {
 
 	@Override
 	protected void processAddChildElementObject(ElementObjectI ceo) {
-		TRWrapper tr = this.table.addTr();
-		TDWrapper td = tr.addTd();
-		td.append(ceo.getElement());
+		if (this.vertical) {
+			TRWrapper tr = this.table.addTr();
+			TDWrapper td = tr.addTd();
+			td.append(ceo.getElement());
+		} else {
+			TDWrapper td = this.firstTRForHorizental.addTd();
+			td.append(ceo.getElement());
+		}
 	}
 }
