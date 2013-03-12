@@ -23,7 +23,7 @@ public interface MainControlI extends ControlI {
 	public ExpSearchViewI openExpSearch();
 
 	public UserExpListViewI openUeList();
-	
+
 	public MyExpViewI openMyExp(String expId);
 
 	public SignupViewI openSignup();
@@ -33,6 +33,9 @@ public interface MainControlI extends ControlI {
 	public void openProfile();
 
 	public void refreshExpConnect(String expId);
-	
+
 	public void refreshExpMessage(String expId);
+
+	public void updateTitleOfExpTab(String expId, String title);
+
 }

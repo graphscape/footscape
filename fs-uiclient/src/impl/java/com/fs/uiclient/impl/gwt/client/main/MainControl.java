@@ -21,6 +21,7 @@ import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
 import com.fs.uicommons.api.gwt.client.CreaterI;
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -150,37 +151,50 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public MyExpViewI openMyExp(final String expId) {
-		MyExpView esv = this.gorOrCreateViewInBody(Path.valueOf("/myexp/" + expId),
-				new CreaterI<MyExpView>() {
+		Path path = this.getExpViewPath(expId);
+		MyExpView esv = this.gorOrCreateViewInBody(path, new CreaterI<MyExpView>() {
 
-					@Override
-					public MyExpView create(ContainerI ct) {
-						return new MyExpView(ct, expId);
-					}
-				});
+			@Override
+			public MyExpView create(ContainerI ct) {
+				return new MyExpView(ct, expId);
+			}
+		});
 
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
 		if (b) {
+			this.refreshExpContent(expId);
 			this.refreshExpConnect(expId);
 			this.refreshExpMessage(expId);//
 			esv.setProperty("isNew", Boolean.FALSE);
 		}
 		return esv;
 	}
-	
+
+	public void refreshExpContent(String expId) {
+
+		MsgWrapper req = this.newRequest(Path.valueOf("/exps/get"));
+		req.setPayload("expId", expId);//
+		this.sendMessage(req);
+		// see ExpGetMH
+		// see updateTitleOfExpTab
+
+	}
+
 	@Override
-	public void refreshExpMessage(String expId){
-		//TODO filter expId
+	public void refreshExpMessage(String expId) {
+		// TODO filter expId
 		String accId = this.getUserInfo().getAccountId();
 
 		MsgWrapper req = this.newRequest(Path.valueOf("/expm/search"));
 		req.setPayload("accountId2", accId);//
 
 		this.sendMessage(req);
+
 	}
+
 	@Override
-	public void refreshExpConnect(String expId){
-		//TODO expId filter
+	public void refreshExpConnect(String expId) {
+		// TODO expId filter
 		String accId = this.getUserInfo().getAccountId();
 		MsgWrapper req = this.newRequest(Path.valueOf("/expc/search"));
 		req.setPayload("accountId1", accId);//
@@ -189,6 +203,25 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	public UserInfo getUserInfo() {
 		return this.getClient(true).getEndpoint().getUserInfo();
+	}
+
+	private Path getExpViewPath(String expId) {
+		return Path.valueOf("/myexp/" + expId);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.main.MainControlI#updateTitleOfExpTab(
+	 * java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void updateTitleOfExpTab(String expId, String title) {
+		BodyViewI bv = this.getBodyView();
+		Path path = this.getExpViewPath(expId);
+		bv.setTitleOfItem(path, title, false);
+
 	}
 
 }

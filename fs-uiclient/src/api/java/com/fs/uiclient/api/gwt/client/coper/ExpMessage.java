@@ -32,6 +32,13 @@ public class ExpMessage extends MsgWrapper {
 	}
 
 	/**
+	 * @return the expId1
+	 */
+	public String getExpBody1() {
+		return (String) this.getHeader("expBody1", true);
+	}
+
+	/**
 	 * @return the expId2
 	 */
 	public String getExpId2() {

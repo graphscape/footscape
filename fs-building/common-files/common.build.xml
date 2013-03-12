@@ -125,7 +125,7 @@
 	</condition>
 </target>
 
-<target name="reclipse" depends="setup">
+<target name="eclipse2" depends="setup">
 	<antcall target="resolve" />
 	<!-- For gwt test in eclipse,copy java resource to classes folder;no need to compile package. -->
 	<antcall target="eclipse" />

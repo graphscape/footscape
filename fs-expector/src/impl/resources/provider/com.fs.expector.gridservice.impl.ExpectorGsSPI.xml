@@ -39,6 +39,7 @@
 
 		</config>
 		<config name="expm" path="/events/expm" class="com.fs.expector.gridservice.impl.handler.expm.ExpMessageHandler" />
+		
 		<config name="cooper" path="/events/cooper" class="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
 		<config name="profile" path="/events/profile" class="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
 		<config name="uelist" path="/events/uelist" class="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />

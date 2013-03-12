@@ -16,6 +16,9 @@ public interface BodyViewI extends ViewI {
 	public <T extends WidgetI> T getItem(Path path, boolean force);
 
 	public <T extends WidgetI> T addItem(Path path, T w);
+	
+	//TODO provide new interface.
+	public void setTitleOfItem(Path path, String title, boolean force);
 
 	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt);
 

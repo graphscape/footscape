@@ -35,6 +35,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpGetMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
@@ -150,6 +151,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/get/success"), new ExpGetMH(c));// search
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"),
 				new CooperRequestSuccessMH(c));// search

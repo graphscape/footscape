@@ -102,4 +102,12 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		res.setPayload("expectations", el);
 	}
+	
+	@Handle("get")
+	public void handleGet(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
+		MessageI req = ew.getMessage();//
+		String expId = req.getString("expId", true);
+		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
+		res.setPayload("expectation", exp.getTarget());
+	}
 }

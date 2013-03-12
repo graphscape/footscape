@@ -56,14 +56,19 @@ public abstract class ExpMessageView extends ViewSupport {
 	public ExpMessageView(ContainerI c, ExpMessage msg) {
 		super(c, DOM.createDiv());
 		this.msg = msg;
-		//
+		//accountId:
 		Element ele = DOM.createDiv();
-		ele.setInnerText(msg.getAccountId1() + ":");
+		ele.setInnerText("account:"+msg.getAccountId1() + "");
 		this.element.appendChild(ele);
 		//
 		ele = DOM.createDiv();
-		ele.setInnerText(msg.getExpId1() + ":");
+		ele.setInnerText("expId:"+msg.getExpId1() + "");
 		this.element.appendChild(ele);
+		//
+		ele = DOM.createDiv();
+		ele.setInnerText("expBody:"+msg.getExpBody1() + "");
+		this.element.appendChild(ele);
+		
 		// actions
 		ele = DOM.createDiv();
 		this.element.appendChild(ele);

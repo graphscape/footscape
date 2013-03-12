@@ -67,7 +67,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	 * @param b
 	 */
 	public <T extends WidgetI> T getItem(Path path, boolean force) {
-		TabWI ta = this.tabber.getTab(path, false);
+		TabWI ta = this.getTabOfItem(path, false);
 		if (ta == null) {
 			if (force) {
 				throw new UiException("no item found :" + path);
@@ -77,6 +77,17 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		PanelWI p = (PanelWI) ta.getManaged();
 		return (T) p.getChildWidgetList().get(0);//
 
+	}
+
+	protected TabWI getTabOfItem(Path path, boolean force) {
+		TabWI ta = this.tabber.getTab(path, false);
+		if (ta == null) {
+			if (force) {
+				throw new UiException("no item found :" + path);
+			}
+			return null;
+		}
+		return ta;
 	}
 
 	@Override
@@ -90,4 +101,15 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		return rt;
 	}
 
+	@Override
+	public void setTitleOfItem(Path path, String title, boolean force) {
+		TabWI tab = this.getTabOfItem(path, false);
+		if (tab == null) {
+			if (force) {
+				throw new UiException("no item found:" + path);
+			}
+		}
+		tab.setText(false, title);
+
+	}
 }
