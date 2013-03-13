@@ -38,8 +38,9 @@ public class ExpGetMH extends MHSupport {
 		MainControlI c = this.getControl(MainControlI.class, true);
 		String expId = exp.getString(Constants.NK_ID, true);
 		String body = exp.getString("body", true);
-		c.updateTitleOfExpTab(expId, body);
-
+		c.setExpDetail(expId, body);
+		//
+		
 	}
 
 }

@@ -217,11 +217,15 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void updateTitleOfExpTab(String expId, String title) {
+	public void setExpDetail(String expId, String body) {
+		//update title of tab that point to the exp view
 		BodyViewI bv = this.getBodyView();
 		Path path = this.getExpViewPath(expId);
-		bv.setTitleOfItem(path, title, false);
-
+		bv.setTitleOfItem(path, body, false);
+		//
+		MyExpViewI mv = this.openMyExp(expId);
+		mv.setMyExp(body);
+		
 	}
 
 }

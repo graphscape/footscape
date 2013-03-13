@@ -14,6 +14,9 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  */
 public interface MyExpViewI extends ViewI {
 
+	//TODO myexp model as parameter
+	public void setMyExp(String body);
+	
 	/**
 	 * Mar 6, 2013
 	 */

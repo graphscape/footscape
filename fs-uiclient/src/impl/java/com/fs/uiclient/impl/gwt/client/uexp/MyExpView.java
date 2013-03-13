@@ -28,6 +28,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected ListI outer;
 
+	protected LabelI body;
+	
+	protected ListI middle;
+	
+
 	// message msglist
 	protected ListI msglist;
 
@@ -47,19 +52,31 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	public MyExpView(ContainerI ctn, String expId) {
 		super(ctn, "myexp", DOM.createDiv());
 
+		this.outer = this.factory.create(ListI.class);
+		this.outer.parent(this);
+		
+		this.body = this.factory.create(LabelI.class);
+		this.body.parent(this.outer);
+		
 		UiPropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
-		this.outer = this.factory.create(ListI.class, pts);
-		this.outer.parent(this);
+		
+		this.middle = this.factory.create(ListI.class, pts);
+		this.middle.parent(this.outer);
 
 		this.msglist = this.factory.create(ListI.class);
-		this.msglist.parent(this.outer);
+		this.msglist.parent(this.middle);
 		this.map = new HashMap<String, ExpMessage>();
 
 		this.connected = this.factory.create(ListI.class);
-		this.connected.parent(this.outer);
+		this.connected.parent(this.middle);
 		this.map2 = new HashMap<String, ExpConnect>();
 
+	}
+	
+	@Override
+	public void setMyExp(String body){
+		this.body.setText(body);
 	}
 
 	/*

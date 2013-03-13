@@ -36,6 +36,6 @@ public interface MainControlI extends ControlI {
 
 	public void refreshExpMessage(String expId);
 
-	public void updateTitleOfExpTab(String expId, String title);
+	public void setExpDetail(String expId, String title);
 
 }
