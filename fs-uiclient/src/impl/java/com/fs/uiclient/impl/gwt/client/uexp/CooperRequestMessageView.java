@@ -34,31 +34,37 @@ public class CooperRequestMessageView extends ExpMessageView {
 	 */
 	public CooperRequestMessageView(ContainerI c, ExpMessage msg) {
 		super(c, msg);
-		ButtonI ok = this.factory.create(ButtonI.class);
+		PropertiesData<Object> cr = msg.getPayload("cooperRequest", false);
+		boolean exist = cr != null;
+		
+		final ButtonI ok = this.factory.create(ButtonI.class);
 		ok.setText(true, "ok");
 		ok.parent(this.actions);
 		ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent t) {
+				ok.disable(true);//
 				CooperRequestMessageView.this.onOk();
 			}
 		});
+		ok.disable(!exist);
 	}
 
 	protected void onOk() {
+		
 		this.dispatchActionEvent(Actions.A_UEXP_COOPER_CONFIRM);
 	}
 
 	/*
-	 *Mar 9, 2013
+	 * Mar 9, 2013
 	 */
 	@Override
 	protected void beforeActionEvent(ActionEvent ae) {
 		super.beforeActionEvent(ae);
-		
+
 		String crId = msg.getPayload("cooperRequestId", true);
-		
+
 		ae.setProperty("cooperRequestId", crId);
 	}
 }

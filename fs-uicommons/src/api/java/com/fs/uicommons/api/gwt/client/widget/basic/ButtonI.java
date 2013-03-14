@@ -20,4 +20,6 @@ public interface ButtonI extends BasicI {
 
 	public void setText(boolean toloc, String text);
 
+	public void disable(boolean dis);
+
 }

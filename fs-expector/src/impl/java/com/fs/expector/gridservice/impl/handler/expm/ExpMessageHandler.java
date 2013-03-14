@@ -25,9 +25,11 @@ import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.expector.gridservice.impl.handler.cooper.CooperHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -118,8 +120,8 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		for (ExpMessage em : list) {
 			String expId1 = em.getExpId1();
 			String expId2 = em.getExpId2();
-
-			MessageI msg = new MessageSupport(em.getPath());
+			String path = em.getPath();
+			MessageI msg = new MessageSupport(path);
 			msg.setHeader("id", em.getId());
 			msg.setHeader("accountId1", em.getAccountId1());
 			msg.setHeader("accountId2", em.getAccountId2());
@@ -147,6 +149,12 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				String body = em.getBody();
 				PropertiesI<Object> pls = this.decodeMessageExtend(body);
 				msg.setPayloads(pls);
+				// is a cooper request message,add extends field
+				if (CooperHandler.MP_CONNECT_REQUEST.equals(path)) {//
+					String crId = (String) pls.getProperty("cooperRequestId", true);
+					ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crId, false);
+					msg.setPayload("cooperRequest", cr == null ? null : cr.getTarget());
+				}
 			}
 			ml.add(msg);
 		}

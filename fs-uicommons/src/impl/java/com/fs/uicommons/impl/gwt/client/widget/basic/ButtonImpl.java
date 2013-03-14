@@ -21,6 +21,8 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 
 	private State state;
 
+	private boolean disable;
+
 	public ButtonImpl(ContainerI c, String name) {
 		super(c, name, (Element) Document.get().createPushButtonElement().cast());
 		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
@@ -45,6 +47,9 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 	}
 
 	public void onGwtClick(com.google.gwt.event.dom.client.ClickEvent event) {
+		if (this.disable) {
+			return;
+		}
 		this.switchState();
 		new ClickEvent(this).dispatch();
 	}
@@ -68,6 +73,20 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 
 		return this.state;
 
+	}
+
+	/*
+	 * Mar 14, 2013
+	 */
+	@Override
+	public void disable(boolean dis) {
+		if (dis) {
+			this.elementWrapper.addClassName("disable");
+		} else {
+			this.elementWrapper.removeClassName("disable");
+		}
+		this.disable = dis;
+		this.element.setPropertyBoolean("disabled", dis);
 	}
 
 }

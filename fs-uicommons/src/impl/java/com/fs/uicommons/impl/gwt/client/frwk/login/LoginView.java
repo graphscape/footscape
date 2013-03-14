@@ -31,12 +31,6 @@ public class LoginView extends FormsView implements LoginViewI {
 		this.addAction(Actions.A_LOGIN_ANONYMOUS, true);// create
 		// anonymous
 
-		// client start,to login
-		// from cokies or web data
-
-		this.addAction(Actions.A_LOGIN_LOGOUT);// logout is hidden
-		// action
-
 		this.addAction(Actions.A_LOGIN_SUBMIT);
 
 		FormViewI def = this.getDefaultForm();

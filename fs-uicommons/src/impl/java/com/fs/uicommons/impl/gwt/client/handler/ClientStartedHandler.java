@@ -30,7 +30,7 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		fc.open();
 		fc.addHeaderItem(HeaderItems.USER_LOGIN);
-		fc.addHeaderItem(HeaderItems.USER_LOGOUT);
+		
 		new AutoLoginRequireEvent(e.getSource()).dispatch();
 	}
 

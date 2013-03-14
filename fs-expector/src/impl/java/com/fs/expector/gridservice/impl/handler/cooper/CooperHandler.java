@@ -4,8 +4,6 @@
  */
 package com.fs.expector.gridservice.impl.handler.cooper;
 
-import java.util.List;
-
 import org.json.simple.JSONArray;
 
 import com.fs.commons.api.ActiveContext;
@@ -17,7 +15,6 @@ import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
@@ -30,6 +27,8 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class CooperHandler extends ExpectorTMREHSupport {
+
+	public static final String MP_CONNECT_REQUEST = "/connect/request";
 
 	private CodecI codec;
 
@@ -67,7 +66,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		em.setExpId2(expId2);
 		em.setAccountId1(aid);
 		em.setAccountId2(accId2);
-		em.setPath("/connect/request");
+		em.setPath(MP_CONNECT_REQUEST);
 		em.setHeader("");
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty("cooperRequestId", cid);
@@ -84,6 +83,19 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 		JSONArray jsn = (JSONArray) this.codec.encode(pts);
 		return jsn.toJSONString();
+	}
+
+	@Handle("get")
+	public void handleGet(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
+		MessageI req = ew.getMessage();//
+		String crId = (String) req.getPayload("cooperRequestId", true);
+		ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crId, false);
+		if (cr != null) {
+			res.setPayload("cooperRequest", cr.getTarget());
+		} else {
+			res.setPayload("cooperRequest", null);
+		}
+
 	}
 
 	@Handle("confirm")
