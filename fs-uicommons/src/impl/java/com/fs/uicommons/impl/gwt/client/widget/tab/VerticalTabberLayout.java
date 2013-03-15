@@ -20,14 +20,13 @@ public class VerticalTabberLayout extends TabberLayout {
 	private Element ul;
 
 	private Element bodyTd;
-
+	
 	/**
 	 * @param c
 	 * @param element
 	 */
-	public VerticalTabberLayout(Element element) {
-		super(element,"layout-vertical");
-
+	public VerticalTabberLayout(Element element, boolean rev) {
+		super(element,"layout-vertical",rev);
 		Element table = this.element;
 		Element tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
@@ -49,8 +48,12 @@ public class VerticalTabberLayout extends TabberLayout {
 	public void addTab(TabWI cw) {
 		// TODO Auto-generated method stub
 		Element li = (com.google.gwt.user.client.Element) Document.get().createLIElement().cast();
-		this.ul.appendChild(li);//
-		li.appendChild(cw.getElement());
+		if(this.isReverse){
+			this.ul.insertFirst(li);
+		}else{
+			this.ul.appendChild(li);//
+		}
+		li.appendChild(cw.getElement());			
 
 	}
 

@@ -36,6 +36,8 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	private TabberLayout layout;
 	
 	private boolean isClosable;
+	
+	private boolean isReverse;
 
 	/**
 	 * @param ele
@@ -44,11 +46,13 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		super(c, name, DOM.createTable(), pts);
 		boolean vertical = (Boolean) this.getProperty(TabberWI.PK_IS_VERTICAL, Boolean.FALSE);
 		this.isClosable = (Boolean) this.getProperty(TabberWI.PK_IS_CLOSABLE, Boolean.FALSE);
+		this.isReverse = (Boolean) this.getProperty(TabberWI.PK_IS_REVERSE, Boolean.FALSE);
+		
 
 		if (vertical) {
-			this.layout = new VerticalTabberLayout(this.element);
+			this.layout = new VerticalTabberLayout(this.element, this.isReverse);
 		} else {
-			this.layout = new HorizentalTabberLayout(this.element);
+			this.layout = new HorizentalTabberLayout(this.element, this.isReverse);
 		}
 
 		this.stack = this.factory.create(StackWI.class);

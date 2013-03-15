@@ -24,8 +24,8 @@ public class HorizentalTabberLayout extends TabberLayout {
 	 * @param c
 	 * @param element
 	 */
-	public HorizentalTabberLayout(Element element) {
-		super(element, "layout-horizental");
+	public HorizentalTabberLayout(Element element, boolean rev) {
+		super(element, "layout-horizental",rev);
 
 		Element table = this.element;
 		Element tbody = DOM.createTBody();
@@ -52,7 +52,12 @@ public class HorizentalTabberLayout extends TabberLayout {
 	@Override
 	public void addTab(TabWI cw) {
 		// TODO Auto-generated method stub
-		this.headerTd.appendChild(cw.getElement());//
+		if(this.isReverse){
+			this.headerTd.insertFirst(cw.getElement());
+		}else{
+			
+			this.headerTd.appendChild(cw.getElement());//
+		}
 	}
 
 	/*

@@ -34,6 +34,8 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		UiPropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(TabberWI.PK_IS_VERTICAL, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_CLOSABLE, Boolean.TRUE);
+		pts.setProperty(TabberWI.PK_IS_REVERSE, Boolean.TRUE);
+		
 		this.tabber = this.factory.create(TabberWI.class, pts);//
 		this.tabber.parent(this);
 	}

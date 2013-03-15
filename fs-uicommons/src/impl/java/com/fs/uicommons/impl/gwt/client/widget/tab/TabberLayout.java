@@ -15,13 +15,16 @@ import com.google.gwt.user.client.Element;
  */
 public abstract class TabberLayout extends ElementWrapper {
 
+	protected boolean isReverse;
+
 	/**
 	 * @param c
 	 * @param element
 	 */
-	public TabberLayout(Element element, String cname) {
+	public TabberLayout(Element element, String cname, boolean rev) {
 		super(element);
 		element.addClassName(cname);
+		this.isReverse = rev;
 	}
 
 	protected Element createTr(Element tbody) {
