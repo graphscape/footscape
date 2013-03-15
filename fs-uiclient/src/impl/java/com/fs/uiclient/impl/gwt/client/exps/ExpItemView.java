@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.exps.item;
+package com.fs.uiclient.impl.gwt.client.exps;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
@@ -74,12 +74,7 @@ public class ExpItemView extends SimpleView {
 
 		}
 
-		{
-			TRWrapper tr = this.table.addTr();
-			TDWrapper td = tr.addTd();
-			td.getElement().setInnerText(ei.getActivityId());
-
-		}
+		
 
 	}
 

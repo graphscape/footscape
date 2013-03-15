@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.NodeFields;
+import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
@@ -44,7 +45,7 @@ public class UeListRefreshMH extends MHSupport {
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);
 			String expId = (String) oi.getProperty(NodeFields.PK_ID, true);
-			String body = (String) oi.getProperty("title", true);
+			String body = (String) oi.getProperty(ExpEditView.F_BODY, true);
 
 			DateData dd = (DateData) oi.getProperty(NodeFields.PK_TIMESTAMP, true);
 

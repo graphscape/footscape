@@ -8,7 +8,6 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
-import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
@@ -141,7 +140,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	}
 
 	protected String viewName(ExpItemModel cm) {
-		return "expItem-" + cm.getName();
+		return "expItem-" + cm.getExpId();
 	}
 
 	protected ExpItemView getItemViewByModel(ExpItemModel cm, boolean force) {

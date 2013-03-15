@@ -10,7 +10,7 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uiclient.impl.gwt.client.exps.item.ExpItemView;
+import com.fs.uiclient.impl.gwt.client.exps.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
 import com.fs.uiclient.impl.test.gwt.client.cases.support.TestBase;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -107,7 +107,7 @@ public class ExpSearchTest extends TestBase {
 		// listen to the activity before click coper
 		this.listenToTheActivityIdSettingBeforeCoper();
 		// click coper
-		String name = "expItem-" + eim.getName();// see ExpSearchView
+		String name = "expItem-" + eim.getExpId();// see ExpSearchView
 		ExpItemView eiv = this.root.find(ExpItemView.class, name, true);
 		eiv.clickAction(Actions.A_EXPS_COOPER);// coper request,wait the
 												// activities refresh and the

@@ -36,7 +36,7 @@ public class ExpSearchMH extends MHSupport {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		ExpSearchControlI c = this.getControl(ExpSearchControlI.class, true);
-		
+
 		MessageData res = t.getMessage();
 
 		List<ObjectPropertiesData> expL = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
@@ -44,20 +44,7 @@ public class ExpSearchMH extends MHSupport {
 		c.reset();
 		for (int i = 0; i < expL.size(); i++) {
 			ObjectPropertiesData oi = expL.get(i);
-			String expId = (String) oi.getProperty("id");
-			String body = (String) oi.getProperty("title");
-			DateData timestamp = (DateData) oi.getProperty("timestamp");
-			String actId = (String) oi.getProperty("activityId");
-			String accId = (String) oi.getProperty("accountId");
-			String nick = (String) oi.getProperty("nick");
-			String icon = (String) oi.getProperty("iconDataUrl");
-
-			ExpItemModel ei = new ExpItemModel(expId);
-			ei.setActivityId(actId == null ? null : actId);
-			ei.setTimestamp(timestamp);
-			ei.setBody(body);//
-			ei.setAccountId(accId);
-			ei.setIconDataUrl(icon);
+			ExpItemModel ei = new ExpItemModel(oi);
 			c.addOrUpdateExpItem(ei);
 		}
 

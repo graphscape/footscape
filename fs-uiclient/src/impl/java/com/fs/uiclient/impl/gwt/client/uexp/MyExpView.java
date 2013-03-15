@@ -20,7 +20,8 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.data.PropertiesData;
+import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
@@ -59,7 +60,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	 */
 	public MyExpView(ContainerI ctn, String expId) {
 		super(ctn, "myexp", DOM.createDiv());
-
+		this.expId = expId;
 		this.outer = this.factory.create(ListI.class);
 		this.outer.parent(this);
 
@@ -110,9 +111,12 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		MsgWrapper req = new MsgWrapper("/expm/create");
 		req.setPayload("expId1", this.expId);
 		req.setPayload("expId2", this.expId);
-		PropertiesData<Object> body = new PropertiesData<Object>();
+		ObjectPropertiesData body = new ObjectPropertiesData();
 		body.setProperty("text", msg);
 		req.setPayload("body", body);
+		//
+		ObjectPropertiesData header = new ObjectPropertiesData();
+		req.setPayload("header", header);
 		req.setPayload("path", "/text-message");
 		this.getClient(true).getEndpoint().sendMessage(req);//
 	}
