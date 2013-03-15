@@ -40,7 +40,7 @@ public abstract class ExpMessageView extends ViewSupport {
 
 	static {
 		creatorMap.put(Path.valueOf("/connect/request"), CooperRequestMessageView.CRT);
-
+		creatorMap.put(Path.valueOf("/text-message"), TextMessageView.CRT);
 	}
 	
 	protected ExpMessage msg;

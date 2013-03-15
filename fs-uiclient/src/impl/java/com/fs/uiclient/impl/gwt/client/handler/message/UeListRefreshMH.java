@@ -44,7 +44,7 @@ public class UeListRefreshMH extends MHSupport {
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);
 			String expId = (String) oi.getProperty(NodeFields.PK_ID, true);
-			String body = (String) oi.getProperty("body", true);
+			String body = (String) oi.getProperty("title", true);
 
 			DateData dd = (DateData) oi.getProperty(NodeFields.PK_TIMESTAMP, true);
 

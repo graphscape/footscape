@@ -45,7 +45,7 @@ public class ExpSearchMH extends MHSupport {
 		for (int i = 0; i < expL.size(); i++) {
 			ObjectPropertiesData oi = expL.get(i);
 			String expId = (String) oi.getProperty("id");
-			String body = (String) oi.getProperty("body");
+			String body = (String) oi.getProperty("title");
 			DateData timestamp = (DateData) oi.getProperty("timestamp");
 			String actId = (String) oi.getProperty("activityId");
 			String accId = (String) oi.getProperty("accountId");

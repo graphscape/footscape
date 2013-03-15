@@ -20,7 +20,7 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class UserExpModel extends ModelSupport {
 
-	public static final Location L_BODY = Location.valueOf("body");//
+	public static final Location L_BODY = Location.valueOf("title");//
 
 	public static final Location L_TIMESTAMP = Location.valueOf("timestamp");//
 

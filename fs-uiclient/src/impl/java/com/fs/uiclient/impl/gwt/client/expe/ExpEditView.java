@@ -18,7 +18,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class ExpEditView extends FormsView implements ExpEditViewI {
 
-	public static final String F_BODY = "body";
+	public static final String F_BODY = "title";
 	private ViewReferenceI managed;
 
 	/**

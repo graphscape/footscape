@@ -62,15 +62,22 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		PropertiesI<Object> rt = (PropertiesI<Object>) this.codec.decode(jsn);
 		return rt;
 	}
-
+	private String encodeMessageExtend(PropertiesI<Object> body){
+		JSONArray ja = (JSONArray) this.codec.encode(body);
+		return ja.toJSONString();
+	}
 	@Handle("create")
 	public void handleCreate(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		String expId1 = req.getString("expId1", true);
 		String expId2 = req.getString("expId2", true);
+		String path = req.getString("path",true);
 		String header = req.getString("header", true);
-		String body = req.getString("body", true);
-
+		
+		PropertiesI<Object> body = (PropertiesI<Object>) req.getPayload("body",false);
+		
+		String bodyS = body == null?null:this.encodeMessageExtend(body);
+		
 		Expectation exp1 = this.dataService.getNewestById(Expectation.class, expId1, true);
 		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
 
@@ -82,8 +89,9 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		em.setExpId2(expId2);
 		em.setAccountId1(accId1);
 		em.setAccountId2(accId2);
+		em.setPath(path);
 		em.setHeader(header);
-		em.setBody(body);
+		em.setBody(bodyS);
 		em.save(true);
 		String id = em.getId();
 		res.setPayload("expMessageId", id);

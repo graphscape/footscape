@@ -10,11 +10,18 @@ import java.util.Map;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
+import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
+import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
+import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.data.PropertiesData;
+import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
 
@@ -28,10 +35,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected ListI outer;
 
-	protected LabelI body;
-	
+	protected LabelI title;
+
+	protected StringEditorI statement;
+
 	protected ListI middle;
-	
 
 	// message msglist
 	protected ListI msglist;
@@ -54,13 +62,36 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 		this.outer = this.factory.create(ListI.class);
 		this.outer.parent(this);
-		
-		this.body = this.factory.create(LabelI.class);
-		this.body.parent(this.outer);
-		
+
+		this.title = this.factory.create(LabelI.class);
+		this.title.parent(this.outer);
+
+		// msg input
+		this.statement = this.factory.create(StringEditorI.class);
+		this.statement.parent(this);
+		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
+
+			@Override
+			public void handle(ChangeEvent t) {
+
+			}
+		});
+		// send button
+		final ButtonI ok = this.factory.create(ButtonI.class);
+		ok.setText(true, "ok");
+		ok.parent(this);
+		ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+			@Override
+			public void handle(ClickEvent t) {
+				MyExpView.this.onSendClick();
+			}
+		});
+		//
+
 		UiPropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
-		
+
 		this.middle = this.factory.create(ListI.class, pts);
 		this.middle.parent(this.outer);
 
@@ -73,10 +104,22 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
-	
+
+	protected void onSendClick() {
+		String msg = this.statement.getData();
+		MsgWrapper req = new MsgWrapper("/expm/create");
+		req.setPayload("expId1", this.expId);
+		req.setPayload("expId2", this.expId);
+		PropertiesData<Object> body = new PropertiesData<Object>();
+		body.setProperty("text", msg);
+		req.setPayload("body", body);
+		req.setPayload("path", "/text-message");
+		this.getClient(true).getEndpoint().sendMessage(req);//
+	}
+
 	@Override
-	public void setMyExp(String body){
-		this.body.setText(body);
+	public void setMyExp(String body) {
+		this.title.setText(body);
 	}
 
 	/*
