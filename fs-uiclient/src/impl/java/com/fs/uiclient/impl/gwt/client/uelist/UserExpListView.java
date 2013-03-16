@@ -89,4 +89,14 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 
 	}
 
+	/*
+	 * Mar 16, 2013
+	 */
+	@Override
+	public void delete(String expId) {
+		//
+		UserExpItemView ue = this.getUserExpView(expId, false);
+		ue.parent(null);
+	}
+
 }

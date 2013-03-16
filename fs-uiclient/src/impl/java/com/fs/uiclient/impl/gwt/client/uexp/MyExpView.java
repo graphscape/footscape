@@ -79,7 +79,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		});
 		// send button
 		final ButtonI ok = this.factory.create(ButtonI.class);
-		ok.setText(true, "ok");
+		ok.setText(true, "send");
 		ok.parent(this);
 		ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -88,7 +88,17 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				MyExpView.this.onSendClick();
 			}
 		});
-		//
+		// close button
+		final ButtonI close = this.factory.create(ButtonI.class);
+		close.setText(true, "close");
+		close.parent(this);
+		close.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+			@Override
+			public void handle(ClickEvent t) {
+				MyExpView.this.onCloseClick();
+			}
+		});
 
 		UiPropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
@@ -105,12 +115,19 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
-
+	
+	//close
+	protected void onCloseClick() {
+		MsgWrapper req = new MsgWrapper("/expe/close");
+		req.setPayload("expId", this.expId);
+		this.getClient(true).getEndpoint().sendMessage(req);//
+	}
 	protected void onSendClick() {
 		String msg = this.statement.getData();
 		MsgWrapper req = new MsgWrapper("/expm/create");
 		req.setPayload("expId1", this.expId);
-		req.setPayload("expId2", this.expId);
+		//expId2 is null, broad cast this message.
+		//req.setPayload("expId2", this.expId);
 		ObjectPropertiesData body = new ObjectPropertiesData();
 		body.setProperty("text", msg);
 		req.setPayload("body", body);

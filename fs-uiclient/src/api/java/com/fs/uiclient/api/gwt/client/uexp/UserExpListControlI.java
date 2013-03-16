@@ -24,5 +24,7 @@ public interface UserExpListControlI extends ControlI {
 	public void addOrUpdateExpMessage(ExpMessage msg);
 	
 	public void addOrUpdateExpConnect(ExpConnect ec);
+	
+	public void deleteExp(String expId);
 
 }

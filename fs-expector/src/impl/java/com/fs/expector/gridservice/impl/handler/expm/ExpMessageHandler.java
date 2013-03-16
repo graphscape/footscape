@@ -20,12 +20,12 @@ import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.core.NodeI;
+import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
-import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
+import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
@@ -62,46 +62,95 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		PropertiesI<Object> rt = (PropertiesI<Object>) this.codec.decode(jsn);
 		return rt;
 	}
-	private String encodeMessageExtend(PropertiesI<?> body){
+
+	private String encodeMessageExtend(PropertiesI<?> body) {
 		JSONArray ja = (JSONArray) this.codec.encode(body);
 		return ja.toJSONString();
 	}
+
+	/**
+	 * expId1 is from exp,expId2 is to exp, if to exp is null, broadcast this
+	 * message to all expId1's connected exps. Mar 16, 2013
+	 */
 	@Handle("create")
 	public void handleCreate(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		String expId1 = req.getString("expId1", true);
-		String expId2 = req.getString("expId2", true);
-		String path = req.getString("path",true);
-		PropertiesI<String> header = (PropertiesI<String>) req.getPayload("header",false);
-		PropertiesI<Object> body = (PropertiesI<Object>) req.getPayload("body",false);
-		
-		String bodyS = body == null?null:this.encodeMessageExtend(body);
-		String headerS = header == null?null:this.encodeMessageExtend(header);
-		
 		Expectation exp1 = this.dataService.getNewestById(Expectation.class, expId1, true);
-		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
 
-		String accId1 = exp1.getAccountId();
-		String accId2 = exp2.getAccountId();
+		String path = req.getString("path", true);
 
-		ExpMessage em = new ExpMessage().forCreate(this.dataService);
-		em.setExpId1(expId1);
-		em.setExpId2(expId2);
-		em.setAccountId1(accId1);
-		em.setAccountId2(accId2);
-		em.setPath(path);
-		em.setHeader(headerS);
-		em.setBody(bodyS);
-		em.save(true);
-		String id = em.getId();
-		res.setPayload("expMessageId", id);
-		
-		//TODO async for notify.
-		MessageI msg = new MessageSupport("/notify/exp-message-created");
+		PropertiesI<String> header = (PropertiesI<String>) req.getPayload("header", false);
 
-		this.onlineNotifyService.tryNotifyAccount(accId1, msg);
-		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
-		
+		PropertiesI<Object> body = (PropertiesI<Object>) req.getPayload("body", false);
+
+		String bodyS = body == null ? null : this.encodeMessageExtend(body);
+		String headerS = header == null ? null : this.encodeMessageExtend(header);
+
+		List<String> expId2L = new ArrayList<String>();
+
+		{
+			String expId2 = req.getString("expId2", false);
+
+			if (expId2 == null) {// broad cast
+				expId2L.add(expId1);
+				List<String> idL = getConnectedExpId2List(this.dataService, expId1);
+				expId2L.addAll(idL);
+			} else {// send to
+				expId2L.add(expId2);
+			}
+		}
+
+		for (String expId2 : expId2L) {
+
+			Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, false);
+
+			String accId1 = exp1.getAccountId();
+			String accId2 = exp2.getAccountId();
+
+			ExpMessage em = new ExpMessage().forCreate(this.dataService);
+			em.setExpId1(expId1);
+			em.setExpId2(expId2);
+			em.setAccountId1(accId1);
+			em.setAccountId2(accId2);
+			em.setPath(path);
+			em.setHeader(headerS);
+			em.setBody(bodyS);
+			em.save(true);
+			// todo async notify
+			MessageI msg = new MessageSupport("/notify/exp-message-created");
+
+			this.onlineNotifyService.tryNotifyAccount(accId2, msg);
+		}
+
+	}
+
+	public static List<Connection> getConnectionList(DataServiceI ds, String expId) {
+		List<Connection> c1 = getConnectionListByExpId1(ds, expId);
+		List<Connection> c2 = getConnectionListByExpId2(ds, expId);
+		c1.addAll(c2);
+		return c1;
+	}
+
+	public static List<Connection> getConnectionListByExpId1(DataServiceI ds, String expId1) {
+		List<Connection> cL = ds.getListNewestFirst(Connection.class, Connection.EXP_ID1, expId1, 0, 1000);
+		return cL;
+	}
+
+	public static List<Connection> getConnectionListByExpId2(DataServiceI ds, String expId2) {
+		List<Connection> cL = ds.getListNewestFirst(Connection.class, new String[] { Connection.EXP_ID2 },
+				new Object[] { expId2 }, 0, 1000);
+		return cL;
+	}
+
+	public static List<String> getConnectedExpId2List(DataServiceI ds, String expId) {
+		List<Connection> cL = ds.getListNewestFirst(Connection.class, Connection.EXP_ID1, expId, 0, 1000);
+		List<String> rt = new ArrayList<String>();
+		for (Connection c : cL) {
+			rt.add(c.getExpId2());
+		}
+
+		return rt;
 	}
 
 	@Handle("search")

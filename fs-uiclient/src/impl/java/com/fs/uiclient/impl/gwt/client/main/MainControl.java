@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
@@ -218,14 +219,33 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public void setExpDetail(String expId, String body) {
-		//update title of tab that point to the exp view
+		// update title of tab that point to the exp view
 		BodyViewI bv = this.getBodyView();
 		Path path = this.getExpViewPath(expId);
 		bv.setTitleOfItem(path, body, false);
 		//
 		MyExpViewI mv = this.openMyExp(expId);
 		mv.setMyExp(body);
-		
+
+	}
+
+	/*
+	 * Mar 16, 2013
+	 */
+	@Override
+	public void closeMyExp(String expId) {
+		//
+		Path path = this.getExpViewPath(expId);
+		this.getBodyView().tryCloseItem(path);
+	}
+
+	protected UserExpListControlI getUeListControl() {
+		return this.getManager().getControl(UserExpListControlI.class, true);
+	}
+
+	@Override
+	public void refreshUeList() {
+		this.getUeListControl().refresh(null);//
 	}
 
 }

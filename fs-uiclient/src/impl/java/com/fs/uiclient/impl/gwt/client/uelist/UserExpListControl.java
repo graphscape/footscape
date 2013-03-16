@@ -130,4 +130,14 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		me.addOrUpdateConnected(ec);
 	}
 
+	/*
+	 *Mar 16, 2013
+	 */
+	@Override
+	public void deleteExp(String expId) {
+		// 
+		UserExpListViewI uelv = this.getMainControl().openUeList();
+		uelv.delete(expId);
+	}
+
 }

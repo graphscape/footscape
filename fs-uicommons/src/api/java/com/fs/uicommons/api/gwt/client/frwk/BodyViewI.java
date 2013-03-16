@@ -17,6 +17,8 @@ public interface BodyViewI extends ViewI {
 
 	public <T extends WidgetI> T addItem(Path path, T w);
 	
+	public void tryCloseItem(Path path);
+	
 	//TODO provide new interface.
 	public void setTitleOfItem(Path path, String title, boolean force);
 

@@ -19,4 +19,6 @@ public interface UserExpListViewI extends ViewI {
 
 	public void update(UserExpModel uem);
 
+	public void delete(String expId);
+
 }

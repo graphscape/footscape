@@ -12,4 +12,6 @@ import com.fs.commons.api.message.MessageI;
 public interface OnlineNotifyServiceI {
 
 	public void tryNotifyAccount(String accId, MessageI msg);
+
+	public void tryNotifyAccount(String accId, String path);
 }

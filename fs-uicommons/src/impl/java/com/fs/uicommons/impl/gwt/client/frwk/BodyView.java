@@ -35,7 +35,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		pts.setProperty(TabberWI.PK_IS_VERTICAL, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_CLOSABLE, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_REVERSE, Boolean.TRUE);
-		
+
 		this.tabber = this.factory.create(TabberWI.class, pts);//
 		this.tabber.parent(this);
 	}
@@ -112,6 +112,20 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			}
 		}
 		tab.setText(false, title);
+
+	}
+
+	/*
+	 * Mar 16, 2013
+	 */
+	@Override
+	public void tryCloseItem(Path path) {
+		//
+		final TabWI sitem = this.tabber.getTab(path, false);
+		if (sitem == null) {
+			return;// not found
+		}
+		sitem.close();
 
 	}
 }

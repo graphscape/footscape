@@ -12,6 +12,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.expector.gridservice.api.OnlineNotifyServiceI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -33,6 +34,11 @@ public class OnlineNotifyServiceImpl extends ConfigurableSupport implements Onli
 
 	protected TerminalManagerI terminalManager;
 
+	@Override
+	public void tryNotifyAccount(String accId, String path) {
+		MessageI msg = new MessageSupport(path);
+		this.tryNotifyAccount(accId, msg);
+	}
 	@Override
 	public void tryNotifyAccount(String accId, MessageI msg) {
 		// SessionManagerI sm = this.facade.getSessionManager();
