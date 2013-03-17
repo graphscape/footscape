@@ -142,6 +142,16 @@ table.wgt-BarWidgetImpl{
 .wgt-BarWidgetImpl .wgt-ItemView {
 	
 }
+
+.wgt-BodyView {
+	text-align:center;	
+}
+
+.wgt-BodyView > .wgt-TabberWImpl {
+	margin-left:auto;
+	margin-right:auto;
+	width:1024px;
+}
 .wgt-BossView table{
 	width : 100%;
 }
@@ -212,6 +222,20 @@ Console View
 .wgt-FormView .wgt-LabelImpl {
 	float: right;
 }
+.wgt-FrwkView {
+	height:100%;
+}
+
+.wgt-FrwkView > .position-top {
+	height:100%;
+}
+
+.wgt-FrwkView > .position-bottom {
+	width:100%;
+	background-color: rgba(50, 90, 150, 0.3);
+	text-align:center;
+	color:rgba(50, 90, 150, 0.9);
+}
 
 /*HeaderView*/
 .wgt-HeaderView {
@@ -219,6 +243,12 @@ Console View
 	width: 100%;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 	padding: 0px 0px;
+}
+
+.wgt-HeaderView > .position-body {
+	margin-left:auto;
+	margin-right:auto;
+	width:1024px;
 }
 
 /*Label*/
