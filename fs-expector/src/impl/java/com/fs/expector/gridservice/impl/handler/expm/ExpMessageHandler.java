@@ -39,8 +39,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
-
-	private int maxSizeOfMessageQuery = 10000;
+	public static int maxSizeOfMessageQuery = 10000;
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -125,6 +124,16 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	}
 
+	// TODO delete by query
+	public static void deleteMessageByExpId2(DataServiceI ds, String expId2) {
+		List<ExpMessage> mL = ds.getListNewestFirst(ExpMessage.class, ExpMessage.EXP_ID2, expId2, 0,
+				ExpMessageHandler.maxSizeOfMessageQuery);
+		for (ExpMessage m : mL) {
+			String id = m.getId();
+			ds.deleteById(ExpMessage.class, id);
+		}
+	}
+
 	public static List<Connection> getConnectionList(DataServiceI ds, String expId) {
 		List<Connection> c1 = getConnectionListByExpId1(ds, expId);
 		List<Connection> c2 = getConnectionListByExpId2(ds, expId);
@@ -200,13 +209,13 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				msg.setPayload("nick1", acc.getNick());
 			}
 			{// exp1 body
-				Expectation exp1 = this.getExpectation(expId1);
-				msg.setPayload("expBody1", exp1.getBody());
+				String expB = this.getExpBodyForMessage(expId1);
+				msg.setPayload("expBody1", expB);
 
 			}
 			{// exp2 body
-				Expectation exp2 = this.getExpectation(expId2);
-				msg.setPayload("expBody2", exp2.getBody());
+				String expB = this.getExpBodyForMessage(expId1);
+				msg.setPayload("expBody2", expB);
 
 			}
 			{// body,extends properties
@@ -226,7 +235,9 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		res.setPayload("expMessages", ml);
 	}
 
-	private Expectation getExpectation(String expId) {
-		return this.dataService.getNewestById(Expectation.class, expId, true);
+	private String getExpBodyForMessage(String expId) {
+		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, false);
+		return exp == null ? "Deleted" : exp.getBody();
+
 	}
 }

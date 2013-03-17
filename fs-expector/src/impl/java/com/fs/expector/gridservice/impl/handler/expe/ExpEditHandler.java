@@ -64,23 +64,31 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 
 		String expId = (String) req.getPayload("expId", true);
 
-		//
+		// delete connection to and from this exp;
 		// TODO delete by query;
 		List<Connection> cL = ExpMessageHandler.getConnectionList(this.dataService, expId);
 		Set<String> accIdSet = new HashSet<String>();
-		accIdSet.add(aid);//self notify
+		accIdSet.add(aid);// self notify
 		for (Connection c : cL) {
 			this.dataService.deleteById(Connection.class, c.getId());
 			String accId = c.getAccountId1();
 			accIdSet.add(accId);
 		}
+		// delete message to this exp
+		ExpMessageHandler.deleteMessageByExpId2(this.dataService, expId);
+
+		// message from this exp not delete?
+
+		// delete exp.
+
 		this.dataService.deleteById(Expectation.class, expId);
+
+		// notify
 		for (String accId : accIdSet) {
 			MessageI msg = new MessageSupport("/notify/exp-deleted");
 			msg.setHeader("expId", expId);
 			this.onlineNotifyService.tryNotifyAccount(accId, msg);
 		}
-		// delete exp.
 
 	}
 }

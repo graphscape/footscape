@@ -121,11 +121,8 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	@Override
 	public void tryCloseItem(Path path) {
 		//
-		final TabWI sitem = this.tabber.getTab(path, false);
-		if (sitem == null) {
-			return;// not found
-		}
-		sitem.close();
+		
+		this.tabber.remove(path);
 
 	}
 }

@@ -34,9 +34,9 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	private TabWI first;
 
 	private TabberLayout layout;
-	
+
 	private boolean isClosable;
-	
+
 	private boolean isReverse;
 
 	/**
@@ -47,7 +47,6 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		boolean vertical = (Boolean) this.getProperty(TabberWI.PK_IS_VERTICAL, Boolean.FALSE);
 		this.isClosable = (Boolean) this.getProperty(TabberWI.PK_IS_CLOSABLE, Boolean.FALSE);
 		this.isReverse = (Boolean) this.getProperty(TabberWI.PK_IS_REVERSE, Boolean.FALSE);
-		
 
 		if (vertical) {
 			this.layout = new VerticalTabberLayout(this.element, this.isReverse);
@@ -80,12 +79,16 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	}
 
 	@Override
-	public void remove(Path path) {
+	public boolean remove(Path path) {
 		// remove tabthis.
-		TabWI t = this.getTab(path, true);
+		TabWI t = this.getTab(path, false);
+		if (t == null) {
+			return false;
+		}
 		t.parent(null);
 		// remove panel
 		this.stack.remove(path);
+		return true;
 	}
 
 	public List<TabWI> getTabList() {

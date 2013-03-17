@@ -30,8 +30,6 @@ public interface TabberWI extends CompositeI {
 
 	public TabWI getTab(Path name, boolean force);
 
-	public void remove(Path path);
-
-	// public PanelWI getPanel(Path name, boolean force);
-
+	public boolean remove(Path path);
+	
 }
