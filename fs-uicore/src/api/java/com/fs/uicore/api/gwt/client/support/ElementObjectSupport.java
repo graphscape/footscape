@@ -33,7 +33,7 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	protected Element element;
 
 	protected ElementWrapper elementWrapper;
-
+	
 	protected ElementWrapper opacities;// is the container div,which is set to
 										// opancity=1.0;
 

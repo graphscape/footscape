@@ -62,7 +62,7 @@ public class Actions {
 
 	public static final Path A_SIGNUP_SUBMIT = A_SIGNUP.getSubPath("submit");
 
-	public static final Path A_SIGNUP_CONFIRM = A_SIGNUP.getSubPath("confirm");
+	//public static final Path A_SIGNUP_CONFIRM = A_SIGNUP.getSubPath("confirm");
 
 	//
 

@@ -26,17 +26,17 @@ public class VerticalTabberLayout extends TabberLayout {
 	 * @param element
 	 */
 	public VerticalTabberLayout(Element element, boolean rev) {
-		super(element,"layout-vertical",rev);
+		super(element,"tabber-layout-vertical",rev);
 		Element table = this.element;
 		Element tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
 		Element tr = this.createTr(tbody);
-		this.leftTd = this.createTd(tr, "position-left");
+		this.leftTd = this.createTd(tr, "tabber-layout-left");
 
 		this.ul = (com.google.gwt.user.client.Element) Document.get().createULElement().cast();
 		DOM.appendChild(this.leftTd, this.ul);
 
-		this.bodyTd = this.createTd(tr, "position-right");
+		this.bodyTd = this.createTd(tr, "tabber-layout-right");
 	}
 
 	@Override

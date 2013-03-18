@@ -130,8 +130,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP(c, Path.valueOf("/signup/submit")));
 		eb.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));
-		eb.addHandler(Actions.A_SIGNUP_CONFIRM, new FormSubmitAP(c, Path.valueOf("/signup/confirm"),
-				SignupModelI.F_CONFIRM));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 

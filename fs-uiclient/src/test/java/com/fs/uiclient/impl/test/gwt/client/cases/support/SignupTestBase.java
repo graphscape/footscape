@@ -60,19 +60,8 @@ public abstract class SignupTestBase extends TestBase {
 		MessageData res = e.getMessage();
 		Path p = e.getMessage().getPath().getParent();
 		if (p.equals(Path.valueOf("/endpoint/message/signup/submit"))) {
-			String ccode = res.getString("confirmCode", true);//
 
-			FormView fv = this.signupView.find(FormView.class, "confirm", true);
-
-			EditorI emailE = fv.find(EditorI.class, "email", true);
-			emailE.input((this.email));
-			EditorI ccodeE = fv.find(EditorI.class, "confirmCode", true);// see
-																			// ResponseConfirmCodeNodifier
-			ccodeE.input((ccode));
-
-			this.signupView.clickAction(Actions.A_SIGNUP_CONFIRM);
 			this.tryFinish("submit");
-		} else if (p.equals(Path.valueOf("/endpoint/message/signup/confirm"))) {
 			this.onSignup(this.email, this.password);
 			this.tryFinish("confirm");
 		}

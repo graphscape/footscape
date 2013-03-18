@@ -12,6 +12,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  */
 public interface SignupViewI extends ViewI {
 
-	public void setConfirmCode(String cc);
+	//public void setConfirmCode(String cc);
 
 }

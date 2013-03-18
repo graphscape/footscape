@@ -22,6 +22,7 @@ import com.google.gwt.user.client.Element;
  */
 public class AbstractPanelWImpl extends LayoutSupport implements PanelWI{
 	
+	protected Element header;
 	protected ObjectElementHelper close;
 	
 	/**
@@ -29,7 +30,10 @@ public class AbstractPanelWImpl extends LayoutSupport implements PanelWI{
 	 */
 	public AbstractPanelWImpl(ContainerI c, String name, Element ele) {
 		super(c, name, ele);
-		this.close = this.helpers.addHelper("Close", DOM.createDiv());
+		this.header = DOM.createDiv();
+		ele.appendChild(this.header);
+
+		this.close = this.helpers.addHelper("Close", DOM.createButton());
 		this.close.getElement().setInnerText("X");
 		this.close.getElement().addClassName("button");
 		this.close.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
@@ -40,7 +44,8 @@ public class AbstractPanelWImpl extends LayoutSupport implements PanelWI{
 			}
 		});
 		
-		ele.appendChild(this.close.getElement());//
+		this.header.appendChild(this.close.getElement());//
+		//this.header.appendChild(DOM.createDiv());//right filler
 		this.setClosable(false);
 	}
 	

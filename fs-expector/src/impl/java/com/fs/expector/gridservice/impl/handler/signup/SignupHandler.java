@@ -18,13 +18,14 @@ import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
+import com.fs.commons.api.value.ErrorInfos;
+import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.expector.dataservice.api.NodeTypes;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.SignupRequest;
-import com.fs.expector.gridservice.api.signup.ConfirmCodeNotifierI;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -36,7 +37,9 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 	private static Logger LOG = LoggerFactory.getLogger(SignupHandler.class);
 
-	protected ConfirmCodeNotifierI confirmCodeNotifier;
+	// protected ConfirmCodeNotifierI confirmCodeNotifier;
+
+	// protected boolean isNeedConfirm = false;
 
 	public SignupHandler() {
 		super();
@@ -50,21 +53,15 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 		{
 			ValidatorI<MessageI> vl = this.createValidator("submit");
+			vl.addExpression(prefix + "['nick']!=null");
 			vl.addExpression(prefix + "['email']!=null");
 			vl.addExpression(prefix + "['password']!=null");
-			vl.addExpression(prefix + "['nick']!=null");
-			vl.addExpression(prefix + "['isAgree']");
 			// passcode in session .
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
-		{
-			ValidatorI<MessageI> vl = this.createValidator("confirm");
-			vl.addExpression(prefix + "['email']!=null");
-			vl.addExpression(prefix + "['confirmCode']!=null");
-		}
-
-		this.confirmCodeNotifier = this.top.finder(ConfirmCodeNotifierI.class).name("main").find(true);
-
+		
+		// this.confirmCodeNotifier =
+		// this.top.finder(ConfirmCodeNotifierI.class).name("main").find(true);
 	}
 
 	@Override
@@ -120,25 +117,14 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		pts.setNick(nick);
 		pts.setConfirmCode(confirmCode);//
 		pts.save(true);
-		this.confirmCodeNotifier.notify(mw, hc, email, confirmCode);
 
+		// this.confirmCodeNotifier.notify(mw, hc, email, confirmCode);
+		SignupHandler.confirm(this.dataService, email, confirmCode, res.getErrorInfos());
 	}
 
-	/**
-	 * finish signup process,user who submit the information input the confirm
-	 * code that received by mail address.
-	 * 
-	 * @param hc
-	 * @param req
-	 * @param res
-	 */
-	@Handle("confirm")
-	public void handleConfirm(TerminalMsgReceiveEW mw, MessageContext hc, ResponseI res) {
-		MessageI req = mw.getMessage();//
-		String email = (String) req.getPayload("email");
+	public static void confirm(DataServiceI ds, String email, String confirmCode, ErrorInfos eis) {
 		email = email.toLowerCase();
-		String confirmCode = (String) req.getPayload("confirmCode");
-		NodeQueryOperationI<SignupRequest> qo = this.dataService.prepareNodeQuery(NodeTypes.SIGNUP_REQUEST);
+		NodeQueryOperationI<SignupRequest> qo = ds.prepareNodeQuery(NodeTypes.SIGNUP_REQUEST);
 
 		qo.propertyEq(SignupRequest.PK_CONFIRM_CODE, confirmCode);
 		qo.propertyEq(SignupRequest.PK_EMAIL, email);// query by email and the
@@ -147,8 +133,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		NodeQueryResultI<SignupRequest> rst = qo.execute().getResult().assertNoError().cast();
 		List<SignupRequest> srl = rst.list();
 		if (srl.isEmpty()) {
-			res.getErrorInfos().add(
-					new ErrorInfo(null, "confirmCode or username error,or already confirmed."));// TODO
+			eis.add(new ErrorInfo(null, "confirmCode or username error,or already confirmed."));// TODO
 			return;
 		}
 		SignupRequest sp = srl.get(0);//
@@ -156,14 +141,14 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		String password = (String) sp.getProperty("password");
 
 		// do really create account.
-		Account an = new Account().forCreate(this.dataService);
+		Account an = new Account().forCreate(ds);
 		an.setId(email);// email as the id?
 		an.setPassword(password);
 		an.setNick(sp.getNick());
 		an.setIsAnonymous(false);
 		an.save(true);
 		//
-		AccountInfo xai = new AccountInfo().forCreate(this.dataService);
+		AccountInfo xai = new AccountInfo().forCreate(ds);
 		xai.setId(email);
 		xai.setEmail(email);//
 		xai.setAccountId(an.getId());

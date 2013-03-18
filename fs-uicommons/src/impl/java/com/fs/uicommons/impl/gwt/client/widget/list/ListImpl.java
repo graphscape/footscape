@@ -11,7 +11,9 @@ import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
+import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  * @author wuzhen
@@ -51,9 +53,18 @@ public class ListImpl extends LayoutSupport implements ListI {
 			TRWrapper tr = this.table.addTr();
 			TDWrapper td = tr.addTd();
 			td.append(ceo.getElement());
+			ceo.setProperty("externalParentElement", tr.getElement());
 		} else {
 			TDWrapper td = this.firstTRForHorizental.addTd();
 			td.append(ceo.getElement());
+			ceo.setProperty("externalParentElement", td.getElement());
 		}
 	}
+	@Override
+	protected void onRemoveChild(Element ele, WidgetI cw) {
+		Element epe = (Element)cw.getProperty("externalParentElement");
+		epe.removeFromParent();
+		super.onRemoveChild(ele, cw);
+	}
+
 }

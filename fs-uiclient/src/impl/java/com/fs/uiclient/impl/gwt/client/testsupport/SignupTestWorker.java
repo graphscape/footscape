@@ -83,18 +83,7 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		MessageData res = e.getMessage();
 		Path p = e.getMessage().getPath().getParent();
 		if (p.equals(Path.valueOf("/endpoint/message/signup/submit"))) {
-			String ccode = res.getString("confirmCode", true);//
-
-			FormView fv = this.signupView.find(FormView.class, "confirm", true);
-
-			EditorI emailE = fv.find(EditorI.class, "email", true);
-			emailE.input((this.email));
-			EditorI ccodeE = fv.find(EditorI.class, "confirmCode", true);// see
-																			// ResponseConfirmCodeNodifier
-			ccodeE.input((ccode));
-
-			this.signupView.clickAction(Actions.A_SIGNUP_CONFIRM);
-		} else if (p.equals(Path.valueOf("/endpoint/message/signup/confirm"))) {
+			
 			this.tryFinish("signup.done");
 			this.onSignup(this.email, this.password);
 		}
@@ -118,17 +107,17 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		EditorI passwordE = fv.find(EditorI.class, "password", true);
 		passwordE.input((this.password));
 
-		EditorI password2E = fv.find(EditorI.class, "password2", true);
-		password2E.input((this.password));
+		//EditorI password2E = fv.find(EditorI.class, "password2", true);
+		//password2E.input((this.password));
 
 		EditorI emailE = fv.find(EditorI.class, "email", true);
 		emailE.input((this.email));
 
-		EditorI isaE = fv.find(EditorI.class, "isAgree", true);
-		isaE.input((true));
+		//EditorI isaE = fv.find(EditorI.class, "isAgree", true);
+		//isaE.input((true));
 
-		EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
-		ccnE.input(("resp"));
+		//EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
+		//ccnE.input(("resp"));
 
 		this.signupView.clickAction(Actions.A_SIGNUP_SUBMIT);
 

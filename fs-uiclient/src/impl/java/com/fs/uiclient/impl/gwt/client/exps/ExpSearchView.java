@@ -13,16 +13,14 @@ import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
-import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
-import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
@@ -56,7 +54,9 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 		this.model = new ExpSearchModel();
 
-		this.header = this.factory.create(ListI.class);//
+		MapProperties pts = new MapProperties();
+		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
+		this.header = this.factory.create(ListI.class,pts);//
 		this.header.parent(this);
 
 		this.statement = this.factory.create(StringEditorI.class);

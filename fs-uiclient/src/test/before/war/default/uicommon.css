@@ -34,6 +34,11 @@
 	display : block;
 }
 
+.tabber-layout-right {
+	vertical-align : top;
+	padding-left:15px;
+}
+
 .invisible {
 	display : none;
 }
@@ -395,31 +400,28 @@ Console View
 }
 
 /*Vertical Tabber*/
-.wgt-TabberWImpl.layout-vertical td.position-left{
+.tabber-layout-left{
 	vertical-align:top;
 	margin-top:10px;
 	width:179px;
 }
 
-.wgt-TabberWImpl.layout-vertical td.position-left ul {
+.tabber-layout-left ul {
 	list-style: none;
 	margin: 2px 0;
 	padding-left: 0;
 	background-color: #fff;
 }
 
-.wgt-TabberWImpl.layout-vertical td.position-left ul li {
+.tabber-layout-left ul li {
 	color: #034F82;
 	cursor: pointer;
 	padding-top:3px;
 }
 
-.wgt-TabberWImpl.layout-vertical td.position-left ul .wgt-TabWImpl:hover,
-.wgt-TabberWImpl.layout-vertical td.position-left ul .wgt-TabWImpl.position-selected {
+.tabber-layout-left ul .wgt-TabWImpl:hover,
+.tabber-layout-left ul .wgt-TabWImpl.position-selected {
 	background: rgba(50, 90, 150, 0.3);
 }
 
-.wgt-TabberWImpl.layout-vertical td.position-right {
-	padding-left:15px;
-}
 /*End of CSS file*/
