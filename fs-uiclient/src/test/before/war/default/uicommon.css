@@ -38,6 +38,9 @@
 	vertical-align : top;
 	padding-left:15px;
 }
+.tabber-layout-left {
+	border-right:1px solid rgba(50, 90, 150, 0.3);
+}
 
 .invisible {
 	display : none;
@@ -109,10 +112,10 @@
 	margin-top:-2px;
 	margin-bottom:0px;
 	margin-left: 1px;
-	padding-top:6px;
-	padding-left:6px;
-	padding-right:6px;
-	padding-bottom: 6px;
+	padding-top:3px;
+	padding-left:1px;
+	padding-right:1px;
+	padding-bottom: 3px;
 	text-decoration: none;
 	text-shadow: 0 1px 0 #000;
 	white-space: nowrap;
@@ -139,9 +142,8 @@ table.wgt-BarWidgetImpl{
 }
 
 .wgt-BarWidgetImpl .right {
-	padding-right:10px;
-	float : right;/*text-align not work?*/	
-	
+	padding-right:0px;
+	text-align : right;
 }
 
 .wgt-BarWidgetImpl .wgt-ItemView {
@@ -150,39 +152,15 @@ table.wgt-BarWidgetImpl{
 
 .wgt-BodyView {
 	text-align:center;	
+	height:90%;
 }
 
 .wgt-BodyView > .wgt-TabberWImpl {
 	margin-left:auto;
 	margin-right:auto;
 	width:1024px;
-}
-.wgt-BossView table{
-	width : 100%;
-}
-.wgt-BossView td{
-	vertical-align:top;
-}
-.wgt-BossView .position-top{
-	
-}
-.wgt-BossView td.position-left{
-	width:166px;
-}
+	height:100%;
 
-.wgt-BossView td.position-center{
-	padding-left : 15px;
-	width:60%;
-}
-
-.wgt-BossView td.position-right{
-	
-}
-
-.wgt-BossView .position-bottom{
-	font-size: 9px;
-	border-top:1px solid white;
-	text-align:center;
 }
 
 /**
@@ -248,6 +226,7 @@ Console View
 	width: 100%;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 	padding: 0px 0px;
+	font-weight: bold;
 }
 
 .wgt-HeaderView > .position-body {

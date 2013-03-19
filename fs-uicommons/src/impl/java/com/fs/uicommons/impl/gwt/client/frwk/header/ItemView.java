@@ -40,12 +40,14 @@ public class ItemView extends LightWeightView {
 				ItemView.this.onClick();
 			}
 		});
+
+		this.anchor.getElementWrapper().addClassName("header-item" + path.toString('-'));
 	}
 
 	public MenuItemWI getOrAddMenuItem(final String name) {
 
 		MenuItemWI rt = this.menu.addItem(name);
-		
+
 		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
@@ -107,6 +109,5 @@ public class ItemView extends LightWeightView {
 		}
 
 	}
-
 
 }

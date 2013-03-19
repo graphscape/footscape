@@ -30,6 +30,9 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 	@Override
 	public void handle(AfterClientStartEvent t) {
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		//
+		fc.addHeaderItem(HeaderNames.H1_LOGO, true);
+		// right
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		fc.addHeaderItem(HeaderNames.H2_PROFILE);
 		fc.addHeaderItem(HeaderNames.H1_MYEXP);

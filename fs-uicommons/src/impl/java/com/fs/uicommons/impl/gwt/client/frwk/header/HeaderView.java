@@ -7,7 +7,7 @@ package com.fs.uicommons.impl.gwt.client.frwk.header;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
+import com.fs.uicommons.api.gwt.client.Position;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
@@ -35,25 +35,31 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 
 	}
 
-	public ItemView getOrCreateItem(Path path) {
+	public ItemView getOrCreateItem(Path path, boolean preferLeft) {
 
 		ItemView rt = this.itemViewMap.get(path);
 		if (rt != null) {
 			return rt;
 		}
 		rt = new ItemView(this.getContainer(), path);
-
-		this.itemList.addItem(BarWidgetI.P_RIGHT, rt);
+		Position p = preferLeft ? BarWidgetI.P_LEFT : BarWidgetI.P_RIGHT;
+		this.itemList.addItem(p, rt);
 		this.itemViewMap.put(path, rt);
 		return rt;
 	}
 
+	@Override
 	public void addItem(Path path) {
+		this.addItem(path, false);
+	}
+
+	@Override
+	public void addItem(Path path, boolean left) {
 
 		if (path.size() == 1) {
-			ItemView rt = this.getOrCreateItem(path);
+			ItemView rt = this.getOrCreateItem(path, left);
 		} else if (path.size() == 2) {
-			ItemView rt = this.getOrCreateItem(path.getParent());
+			ItemView rt = this.getOrCreateItem(path.getParent(), left);
 
 			rt.getOrAddMenuItem(path.getName());
 
@@ -71,7 +77,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		if (toloc) {
 			text = this.getClient(true).localized(text);
 		}
-		ItemView iv = this.getOrCreateItem(path);
+		ItemView iv = this.getOrCreateItem(path, false);
 		iv.setDisplayText(false, text);
 	}
 

@@ -27,15 +27,16 @@
 	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />
 	<property name="/signup" value="Signup" />
-	<property name="/login/view" value="Login View" />
-	<property name="/uelist" value="My Expectations" />
-	<property name="/expe" value="Edit Expectation" />
-	<property name="/profile" value="My Profile" />
-	<property name="/testers" value="Test Cases"/>
+	<property name="/login/view" value="Login" />
+	<property name="/uelist" value="Expectations" />
+	<property name="/expe" value="New" />
+	<property name="/profile" value="Profile" />
+	<property name="/testers" value="Tests"/>
 	<property name="/tab-default" value="Default"/>
 	<property name="/tab-confirm" value="Confirm"/>
 	<property name="/expMessageCount" value="Messages" />
-	<property name="/myExp" value="My Expectations" />
+	<property name="/myExp" value="Expectations" />
+	<property name="/logo" value="Waitee" />
 	
 	<!-- Actions -->
 	<property name="/action/activity/openChatRoom" value="Chat" />

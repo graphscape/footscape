@@ -11,14 +11,16 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 /**
  * @author wu
  */
-public interface FrwkControlI extends ControlI{
-	
+public interface FrwkControlI extends ControlI {
+
 	public void open();
-	
+
 	public void addHeaderItem(Path path);
-	
+
+	public void addHeaderItem(Path path, boolean left);
+
 	public HeaderViewI getHeaderView();
-	
+
 	public LoginViewI openLoginView();
-	
+
 }

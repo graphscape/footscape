@@ -39,7 +39,12 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 
 	@Override
 	public void addHeaderItem(Path path) {
-		this.getFrwkView().getHeader().addItem(path);
+		this.addHeaderItem(path, false);
+	}
+
+	@Override
+	public void addHeaderItem(Path path, boolean left) {
+		this.getFrwkView().getHeader().addItem(path, left);
 
 	}
 

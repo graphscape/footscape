@@ -37,6 +37,9 @@ public class UserLoginHandler extends UiHandlerSupport implements EventHandlerI<
 		if (nick == null) {
 			nick = ui.getAccountId();//
 		}
+		if (nick.length() > 9) {
+			nick = nick.substring(0, 6) + "...";
+		}
 		fc.getHeaderView().setItemDisplayText(HeaderItems.H1_USER, false, nick);
 
 	}

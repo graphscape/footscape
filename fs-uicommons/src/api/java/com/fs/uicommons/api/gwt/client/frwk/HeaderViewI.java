@@ -13,6 +13,8 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 public interface HeaderViewI extends ViewI {
 
 	public void addItem(Path path);
+	
+	public void addItem(Path path, boolean left);
 
 	public void setItemDisplayText(Path path,boolean toloc, String text);
 
