@@ -60,7 +60,7 @@ public class UserExpItemView extends ViewSupport {
 			// left
 			TRWrapper tr0 = this.table.addTr();
 			TDWrapper td0 = tr0.addTd();
-			td0.addClassName("icon");
+			td0.addClassName("uel-item-icon");
 			td0.setAttribute("rowspan", "3");
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
 			image.setAttribute(
@@ -74,13 +74,14 @@ public class UserExpItemView extends ViewSupport {
 			TDWrapper td02 = tr0.addTd();
 			td02.setAttribute("rowspan", "3");
 			this.actionsTd = td02;
+			this.actionsTd.addClassName("uel-item-actions");
 		}
 		//
 		{// tr1
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
-			td1.addClassName("expBody");
+			td1.addClassName("uel-item-expbody");
 			td1.setAttribute("colspan", "1");//
 			td1.getElement().setInnerText(t.getBody());
 			// td1,1
@@ -90,7 +91,7 @@ public class UserExpItemView extends ViewSupport {
 			// timestamp
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();
-			td.addClassName("timestamp");
+			td.addClassName("uel-item-timestamp");
 			String dateS = DateUtil.format(t.getTimestamp(false), false);
 			td.getElement().setInnerText(dateS);
 

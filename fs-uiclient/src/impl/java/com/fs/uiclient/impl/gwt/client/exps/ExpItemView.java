@@ -58,14 +58,14 @@ public class ExpItemView extends ViewSupport {
 			// td 0,0-1-2
 			TRWrapper tr0 = this.table.addTr();
 			TDWrapper td0 = tr0.addTd();
-			td0.addClassName("icon");
+			td0.addClassName("exps-item-icon");
 			td0.setAttribute("rowspan", "3");
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
 			image.setAttribute("src", ei.getIconDataUrl());
 			td0.append(image);
 			// middle,timestamp
 			TDWrapper td01 = tr0.addTd();
-			td01.addClassName("timestamp");
+			td01.addClassName("exps-item-timestamp");
 			String dateS = DateUtil.format(ei.getTimestamp(), false);
 			td01.getElement().setInnerText(dateS);
 			// right
@@ -79,7 +79,7 @@ public class ExpItemView extends ViewSupport {
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
-			td1.addClassName("expBody");
+			td1.addClassName("exps-item-expbody");
 
 			td1.getElement().setInnerText(ei.getExpBody());
 			// td1,1
@@ -88,6 +88,7 @@ public class ExpItemView extends ViewSupport {
 		//actions
 		ListI actions = this.factory.create(ListI.class);//
 		actions.parent(this);
+		actions.getElementWrapper().addClassName("exps-item-actions");
 
 		ButtonI cooper = this.factory.create(ButtonI.class);
 		cooper.setText(true, "cooper");
