@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 public class MessageData {
 
 	public static final String HK_PATH = "_path";
+	
 	private StringPropertiesData headers = new StringPropertiesData();
 
 	private ObjectPropertiesData payloads = new ObjectPropertiesData();

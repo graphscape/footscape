@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
@@ -21,6 +18,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
@@ -124,7 +122,6 @@ public class SimpleView extends ViewSupport {
 		b.setVisible(!hide);
 	}
 
-
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 		Element parent = pe;
@@ -177,6 +174,16 @@ public class SimpleView extends ViewSupport {
 			throw new UiException("widget not found for action:" + ap + " in view:" + this);
 		}
 		ab.getElementWrapper().click();
+	}
+
+	@Override
+	public void addErrorInfo(ErrorInfosData eis) {
+		this.errorInfoDisplay.addErrorInfos(eis);
+	}
+
+	@Override
+	public void clearErrorInfo() {
+		this.errorInfoDisplay.clear();
 	}
 
 }

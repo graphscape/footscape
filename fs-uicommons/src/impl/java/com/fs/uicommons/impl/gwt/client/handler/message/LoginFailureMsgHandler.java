@@ -43,7 +43,7 @@ public class LoginFailureMsgHandler extends UiHandlerSupport implements MessageH
 
 		AccountsLDW accs = AccountsLDW.getInstance();
 		ErrorInfosData eis = (ErrorInfosData) req.getPayload(UiResponse.ERROR_INFO_S);
-		if (eis.containsErrorCode(ErrorCodes.FAILED_LOGIN_NOTFOUND_ACCOUNT_OR_PASSWORD)) {//
+		if (eis.containsErrorCode(ErrorCodes.AUTH_FAILURE)) {//
 
 			// the saved account/email/password not valid for some reason
 			// 1)password is changed by some other means.
@@ -71,6 +71,10 @@ public class LoginFailureMsgHandler extends UiHandlerSupport implements MessageH
 					throw new UiException("bug,no this type:" + type);
 				}
 
+			} else {// not saved info,but user provided info,so notify user this
+					// error.
+				LoginViewI lv = this.getRootView().find(LoginViewI.class, true);
+				lv.addErrorInfo(eis);
 			}
 
 		}

@@ -34,7 +34,6 @@ public class LoginSubmitAH extends ActionHandlerSupport {
 
 		// this submit
 
-		req.setProperty("isSaved", (false));
 		req.setProperty("type", ("registered"));
 
 		String email = lm.getEmail();

@@ -283,17 +283,20 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 			t = e;
 		}
 
-		if (t == null) {//no error,got response
+		if (t == null) {// no error,got response
 			this.tryResponse(ep, req, res);
-		} else {//cannot got response
+		} else {// cannot got response
 			fres.cancel(true);
 			this.onException(evt, t);
 		}
 	}
 
+	public static final String HK_RESPONSE_HANDLER_ID = "response_handler_id";
+
 	protected ResponseI handleInSlave(MessageI req) {
 
 		ResponseI rt = this.engine.service(req);
+		rt.setHeader(HK_RESPONSE_HANDLER_ID, req.getHeader(HK_RESPONSE_HANDLER_ID));
 		return rt;
 	}
 

@@ -14,6 +14,8 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  */
 public class MsgWrapper extends PropertiesData<Object> {
 
+	public static final String HK_REQUEST_ID = "_requestId";
+	
 	protected MessageData target;
 
 	public MsgWrapper(String path) {

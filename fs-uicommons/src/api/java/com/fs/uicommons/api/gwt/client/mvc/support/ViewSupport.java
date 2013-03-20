@@ -9,6 +9,7 @@ import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -47,6 +48,23 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 	}
 
 	protected void beforeActionEvent(ActionEvent ae) {
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicommons.api.gwt.client.mvc.ViewI#addErrorInfo(com.fs.uicore.
+	 * api.gwt.client.data.ErrorInfosData)
+	 */
+	@Override
+	public void addErrorInfo(ErrorInfosData eis) {
+
+	}
+
+	@Override
+	public void clearErrorInfo() {
 
 	}
 }

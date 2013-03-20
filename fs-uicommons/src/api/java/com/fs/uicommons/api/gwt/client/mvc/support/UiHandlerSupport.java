@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
@@ -42,6 +43,10 @@ public class UiHandlerSupport {
 
 	protected UiClientI getClient(boolean force) {
 		return this.container.get(UiClientI.class, force);
+	}
+
+	protected RootI getRootView() {
+		return this.getClient(true).getRoot();
 	}
 
 	protected <T extends ControlI> T getControl(Class<T> cls, boolean force) {

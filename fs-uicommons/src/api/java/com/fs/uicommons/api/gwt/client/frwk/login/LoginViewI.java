@@ -33,4 +33,8 @@ public interface LoginViewI extends ViewI {
 
 	public boolean isSavingAccount();
 
+	/**
+	 * 
+	 */
+
 }

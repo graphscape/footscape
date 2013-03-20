@@ -85,6 +85,7 @@ import com.fs.uicommons.impl.gwt.client.handler.action.GChatSendAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
+import com.fs.uicommons.impl.gwt.client.handler.message.LoginFailureMsgHandler;
 import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;
 import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
@@ -164,6 +165,8 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		EndPointI ep = client.getEndpoint();
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousMsgHandler());
+		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMsgHandler(c));
+
 	}
 
 	public void activeOtherHandlers(ContainerI c, UiClientI client) {
