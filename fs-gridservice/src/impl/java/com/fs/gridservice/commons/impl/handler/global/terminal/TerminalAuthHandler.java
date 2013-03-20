@@ -9,7 +9,6 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.gridservice.commons.api.GridServiceErrorCodes;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
 import com.fs.gridservice.commons.api.support.TerminalMsgReseiveEventHandler;
@@ -44,7 +43,8 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 		PropertiesI<Object> cre = reqE.getMessage().getPayloads();
 
 		PropertiesI<Object> ok = this.authProvider.auth(cre);
-
+		res.setPayloads(cre);//for tracking
+		
 		if (ok != null) {
 			String tid = reqE.getTerminalId();
 			TerminalGd tg = this.terminalManager.getTerminal(tid);
@@ -60,7 +60,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 			// binding session with tid:
 			this.binding(res, ok, reqE, tid, s);
 		} else {
-			res.getErrorInfos().addError(GridServiceErrorCodes.AUTH_FAILURE, "auth failed ");
+			res.getErrorInfos().addError("auth/failure", "auth failed ");
 		}
 	}
 

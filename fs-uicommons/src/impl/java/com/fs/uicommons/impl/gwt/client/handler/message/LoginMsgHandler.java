@@ -45,6 +45,7 @@ public class LoginMsgHandler extends UiHandlerSupport implements MessageHandlerI
 				// String type = res.getRequest().getPayLoadAsString("type",
 				// true);
 				// type must be registered
+			
 			boolean saving = lm.isSavingAccount();
 			AccountsLDW sai = AccountsLDW.getInstance();
 			RegisteredAccountLDW acc = sai.getRegistered();

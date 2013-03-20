@@ -153,7 +153,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
-		eb.addHandler(Actions.A_LOGIN_ANONYMOUS, new SignupAnonymousAH(c));
 
 		//
 		eb.addHandler(Actions.A_GCHAT_JOIN, new GChatJoinAP(c));
@@ -164,7 +163,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	public void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI ep = client.getEndpoint();
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
-				new SignupAnonymousMsgHandler());
+				new SignupAnonymousMsgHandler(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMsgHandler(c));
 
 	}

@@ -12,6 +12,7 @@ import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
+import com.fs.uicommons.impl.gwt.client.handler.action.AutoLoginHandler;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.UiResponse;
@@ -57,14 +58,13 @@ public class LoginFailureMsgHandler extends UiHandlerSupport implements MessageH
 				if (type.equals("registered")) {//
 					RegisteredAccountLDW acc1 = accs.getRegistered();
 					acc1.invalid();// try using the anonymous login.
-					new ActionEvent(t.getSource(), Actions.A_LOGIN_SUBMIT).dispatch();// try
-					// again
-
+					//try auto auth with anonymous
+					AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());//try again,with anonymous
 				} else if (type.equals("anonymous")) {
 					AnonymousAccountLDW acc2 = accs.getAnonymous();
 					acc2.invalid();// clean and try again: create a new
 									// anonymous and login
-					new ActionEvent(t.getSource(), Actions.A_LOGIN_SUBMIT).dispatch();// try
+					AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());//try agin, signup anonymous
 					// again
 
 				} else {

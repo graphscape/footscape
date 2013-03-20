@@ -4,14 +4,17 @@ import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
-import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AnonymousAccountLDW;
 import com.fs.uicommons.impl.gwt.client.frwk.login.RegisteredAccountLDW;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 
 /**
  * 
@@ -35,7 +38,12 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 	public void handle(AutoLoginRequireEvent ae) {
 		//
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
+		EndPointI ep = this.getEndpoint();
+		AutoLoginHandler.autoLogin(ep, ae.getSource());
 
+	}
+
+	public static void autoLogin(EndPointI endpoint, UiObjectI esource) {
 		ObjectPropertiesData req = new ObjectPropertiesData();
 
 		// this submit
@@ -60,11 +68,12 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 
 		} else {// has not saved account,create it first and then call this
 				// submit again.
-			new ActionEvent(ae.getSource(), Actions.A_LOGIN_ANONYMOUS).dispatch();
+			MsgWrapper msg = new MsgWrapper(Path.valueOf("/signup/anonymous"));
+			endpoint.sendMessage(msg);
 			return;
 		}
 
-		this.getEndpoint().auth(req);
+		endpoint.auth(req);
 	}
 
 }

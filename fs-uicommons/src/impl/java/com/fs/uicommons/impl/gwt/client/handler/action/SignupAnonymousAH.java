@@ -29,9 +29,7 @@ public class SignupAnonymousAH extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		//
 
-		MsgWrapper req = this.newRequest(Path.valueOf("/signup/anonymous"));
-
-		this.sendMessage(req);
+		
 	}
 
 }

@@ -28,9 +28,6 @@ public class LoginView extends FormsView implements LoginViewI {
 		this.accountLabel = this.factory.create(LabelI.class);
 		this.accountLabel.parent(this);
 
-		this.addAction(Actions.A_LOGIN_ANONYMOUS, true);// create
-		// anonymous
-
 		this.addAction(Actions.A_LOGIN_SUBMIT);
 
 		FormViewI def = this.getDefaultForm();
@@ -38,8 +35,14 @@ public class LoginView extends FormsView implements LoginViewI {
 		def.addField(FK_PASSWORD, String.class);//
 		def.addField(FK_SAVINGACCOUNT, Boolean.class);
 		// actions
-
+		AccountsLDW accs = AccountsLDW.getInstance();
+		RegisteredAccountLDW acc1 = accs.getRegistered();
+		if(acc1.isValid()){
+			def.setFieldValue(FK_EMAIL,acc1.getEmail());
+			def.setFieldValue(FK_PASSWORD, acc1.getPassword());
+		}
 	}
+
 
 	@Override
 	public void doAttach() {

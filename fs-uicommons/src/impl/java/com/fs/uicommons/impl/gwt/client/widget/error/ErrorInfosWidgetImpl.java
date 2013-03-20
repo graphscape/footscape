@@ -3,7 +3,6 @@
  */
 package com.fs.uicommons.impl.gwt.client.widget.error;
 
-import com.fs.uicommons.api.gwt.client.adjust.OverflowAdjustHandler;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -31,7 +30,7 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements ErrorInfosWid
 		tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
 		// NOTE
-		this.addAdjuster("ext", new OverflowAdjustHandler());
+		//this.addAdjuster("ext", new OverflowAdjustHandler());
 	}
 
 	/**

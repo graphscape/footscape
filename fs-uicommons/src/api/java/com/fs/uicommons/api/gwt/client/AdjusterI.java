@@ -13,7 +13,7 @@ import com.fs.uicore.api.gwt.client.event.ClickEvent;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated to be rethink.
  */
 public interface AdjusterI extends ElementObjectI {
 

@@ -21,7 +21,6 @@ public class Actions {
 	/** LOGIN **/
 	public static final Path A_LOGIN = ACTION.getSubPath("login");
 
-	public static final Path A_LOGIN_ANONYMOUS = A_LOGIN.getSubPath("anonymous");
 	// create anonymous
 	// account.
 

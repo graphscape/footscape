@@ -17,7 +17,7 @@ import com.fs.uicore.api.gwt.client.event.ClickEvent;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated
  */
 public class OverflowAdjustHandler implements EventHandlerI<ClickEvent> {
 
