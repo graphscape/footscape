@@ -8,6 +8,8 @@ import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wuzhen
@@ -30,6 +32,11 @@ public class MyExpHeaderItemHandler extends UiHandlerSupport implements EventHan
 	 */
 	@Override
 	public void handle(HeaderItemEvent t) {
+		UserInfo ui = this.getEndpoint().getUserInfo();
+		if (ui.isAnonymous()) {
+			Window.alert("Please login before create your expecation.");
+			return;
+		}
 
 		MainControlI mc = this.getControl(MainControlI.class, true);
 		mc.openUeList();

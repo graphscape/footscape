@@ -4,6 +4,8 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import java.util.List;
+
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 
@@ -20,5 +22,11 @@ public interface UserExpListViewI extends ViewI {
 	public void update(UserExpModel uem);
 
 	public void delete(String expId);
+
+	public List<UserExpModel> getUserExpList();
+
+	public UserExpModel getUserExp(String id, boolean b);
+
+	public void addUserExp(UserExpModel uem);
 
 }

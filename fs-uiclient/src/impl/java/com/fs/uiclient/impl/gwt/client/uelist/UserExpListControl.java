@@ -42,24 +42,20 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		this.sendMessage(req);
 	}
 
-	public UserExpListModelI getModel() {
-		return this.getMainControl().getUeListModel();
-	}
-
 	/*
 	 * Jan 14, 2013
 	 */
 	@Override
 	public void select(String expId) {
-
+		UserExpListViewI uelv = this.getMainControl().openUeList();
 		// model
-		List<UserExpModel> ueL = this.getModel().getChildList(UserExpModel.class);
+		List<UserExpModel> ueL = uelv.getUserExpList();
 		for (UserExpModel ue : ueL) {
 			boolean sel = ue.getExpId().equals(expId);
 			ue.select(sel);
 		}
 		// view
-		UserExpListViewI uelv = this.getMainControl().openUeList();
+		
 		uelv.select(expId);
 
 		// call search
@@ -72,8 +68,8 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	 */
 	@Override
 	public void refresh(String expId) {
-		UserExpListModel uelm = this.getModel().cast();
-		Long lts = uelm.getLastTimestamp(false);
+		UserExpListViewI uelv = this.getMainControl().openUeList();
+		Long lts = null;//uelv.getLastTimestamp(false);
 		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/refresh"));
 		req.setPayload("lastTimestamp", DateData.valueOf(lts));// fresh from
 																// here
@@ -86,14 +82,13 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void addOrUpdateUserExp(UserExpModel uem) {
 		String id = uem.getExpId();
-		UserExpListModelI ulm = this.getModel();
-		UserExpModel old = ulm.getUserExp(id, false);
+		UserExpListViewI uelv = this.getMainControl().openUeList();
+		UserExpModel old = uelv.getUserExp(id, false);
 		if (old == null) {
-			ulm.addUserExp(uem);
+			uelv.addUserExp(uem);
 		} else {
 			old.setBody(uem.getBody());
 		}
-		UserExpListViewI uelv = this.getMainControl().openUeList();
 		uelv.update(uem);
 	}
 

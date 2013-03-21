@@ -4,6 +4,8 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
+import java.util.List;
+
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
@@ -22,23 +24,20 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 
 	protected ListI list;
 
-	UserExpListModelI model;
+	UserExpListModelI model = new UserExpListModel("ue-msglist");
 
 	/**
 	 * @param ctn
 	 */
-	public UserExpListView(ContainerI ctn, UserExpListModelI uem) {
+	public UserExpListView(ContainerI ctn) {
 		super(ctn, "uelist");
-		this.model = uem;
 		this.addAction(Actions.A_UEL_CREATE);
 		// click and open one exp,enter the exp's main view.
 
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("expListContainer");
 		this.list.parent(this);
-		for (UserExpModel ue : uem.getChildList(UserExpModel.class)) {
-			this.addUserExpModel(ue);
-		}
+		
 	}
 
 	/**
@@ -97,6 +96,30 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 		//
 		UserExpItemView ue = this.getUserExpView(expId, false);
 		ue.parent(null);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.exps.UserExpListViewI#getUserExpList()
+	 */
+	@Override
+	public List<UserExpModel> getUserExpList() {
+		return this.model.getChildList(UserExpModel.class);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.exps.UserExpListViewI#getUserExp(java.lang.String, boolean)
+	 */
+	@Override
+	public UserExpModel getUserExp(String id, boolean force) {
+		return this.model.getUserExp(id, force);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uiclient.api.gwt.client.exps.UserExpListViewI#addUserExp(com.fs.uiclient.api.gwt.client.uexp.UserExpModel)
+	 */
+	@Override
+	public void addUserExp(UserExpModel uem) {
+		this.model.addUserExp(uem);
 	}
 
 }

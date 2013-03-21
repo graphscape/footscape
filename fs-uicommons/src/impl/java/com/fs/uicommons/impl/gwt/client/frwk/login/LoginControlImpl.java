@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
+import com.fs.uicommons.api.gwt.client.CommonsPaths;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginModelI;
@@ -34,12 +35,11 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	public LoginViewI openLoginView() {
 
 		BodyViewI bv = this.getBodyView();
-		Path path = Path.valueOf("/login/view");
-		LoginView lv = bv.getItem(path, false);
+		LoginView lv = bv.getItem(CommonsPaths.LOGIN_VIEW, false);
 		if (lv == null) {
 			lv = new LoginView(this.getContainer(), "login");
 
-			bv.addItem(path, lv);
+			bv.addItem(CommonsPaths.LOGIN_VIEW, lv);
 		}
 		return lv;
 	}

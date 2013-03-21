@@ -21,6 +21,7 @@ import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
+import com.fs.uicommons.api.gwt.client.CommonsPaths;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
@@ -36,7 +37,6 @@ import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 public class MainControl extends ControlSupport implements MainControlI {
 
 	ProfileModelI profile;
-	UserExpListModelI uelist;
 
 	/**
 	 * @param name
@@ -44,21 +44,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public MainControl(ContainerI c, String name) {
 		super(c, name);
 		this.profile = new ProfileModel("profile");
-		this.uelist = new UserExpListModel("ue-msglist");
+
 	}
 
 	public ProfileModelI getProfileModel() {
 		return this.profile;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uiclient.api.gwt.client.main.MainControlI#getUeListModel()
-	 */
-	@Override
-	public UserExpListModelI getUeListModel() {
-		return this.uelist;
 	}
 
 	/*
@@ -85,14 +75,13 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public UserExpListViewI openUeList() {
 		//
-		final UserExpListModelI uel = this.getUeListModel();
 
 		UserExpListViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/uelist"),
 				new CreaterI<UserExpListView>() {
 
 					@Override
 					public UserExpListView create(ContainerI ct) {
-						return new UserExpListView(ct, uel);
+						return new UserExpListView(ct);
 					}
 				});
 		return uelv;
@@ -246,6 +235,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void refreshUeList() {
 		this.getUeListControl().refresh(null);//
+	}
+
+	@Override
+	public void closeLoginView() {
+		this.getBodyView().tryCloseItem(CommonsPaths.LOGIN_VIEW);
 	}
 
 }

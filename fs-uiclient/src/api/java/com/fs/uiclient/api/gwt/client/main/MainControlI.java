@@ -18,8 +18,6 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public interface MainControlI extends ControlI {
 
-	public UserExpListModelI getUeListModel();
-
 	public ExpSearchViewI openExpSearch();
 
 	public UserExpListViewI openUeList();
@@ -41,5 +39,7 @@ public interface MainControlI extends ControlI {
 	public void setExpDetail(String expId, String title);
 	
 	public void refreshUeList();
+
+	public void closeLoginView();
 
 }
