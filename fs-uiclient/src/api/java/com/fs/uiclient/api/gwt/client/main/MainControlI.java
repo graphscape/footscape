@@ -33,13 +33,15 @@ public interface MainControlI extends ControlI {
 	public void refreshExpConnect(String expId);
 
 	public void refreshExpMessage(String expId);
-	
+
 	public void closeMyExp(String expId);
 
 	public void setExpDetail(String expId, String title);
-	
+
 	public void refreshUeList();
 
 	public void closeLoginView();
+
+	public void closeAll();
 
 }

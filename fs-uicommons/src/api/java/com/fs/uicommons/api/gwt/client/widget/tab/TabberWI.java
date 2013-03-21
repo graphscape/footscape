@@ -4,6 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.tab;
 
+import java.util.List;
+
 import com.fs.uicore.api.gwt.client.CompositeI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
@@ -21,6 +23,8 @@ public interface TabberWI extends CompositeI {
 	public static final String PK_IS_REVERSE = "isReverse";
 
 	public TabWI getSelected(boolean force);
+	
+	public List<TabWI> getTabList() ;
 
 	public TabWI addTab(Path name);
 
@@ -31,5 +35,7 @@ public interface TabberWI extends CompositeI {
 	public TabWI getTab(Path name, boolean force);
 
 	public boolean remove(Path path);
+	
+	public void removeAll();
 	
 }

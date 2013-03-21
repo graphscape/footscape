@@ -12,21 +12,20 @@ import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
-import com.fs.uiclient.impl.gwt.client.uelist.UserExpListModel;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
-import com.fs.uicommons.api.gwt.client.CommonsPaths;
+import com.fs.uicommons.api.gwt.client.Constants;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
@@ -75,15 +74,20 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public UserExpListViewI openUeList() {
 		//
-
+		final Holder<Boolean> holder = new Holder<Boolean>(Boolean.FALSE);
 		UserExpListViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/uelist"),
 				new CreaterI<UserExpListView>() {
 
 					@Override
 					public UserExpListView create(ContainerI ct) {
+						holder.setTarget(true);//
 						return new UserExpListView(ct);
 					}
 				});
+		//created called,first created.
+		if(holder.getTarget()){
+			this.refreshUeList();//
+		}
 		return uelv;
 
 	}
@@ -239,7 +243,15 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	@Override
 	public void closeLoginView() {
-		this.getBodyView().tryCloseItem(CommonsPaths.LOGIN_VIEW);
+		this.getBodyView().tryCloseItem(Constants.LOGIN_VIEW);
+	}
+
+	/*
+	 *Mar 21, 2013
+	 */
+	@Override
+	public void closeAll() {
+		this.getBodyView().closeAllItems();
 	}
 
 }

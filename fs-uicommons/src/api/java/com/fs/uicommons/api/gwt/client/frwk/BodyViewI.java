@@ -23,5 +23,7 @@ public interface BodyViewI extends ViewI {
 	public void setTitleOfItem(Path path, String title, boolean force);
 
 	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt);
+	
+	public void closeAllItems();
 
 }

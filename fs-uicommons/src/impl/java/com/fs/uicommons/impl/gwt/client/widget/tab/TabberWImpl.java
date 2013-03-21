@@ -13,6 +13,7 @@ import com.fs.uicommons.api.gwt.client.widget.stack.StackWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabWI;
 import com.fs.uicommons.api.gwt.client.widget.tab.TabberWI;
+import com.fs.uicommons.impl.gwt.client.widget.util.ListMap;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -31,7 +32,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	private StackWI stack;
 
-	private TabWI first;
+	private ListMap<Path, TabWI> history = new ListMap<Path, TabWI>();
 
 	private TabberLayout layout;
 
@@ -82,15 +83,22 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 	public boolean remove(Path path) {
 		// remove tabthis.
 		TabWI t = this.getTab(path, false);
+
 		if (t == null) {
 			return false;
 		}
+		boolean sel = t.isSelected();
 		t.parent(null);
 		// remove panel
 		this.stack.remove(path);
+		this.history.remove(path);
+		if (sel) {// selected removed.
+			this.updateSelect();
+		}
 		return true;
 	}
 
+	@Override
 	public List<TabWI> getTabList() {
 		return this.getChildList(TabWI.class);
 	}
@@ -134,26 +142,24 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		// widget.
 		// first must select
 		this.child(rt);//
-
-		if (this.first == null) {// first one
-			this.first = rt;
-			this.first.select();
-		} else {// not first one
-			if (sel) {
-				rt.select();
-			} else {
-				this.first.select();
-			}
+		this.history.put(name, rt);
+		if (sel) {
+			rt.select();
+		} else {
+			updateSelect();
 		}
 
 		return rt;
 	}
 
-	public TabWI getFirstTab(boolean force) {
-		if (this.first == null && force) {
-			throw new UiException("no tab");
+	public void updateSelect() {
+		if (null == this.getSelected(false)) {
+			Path p = this.history.getNewest();
+			if (p != null) {
+				TabWI tab = this.getTab(p, true);
+				tab.select();
+			}
 		}
-		return this.first;
 	}
 
 	public int getSize() {
@@ -211,6 +217,18 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 			throw new UiException("empty or bug,there is no tab selected?");
 		}
 		return null;
+	}
+
+	/*
+	 * Mar 21, 2013
+	 */
+	@Override
+	public void removeAll() {
+		List<TabWI> tl = this.getTabList();
+		for (TabWI t : tl) {
+			Path p = Path.valueOf(t.getName());
+			this.remove(p);
+		}
 	}
 
 }

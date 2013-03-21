@@ -27,7 +27,7 @@
 	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />
 	<property name="/signup" value="Signup" />
-	<property name="/login/view" value="Login" />
+	<property name="/login" value="Login" />
 	<property name="/uelist" value="Expectations" />
 	<property name="/expe" value="New" />
 	<property name="/profile" value="Profile" />

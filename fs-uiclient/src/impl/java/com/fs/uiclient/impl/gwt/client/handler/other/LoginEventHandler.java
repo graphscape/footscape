@@ -42,6 +42,7 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 
 		// open exp search view
 		MainControlI mc = this.getControl(MainControlI.class, true);
+		mc.closeAll();
 		mc.openExpSearch();//
 		//close login view if opened
 		mc.closeLoginView();

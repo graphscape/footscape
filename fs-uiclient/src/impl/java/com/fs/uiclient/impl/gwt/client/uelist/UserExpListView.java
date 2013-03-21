@@ -37,7 +37,6 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("expListContainer");
 		this.list.parent(this);
-		
 	}
 
 	/**

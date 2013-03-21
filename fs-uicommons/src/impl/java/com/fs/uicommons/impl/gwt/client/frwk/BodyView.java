@@ -125,4 +125,12 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		this.tabber.remove(path);
 
 	}
+
+	/*
+	 *Mar 21, 2013
+	 */
+	@Override
+	public void closeAllItems() {
+		this.tabber.removeAll();
+	}
 }
