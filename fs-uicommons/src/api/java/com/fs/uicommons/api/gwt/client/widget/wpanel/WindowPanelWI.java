@@ -4,7 +4,8 @@
  */
 package com.fs.uicommons.api.gwt.client.widget.wpanel;
 
-import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
+import com.fs.uicore.api.gwt.client.CompositeI;
+import com.fs.uicore.api.gwt.client.WindowI;
 
 
 /**
@@ -15,6 +16,6 @@ import com.fs.uicommons.api.gwt.client.widget.panel.PanelWI;
  *         @see WindowI
  *         
  */
-public interface WindowPanelWI extends PanelWI {
+public interface WindowPanelWI extends CompositeI {
 
 }

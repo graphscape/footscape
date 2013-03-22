@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
@@ -84,8 +85,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 						return new UserExpListView(ct);
 					}
 				});
-		//created called,first created.
-		if(holder.getTarget()){
+		// created called,first created.
+		if (holder.getTarget()) {
 			this.refreshUeList();//
 		}
 		return uelv;
@@ -113,7 +114,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public SignupViewI openSignup() {
 		//
 
-		SignupView rt = this.gorOrCreateViewInBody(Path.valueOf("/signup"), new CreaterI<SignupView>() {
+		SignupView rt = this.gorOrCreateViewInBody(UiClientConstants.P_SIGNUP, new CreaterI<SignupView>() {
 
 			@Override
 			public SignupView create(ContainerI ct) {
@@ -247,11 +248,21 @@ public class MainControl extends ControlSupport implements MainControlI {
 	}
 
 	/*
-	 *Mar 21, 2013
+	 * Mar 21, 2013
 	 */
 	@Override
 	public void closeAll() {
 		this.getBodyView().closeAllItems();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.uiclient.api.gwt.client.main.MainControlI#closeSignup()
+	 */
+	@Override
+	public void closeSignup() {
+		 this.getBodyView().tryCloseItem(UiClientConstants.P_SIGNUP);
 	}
 
 }

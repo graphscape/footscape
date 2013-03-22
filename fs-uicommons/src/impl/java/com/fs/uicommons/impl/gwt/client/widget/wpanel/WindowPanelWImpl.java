@@ -4,8 +4,8 @@
  */
 package com.fs.uicommons.impl.gwt.client.widget.wpanel;
 
+import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.api.gwt.client.widget.wpanel.WindowPanelWI;
-import com.fs.uicommons.impl.gwt.client.widget.panel.AbstractPanelWImpl;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Point;
@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
  *         RootI.
  * @see AbsolutePanel
  */
-public class WindowPanelWImpl extends AbstractPanelWImpl implements WindowPanelWI {
+public class WindowPanelWImpl extends LayoutSupport implements WindowPanelWI {
 
 	/**
 	 * @param ele

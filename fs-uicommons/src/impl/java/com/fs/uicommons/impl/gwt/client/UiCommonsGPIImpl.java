@@ -84,7 +84,6 @@ import com.fs.uicommons.impl.gwt.client.handler.action.GChatJoinAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.GChatSendAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
-import com.fs.uicommons.impl.gwt.client.handler.action.SignupAnonymousAH;
 import com.fs.uicommons.impl.gwt.client.handler.message.LoginFailureMsgHandler;
 import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;

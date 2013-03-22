@@ -72,6 +72,7 @@ public class ExpItemView extends ViewSupport {
 			TDWrapper td02 = tr0.addTd();
 			td02.setAttribute("rowspan", "3");
 			this.actionsTd = td02;
+			this.actionsTd.addClassName("exps-item-actions");
 
 		}
 		//
@@ -88,7 +89,7 @@ public class ExpItemView extends ViewSupport {
 		//actions
 		ListI actions = this.factory.create(ListI.class);//
 		actions.parent(this);
-		actions.getElementWrapper().addClassName("exps-item-actions");
+		
 
 		ButtonI cooper = this.factory.create(ButtonI.class);
 		cooper.setText(true, "cooper");

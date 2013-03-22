@@ -20,13 +20,15 @@ public class HorizentalTabberLayout extends TabberLayout {
 
 	private Element bodyTd;
 
+	private TabberWImpl tabber;
+
 	/**
 	 * @param c
 	 * @param element
 	 */
-	public HorizentalTabberLayout(Element element, boolean rev) {
-		super(element, "layout-horizental",rev);
-
+	public HorizentalTabberLayout(TabberWImpl tabber, Element element, boolean rev) {
+		super(element, "layout-horizental", rev);
+		this.tabber = tabber;
 		Element table = this.element;
 		Element tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
@@ -52,12 +54,28 @@ public class HorizentalTabberLayout extends TabberLayout {
 	@Override
 	public void addTab(TabWI cw) {
 		// TODO Auto-generated method stub
-		if(this.isReverse){
+		if (this.isReverse) {
 			this.headerTd.insertFirst(cw.getElement());
-		}else{
-			
+		} else {
+
 			this.headerTd.appendChild(cw.getElement());//
 		}
+		
+	}
+	
+	@Override
+	public void afterTabAddOrRemove() {
+
+		if (this.tabber.getTabList().size() <= 1) {
+			// hide the header
+
+			this.headerTd.addClassName("invisible");
+			this.headerTd.removeClassName("visible");
+		} else {// show the tab
+			this.headerTd.addClassName("visible");
+			this.headerTd.removeClassName("invisible");
+		}
+
 	}
 
 	/*
@@ -70,6 +88,8 @@ public class HorizentalTabberLayout extends TabberLayout {
 	@Override
 	public void removeTab(TabWI cw) {
 		cw.getElement().removeFromParent();
+
+		this.afterTabAddOrRemove();
 	}
 
 }

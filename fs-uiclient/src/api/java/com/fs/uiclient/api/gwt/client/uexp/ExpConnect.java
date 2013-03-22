@@ -4,7 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.Constants;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 
 /**
@@ -18,7 +18,7 @@ public class ExpConnect extends PropertiesData<Object> {
 	}
 
 	public String getConnectId() {
-		return (String) this.getProperty(Constants.NK_ID, true);
+		return (String) this.getProperty(UiClientConstants.NK_ID, true);
 	}
 
 	public String getAccountId1() {
