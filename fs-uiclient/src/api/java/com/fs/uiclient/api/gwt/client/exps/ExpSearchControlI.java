@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -15,13 +16,13 @@ public interface ExpSearchControlI extends ControlI {
 	/**
 	 * 
 	 */
-	public void search(String expId);
+	public void search(UserExpModel ue);
 
 	public void addOrUpdateExpItem(ExpItemModel ei);
 
 	public void reset();
 
-	public String getExpId(boolean b);
+	public UserExpModel getExpId(boolean b);
 
 	public String getPhrase(boolean b);
 

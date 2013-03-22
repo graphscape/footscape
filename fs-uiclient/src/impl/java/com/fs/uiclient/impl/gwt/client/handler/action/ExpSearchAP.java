@@ -5,7 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -33,7 +33,8 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		//
 		ExpSearchControlI sm = this.getControl(ExpSearchControlI.class, true);
 
-		String expId = sm.getExpId(false);
+		UserExpModel ue =		sm.getExpId(false);
+		String expId = ue == null?null:ue.getExpId();
 		String phrase = sm.getPhrase(false);
 		int pg = sm.getFirstResult();
 		MsgWrapper req = this.newRequest(Path.valueOf("/exps/search"));

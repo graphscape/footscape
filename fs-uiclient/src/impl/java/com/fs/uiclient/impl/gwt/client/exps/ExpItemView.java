@@ -86,10 +86,9 @@ public class ExpItemView extends ViewSupport {
 			// td1,1
 		}
 
-		//actions
+		// actions
 		ListI actions = this.factory.create(ListI.class);//
-		actions.parent(this);
-		
+		actions.parent(this);// note,see on add child method
 
 		ButtonI cooper = this.factory.create(ButtonI.class);
 		cooper.setText(true, "cooper");
@@ -98,10 +97,16 @@ public class ExpItemView extends ViewSupport {
 			@Override
 			public void handle(ClickEvent e) {
 				// TODO open search view?
-				ExpItemView.this.dispatchActionEvent(Actions.A_EXPS_COOPER);
+				ExpItemView.this.onCooperClicked();
 			}
 		});
 		cooper.parent(actions);
+
+	}
+
+	protected void onCooperClicked() {
+		
+		this.dispatchActionEvent(Actions.A_EXPS_COOPER);
 
 	}
 

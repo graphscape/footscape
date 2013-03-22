@@ -14,6 +14,7 @@ import com.fs.uicore.api.gwt.client.event.ModelUpdateEvent;
  *         incoming cr(cooper request).
  *         <p>
  *         see: UserExpModel UserExpItemView
+ *         @deprecated todo remove
  */
 public class ViewUpdateEvent extends Event {
 	public static final Type<ViewUpdateEvent> TYPE = new Type<ViewUpdateEvent>(

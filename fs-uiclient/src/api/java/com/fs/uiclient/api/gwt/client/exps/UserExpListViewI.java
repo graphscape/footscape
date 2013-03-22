@@ -17,6 +17,7 @@ public interface UserExpListViewI extends ViewI {
 
 	public void incomingCr(String expId, String crId);
 
+	@Deprecated //REMOVE
 	public void select(String expId);
 
 	public void update(UserExpModel uem);

@@ -34,10 +34,6 @@ public class Actions {
 	public static final Path A_ACT_OPEN_CHAT_ROOM = A_ACT.getSubPath("openChatRoom");
 
 	// cooper
-	public static final Path A_COOPER = ACTION.getSubPath("cooper");
-
-	public static final Path A_COOP_REQUEST = A_COOPER.getSubPath("request");
-
 
 	public static final Path A_EXPE = ACTION.getSubPath("expe");
 
@@ -62,7 +58,8 @@ public class Actions {
 
 	public static final Path A_SIGNUP_SUBMIT = A_SIGNUP.getSubPath("submit");
 
-	//public static final Path A_SIGNUP_CONFIRM = A_SIGNUP.getSubPath("confirm");
+	// public static final Path A_SIGNUP_CONFIRM =
+	// A_SIGNUP.getSubPath("confirm");
 
 	//
 

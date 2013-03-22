@@ -21,11 +21,10 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchControl;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.ItemCooperAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
@@ -120,10 +119,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	private void activeActionHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 
-		eb.addHandler(Actions.A_COOP_REQUEST, new CooperRequestAP(c));
 		eb.addHandler(Actions.A_EXPE_SUBMIT, new ExpEditSumbitAP(c));//
 
-		eb.addHandler(Actions.A_EXPS_COOPER, new ItemCooperAP(c));
+		eb.addHandler(Actions.A_EXPS_COOPER, new CooperRequestAP(c));
 
 		eb.addHandler(Actions.A_EXPS_SEARCH, new ExpSearchAP(c));
 

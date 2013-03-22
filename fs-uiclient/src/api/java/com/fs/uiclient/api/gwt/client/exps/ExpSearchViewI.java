@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 
 /**
@@ -16,9 +17,9 @@ public interface ExpSearchViewI extends ViewI {
 
 	public void reset();
 
-	public String getExpId(boolean b);
+	public UserExpModel getExpId(boolean b);
 
-	public void setExpId(String expId);
+	public void setExpId(UserExpModel ue);
 
 	public String getPhrase(boolean b);
 

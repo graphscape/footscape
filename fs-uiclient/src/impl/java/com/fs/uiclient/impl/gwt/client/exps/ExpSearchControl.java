@@ -7,9 +7,9 @@ package com.fs.uiclient.impl.gwt.client.exps;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -35,9 +35,9 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 * .String)
 	 */
 	@Override
-	public void search(String expId) {
+	public void search(UserExpModel ue) {
 		ExpSearchViewI es = this.getMainControl().openExpSearch();
-		es.setExpId(expId);//
+		es.setExpId(ue);//
 
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
 	}
@@ -72,7 +72,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getExpId(boolean)
 	 */
 	@Override
-	public String getExpId(boolean b) {
+	public UserExpModel getExpId(boolean b) {
 		// TODO Auto-generated method stub
 		return this.getView().getExpId(b);
 	}

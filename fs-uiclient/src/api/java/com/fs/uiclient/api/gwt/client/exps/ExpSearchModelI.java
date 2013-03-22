@@ -6,13 +6,15 @@ package com.fs.uiclient.api.gwt.client.exps;
 
 import java.util.List;
 
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+
 /**
  * @author wu
  * 
  */
 public interface ExpSearchModelI {
 
-	public String getExpId(boolean force);
+	public UserExpModel getExpId(boolean force);
 
 	public String getPhrase(boolean force);
 	
@@ -30,9 +32,9 @@ public interface ExpSearchModelI {
 
 	public boolean previousPage();
 
-	public void setExpId(String expId);// for search parameter
+	public void setExpId(UserExpModel expId);// for search parameter
 
-	public String getExpId();// for search parameter
+	public UserExpModel getExpId();// for search parameter
 
 	public void reset();
 

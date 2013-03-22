@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicore.api.gwt.client.UiException;
 
 /**
@@ -19,7 +20,7 @@ import com.fs.uicore.api.gwt.client.UiException;
  */
 public class ExpSearchModel implements ExpSearchModelI {
 
-	private String expId;
+	private UserExpModel expId;
 
 	private String phrase;
 
@@ -43,9 +44,9 @@ public class ExpSearchModel implements ExpSearchModelI {
 	 * Oct 20, 2012
 	 */
 	@Override
-	public String getExpId(boolean force) {
+	public UserExpModel getExpId(boolean force) {
 		//
-		String rt = this.getExpId();
+		UserExpModel rt = this.getExpId();
 		if (force && rt == null) {
 			throw new UiException("no expId in :" + this);
 		}
@@ -143,7 +144,7 @@ public class ExpSearchModel implements ExpSearchModelI {
 	 * .String)
 	 */
 	@Override
-	public void setExpId(String expId) {
+	public void setExpId(UserExpModel expId) {
 		this.expId = expId;
 	}
 
@@ -153,7 +154,7 @@ public class ExpSearchModel implements ExpSearchModelI {
 	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI#getExpId()
 	 */
 	@Override
-	public String getExpId() {
+	public UserExpModel getExpId() {
 		return this.expId;
 	}
 

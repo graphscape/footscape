@@ -50,17 +50,21 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		UserExpListViewI uelv = this.getMainControl().openUeList();
 		// model
 		List<UserExpModel> ueL = uelv.getUserExpList();
+		UserExpModel selected = null;
 		for (UserExpModel ue : ueL) {
 			boolean sel = ue.getExpId().equals(expId);
-			ue.select(sel);
+			ue.select(sel);//view update
+			if(sel){
+				selected = ue;				
+			}
 		}
 		// view
 		
-		uelv.select(expId);
+		uelv.select(expId);//
 
 		// call search
 		ExpSearchControlI sc = this.getManager().getControl(ExpSearchControlI.class, true);
-		sc.search(expId);
+		sc.search(selected);
 	}
 
 	/*

@@ -8,11 +8,13 @@ import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
+import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -43,6 +45,8 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	protected ViewReferenceI managed;
 
 	protected ExpSearchModelI model;
+	
+	protected LabelI myexp;//TODO view 
 
 	/**
 	 * @param ele
@@ -79,6 +83,9 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 				ExpSearchView.this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
 			}
 		});
+		//
+		this.myexp = this.factory.create(LabelI.class);
+		this.myexp.parent(this.header);
 
 		this.list = this.factory.create(ListI.class);
 		//
@@ -179,7 +186,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getExpId(boolean)
 	 */
 	@Override
-	public String getExpId(boolean b) {
+	public UserExpModel getExpId(boolean b) {
 		// TODO Auto-generated method stub
 		return this.model.getExpId(b);
 	}
@@ -192,8 +199,15 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	 * .String)
 	 */
 	@Override
-	public void setExpId(String expId) {
+	public void setExpId(UserExpModel expId) {
 		this.model.setExpId(expId);
+		String text = null;
+		if(expId != null){		
+			text =expId.getBody();
+		}
+		
+		this.myexp.setText(text);
+		
 	}
 
 	/*
