@@ -10,8 +10,6 @@ package com.fs.expector.gridservice.api;
  */
 public class ErrorCodes {
 
-	public static final String FAILED_LOGIN = "failed.login";
+	public static final String FAILED_SIGNUP = "failed/signup";
 
-	public static final String FAILED_LOGIN_NOTFOUND_ACCOUNT_OR_PASSWORD = FAILED_LOGIN
-			+ ".notfound.account_or_password";
 }

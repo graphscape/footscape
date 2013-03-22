@@ -40,14 +40,15 @@ import com.fs.uiclient.impl.gwt.client.handler.message.ExpGetMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
-import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
@@ -129,7 +130,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP(c, "/profile/init"));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP(c, Path.valueOf("/signup/submit")));
-		eb.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 
@@ -169,6 +169,10 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new CooperConfirmSuccessMH(c));// search
 		//
 		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
+		dis.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
+																							// succ
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// signup
+
 	}
 
 	private void activeControls(ContainerI c, UiClientI client) {

@@ -51,4 +51,7 @@ public abstract class TabberLayout extends ElementWrapper {
 	public abstract void addTab(TabWI tab);
 
 	public abstract void removeTab(TabWI tab);
+
+	public abstract void afterTabAddOrRemove();
+
 }

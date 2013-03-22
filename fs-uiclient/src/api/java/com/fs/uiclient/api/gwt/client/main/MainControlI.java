@@ -25,6 +25,8 @@ public interface MainControlI extends ControlI {
 	public MyExpViewI openMyExp(String expId);
 
 	public SignupViewI openSignup();
+	
+	public void closeSignup();
 
 	public ExpEditViewI openExpEditView();
 

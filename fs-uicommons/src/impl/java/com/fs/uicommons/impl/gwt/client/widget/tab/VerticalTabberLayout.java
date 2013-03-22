@@ -74,4 +74,13 @@ public class VerticalTabberLayout extends TabberLayout {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.uicommons.impl.gwt.client.widget.tab.TabberLayout#afterTabAddOrRemove()
+	 */
+	@Override
+	public void afterTabAddOrRemove() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
