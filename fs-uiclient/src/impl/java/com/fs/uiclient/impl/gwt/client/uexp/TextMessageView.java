@@ -4,9 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
-import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -32,26 +30,9 @@ public class TextMessageView extends ExpMessageView {
 	 */
 	public TextMessageView(ContainerI c, ExpMessage msg) {
 		super(c, msg);
-		Element ele = DOM.createDiv();
 		String text = msg.getPayLoadAsString("text", true);
-		ele.setInnerText(text);
-		this.element.appendChild(ele);
+		this.messageDiv.getElement().setInnerText(text);
+
 	}
 
-	protected void onOk() {
-		
-		this.dispatchActionEvent(Actions.A_UEXP_COOPER_CONFIRM);
-	}
-
-	/*
-	 * Mar 9, 2013
-	 */
-	@Override
-	protected void beforeActionEvent(ActionEvent ae) {
-		super.beforeActionEvent(ae);
-
-		String crId = msg.getPayload("cooperRequestId", true);
-
-		ae.setProperty("cooperRequestId", crId);
-	}
 }

@@ -6,9 +6,24 @@
 	margin-left:-1px;
 }
 
+.exps-item {
+	border-left : 2px solid white;
+	border-top : 1px solid rgba(0, 0, 0, 0.05);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left:0px;
+}
+
+.exps-item:hover {
+	background: rgba(0, 0, 0, 0.0);
+	border-left : 2px solid rgba(0, 0, 0, 0.0);
+	border-top : 1px solid rgba(0, 0, 0, 0.5);
+	
+}
 .exps-item-icon { /**td**/
 	width:1%;
 	padding-right:6px;
+	vertical-align: top;
 }
 
 .exps-item-actions {
@@ -22,6 +37,60 @@
 .exps-item-expbody {
 	color:#0754A6;
 	font-weight:bold;
+}
+
+.myexp-connected {
+	vertial-align:top;
+	height:100%;
+}
+.myexp-messagelist {
+	width:600px;
+}
+.myexp-message {
+	margin-bottom : 6px;
+	background: rgba(50, 90, 150, 0.1);
+	border-radius: 3px;
+}
+
+.myexp-message-body {
+	font-weight:bold;
+	padding : 6px;
+	background: rgba(50, 90, 150, 0.2);
+	border-bottom : 0px solid rgba(50, 90, 150, 0.0);
+}
+
+.myexp-message-nick {
+	font-size :9px;
+	color:rgba(0, 0, 0, 0.5);
+	text-align:right;
+}
+
+.myexp-message-expbody {
+	font-size:9px;
+	color:rgba(0, 0, 0, 0.5);
+	text-align:right;
+
+}
+
+.myexp-message-timestamp {
+	font-size:9px;
+	color:rgba(0, 0, 0, 0.5);
+	text-align:left;
+}
+
+.uel-item {
+	border-left : 2px solid white;
+	border-top : 1px solid rgba(0, 0, 0, 0.05);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left:0px;
+}
+
+.uel-item:hover {
+	background: rgba(0, 0, 0, 0.0);
+	border-left : 2px solid rgba(0, 0, 0, 0.0);
+	border-top : 1px solid rgba(0, 0, 0, 0.5);
+	
 }
 
 .uel-item-icon { /**td**/
@@ -42,32 +111,8 @@
 	font-weight:bold;
 }
 
-.wgt-ExpItemView,
-.wgt-UserExpItemView {
-	border-left : 2px solid white;
-	border-bottom : 1px solid rgba(0, 0, 0, 0.05);
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-left:0px;
-}
-.wgt-ExpItemView table {
-	width:100%;
-}
-.wgt-ExpItemView:hover,
-.wgt-UserExpItemView:hover {
-	background: rgba(0, 0, 0, 0.0);
-	border-left : 2px solid rgba(0, 0, 0, 0.0);
-	border-bottom : 1px solid rgba(0, 0, 0, 0.5);
-	
-}
 
-.wgt-ExpItemView td {
-	vertical-align: bottom;
-}
 
-.wgt-ExpItemView td.icon {
-	vertical-align: top;
-}
 
 
 .wgt-UserExpView{

@@ -61,9 +61,11 @@ public class ControlSupport extends AbstractControl {
 		rt.parent(parent);
 		return rt;
 	}
-
-	public <T extends WidgetI> T gorOrCreateViewInBody(Path path, CreaterI<T> crt) {
-		return this.getBodyView().getOrCreateItem(path, crt);
+	public <T extends WidgetI> T getOrCreateViewInBody(Path path, CreaterI<T> crt) {
+		return this.getOrCreateViewInBody(path, crt, false);
+	}
+	public <T extends WidgetI> T getOrCreateViewInBody(Path path, CreaterI<T> crt,boolean select) {
+		return this.getBodyView().getOrCreateItem(path, crt,select);
 
 	}
 

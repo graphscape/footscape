@@ -41,6 +41,7 @@ public class UserExpItemView extends ViewSupport {
 	 */
 	public UserExpItemView(ContainerI ctn, String name, UserExpModel um) {
 		super(ctn, name, DOM.createDiv());
+		this.element.addClassName("uel-item");
 		this.model = um;
 		UserExpModel t = (UserExpModel) this.model;
 		this.table = new TableWrapper();
@@ -102,7 +103,7 @@ public class UserExpItemView extends ViewSupport {
 		actions.parent(this);
 		
 		ButtonI select = this.factory.create(ButtonI.class);
-		select.setText(true, "select");
+		select.setText(true, "search");
 		select.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

@@ -9,7 +9,6 @@ import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
@@ -18,7 +17,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  */
 public interface MainControlI extends ControlI {
 
-	public ExpSearchViewI openExpSearch();
+	public ExpSearchViewI openExpSearch(boolean show);
 
 	public UserExpListViewI openUeList();
 

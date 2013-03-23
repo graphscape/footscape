@@ -14,6 +14,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
+import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -45,9 +46,15 @@ public abstract class ExpMessageView extends ViewSupport {
 	
 	protected ExpMessage msg;
 	
+	protected ElementWrapper messageDiv;
+	
 	protected ElementWrapper actionsDiv;
 	
 	protected ListI actions;
+	
+	protected String nick;
+	
+	protected String expBody;
 
 	/**
 	 * @param c
@@ -55,18 +62,29 @@ public abstract class ExpMessageView extends ViewSupport {
 	 */
 	public ExpMessageView(ContainerI c, ExpMessage msg) {
 		super(c, DOM.createDiv());
-		this.msg = msg;
-		//accountId:
+		this.elementWrapper.addClassName("myexp-message");
 		Element ele = DOM.createDiv();
-		ele.setInnerText(""+msg.getNick1() + ":");
 		this.element.appendChild(ele);
-		//
-		/*ele = DOM.createDiv();
-		ele.setInnerText("expId:"+msg.getExpId1() + "");
-		this.element.appendChild(ele);
-		*/
-		//
+		this.messageDiv = new ElementWrapper(ele);
+		this.messageDiv.addClassName("myexp-message-body");
+		
+		this.msg = msg;
+		//time
 		ele = DOM.createDiv();
+		ele.addClassName("myexp-message-timestamp");
+		String dateS = DateUtil.format(msg.getTimeStamp(), false);
+		ele.setInnerText(""+dateS + "");
+		this.element.appendChild(ele);
+		
+		//nick
+		 ele = DOM.createDiv();
+		ele.setInnerText(""+msg.getNick1() + ":");
+		ele.addClassName("myexp-message-nick");
+		this.element.appendChild(ele);
+		
+		//exp body
+		ele = DOM.createDiv();
+		ele.addClassName("myexp-message-expbody");
 		ele.setInnerText(""+msg.getExpBody1() + "");
 		this.element.appendChild(ele);
 		
@@ -74,6 +92,7 @@ public abstract class ExpMessageView extends ViewSupport {
 		ele = DOM.createDiv();
 		this.element.appendChild(ele);
 		this.actionsDiv = new ElementWrapper(ele);
+		this.actionsDiv.addClassName("myexp-message-actions");
 		this.actions = this.factory.create(ListI.class);//
 		this.actions.parent(this);
 		//

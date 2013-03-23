@@ -16,7 +16,7 @@ public interface ExpSearchControlI extends ControlI {
 	/**
 	 * 
 	 */
-	public void search(UserExpModel ue);
+	public void search(UserExpModel ue,boolean showView);
 
 	public void addOrUpdateExpItem(ExpItemModel ei);
 

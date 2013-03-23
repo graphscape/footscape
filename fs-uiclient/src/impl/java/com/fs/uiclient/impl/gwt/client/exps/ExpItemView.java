@@ -40,6 +40,7 @@ public class ExpItemView extends ViewSupport {
 	public ExpItemView(String name, ContainerI ctn, ExpItemModel ei) {
 
 		super(ctn, name, DOM.createDiv());
+		this.element.addClassName("exps-item");
 		this.model = ei;
 		//
 		if (this.table != null) {

@@ -98,6 +98,10 @@
 .panel-header { /*DIV*/
 	border-bottom:1px solid rgba(50, 90, 150, 0.3);
 }
+
+.list-item {
+	vertical-align: top;
+}
 /*Anchor,button*/
 .wgt-AnchorWImpl {
 	background: #034F82;
@@ -220,9 +224,10 @@ Console View
 .wgt-HeaderView {
 	background-color: #034F82;
 	width: 100%;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
 	padding: 0px 0px;
 	font-weight: bold;
+	margin-bottom: 6px;
 }
 
 .wgt-HeaderView>.position-body {

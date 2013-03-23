@@ -32,9 +32,14 @@ public class ListImpl extends LayoutSupport implements ListI {
 		table = new TableWrapper();
 		this.elementWrapper.append(table);
 		this.vertical = (Boolean) this.getProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
+		
+		
+		String cname = "vlist";
 		if (!this.vertical) {
 			this.firstTRForHorizental = this.table.addTr();
+			cname = "hlist";
 		}
+		this.element.addClassName(cname);
 	}
 
 	/*
@@ -57,6 +62,7 @@ public class ListImpl extends LayoutSupport implements ListI {
 		} else {
 			TDWrapper td = this.firstTRForHorizental.addTd();
 			td.append(ceo.getElement());
+			td.addClassName("list-item");
 			ceo.setProperty("externalParentElement", td.getElement());
 		}
 	}

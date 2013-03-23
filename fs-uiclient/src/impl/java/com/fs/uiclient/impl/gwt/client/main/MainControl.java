@@ -55,16 +55,17 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Jan 31, 2013
 	 */
 	@Override
-	public ExpSearchViewI openExpSearch() {
+	public ExpSearchViewI openExpSearch(boolean showView) {
+		Path path = Path.valueOf("/exp-search");
 
-		ExpSearchView esv = this.gorOrCreateViewInBody(Path.valueOf("/exp-search"),
-				new CreaterI<ExpSearchView>() {
+		ExpSearchView esv = this.getOrCreateViewInBody(path, new CreaterI<ExpSearchView>() {
 
-					@Override
-					public ExpSearchView create(ContainerI ct) {
-						return new ExpSearchView(ct);
-					}
-				});
+			@Override
+			public ExpSearchView create(ContainerI ct) {
+				return new ExpSearchView(ct);
+			}
+		}, showView);
+
 		return esv;
 
 	}
@@ -76,7 +77,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public UserExpListViewI openUeList() {
 		//
 		final Holder<Boolean> holder = new Holder<Boolean>(Boolean.FALSE);
-		UserExpListViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/uelist"),
+		UserExpListViewI uelv = this.getOrCreateViewInBody(Path.valueOf("/uelist"),
 				new CreaterI<UserExpListView>() {
 
 					@Override
@@ -96,7 +97,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public ExpEditViewI openExpEditView() {
 
-		ExpEditViewI uelv = this.gorOrCreateViewInBody(Path.valueOf("/expe"), new CreaterI<ExpEditViewI>() {
+		ExpEditViewI uelv = this.getOrCreateViewInBody(Path.valueOf("/expe"), new CreaterI<ExpEditViewI>() {
 
 			@Override
 			public ExpEditViewI create(ContainerI ct) {
@@ -114,7 +115,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public SignupViewI openSignup() {
 		//
 
-		SignupView rt = this.gorOrCreateViewInBody(UiClientConstants.P_SIGNUP, new CreaterI<SignupView>() {
+		SignupView rt = this.getOrCreateViewInBody(UiClientConstants.P_SIGNUP, new CreaterI<SignupView>() {
 
 			@Override
 			public SignupView create(ContainerI ct) {
@@ -127,7 +128,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void openProfile() {
 		final ProfileModelI sm = this.getProfileModel();
-		ProfileView rt = this.gorOrCreateViewInBody(Path.valueOf("/profile"), new CreaterI<ProfileView>() {
+		ProfileView rt = this.getOrCreateViewInBody(Path.valueOf("/profile"), new CreaterI<ProfileView>() {
 
 			@Override
 			public ProfileView create(ContainerI ct) {
@@ -147,7 +148,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public MyExpViewI openMyExp(final String expId) {
 		Path path = this.getExpViewPath(expId);
-		MyExpView esv = this.gorOrCreateViewInBody(path, new CreaterI<MyExpView>() {
+		MyExpView esv = this.getOrCreateViewInBody(path, new CreaterI<MyExpView>() {
 
 			@Override
 			public MyExpView create(ContainerI ct) {
@@ -262,7 +263,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 */
 	@Override
 	public void closeSignup() {
-		 this.getBodyView().tryCloseItem(UiClientConstants.P_SIGNUP);
+		this.getBodyView().tryCloseItem(UiClientConstants.P_SIGNUP);
 	}
 
 }

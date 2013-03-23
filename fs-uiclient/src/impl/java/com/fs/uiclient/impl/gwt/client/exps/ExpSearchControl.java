@@ -35,15 +35,15 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 * .String)
 	 */
 	@Override
-	public void search(UserExpModel ue) {
-		ExpSearchViewI es = this.getMainControl().openExpSearch();
+	public void search(UserExpModel ue,boolean showView) {
+		ExpSearchViewI es = this.getMainControl().openExpSearch(showView);
 		es.setExpId(ue);//
-
+		
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
 	}
 	
 	protected ExpSearchViewI getView(){
-		return this.getMainControl().openExpSearch();
+		return this.getMainControl().openExpSearch(false);
 	}
 
 	/*
@@ -52,7 +52,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	@Override
 	public void addOrUpdateExpItem(ExpItemModel ei) {
 
-		ExpSearchViewI esv = this.getMainControl().openExpSearch();
+		ExpSearchViewI esv = this.getMainControl().openExpSearch(false);
 		esv.addExpItem(ei);
 	}
 
@@ -61,7 +61,7 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 */
 	@Override
 	public void reset() {
-		ExpSearchViewI v = this.getMainControl().openExpSearch();
+		ExpSearchViewI v = this.getMainControl().openExpSearch(false);
 		v.reset();
 	}
 

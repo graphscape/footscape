@@ -200,7 +200,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			msg.setHeader("accountId2", em.getAccountId2());
 			msg.setHeader("expId1", em.getExpId1());
 			msg.setHeader("expId2", em.getExpId2());
-
+			msg.setPayload("timestamp",em.getTimestamp());
 			{// account
 				String accId1 = em.getAccountId1();
 				// account must be exist

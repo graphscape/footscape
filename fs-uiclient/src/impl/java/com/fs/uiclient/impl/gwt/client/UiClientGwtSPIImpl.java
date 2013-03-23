@@ -21,10 +21,10 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchControl;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
@@ -47,6 +47,7 @@ import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.SearchHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
@@ -103,10 +104,13 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		// header item
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_SIGNUP),
 				new SignupHeaderItemHandler(c));
+
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_PROFILE),
 				new ProfileHeaderItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_MYEXP),
 				new MyExpHeaderItemHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_SEARCH),
+				new SearchHeaderItemHandler(c));
 
 		// client start
 		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));
@@ -168,7 +172,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		//
 		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
 		dis.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
-																							// succ
+																								// succ
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// signup
 
 	}

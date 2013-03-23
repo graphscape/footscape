@@ -17,8 +17,6 @@ public interface UserExpListControlI extends ControlI {
 
 	public void detailExp(String expId);
 
-	public void select(String expId);
-
 	public void addOrUpdateUserExp(UserExpModel uem);
 	
 	public void addOrUpdateExpMessage(ExpMessage msg);

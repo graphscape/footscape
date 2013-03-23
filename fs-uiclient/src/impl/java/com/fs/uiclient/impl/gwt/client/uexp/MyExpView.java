@@ -105,13 +105,16 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 		this.middle = this.factory.create(ListI.class, pts);
 		this.middle.parent(this.outer);
+		this.middle.getElement().addClassName("myexp-middle");
 
 		this.msglist = this.factory.create(ListI.class);
 		this.msglist.parent(this.middle);
+		this.msglist.getElement().addClassName("myexp-messagelist");
 		this.map = new HashMap<String, ExpMessage>();
 
 		this.connected = this.factory.create(ListI.class);
 		this.connected.parent(this.middle);
+		this.connected.getElement().addClassName("myexp-connected");
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}

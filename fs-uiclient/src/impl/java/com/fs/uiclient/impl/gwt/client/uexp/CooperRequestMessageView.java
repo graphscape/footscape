@@ -34,9 +34,14 @@ public class CooperRequestMessageView extends ExpMessageView {
 	 */
 	public CooperRequestMessageView(ContainerI c, ExpMessage msg) {
 		super(c, msg);
+		String text = "Coooperation request from " + this.msg.getNick1() + ":" + this.msg.getExpBody1()
+				+ ",please click OK if you agree!";
+		this.messageDiv.getElement().setInnerText(text);
+
+		//
 		PropertiesData<Object> cr = msg.getPayload("cooperRequest", false);
 		boolean exist = cr != null;
-		
+
 		final ButtonI ok = this.factory.create(ButtonI.class);
 		ok.setText(true, "ok");
 		ok.parent(this.actions);
@@ -52,7 +57,7 @@ public class CooperRequestMessageView extends ExpMessageView {
 	}
 
 	protected void onOk() {
-		
+
 		this.dispatchActionEvent(Actions.A_UEXP_COOPER_CONFIRM);
 	}
 

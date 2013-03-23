@@ -22,6 +22,6 @@ public class HeaderNames {
 
 	public static final Path H1_MYEXP = Path.valueOf("myExp");
 
-	public static final Path H1_EXPMESSAGECOUNT = Path.valueOf("expMessageCount");
+	public static final Path H1_SEARCH = Path.valueOf("search");
 
 }

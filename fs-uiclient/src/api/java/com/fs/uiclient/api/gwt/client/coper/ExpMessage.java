@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.coper;
 
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
 /**
@@ -54,6 +55,10 @@ public class ExpMessage extends MsgWrapper {
 	
 	public String getNick1() {
 		return (String) this.getPayload("nick1", true);
+	}
+	
+	public DateData getTimeStamp(){
+		return (DateData) this.getPayload("timestamp", true);
 	}
 	
 	

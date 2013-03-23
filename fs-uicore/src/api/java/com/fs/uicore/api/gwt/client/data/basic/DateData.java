@@ -4,6 +4,7 @@
 package com.fs.uicore.api.gwt.client.data.basic;
 
 import com.fs.uicore.api.gwt.client.data.BasicData;
+import com.fs.uicore.api.gwt.client.util.DateUtil;
 
 /**
  * @author wu
@@ -22,6 +23,6 @@ public class DateData extends BasicData<Long> {
 	}
 
 	public String getFormated() {
-		return this.value + "";// TODO
+		return DateUtil.format(this);
 	}
 }

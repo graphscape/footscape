@@ -42,7 +42,7 @@ public class CooperRequestAP extends ActionHandlerSupport {
 		String expId2 = (String) ae.getProperty("expId2", true);
 
 		//
-		ExpSearchViewI sm = mc.openExpSearch();
+		ExpSearchViewI sm = mc.openExpSearch(false);
 
 		UserExpModel ue = sm.getExpId(false);
 		if(ue == null){

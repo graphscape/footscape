@@ -36,7 +36,7 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		fc.addHeaderItem(HeaderNames.H2_PROFILE);
 		fc.addHeaderItem(HeaderNames.H1_MYEXP);
-		fc.addHeaderItem(HeaderNames.H1_EXPMESSAGECOUNT);
+		fc.addHeaderItem(HeaderNames.H1_SEARCH);
 	}
 
 }

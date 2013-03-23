@@ -59,6 +59,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	/**
 	 * @param t
 	 */
+	@Override
 	public void select(Path path) {
 
 		final TabWI sitem = this.tabber.getTab(path, true);
@@ -94,12 +95,20 @@ public class BodyView extends LightWeightView implements BodyViewI {
 
 	@Override
 	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt) {
+		return this.getOrCreateItem(path, crt, false);
+	}
+
+	@Override
+	public <T extends WidgetI> T getOrCreateItem(Path path, com.fs.uicommons.api.gwt.client.CreaterI<T> crt,
+			boolean select) {
 		T rt = this.getItem(path, false);
-		if (rt != null) {
-			return rt;
+		if (rt == null) {
+			rt = crt.create(this.getContainer());
+			this.addItem(path, rt);
 		}
-		rt = crt.create(this.getContainer());
-		this.addItem(path, rt);
+		if(select){
+			this.select(path);
+		}
 		return rt;
 	}
 
@@ -121,16 +130,17 @@ public class BodyView extends LightWeightView implements BodyViewI {
 	@Override
 	public void tryCloseItem(Path path) {
 		//
-		
+
 		this.tabber.remove(path);
 
 	}
 
 	/*
-	 *Mar 21, 2013
+	 * Mar 21, 2013
 	 */
 	@Override
 	public void closeAllItems() {
 		this.tabber.removeAll();
 	}
+
 }

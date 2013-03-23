@@ -18,6 +18,8 @@ public class TableWrapper extends ElementWrapper {
 	 */
 	public TableWrapper() {
 		super(DOM.createTable());
+		this.cellspacing(0);
+		this.cellspading(0);
 	}
 
 	public TableWrapper cellspacing(int cs) {
