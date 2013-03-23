@@ -9,16 +9,16 @@
 .exps-item {
 	border-left : 2px solid white;
 	border-top : 1px solid rgba(0, 0, 0, 0.05);
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 0px;
+	padding-bottom: 6px;
 	padding-left:0px;
 }
 
 .exps-item:hover {
 	background: rgba(0, 0, 0, 0.0);
 	border-left : 2px solid rgba(0, 0, 0, 0.0);
-	border-top : 1px solid rgba(0, 0, 0, 0.5);
-	
+	border-top : 1px solid rgba(50, 90, 150, 0.1);
+	background: rgba(50, 90, 150, 0.1);
 }
 .exps-item-icon { /**td**/
 	width:1%;
@@ -52,6 +52,10 @@
 	border-radius: 3px;
 }
 
+.myexp-message-td1{/*message td*/
+	width:100%;
+}
+
 .myexp-message-body {
 	font-weight:bold;
 	padding : 6px;
@@ -76,21 +80,22 @@
 	font-size:9px;
 	color:rgba(0, 0, 0, 0.5);
 	text-align:left;
+	white-space: nowrap;
 }
 
 .uel-item {
 	border-left : 2px solid white;
 	border-top : 1px solid rgba(0, 0, 0, 0.05);
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 0px;
+	padding-bottom: 6px;
 	padding-left:0px;
 }
-
+.uel-item.selected,
 .uel-item:hover {
 	background: rgba(0, 0, 0, 0.0);
 	border-left : 2px solid rgba(0, 0, 0, 0.0);
-	border-top : 1px solid rgba(0, 0, 0, 0.5);
-	
+	border-top : 1px solid rgba(50, 90, 150, 0.1);
+	background: rgba(50, 90, 150, 0.1);
 }
 
 .uel-item-icon { /**td**/
@@ -115,15 +120,15 @@
 
 
 
-.wgt-UserExpView{
+.xwgt-UserExpView{
 	margin-top : 10px;
 	background: rgba(0, 0, 0, 0.0);
 	border-right : 2px solid rgba(0, 0, 0, 0.0);
 	border-bottom : 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.wgt-UserExpView.selected,
-.wgt-UserExpView:hover{
+.xwgt-UserExpView.selected,
+.xwgt-UserExpView:hover{
 	background: rgba(0, 0, 0, 0.0);
 	border-right : 2px solid rgba(0, 0, 0, 0.0);
 	border-bottom : 1px solid rgba(0, 0, 0, 0.5);

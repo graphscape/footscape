@@ -299,13 +299,14 @@ Console View
 	cursor: pointer;
 	display: inline-block;
 	float: none;
+	margin:0px;
 	height: auto;
 	padding: 3px 3px;
 	position: static;
 	text-decoration: none;
-	text-indent: 3px;
+	text-align:left;
 	white-space: nowrap;
-	width: auto;
+	width: 100%;
 	text-shadow: 0 0px 0 #000;
 }
 

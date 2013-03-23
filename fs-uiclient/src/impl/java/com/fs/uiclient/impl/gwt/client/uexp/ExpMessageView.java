@@ -10,6 +10,9 @@ import java.util.Map;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
+import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
+import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
+import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
@@ -43,18 +46,20 @@ public abstract class ExpMessageView extends ViewSupport {
 		creatorMap.put(Path.valueOf("/connect/request"), CooperRequestMessageView.CRT);
 		creatorMap.put(Path.valueOf("/text-message"), TextMessageView.CRT);
 	}
-	
+
 	protected ExpMessage msg;
-	
+
 	protected ElementWrapper messageDiv;
-	
+
 	protected ElementWrapper actionsDiv;
-	
+
 	protected ListI actions;
-	
+
 	protected String nick;
-	
+
 	protected String expBody;
+
+	protected TableWrapper outer;
 
 	/**
 	 * @param c
@@ -62,41 +67,81 @@ public abstract class ExpMessageView extends ViewSupport {
 	 */
 	public ExpMessageView(ContainerI c, ExpMessage msg) {
 		super(c, DOM.createDiv());
-		this.elementWrapper.addClassName("myexp-message");
-		Element ele = DOM.createDiv();
-		this.element.appendChild(ele);
-		this.messageDiv = new ElementWrapper(ele);
-		this.messageDiv.addClassName("myexp-message-body");
-		
+
 		this.msg = msg;
-		//time
-		ele = DOM.createDiv();
-		ele.addClassName("myexp-message-timestamp");
-		String dateS = DateUtil.format(msg.getTimeStamp(), false);
-		ele.setInnerText(""+dateS + "");
-		this.element.appendChild(ele);
-		
-		//nick
-		 ele = DOM.createDiv();
-		ele.setInnerText(""+msg.getNick1() + ":");
-		ele.addClassName("myexp-message-nick");
-		this.element.appendChild(ele);
-		
-		//exp body
-		ele = DOM.createDiv();
-		ele.addClassName("myexp-message-expbody");
-		ele.setInnerText(""+msg.getExpBody1() + "");
-		this.element.appendChild(ele);
-		
+
+		this.elementWrapper.addClassName("myexp-message");
+		this.outer = new TableWrapper();
+		this.elementWrapper.append(this.outer);
+		// first line
+		TRWrapper tr0 = this.outer.addTr();
+		{
+			// image
+			{
+				TDWrapper td0 = tr0.addTd();
+				td0.addClassName("myexp-message-td0");
+				ElementWrapper image = new ElementWrapper(DOM.createImg());
+				image.setAttribute(
+						"src",
+						"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==");//
+				td0.append(image);
+			}
+			// message
+			{
+				TDWrapper td1 = tr0.addTd();
+				td1.addClassName("myexp-message-td1");
+				Element ele = DOM.createDiv();
+				this.messageDiv = new ElementWrapper(ele);
+				this.messageDiv.addClassName("myexp-message-body");
+				td1.append(ele);
+
+			}
+			{
+				TDWrapper td2 = tr0.addTd();
+				td2.addClassName("myexp-message-td2");
+				
+				{
+					// time
+					
+					Element ele = DOM.createDiv();
+					ele.addClassName("myexp-message-timestamp");
+					String dateS = DateUtil.format(msg.getTimeStamp(), false);
+					ele.setInnerText("" + dateS + "");
+					td2.append(ele);
+				}
+				{
+					// nick
+					Element ele = DOM.createDiv();
+					ele.setInnerText("" + msg.getNick1() + ":");
+					ele.addClassName("myexp-message-nick");
+					td2.append(ele);
+
+				}
+				{
+					// exp body
+					Element ele = DOM.createDiv();
+					ele.addClassName("myexp-message-expbody");
+					ele.setInnerText("" + msg.getExpBody1() + "");
+					td2.append(ele);
+				}
+			}
+			{
+				TDWrapper td3 = tr0.addTd();
+				td3.addClassName("myexp-message-td3");
+				Element ele = DOM.createDiv();
+				td3.append(ele);
+				this.actionsDiv = new ElementWrapper(ele);
+				this.actionsDiv.addClassName("myexp-message-actions");
+				this.actions = this.factory.create(ListI.class);//
+				this.actions.parent(this);
+			}
+
+		}
+
 		// actions
-		ele = DOM.createDiv();
-		this.element.appendChild(ele);
-		this.actionsDiv = new ElementWrapper(ele);
-		this.actionsDiv.addClassName("myexp-message-actions");
-		this.actions = this.factory.create(ListI.class);//
-		this.actions.parent(this);
+
 		//
-		
+
 	}
 
 	public static ExpMessageView createViewForMessage(ContainerI c, ExpMessage msg) {
