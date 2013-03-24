@@ -24,6 +24,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.ErrorInfo;
@@ -46,6 +48,8 @@ import com.fs.dataservice.core.impl.elastic.SearchHitNode;
  */
 public class NodeQueryOperationE<W extends NodeWrapper> extends
 		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements NodeQueryOperationI<W> {
+
+	private static Logger LOG = LoggerFactory.getLogger(NodeQueryOperationE.class);
 
 	private static class Term {
 		String field;
@@ -199,7 +203,9 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		for (Sort s : this.sortList) {
 			srb.addSort(s.field, s.order);
 		}
-
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("query l:" + srb);
+		}
 		SearchResponse response = srb.execute()//
 				.actionGet();
 		SearchHits shs = response.getHits();

@@ -12,6 +12,8 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 public interface ListI extends WidgetI {
 	
 	public static final String PK_IS_VERTICAL = "isVertical";
+	
+	public static final String PK_COMPARATOR = "comparator";
 
 	public int getSize();
 }

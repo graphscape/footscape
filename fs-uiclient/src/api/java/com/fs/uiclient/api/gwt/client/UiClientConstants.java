@@ -16,4 +16,6 @@ public class UiClientConstants {
 	public static final String NK_ID = "id_";
 	public static final Path P_SIGNUP = Path.valueOf("/signup");
 
+	public static final Integer MESSAGE_LIMIT = 3;
+
 }

@@ -32,6 +32,13 @@ public class TableWrapper extends ElementWrapper {
 		return this;
 	}
 
+	public TRWrapper insertTrBefore(TRWrapper trw) {
+		TRWrapper rt = new TRWrapper();
+		this.element.insertBefore(rt.getElement(), trw == null ? null : trw.getElement());
+		return rt;
+
+	}
+
 	public TRWrapper addTr() {
 		TRWrapper rt = new TRWrapper();
 		this.append(rt);

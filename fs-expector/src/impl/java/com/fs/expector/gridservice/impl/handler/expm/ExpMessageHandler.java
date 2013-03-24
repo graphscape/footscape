@@ -5,6 +5,7 @@
 package com.fs.expector.gridservice.impl.handler.expm;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -21,6 +22,7 @@ import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
+import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.expector.dataservice.api.wrapper.Account;
@@ -39,7 +41,7 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
-	public static int maxSizeOfMessageQuery = 10000;
+	public int defaultLimit = 50;
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -118,7 +120,8 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			em.save(true);
 			// todo async notify
 			MessageI msg = new MessageSupport("/notify/exp-message-created");
-
+			msg.setHeader("expId2", expId2);
+			msg.setHeader("expId1", expId1);
 			this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 		}
 
@@ -126,11 +129,16 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 	// TODO delete by query
 	public static void deleteMessageByExpId2(DataServiceI ds, String expId2) {
-		List<ExpMessage> mL = ds.getListNewestFirst(ExpMessage.class, ExpMessage.EXP_ID2, expId2, 0,
-				ExpMessageHandler.maxSizeOfMessageQuery);
-		for (ExpMessage m : mL) {
-			String id = m.getId();
-			ds.deleteById(ExpMessage.class, id);
+		while (true) {
+			List<ExpMessage> mL = ds
+					.getListNewestFirst(ExpMessage.class, ExpMessage.EXP_ID2, expId2, 0, 1000);
+			for (ExpMessage m : mL) {
+				String id = m.getId();
+				ds.deleteById(ExpMessage.class, id);
+			}
+			if(mL.isEmpty()){
+				break;
+			}
 		}
 	}
 
@@ -167,12 +175,28 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		MessageI req = ew.getMessage();//
 
 		String accountId2 = req.getString("accountId2", false);
-		String expId2 = req.getString("expId2", false);
+		// TODO permission
+		if (!this.assertAccout(ew, accountId2, res.getErrorInfos())) {
+			return;
+		}
+		String expId2 = req.getString("expId2", true);
+		Date timestamp1 = (Date) req.getPayload("timestamp1", false);
+		Date timestamp2 = (Date) req.getPayload("timestamp2", false);
+		
+		Integer limit = (Integer) req.getPayload("limit", this.defaultLimit);
 
 		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
 
+		if (timestamp1 != null) {
+			qo.propertyGt(NodeI.PK_TIMESTAMP, timestamp1, true);
+		}
+
+		if (timestamp2 != null) {
+			qo.propertyLt(NodeI.PK_TIMESTAMP, timestamp2, true);
+		}
+		qo.sortTimestamp(true);
 		qo.first(0);
-		qo.maxSize(this.maxSizeOfMessageQuery);
+		qo.maxSize(limit);
 		if (expId2 != null) {
 			qo.propertyEq(ExpMessage.EXP_ID2, expId2);
 		}
@@ -183,7 +207,8 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 		NodeQueryResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
-
+		res.setPayload("limit", limit);
+		res.setPayload("expId2",expId2);
 	}
 
 	private void processExpsResult(ResponseI res, List<ExpMessage> list) {
@@ -200,7 +225,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			msg.setHeader("accountId2", em.getAccountId2());
 			msg.setHeader("expId1", em.getExpId1());
 			msg.setHeader("expId2", em.getExpId2());
-			msg.setPayload("timestamp",em.getTimestamp());
+			msg.setPayload("timestamp", em.getTimestamp());
 			{// account
 				String accId1 = em.getAccountId1();
 				// account must be exist

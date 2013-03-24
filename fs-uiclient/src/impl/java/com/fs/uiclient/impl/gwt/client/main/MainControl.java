@@ -28,7 +28,11 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
+import com.fs.uicore.api.gwt.client.support.DefaultEventDispatcher;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * @author wu
@@ -148,22 +152,34 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public MyExpViewI openMyExp(final String expId) {
 		Path path = this.getExpViewPath(expId);
-		MyExpView esv = this.getOrCreateViewInBody(path, new CreaterI<MyExpView>() {
+		final MyExpView esv = this.getOrCreateViewInBody(path, new CreaterI<MyExpView>() {
 
 			@Override
 			public MyExpView create(ContainerI ct) {
 				return new MyExpView(ct, expId);
 			}
 		});
-
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
+		esv.setProperty("isNew", Boolean.FALSE);
 		if (b) {
-			this.refreshExpContent(expId);
-			this.refreshExpConnect(expId);
-			this.refreshExpMessage(expId);//
-			esv.setProperty("isNew", Boolean.FALSE);
+
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+				@Override
+				public void execute() {
+					MainControl.this.afterOpenNewMyExp(esv, expId);
+				}
+			});
 		}
 		return esv;
+	}
+
+	protected void afterOpenNewMyExp(MyExpView esv, String expId) {
+
+		this.refreshExpContent(expId);
+		this.refreshExpConnect(expId);
+		this.refreshExpMessage(expId);//
+
 	}
 
 	public void refreshExpContent(String expId) {
@@ -179,11 +195,22 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void refreshExpMessage(String expId) {
 		// TODO filter expId
+
+		MyExpViewI me = this.openMyExp(expId);
+		DateData timestamp1 = me.getLatestMessageTimestamp();
 		String accId = this.getUserInfo().getAccountId();
 
 		MsgWrapper req = this.newRequest(Path.valueOf("/expm/search"));
 		req.setPayload("accountId2", accId);//
+		req.setPayload("expId2", expId);
+		if (timestamp1 == null) {// if no message,then limit the result,get the
+									// newest list with limit
+			req.setPayload("limit", UiClientConstants.MESSAGE_LIMIT);
+		} else {// no limit,there alreay message got,then refresh to the newest
+				// list from the timestamp1.
 
+			req.setPayload("timestamp1", timestamp1);// the
+		}
 		this.sendMessage(req);
 
 	}

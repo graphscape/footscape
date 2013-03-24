@@ -143,6 +143,10 @@ public abstract class ExpMessageView extends ViewSupport {
 		//
 
 	}
+	
+	public ExpMessage getExpMessage(){
+		return this.msg;
+	}
 
 	public static ExpMessageView createViewForMessage(ContainerI c, ExpMessage msg) {
 		Path path = msg.getPath();

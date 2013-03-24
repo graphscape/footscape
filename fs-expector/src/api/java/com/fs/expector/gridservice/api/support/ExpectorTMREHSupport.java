@@ -15,6 +15,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
@@ -193,6 +194,20 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 			}
 		}
 		return s.getAccountId();
+	}
+
+	protected boolean isAccount(TerminalMsgReceiveEW ew, String aid) {
+		String accId = this.getAccountId(ew, true);
+		return accId.equals(aid);
+	}
+
+	protected boolean assertAccout(TerminalMsgReceiveEW ew, String aid, ErrorInfos ies) {
+		boolean rt = this.isAccount(ew, aid);
+
+		if (!rt) {
+			ies.addError("account is not match");
+		}
+		return rt;
 	}
 
 	protected <T extends NodeWrapper> void processGetNewestListById(Class<T> cls, MessageContext hc) {

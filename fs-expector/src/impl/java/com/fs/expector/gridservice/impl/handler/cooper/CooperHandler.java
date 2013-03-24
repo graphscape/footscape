@@ -75,7 +75,9 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		em.save(true);
 
 		MessageI msg = new MessageSupport("/notify/exp-message-created");
-
+		msg.setHeader("expId1", expId1);
+		msg.setHeader("expId2", expId2);
+		
 		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 	}
 

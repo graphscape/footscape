@@ -26,8 +26,9 @@ public class ExpMessageCreatedNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
+		String expId2 = t.getMessage().getHeader("expId2", true);
 
-		this.getControl(MainControlI.class, true).refreshExpMessage(null);
+		this.getControl(MainControlI.class, true).refreshExpMessage(expId2);
 
 	}
 

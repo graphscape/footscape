@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.uexp;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,9 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.core.WidgetI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
-import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
@@ -55,6 +57,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected boolean isNew = true;
 
+	protected DateData latestMessageTimestamp;
+
 	/**
 	 * @param ctn
 	 */
@@ -77,6 +81,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 			}
 		});
+
 		// send button
 		final ButtonI ok = this.factory.create(ButtonI.class);
 		ok.setText(true, "send");
@@ -99,38 +104,76 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				MyExpView.this.onCloseClick();
 			}
 		});
+		{
+			UiPropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
 
-		UiPropertiesI<Object> pts = new MapProperties<Object>();
-		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
+			this.middle = this.factory.create(ListI.class, pts);
+			this.middle.parent(this.outer);
+			this.middle.getElement().addClassName("myexp-middle");
+		}
+		{
+			UiPropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty(ListI.PK_COMPARATOR, new Comparator<ExpMessageView>() {
 
-		this.middle = this.factory.create(ListI.class, pts);
-		this.middle.parent(this.outer);
-		this.middle.getElement().addClassName("myexp-middle");
+				@Override
+				public int compare(ExpMessageView o1, ExpMessageView o2) {
+					//
+					return (int) (o1.getExpMessage().getTimeStamp().getValue() - o2.getExpMessage()
+							.getTimeStamp().getValue());
+				}
+			});
 
-		this.msglist = this.factory.create(ListI.class);
-		this.msglist.parent(this.middle);
-		this.msglist.getElement().addClassName("myexp-messagelist");
+			this.msglist = this.factory.create(ListI.class, pts);
+			this.msglist.parent(this.middle);
+			this.msglist.getElement().addClassName("myexp-messagelist");
+		}
 		this.map = new HashMap<String, ExpMessage>();
+		// older button
+		final ButtonI older = this.factory.create(ButtonI.class);
+		older.setText(true, "older-msg");
+		older.parent(this.middle);
+		older.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
+			@Override
+			public void handle(ClickEvent t) {
+				MyExpView.this.onOlderMsgClick();
+			}
+		});
+		// older button end
 		this.connected = this.factory.create(ListI.class);
 		this.connected.parent(this.middle);
 		this.connected.getElement().addClassName("myexp-connected");
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
-	
-	//close
+
+	protected void onOlderMsgClick() {
+		MsgWrapper req = new MsgWrapper("expm/search");
+		req.setPayload("accountId2", this.getAccountId());
+		req.setPayload("expId2", this.expId);
+		req.setPayload("timestamp2", this.latestMessageTimestamp);
+		req.setPayload("limit", 50);
+		this.getClient(true).getEndpoint().sendMessage(req);
+	}
+
+	protected String getAccountId() {
+		return this.getClient(true).getEndpoint().getUserInfo().getAccountId();
+	}
+
+	// close
 	protected void onCloseClick() {
 		MsgWrapper req = new MsgWrapper("/expe/close");
 		req.setPayload("expId", this.expId);
 		this.getClient(true).getEndpoint().sendMessage(req);//
 	}
+
 	protected void onSendClick() {
 		String msg = this.statement.getData();
 		MsgWrapper req = new MsgWrapper("/expm/create");
 		req.setPayload("expId1", this.expId);
-		//expId2 is null, broad cast this message.
-		//req.setPayload("expId2", this.expId);
+		// expId2 is null, broad cast this message.
+		// req.setPayload("expId2", this.expId);
 		ObjectPropertiesData body = new ObjectPropertiesData();
 		body.setProperty("text", msg);
 		req.setPayload("body", body);
@@ -157,6 +200,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		if (msg2 != null) {
 			return;//
 		}
+		DateData ts = msg.getTimeStamp();
+		if(this.latestMessageTimestamp == null||ts.getValue()>this.latestMessageTimestamp.getValue()){
+			this.latestMessageTimestamp = ts;
+		}
 		ExpMessageView ev = ExpMessageView.createViewForMessage(this.container, msg);
 		ev.parent(this.msglist);
 		this.map.put(id, msg);
@@ -180,5 +227,14 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 		this.map2.put(cid, ec);
 
+	}
+
+	/*
+	 *Mar 24, 2013
+	 */
+	@Override
+	public DateData getLatestMessageTimestamp() {
+		// 
+		return this.latestMessageTimestamp;
 	}
 }
