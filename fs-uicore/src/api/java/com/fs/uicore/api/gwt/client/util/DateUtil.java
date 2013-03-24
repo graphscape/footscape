@@ -17,7 +17,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  * 
  */
 public class DateUtil {
-	private static DateTimeFormat FORMAT = DateTimeFormat.getFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+	private static DateTimeFormat FORMAT = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	public static String format(DateData dd) {
 		return format(dd, true);

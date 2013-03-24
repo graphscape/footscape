@@ -18,7 +18,7 @@ import com.fs.commons.api.lang.FsException;
  */
 public class DateUtil {
 	private static SimpleDateFormat FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+			"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	public static String format(Date dd) {
 		return FORMAT.format(dd);

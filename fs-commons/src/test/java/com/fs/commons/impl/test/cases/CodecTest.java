@@ -8,11 +8,13 @@
 package com.fs.commons.impl.test.cases;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
 
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.support.MapProperties;
@@ -26,11 +28,27 @@ import com.fs.commons.impl.test.cases.support.TestBase;
  * 
  */
 public class CodecTest extends TestBase {
+	public void testDateConvert() {
+
+		Date d = new Date();
+		CodecI.FactoryI cf = this.container.find(CodecI.FactoryI.class, true);
+		CodecI c = cf.getCodec(Date.class);
+		Object o = c.encode(d);
+		assertTrue(o instanceof JSONArray);
+		JSONArray jA = (JSONArray) o;
+		String json = jA.toJSONString();
+		System.out.println("convert from date to json,from:" + d + ",to:" + json);
+		//
+		JSONArray jA2 = (JSONArray) JSONValue.parse(json);
+		Date d2 = (Date) c.decode(jA2);
+		System.out.println("convert from json to date,from:" + json + ",to:" + d2);
+		assertEquals(d, d2);
+	}
+
 	public void testErrorInfos() {
 		CodecI.FactoryI cf = this.container.find(CodecI.FactoryI.class, true);
 		PropertiesI<Object> obj = new MapProperties<Object>();
-		obj.setProperty("_ERROR_INFO_S",
-				new ErrorInfos().add(new ErrorInfo("message-value")));
+		obj.setProperty("_ERROR_INFO_S", new ErrorInfos().add(new ErrorInfo("message-value")));
 		CodecI c = cf.getCodec(PropertiesI.class);
 
 		JSONArray ser = (JSONArray) c.encode(obj);

@@ -10,7 +10,7 @@ curl -XGET 'http://localhost:9200/nodes/exp-message/_search?pretty=true' -d '
         }
       }, {
         "term" : {
-          "expId2" : "sbRo1yT4RKKsmUQEtA5grQ"
+          "expId2" : "PA44Od3lSp-FG13aYbs-2g"
         }
       }, {
         "term" : {
@@ -19,7 +19,7 @@ curl -XGET 'http://localhost:9200/nodes/exp-message/_search?pretty=true' -d '
       }, {
         "range" : {
           "timestamp_" : {
-            "from" : "2013-03-23T21:22:36.114Z",
+            "from" : "2013-03-24T00:39:23.661Z",
             "to" : null,
             "include_lower" : true,
             "include_upper" : true
