@@ -131,7 +131,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.map = new HashMap<String, ExpMessage>();
 		// older button
 		final ButtonI older = this.factory.create(ButtonI.class);
-		older.setText(true, "older-msg");
+		older.setText(true, "/action/myexp/older-msg");
 		older.parent(this.middle);
 		older.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
