@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
@@ -153,7 +154,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		req.setPayload("accountId2", this.getAccountId());
 		req.setPayload("expId2", this.expId);
 		req.setPayload("timestamp2", this.latestMessageTimestamp);
-		req.setPayload("limit", 50);
+		req.setPayload("limit", UiClientConstants.MESSAGE_LIMIT);
 		this.getClient(true).getEndpoint().sendMessage(req);
 	}
 
