@@ -5,15 +5,19 @@
 package com.fs.uiclient.impl.gwt.client.signup;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.facebook.AuthLoginResponseJso;
+import com.fs.uiclient.api.gwt.client.facebook.Facebook;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.event.ModelValueEvent;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
+import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
@@ -47,8 +51,26 @@ public class SignupView extends FormsView implements SignupViewI {
 		def.addField("password", String.class);
 		def.addField("email", String.class);
 
-		// form2
+		// facebook login button
+		Element fbb = Facebook.createLoginButtonDiv().cast();
+		this.element.appendChild(fbb);
+		// the init should be after this element is attached to root?
+		Facebook fb = Facebook.getInstance();
+		fb.onAuthLogin(new HandlerI<AuthLoginResponseJso>() {
 
+			@Override
+			public void handle(AuthLoginResponseJso t) {
+				SignupView.this.onFacebookAuth(t);
+			}
+		});
+		fb.start(true);
+	}
+
+	/**
+	 *Mar 26, 2013
+	 */
+	protected void onFacebookAuth(AuthLoginResponseJso t) {
+		
 	}
 
 	// show or hidden this view by model value
