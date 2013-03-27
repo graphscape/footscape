@@ -85,7 +85,7 @@ public class AuthedTestBase extends TestBase {
 		Account acc = new Account().forCreate(this.datas);
 
 		acc.setPassword(signup.getPassword());
-		acc.setIsAnonymous(false);//
+		acc.setType(Account.TYPE_REGISTERED);
 		acc.setNick(signup.getNick());
 		acc.save(true);
 

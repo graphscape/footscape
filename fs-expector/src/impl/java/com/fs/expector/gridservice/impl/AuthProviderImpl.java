@@ -9,7 +9,6 @@ import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
-import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -35,20 +34,17 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 
 	@Override
 	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
+
+		
+		
 		//
-		String password = (String) credential.getProperty("password", false);
-
 		PropertiesI<Object> rt = new MapProperties<Object>();
-		String type = (String) credential.getProperty("type");// anonymous/registered
-		// boolean isSaved = credential.getProperty(Boolean.class, "isSaved",
-		// Boolean.FALSE);//
-		boolean isAnonymous = !type.equals("registered");
-		String accountId;
-		if (isAnonymous) {// registered
+		String type = (String) credential.getProperty("type", true);// anonymous/registered
 
+		String accountId = null;
+		if (Account.TYPE_ANONYMOUS.equals(type)) {
 			accountId = (String) credential.getProperty("accountId", true);
-		} else {// anonymous
-
+		} else if (Account.TYPE_REGISTERED.equals(type)) {
 			String email = (String) credential.getProperty("email", true);
 			rt.setProperty("email", email);
 			AccountInfo ai = this.factory.getDataService().getNewest(AccountInfo.class, AccountInfo.EMAIL,
@@ -58,7 +54,30 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 				return null;
 			}
 			accountId = ai.getAccountId();
+		} else if (Account.TYPE_EXTERNAL.equals(type)) {
+			String source = (String) credential.getProperty("source", true);			
+			String xuid = (String) credential.getProperty("userId", true);
+			String nick = (String) credential.getProperty("nick");
+
+			// already external authed
+			String aid = source + "-" + xuid;
+			Account acc = this.factory.getDataService().getNewestById(Account.class, aid, false);
+			String password = "todo";
+			if (acc == null) {//
+				// create a account for this external user
+				acc = new Account().forCreate(this.factory.getDataService());
+				acc.setId(aid);
+				acc.setType(Account.TYPE_EXTERNAL);// external means the user should login by
+										// external system.
+				acc.setNick(nick);
+				acc.setPassword(password);
+				acc.save(true);
+			}
+			accountId = aid;
 		}
+
+		String password = (String) credential.getProperty("password", false);
+		
 
 		Account acc = this.factory.getDataService().getNewestById(Account.class, accountId, false);
 
@@ -73,7 +92,7 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 		}
 
 		String nick = acc.getNick();
-		rt.setProperty("isAnonymous", acc.getIsAnonymous());
+		rt.setProperty("isAnonymous", "anonymous".equals(acc.getType()));
 		rt.setProperty(SessionGd.ACCID, accountId);
 		rt.setProperty("nick", nick);
 		return rt;

@@ -152,7 +152,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		an.setId(email);// email as the id?
 		an.setPassword(password);
 		an.setNick(sp.getNick());
-		an.setIsAnonymous(false);
+		an.setType(Account.TYPE_REGISTERED);
 		an.save(true);
 		//
 		AccountInfo xai = new AccountInfo().forCreate(ds);
@@ -170,7 +170,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		Account an = new Account().forCreate(this.dataService);
 
 		an.setId(id);//
-		an.setIsAnonymous(true);
+		an.setType(Account.TYPE_ANONYMOUS);
 		an.setPassword(id);//
 		an.setNick(id);
 		an.save(true);

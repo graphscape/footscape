@@ -10,7 +10,7 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
  * @author wu
- * 
+ * TODO rename to RegisteredUser
  */
 public class AccountInfo extends NodeWrapper {
 

@@ -79,8 +79,11 @@ public class FbLoginAP extends ActionHandlerSupport {
 
 	protected void onMe(String uid, MeResponseJSO mr) {
 		PropertiesData<Object> pts = new PropertiesData<Object>();
-		//TODO 
-		
+		String nick = mr.getName();
+		pts.setProperty("type", "external");
+		pts.setProperty("userId", uid);
+		pts.setProperty("nick", nick);
+		//TODO ?
 		this.getEndpoint().auth(pts);
 		
 	}

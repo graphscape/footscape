@@ -18,7 +18,14 @@ public class Account extends NodeWrapper {
 
 	public static final String NICK = "nick";
 
-	public static final String ISANONYMOUS = "isAnonymous";
+	public static final String TYPE = "type";
+	
+	public static final String TYPE_ANONYMOUS = "anonymous";
+	
+	public static final String TYPE_EXTERNAL = "external";
+	
+	public static final String TYPE_REGISTERED = "registered";
+	
 
 	/**
 	 * @param pts
@@ -29,7 +36,7 @@ public class Account extends NodeWrapper {
 
 	public static void config(DataSchema cfs) {
 		cfs.addConfig(NodeTypes.ACCOUNT, Account.class)
-				.field(PASSWORD).field(NICK).field(ISANONYMOUS);
+				.field(PASSWORD).field(NICK).field(TYPE);
 
 	}
 
@@ -62,12 +69,16 @@ public class Account extends NodeWrapper {
 		this.setProperty(NICK, nick2);
 	}
 
-	public void setIsAnonymous(boolean an) {
-		this.setProperty(ISANONYMOUS, an);
+	public void setType(String type) {
+		this.setProperty(TYPE, type);
 	}
 
-	public boolean getIsAnonymous() {
-		return (Boolean) this.getProperty(ISANONYMOUS);
+	public String getType() {
+		return (String) this.getProperty(TYPE);
+	}
+	
+	public boolean isType(String type){
+		return type.equals(this.getType());
 	}
 
 }
