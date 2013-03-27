@@ -5,8 +5,9 @@
 package com.fs.uiclient.impl.gwt.client.signup;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.facebook.AuthLoginResponseJso;
+import com.fs.uiclient.api.gwt.client.facebook.FBJSO;
 import com.fs.uiclient.api.gwt.client.facebook.Facebook;
+import com.fs.uiclient.api.gwt.client.facebook.LoginStatusResponseJSO;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
@@ -40,37 +41,64 @@ public class SignupView extends FormsView implements SignupViewI {
 		super(ctn, "signup");
 		//
 		this.addAction(Actions.A_SIGNUP_SUBMIT);
+		this.addAction(Actions.A_SIGNUP_FBLOGIN);
 
 		// form1
 		FormViewI def = this.getDefaultForm();
 		// actions for form1
 		def.getFormModel().addAction(Actions.A_SIGNUP_SUBMIT);
+		def.getFormModel().addAction(Actions.A_SIGNUP_FBLOGIN);
 
 		// fields1
 		def.addField("nick", String.class);
 		def.addField("password", String.class);
 		def.addField("email", String.class);
 
-		// facebook login button
-		Element fbb = Facebook.createLoginButtonDiv().cast();
-		this.element.appendChild(fbb);
 		// the init should be after this element is attached to root?
-		Facebook fb = Facebook.getInstance();
-		fb.onAuthLogin(new HandlerI<AuthLoginResponseJso>() {
+		Facebook.getInstance(new HandlerI<FBJSO>() {
 
 			@Override
-			public void handle(AuthLoginResponseJso t) {
-				SignupView.this.onFacebookAuth(t);
+			public void handle(FBJSO t) {
+				SignupView.this.onFacebook(t);
 			}
-		});
-		fb.start(true);
+		});// init
+
 	}
 
 	/**
-	 *Mar 26, 2013
+	 * @param t
 	 */
-	protected void onFacebookAuth(AuthLoginResponseJso t) {
-		
+	protected void onFacebook(FBJSO t) {
+		// facebook login button
+
+		t.getLoginStatus(new HandlerI<LoginStatusResponseJSO>() {
+
+			@Override
+			public void handle(LoginStatusResponseJSO t) {
+				SignupView.this.onLoginStatus(t);
+			}
+		});
+
+	}
+
+	/**
+	 * @param t
+	 */
+	protected void onLoginStatus(LoginStatusResponseJSO t) {
+		if (t.isConnected()) {//
+			
+		} else {//
+			Element fbb = Facebook.createLoginButtonDiv().cast();
+			this.element.appendChild(fbb);
+
+		}
+	}
+
+	/**
+	 * Mar 26, 2013
+	 */
+	protected void onFacebookAuth(LoginStatusResponseJSO t) {
+
 	}
 
 	// show or hidden this view by model value

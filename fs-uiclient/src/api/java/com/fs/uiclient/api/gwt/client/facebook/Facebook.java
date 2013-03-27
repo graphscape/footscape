@@ -3,11 +3,10 @@
  */
 package com.fs.uiclient.api.gwt.client.facebook;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fs.uicore.api.gwt.client.HandlerI;
-import com.fs.uicore.api.gwt.client.support.ErrorReportProxyHandler;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
@@ -21,138 +20,88 @@ public class Facebook {
 
 	private static String jsSrcElementId = "facebook-jssdk";
 
-	private static Facebook ME;
-	
-	private static String appId = "123";//TODO
-	
-	//private Map<String,HandlerI<JavaScriptObject>> hdlMap;
-	
-	public Facebook() {
-		//this.hdlMap = new HashMap<String,HandlerI<JavaScriptObject>> ();
-	}
+	private static FBJSO FB;
 
-	public static Facebook getInstance() {
-		if(ME != null){
-			return ME;
+	private static String appId = "120488868142584";// TODO
+
+	private static String appSecret = "f113280c5ab50afe4f3b5a35e21ba9f4";
+
+	private static List<HandlerI<FBJSO>> readyHandlers = new ArrayList<HandlerI<FBJSO>>();
+
+	public static void getInstance(HandlerI<FBJSO> readyH) {
+		if (FB != null) {
+			readyH.handle(FB);
 		}
-		Facebook rt = new Facebook();
-		ME = rt;
-		return rt;
 
-	}
-	
-	public void onAuthLogin(final HandlerI<AuthLoginResponseJso> handler) {
+		readyHandlers.add(readyH);
 
-		this.onEvent("auth.login", new HandlerI<JavaScriptObject>() {
-
-			@Override
-			public void handle(JavaScriptObject t) {
-				AuthLoginResponseJso jso = t.cast();
-				handler.handle(jso);
-			}
-
-		});
-
-	}
-	
-	public void onEvent(String event, HandlerI<JavaScriptObject> handler) {
-		handler = new ErrorReportProxyHandler<JavaScriptObject>(handler) ;		
-		//this.hdlMap.put(event, handler);//
-		this.onEventInternal(event, new ErrorReportProxyHandler<JavaScriptObject>(handler));
-	}
-
-	private native void onEventInternal(String event, HandlerI<JavaScriptObject> handler)
-	/*-{
-		var func = function (evt){
-			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(evt);
-		};
-		FB.Event.subscribe(event,func);
-	}-*/;
-	
-	public void start(boolean reload) {
-		
-		//TODO reload?
-		
 		Document doc = Document.get();
 		Element fbJs = doc.getElementById(jsSrcElementId);
-		if (fbJs != null) {
-			return;
+		if (fbJs == null) {
+			//
+			// add root element
+			Element root = DOM.createDiv();
+			root.setId("fb-root");
+			doc.getBody().insertFirst(root);
+			// prepare the init function
+			setFbAsyncInitFunction(appId);
+			// add the script element
+			fbJs = doc.createScriptElement();
+			fbJs.setId(jsSrcElementId);
+			fbJs.setAttribute("src", "https://connect.facebook.net/en_US/all.js");
+			doc.getBody().insertAfter(fbJs, root);
 		}
-		//prepare the init function
-		this.setFbAsyncInitFunction(appId);
-		// add the script element
-		fbJs = doc.createScriptElement();
-		fbJs.setId(jsSrcElementId);
-		fbJs.setAttribute("src", "//connect.facebook.net/en_US/all.js");
-		doc.getBody().insertFirst(fbJs);
 
+	}
+
+	public static native void setFbAsyncInitFunction(String appId_)
+	/*-{
+
+		$wnd.fbAsyncInit = function() {
+			//alert('before fb init:');
+			var pts = {
+				appId : appId_, // App ID
+				channelUrl : '//localhost:8888/facebook/channel.html', // Channel File
+				status : true, // check login status
+				cookie : true, // enable cookies to allow the server to access the session
+				xfbml : true
+			// parse XFBML
+			};
+			//alert('appId:' + pts.appId);
+
+			if (typeof ($wnd.FB) == 'undefined' || $wnd.FB == null) {
+				alert('$wnd.FB not defined.');
+			}
+
+			$wnd.FB.init(pts);
+			//alert('after fb init');
+			@com.fs.uiclient.api.gwt.client.facebook.Facebook::afterFBInit(Ljava/lang/Object;)($wnd.FB);
+		};
+	}-*/;
+
+	private static void afterFBInit(Object fbJso) {
+		JavaScriptObject jso = (JavaScriptObject)fbJso;
+		FBJSO fb = jso.cast();
+		FB = fb;
+		for (HandlerI<FBJSO> h : readyHandlers) {
+			h.handle(fb);//
+		}
 	}
 
 	public static Element createLoginButtonDiv() {
 		Element rt = DOM.createDiv();
 		rt.addClassName("fb-login-button");
 		rt.setAttribute("data-scope", "user_likes,user_photos");
-
 		return rt;
 	}
-	
-//	private void onEvent(String evt, JavaScriptObject data){
-//		HandlerI<JavaScriptObject> hdl = hdlMap.get(evt);
-//		if(hdl == null){
-//			return;
-//		}
-//		hdl.handle(data);
-//	}
-	
-	public void login(final HandlerI<AuthLoginResponseJso> handler){
-		this.onAuthLogin(handler);
-		
-	}
-	private native void getLoginStatus(HandlerI<JavaScriptObject> handler)
-	/*-{
-		var func = function(response){
-			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(response);
-		};
-		FB.getLoginStatus(func);
-		
-	}-*/;
-	private native void doLogin(HandlerI<AuthLoginResponseJso> handler)
-	/*-{
-		var func = function(response){
-			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(response);
-		};
-		FB.login(func);
-		
-	}-*/;
-	
-	private native JavaScriptObject responseFunction(JavaScriptObject response)/*-{
-		return function(response){
-			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(response);
-		};
-	}-*/;
-	
-	private native void setFbAsyncInitFunction(String appId_)
-	/*-{
 
-		$wnd.fbAsyncInit = function() {
-			FB.init({
-				appId : appId_, // App ID
-				channelUrl : '/channel.html', // Channel File
-				status : true, // check login status
-				cookie : true, // enable cookies to allow the server to access the session
-				xfbml : true
-			// parse XFBML
-			});
-			
-		};
+	private static native boolean isFBDefined()
+	/*-{
+		if (typeof ($wnd.FB) != 'undefined' && $wnd.FB != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}-*/;
 
-	/**
-	 *
-			var func = function (evt){
-				this.@com.fs.uiclient.api.gwt.client.facebook::onEvent(Ljava.lang.String;Ljava/lang/Object;)('auth.login',evt);
-			};
-			FB.Event.subscribe('auth.login',func); 
-			
-	 */
 }

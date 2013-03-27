@@ -24,6 +24,7 @@ import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.FbLoginAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
@@ -132,6 +133,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP(c, "/profile/init"));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP(c, Path.valueOf("/signup/submit")));
+		eb.addHandler(Actions.A_SIGNUP_FBLOGIN, new FbLoginAP(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 
