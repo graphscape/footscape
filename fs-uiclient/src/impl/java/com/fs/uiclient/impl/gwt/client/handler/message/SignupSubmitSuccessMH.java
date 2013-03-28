@@ -4,7 +4,11 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -20,7 +24,6 @@ public class SignupSubmitSuccessMH extends MHSupport {
 	 */
 	public SignupSubmitSuccessMH(ContainerI c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -29,7 +32,17 @@ public class SignupSubmitSuccessMH extends MHSupport {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		MessageData res = t.getMessage();
-		// in case of notify by 'resp'
+		MessageData req = res.getSource();
+		MainControlI mc = this.getControl(MainControlI.class, true);
+		SignupViewI sv = mc.openSignup();
+		String email = sv.getEmail();
+		String password = sv.getPassword();
+		mc.closeSignup();
+		LoginControlI lc = this.getControl(LoginControlI.class, true);
+		LoginViewI lv = lc.openLoginView();
+		lv.setEmail(email);
+		lv.setPassword(password);
+		
 
 	}
 

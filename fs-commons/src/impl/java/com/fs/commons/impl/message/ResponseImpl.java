@@ -19,6 +19,7 @@ public class ResponseImpl extends MessageSupport implements ResponseI {
 
 	public ResponseImpl(MessageI req) {
 		this.request = req;
+		this.setHeader(HK_SOURCE_ID, req.getId());
 		ErrorInfos eis = new ErrorInfos();
 		this.setPayload(ERROR_INFO_S, eis);
 	}

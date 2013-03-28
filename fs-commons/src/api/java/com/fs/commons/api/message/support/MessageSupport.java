@@ -7,6 +7,8 @@
  */
 package com.fs.commons.api.message.support;
 
+import java.util.UUID;
+
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
@@ -28,9 +30,14 @@ public class MessageSupport implements MessageI {
 	}
 
 	public MessageSupport(String path) {
+		this(path,UUID.randomUUID().toString());
+	}
+
+	public MessageSupport(String path, String id) {
 		this.headers = new MapProperties<String>();
 		this.payloads = new MapProperties<Object>();
 		this.headers.setProperty(HK_PATH, path);
+		this.headers.setProperty(HK_ID, id);
 	}
 
 	public static MessageI newMessage() {
@@ -265,8 +272,8 @@ public class MessageSupport implements MessageI {
 	}
 
 	@Override
-	public String getSource() {
-		return this.getHeader(HK_SOURCE);
+	public String getSourceId() {
+		return this.getHeader(HK_SOURCE_ID);
 	}
 
 	/*

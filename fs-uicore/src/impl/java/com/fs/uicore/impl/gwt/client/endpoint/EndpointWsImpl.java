@@ -14,6 +14,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
+import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
@@ -56,11 +57,14 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private UserInfo userInfo;
 
+	private MessageCacheI messageCache;
+
 	/**
 	 * @param md
 	 */
 	public EndpointWsImpl(ContainerI c, MessageDispatcherI md) {
 		super(c);
+		this.messageCache = new MessageCacheImpl(c);
 		this.addHandler(
 				EndpointMessageEvent.TYPE.getAsPath().concat(
 						Path.valueOf("/control/status/serverIsReady", '/')),
@@ -99,6 +103,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	protected void doAttach() {
 		super.doAttach();
 		new EndpointKeeper(this).start();
+		this.messageCache.start();
 	}
 
 	protected void onServerIsReady(MsgWrapper e) {
@@ -194,7 +199,9 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		//
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
+		this.messageCache.addMessage(req);// for later reference
 		this.socket.send(jsS);
+
 	}
 
 	protected void onWsOpen(Object evt) {
@@ -225,6 +232,16 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		String msg = "" + evt.getData();
 		JSONValue jsonV = JSONParser.parseStrict(msg);
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
+		String sid = md.getSourceId();
+		if (sid != null) {
+			MessageData req = this.messageCache.getMessage(sid);
+			if (req == null) {
+				LOG.info("request not found,may timeout or the source message is from other side,message:"
+						+ md);
+			} else {
+				md.setPayload(MessageData.PK_SOURCE, req);
+			}
+		}
 		Path p = md.getPath();
 		Path tp = EndpointMessageEvent.TYPE.getAsPath();
 
@@ -327,6 +344,15 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	public UserInfo getUserInfo() {
 		//
 		return this.userInfo;
+	}
+
+	/*
+	 * Mar 28, 2013
+	 */
+	@Override
+	public MessageCacheI getRequestCache() {
+		//
+		return null;
 	}
 
 }

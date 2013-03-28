@@ -9,6 +9,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
+import com.fs.uicore.api.gwt.client.util.UID;
 
 /**
  * @author wu
@@ -17,7 +18,13 @@ import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
 public class MessageData {
 
 	public static final String HK_PATH = "_path";
+
+	public static final String HK_ID = "_id";
+
+	public static final String HK_SOURCE_ID = "_source_id";
 	
+	public static final String PK_SOURCE = "_source";
+		
 	private StringPropertiesData headers = new StringPropertiesData();
 
 	private ObjectPropertiesData payloads = new ObjectPropertiesData();
@@ -32,7 +39,12 @@ public class MessageData {
 	}
 
 	public MessageData(String path) {
+		this(path, UID.create("msg-"));
+	}
+
+	public MessageData(String path, String id) {
 		this.setHeader(HK_PATH, path);
+		this.setHeader(HK_ID, id);
 	}
 
 	/**
@@ -44,6 +56,14 @@ public class MessageData {
 
 	public StringPropertiesData getHeaders() {
 		return headers;
+	}
+
+	public String getId() {
+		return this.getHeader(HK_ID);
+	}
+
+	public String getSourceId() {
+		return this.getHeader(HK_SOURCE_ID);
 	}
 
 	public String getHeader(String key) {
@@ -112,6 +132,10 @@ public class MessageData {
 	public String toString() {
 		return this.getClass().getName() + ",headers:" + this.headers.toString() + ",payloads:"
 				+ this.payloads;
+	}
+	
+	public MessageData getSource(){
+		return (MessageData)this.getPayload(PK_SOURCE);
 	}
 
 	/**

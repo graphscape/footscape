@@ -201,8 +201,8 @@ public class ProxyMessageSupport implements MessageI {
 	}
 
 	@Override
-	public String getSource() {
-		return this.target.getSource();
+	public String getSourceId() {
+		return this.target.getSourceId();
 	}
 
 	@Override

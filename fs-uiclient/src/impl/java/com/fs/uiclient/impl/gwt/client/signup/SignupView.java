@@ -109,4 +109,23 @@ public class SignupView extends FormsView implements SignupViewI {
 		this.managed.select(sr);//
 	}
 
+	/*
+	 *Mar 28, 2013
+	 */
+	@Override
+	public String getEmail() {
+		// 
+		FormViewI def = this.getDefaultForm();
+		return def.getFieldData("email");
+	}
+
+	/*
+	 *Mar 28, 2013
+	 */
+	@Override
+	public String getPassword() {
+		FormViewI def = this.getDefaultForm();
+		return def.getFieldData("password");
+	}
+
 }

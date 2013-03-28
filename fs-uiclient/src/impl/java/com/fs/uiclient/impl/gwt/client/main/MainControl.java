@@ -89,7 +89,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 						holder.setTarget(true);//
 						return new UserExpListView(ct);
 					}
-				});
+				}, true);
 		// created called,first created.
 		if (holder.getTarget()) {
 			this.refreshUeList();//
@@ -107,7 +107,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			public ExpEditViewI create(ContainerI ct) {
 				return new ExpEditView(ct);
 			}
-		});
+		}, true);
 		return uelv;
 
 	}
@@ -125,7 +125,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			public SignupView create(ContainerI ct) {
 				return new SignupView(ct);
 			}
-		});
+		}, true);
 		return rt;
 	}
 
@@ -138,7 +138,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			public ProfileView create(ContainerI ct) {
 				return new ProfileView(ct, (ProfileModel) sm);
 			}
-		});
+		}, true);
 
 	}
 
@@ -158,7 +158,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			public MyExpView create(ContainerI ct) {
 				return new MyExpView(ct, expId);
 			}
-		});
+		}, true);
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
 		esv.setProperty("isNew", Boolean.FALSE);
 		if (b) {

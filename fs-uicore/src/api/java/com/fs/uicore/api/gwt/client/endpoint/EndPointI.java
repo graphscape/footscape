@@ -36,5 +36,7 @@ public interface EndPointI extends UiObjectI {
 	public UserInfo getUserInfo();
 
 	public String getUri();
+	
+	public MessageCacheI getRequestCache();
 
 }

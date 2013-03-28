@@ -61,6 +61,8 @@ public interface PropertiesEditorI extends EditorI<ObjectPropertiesData> {
 	public List<PropertyModel> getFieldModelList();
 
 	public EditorI getPropertyEditor(String name);
+	
+	public void setFieldValue(String fname, Object v);
 
 	public void addProperty(final PropertyModel pm);
 

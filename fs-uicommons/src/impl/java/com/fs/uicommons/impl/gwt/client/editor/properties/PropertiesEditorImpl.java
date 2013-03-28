@@ -21,6 +21,7 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -195,6 +196,15 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		PropertyModel pm = this.getFieldModel(name);
 		return pm.getEditor(true);
 
+	}
+
+	/*
+	 *Mar 28, 2013
+	 */
+	@Override
+	public void setFieldValue(String fname, Object v) {
+		EditorI edt  = this.getPropertyEditor(fname);
+		edt.setData(v);
 	}
 
 }

@@ -189,7 +189,7 @@ public class FormView extends ViewSupport implements FormViewI {
 		if (fm == null) {
 			throw new UiException("no field with name:" + fname + " in view:" + this);
 		}
-		this.getData().setProperty(fname, value);
+		this.propertiesEditor.setFieldValue(fname, value);
 	}
 
 }

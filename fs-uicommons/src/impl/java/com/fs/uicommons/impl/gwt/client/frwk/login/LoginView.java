@@ -82,4 +82,27 @@ public class LoginView extends FormsView implements LoginViewI {
 		return this.getDefaultFormView().getFieldData(FK_SAVINGACCOUNT, Boolean.FALSE);
 	}
 
+
+	/*
+	 *Mar 28, 2013
+	 */
+	@Override
+	public void setEmail(String email) {
+		// 
+		FormViewI def = this.getDefaultForm();
+		def.setFieldValue(FK_EMAIL, email);
+	}
+
+
+	/*
+	 *Mar 28, 2013
+	 */
+	@Override
+	public void setPassword(String password) {
+		//
+		FormViewI def = this.getDefaultForm();
+		def.setFieldValue(FK_PASSWORD, password); 
+		
+	}
+
 }

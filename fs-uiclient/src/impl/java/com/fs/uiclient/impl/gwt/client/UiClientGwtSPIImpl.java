@@ -25,9 +25,9 @@ import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FbLoginAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.FormSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.SignupSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
@@ -132,7 +132,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP(c, "/profile/init"));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
-		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new FormSubmitAP(c, Path.valueOf("/signup/submit")));
+		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new SignupSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_FBLOGIN, new FbLoginAP(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
@@ -173,7 +173,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new CooperConfirmSuccessMH(c));// search
 		//
 		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
-		dis.addHandler(Path.valueOf("/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
 																								// succ
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// signup
 

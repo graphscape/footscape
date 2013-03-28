@@ -33,6 +33,9 @@ public interface LoginViewI extends ViewI {
 
 	public boolean isSavingAccount();
 
+	public void setEmail(String email);
+	
+	public void setPassword(String password);
 	/**
 	 * 
 	 */

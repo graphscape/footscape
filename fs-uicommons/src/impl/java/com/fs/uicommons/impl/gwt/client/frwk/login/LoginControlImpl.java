@@ -32,6 +32,7 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	@Override
 	public LoginViewI openLoginView() {
 
+		//TODO creater
 		BodyViewI bv = this.getBodyView();
 		LoginView lv = bv.getItem(Constants.LOGIN_VIEW, false);
 		if (lv == null) {
@@ -39,6 +40,7 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 
 			bv.addItem(Constants.LOGIN_VIEW, lv);
 		}
+		bv.select(Constants.LOGIN_VIEW);//
 		return lv;
 	}
 
