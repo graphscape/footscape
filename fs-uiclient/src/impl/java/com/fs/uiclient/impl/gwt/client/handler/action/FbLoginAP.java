@@ -81,6 +81,7 @@ public class FbLoginAP extends ActionHandlerSupport {
 		PropertiesData<Object> pts = new PropertiesData<Object>();
 		String nick = mr.getName();
 		pts.setProperty("type", "external");
+		pts.setProperty("source", "facebook");//
 		pts.setProperty("userId", uid);
 		pts.setProperty("nick", nick);
 		//TODO ?

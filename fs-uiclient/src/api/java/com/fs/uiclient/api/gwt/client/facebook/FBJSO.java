@@ -46,12 +46,13 @@ public final class FBJSO extends JavaScriptObject {
 		});
 	}
 
-	public native void api(String api, HandlerI<JavaScriptObject> h)
+	public native void api(String api, HandlerI<JavaScriptObject> handler)
 	/*-{
 		var func = function(response) {
+			alert('after response:'+response);
 			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(response);
 		};
-
+		alert('before api:'+api);
 		this.api(api, func);
 	}-*/;
 

@@ -35,13 +35,12 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 	@Override
 	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
 
-		
-		
 		//
 		PropertiesI<Object> rt = new MapProperties<Object>();
 		String type = (String) credential.getProperty("type", true);// anonymous/registered
 
 		String accountId = null;
+		String password = (String) credential.getProperty("password", false);
 		if (Account.TYPE_ANONYMOUS.equals(type)) {
 			accountId = (String) credential.getProperty("accountId", true);
 		} else if (Account.TYPE_REGISTERED.equals(type)) {
@@ -55,29 +54,27 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 			}
 			accountId = ai.getAccountId();
 		} else if (Account.TYPE_EXTERNAL.equals(type)) {
-			String source = (String) credential.getProperty("source", true);			
+			String source = (String) credential.getProperty("source", true);
 			String xuid = (String) credential.getProperty("userId", true);
 			String nick = (String) credential.getProperty("nick");
 
 			// already external authed
 			String aid = source + "-" + xuid;
 			Account acc = this.factory.getDataService().getNewestById(Account.class, aid, false);
-			String password = "todo";
+			password = "todo";
 			if (acc == null) {//
 				// create a account for this external user
 				acc = new Account().forCreate(this.factory.getDataService());
 				acc.setId(aid);
-				acc.setType(Account.TYPE_EXTERNAL);// external means the user should login by
-										// external system.
+				acc.setType(Account.TYPE_EXTERNAL);// external means the user
+													// should login by
+				// external system.
 				acc.setNick(nick);
 				acc.setPassword(password);
 				acc.save(true);
 			}
 			accountId = aid;
 		}
-
-		String password = (String) credential.getProperty("password", false);
-		
 
 		Account acc = this.factory.getDataService().getNewestById(Account.class, accountId, false);
 

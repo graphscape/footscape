@@ -86,11 +86,11 @@ public class SimpleView extends ViewSupport {
 
 	}
 
-	public void addAction(final Path aname) {
-		this.addAction(aname, false);
+	public ButtonI addAction(final Path aname) {
+		return this.addAction(aname, false);
 	}
 
-	public void addAction(final Path aname, boolean hide) {
+	public ButtonI addAction(final Path aname, boolean hide) {
 		// listen to the button clicked event,which is button state is changed.
 		ButtonI b = this.actionMap.get(aname);
 		if (b != null) {
@@ -112,6 +112,7 @@ public class SimpleView extends ViewSupport {
 		this.actionMap.put(aname, b);
 		this.hideAction(aname, hide);
 
+		return b;
 	}
 
 	protected void hideAction(Path aname, boolean hide) {

@@ -54,6 +54,6 @@
 	<property name="/action/uelist/create" value="New"/>
 	<property name="/action/expe/submit" value="Save"/>
 	<property name="/action/myexp/older-msg" value="Older Msg" />
-	
+	<property name="/action/signup/fblogin" value="Log In" />
 	
 </config>

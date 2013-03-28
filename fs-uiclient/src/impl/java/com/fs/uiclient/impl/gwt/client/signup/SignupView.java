@@ -12,6 +12,7 @@ import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
+import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
@@ -41,8 +42,9 @@ public class SignupView extends FormsView implements SignupViewI {
 		super(ctn, "signup");
 		//
 		this.addAction(Actions.A_SIGNUP_SUBMIT);
-		this.addAction(Actions.A_SIGNUP_FBLOGIN);
-
+		
+		ButtonI fb = this.addAction(Actions.A_SIGNUP_FBLOGIN);
+		fb.getElement().addClassName("facebook-login-button");
 		// form1
 		FormViewI def = this.getDefaultForm();
 		// actions for form1

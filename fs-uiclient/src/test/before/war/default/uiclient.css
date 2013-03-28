@@ -39,6 +39,25 @@
 	font-weight:bold;
 }
 
+.facebook-login-button,
+.facebook-login-button:hover {
+	background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yf/r/S-DbSHszr4D.png);
+	background-repeat: no-repeat;
+	display:inline-block;
+	background-color:#5F78AB;
+	color:#FFFFFF;
+	height:22px;
+	font-weight:bold;
+	background-position:0 -133px;
+	padding-left:25px;
+	border-spacing:0;
+	border-bottom:1px solid #1A356E;
+	border-top:1px solid #29447E;
+	border-right:1px solid #29447E;
+	border-collapse:collapse;
+	
+}
+
 .myexp-connected {
 	vertial-align:top;
 	height:100%;
