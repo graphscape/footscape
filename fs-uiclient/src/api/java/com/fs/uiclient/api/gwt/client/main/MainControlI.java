@@ -8,6 +8,7 @@ import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
+import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
@@ -29,7 +30,7 @@ public interface MainControlI extends ControlI {
 
 	public ExpEditViewI openExpEditView();
 
-	public void openProfile();
+	public ProfileViewI openProfile();
 
 	public void refreshExpConnect(String expId);
 

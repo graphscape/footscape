@@ -54,7 +54,8 @@ public class ExpectorDsSPI extends SPISupport {
 		AccountInfo.config(cfs);//
 		Connection.config(cfs);
 		ExpMessage.config(cfs);
-
+		//facade
+		ac.active("EXPECTOR_DS_FACADE", new ExpectorDsFacadeImpl());
 	}
 
 	/*

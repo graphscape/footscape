@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
+import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
@@ -30,7 +31,6 @@ import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
-import com.fs.uicore.api.gwt.client.support.DefaultEventDispatcher;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
@@ -130,7 +130,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	}
 
 	@Override
-	public void openProfile() {
+	public ProfileViewI openProfile() {
 		final ProfileModelI sm = this.getProfileModel();
 		ProfileView rt = this.getOrCreateViewInBody(Path.valueOf("/profile"), new CreaterI<ProfileView>() {
 
@@ -139,7 +139,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 				return new ProfileView(ct, (ProfileModel) sm);
 			}
 		}, true);
-
+		return rt;
 	}
 
 	/*

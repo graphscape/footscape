@@ -43,7 +43,22 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		// the relation between activity and user.
 		String expId1 = (String) req.getPayload("expId1", true);
 		String expId2 = (String) req.getPayload("expId2", true);
-
+		
+		//check if the max connect overflow
+		
+		if (this.efacade.getOverflowConnectedExpCount(expId1) >= 0) {
+			//
+			res.getErrorInfos().addError("connection.overflow","source exp connected too much");
+			return;
+		}
+		
+		//check if the target exp connect overflow
+		if (this.efacade.getOverflowConnectedExpCount(expId2) >= 0) {
+			//
+			res.getErrorInfos().addError("connection.overflow","target exp connected too much");
+			return;
+		}
+		
 		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
 		String accId2 = exp2.getAccountId();
 		ConnectRequest cr = new ConnectRequest().forCreate(this.dataService);
@@ -77,7 +92,7 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		MessageI msg = new MessageSupport("/notify/exp-message-created");
 		msg.setHeader("expId1", expId1);
 		msg.setHeader("expId2", expId2);
-		
+
 		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 	}
 

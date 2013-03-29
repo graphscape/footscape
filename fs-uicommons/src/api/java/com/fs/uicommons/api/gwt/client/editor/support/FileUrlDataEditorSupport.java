@@ -9,11 +9,12 @@ package com.fs.uicommons.api.gwt.client.editor.support;
 import com.fs.uicommons.api.gwt.client.html5.file.FileReaderJSO;
 import com.fs.uicommons.api.gwt.client.html5.file.FileRefJSO;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
-import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtChangeHandler;
 import com.fs.uicore.api.gwt.client.support.ObjectElementHelper;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -90,12 +91,11 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 																	// long?
 		final FileReaderJSO fr = FileReaderJSO.newInstance();
 
-		fr.onLoadEnd(new UiCallbackI<Object, Object>() {
+		fr.onLoadEnd(new HandlerI<JavaScriptObject>() {
 
 			@Override
-			public Object execute(Object t) {
+			public void handle(JavaScriptObject t) {
 				FileUrlDataEditorSupport.this.onLoadEnd(fr, t);
-				return null;
 			}
 		}).readAsDataURL(file);
 	}

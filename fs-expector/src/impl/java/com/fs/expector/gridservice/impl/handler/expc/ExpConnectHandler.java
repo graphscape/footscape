@@ -20,6 +20,7 @@ import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.impl.ExpectorDsFacadeImpl;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -30,8 +31,6 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class ExpConnectHandler extends ExpectorTMREHSupport {
 
 	private CodecI codec;
-
-	private int maxSizeOfConnectQuery = 10000;// TODO remove this
 
 	@Override
 	public void active(ActiveContext ac) {
@@ -52,7 +51,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
 
 		qo.first(0);
-		qo.maxSize(this.maxSizeOfConnectQuery);// TODO application determine
+		qo.maxSize(ExpectorDsFacadeImpl.maxSizeOfConnectQuery);// TODO application determine
 												// this?
 		if (expId1 != null) {
 			qo.propertyEq(ExpMessage.EXP_ID1, expId1);

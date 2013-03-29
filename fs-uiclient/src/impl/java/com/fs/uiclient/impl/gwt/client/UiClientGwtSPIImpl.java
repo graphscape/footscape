@@ -27,8 +27,9 @@ import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.FbLoginAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ProfileInitAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SignupSubmitAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.SimpleRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
@@ -40,6 +41,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.ExpGetMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ProfileInitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
@@ -51,7 +53,6 @@ import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SearchHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.main.MainControl;
-import com.fs.uiclient.impl.gwt.client.profile.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListControl;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
@@ -130,7 +131,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_EXPS_SEARCH, new ExpSearchAP(c));
 
-		eb.addHandler(Actions.A_PROFILE_INIT, new SimpleRequestAP(c, "/profile/init"));
+		eb.addHandler(Actions.A_PROFILE_INIT, new ProfileInitAP(c));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new SignupSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_FBLOGIN, new FbLoginAP(c));
@@ -149,15 +150,20 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	private void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI dis = client.getEndpoint();
 		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH(c));
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH(c));// create
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/get/success"), new ExpGetMH(c));// search
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"),
 				new CooperRequestSuccessMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
+				new CooperConfirmSuccessMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH(c));// create
+		// exp
+		// exp
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/exps/get/success"), new ExpGetMH(c));// search
+	
+		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
+		//
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-message-created"),
 				new ExpMessageCreatedNotifyMH(c));// search
@@ -166,16 +172,15 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new ExpConnectCreatedNotifyMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
 
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));// signup
+		
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
 		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
-				new CooperConfirmSuccessMH(c));// search
-		//
-		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
 																								// succ
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// signup
+		
 
 	}
 

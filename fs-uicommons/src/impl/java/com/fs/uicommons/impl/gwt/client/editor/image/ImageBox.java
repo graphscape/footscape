@@ -13,6 +13,7 @@ import com.fs.uicommons.api.gwt.client.drag.event.DragEndEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DragEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DragStartEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DraggingEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Point;
@@ -55,8 +56,8 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	/**
 	 * @param ele
 	 */
-	public ImageBox(Element outer) {
-		super(null, DOM.createDiv());
+	public ImageBox(ContainerI c, Element outer) {
+		super(c, DOM.createDiv());
 		//
 		//
 		// TODO the outer's parent is not this ,but the helper attach dependence

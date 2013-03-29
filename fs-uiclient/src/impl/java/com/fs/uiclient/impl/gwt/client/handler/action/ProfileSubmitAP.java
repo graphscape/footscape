@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Jan 3, 2013
  */
-package com.fs.uiclient.impl.gwt.client.profile;
+package com.fs.uiclient.impl.gwt.client.handler.action;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.FormDataAP;

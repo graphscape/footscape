@@ -63,7 +63,7 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 			this.imageCroper = null;
 		}
 
-		imageCroper = new ImageCroper();
+		imageCroper = new ImageCroper(this.container);
 
 		imageCroper.parent(this);//
 		imageCroper.addHandler(DataEvent.TYPE, new EventHandlerI<DataEvent>() {

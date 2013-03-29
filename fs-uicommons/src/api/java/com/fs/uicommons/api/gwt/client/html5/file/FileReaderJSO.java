@@ -6,7 +6,9 @@
  */
 package com.fs.uicommons.api.gwt.client.html5.file;
 
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.support.ErrorReportProxyHandler;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -25,17 +27,17 @@ public final class FileReaderJSO extends JavaScriptObject {
 														return new FileReader();											
 														}-*/;
 
-	public FileReaderJSO onLoadEnd(UiCallbackI<Object, Object> handler) {
-		this.addEventHandler("onloadend", handler);
+	public FileReaderJSO onLoadEnd(HandlerI<JavaScriptObject> handler) {
+		this.addEventHandler("onloadend", new ErrorReportProxyHandler<JavaScriptObject>(handler));
 		return this;
 	}
 
 	public native void addEventHandler(String eventType,
-			UiCallbackI<Object, Object> handler)/*-{
+			HandlerI<JavaScriptObject> handler) /*-{
 														
 															this[eventType]=function(evt){
 																//alert('eventType:'+eventType+',event:'+evt+',handler:'+handler);
-																handler.@com.fs.uicore.api.gwt.client.core.UiCallbackI::execute(Ljava/lang/Object;)(evt);
+																handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(evt);
 																
 															};
 														

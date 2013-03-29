@@ -22,6 +22,7 @@ import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.gridservice.api.OnlineNotifyServiceI;
 import com.fs.gridservice.commons.api.GridFacadeI;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
@@ -53,6 +54,8 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	protected OnlineNotifyServiceI onlineNotifyService;
 
+	protected ExpectorDsFacadeI efacade;
+
 	protected String prefix = "payloads.property['_default'].payloads.property['_message'].payloads.property";
 
 	/* */
@@ -71,6 +74,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 		this.sessionManager = this.facade.getSessionManager();
 		this.onlineNotifyService = top.find(OnlineNotifyServiceI.class, true);
+		this.efacade = this.top.find(ExpectorDsFacadeI.class, true);
 	}
 
 	protected <T extends NodeWrapper> T createNode(String expPrefix, MessageContext hc, Class<T> cls) {

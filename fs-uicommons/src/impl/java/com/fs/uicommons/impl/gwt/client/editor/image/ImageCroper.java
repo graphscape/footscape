@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.editor.image;
 
 import com.fs.uicommons.api.gwt.client.drag.event.DragEndEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DraggingEvent;
+import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.Size;
@@ -54,8 +55,8 @@ public class ImageCroper extends ElementObjectSupport {
 	/**
 	 * @param ele
 	 */
-	public ImageCroper() {
-		super(null, DOM.createDiv());
+	public ImageCroper(ContainerI c) {
+		super(c, DOM.createDiv());
 		// the origin image is used for determine the size of the image.
 		// if set it to display:none,the size will be 0,0;
 		// so we provide a opacity solution.
@@ -68,7 +69,7 @@ public class ImageCroper extends ElementObjectSupport {
 
 		this.elementWrapper.append(this.editingImageWrapper);
 
-		this.box = new ImageBox(this.editingImageWrapper.getElement());
+		this.box = new ImageBox(c,this.editingImageWrapper.getElement());
 		this.box.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
 			@Override

@@ -20,6 +20,7 @@ button {
 	border-radius: 2px;
 	color: rgba(50, 90, 150, 0.9);
 	cursor: pointer;
+	font-weight: bold;
 	margin-rigt: 5px;
 	margin-top: 0px;
 	margin-bottom: 0px;
