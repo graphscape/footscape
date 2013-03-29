@@ -39,9 +39,9 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		super.active(ac);
 		{// submit
 			ValidatorI<MessageI> vl = this.createValidator("submit");
-			vl.addExpression("payloads.property['age']!=null");
-			vl.addExpression("payloads.property['gender']!=null");
-			vl.addExpression("payloads.property['icon']!=null");
+			vl.addExpression(prefix + "['age']!=null");
+			vl.addExpression(prefix + "['gender']!=null");
+			vl.addExpression(prefix + "['icon']!=null");
 
 		}
 
@@ -79,18 +79,18 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew, MessageI req, ResponseI res, MessageContext hc,
+	public void handleSubmit(TerminalMsgReceiveEW ew, ResponseI res, MessageContext hc,
 			ValidatorI<MessageI> vl, ValidateResult<MessageI> vr) {
-
+		MessageI req = ew.getMessage();//
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
 			return;
 		}
 		SessionGd login = this.getSession(ew, true);//
 		// here the data is valid for save processing.
-		Integer age = (Integer) req.getPayload("age");// just for display.
-		String gender = (String) req.getPayload("gender");
-		String icon = (String) req.getPayload("icon");
+		Integer age = (Integer) req.getPayload("age", true);// just for display.
+		String gender = (String) req.getPayload("gender", true);
+		String icon = (String) req.getPayload("icon", true);
 
 		Profile pts = new Profile().forCreate(this.dataService);// NOTE
 		pts.setAccountId(login.getAccountId());//

@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.coper;
 
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
@@ -52,16 +53,23 @@ public class ExpMessage extends MsgWrapper {
 	public String getAccountId1() {
 		return (String) this.getHeader("accountId1", true);
 	}
-	
+
 	public String getNick1() {
 		return (String) this.getPayload("nick1", true);
 	}
-	
-	public DateData getTimeStamp(){
+
+	public String getIcon1() {
+		String rt = (String) this.getPayload("icon1", false);
+		if (rt == null) {
+			rt = UiClientConstants.DEF_ICON;
+		}
+		return rt;
+
+	}
+
+	public DateData getTimeStamp() {
 		return (DateData) this.getPayload("timestamp", true);
 	}
-	
-	
 
 	/**
 	 * @return the accountId2

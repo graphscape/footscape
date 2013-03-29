@@ -11,6 +11,7 @@ import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.dataservice.api.wrapper.Connection;
+import com.fs.expector.dataservice.api.wrapper.Profile;
 
 /**
  * @author wu
@@ -57,6 +58,19 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	public int getOverflowConnectedExpCount(String expId) {
 		int c = this.getConnectedExpCount(expId);
 		return c - this.maxAllowedConnectPerExp;
+	}
+
+	/*
+	 *Mar 29, 2013
+	 */
+	@Override
+	public String getIconByAccountId(String accId1) {
+		// 
+		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
+		if(p == null){
+			return null;
+		}
+		return p.getIcon();
 	}
 
 }

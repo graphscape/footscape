@@ -42,6 +42,8 @@ import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ProfileInitSuccessMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitFailureMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
@@ -172,14 +174,16 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new ExpConnectCreatedNotifyMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
 
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));// signup
-		
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));// 
+
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/failure"), new ProfileSubmitFailureMH(c));// 
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/success"), new ProfileSubmitSuccessMH(c));// 
 		// exp
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));// signup
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));// 
 																								// succ
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// signup
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// 
 		
 
 	}

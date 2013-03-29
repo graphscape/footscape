@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.handler.FormDataAP;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -28,6 +29,8 @@ public class ProfileSubmitAP extends FormDataAP {
 	 */
 	@Override
 	public void handle(ActionEvent ae) {
+		MainControlI mc = this.getControl(MainControlI.class, true);
+		mc.openProfile().clearErrorInfo();
 		MsgWrapper req = this.newRequest(Path.valueOf("/profile/submit"));
 		this.processFormData(ae, req);
 		this.sendMessage(req);

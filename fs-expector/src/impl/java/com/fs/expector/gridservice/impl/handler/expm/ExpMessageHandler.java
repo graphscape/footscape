@@ -30,6 +30,7 @@ import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.handler.cooper.CooperHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -232,6 +233,9 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				Account acc = this.dataService.getNewestById(Account.class, accId1, true);
 
 				msg.setPayload("nick1", acc.getNick());
+				String icon = this.efacade.getIconByAccountId(accId1);
+				//icon of acc1
+				msg.setPayload("icon1",icon);
 			}
 			{// exp1 body
 				String expB = this.getExpBodyForMessage(expId1);

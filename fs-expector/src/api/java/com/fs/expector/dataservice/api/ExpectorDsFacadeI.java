@@ -13,4 +13,6 @@ public interface ExpectorDsFacadeI {
 
 	public int getConnectedExpCount(String expId);
 
+	public String getIconByAccountId(String accId1);
+
 }
