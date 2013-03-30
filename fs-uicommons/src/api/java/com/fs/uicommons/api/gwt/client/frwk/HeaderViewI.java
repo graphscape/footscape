@@ -15,7 +15,11 @@ public interface HeaderViewI extends ViewI {
 	public void addItem(Path path);
 	
 	public void addItem(Path path, boolean left);
+	
+	public void addItemIfNotExist(Path path);
 
 	public void setItemDisplayText(Path path,boolean toloc, String text);
+
+	public void tryRemoveItem(Path path);
 
 }

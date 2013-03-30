@@ -15,6 +15,10 @@ public interface FrwkControlI extends ControlI {
 
 	public void open();
 
+	public void tryRemoveHeaderItem(Path path);
+	
+	public void addHeaderItemIfNotExist(Path path);
+	
 	public void addHeaderItem(Path path);
 
 	public void addHeaderItem(Path path, boolean left);

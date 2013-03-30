@@ -31,12 +31,12 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 	public void handle(AfterClientStartEvent t) {
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		//
-		fc.addHeaderItem(HeaderNames.H1_LOGO, true);
+		fc.addHeaderItem(HeaderNames.H1_LOGO, true);//left
 		// right
+		fc.addHeaderItemIfNotExist(HeaderNames.H1_SEARCH);
+		fc.addHeaderItemIfNotExist(HeaderNames.H1_MYEXP);//anonymous will notify:no right to show exp
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
-		fc.addHeaderItem(HeaderNames.H2_PROFILE);
-		fc.addHeaderItem(HeaderNames.H1_MYEXP);
-		fc.addHeaderItem(HeaderNames.H1_SEARCH);
+		
 	}
 
 }

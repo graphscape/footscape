@@ -64,7 +64,10 @@ div {
 	padding: 0;
 	margin: 0;
 }
-
+div:focus {
+    border: solid 2px red;
+    outline: none;
+}
 div.popup {
 	background-color : #888;
 	position:absolute;

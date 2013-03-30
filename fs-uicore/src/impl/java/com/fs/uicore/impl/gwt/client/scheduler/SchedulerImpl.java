@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -16,6 +17,7 @@ import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
+import com.google.gwt.user.client.Timer;
 
 /**
  * @author wu
@@ -114,5 +116,21 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI, Contai
 	@Override
 	public void cancel(String name) {
 		throw new UiException("TODO");
+	}
+
+	/*
+	 * Mar 30, 2013
+	 */
+	@Override
+	public void scheduleTimer(int delay, final HandlerI<Object> eh) {
+		//
+		new Timer() {
+
+			@Override
+			public void run() {
+				//
+				eh.handle(null);
+			}
+		}.schedule(delay);
 	}
 }

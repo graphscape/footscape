@@ -9,7 +9,11 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.support.SimpleModel;
+import com.fs.uicore.api.gwt.client.event.HideEvent;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtMouseOutHandler;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtMouseOverHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.user.client.DOM;
 
 public class ItemView extends LightWeightView {
@@ -41,7 +45,48 @@ public class ItemView extends LightWeightView {
 			}
 		});
 
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(),
+				new GwtMouseOutHandler() {
+					protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
+						ItemView.this.onGwtMouseOut(evt);
+					}
+
+				});
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(),
+				new GwtMouseOverHandler() {
+					protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
+						ItemView.this.onGwtMouseOver(evt);
+					}
+
+				});
+		this.menu.addHandler(HideEvent.TYPE, new EventHandlerI<HideEvent>() {
+
+			@Override
+			public void handle(HideEvent t) {
+				ItemView.this.onMenuHide();
+			}
+		});
+
 		this.anchor.getElementWrapper().addClassName("header-item" + path.toString('-'));
+	}
+
+	/**
+	 * Mar 30, 2013
+	 */
+	protected void onGwtMouseOut(MouseOutEvent evt) {
+		if (this.hasMenu() && this.menu.isVisible()) {
+			// menu is shown, so wait the menu hide event
+			return;
+		}
+		this.select(false);
+	}
+
+	protected void onMenuHide() {
+		this.select(false);
+	}
+
+	protected void onGwtMouseOver(MouseOverEvent evt) {
+		this.select(true);
 	}
 
 	public MenuItemWI getOrAddMenuItem(final String name) {
@@ -77,7 +122,8 @@ public class ItemView extends LightWeightView {
 	}
 
 	private void onClick() {
-		this.select(!this.selected);
+		this.select(true);
+		new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path)).dispatch();
 	}
 
 	public void select(boolean sel) {
@@ -90,9 +136,6 @@ public class ItemView extends LightWeightView {
 
 		this.anchor.getElementWrapper().addAndRemoveClassName(sel, "selected", "unselected");
 
-		if (this.selected) {
-			new HeaderItemEvent(this, HeaderItemEvent.TYPE.getAsPath().concat(this.path)).dispatch();
-		}
 	}
 
 	protected boolean hasMenu() {

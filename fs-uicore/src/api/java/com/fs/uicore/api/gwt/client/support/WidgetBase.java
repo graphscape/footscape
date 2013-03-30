@@ -7,6 +7,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
+import com.fs.uicore.api.gwt.client.event.HideEvent;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -38,7 +39,9 @@ public abstract class WidgetBase extends ElementObjectSupport implements WidgetI
 		this.visible = vis;
 		//
 		this.elementWrapper.addAndRemoveClassName(vis, "visible", "invisible");
-
+		if (!this.visible) {
+			new HideEvent(this).dispatch();
+		}
 	}
 
 }

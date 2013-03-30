@@ -30,6 +30,7 @@ import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
+import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 import com.fs.uicore.api.gwt.client.util.OID;
 
 /**
@@ -96,6 +97,10 @@ public class UiObjectSupport extends MapProperties<Object> implements UiObjectI 
 		if (pts != null) {
 			this.setProperties(pts);
 		}
+	}
+	
+	protected SchedulerI getScheduler(){
+		return this.container.get(SchedulerI.class, true);
 	}
 
 	/*

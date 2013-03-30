@@ -37,7 +37,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 
 	public ItemView getOrCreateItem(Path path, boolean preferLeft) {
 
-		ItemView rt = this.itemViewMap.get(path);
+		ItemView rt = this.getItem(path);
 		if (rt != null) {
 			return rt;
 		}
@@ -45,6 +45,23 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		Position p = preferLeft ? BarWidgetI.P_LEFT : BarWidgetI.P_RIGHT;
 		this.itemList.addItem(p, rt);
 		this.itemViewMap.put(path, rt);
+		return rt;
+	}
+
+	/*
+	 *Mar 30, 2013
+	 */
+	@Override
+	public void tryRemoveItem(Path path) {
+		ItemView iv = this.getItem(path);
+		if(iv == null){
+			return;
+		}
+		iv.parent(null);
+		this.itemViewMap.remove(iv);
+	}
+	public ItemView getItem(Path path){
+		ItemView rt = this.itemViewMap.get(path);
 		return rt;
 	}
 
@@ -80,5 +97,18 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		ItemView iv = this.getOrCreateItem(path, false);
 		iv.setDisplayText(false, text);
 	}
+
+	/*
+	 *Mar 30, 2013
+	 */
+	@Override
+	public void addItemIfNotExist(Path path) {
+		// 
+		if(null != this.getItem(path)){
+			return;
+		}
+		this.addItem(path);
+	}
+
 
 }

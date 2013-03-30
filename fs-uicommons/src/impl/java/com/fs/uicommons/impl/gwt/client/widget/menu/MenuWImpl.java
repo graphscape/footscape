@@ -7,6 +7,7 @@ package com.fs.uicommons.impl.gwt.client.widget.menu;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
+import com.fs.uicommons.impl.gwt.client.UiCommonsConstants;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Point;
@@ -16,9 +17,14 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.efilter.SimpleEventFilter;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtMouseOutHandler;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtMouseOverHandler;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Timer;
 
 /**
  * @author wu
@@ -33,11 +39,57 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	 */
 	protected Element ul;
 
+	protected Timer timerToHide;
+
 	public MenuWImpl(ContainerI c, String name) {
 		super(c, name, DOM.createDiv());
 
 		this.ul = (com.google.gwt.user.client.Element) Document.get().createULElement().cast();
 		DOM.appendChild(this.element, this.ul);
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(), new GwtMouseOutHandler() {
+			protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
+				MenuWImpl.this.onGwtMouseOut(evt);
+			}
+
+		});
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(), new GwtMouseOverHandler() {
+			protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
+				MenuWImpl.this.onGwtMouseOver(evt);
+			}
+
+		});
+		
+
+	}
+
+	/**
+	 * Mar 30, 2013
+	 */
+	protected void onGwtMouseOut(MouseOutEvent evt) {
+		// close this after 1 sec;
+		this.tryCancelHideTimer();
+		timerToHide = new Timer() {
+
+			@Override
+			public void run() {
+				MenuWImpl.this.onBlurTimeout();
+			}
+		};
+		timerToHide.schedule(UiCommonsConstants.MENU_HIDE_TIMEOUT_MS);
+	}
+	
+	protected void tryCancelHideTimer(){
+		if (timerToHide != null) {
+			timerToHide.cancel();
+		}		
+	}
+
+	protected void onGwtMouseOver(MouseOverEvent evt) {
+		this.tryCancelHideTimer();
+	}
+
+	protected void onBlurTimeout() {
+		this.setVisible(false);
 	}
 
 	@Override
@@ -113,7 +165,9 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 		Point topLeft = src.getElementWrapper().getAbsoluteRectangle().getBottomLeft();
 		ElementWrapper body = this.getElementWrapper().getBody();// TODO move
 																	// around.
-		this.getElementWrapper().tryMoveInside(topLeft, body);
+		ElementWrapper ele = this.getElementWrapper();
+		ele.tryMoveInside(topLeft, body);
+		
 	}
 
 	@Override
@@ -133,6 +187,15 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	public MenuItemWI getItem(String name) {
 		throw new UiException("TODO");
 
+	}
+
+	/*
+	 *Mar 30, 2013
+	 */
+	@Override
+	public void attach() {
+		// 
+		super.attach();
 	}
 
 }

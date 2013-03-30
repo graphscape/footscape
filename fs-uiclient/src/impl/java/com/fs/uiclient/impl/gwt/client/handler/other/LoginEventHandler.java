@@ -5,8 +5,10 @@
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
+import com.fs.uiclient.impl.gwt.client.HeaderNames;
 import com.fs.uiclient.impl.gwt.client.tasks.ActivityRefreshHandler;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -37,19 +39,24 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 	public void handle(UserLoginEvent t) {
 		// update header item
 		UserInfo ui = t.getUserInfo();
-		//HeaderViewI hm = this.getClient(true).getRoot().find(HeaderViewI.class, true);
-
+		// HeaderViewI hm =
+		// this.getClient(true).getRoot().find(HeaderViewI.class, true);
+		// header items
+		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		MainControlI mc = this.getControl(MainControlI.class, true);
 
 		// open exp search view
-		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.closeAll();
-		mc.openExpSearch(false);//
-		//close login view if opened
-		mc.closeLoginView();
-		// open user exp msglist view.
-		if (!ui.isAnonymous()) {//
+		if (ui.isAnonymous()) {//?or not remove this item,but notify user no right?
+			fc.tryRemoveHeaderItem(HeaderNames.H2_PROFILE);
+		} else {
+			fc.addHeaderItemIfNotExist(HeaderNames.H2_PROFILE);
 			mc.openUeList();
 		}
+		mc.closeAll();
+		mc.openExpSearch(false);//
+		// close login view if opened
+		mc.closeLoginView();
+		// open user exp msglist view.
 
 		//
 		// this.activeTasks();

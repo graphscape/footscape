@@ -67,4 +67,21 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 		//
 		return this.getFrwkView().getHeader();
 	}
+
+	/*
+	 *Mar 30, 2013
+	 */
+	@Override
+	public void addHeaderItemIfNotExist(Path path) {
+		// 
+		this.getHeaderView().addItemIfNotExist(path);
+	}
+
+	/*
+	 *Mar 30, 2013
+	 */
+	@Override
+	public void tryRemoveHeaderItem(Path path) {
+		this.getHeaderView().tryRemoveItem(path);
+	}
 }
