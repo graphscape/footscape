@@ -24,7 +24,6 @@ import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
-import com.fs.uiclient.impl.gwt.client.handler.action.FbLoginAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ProfileInitAP;
@@ -136,7 +135,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_PROFILE_INIT, new ProfileInitAP(c));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new SignupSubmitAP(c));
-		eb.addHandler(Actions.A_SIGNUP_FBLOGIN, new FbLoginAP(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
 
@@ -163,7 +161,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/exps/get/success"), new ExpGetMH(c));// search
-	
+
 		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
 		//
 		// exp
@@ -174,17 +172,18 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new ExpConnectCreatedNotifyMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
 
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));// 
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));//
 
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/failure"), new ProfileSubmitFailureMH(c));// 
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/success"), new ProfileSubmitSuccessMH(c));// 
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/failure"),
+				new ProfileSubmitFailureMH(c));//
+		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/success"),
+				new ProfileSubmitSuccessMH(c));//
 		// exp
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));// 
-																								// succ
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));// 
-		
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));//
+		// succ
+		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));//
 
 	}
 

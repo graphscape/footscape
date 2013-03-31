@@ -1,0 +1,7 @@
+<config>
+	<host value="$mailsender.host" />
+	<port value="$mailsender.port" />
+	<protocol value="$mailsender.protocol" />
+	<username value="$mailsender.username" />
+	<password value="$mailsender.password" />
+</config>

@@ -80,12 +80,19 @@ import com.fs.uicommons.impl.gwt.client.handler.LoginHeaderItemHandler;
 import com.fs.uicommons.impl.gwt.client.handler.LogoutHeaderItemHandler;
 import com.fs.uicommons.impl.gwt.client.handler.UserLoginHandler;
 import com.fs.uicommons.impl.gwt.client.handler.action.AutoLoginHandler;
+import com.fs.uicommons.impl.gwt.client.handler.action.FbLoginAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.GChatJoinAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.GChatSendAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.LoginSubmitAH;
 import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
-import com.fs.uicommons.impl.gwt.client.handler.message.LoginFailureMsgHandler;
-import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousMsgHandler;
+import com.fs.uicommons.impl.gwt.client.handler.action.PasswordForgotAP;
+import com.fs.uicommons.impl.gwt.client.handler.action.PasswordResetAP;
+import com.fs.uicommons.impl.gwt.client.handler.message.LoginFailureMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.PasswordForgotFailureMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.PasswordForgotSuccessMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.PasswordResetFailureMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.PasswordResetSuccessMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.SignupAnonymousSuccessMH;
 import com.fs.uicommons.impl.gwt.client.mvc.ControlManagerImpl;
 import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.AnchorWImpl;
@@ -152,7 +159,10 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
-
+		eb.addHandler(Actions.A_LOGIN_FACEBOOK, new FbLoginAP(c));
+		//password
+		eb.addHandler(Actions.A_PASSWORD_FORGOT, new PasswordForgotAP(c));
+		eb.addHandler(Actions.A_PASSWORD_RESET, new PasswordResetAP(c));
 		//
 		eb.addHandler(Actions.A_GCHAT_JOIN, new GChatJoinAP(c));
 		eb.addHandler(Actions.A_GCHAT_SEND, new GChatSendAP(c));
@@ -162,9 +172,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	public void activeMessageHandlers(ContainerI c, UiClientI client) {
 		EndPointI ep = client.getEndpoint();
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
-				new SignupAnonymousMsgHandler(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMsgHandler(c));
-
+				new SignupAnonymousSuccessMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/failure"), new PasswordForgotFailureMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/failure"), new PasswordResetFailureMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/success"), new PasswordResetSuccessMH(c));
+		
 	}
 
 	public void activeOtherHandlers(ContainerI c, UiClientI client) {

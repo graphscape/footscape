@@ -1,7 +1,7 @@
 /**
  *  
  */
-package com.fs.uiclient.api.gwt.client.facebook;
+package com.fs.uicommons.api.gwt.client.facebook;
 
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -52,7 +52,7 @@ public final class FBJSO extends JavaScriptObject {
 			alert('after response:'+response);
 			handler.@com.fs.uicore.api.gwt.client.HandlerI::handle(Ljava/lang/Object;)(response);
 		};
-		alert('before api:'+api);
+		//alert('before api:'+api);
 		this.api(api, func);
 	}-*/;
 

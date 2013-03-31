@@ -4,9 +4,13 @@
  */
 package com.fs.uicore.api.gwt.client.window;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.Size;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -28,5 +32,11 @@ public class UiWindow {
 		int h = Window.getClientHeight();
 		
 		return new Rectangle(Point.valueOf(x, y), Size.valueOf(w, h));
+	}
+	
+	public static Map<String,List<String>> getParameters(){
+		Map<String,List<String>> pm = com.google.gwt.user.client.Window.Location.getParameterMap();
+		
+		return pm;
 	}
 }

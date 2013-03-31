@@ -3,6 +3,8 @@
  */
 package com.fs.expector.dataservice.impl;
 
+import java.util.UUID;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
@@ -10,6 +12,8 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
 import com.fs.dataservice.api.core.result.NodeQueryResultI;
 import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
+import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 
@@ -61,16 +65,48 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	}
 
 	/*
-	 *Mar 29, 2013
+	 * Mar 29, 2013
 	 */
 	@Override
 	public String getIconByAccountId(String accId1) {
-		// 
+		//
 		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
-		if(p == null){
+		if (p == null) {
 			return null;
 		}
 		return p.getIcon();
+	}
+
+	/*
+	 * Mar 31, 2013
+	 */
+	@Override
+	public Account updatePassword(String aid, String pass) {
+		//
+		Account a = this.dataService.getNewestById(Account.class, aid, false);
+		
+		if (a == null) {
+			
+			return null;
+		}
+		Account rt = new Account().forCreate(this.dataService);
+		rt.getTarget().setProperties(a.getUserProperties());		
+		rt.setId(a.getId());
+		rt.setPassword(pass);
+		rt.save(true);
+		return rt;
+	}
+
+	public Account getAccountByEmail(String email) {
+
+		AccountInfo ai = this.dataService.getNewest(AccountInfo.class, AccountInfo.EMAIL, email, false);
+		if (ai == null) {
+			return null;
+		}
+		String aid = ai.getAccountId();
+		Account rt = this.dataService.getNewestById(Account.class, aid, false);
+
+		return rt;
 	}
 
 }

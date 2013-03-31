@@ -15,4 +15,6 @@ public class Constants {
 
 	public static final Path LOGIN_VIEW = Path.valueOf("login");
 
+	public static final Path PASSWORDRESET_VIEW = Path.valueOf("password-reset");
+
 }

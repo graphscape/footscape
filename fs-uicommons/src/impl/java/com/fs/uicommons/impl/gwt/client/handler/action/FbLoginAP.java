@@ -2,14 +2,14 @@
  * All right is from Author of the file,to be explained in comming days.
  * Oct 20, 2012
  */
-package com.fs.uiclient.impl.gwt.client.handler.action;
+package com.fs.uicommons.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.facebook.AuthResponseJSO;
-import com.fs.uiclient.api.gwt.client.facebook.FBJSO;
-import com.fs.uiclient.api.gwt.client.facebook.Facebook;
-import com.fs.uiclient.api.gwt.client.facebook.LoginResponseJSO;
-import com.fs.uiclient.api.gwt.client.facebook.MeResponseJSO;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.facebook.AuthResponseJSO;
+import com.fs.uicommons.api.gwt.client.facebook.FBJSO;
+import com.fs.uicommons.api.gwt.client.facebook.Facebook;
+import com.fs.uicommons.api.gwt.client.facebook.LoginResponseJSO;
+import com.fs.uicommons.api.gwt.client.facebook.MeResponseJSO;
 import com.fs.uicommons.api.gwt.client.handler.ActionHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;

@@ -19,7 +19,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class SignupAnonymousMsgHandler extends UiHandlerSupport implements
+public class SignupAnonymousSuccessMH extends UiHandlerSupport implements
 		MessageHandlerI<EndpointMessageEvent> {
 
 	/*
@@ -28,7 +28,7 @@ public class SignupAnonymousMsgHandler extends UiHandlerSupport implements
 	/**
 	 * @param c
 	 */
-	public SignupAnonymousMsgHandler(ContainerI c) {
+	public SignupAnonymousSuccessMH(ContainerI c) {
 		super(c);
 	}
 

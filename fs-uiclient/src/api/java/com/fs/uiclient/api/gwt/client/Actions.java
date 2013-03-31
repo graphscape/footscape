@@ -58,7 +58,7 @@ public class Actions {
 
 	public static final Path A_SIGNUP_SUBMIT = A_SIGNUP.getSubPath("submit");
 
-	public static final Path A_SIGNUP_FBLOGIN = A_SIGNUP.getSubPath("fblogin");
+	public static final Path A_SIGNUP_FBLOGIN = com.fs.uicommons.api.gwt.client.Actions.A_LOGIN_FACEBOOK;
 
 	// public static final Path A_SIGNUP_CONFIRM =
 	// A_SIGNUP.getSubPath("confirm");

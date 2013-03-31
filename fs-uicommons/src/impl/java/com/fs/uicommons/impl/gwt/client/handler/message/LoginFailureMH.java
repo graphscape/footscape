@@ -4,9 +4,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.handler.message;
 
-import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.ErrorCodes;
-import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
@@ -25,12 +23,12 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
  * @author wu
  * 
  */
-public class LoginFailureMsgHandler extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
+public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<EndpointMessageEvent> {
 
 	/**
 	 * @param c
 	 */
-	public LoginFailureMsgHandler(ContainerI c) {
+	public LoginFailureMH(ContainerI c) {
 		super(c);
 	}
 

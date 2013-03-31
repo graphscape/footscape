@@ -42,6 +42,8 @@
 	<!-- Actions -->
 	<property name="/action/activity/openChatRoom" value="Chat" />
 	<property name="/action/profile/submit" value="Save" />
+	<property name="/action/password/forgot" value="Forgot" />
+	<property name="/action/password/reset" value="Reset" />
 	<property name="/action/signup/submit" value="Signup Submit"/>
 	<property name="/action/signup/confirm" value="Confirm Signup"/>
 	<property name="/action/exps/search" value="Search"/>

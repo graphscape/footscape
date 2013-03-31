@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.ErrorInfo;
 import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
@@ -33,6 +35,14 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 
 	protected NodeCreateOperationI createOperation;
 
+	protected static Set<String> PK_SYSTEM = new HashSet<String>();
+	static {
+		PK_SYSTEM.add(NodeI.PK_ID);
+		PK_SYSTEM.add(NodeI.PK_TIMESTAMP);
+		PK_SYSTEM.add(NodeI.PK_TYPE);
+		PK_SYSTEM.add(NodeI.PK_UNIQUE_ID);
+	}
+
 	public NodeWrapper(NodeType type) {
 		this.nodeType = type;
 	}
@@ -53,6 +63,7 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 		return (T) this;
 
 	}
+	
 
 	public void validate(NodeMeta nc, ErrorInfos rt) {
 		List<String> kl = this.target.keyList();// actual data
@@ -60,8 +71,7 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 		for (String k : kl) {
 			FieldMeta fc = nc.getField(k, false);
 			if (fc == null) {// any data must be defined.
-				rt.add(new ErrorInfo("no field:" + k
-						+ " is configured by for type:" + nc.getNodeType()));
+				rt.add(new ErrorInfo("no field:" + k + " is configured by for type:" + nc.getNodeType()));
 				continue;
 			}
 		}
@@ -70,8 +80,7 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 			Object value = this.target.getProperty(k);//
 
 			if (value == null && fc.isManditory()) {
-				rt.add(new ErrorInfo("field:" + k + " is manditory for type:"
-						+ nc.getNodeType()));
+				rt.add(new ErrorInfo("field:" + k + " is manditory for type:" + nc.getNodeType()));
 			}
 
 			fc.validate(this, rt);
@@ -88,17 +97,29 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 		this.attachTo(pts);
 	}
 
-	public <T extends PropertiesWrapper<Object, PropertiesI<Object>>> T attachTo(
-			PropertiesI<Object> pts, DataServiceI dataService) {
+
+	public <T extends PropertiesWrapper<Object, PropertiesI<Object>>> T attachTo(PropertiesI<Object> pts,
+			DataServiceI dataService) {
 
 		this.dataService = dataService;
 		return this.attachTo(pts);
 
 	}
 
+	public PropertiesI<Object> getUserProperties() {
+		PropertiesI<Object> rt = new MapProperties<Object>();
+		for (String key : this.target.keyList()) {
+			if (PK_SYSTEM.contains(key)) {
+				continue;
+			}
+			Object value = this.target.getProperty(key);
+			rt.setProperty(key, value);
+		}
+		return rt;
+	}
+
 	@Override
-	public <T extends PropertiesWrapper<Object, PropertiesI<Object>>> T attachTo(
-			PropertiesI<Object> pts) {
+	public <T extends PropertiesWrapper<Object, PropertiesI<Object>>> T attachTo(PropertiesI<Object> pts) {
 		super.attachTo(pts);//
 
 		return (T) this;
@@ -122,8 +143,7 @@ public class NodeWrapper extends PropertiesWrapper<Object, PropertiesI<Object>> 
 
 	public String save(boolean refreshAfterCreate) {
 
-		ResultI rst = this.createOperation
-				.refreshAfterCreate(refreshAfterCreate).execute().getResult()
+		ResultI rst = this.createOperation.refreshAfterCreate(refreshAfterCreate).execute().getResult()
 				.assertNoError();
 
 		return (String) rst.get(true);

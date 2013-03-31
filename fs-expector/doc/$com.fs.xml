@@ -1,0 +1,16 @@
+<config>
+	<web.rootUrl>
+ 		<![CDATA[http://127.0.0.1:8888/UiClientImplTest.html?logLevel=WARNING&fs.logLevel=INFO&gwt.codesvr=127.0.0.1:9997]]>
+	</web.rootUrl>
+	<data.cleanAtInit value="true"/>
+	<grid.cleanAtInit value="true"/>
+	<elastic.host value="localhost"/>
+	<elastic.port value="9300" />
+	<email.admin value="admin@thinkpad" />
+	<testing value="true" />
+	<mailsender.host value="smtp.gmail.com" />
+	<mailsender.port value="465" />
+	<mailsender.protocol value="smtps" />
+	<mailsender.username value="waitee3@gmail.com" />
+	<mailsender.password value="goodweek!1" />
+</config>

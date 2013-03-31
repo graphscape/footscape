@@ -1,7 +1,7 @@
 /**
  *  
  */
-package com.fs.uiclient.api.gwt.client.facebook;
+package com.fs.uicommons.api.gwt.client.facebook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -36,8 +36,9 @@ public class Facebook {
 		readyHandlers.add(readyH);
 
 		Document doc = Document.get();
-		Element fbJs = doc.getElementById(jsSrcElementId);
-		if (fbJs == null) {
+		com.google.gwt.dom.client.Element domE = doc.getElementById(jsSrcElementId);
+		if (domE == null) {
+			
 			//
 			// add root element
 			Element root = DOM.createDiv();
@@ -46,7 +47,7 @@ public class Facebook {
 			// prepare the init function
 			setFbAsyncInitFunction(appId);
 			// add the script element
-			fbJs = doc.createScriptElement();
+			Element fbJs = doc.createScriptElement().cast();
 			fbJs.setId(jsSrcElementId);
 			fbJs.setAttribute("src", "https://connect.facebook.net/en_US/all.js");
 			doc.getBody().insertAfter(fbJs, root);

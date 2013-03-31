@@ -23,11 +23,14 @@
 	</prefix>
 	<config name="globalEventDispatcher">
 
-		<handlers value="signup,client,i18n,imsg,expc,expe,exps,expm,cooper,profile,uelist" />
+		<handlers value="signup,client,i18n,imsg,expc,expe,exps,expm,cooper,password,profile,uelist" />
 
 		<config name="signup" path="/events/signup" class="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
 		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
 			<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
+		</config>
+		<config name="password" path="/events/password" class="com.fs.expector.gridservice.impl.handler.password.PasswordHandler" >
+			<rootUrl value="$web.rootUrl"/>
 		</config>
 		<config name="i18n" path="/events/i18n" class="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
 		<config name="imsg" path="/events/imsg" class="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />

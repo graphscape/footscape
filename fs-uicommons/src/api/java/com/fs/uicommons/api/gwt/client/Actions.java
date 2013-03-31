@@ -20,7 +20,10 @@ public class Actions {
 
 	/** LOGIN **/
 	public static final Path A_LOGIN = ACTION.getSubPath("login");
-
+	
+	/** PASSWORD**/
+	public static final Path A_PASSWORD = ACTION.getSubPath("password");
+	
 	// create anonymous
 	// account.
 
@@ -29,6 +32,12 @@ public class Actions {
 	// view?.
 
 	public static final Path A_LOGIN_SUBMIT = A_LOGIN.getSubPath("submit");
+	
+	public static final Path A_LOGIN_FACEBOOK = A_LOGIN.getSubPath("facebook");
+
+	public static final Path A_PASSWORD_FORGOT = A_PASSWORD.getSubPath("forgot");
+	
+	public static final Path A_PASSWORD_RESET = A_PASSWORD.getSubPath("reset");
 
 	/** GCHAT **/
 

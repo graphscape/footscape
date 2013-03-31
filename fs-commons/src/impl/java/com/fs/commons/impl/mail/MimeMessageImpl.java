@@ -93,4 +93,17 @@ public class MimeMessageImpl extends MimeMessageWrapper {
 
 	}
 
+	/*
+	 * Mar 31, 2013
+	 */
+	@Override
+	public MimeMessageWrapper setSubject(String subject) {
+		try {
+			this.target.setSubject(subject);
+		} catch (MessagingException e) {
+			throw new FsException(e);
+		}
+		return this;
+	}
+
 }

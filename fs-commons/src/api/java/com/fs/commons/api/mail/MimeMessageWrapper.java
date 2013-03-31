@@ -22,6 +22,8 @@ public abstract class MimeMessageWrapper {
 	public abstract MimeMessageWrapper setText(String text, boolean isHtml);
 
 	public abstract String getContentAsText();
+	
+	public abstract MimeMessageWrapper setSubject(String subject);
 
 	public MimeMessage getTarget() {
 		return target;

@@ -3,6 +3,8 @@
  */
 package com.fs.commons.impl.mail;
 
+import java.util.Properties;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -41,8 +43,23 @@ public class MailSenderImpl extends ConfigurableSupport implements MailSenderI {
 		super.active(ac);
 		sender = new JavaMailSenderImpl();
 		String host = this.config.getProperty("host", true);
+		String protocol = this.config.getProperty("protocol","smtps");
+		int port = this.config.getPropertyAsInt("port", 465);
+		String username = this.config.getProperty("username",true);
+		String password = this.config.getProperty("password",true);
+		
+		Properties pts = new Properties();
+		pts.setProperty("mail.smtps.auth", "true");
+		//pts.setProperty("mail.smtp.starttls.enable", "true");
+		//pts.setProperty("mail.smtp.quitwait", "false");
+		
+		sender.setJavaMailProperties(pts);
 		sender.setHost(host);
-
+		sender.setPort(port);
+		sender.setUsername(username);
+		sender.setPassword(password);
+		sender.setProtocol(protocol);
+		
 	}
 
 }
