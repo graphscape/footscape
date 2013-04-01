@@ -1,0 +1,15 @@
+
+private key:
+
+openssl genrsa -des3 -out server.key 1024
+
+request:
+openssl req -new -key server.key -out server.csr
+
+self sign:
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt 
+
+to pkcs12
+openssl pkcs12 -export -in server.crt -inkey server.key -out server.p12
+=refs=
+http://www.akadia.com/services/ssh_test_certificate.html

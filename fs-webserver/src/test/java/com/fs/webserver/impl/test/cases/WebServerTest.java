@@ -14,11 +14,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.fs.webserver.impl.test.TestServlet;
 import com.fs.webserver.impl.test.cases.support.TestBase;
+import com.sun.mail.iap.Protocol;
 
 /**
  * @author wu
@@ -28,14 +28,17 @@ import com.fs.webserver.impl.test.cases.support.TestBase;
 public class WebServerTest extends TestBase {
 
 	public void test() throws Exception {
-		URIBuilder builder = new URIBuilder();
-		String host = "localhost";
-		builder.setScheme("http").setHost(host).setPort(8080).setPath("/ROOT/testsevlet/do")
-				.setParameter("q", "httpclient");
-		URI uri = builder.build();
-		uri = new URI("http://localhost:8080/testapp/testsevlet/do");
-		HttpGet httpget = new HttpGet(uri);
+		this.doTest(false);
+		this.doTest(true);
+	}
 
+	private void doTest(boolean ssl) throws Exception {
+		// URIBuilder builder = new URIBuilder();
+		String host = "localhost";
+		String prot = ssl ? "https" : "http";
+		int port = ssl ? 8443 : 8080;
+		URI uri = new URI(prot + "://localhost:" + port + "/testapp/testsevlet/do");
+		HttpGet httpget = new HttpGet(uri);
 		HttpClient httpclient = new DefaultHttpClient();
 
 		HttpResponse response = httpclient.execute(httpget);

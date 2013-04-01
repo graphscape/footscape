@@ -25,6 +25,7 @@
 		<dependency org="org.eclipse.jetty" name="jetty-http" rev="9.0.0.RC1" force="true" conf="runtime->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-io" rev="9.0.0.RC1" force="true" conf="runtime->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-server" rev="9.0.0.RC1" force="true" conf="impl->master" />
+		<dependency org="org.eclipse.jetty" name="jetty-security" rev="9.0.0.RC1" force="true" conf="impl->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-servlet" rev="9.0.0.RC1" force="true" conf="impl->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-webapp" rev="9.0.0.RC1" force="true" conf="impl->master" />
 		<dependency org="org.eclipse.jetty" name="jetty-util" rev="9.0.0.RC1" force="true" conf="impl->master" />

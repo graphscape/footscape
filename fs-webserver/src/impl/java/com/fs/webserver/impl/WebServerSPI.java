@@ -27,13 +27,9 @@ public class WebServerSPI extends SPISupport {
 	@Override
 	public void doActive(ActiveContext ac) {
 
-		{// active web server
-			JettyWebServerImpl ws = new JettyWebServerImpl();
-			ac.activitor().context(ac).spi(this)
-					.cfgId(this.getId() + ".Object.WEB_SERVER").object(ws)
-					.active();
-			// ws.start();not start here
-		}
+		
+		ac.active("WEB_SERVER");
+		
 		// ADD default ROOT webapp
 		WebServerI ws = ac.getContainer().find(WebServerI.class, true);
 

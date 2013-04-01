@@ -1,7 +1,15 @@
 <config>
 
 
-	<property name="Object.WEB_SERVER.class" value="com.fs.webserver.impl.jetty.JettyWebServerImpl" />
+	<config name="WEB_SERVER" class="com.fs.webserver.impl.jetty.JettyWebServerImpl" >
+		<property name="isSslEnable" value="$web.isSslEnable"/>
+		<config name="ssl">
+			<property name="keyStoreLocation" value="$ssl.keyStoreLocation" />
+			<property name="keyStoreType" value="$ssl.keyStoreType" />
+			<property name="keyStorePassword" value="$ssl.keyStorePassword" />
+			<property name="port" value="$ssl.port" />
+		</config>
+	</config>
 	<config name="Object.WEB_SERVER">
 
 	</config>
