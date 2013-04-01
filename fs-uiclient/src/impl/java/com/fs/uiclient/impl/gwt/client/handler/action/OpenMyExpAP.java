@@ -25,7 +25,7 @@ public class OpenMyExpAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		String expId = (String) ae.getProperty("expId", true);
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.openMyExp(expId);
+		mc.openMyExp(expId, true);
 	}
 
 }

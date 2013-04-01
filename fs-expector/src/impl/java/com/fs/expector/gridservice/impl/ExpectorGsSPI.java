@@ -32,7 +32,7 @@ public class ExpectorGsSPI extends SPISupport {
 		ac.active("authProvider");
 		// Converter factory
 		ac.active("onlineNotifyService");
-		this.activeConfirmCodeNotifier(ac);
+		//this.activeConfirmCodeNotifier(ac);
 		this.activeHandlers(ac);
 		
 
@@ -53,16 +53,16 @@ public class ExpectorGsSPI extends SPISupport {
 								new String[] {}));
 
 	}
-
-	protected void activeConfirmCodeNotifier(ActiveContext ac) {
-
-		ConfigFactoryI cf = ac.getContainer().find(ConfigFactoryI.class, true);
-
-		PopulatorI pp = cf.newPopulator().container(ac.getContainer())
-				.type("confirmCodeNotifier");
-		pp.spi(this).active(ac).force(true).populate();
-
-	}
+//
+//	protected void activeConfirmCodeNotifier(ActiveContext ac) {
+//
+//		ConfigFactoryI cf = ac.getContainer().find(ConfigFactoryI.class, true);
+//
+//		PopulatorI pp = cf.newPopulator().container(ac.getContainer())
+//				.type("confirmCodeNotifier");
+//		pp.spi(this).active(ac).force(true).populate();
+//
+//	}
 
 	/* */
 	@Override

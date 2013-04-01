@@ -117,11 +117,18 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	public void open() {
 		UiClientI client = this.getClient(true);//
-
+		String protocol = Window.Location.getProtocol();
 		String host = Window.Location.getHostName();
 		String port = Window.Location.getPort();
-		port = "8080";// for testing.
-		this.uri = "ws://" + host + ":" + port + "/wsa/default";
+		boolean https = protocol.equals("https:");
+
+		String wsProtocol = https ? "wss" : "ws";
+		//
+		String portSet = client.getParameter(https ? UiClientI.RK_WSS_PORT : UiClientI.RK_WS_PORT, false);
+
+		port = portSet == null ? (https ? "443" : "80") : portSet;
+
+		this.uri = wsProtocol + "://" + host + ":" + port + "/wsa/default";
 
 		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 

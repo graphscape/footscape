@@ -14,6 +14,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.window.UiWindow;
 
 /**
  * @author wuzhen
@@ -29,6 +30,12 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 	@Override
 	public void active(final ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);//
+		String wsP = UiWindow.getParameter("fs.wsPort", "8080");
+		String wssP = UiWindow.getParameter("fs.wssPort", "8443");
+		
+		client.setParameter(UiClientI.RK_WS_PORT, wsP);
+		client.setParameter(UiClientI.RK_WSS_PORT, wssP);
+		//
 		EventBusI eb = c.getEventBus();
 
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HI_EXP), new EventHandlerI<HeaderItemEvent>() {

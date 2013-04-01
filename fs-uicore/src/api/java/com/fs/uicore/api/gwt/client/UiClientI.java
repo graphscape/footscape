@@ -12,6 +12,10 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public interface UiClientI extends UiObjectI {
 
+	public String RK_WSS_PORT = "WSS_PORT";
+
+	public String RK_WS_PORT = "WS_PORT";
+	
 	public String getClientId();
 
 	public EndPointI getEndpoint();
@@ -25,11 +29,11 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, boolean force);
 
 	public CodecI.FactoryI getCodecFactory();
-	
-	public String getPreferedLocale() ;
+
+	public String getPreferedLocale();
 
 	public String localized(String key);
-	
+
 	public void start();//
 
 }

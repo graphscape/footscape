@@ -22,7 +22,7 @@ public interface MainControlI extends ControlI {
 
 	public UserExpListViewI openUeList();
 
-	public MyExpViewI openMyExp(String expId);
+	public MyExpViewI openMyExp(String expId,boolean show);
 
 	public SignupViewI openSignup();
 	

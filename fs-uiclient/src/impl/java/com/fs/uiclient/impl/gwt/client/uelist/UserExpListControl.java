@@ -48,7 +48,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void refresh(String expId) {
 		UserExpListViewI uelv = this.getMainControl().openUeList();
-		Long lts = null;//uelv.getLastTimestamp(false);
+		Long lts = null;// uelv.getLastTimestamp(false);
 		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/refresh"));
 		req.setPayload("lastTimestamp", DateData.valueOf(lts));// fresh from
 																// here
@@ -78,16 +78,16 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	public void addOrUpdateExpMessage(ExpMessage msg) {
 		// get or open the ExpView
 		String expId = msg.getExpId2();
-		MyExpViewI me = this.openMyExpView(expId);
+		MyExpViewI me = this.openMyExpView(expId, false);
 		me.addOrUpdateMessage(msg);
 	}
 
 	/**
 	 * Mar 6, 2013
 	 */
-	private MyExpViewI openMyExpView(String expId) {
+	private MyExpViewI openMyExpView(String expId, boolean select) {
 		//
-		MyExpViewI rt = this.getMainControl().openMyExp(expId);
+		MyExpViewI rt = this.getMainControl().openMyExp(expId, select);
 
 		return rt;
 	}
@@ -100,16 +100,16 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		//
 
 		String expId = ec.getExpId1();
-		MyExpViewI me = this.openMyExpView(expId);
+		MyExpViewI me = this.openMyExpView(expId, false);
 		me.addOrUpdateConnected(ec);
 	}
 
 	/*
-	 *Mar 16, 2013
+	 * Mar 16, 2013
 	 */
 	@Override
 	public void deleteExp(String expId) {
-		// 
+		//
 		UserExpListViewI uelv = this.getMainControl().openUeList();
 		uelv.delete(expId);
 	}

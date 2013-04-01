@@ -150,7 +150,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * String)
 	 */
 	@Override
-	public MyExpViewI openMyExp(final String expId) {
+	public MyExpViewI openMyExp(final String expId, boolean show) {
 		Path path = this.getExpViewPath(expId);
 		final MyExpView esv = this.getOrCreateViewInBody(path, new CreaterI<MyExpView>() {
 
@@ -158,7 +158,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 			public MyExpView create(ContainerI ct) {
 				return new MyExpView(ct, expId);
 			}
-		}, true);
+		}, show);
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
 		esv.setProperty("isNew", Boolean.FALSE);
 		if (b) {
@@ -196,7 +196,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public void refreshExpMessage(String expId) {
 		// TODO filter expId
 
-		MyExpViewI me = this.openMyExp(expId);
+		MyExpViewI me = this.openMyExp(expId,false);
 		DateData timestamp1 = me.getLatestMessageTimestamp();
 		String accId = this.getUserInfo().getAccountId();
 
@@ -246,7 +246,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 		Path path = this.getExpViewPath(expId);
 		bv.setTitleOfItem(path, body, false);
 		//
-		MyExpViewI mv = this.openMyExp(expId);
+		MyExpViewI mv = this.openMyExp(expId,false);
 		mv.setMyExp(body);
 
 	}

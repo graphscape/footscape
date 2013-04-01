@@ -27,6 +27,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
+import com.fs.uicore.api.gwt.client.window.UiWindow;
 import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 
@@ -55,6 +56,16 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
 		this.endpoint = new EndpointWsImpl(c, md);
 		this.endpoint.parent(this);
+
+		String wsP = UiWindow.getParameter("fs.wsPort", null);
+		String wssP = UiWindow.getParameter("fs.wssPort", null);
+		if (wsP != null) {
+			this.setParameter(UiClientI.RK_WS_PORT, wsP);
+		}
+		
+		if (wssP != null) {
+			this.setParameter(UiClientI.RK_WSS_PORT, wssP);
+		}
 	}
 
 	@Override
