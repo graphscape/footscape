@@ -280,7 +280,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public StringEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new StringEditorImpl(c, name);
+				return new StringEditorImpl(c, name,pts);
 
 			}
 		});

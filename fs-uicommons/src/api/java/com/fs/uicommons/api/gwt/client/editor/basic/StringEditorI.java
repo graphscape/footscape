@@ -11,4 +11,6 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
  */
 public interface StringEditorI extends EditorI<String> {
 
+	public static final String PK_TEXAREA = "isTextArea";
+
 }

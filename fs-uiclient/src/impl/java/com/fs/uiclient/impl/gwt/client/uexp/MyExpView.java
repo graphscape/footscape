@@ -22,12 +22,13 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.event.KeyUpEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -73,16 +74,32 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.title.parent(this.outer);
 
 		// msg input
-		this.statement = this.factory.create(StringEditorI.class);
-		this.statement.parent(this);
-		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
+		{
+			UiPropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty(StringEditorI.PK_TEXAREA, true);
+			this.statement = this.factory.create(StringEditorI.class, pts);
+			this.statement.parent(this);
+			this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
-			@Override
-			public void handle(ChangeEvent t) {
+				@Override
+				public void handle(ChangeEvent t) {
 
-			}
-		});
+				}
+			});
+			this.statement.addHandler(KeyUpEvent.TYPE, new EventHandlerI<KeyUpEvent>() {
 
+				@Override
+				public void handle(KeyUpEvent t) {
+					if (!t.isEnter()) {
+						return;
+					}
+					if (!t.isCtlKey()) {
+						return;
+					}
+					MyExpView.this.onSendClick();
+				}
+			});
+		}
 		// send button
 		final ButtonI ok = this.factory.create(ButtonI.class);
 		ok.setText(true, "send");
@@ -96,13 +113,13 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		});
 		// close button
 		final ButtonI close = this.factory.create(ButtonI.class);
-		close.setText(true, "close");
+		close.setText(true, "destroy");
 		close.parent(this);
 		close.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent t) {
-				MyExpView.this.onCloseClick();
+				MyExpView.this.onDestroyClick();
 			}
 		});
 		{
@@ -163,7 +180,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	// close
-	protected void onCloseClick() {
+	protected void onDestroyClick() {
+		if(!Window.confirm("Do you confirm to destroy this expectation?")){
+			return;
+		}
+		
 		MsgWrapper req = new MsgWrapper("/expe/close");
 		req.setPayload("expId", this.expId);
 		this.getClient(true).getEndpoint().sendMessage(req);//
@@ -171,6 +192,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected void onSendClick() {
 		String msg = this.statement.getData();
+		if (msg == null) {
+			Window.alert("Please input message before send.");
+			return;
+		}
 		MsgWrapper req = new MsgWrapper("/expm/create");
 		req.setPayload("expId1", this.expId);
 		// expId2 is null, broad cast this message.
@@ -202,7 +227,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			return;//
 		}
 		DateData ts = msg.getTimeStamp();
-		if(this.latestMessageTimestamp == null||ts.getValue()>this.latestMessageTimestamp.getValue()){
+		if (this.latestMessageTimestamp == null || ts.getValue() > this.latestMessageTimestamp.getValue()) {
 			this.latestMessageTimestamp = ts;
 		}
 		ExpMessageView ev = ExpMessageView.createViewForMessage(this.container, msg);
@@ -231,11 +256,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	/*
-	 *Mar 24, 2013
+	 * Mar 24, 2013
 	 */
 	@Override
 	public DateData getLatestMessageTimestamp() {
-		// 
+		//
 		return this.latestMessageTimestamp;
 	}
 }
