@@ -12,6 +12,10 @@
 	cursor: pointer;
 }
 
+.more{
+	align: center;
+	width: 100%;
+}
 .opacities {
 	opacity: 0.4;
 	position: absolute;

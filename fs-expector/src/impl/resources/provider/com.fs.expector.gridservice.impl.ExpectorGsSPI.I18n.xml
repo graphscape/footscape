@@ -2,6 +2,7 @@
 	
 	<age value="Age" />
 	<cancel value="Cancel" />
+	<cooper value="Coop" />
 	<confirmCode value="Confirm Code" />
 	<confirmCodeNotifier value="Confirm By" />
 	<default value="Default" />
@@ -12,6 +13,7 @@
 	<isAgree value="Agree" />
 	<login value="Login" />
 	<logout value="Logout" />
+	<more value="More"/>
 	<next.page value="Next"/>
 	<nick value="Nick" /> 
 	<ok value="OK" />
@@ -20,9 +22,8 @@
 	<profile value="Profile"/>
 	<previous.page value="Previous"/>
 	<signup value="Signup" />
-	<search.exp value="Expectation Search" />
+	<search value="Search" />
 	<savingAccount value="Remember Account" />
-	<uelist value="My Expectations" /> 
 	
 	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />
@@ -50,6 +51,7 @@
 	<property name="/action/exps/cooper" value="Cooper With"/>
 	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
+	<property name="/action/login/facebook" value="Log In" />
 	<property name="/action/userexp/select" value="Select"/>
 	<property name="/action/userexp/activity" value="Open Activity"/>
 	<property name="/action/userexp/cooperConfirm" value="Cooper Confirm"/>

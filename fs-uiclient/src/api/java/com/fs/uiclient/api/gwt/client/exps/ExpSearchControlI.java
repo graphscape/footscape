@@ -9,14 +9,14 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- * 
+ * @deprecated user ExpSearchViewI
  */
 public interface ExpSearchControlI extends ControlI {
 
 	/**
 	 * 
 	 */
-	public void search(UserExpModel ue,boolean showView);
+	public void search(UserExpModel ue, boolean showView);
 
 	public void addOrUpdateExpItem(ExpItemModel ei);
 
@@ -25,8 +25,6 @@ public interface ExpSearchControlI extends ControlI {
 	public UserExpModel getExpId(boolean b);
 
 	public String getPhrase(boolean b);
+	
 
-	public int getFirstResult();
-
-	public int getMaxResult();
 }

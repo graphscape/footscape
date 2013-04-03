@@ -24,9 +24,7 @@ public class ExpSearchModel implements ExpSearchModelI {
 
 	private String phrase;
 
-	private int firstResult;
-
-	private int size = 15;
+	private int pageSize = 15;
 
 	private List<ExpItemModel> itemList;
 
@@ -78,52 +76,6 @@ public class ExpSearchModel implements ExpSearchModelI {
 	 */
 	private ExpItemModel getExpItemById(String expId2) {
 		return this.itemMap.get(expId2);
-	}
-
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public int getFirstResult() {
-		//
-		return this.firstResult;
-	}
-
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public int getMaxResult() {
-		//
-		return this.firstResult + this.size;// TODO
-	}
-
-	public void setFirstResult(int pg) {
-		this.firstResult = pg;
-	}
-
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public boolean nextPage() {
-		int fr = this.getFirstResult();
-		this.setFirstResult(this.getMaxResult() + fr);
-		return true;
-	}
-
-	/*
-	 * Dec 1, 2012
-	 */
-	@Override
-	public boolean previousPage() {
-		int fr = this.getFirstResult();
-		fr = fr - this.getMaxResult();
-		if (fr < 0) {
-			fr = 0;
-		}
-		this.setFirstResult(fr);
-		return true;
 	}
 
 	/*

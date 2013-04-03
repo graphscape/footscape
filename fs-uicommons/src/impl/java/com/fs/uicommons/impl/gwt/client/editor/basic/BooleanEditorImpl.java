@@ -40,10 +40,14 @@ public class BooleanEditorImpl extends EditorSupport<Boolean> implements Boolean
 
 	/* */
 	@Override
-	public void setData(Boolean dt, boolean dis) {
-		super.setData(dt, dis);
+	public boolean setData(Boolean dt, boolean dis) {
+		boolean rt = super.setData(dt, dis);
+		if(rt){
+			
 		Boolean ck = dt == null ? false : dt;
 		this.element.setChecked(ck);
+		}
+		return rt;
 	}
 
 	public boolean isChecked() {

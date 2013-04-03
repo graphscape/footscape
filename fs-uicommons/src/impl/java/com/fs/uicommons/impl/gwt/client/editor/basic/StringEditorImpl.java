@@ -74,17 +74,24 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 	}
 
 	protected void onChange() {
+
 		String v = this.getText();
+
 		this.setData((v), true);//
 
 	}
 
 	/* */
 	@Override
-	public void setData(String dt, boolean dis) {
-		super.setData(dt, dis);
+	public boolean setData(String dt, boolean dis) {
+		boolean changed = super.setData(dt, dis);
+		if (!changed) {
+			return false;
+		}
 		String txt = dt == null ? "" : dt;
 		this.setText(txt);
+		return changed;
+
 	}
 
 	public String getText() {

@@ -19,7 +19,6 @@ import com.fs.uicore.api.gwt.client.ContainerI;
  */
 public class ExpSearchControl extends ControlSupport2 implements ExpSearchControlI {
 
-
 	/**
 	 * @param name
 	 */
@@ -35,14 +34,14 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	 * .String)
 	 */
 	@Override
-	public void search(UserExpModel ue,boolean showView) {
+	public void search(UserExpModel ue, boolean showView) {
 		ExpSearchViewI es = this.getMainControl().openExpSearch(showView);
 		es.setExpId(ue);//
-		
+
 		new ActionEvent(this, Actions.A_EXPS_SEARCH).dispatch();
 	}
-	
-	protected ExpSearchViewI getView(){
+
+	protected ExpSearchViewI getView() {
 		return this.getMainControl().openExpSearch(false);
 	}
 
@@ -87,30 +86,6 @@ public class ExpSearchControl extends ControlSupport2 implements ExpSearchContro
 	public String getPhrase(boolean b) {
 		// TODO Auto-generated method stub
 		return this.getView().getPhrase(b);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getFirstResult()
-	 */
-	@Override
-	public int getFirstResult() {
-		// TODO Auto-generated method stub
-		return this.getView().getFirstResult();
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI#getMaxResult()
-	 */
-	@Override
-	public int getMaxResult() {
-		// TODO Auto-generated method stub
-		return this.getView().getMaxResult();
 	}
 
 }

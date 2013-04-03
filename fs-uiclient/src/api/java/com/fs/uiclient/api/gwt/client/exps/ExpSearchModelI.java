@@ -17,20 +17,12 @@ public interface ExpSearchModelI {
 	public UserExpModel getExpId(boolean force);
 
 	public String getPhrase(boolean force);
-	
+
 	public void setPhrase(String phrase);
 
 	public ExpItemModel addExpItem(ExpItemModel ei);
 
 	public List<ExpItemModel> getExpItemList();
-
-	public int getFirstResult();
-
-	public int getMaxResult();
-
-	public boolean nextPage();
-
-	public boolean previousPage();
 
 	public void setExpId(UserExpModel expId);// for search parameter
 

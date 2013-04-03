@@ -8,6 +8,7 @@ import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
+import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -47,12 +48,20 @@ public class EditorSupport<T> extends LayoutSupport implements EditorI<T> {
 	public void setData(T d) {
 		this.setData(d, true);//
 	}
-
-	protected void setData(T d, boolean dispatch) {
+	protected boolean setData(T d, boolean dispatch) {
+		
+		boolean same = ObjectUtil.nullSafeEquals(d, this.data);
+		
+		if(same){
+			return false;
+		}
+		
 		this.data = d;
+		
 		if (dispatch) {// TODO
 			new ChangeEvent(this).dispatch();
 		}
+		return true;
 	}
 
 }

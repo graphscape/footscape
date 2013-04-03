@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
+import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
@@ -38,15 +39,15 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 	protected ButtonI search;
 
-	protected ButtonI nextPage;
+	protected ButtonI more;
 
-	protected ButtonI previousPage;
+	// protected ButtonI previousPage;
 
 	protected ViewReferenceI managed;
 
 	protected ExpSearchModelI model;
-	
-	protected LabelI myexp;//TODO view 
+
+	protected LabelI myexp;// TODO view
 
 	/**
 	 * @param ele
@@ -60,7 +61,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 		MapProperties pts = new MapProperties();
 		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
-		this.header = this.factory.create(ListI.class,pts);//
+		this.header = this.factory.create(ListI.class, pts);//
 		this.header.parent(this);
 
 		this.statement = this.factory.create(StringEditorI.class);
@@ -80,7 +81,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 			@Override
 			public void handle(ClickEvent e) {
-				ExpSearchView.this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
+				ExpSearchView.this.onSearch();
 			}
 		});
 		//
@@ -91,30 +92,25 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		//
 		this.list.setName("itemList");// for testing
 		this.list.parent(this);
-		//
-		this.previousPage = this.factory.create(ButtonI.class);
-		this.previousPage.setText(true, "previous.page");
-		this.previousPage.parent(this);
-		this.previousPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+		this.more = this.factory.create(ButtonI.class);
+		this.more.setText(true, "more");
+		this.more.getElement().addClassName("more");
+
+		this.more.parent(this);
+		this.more.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
-				ExpSearchView.this.onPreviousPage();
+				ExpSearchView.this.onMore();
 			}
 		});
 
-		this.nextPage = this.factory.create(ButtonI.class);
-		this.nextPage.setText(true, "next.page");
+	}
 
-		this.nextPage.parent(this);
-		this.nextPage.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
-
-			@Override
-			public void handle(ClickEvent e) {
-				ExpSearchView.this.onNextPage();
-			}
-		});
-
+	protected void onSearch() {
+		this.reset();//
+		this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
 	}
 
 	/**
@@ -125,12 +121,10 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		this.model.setPhrase(phrase);
 	}
 
-	protected void onPreviousPage() {
-		// TODO action
-	}
-
-	protected void onNextPage() {
-		// TODO action
+	protected void onMore() {
+		ActionEvent rt = new ActionEvent(this, Actions.A_EXPS_SEARCH);
+		rt.setPayload("isMore", Boolean.TRUE);
+		rt.dispatch();
 	}
 
 	@Override
@@ -202,12 +196,12 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	public void setExpId(UserExpModel expId) {
 		this.model.setExpId(expId);
 		String text = null;
-		if(expId != null){		
-			text =expId.getBody();
+		if (expId != null) {
+			text = expId.getBody();
 		}
-		
+
 		this.myexp.setText(text);
-		
+
 	}
 
 	/*
@@ -222,25 +216,12 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getFirstResult()
+	 *Apr 3, 2013
 	 */
 	@Override
-	public int getFirstResult() {
-		// TODO Auto-generated method stub
-		return this.model.getFirstResult();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI#getMaxResult()
-	 */
-	@Override
-	public int getMaxResult() {
-		// TODO Auto-generated method stub
-		return this.model.getMaxResult();
+	public int getSize() {
+		// 
+		return this.model.getExpItemList().size();
 	}
 
 }

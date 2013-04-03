@@ -9,6 +9,8 @@ import java.util.List;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -35,17 +37,16 @@ public class ExpSearchMH extends MHSupport {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		ExpSearchControlI c = this.getControl(ExpSearchControlI.class, true);
+		ExpSearchViewI esv = this.getControl(MainControlI.class,true).openExpSearch(false);
 
 		MessageData res = t.getMessage();
 
 		List<ObjectPropertiesData> expL = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"expectations", true);
-		c.reset();
 		for (int i = 0; i < expL.size(); i++) {
 			ObjectPropertiesData oi = expL.get(i);
 			ExpItemModel ei = new ExpItemModel(oi);
-			c.addOrUpdateExpItem(ei);
+			esv.addExpItem(ei);
 		}
 
 	}

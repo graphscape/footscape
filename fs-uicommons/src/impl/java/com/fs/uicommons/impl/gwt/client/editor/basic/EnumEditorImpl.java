@@ -45,9 +45,12 @@ public class EnumEditorImpl extends EditorSupport<String> implements EnumEditorI
 	}
 
 	@Override
-	public void setData(String data, boolean dis) {
-		super.setData(data, dis);
-		this.updateElement();
+	public boolean setData(String data, boolean dis) {
+		boolean rt = super.setData(data, dis);
+		if (rt) {
+			this.updateElement();
+		}
+		return rt;
 	}
 
 	protected void updateElement() {

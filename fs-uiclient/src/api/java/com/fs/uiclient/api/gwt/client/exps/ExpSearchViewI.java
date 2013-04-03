@@ -22,15 +22,7 @@ public interface ExpSearchViewI extends ViewI {
 	public void setExpId(UserExpModel ue);
 
 	public String getPhrase(boolean b);
-
-	/**
-	 * @return
-	 */
-	public int getFirstResult();
-
-	/**
-	 * @return
-	 */
-	public int getMaxResult();
+	
+	public int getSize();
 
 }

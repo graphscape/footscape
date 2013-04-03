@@ -7,6 +7,7 @@ package com.fs.expector.gridservice.impl.handler.exps;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
@@ -28,6 +29,18 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class ExpSearchHandler extends ExpectorTMREHSupport {
+	
+	private int defaultSearchSlop = 3;
+	
+
+	/*
+	 *Apr 3, 2013
+	 */
+	@Override
+	public void configure(Configuration cfg) {
+		super.configure(cfg);
+		this.defaultSearchSlop = cfg.getPropertyAsInt("defaultSearchSlop", 3);
+	}
 
 	// query the connected exp from specified exp by exp id.
 	@Handle("connected")
@@ -55,7 +68,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		Integer from = (Integer) req.getPayload("firstResult", true);
 		Integer max = (Integer) req.getPayload("maxResult", true);
 		boolean includeMe = req.getBoolean("includeMine", true);
-		int slop = (Integer) req.getPayload("slop", 0);
+		int slop = (Integer) req.getPayload("slop", this.defaultSearchSlop);
 
 		String expId = (String) req.getPayload("expId");// may null
 
@@ -70,7 +83,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);
 		}
 		qo.propertyMatch(Expectation.BODY, phrase, slop);
-
+		qo.sort(NodeI.PK_TIMESTAMP, true);
 		NodeQueryResultI<Expectation> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
 
@@ -110,4 +123,5 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
 		res.setPayload("expectation", exp.getTarget());
 	}
+
 }
