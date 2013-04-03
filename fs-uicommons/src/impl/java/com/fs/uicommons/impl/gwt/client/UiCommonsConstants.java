@@ -9,5 +9,5 @@ package com.fs.uicommons.impl.gwt.client;
  *
  */
 public class UiCommonsConstants {
-	public static final int MENU_HIDE_TIMEOUT_MS = 500;
+	public static final int MENU_HIDE_TIMEOUT_MS = 100;
 }

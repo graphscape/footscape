@@ -20,7 +20,7 @@ public class EventGd extends MessageGd implements GridedDataI {
 
 	public static final String HK_TYPE = "_type";
 
-	public static final String HK_ID = "_id";
+	public static final String HK_ID = MessageI.HK_ID;
 
 	public static final String HK_ORIGIN_EVENT_ID = "_originEventId";
 

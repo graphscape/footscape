@@ -9,7 +9,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- * 
+ * @deprecated use view.
  */
 public interface UserExpListControlI extends ControlI {
 

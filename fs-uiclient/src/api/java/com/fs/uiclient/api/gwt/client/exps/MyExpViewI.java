@@ -15,14 +15,17 @@ import com.fs.uicore.api.gwt.client.data.basic.DateData;
  */
 public interface MyExpViewI extends ViewI {
 
-	//TODO myexp model as parameter
+	// TODO myexp model as parameter
 	public void setMyExp(String body);
-	
+
 	public DateData getLatestMessageTimestamp();
+
 	/**
 	 * Mar 6, 2013
 	 */
 	public void addOrUpdateMessage(ExpMessage msg);
 
 	public void addOrUpdateConnected(ExpConnect exp);
+
+	public void noMore();
 }

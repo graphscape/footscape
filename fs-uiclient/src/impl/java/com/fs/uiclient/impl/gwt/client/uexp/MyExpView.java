@@ -46,6 +46,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected ListI middle;
 
+	protected ListI middleLeft;
+
+	protected ListI middleRight;
+
+	protected ButtonI more;
 	// message msglist
 	protected ListI msglist;
 
@@ -69,60 +74,24 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		this.expId = expId;
 		this.outer = this.factory.create(ListI.class);
 		this.outer.parent(this);
-
-		this.title = this.factory.create(LabelI.class);
-		this.title.parent(this.outer);
-
-		// msg input
-		{
-			UiPropertiesI<Object> pts = new MapProperties<Object>();
-			pts.setProperty(StringEditorI.PK_TEXAREA, true);
-			this.statement = this.factory.create(StringEditorI.class, pts);
-			this.statement.parent(this);
-			this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
+		{// outer/title
+			this.title = this.factory.create(LabelI.class);
+			this.title.parent(this.outer);
+		}
+		{ // close button
+			final ButtonI close = this.factory.create(ButtonI.class);
+			close.setText(true, "destroy");
+			close.parent(this.outer);
+			close.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 				@Override
-				public void handle(ChangeEvent t) {
-
-				}
-			});
-			this.statement.addHandler(KeyUpEvent.TYPE, new EventHandlerI<KeyUpEvent>() {
-
-				@Override
-				public void handle(KeyUpEvent t) {
-					if (!t.isEnter()) {
-						return;
-					}
-					if (!t.isCtlKey()) {
-						return;
-					}
-					MyExpView.this.onSendClick();
+				public void handle(ClickEvent t) {
+					MyExpView.this.onDestroyClick();
 				}
 			});
 		}
-		// send button
-		final ButtonI ok = this.factory.create(ButtonI.class);
-		ok.setText(true, "send");
-		ok.parent(this);
-		ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
-
-			@Override
-			public void handle(ClickEvent t) {
-				MyExpView.this.onSendClick();
-			}
-		});
-		// close button
-		final ButtonI close = this.factory.create(ButtonI.class);
-		close.setText(true, "destroy");
-		close.parent(this);
-		close.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
-
-			@Override
-			public void handle(ClickEvent t) {
-				MyExpView.this.onDestroyClick();
-			}
-		});
-		{
+		// middle
+		{// middle
 			UiPropertiesI<Object> pts = new MapProperties<Object>();
 			pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
 
@@ -130,48 +99,118 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			this.middle.parent(this.outer);
 			this.middle.getElement().addClassName("myexp-middle");
 		}
+		{// outer/middleLeft
+			{// middleLeft
+				UiPropertiesI<Object> pts = new MapProperties<Object>();
+				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
+
+				this.middleLeft = this.factory.create(ListI.class, pts);
+				this.middleLeft.parent(this.middle);
+				this.middleLeft.getElement().addClassName("myexp-middle-left");
+			}
+			{// middleLeft/child
+				// more button
+				more = this.factory.create(ButtonI.class);
+				more.setText(true, "more");
+				more.getElement().addClassName("more");
+				more.parent(this.middleLeft);
+				more.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+					@Override
+					public void handle(ClickEvent t) {
+						MyExpView.this.onMoreClick();
+					}
+				});
+			}
+			{// middleLeft/messagelist
+				UiPropertiesI<Object> pts = new MapProperties<Object>();
+				pts.setProperty(ListI.PK_COMPARATOR, new Comparator<ExpMessageView>() {
+
+					@Override
+					public int compare(ExpMessageView o1, ExpMessageView o2) {
+						//
+						return (int) (o1.getExpMessage().getTimeStamp().getValue() - o2.getExpMessage()
+								.getTimeStamp().getValue());
+					}
+				});
+
+				this.msglist = this.factory.create(ListI.class, pts);
+				this.msglist.parent(this.middleLeft);
+				this.msglist.getElement().addClassName("myexp-messagelist");
+			}
+			// outer/middleLeft/msg input
+			{
+				UiPropertiesI<Object> pts = new MapProperties<Object>();
+				pts.setProperty(StringEditorI.PK_TEXAREA, true);
+				this.statement = this.factory.create(StringEditorI.class, pts);
+				this.statement.parent(this.middleLeft);
+				this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
+
+					@Override
+					public void handle(ChangeEvent t) {
+
+					}
+				});
+				this.statement.addHandler(KeyUpEvent.TYPE, new EventHandlerI<KeyUpEvent>() {
+
+					@Override
+					public void handle(KeyUpEvent t) {
+						if (!t.isEnter()) {
+							return;
+						}
+						if (!t.isCtlKey()) {
+							return;
+						}
+						MyExpView.this.onSendClick();
+					}
+				});
+			}
+			{
+				// send button
+				final ButtonI ok = this.factory.create(ButtonI.class);
+				ok.setText(true, "send");
+				ok.parent(this.middleLeft);
+				ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+					@Override
+					public void handle(ClickEvent t) {
+						MyExpView.this.onSendClick();
+					}
+				});
+			}
+		}
 		{
-			UiPropertiesI<Object> pts = new MapProperties<Object>();
-			pts.setProperty(ListI.PK_COMPARATOR, new Comparator<ExpMessageView>() {
+			{// middleRight
+				UiPropertiesI<Object> pts = new MapProperties<Object>();
+				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
-				@Override
-				public int compare(ExpMessageView o1, ExpMessageView o2) {
-					//
-					return (int) (o1.getExpMessage().getTimeStamp().getValue() - o2.getExpMessage()
-							.getTimeStamp().getValue());
-				}
-			});
+				this.middleLeft = this.factory.create(ListI.class, pts);
+				this.middleLeft.parent(this.middle);
+				this.middleLeft.getElement().addClassName("myexp-middle-left");
+			}
+			{
 
-			this.msglist = this.factory.create(ListI.class, pts);
-			this.msglist.parent(this.middle);
-			this.msglist.getElement().addClassName("myexp-messagelist");
+				// 
+				this.connected = this.factory.create(ListI.class);
+				this.connected.parent(this.middle);
+				this.connected.getElement().addClassName("myexp-connected");
+			}
+
 		}
 		this.map = new HashMap<String, ExpMessage>();
-		// older button
-		final ButtonI older = this.factory.create(ButtonI.class);
-		older.setText(true, "/action/myexp/older-msg");
-		older.parent(this.middle);
-		older.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
-			@Override
-			public void handle(ClickEvent t) {
-				MyExpView.this.onOlderMsgClick();
-			}
-		});
-		// older button end
-		this.connected = this.factory.create(ListI.class);
-		this.connected.parent(this.middle);
-		this.connected.getElement().addClassName("myexp-connected");
 		this.map2 = new HashMap<String, ExpConnect>();
 
 	}
 
-	protected void onOlderMsgClick() {
+	protected void onMoreClick() {
 		MsgWrapper req = new MsgWrapper("expm/search");
+		req.setHeader("isForMore", "true");
 		req.setPayload("accountId2", this.getAccountId());
 		req.setPayload("expId2", this.expId);
 		req.setPayload("timestamp2", this.latestMessageTimestamp);
 		req.setPayload("limit", UiClientConstants.MESSAGE_LIMIT);
+		
 		this.getClient(true).getEndpoint().sendMessage(req);
 	}
 
@@ -181,10 +220,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	// close
 	protected void onDestroyClick() {
-		if(!Window.confirm("Do you confirm to destroy this expectation?")){
+		if (!Window.confirm("Do you confirm to destroy this expectation?")) {
 			return;
 		}
-		
+
 		MsgWrapper req = new MsgWrapper("/expe/close");
 		req.setPayload("expId", this.expId);
 		this.getClient(true).getEndpoint().sendMessage(req);//
@@ -262,5 +301,13 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	public DateData getLatestMessageTimestamp() {
 		//
 		return this.latestMessageTimestamp;
+	}
+
+	/*
+	 *Apr 3, 2013
+	 */
+	@Override
+	public void noMore() {
+		this.more.disable(true);
 	}
 }

@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
@@ -25,7 +26,7 @@ public class MessageCacheImpl implements MessageCacheI {
 	private static class Entry {
 
 		public Entry(MessageData md) {
-			this.data = data;
+			this.data = md;
 			this.created = System.currentTimeMillis();
 		}
 
@@ -38,7 +39,7 @@ public class MessageCacheImpl implements MessageCacheI {
 		}
 	}
 
-	private int timeout = 120 * 1000;
+	private int timeout = UiCoreConstants.TIME_OUT_REQUEST_CACHE;
 
 	private Map<String, Entry> entryMap;
 

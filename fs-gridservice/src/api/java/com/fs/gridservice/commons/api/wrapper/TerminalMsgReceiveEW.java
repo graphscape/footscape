@@ -26,23 +26,23 @@ public class TerminalMsgReceiveEW extends TerminalMsgEW {
 
 	}
 
-	public static TerminalMsgReceiveEW valueOf(Path path,String tId, String cid,MessageI msg) {
-
-		TerminalMsgReceiveEW rt = new TerminalMsgReceiveEW(new EventGd(TYPE, path),tId,cid);
+	public static TerminalMsgReceiveEW valueOf(Path path, String tId, String cid, MessageI msg) {
+		String mid = msg.getId();
+		TerminalMsgReceiveEW rt = new TerminalMsgReceiveEW(new EventGd(TYPE, path, mid), tId, cid);
 		rt.setMessage(msg);
 		return rt;
 	}
 
-	//For wrapper
-	public TerminalMsgReceiveEW(EventGd target){
+	// For wrapper
+	public TerminalMsgReceiveEW(EventGd target) {
 		super(target);
 	}
-	
+
 	/**
 	 * @param target
 	 */
-	protected TerminalMsgReceiveEW(EventGd target,String tId,String cid) {
-		super(target,tId,cid);
+	protected TerminalMsgReceiveEW(EventGd target, String tId, String cid) {
+		super(target, tId, cid);
 	}
 
 }
