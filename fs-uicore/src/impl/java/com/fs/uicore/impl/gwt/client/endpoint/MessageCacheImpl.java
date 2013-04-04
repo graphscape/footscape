@@ -16,13 +16,15 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
 import com.fs.uicore.api.gwt.client.event.ScheduleEvent;
+import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
+import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
  * @author wu
  * 
  */
-public class MessageCacheImpl implements MessageCacheI {
+public class MessageCacheImpl extends UiObjectSupport implements MessageCacheI {
 	private static class Entry {
 
 		public Entry(MessageData md) {
@@ -37,6 +39,15 @@ public class MessageCacheImpl implements MessageCacheI {
 		public boolean isTimeout(long timeout) {
 			return System.currentTimeMillis() > this.created + timeout;
 		}
+
+		/*
+		 *Apr 4, 2013
+		 */
+		@Override
+		public String toString() {
+			return "created:"+created+",data:"+this.data;
+		}
+		
 	}
 
 	private int timeout = UiCoreConstants.TIME_OUT_REQUEST_CACHE;
@@ -48,6 +59,7 @@ public class MessageCacheImpl implements MessageCacheI {
 	private SchedulerI scheduler;
 
 	public MessageCacheImpl(ContainerI c) {
+		super(c);
 		this.entryMap = new HashMap<String, Entry>();
 		this.container = c;
 		this.scheduler = c.get(SchedulerI.class, true);
@@ -84,8 +96,24 @@ public class MessageCacheImpl implements MessageCacheI {
 		}
 
 		for (String id : timeoutIdSet) {
-			this.entryMap.remove(id);
+			this.removeMessage(id, true);
 		}
+	}
+
+	@Override
+	public MessageData removeMessage(String id) {
+		return this.removeMessage(id, true);
+	}
+
+	public MessageData removeMessage(String id, boolean dispatch) {
+
+		Entry en = this.entryMap.remove(id);
+		MessageData rt = en == null ? null : en.data;
+		if (dispatch) {
+
+			new StateChangeEvent(this).dispatch();
+		}
+		return rt;
 	}
 
 	/*
@@ -94,6 +122,7 @@ public class MessageCacheImpl implements MessageCacheI {
 	@Override
 	public void addMessage(MessageData md) {
 		this.entryMap.put(md.getId(), new Entry(md));
+		new StateChangeEvent(this).dispatch();
 	}
 
 	/*
@@ -115,6 +144,14 @@ public class MessageCacheImpl implements MessageCacheI {
 			return null;
 		}
 		return en.data;
+	}
+
+	/*
+	 * Apr 4, 2013
+	 */
+	@Override
+	public int size() {
+		return this.entryMap.size();
 	}
 
 }

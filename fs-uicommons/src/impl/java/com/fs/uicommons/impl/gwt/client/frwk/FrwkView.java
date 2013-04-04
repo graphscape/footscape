@@ -15,8 +15,8 @@ import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicommons.impl.gwt.client.frwk.header.HeaderView;
+import com.fs.uicommons.impl.gwt.client.frwk.other.EndpointBusyIndicator;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
@@ -74,6 +74,9 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 
 		BodyView bv = new BodyView(this.container);
 		bv.parent(this);
+		//
+		EndpointBusyIndicator ebi = new EndpointBusyIndicator(this.container);
+		ebi.parent(this);
 	}
 
 	private Element createTDForPosition(String position, TRWrapper tr) {
@@ -103,14 +106,6 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 
-		String pos = null;
-		if (cw instanceof HeaderView) {
-			pos = "top";
-		} else if (cw instanceof BodyView) {
-			pos = "body";
-		} else {
-			throw new UiException("not supported child:" + cw);
-		}
 		Element td = this.managerTdElements.get("top");
 		DOM.appendChild(td, cw.getElement());
 	}

@@ -18,7 +18,7 @@ public interface WebSocketGoI extends GridedObjectI {
 
 	public static final Path P_CLIENT_IS_READY = Path.valueOf("/control/status/clientIsReady");
 
-	public void sendReady(String termId, String clientId);
+	public void sendReady(String sourceMsageId, String termId, String clientId);
 
 	public void sendMessage(MessageI msg);
 

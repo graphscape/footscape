@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public class ModelEvent extends LocalEvent {
 	public static Type<ModelEvent> TYPE = new Type<ModelEvent>("model");

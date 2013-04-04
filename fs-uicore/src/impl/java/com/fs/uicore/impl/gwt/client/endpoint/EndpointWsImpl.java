@@ -11,17 +11,21 @@ import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointBusyEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointFreeEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointUnbondEvent;
+import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
 import com.fs.uicore.api.gwt.client.html5.ErrorJSO;
 import com.fs.uicore.api.gwt.client.html5.EventJSO;
 import com.fs.uicore.api.gwt.client.html5.ReadyState;
@@ -59,12 +63,23 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	private MessageCacheI messageCache;
 
+	private EndpointFreeEvent lastFreeEvent;
+
+	private EndpointBusyEvent lastBusyEvent;
+
 	/**
 	 * @param md
 	 */
 	public EndpointWsImpl(ContainerI c, MessageDispatcherI md) {
 		super(c);
 		this.messageCache = new MessageCacheImpl(c);
+		this.messageCache.addHandler(new EventHandlerI<StateChangeEvent>() {
+
+			@Override
+			public void handle(StateChangeEvent t) {
+				EndpointWsImpl.this.onMessageCacheUpdate(t);
+			}
+		});
 		this.addHandler(
 				EndpointMessageEvent.TYPE.getAsPath().concat(
 						Path.valueOf("/control/status/serverIsReady", '/')),
@@ -82,6 +97,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 				EndpointWsImpl.this.onBindingSuccess(t);
 			}
 		};
+		// TODO move to SPI active method.
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), bindingMH);
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/binding/success"), bindingMH);
 
@@ -94,6 +110,28 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		};
 		this.addHandler(Path.valueOf("/endpoint/message/terminal/unbinding/success"), unBindingMH);
 
+	}
+
+	/**
+	 * Apr 4, 2013
+	 */
+	protected void onMessageCacheUpdate(StateChangeEvent t) {
+
+		if (this.messageCache.size() == 0) {
+			this.lastBusyEvent = null;
+			if (this.lastFreeEvent == null) {
+				this.lastFreeEvent = new EndpointFreeEvent(this);
+				this.lastFreeEvent.dispatch();
+			}
+			// else ignore
+		} else {
+
+			this.lastFreeEvent = null;
+			if (this.lastBusyEvent == null) {
+				this.lastBusyEvent = new EndpointBusyEvent(this);
+				this.lastBusyEvent.dispatch();
+			}
+		}
 	}
 
 	/*
@@ -207,6 +245,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.messageCache.addMessage(req);// for later reference
+
 		this.socket.send(jsS);
 
 	}
@@ -241,7 +280,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		MessageData md = (MessageData) this.messageCodec.decode(jsonV);
 		String sid = md.getSourceId();
 		if (sid != null) {
-			MessageData req = this.messageCache.getMessage(sid);
+			MessageData req = this.messageCache.removeMessage(sid);
 			if (req == null) {
 				LOG.info("request not found,may timeout or the source message is from other side,message:"
 						+ md);

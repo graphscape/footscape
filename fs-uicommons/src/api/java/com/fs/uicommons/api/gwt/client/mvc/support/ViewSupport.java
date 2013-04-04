@@ -7,9 +7,12 @@ import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
+import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -49,6 +52,18 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	protected void beforeActionEvent(ActionEvent ae) {
 
+	}
+
+	protected EndPointI getEndpoint() {
+		return this.getClient(true).getEndpoint();
+	}
+
+	protected void sendMessage(MsgWrapper req) {
+		this.getEndpoint().sendMessage(req);
+	}
+
+	protected void sendMessage(MessageData req) {
+		this.getEndpoint().sendMessage(req);
 	}
 
 	/*

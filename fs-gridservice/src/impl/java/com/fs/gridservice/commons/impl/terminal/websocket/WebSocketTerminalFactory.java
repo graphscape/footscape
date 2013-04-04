@@ -97,7 +97,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 		Path path = msg.getPath();
 		WebSocketGoI wso = getWso(ws);
 		if (path.equals(WebSocketGoI.P_CLIENT_IS_READY)) {
-			this.onClientIsReadyMessage(wso);
+			this.onClientIsReadyMessage(msg,wso);
 		} else {
 			this.onAppMessage(wso, path, msg);
 		}
@@ -107,6 +107,8 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 
 		String tId = wso.getTerminalId(true);// assign the ws id.
 		String cid = wso.getClientId(true);
+		//NOTE,below is a new message,which payloaded the msg as nested.
+		//NOTE,the two message with same id.
 		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId, cid, msg);
 
 		// eventWrapper->target:EventGd->payload:Message
@@ -120,7 +122,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 
 	}
 
-	private void onClientIsReadyMessage(WebSocketGoI wso) {
+	private void onClientIsReadyMessage(MessageI msg,WebSocketGoI wso) {
 
 		// String wsoId = wso.getId();
 
@@ -135,7 +137,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 		String cid = cg.getId();
 		tm.bindingClient(t.getId(), cid);//
 
-		wso.sendReady(t.getId(), cid);//
+		wso.sendReady(msg.getId(), t.getId(), cid);//
 	}
 
 	/*

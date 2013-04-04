@@ -24,7 +24,6 @@ public class StateChangeEvent extends Event {
 
 	public StateChangeEvent(Type<? extends StateChangeEvent> type, UiObjectI src) {
 		super(type, src);
-		// TODO Auto-generated constructor stub
 	}
 
 	public static StateChangeEvent dispatch(UiObjectI src) {
