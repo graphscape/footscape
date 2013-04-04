@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
+import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointBondEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointBusyEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
@@ -140,10 +141,29 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	@Override
 	protected void doAttach() {
 		super.doAttach();
+
 		new EndpointKeeper(this).start();
 		this.messageCache.start();
+		this.getClient(true).addHandler(ClientClosingEvent.TYPE, new EventHandlerI<ClientClosingEvent>() {
+
+			@Override
+			public void handle(ClientClosingEvent t) {
+				EndpointWsImpl.this.onClientClosing(t);
+			}
+		});
 	}
 
+	/**
+	 *Apr 4, 2013
+	 */
+	protected void onClientClosing(ClientClosingEvent t) {
+		this.close();
+	}
+
+	@Override
+	public void close(){
+		this.socket.close();
+	}
 	protected void onServerIsReady(MsgWrapper e) {
 		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);
@@ -259,7 +279,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	}
 
 	protected void onWsClose(EventJSO evt) {
-		LOG.info("onWsClose,evt:" + evt.toLongString());
+		LOG.info("onWsClose,evt:" + evt);
 		this.serverIsReady = false;
 		this.clientId = null;
 		this.terminalId = null;//

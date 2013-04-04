@@ -3,9 +3,6 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -21,7 +18,9 @@ import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtClosingHandler;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
@@ -30,6 +29,8 @@ import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 import com.fs.uicore.api.gwt.client.window.UiWindow;
 import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
 
 /**
  * @author wu TOTO rename to UiCoreI and impl.
@@ -62,10 +63,18 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		if (wsP != null) {
 			this.setParameter(UiClientI.RK_WS_PORT, wsP);
 		}
-		
+
 		if (wssP != null) {
 			this.setParameter(UiClientI.RK_WSS_PORT, wssP);
 		}
+		Window.addWindowClosingHandler(new GwtClosingHandler() {
+
+			@Override
+			protected void handleInternal(ClosingEvent evt) {
+				//
+				new ClientClosingEvent(UiClientImpl.this).dispatch();
+			}
+		});
 	}
 
 	@Override

@@ -16,7 +16,9 @@ import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.client.ClientManagerI;
 import com.fs.gridservice.commons.api.data.ClientGd;
 import com.fs.gridservice.commons.api.data.EventGd;
+import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.support.FacadeAwareConfigurableSupport;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
@@ -75,6 +77,60 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 
 	}
 
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public void onException(WebSocketI ws, Throwable t) {
+		//
+		LOG.error("exception got for ws:" + ws.getId(), t);
+	}
+
+	/*
+	 * Dec 15, 2012
+	 */
+	@Override
+	public void onClose(WebSocketI ws, int statusCode, String reason) {
+		WebSocketGoI wso = this.getWso(ws);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("onClose,wsoId:" + wso.getId() + ",wsId:" + ws.getId());
+		}
+
+		// server is ready means the terminal object is created and bind to this
+		// WS.
+		// and also the Client object is created and bind to this terminal.
+		// TODO move to a common place for exit logic
+
+		String tid = wso.getTerminalId(false);
+		if (tid == null) {//
+			LOG.warn("ws closed,but no terminal is bound with.");
+			return;
+		}
+
+		TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
+		TerminalGd t = tm.removeEntity(tid);
+		String cid = t.getClientId(false);
+		if (cid == null) {
+			LOG.warn("terminal:" + tid + " destroyed, but no client bound with.");
+		} else {
+			ClientManagerI cm = this.facade.getEntityManager(ClientManagerI.class);
+
+			ClientGd cg = cm.removeEntity(cid);
+		}
+		String sid = t.getSessionId(false);
+		if (sid == null) {
+			LOG.warn("terminal:" + tid + " destroyed,but no session bound with.");
+		} else {
+			SessionManagerI sm = this.facade.getEntityManager(SessionManagerI.class);
+			SessionGd sg = sm.removeEntity(sid);
+
+		}
+
+		//
+
+	}
+
 	public static void setWso(WebSocketI ws, WebSocketGoI wso) {
 		ws.setProperty(PK_WSGO, wso);
 	}
@@ -97,7 +153,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 		Path path = msg.getPath();
 		WebSocketGoI wso = getWso(ws);
 		if (path.equals(WebSocketGoI.P_CLIENT_IS_READY)) {
-			this.onClientIsReadyMessage(msg,wso);
+			this.onClientIsReadyMessage(msg, wso);
 		} else {
 			this.onAppMessage(wso, path, msg);
 		}
@@ -107,8 +163,8 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 
 		String tId = wso.getTerminalId(true);// assign the ws id.
 		String cid = wso.getClientId(true);
-		//NOTE,below is a new message,which payloaded the msg as nested.
-		//NOTE,the two message with same id.
+		// NOTE,below is a new message,which payloaded the msg as nested.
+		// NOTE,the two message with same id.
 		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(path, tId, cid, msg);
 
 		// eventWrapper->target:EventGd->payload:Message
@@ -122,7 +178,7 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 
 	}
 
-	private void onClientIsReadyMessage(MessageI msg,WebSocketGoI wso) {
+	private void onClientIsReadyMessage(MessageI msg, WebSocketGoI wso) {
 
 		// String wsoId = wso.getId();
 
@@ -138,24 +194,6 @@ public class WebSocketTerminalFactory extends FacadeAwareConfigurableSupport imp
 		tm.bindingClient(t.getId(), cid);//
 
 		wso.sendReady(msg.getId(), t.getId(), cid);//
-	}
-
-	/*
-	 * Dec 15, 2012
-	 */
-	@Override
-	public void onException(WebSocketI ws, Throwable t) {
-		//
-
-	}
-
-	/*
-	 * Dec 15, 2012
-	 */
-	@Override
-	public void onClose(WebSocketI ws, int statusCode, String reason) {
-		//
-
 	}
 
 }

@@ -22,6 +22,8 @@ public interface EndPointI extends UiObjectI {
 	public void sendMessage(MsgWrapper req);
 
 	public void open();
+	
+	public void close();
 
 	public boolean isOpen();
 

@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.WindowI;
 import com.fs.uicore.api.gwt.client.commons.Size;
 import com.fs.uicore.api.gwt.client.event.SizeChangeEvent;
-import com.fs.uicore.api.gwt.client.event.WindowClosingEvent;
+import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
 import com.fs.uicore.api.gwt.client.support.StatefulUiObjectSupport;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.Window.ClosingHandler;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public class WindowImpl extends StatefulUiObjectSupport implements WindowI {
 
@@ -31,7 +31,7 @@ public class WindowImpl extends StatefulUiObjectSupport implements WindowI {
 	 */
 	protected void onGwtClosing(ClosingEvent arg0) {
 
-		new WindowClosingEvent(this).dispatch();
+		//new ClientClosingEvent(this).dispatch();
 
 	}
 

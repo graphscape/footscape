@@ -4,9 +4,11 @@
  */
 package com.fs.commons.api.util.benchmark;
 
+import com.fs.commons.api.lang.FsException;
+
 /**
  * @author wu
- *
+ * 
  */
 public class TimeMeasure {
 
@@ -16,7 +18,9 @@ public class TimeMeasure {
 	public long end;
 
 	public long avg() {
-
+		if (this.amount == 0) {
+			return Long.MAX_VALUE;
+		}
 		return this.total() / this.amount;
 	}
 
@@ -32,7 +36,7 @@ public class TimeMeasure {
 	}
 
 	public String toString() {
-		return "metric," + ",\tavg:" + this.avg() + ",\tname:" + name + ",\tstart:" + start + ",\tend:"
-				+ end + ",\tamount:" + amount + ",\ttotal:" + this.total();
+		return "metric," + ",\tavg:" + this.avg() + ",\tname:" + name + ",\tstart:" + start + ",\tend:" + end
+				+ ",\tamount:" + amount + ",\ttotal:" + this.total();
 	}
 }

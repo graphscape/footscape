@@ -116,6 +116,11 @@ public final class WebSocketJSO extends AbstractJSO {
 		}
 	}-*/;
 
+	public native void close()
+	/*-{
+		this.close();
+	}-*/;
+
 	public native void send(String msg)
 	/*-{
 		this.send(msg);
