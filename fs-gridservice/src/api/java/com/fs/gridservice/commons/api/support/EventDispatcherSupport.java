@@ -291,12 +291,14 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		}
 	}
 
-	public static final String HK_RESPONSE_HANDLER_ID = "response_handler_id";
+	// public static final String HK_RESPONSE_HANDLER_ID =
+	// "response_handler_id";
 
 	protected ResponseI handleInSlave(MessageI req) {
 
 		ResponseI rt = this.engine.service(req);
-		rt.setHeader(HK_RESPONSE_HANDLER_ID, req.getHeader(HK_RESPONSE_HANDLER_ID));
+		// rt.setHeader(HK_RESPONSE_HANDLER_ID,
+		// req.getHeader(HK_RESPONSE_HANDLER_ID));
 		return rt;
 	}
 
@@ -308,13 +310,17 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		if (eis.hasError()) {
 			LOG.error("response contains error for request:" + req, res);
 		}
-		if (req.isSilence()) {
+		if (req.isSilence()) {// not response required by client.
 			return;
 		}
 
+		// response path is depended on the success or failure
 		Path path = ep.getSubPath(eis.hasError() ? "failure" : "success");
-
+		// response path
 		res.setHeader(MessageI.HK_PATH, path.toString());
+		// translate error
+		
+		// send response to terminal
 		String ra = req.getResponseAddress();
 		if (ra == null) {//
 			LOG.warn("no response address for request:" + req);

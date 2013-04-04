@@ -9,10 +9,13 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
+import com.fs.commons.api.service.HandlerI;
+import com.fs.commons.api.support.CollectionHandler;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridedObjectManagerI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
 import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
+import com.fs.gridservice.commons.api.terminal.MessageSendingContext;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 
@@ -23,6 +26,8 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> implements TerminalManagerI {
 
 	public static final String N_WEBSOCKET_GOMANAGER = "webSocketGoManager";
+
+	public CollectionHandler<MessageSendingContext> beforeMessageSendingHandlers = new CollectionHandler<MessageSendingContext>();
 
 	/**
 	 * @param name
@@ -71,6 +76,9 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 		String wsoId = tg.getAddress();
 		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		WebSocketGoI wso = gom.getGridedObject(wsoId, true);
+		
+		MessageSendingContext msc = new MessageSendingContext(msg,tg,this.facade);
+		this.beforeMessageSendingHandlers.handle(msc);
 		wso.sendMessage(msg);//
 	}
 
@@ -188,12 +196,20 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 	}
 
 	/*
-	 *Jan 2, 2013
+	 * Jan 2, 2013
 	 */
 	@Override
 	public void unBindingSession(String tid) {
-		// 
+		//
 		this.bindingSession(tid, null);
+	}
+
+	/*
+	 * Apr 4, 2013
+	 */
+	@Override
+	public void addBeforeMessageSendingHandler(HandlerI<MessageSendingContext> handler) {
+		this.beforeMessageSendingHandlers.addHandler(handler);
 	}
 
 }

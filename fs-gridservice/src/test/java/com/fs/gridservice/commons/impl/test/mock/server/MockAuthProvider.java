@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.commons.impl.test.mock.server;
 
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
 
@@ -16,10 +17,8 @@ public class MockAuthProvider implements AuthProviderI {
 	 * Dec 29, 2012
 	 */
 	@Override
-	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
-		//
-		
-		return credential;
+	public void auth(PropertiesI<Object> credential, ErrorInfos eis, PropertiesI<Object> ok) {
+
 	}
 
 }

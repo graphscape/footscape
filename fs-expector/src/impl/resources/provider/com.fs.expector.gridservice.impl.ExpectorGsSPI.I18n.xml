@@ -24,6 +24,12 @@
 	<signup value="Signup" />
 	<search value="Search" />
 	<savingAccount value="Remember Account" />
+	<!-- Error Code -->
+	<property name="/error/unknow" value="Unkow Error"/>
+	<property name="/error/login/failure" value="Login Failed" />
+	<property name="/error/login/missing/email" value="Please input email" />
+	<property name="/error/login/missing/password" value="Please input password" />
+	<property name="/error/login/missing/nick" value="Please input nick" />
 	
 	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />

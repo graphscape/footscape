@@ -6,7 +6,7 @@ package com.fs.expector.gridservice.impl;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.ObjectUtil;
-import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.expector.dataservice.api.wrapper.Account;
@@ -33,10 +33,8 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 	}
 
 	@Override
-	public PropertiesI<Object> auth(PropertiesI<Object> credential) {
-
+	public void auth(PropertiesI<Object> credential,ErrorInfos eis,PropertiesI<Object> rt) {
 		//
-		PropertiesI<Object> rt = new MapProperties<Object>();
 		String type = (String) credential.getProperty("type", true);// anonymous/registered
 
 		String accountId = null;
@@ -49,8 +47,8 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 			AccountInfo ai = this.factory.getDataService().getNewest(AccountInfo.class, AccountInfo.EMAIL,
 					email, false);
 			if (ai == null) {// not found account by email.
-
-				return null;
+				eis.addError("/error/login/failure");
+				return;
 			}
 			accountId = ai.getAccountId();
 		} else if (Account.TYPE_EXTERNAL.equals(type)) {
@@ -80,19 +78,20 @@ public class AuthProviderImpl extends ConfigurableSupport implements AuthProvide
 
 		if (acc == null) {// no this account or password,auth failed,
 							// see:TerminalAuthHandler in grid service.
-			return null;
+			eis.addError("/error/login/failure");
+			return ;
 		}
 
 		if (!ObjectUtil.nullSafeEquals(acc.getPassword(), password)) {// password
 																		// error
-			return null;
+			eis.addError("/error/login/failure");
+			return;
 		}
 
 		String nick = acc.getNick();
 		rt.setProperty("isAnonymous", "anonymous".equals(acc.getType()));
 		rt.setProperty(SessionGd.ACCID, accountId);
 		rt.setProperty("nick", nick);
-		return rt;
 	}
 
 }

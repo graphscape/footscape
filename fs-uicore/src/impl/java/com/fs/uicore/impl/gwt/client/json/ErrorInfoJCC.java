@@ -20,6 +20,8 @@ import com.fs.uicore.impl.gwt.client.support.PropertiesJCCSupport;
  */
 public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 
+	public static final String ID = "id";
+	
 	public static final String CODE = "code";
 
 	public static final String MESSAGE = "message";
@@ -35,11 +37,12 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	/* */
 	@Override
 	protected ErrorInfoData convert(ObjectPropertiesData l) {
+		String id = (String) l.getProperty(ID);
 		String code = (String) l.getProperty(CODE);
 		String message = (String) l.getProperty(MESSAGE);
 		List dl = (List) l.getProperty(DETAIL);
 
-		ErrorInfoData rt = new ErrorInfoData(code, message);// TODO
+		ErrorInfoData rt = new ErrorInfoData(code, message,id);// TODO
 															// null
 		for (int i = 0; i < dl.size(); i++) {
 			String sd = (String) dl.get(i);
@@ -54,8 +57,9 @@ public class ErrorInfoJCC extends PropertiesJCCSupport<ErrorInfoData> {
 	@Override
 	protected ObjectPropertiesData convert(ErrorInfoData t) {
 		ObjectPropertiesData rt = new ObjectPropertiesData();
-		rt.setProperty(MESSAGE, (t.getMessage()));
+		rt.setProperty(ID, t.getId());
 		rt.setProperty(CODE, (t.getCode()));
+		rt.setProperty(MESSAGE, (t.getMessage()));
 		List ld = new ArrayList();
 		for (String d : t.getDetail()) {
 			ld.add((d));

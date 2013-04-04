@@ -15,6 +15,8 @@ public class ClientGd extends EntityGd {
 	public static final String TERMIANAlID = "terminalId";
 
 	public static final String SESSIONID = "sessionId";
+	
+	public static final String LOCALE = "locale";
 
 	public ClientGd() {
 
@@ -33,6 +35,10 @@ public class ClientGd extends EntityGd {
 
 	public String getTerminalId() {
 		return (String) this.getString(TERMIANAlID);
+	}
+	
+	public String getLocale(){
+		return (String) this.getString(LOCALE);
 	}
 
 }

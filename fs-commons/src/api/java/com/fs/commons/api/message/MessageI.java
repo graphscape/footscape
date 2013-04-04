@@ -8,6 +8,7 @@
 package com.fs.commons.api.message;
 
 import com.fs.commons.api.struct.Path;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -21,7 +22,7 @@ public interface MessageI {
 	public static final String HK_ID = "_id";
 
 	public static final String HK_SOURCE_ID = "_source_id";
-	
+
 	public static final String HK_SILENCE = "_silence";
 
 	public static final String HK_ERROR_PROCESSOR = "_eprocessor";
@@ -30,6 +31,12 @@ public interface MessageI {
 	public static final String HK_RESPONSE_ADDRESS = "_resonse_address";
 
 	public static final String PK_DEFAULT = "_default";
+
+	public static final String PK_ERROR_INFO_S = "_ERROR_INFO_S";
+
+	public ErrorInfos getErrorInfos();
+
+	public void assertNoError();
 
 	public String getErrorProcessor();
 
@@ -40,7 +47,7 @@ public interface MessageI {
 	public String getId();
 
 	public String getResponseAddress();
-	
+
 	public boolean isSilence();
 
 	public PropertiesI<String> getHeaders();
@@ -74,7 +81,7 @@ public interface MessageI {
 	public String getString(String key, String def);
 
 	public boolean getBoolean(String key, boolean def);
-	
+
 	public void setPayload(String key, Object value);
 
 	public void setPayload(Object pl);

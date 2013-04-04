@@ -10,6 +10,7 @@ package com.fs.commons.api.message.support;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -232,6 +233,23 @@ public class ProxyMessageSupport implements MessageI {
 	public boolean isSilence() {
 		//
 		return this.target.isSilence();
+	}
+
+	/*
+	 *Apr 4, 2013
+	 */
+	@Override
+	public ErrorInfos getErrorInfos() {
+		// 
+		return this.target.getErrorInfos();
+	}
+
+	/*
+	 *Apr 4, 2013
+	 */
+	@Override
+	public void assertNoError() {
+		this.target.assertNoError();
 	}
 
 }

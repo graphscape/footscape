@@ -6,11 +6,11 @@ package com.fs.expector.gridservice.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
-import com.fs.commons.api.factory.ConfigFactoryI;
-import com.fs.commons.api.factory.PopulatorI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.gridservice.commons.api.EventDispatcherI;
 import com.fs.gridservice.commons.api.GlobalEventDispatcherI;
+import com.fs.gridservice.commons.api.GridFacadeI;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 
 /**
  * @author wu
@@ -34,7 +34,11 @@ public class ExpectorGsSPI extends SPISupport {
 		ac.active("onlineNotifyService");
 		//this.activeConfirmCodeNotifier(ac);
 		this.activeHandlers(ac);
+		GridFacadeI gf
+		= ac.getContainer().find(GridFacadeI.class,true);
+		TerminalManagerI tm = gf.getEntityManager(TerminalManagerI.class);
 		
+		tm.addBeforeMessageSendingHandler(new ErrorInfoLocalizerTMSH());
 
 	}
 

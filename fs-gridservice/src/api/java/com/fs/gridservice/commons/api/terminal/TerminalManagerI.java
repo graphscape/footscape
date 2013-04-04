@@ -4,6 +4,7 @@
 package com.fs.gridservice.commons.api.terminal;
 
 import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.EntityGdManagerI;
 import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
@@ -14,6 +15,8 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  * 
  */
 public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
+	
+	public void addBeforeMessageSendingHandler(HandlerI<MessageSendingContext> handler);
 
 	public TerminalGd getTerminal(String id);
 

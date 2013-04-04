@@ -8,6 +8,8 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.session.AuthProviderI;
@@ -41,27 +43,29 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 	@Handle("auth")
 	public void handleAuth(ResponseI res, TerminalMsgReceiveEW reqE, TerminalMsgSendEW resE, MessageI req) {
 		PropertiesI<Object> cre = reqE.getMessage().getPayloads();
+		ErrorInfos eis = new ErrorInfos();
+		PropertiesI<Object> ok = new MapProperties<Object>();
+		this.authProvider.auth(cre,eis,ok);
 
-		PropertiesI<Object> ok = this.authProvider.auth(cre);
-		res.setPayloads(cre);//for tracking
-		
-		if (ok != null) {
-			String tid = reqE.getTerminalId();
-			TerminalGd tg = this.terminalManager.getTerminal(tid);
-			String cid = tg.getClientId(true);// terminal must be bind to
-												// client.
-			// create a session,
-			SessionGd s = new SessionGd();
+		res.setPayloads(cre);// for tracking
 
-			String accId = (String) ok.getProperty(SessionGd.ACCID, true);
-			s.setProperties(ok);
-			s.setProperty(SessionGd.CLIENTID, cid);// binding tid;
-			String sid = this.sessionManager.createSession(s);
-			// binding session with tid:
-			this.binding(res, ok, reqE, tid, s);
-		} else {
-			res.getErrorInfos().addError("auth/failure", "auth failed ");
+		if (eis.hasError()) {
+			res.getErrorInfos().addAll(eis);
+			return;
 		}
+		String tid = reqE.getTerminalId();
+		TerminalGd tg = this.terminalManager.getTerminal(tid);
+		String cid = tg.getClientId(true);// terminal must be bind to
+											// client.
+		// create a session,
+		SessionGd s = new SessionGd();
+
+		String accId = (String) ok.getProperty(SessionGd.ACCID, true);
+		s.setProperties(ok);
+		s.setProperty(SessionGd.CLIENTID, cid);// binding tid;
+		String sid = this.sessionManager.createSession(s);
+		// binding session with tid:
+		this.binding(res, ok, reqE, tid, s);
 	}
 
 	@Handle("binding")

@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.commons.api.session;
 
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -10,7 +11,7 @@ import com.fs.commons.api.value.PropertiesI;
  * 
  */
 public interface AuthProviderI {
-	
-	public PropertiesI<Object> auth(PropertiesI<Object> credential);
-	
+
+	public void auth(PropertiesI<Object> credential, ErrorInfos eis, PropertiesI<Object> ok);
+
 }

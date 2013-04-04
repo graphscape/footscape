@@ -13,6 +13,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.ErrorInfos;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
@@ -38,12 +39,33 @@ public class MessageSupport implements MessageI {
 		this.payloads = new MapProperties<Object>();
 		this.headers.setProperty(HK_PATH, path);
 		this.headers.setProperty(HK_ID, id);
+		ErrorInfos eis = new ErrorInfos();
+		this.setPayload(PK_ERROR_INFO_S, eis);
 	}
 
 	public static MessageI newMessage() {
 		return new MessageImpl();
 	}
 
+	/* */
+	@Override
+	public ErrorInfos getErrorInfos() {
+
+		return (ErrorInfos) this.getPayload(PK_ERROR_INFO_S);
+
+	}
+
+	/*
+	 * Nov 3, 2012
+	 */
+	@Override
+	public void assertNoError() {
+		ErrorInfos ers = this.getErrorInfos();
+		if (ers.hasError()) {
+			throw new FsException(ers.toString());
+
+		}
+	}
 	/* */
 	@Override
 	public PropertiesI<String> getHeaders() {

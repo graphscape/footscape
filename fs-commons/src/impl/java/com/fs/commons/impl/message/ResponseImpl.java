@@ -20,29 +20,9 @@ public class ResponseImpl extends MessageSupport implements ResponseI {
 	public ResponseImpl(MessageI req) {
 		this.request = req;
 		this.setHeader(HK_SOURCE_ID, req.getId());
-		ErrorInfos eis = new ErrorInfos();
-		this.setPayload(ERROR_INFO_S, eis);
+		
 	}
 
-	/* */
-	@Override
-	public ErrorInfos getErrorInfos() {
-
-		return (ErrorInfos) this.getPayload(ERROR_INFO_S);
-
-	}
-
-	/*
-	 * Nov 3, 2012
-	 */
-	@Override
-	public void assertNoError() {
-		ErrorInfos ers = this.getErrorInfos();
-		if (ers.hasError()) {
-			throw new FsException(ers.toString());
-
-		}
-	}
 
 	/*
 	 * (non-Javadoc)

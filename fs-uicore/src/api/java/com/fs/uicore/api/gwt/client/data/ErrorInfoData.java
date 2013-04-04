@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
+import com.fs.uicore.api.gwt.client.util.UID;
 
 /**
  * @author wu
@@ -17,10 +18,15 @@ public class ErrorInfoData {
 	private String message;
 
 	private String code;// error code?
+	
+	private String id;
 
 	private List<String> detail;
-
 	public ErrorInfoData(String code, String message) {
+		this(code,message,UID.create("err-"));
+	}
+	public ErrorInfoData(String code, String message, String id) {
+		this.id = id;
 		this.code = code;
 		this.message = message;
 		this.detail = new ArrayList<String>();
@@ -67,6 +73,12 @@ public class ErrorInfoData {
 	 */
 	public String getCode() {
 		return code;
+	}
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
 	}
 
 }

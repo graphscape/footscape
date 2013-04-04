@@ -6,6 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.error;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfoData;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.google.gwt.user.client.DOM;
@@ -26,7 +27,7 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements ErrorInfosWid
 		super(c, name, DOM.createDiv());
 		Element table = DOM.createTable();
 		DOM.appendChild(this.element, table);
-
+		this.element.addClassName("error-infos");
 		tbody = DOM.createTBody();
 		DOM.appendChild(table, tbody);
 		// NOTE
@@ -53,13 +54,20 @@ public class ErrorInfosWidgetImpl extends WidgetSupport implements ErrorInfosWid
 	 */
 	@Override
 	public void addErrorInfos(ErrorInfosData errorInfos) {
+		UiClientI client = this.getClient(true);
+		
 		for (ErrorInfoData ei : errorInfos.getErrorInfoList()) {
 			Element tr = DOM.createTR();
 			DOM.appendChild(this.tbody, tr);
+			
+			appendMessageTD(tr, ei.getMessage(), "error-message");
+			
+			appendMessageTD(tr, ei.getCode(), "error-code");
+			
+			appendMessageTD(tr, ei.getId(), "error-id");
 
-			appendMessageTD(tr, ei.getCode(), "errorCode");
-			appendMessageTD(tr, ei.getMessage(), "errorMessage");
-			appendMessageTD(tr, ei.getDetail().toString(), "errorDetail");// TODO
+			
+			//appendMessageTD(tr, ei.getDetail().toString(), "errorDetail");// TODO
 																			// list
 
 		}

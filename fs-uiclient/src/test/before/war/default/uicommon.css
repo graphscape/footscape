@@ -23,6 +23,23 @@
     vertical-align:center;
 }
 
+.error-infos {
+	color: red;
+	width: 100%;
+	/*border:1px solid rgba(150, 0, 0, 0.6);*/
+}
+
+.error-id {
+	font-size: 9px;
+	color:  rgba(0, 0, 0, 0.5);
+}
+
+.error-code {
+	font-size: 9px;
+	color:  rgba(0, 0, 0, 0.5);
+}
+
+
 .more{
 	align: center;
 	width: 100%;
@@ -203,16 +220,6 @@ Console View
 	border-bottom: 1px solid #ccc;
 }
 
-.wgt-ErrorInfosWidgetImpl {
-	color: red;
-	white-space: nowrap;
-	width: 200px;
-	overflow: hidden;
-}
-
-.wgt-ErrorInfosWidgetImpl.adjusted-ext {
-	overflow: visible;
-}
 
 /*FormView*/
 /*Let the column of title to align right*/

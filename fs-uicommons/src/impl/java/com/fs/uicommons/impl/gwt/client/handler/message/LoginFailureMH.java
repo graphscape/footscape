@@ -37,44 +37,53 @@ public class LoginFailureMH extends UiHandlerSupport implements MessageHandlerI<
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-
-		MessageData req = t.getMessage();
+		MessageData res = t.getMessage();
+		MessageData req = res.getSource();
 
 		AccountsLDW accs = AccountsLDW.getInstance();
-		ErrorInfosData eis = (ErrorInfosData) req.getPayload(UiResponse.ERROR_INFO_S);
-		if (eis.containsErrorCode(ErrorCodes.AUTH_FAILURE)) {//
+		ErrorInfosData eis = (ErrorInfosData) res.getPayload(UiResponse.ERROR_INFO_S);
 
-			// the saved account/email/password not valid for some reason
-			// 1)password is changed by some other means.
-			// 2)annonymous account is removed by serve side for some reason.
-			// then clean the saved info, and re run the procedure.
+		// the saved account/email/password not valid for some reason
+		// 1)password is changed by some other means.
+		// 2)annonymous account is removed by serve side for some reason.
+		// then clean the saved info, and re run the procedure.
+		Boolean isSaved = req.getBoolean("isSaved", true);
+		//if not the 
+		if (!isSaved) {//
+			// not saved info,but user provided info,so notify user this
+			// error.
 
-			Boolean isSaved = req.getBoolean("isSaved", true);
-			String type = req.getString("type", true);
-
-			if (isSaved) {// only process auto auth
-				if (type.equals("registered")) {//
-					RegisteredAccountLDW acc1 = accs.getRegistered();
-					acc1.invalid();// try using the anonymous login.
-					//try auto auth with anonymous
-					AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());//try again,with anonymous
-				} else if (type.equals("anonymous")) {
-					AnonymousAccountLDW acc2 = accs.getAnonymous();
-					acc2.invalid();// clean and try again: create a new
-									// anonymous and login
-					AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());//try agin, signup anonymous
-					// again
-
-				} else {
-					throw new UiException("bug,no this type:" + type);
-				}
-
-			} else {// not saved info,but user provided info,so notify user this
-					// error.
-				LoginViewI lv = this.getRootView().find(LoginViewI.class, true);
-				lv.addErrorInfo(eis);
-			}
-
+			LoginViewI lv = this.getRootView().find(LoginViewI.class, true);
+			lv.addErrorInfo(eis);
+			return;
 		}
+		//is saved, auto login result,process it.
+		//unknown error,cannot process.
+		if( !eis.containsErrorCode(ErrorCodes.AUTH_FAILURE)){
+			return;
+		}
+		
+		String type = req.getString("type", true);
+		if (type.equals("registered")) {//
+			RegisteredAccountLDW acc1 = accs.getRegistered();
+			acc1.invalid();// try using the anonymous login.
+			// try auto auth with anonymous
+			AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());// try
+																			// again,with
+																			// anonymous
+		} else if (type.equals("anonymous")) {
+			AnonymousAccountLDW acc2 = accs.getAnonymous();
+			acc2.invalid();// clean and try again: create a new
+							// anonymous and login
+			AutoLoginHandler.autoLogin(this.getEndpoint(), t.getSource());// try
+																			// agin,
+																			// signup
+																			// anonymous
+			// again
+
+		} else {
+			throw new UiException("bug,no this type:" + type);
+		}
+
 	}
 }

@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import com.fs.commons.api.lang.ObjectUtil;
 
@@ -17,6 +19,8 @@ import com.fs.commons.api.lang.ObjectUtil;
  */
 public class ErrorInfo implements ValueI {
 
+	private String id;
+	
 	private String code;
 
 	private String message;
@@ -38,9 +42,14 @@ public class ErrorInfo implements ValueI {
 	public ErrorInfo(String source, Throwable t) {
 		this(source, null, t);
 	}
-
+	
 	public ErrorInfo(String code, String msg, Throwable t) {
-		this.code = code == null?"unknown":code;
+		this(code,msg,t,UUID.randomUUID().toString());
+	}
+	
+	public ErrorInfo(String code, String msg, Throwable t, String id) {
+		this.id = id;
+		this.code = code == null?"/error/unknow":code;
 		this.message = msg;
 		this.detail = new ArrayList<String>();
 		if (t != null) {
@@ -102,6 +111,20 @@ public class ErrorInfo implements ValueI {
 	 */
 	public String getCode() {
 		return code;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
 	}
 
 }
