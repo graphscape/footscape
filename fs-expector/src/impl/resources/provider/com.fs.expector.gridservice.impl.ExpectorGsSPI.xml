@@ -27,7 +27,7 @@
 
 		<config name="signup" path="/events/signup" class="com.fs.expector.gridservice.impl.handler.signup.SignupHandler" />
 		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
-			<client.parameters value="com.fs.uiserver.impl.ClientParameters" />
+			<client.parameters value="com.fs.expector.gridservice.impl.ClientParameters" />
 		</config>
 		<config name="password" path="/events/password" class="com.fs.expector.gridservice.impl.handler.password.PasswordHandler" >
 			<rootUrl value="$web.rootUrl"/>

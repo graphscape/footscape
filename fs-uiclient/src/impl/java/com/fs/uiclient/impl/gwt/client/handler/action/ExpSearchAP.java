@@ -40,15 +40,16 @@ public class ExpSearchAP extends ActionHandlerSupport {
 		if (isMore != null && isMore.booleanValue()) {
 			size = sv.getSize();
 		}
-		
+
 		UserExpModel ue = sv.getExpId(false);
 		String expId = ue == null ? null : ue.getExpId();
 		String phrase = sv.getPhrase(false);
-		
-		
+
 		MsgWrapper req = this.newRequest(Path.valueOf("/exps/search"));
 		req.setPayload("firstResult", Integer.valueOf(size));
-		req.setPayload("maxResult", Integer.valueOf(UiClientConstants.EXPSEARCH_LIMIT));
+		int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_EXP_QUERY_LIMIT, 10);
+		req.setPayload("maxResult", limit);
+		
 
 		// the selected expId for matching.
 		req.getPayloads().setProperty("expId", (expId));

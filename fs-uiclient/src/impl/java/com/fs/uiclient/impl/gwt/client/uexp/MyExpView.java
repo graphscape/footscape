@@ -209,7 +209,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		req.setPayload("accountId2", this.getAccountId());
 		req.setPayload("expId2", this.expId);
 		req.setPayload("timestamp2", this.latestMessageTimestamp);
-		req.setPayload("limit", UiClientConstants.MESSAGE_LIMIT);
+		int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_MESSAGE_QUERY_LIMIT,10);
+		req.setPayload("limit", limit);
 		
 		this.getClient(true).getEndpoint().sendMessage(req);
 	}

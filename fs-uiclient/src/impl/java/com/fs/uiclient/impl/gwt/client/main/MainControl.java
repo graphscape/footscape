@@ -196,7 +196,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	public void refreshExpMessage(String expId) {
 		// TODO filter expId
 
-		MyExpViewI me = this.openMyExp(expId,false);
+		MyExpViewI me = this.openMyExp(expId, false);
 		DateData timestamp1 = me.getLatestMessageTimestamp();
 		String accId = this.getUserInfo().getAccountId();
 
@@ -205,7 +205,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		req.setPayload("expId2", expId);
 		if (timestamp1 == null) {// if no message,then limit the result,get the
 									// newest list with limit
-			req.setPayload("limit", UiClientConstants.MESSAGE_LIMIT);
+			int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_MESSAGE_QUERY_LIMIT, 10);
+			req.setPayload("limit", limit);
 		} else {// no limit,there alreay message got,then refresh to the newest
 				// list from the timestamp1.
 
@@ -246,7 +247,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 		Path path = this.getExpViewPath(expId);
 		bv.setTitleOfItem(path, body, false);
 		//
-		MyExpViewI mv = this.openMyExp(expId,false);
+		MyExpViewI mv = this.openMyExp(expId, false);
 		mv.setMyExp(body);
 
 	}

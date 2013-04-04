@@ -27,6 +27,10 @@ public interface UiClientI extends UiObjectI {
 	public String getParameter(String key, String def);
 
 	public String getParameter(String key, boolean force);
+	
+	public int getParameterAsInt(String key, int def);
+	
+	public boolean getParameterAsBoolean(String key, boolean def);
 
 	public CodecI.FactoryI getCodecFactory();
 

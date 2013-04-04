@@ -19,6 +19,8 @@
 	margin: -10px 0 0 -50px;
     top: 50%;
     left: 50%;
+    text-align:center;
+    vertical-align:center;
 }
 
 .more{

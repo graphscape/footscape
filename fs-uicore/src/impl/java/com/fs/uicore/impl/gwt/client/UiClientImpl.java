@@ -243,4 +243,25 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		return this.endpoint;
 	}
 
+	/*
+	 * Apr 4, 2013
+	 */
+	@Override
+	public int getParameterAsInt(String key, int def) {
+		//
+		String rt = this.getParameter(key, false);
+		return rt == null ? def : Integer.parseInt(rt);
+	}
+
+	/*
+	 * Apr 4, 2013
+	 */
+	@Override
+	public boolean getParameterAsBoolean(String key, boolean def) {
+		//
+		String rt = this.getParameter(key, false);
+		return rt == null ? def : Boolean.valueOf(rt);
+
+	}
+
 }
