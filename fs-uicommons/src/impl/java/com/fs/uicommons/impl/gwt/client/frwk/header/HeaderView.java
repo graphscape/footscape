@@ -32,6 +32,7 @@ public class HeaderView extends SimpleView implements HeaderViewI {
 		super(c, "header");
 		this.itemList = this.factory.create(BarWidgetI.class);
 		this.itemList.parent(this);//
+		this.itemList.getElement().addClassName("header-bar");
 
 	}
 

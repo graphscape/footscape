@@ -22,10 +22,6 @@ public class WidgetSupport extends WidgetBase {
 
 	protected AdjustersHelper adjustersHelper;
 
-	public WidgetSupport(ContainerI c, Element ele) {
-		this(c, null, ele);
-	}
-
 	public WidgetSupport(ContainerI c, String name, Element ele) {
 		super(c, name, ele);
 

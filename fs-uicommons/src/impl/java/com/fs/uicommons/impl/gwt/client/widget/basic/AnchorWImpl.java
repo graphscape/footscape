@@ -46,9 +46,22 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 	@Override
 	public void setDisplayText(String txt) {
 		//
+		this.setDisplayText(txt,false);
+	}
+
+	/*
+	 *Apr 5, 2013
+	 */
+	@Override
+	public void setDisplayText(String txt, boolean loc) {
+		// 
+		if(loc){
+			txt = this.getClient(true).localized(txt);			
+		}
 		AnchorElement ae = this.getElement().cast();
 		ae.setInnerText(txt);//
 		ae.setTitle(txt);// TODO replace this
+		
 	}
 
 }

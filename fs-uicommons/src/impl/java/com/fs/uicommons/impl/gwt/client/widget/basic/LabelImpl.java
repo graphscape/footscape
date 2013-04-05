@@ -20,18 +20,19 @@ public class LabelImpl extends WidgetSupport implements LabelI {
 		super(c, name, DOM.createLabel());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.uicommons.api.gwt.client.widget.basic.LabelI#setText(java.lang
-	 * .String)
-	 */
 	@Override
 	public void setText(String sd) {
+		this.setText(sd,false);
+	}
+	@Override
+	public void setText(String sd, boolean loc) {
+		if(loc){
+			sd = this.localized(sd);			
+		}
 		Element ele = this.getElement();
 
 		ele.setInnerText(sd);//
 		ele.setTitle(sd);
+		
 	}
 }

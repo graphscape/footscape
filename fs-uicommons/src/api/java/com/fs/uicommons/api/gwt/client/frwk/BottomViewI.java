@@ -4,17 +4,14 @@
 package com.fs.uicommons.api.gwt.client.frwk;
 
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
  * @author wuzhen
  * 
  */
-public interface FrwkViewI extends ViewI {
+public interface BottomViewI extends ViewI {
 
-	public BodyViewI getBodyView();
-
-	public HeaderViewI getHeader();
-	
-	public BottomViewI getBottom();
+	public void addItem(Path path);
 
 }

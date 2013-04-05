@@ -7,7 +7,6 @@ package com.fs.uicommons.impl.gwt.client.widget.menu;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Document;
@@ -24,8 +23,8 @@ public class MenuItemWImpl extends WidgetSupport implements MenuItemWI {
 	/**
 	 * @param ele
 	 */
-	public MenuItemWImpl(ContainerI c) {
-		super(c, DOM.createAnchor());
+	public MenuItemWImpl(ContainerI c, String name) {
+		super(c, name, DOM.createAnchor());
 
 		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
 

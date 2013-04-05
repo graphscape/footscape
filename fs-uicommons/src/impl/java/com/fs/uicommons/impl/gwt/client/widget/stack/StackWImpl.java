@@ -13,6 +13,7 @@ import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
@@ -30,8 +31,8 @@ public class StackWImpl extends LayoutSupport implements StackWI {
 	/**
 	 * @param ele
 	 */
-	public StackWImpl(ContainerI c) {
-		super(c, DOM.createDiv());
+	public StackWImpl(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		super(c, name, DOM.createDiv(), pts);
 		this.itemList = new ArrayList<StackItemI>();
 
 	}

@@ -47,7 +47,9 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.other.AboutBottomItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.ContactBottomItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
@@ -115,9 +117,13 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_SEARCH),
 				new SearchHeaderItemHandler(c));
 
+		//bottom item
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(UiClientConstants.BI_ABOUT),new AboutBottomItemHandler(c));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(UiClientConstants.BI_COTACT),new ContactBottomItemHandler(c));
+		
 		// client start
 		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));
-
+		
 	}
 
 	/**

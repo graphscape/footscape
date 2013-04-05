@@ -35,9 +35,9 @@ public class BodyView extends LightWeightView implements BodyViewI {
 		pts.setProperty(TabberWI.PK_IS_VERTICAL, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_CLOSABLE, Boolean.TRUE);
 		pts.setProperty(TabberWI.PK_IS_REVERSE, Boolean.TRUE);
-
-		this.tabber = this.factory.create(TabberWI.class, pts);//
+		this.tabber = this.factory.create(TabberWI.class, this.getChildName("tabber"), pts);//
 		this.tabber.parent(this);
+
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class BodyView extends LightWeightView implements BodyViewI {
 			rt = crt.create(this.getContainer());
 			this.addItem(path, rt);
 		}
-		if(select){
+		if (select) {
 			this.select(path);
 		}
 		return rt;

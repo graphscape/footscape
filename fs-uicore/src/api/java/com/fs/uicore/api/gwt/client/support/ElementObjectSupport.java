@@ -33,7 +33,7 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	protected Element element;
 
 	protected ElementWrapper elementWrapper;
-	
+
 	protected ElementWrapper opacities;// is the container div,which is set to
 										// opancity=1.0;
 
@@ -53,14 +53,26 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	public ElementObjectSupport(ContainerI c, String name, Element element, UiPropertiesI<Object> pts) {
 		super(c, name, pts);
 		this.element = element;
+		if(name != null){
+			this.element.addClassName(name);			
+		}
+
 		this.elementWrapper = new ElementWrapper(this.element);
 		// STYLE class name:
 		// wgt-JavaClassShortName
+		//TODO remove this class name
 		this.elementWrapper.addClassName(this.getStyleClassName(""));
 		// name-uiObjectName
 		this.elementWrapper.addClassName("name-" + this.getName());
 		this.helpers = new ObjectElementHelpers(this);
 		this.helpers.addHelper(HK_MASTER, this.element);//
+	}
+
+	protected String getChildName(String cname) {
+		if (this.name != null) {
+			cname = this.name + "-" + cname;
+		}
+		return cname;
 	}
 
 	protected String getClassNamePrefix() {

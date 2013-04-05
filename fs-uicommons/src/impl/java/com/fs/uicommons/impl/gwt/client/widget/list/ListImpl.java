@@ -90,7 +90,7 @@ public class ListImpl extends LayoutSupport implements ListI {
 			TDWrapper td = tr.addTd();
 			
 			td.append(ceo.getElement());
-			
+			td.addClassName("list-item");
 			//td.append(ceo.getElement());
 			ceo.setProperty("externalParentElement", tr);
 		} else {//

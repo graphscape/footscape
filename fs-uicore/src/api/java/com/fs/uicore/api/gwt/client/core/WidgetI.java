@@ -11,6 +11,7 @@ import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
  * 
  */
 public interface WidgetI extends ElementObjectI {
+	
 
 	public static interface CreaterI<T extends WidgetI> {
 		

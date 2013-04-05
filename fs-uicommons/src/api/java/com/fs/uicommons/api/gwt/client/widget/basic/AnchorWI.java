@@ -7,5 +7,7 @@ public interface AnchorWI extends BasicI {
 	public void click();
 
 	public void setDisplayText(String txt);
+	
+	public void setDisplayText(String txt, boolean loc);
 
 }

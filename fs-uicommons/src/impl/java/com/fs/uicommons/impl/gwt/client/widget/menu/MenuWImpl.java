@@ -95,7 +95,7 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	@Override
 	public MenuItemWI addItem(String name) {
 
-		MenuItemWI rt = new MenuItemWImpl(this.container);
+		MenuItemWI rt = new MenuItemWImpl(this.container, name);
 		rt.setText(true, name);
 
 		this.child(rt);

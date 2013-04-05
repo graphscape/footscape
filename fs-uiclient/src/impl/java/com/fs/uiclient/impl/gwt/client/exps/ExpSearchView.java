@@ -61,7 +61,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 		MapProperties pts = new MapProperties();
 		pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
-		this.header = this.factory.create(ListI.class, pts);//
+		this.header = this.factory.create(ListI.class, this.getChildName("header"), pts);//
 		this.header.parent(this);
 
 		this.statement = this.factory.create(StringEditorI.class);

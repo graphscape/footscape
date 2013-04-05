@@ -40,6 +40,7 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 
 	private boolean isReverse;
 
+
 	/**
 	 * @param ele
 	 */
@@ -52,11 +53,11 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		if (vertical) {
 			this.layout = new VerticalTabberLayout(this.element, this.isReverse);
 		} else {
-			this.layout = new HorizentalTabberLayout(this,this.element, this.isReverse);
+			this.layout = new HorizentalTabberLayout(this, this.element, this.isReverse);
 		}
 
-		this.stack = this.factory.create(StackWI.class);
-
+		this.stack = this.factory.create(StackWI.class, this.getChildName("stack"));
+		
 		this.child(this.stack);//
 
 	}
@@ -95,7 +96,6 @@ public class TabberWImpl extends LayoutSupport implements TabberWI {
 		if (sel) {// selected removed.
 			this.updateSelect();
 		}
-		
 
 		this.layout.afterTabAddOrRemove();
 		return true;

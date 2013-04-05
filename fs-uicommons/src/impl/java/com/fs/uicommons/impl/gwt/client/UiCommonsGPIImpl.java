@@ -21,6 +21,7 @@ import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
+import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
@@ -160,7 +161,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
 		eb.addHandler(Actions.A_LOGIN_FACEBOOK, new FbLoginAP(c));
-		//password
+		// password
 		eb.addHandler(Actions.A_PASSWORD_FORGOT, new PasswordForgotAP(c));
 		eb.addHandler(Actions.A_PASSWORD_RESET, new PasswordResetAP(c));
 		//
@@ -174,11 +175,13 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousSuccessMH(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/failure"), new PasswordForgotFailureMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(
+				c));
+		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/failure"), new PasswordForgotFailureMH(
+				c));
 		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/failure"), new PasswordResetFailureMH(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/success"), new PasswordResetSuccessMH(c));
-		
+
 	}
 
 	public void activeOtherHandlers(ContainerI c, UiClientI client) {
@@ -226,7 +229,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public StackWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new StackWImpl(c);
+				return new StackWImpl(c,name,pts);
 
 			}
 		});
@@ -280,7 +283,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public StringEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new StringEditorImpl(c, name,pts);
+				return new StringEditorImpl(c, name, pts);
 
 			}
 		});
@@ -809,6 +812,16 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof LoginViewI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(BottomViewI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof BottomViewI;
 
 			}
 

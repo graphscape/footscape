@@ -5,6 +5,8 @@
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
 import com.fs.uiclient.impl.gwt.client.HeaderNames;
+import com.fs.uiclient.impl.gwt.client.UiClientConstants;
+import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -36,6 +38,10 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		fc.addHeaderItemIfNotExist(HeaderNames.H1_SEARCH);
 		fc.addHeaderItemIfNotExist(HeaderNames.H1_MYEXP);//anonymous will notify:no right to show exp
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
+		//
+		BottomViewI bv = fc.getBottomView();
+		bv.addItem(UiClientConstants.BI_ABOUT);
+		bv.addItem(UiClientConstants.BI_COTACT);
 		
 	}
 

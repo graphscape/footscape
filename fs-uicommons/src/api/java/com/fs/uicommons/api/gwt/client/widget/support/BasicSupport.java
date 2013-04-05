@@ -15,8 +15,8 @@ import com.google.gwt.user.client.Element;
 public class BasicSupport extends WidgetSupport {
 
 	/** */
-	public BasicSupport(ContainerI c, Element ele) {
-		super(c, ele);
+	public BasicSupport(ContainerI c, String name, Element ele) {
+		super(c, name, ele);
 
 	}
 

@@ -1,3 +1,16 @@
+
+a {
+	color: rgba(50, 90, 150, 0.9);
+	cursor: pointer;
+	padding: 3px;
+}
+
+a:hover {
+	background: rgba(50, 90, 150, 0.9);
+	color: #fff;
+	text-decoration: underline;
+}
+
 body {
 	background: #fff;
 	margin-left: 0px;

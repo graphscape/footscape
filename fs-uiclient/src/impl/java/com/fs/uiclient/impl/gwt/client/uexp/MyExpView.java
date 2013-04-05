@@ -95,7 +95,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			UiPropertiesI<Object> pts = new MapProperties<Object>();
 			pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.FALSE);
 
-			this.middle = this.factory.create(ListI.class, pts);
+			this.middle = this.factory.create(ListI.class, this.getChildName("middle"), pts);
 			this.middle.parent(this.outer);
 			this.middle.getElement().addClassName("myexp-middle");
 		}
@@ -104,7 +104,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
-				this.middleLeft = this.factory.create(ListI.class, pts);
+				this.middleLeft = this.factory.create(ListI.class, this.getChildName("middle-left"),pts);
 				this.middleLeft.parent(this.middle);
 				this.middleLeft.getElement().addClassName("myexp-middle-left");
 			}
@@ -134,15 +134,16 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 					}
 				});
 
-				this.msglist = this.factory.create(ListI.class, pts);
+				this.msglist = this.factory.create(ListI.class, this.getChildName("message-list"),pts);
 				this.msglist.parent(this.middleLeft);
+				//TODO remove
 				this.msglist.getElement().addClassName("myexp-messagelist");
 			}
 			// outer/middleLeft/msg input
 			{
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(StringEditorI.PK_TEXAREA, true);
-				this.statement = this.factory.create(StringEditorI.class, pts);
+				this.statement = this.factory.create(StringEditorI.class, this.getChildName("textarea"),pts);
 				this.statement.parent(this.middleLeft);
 				this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
@@ -184,7 +185,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
-				this.middleLeft = this.factory.create(ListI.class, pts);
+				this.middleLeft = this.factory.create(ListI.class, this.getChildName("midle-left"),pts);
 				this.middleLeft.parent(this.middle);
 				this.middleLeft.getElement().addClassName("myexp-middle-left");
 			}

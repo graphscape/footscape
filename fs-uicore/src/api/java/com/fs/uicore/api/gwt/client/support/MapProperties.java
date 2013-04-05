@@ -20,6 +20,16 @@ public class MapProperties<T> implements UiPropertiesI<T> {
 
 	private Map<String, T> map = new HashMap<String, T>();
 
+	public static <T> MapProperties<T> valueOf(Object... obj) {
+		MapProperties<T> rt = new MapProperties<T>();
+		for (int i = 0; i < obj.length / 2; i++) {
+			String key = (String) obj[i * 2];
+			T value = (T) obj[i * 2 + 1];
+			rt.setProperty(key, value);
+		}
+		return rt;
+	}
+
 	@Override
 	public List<String> keyList() {
 		List<String> rt = new ArrayList<String>();

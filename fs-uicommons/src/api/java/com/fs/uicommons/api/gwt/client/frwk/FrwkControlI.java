@@ -24,6 +24,8 @@ public interface FrwkControlI extends ControlI {
 	public void addHeaderItem(Path path, boolean left);
 
 	public HeaderViewI getHeaderView();
+	
+	public BottomViewI getBottomView();
 
 	public LoginViewI openLoginView();
 

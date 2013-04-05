@@ -4,10 +4,8 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
+import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
@@ -34,7 +32,15 @@ import com.google.gwt.user.client.Element;
 public class FrwkView extends ViewSupport implements FrwkViewI {
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(FrwkView.class);
 
-	protected Map<String, Element> managerTdElements;
+	private Element top;
+
+	private TDWrapper left;
+
+	private TDWrapper body;
+
+	private TDWrapper right;
+
+	private Element bottom;
 
 	/**
 	 * @param ele
@@ -43,28 +49,32 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	public FrwkView(ContainerI c) {
 		super(c, "frwk", DOM.createDiv());
 
-		this.managerTdElements = new HashMap<String, Element>();
+		top = DOM.createDiv();
 
-		Element top = this.createDivForPosition("top", this.element);
+		top.addClassName("frwk-outer");
 
+		this.element.appendChild(top);
 		{
 			TableWrapper table = new TableWrapper();
 			this.elementWrapper.append(table);
 
 			TRWrapper tr = table.addTr();
+			left = tr.addTd();
+			left.addClassName("frwk-left");
 
-			this.createTDForPosition("left", tr);
-			Element ele = this.createTDForPosition("body", tr);
+			this.body = tr.addTd();
 
-			this.createTDForPosition("right", tr);
+			this.right = tr.addTd();
+		}
+		
+		{//bottom
+
+			this.bottom = DOM.createDiv();
+			this.bottom.addClassName("frwk-bottom");
+			this.element.appendChild(this.bottom);
 		}
 
-		Element bot = this.createDivForPosition("bottom", this.element);
-
-		bot.setInnerHTML("This is the bottom.");
-
 		// popup
-		Element pop = this.createDivForPosition("popup", this.element);
 
 		//
 
@@ -74,30 +84,13 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 
 		BodyView bv = new BodyView(this.container);
 		bv.parent(this);
+		
+		BottomView tv = new BottomView(this.container);
+		tv.parent(this);
+		
 		//
 		EndpointBusyIndicator ebi = new EndpointBusyIndicator(this.container);
 		ebi.parent(this);
-	}
-
-	private Element createTDForPosition(String position, TRWrapper tr) {
-		TDWrapper td = tr.addTd();
-
-		td.addClassName("position-" + position);
-		this.managerTdElements.put(position, td.getElement());
-		return td.getElement();
-	}
-
-	private Element createDivForPosition(String position, Element parent) {
-		Element td = DOM.createDiv();
-		this.addPositionElement(position, td, parent);
-		return td;
-	}
-
-	private void addPositionElement(String position, Element ele, Element parent) {
-		DOM.appendChild(parent, ele);
-		ele.addClassName("position-" + position);
-		this.managerTdElements.put(position, ele);
-
 	}
 
 	/*
@@ -106,8 +99,8 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
 
-		Element td = this.managerTdElements.get("top");
-		DOM.appendChild(td, cw.getElement());
+		
+		DOM.appendChild(this.top, cw.getElement());
 	}
 
 	@Override
@@ -119,6 +112,15 @@ public class FrwkView extends ViewSupport implements FrwkViewI {
 	@Override
 	public HeaderViewI getHeader() {
 		return this.getChild(HeaderViewI.class, true);
+	}
+
+	/*
+	 *Apr 5, 2013
+	 */
+	@Override
+	public BottomViewI getBottom() {
+		// 
+		return this.getChild(BottomViewI.class, true);
 	}
 
 }

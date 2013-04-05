@@ -16,7 +16,7 @@ import com.google.gwt.user.client.Element;
  * 
  */
 public interface ElementObjectI extends UiObjectI {
-
+	
 	public Element getElement();
 
 	public ElementWrapper getElementWrapper();

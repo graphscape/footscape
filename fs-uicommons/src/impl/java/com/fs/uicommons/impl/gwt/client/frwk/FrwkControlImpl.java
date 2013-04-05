@@ -3,6 +3,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
+import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
@@ -66,6 +67,11 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	public HeaderViewI getHeaderView() {
 		//
 		return this.getFrwkView().getHeader();
+	}
+	@Override
+	public BottomViewI getBottomView() {
+		//
+		return this.getFrwkView().getBottom();
 	}
 
 	/*

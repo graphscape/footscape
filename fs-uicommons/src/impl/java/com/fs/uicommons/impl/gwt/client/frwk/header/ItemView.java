@@ -31,6 +31,7 @@ public class ItemView extends LightWeightView {
 		this.path = path;
 
 		this.anchor = this.factory.create(AnchorWI.class);
+		this.anchor.getElement().addClassName("header-item");
 		this.anchor.parent(this);//
 		this.setDisplayText(true, this.path.toString());//
 		this.menu = this.factory.create(MenuWI.class);

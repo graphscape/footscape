@@ -45,6 +45,9 @@
 	<property name="/expMessageCount" value="Messages" />
 	<property name="/myExp" value="Expectations" />
 	<property name="/logo" value="Waitee" />
+	<property name="/about" value="About Us"/>
+	<property name="/contact" value="Contact Us"/>
+	<property name="/copyright" value="© 2012-2013 waitee.com.  All rights reserved."/>
 	
 	<!-- Actions -->
 	<property name="/action/activity/openChatRoom" value="Chat" />
