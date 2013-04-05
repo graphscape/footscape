@@ -12,9 +12,9 @@ import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
  */
 public interface UiClientI extends UiObjectI {
 
-	public String RK_WSS_PORT = "WSS_PORT";
+	public static String RK_WSS_PORT = "WSS_PORT";
 
-	public String RK_WS_PORT = "WS_PORT";
+	public static String RK_WS_PORT = "WS_PORT";
 	
 	public String getClientId();
 

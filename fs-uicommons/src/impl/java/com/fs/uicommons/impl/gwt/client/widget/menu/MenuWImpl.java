@@ -4,10 +4,10 @@
  */
 package com.fs.uicommons.impl.gwt.client.widget.menu;
 
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuWI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
-import com.fs.uicommons.impl.gwt.client.UiCommonsConstants;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Point;

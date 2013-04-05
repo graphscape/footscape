@@ -21,8 +21,8 @@ import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
-import com.fs.uicommons.api.gwt.client.Constants;
 import com.fs.uicommons.api.gwt.client.CreaterI;
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -273,7 +273,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 	@Override
 	public void closeLoginView() {
-		this.getBodyView().tryCloseItem(Constants.LOGIN_VIEW);
+		this.getBodyView().tryCloseItem(UiCommonsConstants.LOGIN_VIEW);
 	}
 
 	/*

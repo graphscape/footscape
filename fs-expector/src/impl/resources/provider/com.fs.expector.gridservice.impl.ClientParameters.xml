@@ -3,4 +3,5 @@
 	<property name="expQueryLimit" value="3" />
 	<property name="contactUrl" value="/contact"/>
 	<property name="aboutUsUrl" value="/about-us"/>
+	<property name="wsHeartBeatIntervalMs" value="$ws.heartBeatIntervalMs" />
 </config>

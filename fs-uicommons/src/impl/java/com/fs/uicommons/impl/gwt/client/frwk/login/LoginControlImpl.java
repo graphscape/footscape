@@ -3,7 +3,7 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
-import com.fs.uicommons.api.gwt.client.Constants;
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
@@ -36,13 +36,13 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 
 		// TODO creater
 		BodyViewI bv = this.getBodyView();
-		LoginView lv = bv.getItem(Constants.LOGIN_VIEW, false);
+		LoginView lv = bv.getItem(UiCommonsConstants.LOGIN_VIEW, false);
 		if (lv == null) {
 			lv = new LoginView(this.getContainer(), "login");
 
-			bv.addItem(Constants.LOGIN_VIEW, lv);
+			bv.addItem(UiCommonsConstants.LOGIN_VIEW, lv);
 		}
-		bv.select(Constants.LOGIN_VIEW);//
+		bv.select(UiCommonsConstants.LOGIN_VIEW);//
 		return lv;
 	}
 
@@ -53,13 +53,13 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	public PasswordResetViewI openPasswordResetView() {
 		// TODO creater
 		BodyViewI bv = this.getBodyView();
-		PasswordResetViewI lv = bv.getItem(Constants.PASSWORDRESET_VIEW, false);
+		PasswordResetViewI lv = bv.getItem(UiCommonsConstants.PASSWORDRESET_VIEW, false);
 		if (lv == null) {
 			lv = new PasswordResetView(this.getContainer());
 
-			bv.addItem(Constants.PASSWORDRESET_VIEW, lv);
+			bv.addItem(UiCommonsConstants.PASSWORDRESET_VIEW, lv);
 		}
-		bv.select(Constants.PASSWORDRESET_VIEW);//
+		bv.select(UiCommonsConstants.PASSWORDRESET_VIEW);//
 		return lv;
 	}
 

@@ -9,6 +9,7 @@ package com.fs.uicore.api.gwt.client;
  *
  */
 public class UiCoreConstants {
-	public static final int TIME_OUT_REQUEST_CACHE = 120 * 1000;
+	
+	public static final int TIME_OUT_REQUEST_CACHE = 30 * 1000;
 	
 }

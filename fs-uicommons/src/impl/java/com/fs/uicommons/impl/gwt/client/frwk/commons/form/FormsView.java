@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fs.uicommons.api.gwt.client.Constants;
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsModel;
@@ -100,7 +100,7 @@ public class FormsView extends SimpleView implements FormsViewI {
 	@Override
 	protected void beforeActionEvent(ActionEvent ae) {
 
-		ae.property(Constants.AK_FORMS_VIEW, this);
+		ae.property(UiCommonsConstants.AK_FORMS_VIEW, this);
 	}
 
 	private Path tabPath(String fname) {

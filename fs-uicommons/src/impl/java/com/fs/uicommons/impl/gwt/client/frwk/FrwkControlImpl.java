@@ -5,6 +5,7 @@ package com.fs.uicommons.impl.gwt.client.frwk;
 
 import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
@@ -31,7 +32,7 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	@Override
 	public void open() {
 		RootI root = this.getClient(true).getRoot();
-		FrwkView fv = root.getChild(FrwkView.class, false);
+		FrwkViewI fv = root.getChild(FrwkViewI.class, false);
 		if (fv == null) {
 			fv = new FrwkView(this.container);
 			fv.parent(root);

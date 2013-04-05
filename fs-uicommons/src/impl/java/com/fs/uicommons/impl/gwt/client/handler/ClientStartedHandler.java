@@ -12,6 +12,7 @@ import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.password.PasswordResetViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
+import com.fs.uicommons.impl.gwt.client.EndpointKeeper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -33,6 +34,10 @@ public class ClientStartedHandler extends UiHandlerSupport implements EventHandl
 
 	@Override
 	public void handle(AfterClientStartEvent e) {
+		//heatbeat
+		EndpointKeeper ek = new EndpointKeeper(this.getClient(true));
+		ek.start();//
+		
 		// start frwk view.
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		fc.open();

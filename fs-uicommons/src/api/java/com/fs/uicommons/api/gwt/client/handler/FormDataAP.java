@@ -4,7 +4,7 @@
  */
 package com.fs.uicommons.api.gwt.client.handler;
 
-import com.fs.uicommons.api.gwt.client.Constants;
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -30,7 +30,7 @@ public abstract class FormDataAP extends ActionHandlerSupport {
 
 	protected void processFormData(ActionEvent ae, MsgWrapper req) {
 
-		FormsViewI fv = (FormsViewI) ae.getProperty(Constants.AK_FORMS_VIEW);
+		FormsViewI fv = (FormsViewI) ae.getProperty(UiCommonsConstants.AK_FORMS_VIEW);
 		ObjectPropertiesData dt = (ObjectPropertiesData) this.getFormData(fv);
 
 		req.setPayloads(dt);

@@ -142,7 +142,6 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	protected void doAttach() {
 		super.doAttach();
 
-		new EndpointKeeper(this).start();
 		this.messageCache.start();
 		this.getClient(true).addHandler(ClientClosingEvent.TYPE, new EventHandlerI<ClientClosingEvent>() {
 
