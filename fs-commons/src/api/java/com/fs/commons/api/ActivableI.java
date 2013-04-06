@@ -11,5 +11,4 @@ public interface ActivableI {
 
 	public void active(ActiveContext ac);
 
-	public void deactive(ActiveContext ac);
 }

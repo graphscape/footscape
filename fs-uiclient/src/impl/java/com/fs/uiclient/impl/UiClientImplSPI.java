@@ -23,9 +23,13 @@ public class UiClientImplSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 	}
 
-	/* */
+	/*
+	 * Apr 6, 2013
+	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
+	protected void doBeforeShutdown(int loop) {
+		//
+
 	}
 
 }

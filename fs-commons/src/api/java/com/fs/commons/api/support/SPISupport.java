@@ -6,9 +6,8 @@ package com.fs.commons.api.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
-import com.fs.commons.api.AttachableI;
+import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.config.Configuration;
@@ -30,6 +29,8 @@ public abstract class SPISupport implements SPI {
 	protected Configuration config;
 
 	protected SPIManagerI manager;
+	
+	protected ContainerI container;
 
 	public SPISupport(String id) {
 		this.id = id;
@@ -57,6 +58,7 @@ public abstract class SPISupport implements SPI {
 	@Override
 	public void setSPIManager(SPIManagerI sm) {
 		this.manager = sm;
+		this.container = sm.getContainer();
 	}
 
 	/* */
@@ -76,38 +78,20 @@ public abstract class SPISupport implements SPI {
 	public void active(ActiveContext ac) {
 		this.doActive(ac);
 	}
+	
 
+	/*
+	 *Apr 6, 2013
+	 */
 	@Override
-	public void deactive(ActiveContext ac) {
-		List<Object> objL = ac.getContainer().finder(Object.class).spi(this)
-				.find();
-		// deattach
-		for (Object obj : objL) {
-			if (obj instanceof AttachableI) {
-				AttachableI att = (AttachableI) obj;
-				if (att.isAttached()) {
-					att.dettach();
-				}
-			}
-		}
-		// deactive
-		for (Object obj : objL) {
-			// deactive
-			if (obj instanceof ActivableI) {
-				((ActivableI) obj).deactive(ac);
-			}
-		}
-		// remove
-		for (Object obj : objL) {
-			ac.getContainer().removeObject(obj);// dettach from env.
-			// deactive
-		}
-		this.doDeactive(ac);
-
+	public void beforeShutdown(int loop) {
+		// 
+		this.doBeforeShutdown(loop);
 	}
 
 	public abstract void doActive(ActiveContext ac);
 
-	protected abstract void doDeactive(ActiveContext ac);
+	protected abstract void doBeforeShutdown(int loop) ;
+	
 
 }

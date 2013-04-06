@@ -15,5 +15,7 @@ public interface DataServiceFactoryI {
 	public DataServiceI getDataService();
 
 	public DataSchema getSchema();
+	
+	public void close();
 
 }

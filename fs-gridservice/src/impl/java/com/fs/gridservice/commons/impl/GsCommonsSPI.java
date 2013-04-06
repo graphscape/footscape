@@ -6,6 +6,7 @@ package com.fs.gridservice.commons.impl;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.support.SPISupport;
+import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 import com.fs.gridservice.commons.api.wrapper.internal.InternalMsgEW;
@@ -19,6 +20,7 @@ import com.fs.webserver.api.WebServerI;
  */
 public class GsCommonsSPI extends SPISupport {
 
+	public static final int shutdownLoop = 20;
 	/**
 	 * @param id
 	 */
@@ -57,9 +59,14 @@ public class GsCommonsSPI extends SPISupport {
 		wa.addServlet(ac, "terminal", this.getId() + ".servletHolder.terminal");
 	}
 
+	/*
+	 *Apr 6, 2013
+	 */
 	@Override
-	protected void doDeactive(ActiveContext ac) {
-
+	protected void doBeforeShutdown(int loop) {
+		// 
+		
 	}
+	
 
 }

@@ -10,5 +10,7 @@ package com.fs.gridservice.core.api;
 public interface DgFactoryI {
 
 	public DataGridI getInstance();
+	
+	public void close();
 
 }

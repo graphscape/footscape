@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
-import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.config.ConfigurableI;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.ConfigurationProviderI;
@@ -29,12 +28,6 @@ public class ConfigurableServletSupport extends HttpServlet implements Configura
 	public void active(ActiveContext ac) {
 		//
 		this.container = ac.getContainer();
-	}
-
-	@Override
-	public void deactive(ActiveContext ac) {
-		//
-		//
 	}
 
 	@Override

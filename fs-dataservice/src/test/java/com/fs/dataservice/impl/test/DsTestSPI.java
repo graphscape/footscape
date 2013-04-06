@@ -33,12 +33,12 @@ public class DsTestSPI extends SPISupport {
 	}
 
 	/*
-	 * Dec 30, 2012
+	 *Apr 6, 2013
 	 */
 	@Override
-	protected void doDeactive(ActiveContext ac) {
-		//
-
+	protected void doBeforeShutdown(int loop) {
+		// 
+		
 	}
 
 }

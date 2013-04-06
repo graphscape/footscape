@@ -22,11 +22,7 @@ public class EventGd extends MessageGd implements GridedDataI {
 
 	public static final String HK_ID = MessageI.HK_ID;
 
-	public static final String HK_ORIGIN_EVENT_ID = "_originEventId";
-
-	public static final String HK_CAUSE_EVENT_ID = "_causeEventId";
-
-	public static final String HK_SOURCE_TERMINAL_ID = "_source_terminal_id";
+	public static final String HK_SOURCE_PATH = "_source_path";
 
 	public EventGd() {
 
@@ -36,14 +32,15 @@ public class EventGd extends MessageGd implements GridedDataI {
 		super(msg);
 	}
 
-	public EventGd(EventType type, Path path) {
-		this(type, path, UUID.randomUUID().toString());//
+	public EventGd(EventType type, Path path, Path spath) {
+		this(type, path, UUID.randomUUID().toString(), spath);//
 	}
 
-	public EventGd(EventType type, Path path, String id) {
+	public EventGd(EventType type, Path path, String id, Path spath) {
 		this.setHeader(HK_TYPE, type.name());
 		this.setHeader(HK_PATH, path.toString());
 		this.setHeader(HK_ID, id);
+		this.setHeader(HK_SOURCE_PATH, spath == null ? null : spath.toString());
 	}
 
 	public EventType getType() {
@@ -51,8 +48,9 @@ public class EventGd extends MessageGd implements GridedDataI {
 		return EventType.valueOf(ts);
 	}
 
-	public String getSourceTerminalId() {
-		return this.getHeader(HK_SOURCE_TERMINAL_ID);
+	public Path getSourcePath() {
+		String pS = this.getHeader(HK_SOURCE_PATH, true);
+		return Path.valueOf(pS);
 	}
 
 	public String getId() {

@@ -25,22 +25,11 @@ public class HasContainerSupport extends ConfigurableSupport implements
 	}
 
 	@Override
-	public void deactive(ActiveContext ac) {
-		super.deactive(ac);
-
-	}
-
-	@Override
 	protected void doAttach() {
 		super.doAttach();
 		this.internal.attach();
 	}
 
-	@Override
-	protected void doDettach() {
-		super.doDettach();
-		this.internal.dettach();//
-	}
 
 	/*
 	 * (non-Javadoc)

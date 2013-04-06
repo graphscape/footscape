@@ -6,14 +6,12 @@ package com.fs.commons.api;
 
 /**
  * @author wu
- * 
+ * @deprecated too complicated
  */
 public interface AttachableI {
 
 	public boolean isAttached();
 
 	public void attach();
-
-	public void dettach();
 
 }

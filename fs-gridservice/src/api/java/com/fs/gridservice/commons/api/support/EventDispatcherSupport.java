@@ -22,7 +22,6 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.message.ResponseI;
-import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.ServerSupport;
@@ -252,22 +251,16 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		LOG.error("exception got,eventQueue:" + this.getConfiguration().getName() + ", event:" + evt, t);
 	}
 
-	public void handleEvent(EventGd evt) {
-
-		Path ep = evt.getPath();
-
-		Path p = Path.valueOf("events", ep);
-
-		final MessageI req = new MessageSupport();
-		req.setHeaders(evt.getHeaders());//
-		req.setHeader(MessageI.HK_PATH, p.toString());// override the path;
-		req.setPayload(evt);
-
+	public void handleEvent(final EventGd evt) {
+		// final MessageI req = new MessageSupport();
+		// req.setHeaders(evt.getHeaders());//
+		// req.setHeader(MessageI.HK_PATH, p.toString());// override the path;
+		// req.setPayload(evt);
 		Future<ResponseI> fres = this.slaveExecutor.submit(new Callable<ResponseI>() {
 
 			@Override
 			public ResponseI call() throws Exception {
-				return EventDispatcherSupport.this.handleInSlave(req);
+				return EventDispatcherSupport.this.handleInSlave(evt);
 			}
 		});
 
@@ -284,7 +277,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		}
 
 		if (t == null) {// no error,got response
-			this.tryResponse(ep, req, res);
+			this.tryResponse( evt, res);
 		} else {// cannot got response
 			fres.cancel(true);
 			this.onException(evt, t);
@@ -294,7 +287,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 	// public static final String HK_RESPONSE_HANDLER_ID =
 	// "response_handler_id";
 
-	protected ResponseI handleInSlave(MessageI req) {
+	protected ResponseI handleInSlave(EventGd req) {
 
 		ResponseI rt = this.engine.service(req);
 		// rt.setHeader(HK_RESPONSE_HANDLER_ID,
@@ -302,7 +295,7 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		return rt;
 	}
 
-	protected void tryResponse(Path ep, MessageI req, ResponseI res) {
+	protected void tryResponse(EventGd req, ResponseI res) {
 
 		ErrorInfos eis = res.getErrorInfos();
 
@@ -313,13 +306,13 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 		if (req.isSilence()) {// not response required by client.
 			return;
 		}
-
+		Path spath = req.getSourcePath();
 		// response path is depended on the success or failure
-		Path path = ep.getSubPath(eis.hasError() ? "failure" : "success");
+		Path path = spath.getSubPath(eis.hasError() ? "failure" : "success");
 		// response path
 		res.setHeader(MessageI.HK_PATH, path.toString());
 		// translate error
-		
+
 		// send response to terminal
 		String ra = req.getResponseAddress();
 		if (ra == null) {//
@@ -336,15 +329,6 @@ public abstract class EventDispatcherSupport extends ServerSupport implements Ev
 
 		}
 
-	}
-
-	/*
-	 * Dec 16, 2012
-	 */
-	@Override
-	public void deactive(ActiveContext ac) {
-		//
-		super.deactive(ac);
 	}
 
 }

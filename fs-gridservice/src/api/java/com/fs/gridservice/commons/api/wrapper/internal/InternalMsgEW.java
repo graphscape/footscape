@@ -19,18 +19,17 @@ public class InternalMsgEW extends EventWrapper {
 	public static final EventType TYPE = EventType.valueOf("InternalMsg");
 
 	public static InternalMsgEW valueOf(Path path, MessageI msg) {
-		InternalMsgEW rt = new InternalMsgEW(new EventGd(TYPE, path));
-		rt.target.setPayload("message",msg);
+		InternalMsgEW rt = new InternalMsgEW(new EventGd(TYPE, path, msg.getPath()));
+		rt.target.setPayload("message", msg);
 		return rt;
 	}
 
 	public InternalMsgEW(EventGd target) {
 		super(target);
 	}
-	
-	public MessageI getMessage(){
-		return (MessageI)this.target.getPayload("message",true);
+
+	public MessageI getMessage() {
+		return (MessageI) this.target.getPayload("message", true);
 	}
 
-	
 }

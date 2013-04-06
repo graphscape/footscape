@@ -176,10 +176,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		MessageI req = ew.getMessage();//
 
 		String accountId2 = req.getString("accountId2", false);
-		// TODO permission
-		if (!this.assertAccout(ew, accountId2, res.getErrorInfos())) {
-			return;
-		}
+		
 		String expId2 = req.getString("expId2", true);
 		Date timestamp1 = (Date) req.getPayload("timestamp1", false);
 		Date timestamp2 = (Date) req.getPayload("timestamp2", false);

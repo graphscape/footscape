@@ -50,7 +50,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 		OperationSupport<NodeQueryOperationI<W>, NodeQueryResultI<W>> implements NodeQueryOperationI<W> {
 
 	private static Logger LOG = LoggerFactory.getLogger(NodeQueryOperationE.class);
-
+	
 	private static class Term {
 		String field;
 		Object value;
@@ -91,6 +91,8 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 	private ElasticClientI elastic;
 
 	protected NodeMeta nodeConfig;
+	
+	protected boolean explain;
 
 	/**
 	 * @param ds
@@ -115,7 +117,11 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 
 		return this;
 	}
-
+	@Override
+	public NodeQueryOperationI<W> explain(boolean expl){
+		this.explain = expl;
+		return this;
+	}
 	/*
 	 * Oct 27, 2012
 	 */
@@ -197,7 +203,7 @@ public class NodeQueryOperationE<W extends NodeWrapper> extends
 				.setQuery(qb)//
 				.setFrom(this.getFrom())//
 				.setSize(this.getMaxSize())//
-				.setExplain(true)//
+				.setExplain(this.explain)//
 
 		;
 		for (Sort s : this.sortList) {

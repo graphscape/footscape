@@ -43,14 +43,11 @@ public class UiCommonsImplTestSPI extends SPISupport {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.commons.api.ActivableI#deactive(com.fs.commons.api.ActiveContext)
+	 * Apr 6, 2013
 	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
-		// TODO Auto-generated method stub
+	protected void doBeforeShutdown(int loop) {
+		//
 
 	}
 

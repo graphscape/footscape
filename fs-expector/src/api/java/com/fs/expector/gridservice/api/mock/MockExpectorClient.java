@@ -66,33 +66,13 @@ public class MockExpectorClient extends MockClientWrapper {
 	}
 
 	public void signup(final String email, String nick, String pass) {
-		String ccode = this.signupRequest(email, nick, pass);
-		this.signupConfirm(email, ccode);
-	}
-
-	protected String signupRequest(final String email, String nick, String pass) {
 
 		MessageI req = newRequest("/signup/submit");
 		req.setPayload("email", email);
 		req.setPayload("nick", nick);
 		req.setPayload("password", pass);//
-		req.setPayload("isAgree", Boolean.TRUE);//
-		req.setPayload("confirmCodeNotifier", "resp");//
 
 		MessageI res = this.syncSendMessage(req);
-
-		String rt = res.getString("confirmCode", true);
-
-		return rt;
-	}
-
-	protected void signupConfirm(String email, String ccode) {
-
-		MessageI req = newRequest("/signup/confirm");
-		req.setPayload("email", email);
-		req.setPayload("confirmCode", ccode);
-
-		this.syncSendMessage(req);
 
 	}
 
@@ -196,8 +176,9 @@ public class MockExpectorClient extends MockClientWrapper {
 		MessageI req = this.newRequest("/expm/search");
 		req.setPayload("expId2", expId2);
 		MessageI res = this.syncSendMessage(req);
-		List<PropertiesI<Object>> el = (List<PropertiesI<Object>>) res.getPayload("expMessages", true);
-		for (PropertiesI<Object> pts : el) {
+		res.assertNoError();
+		List<MessageI> el = (List<MessageI>) res.getPayload("expMessages", true);
+		for (MessageI pts : el) {
 			MockExpMessage me = new MockExpMessage(pts);
 
 			rt.add(me);

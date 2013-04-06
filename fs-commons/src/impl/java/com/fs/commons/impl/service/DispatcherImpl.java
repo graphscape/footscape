@@ -90,11 +90,6 @@ public class DispatcherImpl<T> extends HasContainerSupport implements Dispatcher
 	}
 
 	@Override
-	public void deactive(ActiveContext ac) {
-		super.deactive(ac);
-	}
-
-	@Override
 	public void dispatch(Path p, T ctx) {
 
 		List<PathEntyHandler<T>> chL = this.tree.getTargetListInPath(p);

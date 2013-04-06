@@ -13,6 +13,8 @@ import com.fs.gridservice.commons.api.data.EntityGd;
  */
 public interface EntityGdManagerI<T extends EntityGd> {
 
+	public List<T> getAllEntity();
+	
 	public T getEntity(String id);
 
 	public T addEntity(T eg);

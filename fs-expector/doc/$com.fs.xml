@@ -1,14 +1,19 @@
 <config>
+	<!-- Used when email notify user. -->
 	<web.rootUrl>
  		<![CDATA[http://127.0.0.1:8888/UiClientImplTest.html?logLevel=WARNING&fs.logLevel=INFO&gwt.codesvr=127.0.0.1:9997]]>
 	</web.rootUrl>
+	<!--web socket-->	
+	<ws.maxIdleTimeMs value="300000"/>
+	<ws.heartBeatIntervalMs value="290000"/>
 	<!--SSL -->
 	<web.isSslEnable value="true"/>
 	<ssl.port value="8443" />
 	<ssl.keyStoreLocation value="{user.home}/.fs/env/ssl/server.p12"/>
 	<ssl.keyStoreType value="PKCS12"/>
 	<ssl.keyStorePassword value="waitee"/>
-	
+	<client.expQueryLimit value="15" />
+	<client.messageQueryLimit value="15" />
 	<data.cleanAtInit value="true"/>
 	<grid.cleanAtInit value="true"/>
 	

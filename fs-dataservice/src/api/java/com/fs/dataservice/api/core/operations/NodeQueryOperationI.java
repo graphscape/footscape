@@ -55,6 +55,8 @@ public interface NodeQueryOperationI<W extends NodeWrapper> extends
 	public NodeQueryOperationI<W> singleNewest(boolean nf);
 
 	public NodeQueryOperationI<W> timestampRange(Date from, boolean includeFrom, Date to, boolean includeTo);
+	
+	public NodeQueryOperationI<W> explain(boolean expl);
 
 	public String getUniqueId();
 

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.AttachableI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.FinderI;
@@ -18,7 +17,6 @@ import com.fs.commons.api.callback.CallbackI;
 import com.fs.commons.api.describe.DescribableI;
 import com.fs.commons.api.describe.Describe;
 import com.fs.commons.api.event.BeforeAttachEvent;
-import com.fs.commons.api.event.BeforeDetachEvent;
 import com.fs.commons.api.event.EventBusI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.AttachableSupport;
@@ -44,8 +42,7 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
-	private static class ObjectEntryImpl extends DescribedSupport implements
-			ObjectEntryI {
+	private static class ObjectEntryImpl extends DescribedSupport implements ObjectEntryI {
 
 		private Object object;
 
@@ -87,17 +84,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 			new BeforeAttachEvent(this.object).dispatch(this.container);
 			((AttachableI) this.object).attach();
 
-		}
-
-		/**
-		 * 
-		 */
-		public void tryDettach() {
-			if (!(this.object instanceof AttachableI)) {
-				return;
-			}
-			new BeforeDetachEvent(this.object).dispatch(this.container);
-			((AttachableI) this.object).dettach();
 		}
 
 		/*
@@ -148,26 +134,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		if (this.attached) {
 			oe.tryAttach();//
 		}
-	}
-
-	@Override
-	public void removeObject(Object obj) {
-		ObjectEntryImpl rt = null;
-		for (ObjectEntryImpl oe : this.entryList) {
-			if (oe.getObject() == obj) {
-				rt = oe;
-				break;
-			}
-		}
-		if (rt == null) {
-			throw new FsException("no this object :" + obj);
-		}
-		this.entryList.remove(rt);
-		String id = rt.getId();
-		if (rt != null) {
-			this.hasIdEntryMap.remove(id);
-		}
-
 	}
 
 	/* */
@@ -258,18 +224,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.support.AttachableSupport#doDettach()
-	 */
-	@Override
-	protected void doDettach() {
-		for (ObjectEntryImpl oe : this.entryList) {
-			oe.tryDettach();
-		}
-
-	}
 
 	/*
 	 * Dec 14, 2012
@@ -324,5 +278,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		//
 		return this.eventBus;
 	}
+
 
 }

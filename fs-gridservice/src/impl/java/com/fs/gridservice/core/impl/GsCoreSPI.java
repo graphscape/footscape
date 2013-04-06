@@ -33,15 +33,9 @@ public class GsCoreSPI extends SPISupport {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.commons.api.ActivableI#deactive(com.fs.commons.api.ActiveContext)
-	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
-		// TODO Auto-generated method stub
+	protected void doBeforeShutdown(int loop) {
+		//
 
 	}
 

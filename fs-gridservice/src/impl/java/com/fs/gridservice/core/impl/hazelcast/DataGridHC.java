@@ -59,7 +59,7 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 	 * @param client
 	 */
 	public DataGridHC(HazelcastClient client, DgFactoryHC df) {
-		
+
 		this.client = client;
 		this.factory = df;
 		this.objectCache = Collections
@@ -357,12 +357,6 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 
 	}
 
-	@Override
-	protected void doDettach() {
-		new BeforeDgCloseEvent(this).dispatch(this.factory.getContainer());
-		this.client.shutdown();
-	}
-
 	/*
 	 * Dec 19, 2012
 	 */
@@ -373,7 +367,6 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 			i.dump();
 		}
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -386,6 +379,12 @@ public class DataGridHC extends AttachableSupport implements DataGridI {
 		Collection<Instance> is = this.client.getInstances();
 
 		return is.isEmpty();
+	}
+
+	public void close() {
+		//
+		new BeforeDgCloseEvent(this).dispatch(this.factory.getContainer());
+		this.client.shutdown();
 	}
 
 }

@@ -1,6 +1,6 @@
 <config>
-	<property name="messageQueryLimit" value="3" />	
-	<property name="expQueryLimit" value="3" />
+	<property name="messageQueryLimit" value="$client.messageQueryLimit" />	
+	<property name="expQueryLimit" value="$client.expQueryLimit" />
 	<property name="contactUrl" value="/contact"/>
 	<property name="aboutUsUrl" value="/about-us"/>
 	<property name="wsHeartBeatIntervalMs" value="$ws.heartBeatIntervalMs" />

@@ -26,9 +26,13 @@ public class UiClientImplTestSPI extends SPISupport {
 		// .populate();
 	}
 
-	/* */
+	/*
+	 * Apr 6, 2013
+	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
+	protected void doBeforeShutdown(int loop) {
+		//
+
 	}
 
 }

@@ -28,7 +28,8 @@ public class TerminalMsgReceiveEW extends TerminalMsgEW {
 
 	public static TerminalMsgReceiveEW valueOf(Path path, String tId, String cid, MessageI msg) {
 		String mid = msg.getId();
-		TerminalMsgReceiveEW rt = new TerminalMsgReceiveEW(new EventGd(TYPE, path, mid), tId, cid);
+		TerminalMsgReceiveEW rt = new TerminalMsgReceiveEW(new EventGd(TYPE, path, mid, msg.getPath()), tId,
+				cid);
 		rt.setMessage(msg);
 		return rt;
 	}

@@ -31,7 +31,7 @@ public class MessageSupport implements MessageI {
 	}
 
 	public MessageSupport(String path) {
-		this(path,UUID.randomUUID().toString());
+		this(path, UUID.randomUUID().toString());
 	}
 
 	public MessageSupport(String path, String id) {
@@ -66,6 +66,7 @@ public class MessageSupport implements MessageI {
 
 		}
 	}
+
 	/* */
 	@Override
 	public PropertiesI<String> getHeaders() {
@@ -131,10 +132,11 @@ public class MessageSupport implements MessageI {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("headers:");
+		sb.append("{headers:");
 		sb.append(this.headers.toString());
-		sb.append("payloads:");
+		sb.append(",payloads:");
 		sb.append(this.payloads.toString());
+		sb.append("}");
 		return sb.toString();
 	}
 
@@ -180,7 +182,8 @@ public class MessageSupport implements MessageI {
 		//
 		Object rt = this.getPayloads().getProperty(key);
 		if (force && rt == null) {
-			throw new FsException("force key:" + key);
+			throw new FsException("force payload key:" + key + ",all payload keys:"
+					+ this.getPayloads().keyList());
 		}
 		return rt;
 	}

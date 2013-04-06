@@ -137,4 +137,13 @@ public class EntityGdManagerSupport<T extends EntityGd> extends FacadeAwareConfi
 		}
 	}
 
+	/*
+	 *Apr 6, 2013
+	 */
+	@Override
+	public List<T> getAllEntity() {
+		// 
+		return this.dgMap.valueList();
+	}
+
 }

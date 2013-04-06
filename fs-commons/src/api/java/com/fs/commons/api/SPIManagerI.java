@@ -37,8 +37,6 @@ public interface SPIManagerI {
 
 	public void add(String id, Class<? extends SPI> cls);
 
-	public void remove(String id);
-
 	public ContainerI getContainer();
 
 	public void shutdown();//

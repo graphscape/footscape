@@ -15,6 +15,8 @@ public interface SPI extends ActivableI {
 	
 	public void setSPIManager(SPIManagerI sm);
 	
+	public void beforeShutdown(int loop);
+	
 	public String getId();
 
 	public List<String> getDependenceList();

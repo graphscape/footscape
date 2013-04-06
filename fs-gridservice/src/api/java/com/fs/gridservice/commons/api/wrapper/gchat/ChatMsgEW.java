@@ -20,9 +20,9 @@ public class ChatMsgEW extends EventWrapper {
 
 	public static ChatMsgEW valueOf(Path path, String tid, MessageI msg) {
 
-		ChatMsgEW rt = new ChatMsgEW(new EventGd(TYPE, path));
-
-		return rt;
+		//ChatMsgEW rt = new ChatMsgEW(new EventGd(TYPE, path));
+		return null;
+		//return rt;
 	}
 
 	public ChatMsgEW(EventGd target) {

@@ -15,7 +15,7 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  * 
  */
 public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
-	
+
 	public void addBeforeMessageSendingHandler(HandlerI<MessageSendingContext> handler);
 
 	public TerminalGd getTerminal(String id);
@@ -23,7 +23,7 @@ public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
 	public TerminalGd getTerminal(String id, boolean force);
 
 	public TerminalGd webSocketTerminal(WebSocketGoI wso);
-	
+
 	public TerminalGd web20Terminal(String address, PropertiesI<Object> pts);//
 
 	public void sendMessage(String termId, MessageI msg);
@@ -31,13 +31,13 @@ public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
 	public void sendMessage(MessageI msg);
 
 	public void sendTextMessage(String tId, String text);
-	
+
 	public void bindingClient(String tid, String clientId);
-	
+
 	public void bindingSession(String tid, String sid);
-	
+
 	public void unBindingSession(String tid);
-	
+
 	public TerminalGd getTerminalBySessionId(String sid, boolean force);
 
 }

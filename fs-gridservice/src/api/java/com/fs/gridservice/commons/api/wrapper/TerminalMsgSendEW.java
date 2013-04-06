@@ -19,7 +19,7 @@ public class TerminalMsgSendEW extends TerminalMsgEW {
 
 	public static TerminalMsgSendEW valueOf(Path path, String tid, String cid, MessageI msg) {
 
-		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path), tid, cid);
+		TerminalMsgSendEW rt = new TerminalMsgSendEW(new EventGd(TYPE, path, msg.getPath()), tid, cid);
 		rt.setMessage(msg);
 		return rt;
 	}

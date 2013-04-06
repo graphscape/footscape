@@ -26,8 +26,7 @@ import com.fs.commons.api.wrapper.PropertiesWrapper;
  */
 public class SPIManagerImpl implements SPIManagerI {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(SPIManagerImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SPIManagerImpl.class);
 
 	public static final int S_INIT = 0;
 
@@ -42,6 +41,8 @@ public class SPIManagerImpl implements SPIManagerI {
 	private List<SPI> spiList;
 
 	private int status = S_INIT;
+
+	private int maxShutdownLoop = 100;
 
 	public SPIManagerImpl() {
 		ContainerI.FactoryI tf = new ContainerImpl.FactoryImpl();
@@ -59,8 +60,7 @@ public class SPIManagerImpl implements SPIManagerI {
 	@Override
 	public void load(String res) {
 		if (this.status != S_INIT) {
-			throw new FsException("status:" + this.status
-					+ " must be init before load.");
+			throw new FsException("status:" + this.status + " must be init before load.");
 		}
 
 		PropertiesWrapper pw = PropertiesWrapper.load(res, true);
@@ -100,8 +100,7 @@ public class SPIManagerImpl implements SPIManagerI {
 	@Override
 	public void shutdown() {
 		if (this.status != S_RUNNING) {
-			throw new FsException("status:" + this.status
-					+ " must be running for shutdown.");
+			throw new FsException("status:" + this.status + " must be running for shutdown.");
 		}
 		this.status = S_SHUTINGDOWN;
 		try {
@@ -113,20 +112,19 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	public void doShutdown() {
 		this.log("spi manager shutting down...");
-		while (true) {
-			SPI spi = this.getLast(false);
-			if (spi == null) {
-				break;
+		for (int i = 0 ;i< this.maxShutdownLoop ; i++) {
+			for (int j = this.spiList.size() - 1; j >= 0; j--) {
+
+				SPI spi = this.spiList.get(j);
+				spi.beforeShutdown(i);
 			}
-			this.remove(spi.getId());//
 		}
-		this.container.dettach();
+
 		this.log("spi manager shut down.");
 	}
 
 	public void log(String msg) {
-		System.out.println("INFO " + new Date()
-				+ SPIManagerImpl.class.getName() + " " + "" + msg);
+		System.out.println("INFO " + new Date() + SPIManagerImpl.class.getName() + " " + "" + msg);
 	}
 
 	@Override
@@ -142,8 +140,7 @@ public class SPIManagerImpl implements SPIManagerI {
 			throw new FsException("duplicated spi:" + id + ",cls:" + cls);
 		}
 		this.log("start	spi:" + id + ",cls:" + cls);
-		SPI s = ClassUtil.newInstance(cls, new Class[] { String.class },
-				new Object[] { id });
+		SPI s = ClassUtil.newInstance(cls, new Class[] { String.class }, new Object[] { id });
 		s.setSPIManager(this);//
 		this.assertDependenceList(s);
 
@@ -167,8 +164,8 @@ public class SPIManagerImpl implements SPIManagerI {
 		}
 
 		if (!missing.isEmpty()) {
-			throw new FsException("spi:" + spi.getId()
-					+ " cannot active for not founding dependence:" + missing);
+			throw new FsException("spi:" + spi.getId() + " cannot active for not founding dependence:"
+					+ missing);
 		}
 	}
 
@@ -182,33 +179,6 @@ public class SPIManagerImpl implements SPIManagerI {
 			throw new FsException("no spi with id:" + id);
 		}
 		return null;
-	}
-
-	public SPI getLast(boolean force) {
-		if (this.spiList.isEmpty()) {
-			if (force) {
-				throw new FsException("no spi in list");
-			}
-			return null;
-		}
-		return this.spiList.get(this.spiList.size() - 1);
-	}
-
-	/* */
-	@Override
-	public void remove(String id) {
-		this.log("removing spi:" + id + "");
-		SPI lspi = this.getLast(true);
-		if (!lspi.getId().equals(id)) {
-			throw new FsException("not support to remove none-last spi.");
-		}
-		this.spiList.remove(lspi);
-		//
-
-		//
-		ActiveContext ac = new ActiveContext(this.container, lspi);
-		lspi.deactive(ac);
-		this.log("		done remove spi:" + id);
 	}
 
 	/**

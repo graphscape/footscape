@@ -30,10 +30,14 @@ public class TestSPI extends SPISupport {
 
 	}
 
-	/* */
+	/*
+	 *Apr 6, 2013
+	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
-
+	protected void doBeforeShutdown(int loop) {
+		// 
+		
 	}
+
 
 }

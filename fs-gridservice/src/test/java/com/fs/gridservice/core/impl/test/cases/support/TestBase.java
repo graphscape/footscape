@@ -16,7 +16,7 @@ import com.fs.gridservice.core.api.DgFactoryI;
  */
 public class TestBase extends TestCase {
 
-	protected SPIManagerI sm;
+	protected static SPIManagerI sm;
 
 	protected DgFactoryI factory;
 
@@ -24,10 +24,12 @@ public class TestBase extends TestCase {
 
 	@Override
 	public void setUp() {
+		if (sm == null) {
 
-		sm = SPIManagerI.FACTORY.get();
+			sm = SPIManagerI.FACTORY.get();
 
-		sm.load("/boot/test-spim.properties");
+			sm.load("/boot/test-spim.properties");
+		}
 		this.factory = sm.getContainer().finder(DgFactoryI.class).find(true);
 
 		this.dg = this.factory.getInstance();
@@ -40,7 +42,7 @@ public class TestBase extends TestCase {
 	}
 
 	public void tearDown() throws Exception {
-		sm.shutdown();//
+		//sm.shutdown();//
 	}
 
 }

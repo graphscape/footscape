@@ -82,8 +82,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 	}
 
 	@Override
-	public void deactive(ActiveContext ac) {
-		super.deactive(ac);
+	public void close() {
 		if (this.dataService == null) {
 			return;
 		}

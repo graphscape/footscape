@@ -35,12 +35,6 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 		return new ActiveContext(this.container, this.spi);
 	}
 
-	/* */
-	@Override
-	public void deactive(ActiveContext ac) {
-
-	}
-
 	public ContainerI getContainer() {
 		return container;
 	}
@@ -50,16 +44,6 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 	 */
 	@Override
 	protected void doAttach() {
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.support.AttachableSupport#doDettach()
-	 */
-	@Override
-	protected void doDettach() {
 
 	}
 

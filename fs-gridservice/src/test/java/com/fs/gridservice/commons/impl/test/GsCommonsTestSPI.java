@@ -49,14 +49,10 @@ public class GsCommonsTestSPI extends SPISupport {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.support.SPISupport#doDeactive(com.fs.commons.api.
-	 * ActiveContext)
+	 * Apr 6, 2013
 	 */
 	@Override
-	protected void doDeactive(ActiveContext ac) {
-		// TODO Auto-generated method stub
+	protected void doBeforeShutdown(int loop) {
 
 	}
 

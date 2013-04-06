@@ -29,6 +29,12 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 
 	public CollectionHandler<MessageSendingContext> beforeMessageSendingHandlers = new CollectionHandler<MessageSendingContext>();
 
+	public static final int S_CLOSING = 1;
+
+	public static final int S_CLOSED = 2;
+
+	protected int status = 0;
+
 	/**
 	 * @param name
 	 * @param wcls
@@ -76,8 +82,8 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 		String wsoId = tg.getAddress();
 		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		WebSocketGoI wso = gom.getGridedObject(wsoId, true);
-		
-		MessageSendingContext msc = new MessageSendingContext(msg,tg,this.facade);
+
+		MessageSendingContext msc = new MessageSendingContext(msg, tg, this.facade);
 		this.beforeMessageSendingHandlers.handle(msc);
 		wso.sendMessage(msg);//
 	}
@@ -153,6 +159,9 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 
 	@Override
 	public TerminalGd web20Terminal(String address, PropertiesI<Object> pts) {
+		if (this.status == S_CLOSING || this.status == S_CLOSED) {
+			throw new FsException("closing or closed,system is shuting down?");
+		}
 		TerminalGd rt = new TerminalGd();
 		rt.setProperties(pts);
 		rt.setProperty(TerminalGd.PK_PROTOCAL, "web20");
@@ -211,5 +220,6 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 	public void addBeforeMessageSendingHandler(HandlerI<MessageSendingContext> handler) {
 		this.beforeMessageSendingHandlers.addHandler(handler);
 	}
+
 
 }

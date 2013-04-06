@@ -87,9 +87,8 @@ public class DgFactoryHC extends ConfigurableSupport implements DgFactoryI {
 	}
 
 	@Override
-	public void deactive(ActiveContext ac) {
-		super.deactive(ac);
-		this.instance.dettach();
+	public void close() {
+		this.instance.close();
 	}
 
 	@Override

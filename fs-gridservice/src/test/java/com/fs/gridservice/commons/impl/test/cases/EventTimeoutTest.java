@@ -15,8 +15,9 @@ import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
 public class EventTimeoutTest extends TestBase {
 
 	public void test() {
-		EventGd e = new EventGd(EventType.valueOf("timeout-testing"), Path.valueOf("/timeout/testing"));
-		
+		EventGd e = new EventGd(EventType.valueOf("timeout-testing"),
+				Path.valueOf("/events/timeout/testing"), Path.valueOf("/timeout/testing"));
+
 		this.facade.getGlogalEventQueue().offer(e);
 	}
 }

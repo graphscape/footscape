@@ -23,6 +23,7 @@ public abstract class TerminalMsgEW extends TerminalEW {
 	 */
 	public void setMessage(MessageI msg) {
 		this.target.setPayload(MESSAGE, msg);
+		
 	}
 
 	public MessageI getMessage() {

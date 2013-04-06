@@ -26,7 +26,8 @@ public class EventWrapperC<T extends EventWrapper> extends
 	@Override
 	public T convert(MessageContext f) {
 
-		EventGd evt = (EventGd) f.getRequest().getPayload();
+		//the request must is a EventGd which is dispatched by the EventDispatcherSupport,
+		EventGd evt = (EventGd) f.getRequest();
 		evt.getType();// //TODO check type
 		EventWrapper rt = ClassUtil.newInstance(this.toClass,
 				new Class[] { EventGd.class }, new Object[] { evt });

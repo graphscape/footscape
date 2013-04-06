@@ -26,4 +26,14 @@ public abstract class EventWrapper {
 		this.target.setPayload(key, value);
 	}
 
+	/*
+	 *Apr 6, 2013
+	 */
+	@Override
+	public String toString() {
+		return this.target.toString();		
+	}
+	
+	
+
 }

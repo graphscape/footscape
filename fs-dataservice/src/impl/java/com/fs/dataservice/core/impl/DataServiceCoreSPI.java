@@ -6,13 +6,15 @@ package com.fs.dataservice.core.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.dataservice.core.impl.elastic.ElasticDataServiceImpl;
+import com.fs.dataservice.api.core.DataServiceFactoryI;
 
 /**
  * @author wu
  * 
  */
 public class DataServiceCoreSPI extends SPISupport {
+
+	public static final int shutdownLoop = 30;
 
 	/**
 	 * @param id
@@ -32,11 +34,15 @@ public class DataServiceCoreSPI extends SPISupport {
 	}
 
 	/*
-	 * Oct 27, 2012
+	 * Apr 6, 2013
 	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
+	protected void doBeforeShutdown(int loop) {
 		//
+		if (loop == this.shutdownLoop) {
+			DataServiceFactoryI dsf = this.container.find(DataServiceFactoryI.class, true);
+			dsf.close();
+		}
 
 	}
 

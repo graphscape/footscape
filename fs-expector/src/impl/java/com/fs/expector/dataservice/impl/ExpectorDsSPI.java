@@ -62,12 +62,12 @@ public class ExpectorDsSPI extends SPISupport {
 	}
 
 	/*
-	 * Oct 27, 2012
+	 *Apr 6, 2013
 	 */
 	@Override
-	public void doDeactive(ActiveContext ac) {
-		//
-
+	protected void doBeforeShutdown(int loop) {
+		// 
+		
 	}
 
 }
