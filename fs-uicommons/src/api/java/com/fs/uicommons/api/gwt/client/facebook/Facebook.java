@@ -76,7 +76,7 @@ public class Facebook {
 
 			$wnd.FB.init(pts);
 			//alert('after fb init');
-			@com.fs.uiclient.api.gwt.client.facebook.Facebook::afterFBInit(Ljava/lang/Object;)($wnd.FB);
+			@com.fs.uicommons.api.gwt.client.facebook.Facebook::afterFBInit(Ljava/lang/Object;)($wnd.FB);
 		};
 	}-*/;
 

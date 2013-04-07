@@ -29,20 +29,16 @@ public class IntegratedSPI extends SPISupport {
 		WebAppI wa = ac.getContainer().find(WebServerI.class, true)
 				.addWebApp(ac, "INTEGRATED", this.id + ".WebApp.INTEGRATED");
 
-		// TODO create a integrated web app
 		wa.addResource(ac, "INTEGRATED", this.id + ".webResource.integrated");
 
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.commons.api.support.SPISupport#doDeactive(com.fs.commons.api.
-	 * ActiveContext)
+	 * Apr 7, 2013
 	 */
 	@Override
-	protected void doDeactive(ActiveContext ac) {
-		// TODO Auto-generated method stub
+	protected void doBeforeShutdown(int loop) {
+		//
 
 	}
 

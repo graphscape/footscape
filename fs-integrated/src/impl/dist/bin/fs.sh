@@ -8,7 +8,7 @@
 #Resolve FS HOME
 if [ -z "$FS_HOME" ] ; then
 
-    ## resolve links - $0 may be a link to activemq's home
+    ## resolve links - $0 
     PRG="$0"
     progname=`basename "$0"`
     saveddir=`pwd`
@@ -60,7 +60,7 @@ PID=${FS_LOGS}/fs.pid
 #out
 LOG_OUT=${FS_LOGS}/fs.out
 #err
-LOG_ERR=${FS_LOGS}/fs.err
+LOG_ERR=${FS_LOGS}/fs.out
 
 OPTS_1="-home "$JAVA_HOME" -cp $CLASS_PATH -user $USER -outfile $LOG_OUT -errfile $LOG_ERR -pidfile $PID"
 OPTS_2="-Dfs.home=$FS_HOME -Dfs.log.level=$FS_LOG_LEVEL"

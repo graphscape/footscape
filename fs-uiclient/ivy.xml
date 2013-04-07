@@ -24,8 +24,6 @@
 		
 		<dependency org="com.fs" name="gridservice" rev="1.0.0" force="true" conf="test->runtime(*)" />
 		
-		<dependency org="com.fs" name="uiserver" rev="1.0.0" force="true" conf="test->runtime(*)" />
-		
 		<dependency org="com.google.gwt" name="gwt-user" rev="2.5.0" force="true" conf="impl->master" />
 		
 		<dependency org="com.google.gwt" name="gwt-servlet" rev="2.5.0" force="true" conf="impl->master" />
