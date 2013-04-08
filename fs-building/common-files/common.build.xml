@@ -254,6 +254,15 @@
 	</jar>
 
 </target>
+<target name="package-impl" depends="compile-test">
+	<antcall target="jar-">
+		<param name="part" value="api" />
+	</antcall>
+	<antcall target="jar-">
+		<param name="part" value="impl" />
+	</antcall>
+	
+</target>
 <target name="package" depends="compile-test" description="">
 	<antcall target="package-gwt" />
 	<antcall target="jar-">
@@ -262,7 +271,7 @@
 	<antcall target="jar-">
 		<param name="part" value="impl" />
 	</antcall>
-
+	
 </target>
 
 <!-- Note:this task package gwt generated js,and package task include this package(jar). -->
