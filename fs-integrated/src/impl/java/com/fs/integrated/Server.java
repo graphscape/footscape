@@ -13,7 +13,7 @@ public class Server {
 
 	private SPIManagerI spiManager;
 
-	public static void main() {
+	public static void main(String[] args) {
 		new Server().start();
 
 		while (true) {
