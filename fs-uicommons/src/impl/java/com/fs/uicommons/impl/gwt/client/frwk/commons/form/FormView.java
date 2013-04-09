@@ -108,7 +108,12 @@ public class FormView extends ViewSupport implements FormViewI {
 
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls) {
-		return this.addField(name, dcls, null);// default editor class
+		return this.addField(name, dcls, null, null);// default editor class
+	}
+
+	@Override
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Map<String, Object> editorPts) {
+		return this.addField(name, dcls, null, editorPts, null);
 	}
 
 	@Override
@@ -119,6 +124,11 @@ public class FormView extends ViewSupport implements FormViewI {
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback) {
+		return this.addField(name, dcls, editorClass, null, editorCallback);
+	}
+
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
+			Map<String, Object> editorPts, final UiCallbackI<T, Object> editorCallback) {
 
 		FieldModel rt = new FieldModel(name, dcls, editorClass);
 
@@ -126,7 +136,7 @@ public class FormView extends ViewSupport implements FormViewI {
 
 		Class<? extends EditorI> etype = this.resolveEditorClass(rt);//
 		String i18n = rt.getName();
-		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype, i18n);
+		PropertyModel pm = this.propertiesEditor.addFieldModel(rt.getName(), etype, editorPts, i18n);
 		if (editorCallback != null) {
 
 			editorCallback.execute((T) pm.getEditor(true));

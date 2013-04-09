@@ -13,7 +13,6 @@ import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
-import com.fs.uicore.api.gwt.client.window.UiWindow;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
@@ -42,11 +41,7 @@ public class IntegratedEntryPoint implements EntryPoint {
 
 		this.container = sf.getContainer();
 		client = this.container.get(UiClientI.class, true);
-		String wsP = UiWindow.getParameter("fs.wsPort", "8080");
-		String wssP = UiWindow.getParameter("fs.wssPort", "8443");
-		
-		client.setParameter(UiClientI.RK_WS_PORT, wsP);
-		client.setParameter(UiClientI.RK_WSS_PORT, wssP);
+
 		client.start();
 		RootI root = client.getRoot();
 

@@ -1,4 +1,18 @@
 
+a.user-icon {
+	padding:0px;
+}
+a.user-icon img{ /*user image*/
+	width:26px;
+	height:26px;
+	
+}
+
+a.user-icon:hover img {
+	width:52px;
+	height:52px;
+}
+
 .header-item-logo {
 	font-size: 24px;
 	font-family: Helvetica;
@@ -76,10 +90,8 @@
 }
 
 .myexp-message-body {
-	font-weight:bold;
-	padding : 6px;
-	background: rgba(50, 90, 150, 0.2);
-	border-bottom : 0px solid rgba(50, 90, 150, 0.0);
+	font-weight:normal;
+	margin : 6px;
 }
 
 .myexp-message-nick {
@@ -100,6 +112,10 @@
 	color:rgba(0, 0, 0, 0.5);
 	text-align:left;
 	white-space: nowrap;
+}
+
+.myexp-textarea {
+	text-align:left;
 }
 
 .uel-item {
@@ -134,7 +150,6 @@
 	color:#0754A6;
 	font-weight:bold;
 }
-
 
 
 

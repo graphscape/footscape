@@ -20,8 +20,8 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
-import com.google.gwt.editor.client.Editor;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -106,7 +106,11 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		// TODO by type to create editor
 		TableI.CellI cel2 = r.createCell();
 		cel2.getElement().addClassName("position-right");
-		EditorI<?> editor = (EditorI<?>) this.factory.create(ecls);// editor
+		Map<String,Object> epts = pm.getEditorPts();
+		MapProperties<Object> pts = new MapProperties<Object>();
+		
+		pts.setProperties(epts);
+		EditorI<?> editor = (EditorI<?>) this.factory.create(ecls,null, pts);// editor
 		editor.setName(key);//
 		// class
 		cel2.child(editor);
@@ -165,8 +169,14 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 
 	@Override
 	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype, String i18nKey) {
+		return this.addFieldModel(key, etype, null, i18nKey);
+	}
 
-		PropertyModel rt = new PropertyModel(key, i18nKey, etype);
+	@Override
+	public PropertyModel addFieldModel(String key, Class<? extends EditorI> etype,
+			Map<String, Object> editorPts, String i18nKey) {
+
+		PropertyModel rt = new PropertyModel(key, i18nKey, etype,editorPts);
 
 		this.addProperty(rt);
 
@@ -199,11 +209,11 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 	}
 
 	/*
-	 *Mar 28, 2013
+	 * Mar 28, 2013
 	 */
 	@Override
 	public void setFieldValue(String fname, Object v) {
-		EditorI edt  = this.getPropertyEditor(fname);
+		EditorI edt = this.getPropertyEditor(fname);
 		edt.setData(v);
 	}
 

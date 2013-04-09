@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
@@ -90,13 +91,13 @@ public class ListImpl extends LayoutSupport implements ListI {
 			TDWrapper td = tr.addTd();
 			
 			td.append(ceo.getElement());
-			td.addClassName("list-item");
+			td.addClassName(UiCommonsConstants.CN_VLIST_ITEM);
 			//td.append(ceo.getElement());
 			ceo.setProperty("externalParentElement", tr);
 		} else {//
 			TDWrapper td = this.firstTRForHorizental.addTd();
 			td.append(ceo.getElement());
-			td.addClassName("list-item");
+			td.addClassName(UiCommonsConstants.CN_HLIST_ITEM);
 			ceo.setProperty("externalParentElement", td);
 		}
 	}

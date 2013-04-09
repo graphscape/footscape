@@ -4,6 +4,7 @@
 package com.fs.uicommons.api.gwt.client.frwk.commons;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
@@ -18,6 +19,8 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 public interface FormViewI extends ViewI {
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls);
+	
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Map<String,Object> editorPts);
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback);

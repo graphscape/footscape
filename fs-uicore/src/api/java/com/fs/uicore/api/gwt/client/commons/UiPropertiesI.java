@@ -32,5 +32,7 @@ public interface UiPropertiesI<T> {
 	public T getProperty(String key, T def);
 
 	public Map<String, T> getAsMap();
+	
+	public void setProperties(Map<String,T> map);
 
 }

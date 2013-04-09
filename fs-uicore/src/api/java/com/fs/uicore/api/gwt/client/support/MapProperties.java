@@ -109,4 +109,12 @@ public class MapProperties<T> implements UiPropertiesI<T> {
 
 	}
 
+	/*
+	 *Apr 9, 2013
+	 */
+	@Override
+	public void setProperties(Map<String, T> map) {
+		this.map.putAll(map);
+	}
+
 }

@@ -135,8 +135,9 @@
 .visible {
 	display: block;
 }
-.vlist td.list-item{
-	text-align: center;
+
+.vlist-item{
+	text-align: left;
 }
 
 .tabber-layout-right {
@@ -207,9 +208,6 @@
 	border-bottom:1px solid rgba(50, 90, 150, 0.3);
 }
 
-.list-item {
-	vertical-align: top;
-}
 /*Anchor,button*/
 
 

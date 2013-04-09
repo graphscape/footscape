@@ -80,11 +80,16 @@ public abstract class ExpMessageView extends ViewSupport {
 			{
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("myexp-message-td0");
+				//anchor
+				Element ar = DOM.createAnchor();
+				ar.addClassName("user-icon");
+				//img
 				ElementWrapper image = new ElementWrapper(DOM.createImg());
 				image.setAttribute(
 						"src",
 						msg.getIcon1());//
-				td0.append(image);
+				ar.appendChild(image.getElement());//
+				td0.append(ar);
 			}
 			// message
 			{

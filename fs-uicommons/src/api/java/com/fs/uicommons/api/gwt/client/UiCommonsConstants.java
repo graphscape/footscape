@@ -20,4 +20,7 @@ public class UiCommonsConstants {
 	public static String RK_WS_HEARTBEATINTERVAL = "wsHeartBeatIntervalMs";
 	
 	public static final int MENU_HIDE_TIMEOUT_MS = 100;
+	
+	public static final String CN_VLIST_ITEM = "vlist-item";
+	public static final String CN_HLIST_ITEM = "hlist-item";
 }

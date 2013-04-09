@@ -61,13 +61,16 @@ public class UserExpItemView extends ViewSupport {
 			// left
 			TRWrapper tr0 = this.table.addTr();
 			TDWrapper td0 = tr0.addTd();
-			td0.addClassName("uel-item-icon");
+			td0.addClassName("uel-item-td0");
 			td0.setAttribute("rowspan", "3");
+			/*
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
+			image.addClassName("user-icon");
 			image.setAttribute(
 					"src",
 					"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==");//
 			td0.append(image);
+			*/
 			// middle
 			TDWrapper td01 = tr0.addTd();
 			td01.setAttribute("rowspan", "1");

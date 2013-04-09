@@ -4,11 +4,14 @@
  */
 package com.fs.uiclient.impl.gwt.client.expe;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
+import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 
@@ -29,7 +32,9 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 		this.addAction(Actions.A_EXPE_SUBMIT);//
 
 		FormViewI fv = this.getDefaultForm();
-		fv.addField(F_BODY, String.class);
+		Map<String, Object> pts = new HashMap<String, Object>();
+		pts.put(StringEditorI.PK_TEXAREA, true);
+		fv.addField(F_BODY, String.class, pts);
 		fv.getFormModel().addAction(Actions.A_EXPE_SUBMIT);//
 	}
 

@@ -22,6 +22,7 @@ import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
@@ -61,9 +62,15 @@ public class ExpItemView extends ViewSupport {
 			TDWrapper td0 = tr0.addTd();
 			td0.addClassName("exps-item-icon");
 			td0.setAttribute("rowspan", "3");
+			Element ar = DOM.createAnchor();
+			ar.addClassName("user-icon");
+			
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
 			image.setAttribute("src", ei.getIconDataUrl());
-			td0.append(image);
+			
+			ar.appendChild(image.getElement());
+			td0.append(ar);
+			
 			// middle,timestamp
 			TDWrapper td01 = tr0.addTd();
 			td01.addClassName("exps-item-timestamp");
