@@ -152,10 +152,6 @@
 	display: none;
 }
 
-.elo-Canvas {
-	border: 1px solid green;
-}
-
 .elo-Canvas.invisible {
 	display: block;
 }
@@ -198,11 +194,6 @@
 	float: left;
 	width: 10px;
 	height: 10px;
-}
-
-.elo-ImageCroper {
-	border: 1px solid blue;
-	overflow: visible;
 }
 
 .frwk-bottom {

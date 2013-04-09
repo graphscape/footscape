@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -153,16 +153,17 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	}
 
 	/**
-	 *Apr 4, 2013
+	 * Apr 4, 2013
 	 */
 	protected void onClientClosing(ClientClosingEvent t) {
 		this.close();
 	}
 
 	@Override
-	public void close(){
+	public void close() {
 		this.socket.close();
 	}
+
 	protected void onServerIsReady(MsgWrapper e) {
 		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);
@@ -171,22 +172,30 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		new EndpointOpenEvent(this).dispatch();
 	}
 
-	@Override
-	public void open() {
-		UiClientI client = this.getClient(true);//
+	protected String resolveWsUrl() {
+
 		String protocol = Window.Location.getProtocol();
 		String host = Window.Location.getHostName();
-		String port = Window.Location.getPort();
-		boolean https = protocol.equals("https:");
+		String wsProtocol = Window.Location.getParameter(UiCoreConstants.PK_WS_PROTOCOL);
+		if (wsProtocol == null) {// determine by http
+			boolean https = protocol.equals("https:");
+			wsProtocol = https ? "wss" : "ws";
+		}
+		String wsPort = Window.Location.getParameter(UiCoreConstants.PK_WS_PORT);
+		if (wsPort == null) {
+			wsPort = Window.Location.getPort();
+		}
 
-		String wsProtocol = https ? "wss" : "ws";
 		//
-		String portSet = client.getParameter(https ? UiClientI.RK_WSS_PORT : UiClientI.RK_WS_PORT, false);
 
-		port = portSet == null ? (https ? "443" : "80") : portSet;
+		String rt = wsProtocol + "://" + host + ":" + wsPort + "/wsa/default";
 
-		this.uri = wsProtocol + "://" + host + ":" + port + "/wsa/default";
+		return rt;
+	}
 
+	@Override
+	public void open() {
+		this.uri = this.resolveWsUrl();
 		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
 		this.socket = WebSocketJSO.newInstance(uri, true);
@@ -409,15 +418,6 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	public UserInfo getUserInfo() {
 		//
 		return this.userInfo;
-	}
-
-	/*
-	 * Mar 28, 2013
-	 */
-	@Override
-	public MessageCacheI getRequestCache() {
-		//
-		return null;
 	}
 
 }

@@ -22,7 +22,7 @@ public interface EndPointI extends UiObjectI {
 	public void sendMessage(MsgWrapper req);
 
 	public void open();
-	
+
 	public void close();
 
 	public boolean isOpen();
@@ -38,7 +38,5 @@ public interface EndPointI extends UiObjectI {
 	public UserInfo getUserInfo();
 
 	public String getUri();
-	
-	public MessageCacheI getRequestCache();
 
 }

@@ -30,6 +30,8 @@
 	<property name="/error/login/missing/email" value="Please input email" />
 	<property name="/error/login/missing/password" value="Please input password" />
 	<property name="/error/login/missing/nick" value="Please input nick" />
+	<property name="/error/password-forgot/failure" value="Failured when send message to the email address!" />
+	
 	
 	<!-- Header Items,Tab title -->
 	<property name="/exp-search" value="Search" />

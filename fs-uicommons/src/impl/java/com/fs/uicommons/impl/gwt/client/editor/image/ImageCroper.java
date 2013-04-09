@@ -50,7 +50,7 @@ public class ImageCroper extends ElementObjectSupport {
 
 	protected double zoomY = 1;
 
-	protected ObjectElementHelper ok;
+	//protected ObjectElementHelper ok;
 
 	/**
 	 * @param ele
@@ -96,16 +96,16 @@ public class ImageCroper extends ElementObjectSupport {
 		this.elementWrapper.append(this.test);
 
 		//
-		this.ok = this.helpers.addHelper("ok", DOM.createAnchor());
-		this.ok.parent(this.elementWrapper);
-		this.ok.getElement().setInnerHTML("ok");
-		this.ok.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
-
-			@Override
-			protected void handleInternal(ClickEvent evt) {
-				ImageCroper.this.close(true);
-			}
-		});
+//		this.ok = this.helpers.addHelper("ok", DOM.createAnchor());
+//		this.ok.parent(this.elementWrapper);
+//		this.ok.getElement().setInnerHTML("ok");
+//		this.ok.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
+//
+//			@Override
+//			protected void handleInternal(ClickEvent evt) {
+//				ImageCroper.this.close(true);
+//			}
+//		});
 		this.forDebug();
 
 	}

@@ -126,7 +126,7 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 		Account a = this.efacade.getAccountByEmail(email);
 
 		if (a == null) {
-			res.getErrorInfos().addError("reset-password/failure");
+			res.getErrorInfos().addError("error/password-forgot/failure");
 			return;
 		}
 		String aid = a.getId();
