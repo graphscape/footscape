@@ -18,9 +18,14 @@ public class UiCommonsConstants {
 	public static final Path PASSWORDRESET_VIEW = Path.valueOf("password-reset");
 
 	public static String RK_WS_HEARTBEATINTERVAL = "wsHeartBeatIntervalMs";
-	
+
 	public static final int MENU_HIDE_TIMEOUT_MS = 100;
-	
+	// client parameters
+	public static final String CPK_TEXT_INPUT_LENGTH_LIMIT = "textInputLengthLimit";
+
+	// css class name
 	public static final String CN_VLIST_ITEM = "vlist-item";
+
 	public static final String CN_HLIST_ITEM = "hlist-item";
+
 }

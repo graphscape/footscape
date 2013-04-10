@@ -6,7 +6,6 @@ package com.fs.uiclient.impl.gwt.client.testsupport;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.fs.uiclient.api.gwt.client.event.FailureMessageEvent;
 import com.fs.uiclient.api.gwt.client.event.SuccessMessageEvent;
@@ -26,12 +25,6 @@ import com.fs.uicore.api.gwt.client.event.AttachedEvent;
  * 
  */
 public abstract class AbstractTestWorker extends TestWorker {
-	public static void beforeTesting() {
-
-		AccountsLDW accs = AccountsLDW.getInstance();
-		accs.invalid();
-
-	}
 
 	protected UiClientI client;
 

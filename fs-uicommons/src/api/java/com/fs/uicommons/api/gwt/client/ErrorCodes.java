@@ -9,7 +9,7 @@ package com.fs.uicommons.api.gwt.client;
  * 
  */
 public class ErrorCodes {
-
-	public static final String AUTH_FAILURE = "auth/failure";
+	//NOTE must be same as 
+	public static final String AUTH_FAILURE = "/error/login/failure";
 
 }

@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wuzhen
@@ -55,6 +56,11 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 
 	protected void doStart() {
 		UserInfo ui = this.endpoint.getUserInfo();
+		if (ui == null) {
+			Window.alert("anonymous user info is null");
+			return;
+		}
+
 		if (!ui.isAnonymous()) {//
 			throw new UiException("user info not anonymous,ui:" + ui);
 		}
@@ -83,7 +89,7 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		MessageData res = e.getMessage();
 		Path p = e.getMessage().getPath().getParent();
 		if (p.equals(Path.valueOf("/endpoint/message/signup/submit"))) {
-			
+
 			this.tryFinish("signup.done");
 			this.onSignup(this.email, this.password);
 		}
@@ -107,17 +113,17 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 		EditorI passwordE = fv.find(EditorI.class, "password", true);
 		passwordE.input((this.password));
 
-		//EditorI password2E = fv.find(EditorI.class, "password2", true);
-		//password2E.input((this.password));
+		// EditorI password2E = fv.find(EditorI.class, "password2", true);
+		// password2E.input((this.password));
 
 		EditorI emailE = fv.find(EditorI.class, "email", true);
 		emailE.input((this.email));
 
-		//EditorI isaE = fv.find(EditorI.class, "isAgree", true);
-		//isaE.input((true));
+		// EditorI isaE = fv.find(EditorI.class, "isAgree", true);
+		// isaE.input((true));
 
-		//EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
-		//ccnE.input(("resp"));
+		// EditorI ccnE = fv.find(EditorI.class, "confirmCodeNotifier", true);
+		// ccnE.input(("resp"));
 
 		this.signupView.clickAction(Actions.A_SIGNUP_SUBMIT);
 

@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public class RegisterUserLoginEvent extends UserLoginEvent {
 

@@ -1,7 +1,5 @@
 package com.fs.uicommons.impl.gwt.client.handler.action;
 
-import com.fs.uicommons.api.gwt.client.Actions;
-import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.event.AutoLoginRequireEvent;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
@@ -51,12 +49,12 @@ public class AutoLoginHandler extends UiHandlerSupport implements EventHandlerI<
 		AccountsLDW accs = AccountsLDW.getInstance();
 		RegisteredAccountLDW acc1 = accs.getRegistered();
 		AnonymousAccountLDW acc2 = accs.getAnonymous();
-		if (acc1.isValid()) {
+		if (acc1.isValid()) {//registered user is available
 			req.setProperty("isSaved", (true));
 			req.setProperty("type", ("registered"));
 			req.setProperty("email", (acc1.getEmail()));
 			req.setProperty("password", (acc1.getPassword()));
-		} else if (acc2.isValid()) {
+		} else if (acc2.isValid()) {//anonymous user is available
 			req.setProperty("isSaved", (true));
 			req.setProperty("type", ("anonymous"));
 

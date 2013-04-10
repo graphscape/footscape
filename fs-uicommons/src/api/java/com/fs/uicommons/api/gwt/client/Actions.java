@@ -33,6 +33,8 @@ public class Actions {
 
 	public static final Path A_LOGIN_SUBMIT = A_LOGIN.getSubPath("submit");
 	
+	public static final Path A_LOGIN_SUBMIT_SUCCESS = A_LOGIN_SUBMIT.getSubPath("success");
+	
 	public static final Path A_LOGIN_FACEBOOK = A_LOGIN.getSubPath("facebook");
 
 	public static final Path A_PASSWORD_FORGOT = A_PASSWORD.getSubPath("forgot");

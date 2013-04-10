@@ -6,7 +6,6 @@ package com.fs.uicommons.impl.gwt.client.handler;
 import com.fs.uicommons.api.gwt.client.HeaderItems;
 import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
-import com.fs.uicommons.api.gwt.client.gchat.GChatControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -29,14 +28,14 @@ public class UserLoginHandler extends UiHandlerSupport implements EventHandlerI<
 	@Override
 	public void handle(UserLoginEvent e) {
 		UserInfo ui = e.getUserInfo();
-		GChatControlI gc = this.getControl(GChatControlI.class, true);
-		gc.setConnected(true);//
+
 		//
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		String nick = (String) ui.getProperty("nick");
 		if (nick == null) {
 			nick = ui.getAccountId();//
 		}
+		//show a shorter name
 		if (nick.length() > 9) {
 			nick = nick.substring(0, 6) + "...";
 		}

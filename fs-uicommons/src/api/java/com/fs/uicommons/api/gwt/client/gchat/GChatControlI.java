@@ -8,7 +8,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public interface GChatControlI extends ControlI {
 

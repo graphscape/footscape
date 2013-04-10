@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.test.gwt.client;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.impl.gwt.client.testsupport.AbstractTestWorker;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
+import com.fs.uicommons.impl.gwt.client.frwk.login.AccountsLDW;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -17,6 +18,7 @@ import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -32,18 +34,22 @@ public class UiClientTestEntryPoint implements EntryPoint {
 	public void onModuleLoad() {
 		//
 		// UiLoggerFactory.configure((String) null, UiLoggerI.LEVEL_DEBUG);//
+		//
+		if ("true".equals(Window.Location.getParameter(UiClientTestConstants.PK_CLEAN_CLIENT_STORAGE))) {
+			AccountsLDW accs = AccountsLDW.getInstance();
+			accs.invalid();
+		}
 
-		AbstractTestWorker.beforeTesting();
-		
+		//
 		GwtSPI[] spis = new GwtSPI[] { (UiCoreGwtSPI) GWT.create(UiCoreGwtSPI.class),
 				(UiCommonsGPI) GWT.create(UiCommonsGPI.class),
 				(UiClientGwtSPI) GWT.create(UiClientGwtSPI.class),
-				(UiClientTestGPI) GWT.create(UiClientTestGPI.class)};
+				(UiClientTestGPI) GWT.create(UiClientTestGPI.class) };
 		GwtSPI.Factory sf = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {
-				
+
 			}
 		});
 

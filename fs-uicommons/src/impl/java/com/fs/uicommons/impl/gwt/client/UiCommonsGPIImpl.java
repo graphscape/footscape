@@ -89,6 +89,7 @@ import com.fs.uicommons.impl.gwt.client.handler.action.LogoutAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.PasswordForgotAP;
 import com.fs.uicommons.impl.gwt.client.handler.action.PasswordResetAP;
 import com.fs.uicommons.impl.gwt.client.handler.message.LoginFailureMH;
+import com.fs.uicommons.impl.gwt.client.handler.message.LoginSuccessMH;
 import com.fs.uicommons.impl.gwt.client.handler.message.PasswordForgotFailureMH;
 import com.fs.uicommons.impl.gwt.client.handler.message.PasswordForgotSuccessMH;
 import com.fs.uicommons.impl.gwt.client.handler.message.PasswordResetFailureMH;
@@ -159,6 +160,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		EventBusI eb = client.getEventBus(true);
 
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
+		
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
 		eb.addHandler(Actions.A_LOGIN_FACEBOOK, new FbLoginAP(c));
 		// password
@@ -174,6 +176,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		EndPointI ep = client.getEndpoint();
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousSuccessMH(c));
+		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), new LoginSuccessMH(c));		
 		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(
 				c));
@@ -229,7 +232,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			@Override
 			public StackWI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
-				return new StackWImpl(c,name,pts);
+				return new StackWImpl(c, name, pts);
 
 			}
 		});

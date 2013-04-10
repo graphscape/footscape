@@ -27,14 +27,14 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  */
 public abstract class DataServiceSupport implements DataServiceI {
 
-	private DataSchema configurations;
+	protected DataSchema schema;
 
 	protected Map<String, Class<? extends OperationI>> operationInterfaceMap;
 
 	protected Map<Class<? extends OperationI>, Class<? extends OperationI>> operationInterfaceImplementMap;
 
 	public DataServiceSupport(DataSchema ds) {
-		this.configurations = ds;
+		this.schema = ds;
 		this.operationInterfaceImplementMap = new HashMap<Class<? extends OperationI>, Class<? extends OperationI>>();
 		this.operationInterfaceMap = new HashMap<String, Class<? extends OperationI>>();
 	}
@@ -143,7 +143,7 @@ public abstract class DataServiceSupport implements DataServiceI {
 
 	@Override
 	public DataSchema getConfigurations() {
-		return configurations;
+		return schema;
 	}
 
 	/*

@@ -4,43 +4,41 @@
  */
 package com.fs.dataservice.core.impl.elastic;
 
-import java.util.Map;
-
-import org.elasticsearch.action.get.GetRequestBuilder;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.NoNodeAvailableException;
-
-import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.MapProperties;
 
 /**
  * @author wu
  * 
  */
-public class MetaInfo {
+public class MetaInfo extends MapProperties<String> {
 
-	private String version;
+	public static final String PK_VERSION = "version";
 
-	public MetaInfo(String version) {
+	public static final String PK_OWNER = "owner";
 
-		this.version = version;
+	public static final String PK_PASSWORD = "password";
 
+	public static final String TYPE = "meta-infos";
+
+	public MetaInfo(String version, String owner, String password) {
+		this.setProperty(PK_VERSION, version);
+		this.setProperty(PK_OWNER, owner);
+		this.setProperty(PK_PASSWORD, password);
+	}
+
+	public String getOwner() {
+		return this.getProperty(PK_OWNER, true);
+	}
+
+	public String getPassword() {
+		return this.getProperty(PK_PASSWORD, true);
 	}
 
 	/**
 	 * @return the version
 	 */
 	public String getVersion() {
-		return version;
-	}
-
-	/*
-	 * Nov 1, 2012
-	 */
-	@Override
-	public String toString() {
-		//
-		return "version:" + this.version;
+		return this.getProperty(PK_VERSION, true);
 	}
 
 }

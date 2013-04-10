@@ -30,7 +30,7 @@ button {
 	border-left: 1px solid rgba(0, 0, 0, 0.0);
 	border-bottom: 1px solid rgba(50, 90, 150, 0.9);
 	border-right: 1px solid rgba(50, 90, 150, 0.9);		
-	border-radius: 2px;
+	border-radius: 3px;
 	color: rgba(50, 90, 150, 0.9);
 	cursor: pointer;
 	font-weight: bold;

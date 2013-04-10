@@ -21,10 +21,7 @@ import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
  */
 public class UiClientTestGPIImpl implements UiClientTestGPI {
 
-	private static final Path HI_EXP = Path.valueOf(new String[] { "testers", "user1:signup-login-exp" });
-
-	private static final Path HI_ACTIVITY = Path.valueOf(new String[] { "testers",
-			"user2:signup-login-exp-cooper" });
+	private static final Path HI_EXP = Path.valueOf(new String[] { "testers", "user1@some.com" });
 
 	@Override
 	public void active(final ContainerI c) {
@@ -45,19 +42,7 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 				worker.start(client);
 			}
 		});
-		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HI_ACTIVITY),
-				new EventHandlerI<HeaderItemEvent>() {
 
-					@Override
-					public void handle(HeaderItemEvent t) {
-						CollectionTestWorker worker = new CollectionTestWorker()//
-								.addTestWorker(new LoginTestWorker("user2", "user2@other.com", "user2"))//
-								.addTestWorker(new ExpTestWorker(6))//
-
-						;
-						worker.start(client);
-					}
-				});
 		eb.addHandler(AfterClientStartEvent.TYPE, new EventHandlerI<AfterClientStartEvent>() {
 
 			@Override
@@ -72,7 +57,6 @@ public class UiClientTestGPIImpl implements UiClientTestGPI {
 		FrwkControlI fc = client.find(FrwkControlI.class, true);
 
 		fc.addHeaderItem(HI_EXP);
-		fc.addHeaderItem(HI_ACTIVITY);
 
 	}
 

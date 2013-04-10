@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
@@ -50,8 +51,6 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 	private static final Logger LOG = LoggerFactory.getLogger(ElasticDataServiceFactoryImpl.class);
 
 	protected String defaultIndex = "nodes";
-
-	protected String dataVersion = "0.1";
 
 	protected DataSchema schema;
 
@@ -129,29 +128,40 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 
 	private DataServiceI doCreateDataService(String index) {
 
-		this.schema.freeze();// not allow change
+		this.schema.freeze();// not allow change from now on;
 		TransportClient client = new TransportClient();
 		String host = this.getHost();
 		int port = this.getPort();
 		client.addTransportAddress(new InetSocketTransportAddress(host, port));
 
-		boolean exist = this.isIndexExist(client, index);
-		boolean ci = this.config.getPropertyAsBoolean("cleanAtInit", false);
-		if (exist && ci) {
-			this.deleteIndex(client, index);
-		}
-
 		MetaInfo mi = this.loadDataVersion(client, index, false);
 		LOG.info("meta info readed from data base:" + mi);
 		if (mi == null) {// no index init
+
 			this.createIndex(client, index);
-		} else {
-			if ("0.1".equals(mi.getVersion())) {
+		} else {// exist
+
+			// check is meet
+			MetaInfo expected = this.getExpectedMetaInfos();
+
+			if (expected.equals(mi)) {
+
 				LOG.info("data version is ok:" + mi.getVersion());
 			} else {
-				throw new FsException("data version not supported:" + mi.getVersion()
+				throw new FsException("data-meta info is not match,expected:" + expected + ",actrual:" + mi
 						+ ",please make sure your elastic server configureation is correct.");
 			}
+
+			boolean ci = this.config.getPropertyAsBoolean("cleanAtInit", false);
+			boolean test = this.config.getPropertyAsBoolean("isTest", false);
+			if (ci) {
+				if (!test) {
+					throw new FsException("not test data,cannot clean it.");
+				}
+				this.deleteIndex(client, index);
+				this.createIndex(client, index);//
+			}
+
 		}
 
 		this.dataService = new ElasticDataServiceImpl(this.schema, client, index);
@@ -287,18 +297,33 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 		}// end mapping
 			// create version meta info
 		{
+			MetaInfo mi = this.getExpectedMetaInfos();// for create index.
 			try {
 				XContentBuilder jb = JsonXContent.contentBuilder();
 				jb.startObject();
-				jb.field("version", "0.1");//
+				jb.field(MetaInfo.PK_VERSION, mi.getVersion());//
+				jb.field(MetaInfo.PK_OWNER, mi.getOwner());//
+				jb.field(MetaInfo.PK_PASSWORD, mi.getPassword());//
+
 				jb.endObject();
-				IndexResponse response = client.prepareIndex(index, "version", "0").setSource(jb).execute()
-						.actionGet();
+				IndexResponse response = client.prepareIndex(index, MetaInfo.TYPE, "0").setSource(jb)
+						.execute().actionGet();
 				String rid = response.getId();
 			} catch (IOException e) {
 				throw new FsException(e);
 			}
 		}
+	}
+
+	protected MetaInfo getExpectedMetaInfos() {
+		Configuration mc = Configuration.properties(this.configId + ".metaInfo");
+
+		String v = mc.getProperty(MetaInfo.PK_VERSION, true);
+		String o = mc.getProperty(MetaInfo.PK_OWNER, true);
+		String p = mc.getProperty(MetaInfo.PK_PASSWORD, true);
+
+		MetaInfo rt = new MetaInfo(v, o, p);
+		return rt;
 	}
 
 	private void deleteIndex(Client client, String index) {
@@ -327,7 +352,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 
 		GetRequestBuilder gr = client.prepareGet();
 
-		gr = gr.setIndex(index).setType("version").setId("0");
+		gr = gr.setIndex(index).setType(MetaInfo.TYPE).setId("0");
 
 		GetResponse res = gr.execute().actionGet();
 
@@ -335,13 +360,16 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 
 		if (src == null) {
 			if (force) {
-				throw new FsException("no version info found for index:" + index);
+				throw new FsException("no meta info found for index:" + index
+						+ ",sorry this index cannot be recognized!");
 			}
 			return null;
 		}
 		String version = (String) src.get("version");
+		String owner = (String) src.get("owner");
+		String password = (String) src.get("password");
 
-		return new MetaInfo(version);
+		return new MetaInfo(version, owner, password);
 	}
 
 }

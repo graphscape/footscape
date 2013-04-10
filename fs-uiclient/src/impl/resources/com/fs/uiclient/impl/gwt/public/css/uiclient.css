@@ -5,7 +5,7 @@ a.user-icon {
 a.user-icon img{ /*user image*/
 	width:26px;
 	height:26px;
-	
+	border-radius: 3px;
 }
 
 a.user-icon:hover img {

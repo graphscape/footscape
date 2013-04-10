@@ -3,9 +3,11 @@
  */
 package com.fs.uicommons.impl.gwt.client.editor.basic;
 
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.EditorSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.event.KeyDownEvent;
 import com.fs.uicore.api.gwt.client.event.KeyUpEvent;
@@ -25,6 +27,9 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 	private boolean trim = true;
 	private boolean emptyAsNull = true;
 	private boolean isTextArea;
+
+	private int lengthLimit = -1;
+
 	private Element stringElement;
 
 	/** */
@@ -36,6 +41,19 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 		} else {
 			stringElement = DOM.createInputText();
 		}
+		
+		int ll = (Integer) this.getProperty(StringEditorI.PK_LENGTH_LIMIT, -1);
+		//not set,see the default config in client parameters
+		if (ll == -1) {
+			ll = this.getClient(true).getParameterAsInt(UiCommonsConstants.CPK_TEXT_INPUT_LENGTH_LIMIT, -1);
+		}
+
+		if (ll < -1) {
+			throw new UiException("" + StringEditorI.PK_LENGTH_LIMIT + ",must >= -1");
+		}
+		
+		this.lengthLimit = ll;
+
 		this.element.appendChild(this.stringElement);
 		ObjectElementHelper oeh = this.helpers.addHelper("stringElement", stringElement);
 		oeh.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(), new GwtChangeHandler() {
@@ -76,6 +94,11 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 	protected void onChange() {
 
 		String v = this.getText();
+
+		if (this.lengthLimit != -1 && v != null && v.length() > this.lengthLimit) {
+			// not show a message for this?
+			v = v.substring(0, this.lengthLimit);
+		}
 
 		this.setData((v), true);//
 

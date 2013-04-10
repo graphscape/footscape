@@ -4,4 +4,6 @@
 	<property name="contactUrl" value="/contact"/>
 	<property name="aboutUsUrl" value="/about-us"/>
 	<property name="wsHeartBeatIntervalMs" value="$ws.heartBeatIntervalMs" />
+	<property name="rootUrl" value="$web.rootUrl"/>
+	<property name="textInputLengthLimit" value="140" />
 </config>
