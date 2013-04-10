@@ -46,14 +46,15 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 		MainControlI mc = this.getControl(MainControlI.class, true);
 
 		// open exp search view
-		if (ui.isAnonymous()) {//?or not remove this item,but notify user no right?
+		if (ui.isAnonymous()) {// ?or not remove this item,but notify user no
+								// right?
 			fc.tryRemoveHeaderItem(HeaderNames.H2_PROFILE);
 		} else {
 			fc.addHeaderItemIfNotExist(HeaderNames.H2_PROFILE);
 			mc.openUeList();
 		}
 		mc.closeAll();
-		mc.openExpSearch(false);//
+		mc.openExpSearch(true).search();//
 		// close login view if opened
 		mc.closeLoginView();
 		// open user exp msglist view.

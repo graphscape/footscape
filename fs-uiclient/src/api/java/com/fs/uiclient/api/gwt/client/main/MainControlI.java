@@ -17,9 +17,8 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlI;
  * 
  */
 public interface MainControlI extends ControlI {
-
 	public ExpSearchViewI openExpSearch(boolean show);
-
+	
 	public UserExpListViewI openUeList();
 
 	public MyExpViewI openMyExp(String expId,boolean show);

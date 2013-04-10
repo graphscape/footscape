@@ -17,12 +17,14 @@ public interface ExpSearchViewI extends ViewI {
 
 	public void reset();
 
+	public void search();
+
 	public UserExpModel getExpId(boolean b);
 
 	public void setExpId(UserExpModel ue);
 
 	public String getPhrase(boolean b);
-	
+
 	public int getSize();
 
 }

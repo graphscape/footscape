@@ -45,7 +45,7 @@ public class CooperRequestAP extends ActionHandlerSupport {
 		ExpSearchViewI sm = mc.openExpSearch(false);
 
 		UserExpModel ue = sm.getExpId(false);
-		if(ue == null){
+		if (ue == null) {
 			Window.alert("Please select your expectation to cooperate with!");
 			return;
 		}

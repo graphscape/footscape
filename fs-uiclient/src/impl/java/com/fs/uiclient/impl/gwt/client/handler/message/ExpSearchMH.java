@@ -37,7 +37,7 @@ public class ExpSearchMH extends MHSupport {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		ExpSearchViewI esv = this.getControl(MainControlI.class,true).openExpSearch(false);
+		ExpSearchViewI esv = this.getControl(MainControlI.class, true).openExpSearch(false);
 
 		MessageData res = t.getMessage();
 

@@ -156,7 +156,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 			boolean test = this.config.getPropertyAsBoolean("isTest", false);
 			if (ci) {
 				if (!test) {
-					throw new FsException("not test data,cannot clean it.");
+					throw new FsException("not in test mode,clean data in product mode?");
 				}
 				this.deleteIndex(client, index);
 				this.createIndex(client, index);//

@@ -81,7 +81,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 			@Override
 			public void handle(ClickEvent e) {
-				ExpSearchView.this.onSearch();
+				ExpSearchView.this.search();
 			}
 		});
 		//
@@ -106,11 +106,6 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 			}
 		});
 
-	}
-
-	protected void onSearch() {
-		this.reset();//
-		this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
 	}
 
 	/**
@@ -216,12 +211,19 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	}
 
 	/*
-	 *Apr 3, 2013
+	 * Apr 3, 2013
 	 */
 	@Override
 	public int getSize() {
-		// 
+		//
 		return this.model.getExpItemList().size();
+	}
+
+	@Override
+	public void search() {
+		//
+		this.reset();//
+		this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
 	}
 
 }

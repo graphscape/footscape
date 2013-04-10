@@ -61,7 +61,6 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public ExpSearchViewI openExpSearch(boolean showView) {
 		Path path = Path.valueOf("/exp-search");
-
 		ExpSearchView esv = this.getOrCreateViewInBody(path, new CreaterI<ExpSearchView>() {
 
 			@Override
@@ -69,7 +68,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 				return new ExpSearchView(ct);
 			}
 		}, showView);
-
+		
 		return esv;
 
 	}

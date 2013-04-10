@@ -3,6 +3,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
+import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
@@ -32,7 +33,8 @@ public class SearchHeaderItemHandler extends UiHandlerSupport implements EventHa
 	public void handle(HeaderItemEvent t) {
 
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.openExpSearch(true);//
+		mc.openExpSearch(true).search();//
+
 	}
 
 }
