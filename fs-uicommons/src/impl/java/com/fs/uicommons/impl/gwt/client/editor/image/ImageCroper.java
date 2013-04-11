@@ -62,6 +62,11 @@ public class ImageCroper extends ElementObjectSupport {
 		// so we provide a opacity solution.
 		this.originImageWrapper = ElementWrapper.valueOf(DOM.createImg());
 		this.addOpacity(this.originImageWrapper);
+
+		// canvas shoulb be hidden
+		canvas = new Canvas(60, 60);
+		canvas.parent(this);//
+
 		//
 		editingImage = ImageElement.as(DOM.createImg());
 		this.editingImageWrapper = ElementWrapper.valueOf(this.editingImage);//
@@ -86,10 +91,6 @@ public class ImageCroper extends ElementObjectSupport {
 		});
 
 		this.box.parent(this);
-
-		// canvas is hidden
-		canvas = new Canvas(60, 60);
-		canvas.parent(this);//
 
 		this.test = ElementWrapper.valueOf(DOM.createImg());
 		this.test.addClassName("test");

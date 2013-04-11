@@ -4,8 +4,12 @@
  */
 package com.fs.uiclient.impl.gwt.client.signup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
+import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI.ItemModel;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
@@ -48,7 +52,9 @@ public class SignupView extends FormsView implements SignupViewI {
 
 		// fields1
 		def.addField("nick", String.class);
-		def.addField("password", String.class);
+		Map<String,Object> pts= new HashMap<String,Object>();
+		pts.put(StringEditorI.PK_ISPASSWORD, Boolean.TRUE);
+		def.addField("password", String.class, pts);
 		def.addField("email", String.class);
 
 	}

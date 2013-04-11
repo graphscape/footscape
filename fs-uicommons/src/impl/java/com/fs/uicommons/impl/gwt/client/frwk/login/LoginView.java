@@ -1,6 +1,10 @@
 package com.fs.uicommons.impl.gwt.client.frwk.login;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uicommons.api.gwt.client.Actions;
+import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -37,7 +41,12 @@ public class LoginView extends FormsView implements LoginViewI {
 
 		FormViewI def = this.getDefaultForm();
 		def.addField(FK_EMAIL, String.class);//
-		def.addField(FK_PASSWORD, String.class);//
+		
+		Map<String,Object> pts= new HashMap<String,Object>();
+		pts.put(StringEditorI.PK_ISPASSWORD, Boolean.TRUE);
+		
+		def.addField(FK_PASSWORD, String.class,pts);//
+		
 		def.addField(FK_SAVINGACCOUNT, Boolean.class);
 		// actions
 		AccountsLDW accs = AccountsLDW.getInstance();

@@ -39,11 +39,16 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 		if (this.isTextArea) {
 			stringElement = DOM.createTextArea();
 		} else {
-			stringElement = DOM.createInputText();
+			boolean isPassword = (Boolean) this.getProperty(StringEditorI.PK_ISPASSWORD, Boolean.FALSE);
+			if (isPassword) {
+				stringElement = DOM.createInputPassword();
+			} else {
+				stringElement = DOM.createInputText();
+			}
 		}
-		
+
 		int ll = (Integer) this.getProperty(StringEditorI.PK_LENGTH_LIMIT, -1);
-		//not set,see the default config in client parameters
+		// not set,see the default config in client parameters
 		if (ll == -1) {
 			ll = this.getClient(true).getParameterAsInt(UiCommonsConstants.CPK_TEXT_INPUT_LENGTH_LIMIT, -1);
 		}
@@ -51,7 +56,7 @@ public class StringEditorImpl extends EditorSupport<String> implements StringEdi
 		if (ll < -1) {
 			throw new UiException("" + StringEditorI.PK_LENGTH_LIMIT + ",must >= -1");
 		}
-		
+
 		this.lengthLimit = ll;
 
 		this.element.appendChild(this.stringElement);

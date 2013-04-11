@@ -162,39 +162,50 @@
 	display: block;
 }
 
-.elo-ImageBox {
-	border: 1px solid red;
+.image-select-box {
+	border: 1px solid orange;
 	position: absolute;
 	width: 110px;
 	height: 110px;
 	overflow: visible;
+	cursor: pointer;
 }
 
-.elo-ImageBox.dragging {
-	box-shadow: 0 3px 6px rgba(0, 255, 0, 0.5);
+.image-select-box.dragging {
+	box-shadow: 0 3px 6px rgba(0, 255, 0, 0.8);
+	cursor: move;
 }
 
-.elo-ImageBox .decorator {
+.image-select-box-decorator {
 	position: absolute;
 	background: gray;
-	opacity: 0.5;
+	opacity: 0.3;
 	overflow: visible;
+	cursor: default;
 }
 
-.elo-ImageBox .plus {
-	background: gray;
-	opacity: 0.4;
-	float: right;
-	width: 10px;
-	height: 10px;
+.image-select-box-top {
+	color:white;
+	vertical-align: bottom;
+	text-align:center;
 }
 
-.elo-ImageBox .minus {
-	background: gray;
-	opacity: 0.4;
-	float: left;
-	width: 10px;
-	height: 10px;
+.image-select-box .plus {
+	position:absolute;
+	margin-top:-26px;
+	font-weight:bold;
+	width: 26px;
+	height: 26px;
+	font-size: 20px;
+}
+
+.image-select-box .minus {
+	position:absolute;
+	margin-left:-26px;
+	font-weight:bold;
+	width: 26px;
+	height: 26px;
+	font-size: 20px;
 }
 
 .frwk-bottom {

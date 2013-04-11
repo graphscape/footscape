@@ -15,4 +15,5 @@ public interface StringEditorI extends EditorI<String> {
 	
 	public static final String PK_LENGTH_LIMIT = "lengthLimit";
 
+	public static final String PK_ISPASSWORD = "isPassword";
 }

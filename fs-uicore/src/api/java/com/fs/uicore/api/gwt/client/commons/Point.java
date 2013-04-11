@@ -67,6 +67,7 @@ public class Point {
 		return Point.valueOf(this.x + p2.x, this.y + p2.y);
 	}
 
+	//first limit,x ,y allo great than 0;
 	public boolean isFirstArea(boolean includeZero) {
 		if (includeZero) {
 			return this.x >= 0 && this.y >= 0;

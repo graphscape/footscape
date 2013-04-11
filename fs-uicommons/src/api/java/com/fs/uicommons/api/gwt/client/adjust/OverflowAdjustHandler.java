@@ -42,7 +42,7 @@ public class OverflowAdjustHandler implements EventHandlerI<ClickEvent> {
 		List<ElementWrapper> rt = new ArrayList<ElementWrapper>();
 		for (ElementWrapper ew : owner.getChildElementList()) {
 
-			if (!top.getAbsoluteRectangle().isContains(
+			if (!top.getAbsoluteRectangle().contains(
 					ew.getAbsoluteRectangle())) {// overflowed
 				rt.add(ew);
 			} else {

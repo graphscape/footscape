@@ -15,8 +15,7 @@ public class Rectangle {
 	private Size size;
 
 	public Rectangle(Point topLeft, Point bottomRight) {
-		this(topLeft, Size.valueOf(bottomRight.getX() - topLeft.getX(),
-				bottomRight.getY() - topLeft.getY()));
+		this(topLeft, Size.valueOf(bottomRight.getX() - topLeft.getX(), bottomRight.getY() - topLeft.getY()));
 	}
 
 	public Rectangle(Point topLeft, Size size) {
@@ -64,8 +63,7 @@ public class Rectangle {
 	}
 
 	public Point getTopRight() {
-		return Point.valueOf(this.topLeft.getX() + this.size.getWidth(),
-				this.topLeft.getY());
+		return Point.valueOf(this.topLeft.getX() + this.size.getWidth(), this.topLeft.getY());
 	}
 
 	/**
@@ -89,10 +87,13 @@ public class Rectangle {
 		return r2.topLeft.equals(this.topLeft) && this.size.equals(r2.size);
 	}
 
-	public boolean isContains(Rectangle rect) {
-		return this.topLeft.minus(rect.topLeft).isFirstArea(true)
-				&& rect.getBottomRight().minus(this.getBottomRight())
-						.isFirstArea(true);
+	public boolean contains(Point p) {
+		return p.minus(this.topLeft).isFirstArea(true) && this.getBottomRight().minus(p).isFirstArea(true);
+	}
+
+	public boolean contains(Rectangle rect) {
+		return rect.topLeft.minus(this.topLeft).isFirstArea(true)
+				&& this.getBottomRight().minus(rect.getBottomRight()).isFirstArea(true);
 	}
 
 	/*

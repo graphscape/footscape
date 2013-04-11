@@ -53,25 +53,32 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	// minus the size
 	protected ObjectElementHelper minus;
 
+	// display the event point when moving
+	protected ElementWrapper labelOfMouseMoving;// enter label;
+
 	/**
 	 * @param ele
 	 */
 	public ImageBox(ContainerI c, Element outer) {
 		super(c, DOM.createDiv());
+		this.element.addClassName("image-select-box");
 		//
 		//
 		// TODO the outer's parent is not this ,but the helper attach dependence
 		// with this element.
+		// ? what is the outer's function here?
 		this.outer = this.helpers.addHelper("OUTER", outer);
 		this.decoMap = new HashMap<String, ElementWrapper>();
-		this.addDeco("top");
+		labelOfMouseMoving = this.addDeco("top");
 		this.addDeco("left");
 		this.addDeco("bottom");
 		this.addDeco("right");
 		//
 
-		this.plus = this.helpers.addHelper("plus", DOM.createDiv());
-		this.plus.addClassName("plus").parent(this.elementWrapper);
+		this.plus = this.helpers.addHelper("plus", DOM.createButton());
+		this.plus.getElement().setInnerText("+");
+		this.plus.addClassName("plus");
+		this.plus.parent(this.elementWrapper);
 
 		this.plus.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
 
@@ -80,8 +87,10 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 				ImageBox.this.onPlus();
 			}
 		});
-		this.minus = this.helpers.addHelper("minus", DOM.createDiv());
-		this.minus.addClassName("minus").parent(this.elementWrapper);
+		this.minus = this.helpers.addHelper("minus", DOM.createButton());
+		this.minus.getElement().setInnerText("-");
+		this.minus.addClassName("minus");
+		this.minus.parent(this.elementWrapper);
 		this.minus.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
 
 			@Override
@@ -145,8 +154,8 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	protected ElementWrapper addDeco(String name) {
 
 		ElementWrapper rt = new ElementWrapper(DOM.createDiv());
-		rt.addClassName("position-" + name);
-		rt.addClassName("decorator");
+		rt.addClassName("image-select-box-" + name);
+		rt.addClassName("image-select-box-decorator");
 
 		this.elementWrapper.append(rt);// absolute
 		this.decoMap.put(name, rt);
@@ -167,9 +176,17 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	 * @param e
 	 */
 	protected void onDragging(DraggingEvent e) {
+
+		this.showEventPoint(e);
 		this.updateDecos();
 
 		log(e);
+	}
+
+	protected void showEventPoint(DragEvent e) {
+		Point p = e.getPoint();
+		String text = p.getX() + "," + p.getY();
+		this.labelOfMouseMoving.getElement().setInnerText(text);
 	}
 
 	protected void updateDecos() {
@@ -181,6 +198,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 
 		Rectangle outerRect = skipThisPositionContext(this.outer.getAbsoluteRectangle());
 		// left deco
+
 		{// left margin
 			Point tl = outerRect.getTopLeft();
 			Point br = Point.valueOf(boxRect.getTopLeft().getX(), outerRect.getBottomLeft().getY());
@@ -220,6 +238,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	 * @param e
 	 */
 	protected void onEnd(DragEndEvent e) {
+		this.labelOfMouseMoving.getElement().setInnerText(null);
 		this.updateDecos();
 		log(e);
 	}
@@ -228,6 +247,8 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	 * @param e
 	 */
 	protected void onStart(DragStartEvent e) {
+
+		this.showEventPoint(e);
 		log(e);
 	}
 

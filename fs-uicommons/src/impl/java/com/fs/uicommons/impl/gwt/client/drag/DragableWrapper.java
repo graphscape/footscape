@@ -26,6 +26,7 @@ import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  * @author wuzhen
@@ -134,11 +135,13 @@ public class DragableWrapper extends UiObjectSupport {
 	}
 
 	protected void onMouseUp(MouseUpEvent event) {
-		if (!this.pickupByDoubleClick) {
 
-			Point p = this.getClientPoint(event);
-			this.endDrag(p);
+		if (this.pickupByDoubleClick) {
+			// if double click ,should listener down event
+			return;
 		}
+		Point p = this.getClientPoint(event);
+		this.endDrag(p);
 
 	}
 
@@ -154,24 +157,31 @@ public class DragableWrapper extends UiObjectSupport {
 
 	protected void onMouseDown(MouseDownEvent event) {
 		Point p = this.getClientPoint(event);
-
+		Point rp = this.getRelativePoint(event, this.dragableElement.getElement());
 		if (this.pickupByDoubleClick) {
-			startOrEndDrag(p);
+			startOrEndDrag(p,rp);//switch
 		} else {//
-			this.startDrag(p);
+			this.tryStartDrag(p,rp);
 
 		}
 
 	}
 
-	protected void startOrEndDrag(Point p) {
+	protected void startOrEndDrag(Point cp,Point rp) {
 		if (this.dragging) {
-			this.endDrag(p);
+			this.endDrag(cp);
 		} else {
-			this.startDrag(p);
+			this.tryStartDrag(cp,rp);
 		}
 	}
-
+	protected void tryStartDrag(Point cp,Point rp) {
+		Size size = this.dragableElement.getAbsoluteRectangle().getSize();
+		
+		if(rp.isFirstArea(true)&&rp.getX()<size.getWidth()&&rp.getY()<size.getHeight()){
+			this.startDrag(cp);
+		}
+		
+	}
 	protected void startDrag(Point p) {
 		dragging = true;
 		this.startMousePoint = p;
@@ -183,10 +193,14 @@ public class DragableWrapper extends UiObjectSupport {
 
 		new DragStartEvent(this.dragable, this.getDragger(), this.startMousePoint).dispatch();//
 	}
-
-	protected Point getClientPoint(MouseEvent event) {
-		int x = event.getClientX();
-		int y = event.getClientY();
+	
+	protected Point getClientPoint(MouseEvent event){
+		return Point.valueOf(event.getClientX(), event.getClientY());
+	}
+	
+	protected Point getRelativePoint(MouseEvent event,Element ele) {
+		int x = event.getRelativeX(ele);
+		int y = event.getRelativeY(ele);
 		return Point.valueOf(x, y);
 
 	}
