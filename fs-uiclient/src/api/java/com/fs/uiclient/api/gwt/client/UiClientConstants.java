@@ -25,6 +25,8 @@ public class UiClientConstants {
 
 	public static final String PK_URL_ABOUTUS = "aboutUsUrl";
 
+	public static final Path AP_COOPER = Path.valueOf("/action/exps/cooper");
+
 	// public static final Integer MESSAGE_LIMIT = 25;//
 
 	// public static final int EXPSEARCH_LIMIT = 3;

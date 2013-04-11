@@ -5,10 +5,9 @@
 package com.fs.uiclient.impl.gwt.client.exps;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
-import com.fs.uiclient.impl.gwt.client.uelist.UserExpItemView;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
-import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
@@ -99,7 +98,7 @@ public class ExpItemView extends ViewSupport {
 		actions.parent(this);// note,see on add child method
 
 		ButtonI cooper = this.factory.create(ButtonI.class);
-		cooper.setText(true, "cooper");
+		cooper.setText(true, UiClientConstants.AP_COOPER.toString());
 		cooper.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

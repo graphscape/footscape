@@ -6,7 +6,7 @@ package com.fs.uicommons.impl.gwt.client.widget.basic;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI.ValueWrapper;
+import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.state.State;
 import com.google.gwt.dom.client.Document;
@@ -36,13 +36,19 @@ public class ButtonImpl extends WidgetSupport implements ButtonI {
 
 	@Override
 	public void setText(boolean toloc, String txt) {
+		String title = null;
+		String txt2 = txt;
 		if (toloc) {
-			txt = this.localized(txt);//
+			String tkey = Path.valueOf("tip").concat(Path.valueOf(txt)).toString();
+			txt2 = this.localized(txt);//			
+			title = this.localized(tkey);
 		}
 		Element ele = this.getElement();
 
-		ele.setInnerText(txt);//
-		ele.setTitle(txt);// TODO replace this
+		ele.setInnerText(txt2);//
+		if(title!=null){
+			ele.setTitle(title);// TODO replace this			
+		}
 
 	}
 

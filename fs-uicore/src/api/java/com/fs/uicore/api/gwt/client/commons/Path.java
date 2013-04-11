@@ -89,7 +89,7 @@ public class Path {
 		names.add(name);
 		return Path.valueOf(names);
 	}
-
+	
 	public static Path valueOf(Path par, String name) {
 		return par.getSubPath(name);
 	}

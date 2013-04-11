@@ -50,26 +50,38 @@
 	<property name="/logo" value="Waitee" />
 	<property name="/about" value="About Us"/>
 	<property name="/contact" value="Contact Us"/>
-	<property name="/copyright" value="© 2012-2013 waitee.com.  All rights reserved."/>
+	<property name="/copyright" value="fs-v0.1.0-IR1 © 2012-2013 waitee.com.  All rights reserved." />
 	
 	<!-- Actions -->
 	<property name="/action/activity/openChatRoom" value="Chat" />
 	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/password/forgot" value="Forgot" />
 	<property name="/action/password/reset" value="Reset" />
-	<property name="/action/signup/submit" value="Signup Submit"/>
-	<property name="/action/signup/confirm" value="Confirm Signup"/>
+	<property name="/action/signup/submit" value="Signup"/>
+	<property name="/action/signup/confirm" value="Confirm"/>
 	<property name="/action/exps/search" value="Search"/>
-	<property name="/action/exps/cooper" value="Cooper With"/>
+	<property name="/action/exps/cooper" value="Coop"/>
 	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
 	<property name="/action/login/facebook" value="Log In" />
 	<property name="/action/userexp/select" value="Select"/>
-	<property name="/action/userexp/activity" value="Open Activity"/>
-	<property name="/action/userexp/cooperConfirm" value="Cooper Confirm"/>
 	<property name="/action/uelist/create" value="New"/>
 	<property name="/action/expe/submit" value="Save"/>
-	<property name="/action/myexp/older-msg" value="Older Msg" />
 	<property name="/action/signup/fblogin" value="Log In" />
 	
+	<!-- tip -->
+	<property name="/tip/action/profile/submit" value="Save" />
+	<property name="/tip/action/password/forgot" value="Forgot password? click will send a email to your for reset your password." />
+	<property name="/tip/action/password/reset" value="Reset Password" />
+	<property name="/tip/action/signup/submit" value="Signup"/>
+	<property name="/tip/action/exps/search" value="Search expectations."/>
+	<property name="/tip/action/exps/cooper" value="Send a message to this expecation to ask cooperation with."/>
+	<property name="/tip/action/login/submit" value="Login"/>
+	<property name="/tip/action/login/logout" value="Logout"/>
+	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
+	<property name="/tip/action/userexp/select" value="Select"/>
+	<property name="/tip/action/uelist/create" value="Create a new expecation for you."/>
+	<property name="/tip/action/expe/submit" value="Save"/>
+	<property name="/tip/action/signup/fblogin" value="Log in by facebook account." />
+	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with."/>
 </config>

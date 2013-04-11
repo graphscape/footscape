@@ -2,12 +2,14 @@ package com.fs.uicommons.impl.gwt.client.frwk.login;
 
 import com.fs.uicommons.api.gwt.client.Actions;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
-import com.fs.uicommons.api.gwt.client.frwk.commons.FormsViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtKeyDownHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 
 /**
  * Session view will add user info in the header view.
@@ -40,12 +42,20 @@ public class LoginView extends FormsView implements LoginViewI {
 		// actions
 		AccountsLDW accs = AccountsLDW.getInstance();
 		RegisteredAccountLDW acc1 = accs.getRegistered();
-		if(acc1.isValid()){
-			def.setFieldValue(FK_EMAIL,acc1.getEmail());
+		if (acc1.isValid()) {
+			def.setFieldValue(FK_EMAIL, acc1.getEmail());
 			def.setFieldValue(FK_PASSWORD, acc1.getPassword());
 		}
-	}
+		this.addGwtEventHandler(KeyDownEvent.getType(), new GwtKeyDownHandler() {
 
+			@Override
+			protected void handleInternal(com.google.gwt.event.dom.client.KeyDownEvent evt) {
+				if (evt.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					LoginView.this.dispatchActionEvent(Actions.A_LOGIN_SUBMIT);
+				}
+			}
+		});
+	}
 
 	@Override
 	public void doAttach() {
@@ -85,27 +95,25 @@ public class LoginView extends FormsView implements LoginViewI {
 		return this.getDefaultFormView().getFieldData(FK_SAVINGACCOUNT, Boolean.FALSE);
 	}
 
-
 	/*
-	 *Mar 28, 2013
+	 * Mar 28, 2013
 	 */
 	@Override
 	public void setEmail(String email) {
-		// 
+		//
 		FormViewI def = this.getDefaultForm();
 		def.setFieldValue(FK_EMAIL, email);
 	}
 
-
 	/*
-	 *Mar 28, 2013
+	 * Mar 28, 2013
 	 */
 	@Override
 	public void setPassword(String password) {
 		//
 		FormViewI def = this.getDefaultForm();
-		def.setFieldValue(FK_PASSWORD, password); 
-		
+		def.setFieldValue(FK_PASSWORD, password);
+
 	}
 
 }
