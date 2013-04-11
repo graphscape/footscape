@@ -6,19 +6,18 @@
 		<conf name="runtime" extends="impl" />
 		<conf name="test" extends="runtime" />
 	</configurations>
-
-	<publications>
 	
+	<publications>
+
 		<artifact name="fs-expector-api" type="jar" conf="api" ext="jar" />
 		<artifact name="fs-expector-impl" type="jar" conf="impl" ext="jar" />
 	
 	</publications>
 	<dependencies>
 
-
-		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
-		<dependency org="com.fs" name="dataservice" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
-		<dependency org="com.fs" name="gridservice" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="commons" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="dataservice" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="gridservice" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
 

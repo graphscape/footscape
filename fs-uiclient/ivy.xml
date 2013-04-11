@@ -16,13 +16,13 @@
 	<dependencies>
 
 
-		<dependency org="com.fs" name="commons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="commons" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 
-		<dependency org="com.fs" name="uicore" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="uicore" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 
-		<dependency org="com.fs" name="uicommons" rev="1.0.0" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="uicommons" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		
-		<dependency org="com.fs" name="gridservice" rev="1.0.0" force="true" conf="test->runtime(*)" />
+		<dependency org="com.fs" name="gridservice" rev="${fs.revision}" force="true" conf="test->runtime(*)" />
 		
 		<dependency org="com.google.gwt" name="gwt-user" rev="2.5.0" force="true" conf="impl->master" />
 		

@@ -4,6 +4,9 @@
 	<property name="fs.build.home" value="${env.FS_BUILD_HOME}" />
 
 	<property name="dir.fs.building" value="${fs.build.home}/fs-building" />
+	
+	<properties file="${dir.fs.building}/common-files/common.build.properties"/>
+	
 	<property name="repo.internal" value="${dir.fs.building}/ivy/internal" />
 
 	<property name="local-maven2-pattern"

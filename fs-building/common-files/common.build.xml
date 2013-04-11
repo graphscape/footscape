@@ -227,14 +227,26 @@
 </target>
 
 <target name="setup" depends="fail" if="allIsWellBool">
-	<echo message="Start building:${ant.project.name}" />
+	<tstamp>
+		<format property="started" pattern="yyyy/MM/dd HH:mm:ss" />
+	</tstamp>
+	<echo message="${started} start building:${ant.project.name}" />
 	<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${dir.fs.building}/tools/ivy/ivy-2.2.0.jar" />
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${dir.fs.building}/tools/ant-contrib/ant-contrib-0.6.jar" />
 	<ivy:settings id="fs.ivy.settings" file="${dir.fs.common.files}/common.ivysettings.xml" />
 
 </target>
 
-
+<target name="tearDown">
+	<tstamp>
+		<format property="ended" pattern="yyyy/MM/dd HH:mm:ss" />
+	</tstamp>
+	
+	<echo message="--------------------------------" />
+	<echo message="${ended} end building:${ant.project.name}" />
+	<echo message="--------------------------------" />
+	
+</target>
 <target name="resolve" depends="setup" description="--> retreive dependencies with ivy">
 	<ivy:retrieve pattern="${dir.target}/[conf]/lib/[artifact]-[revision](-[classifier]).[ext]" type="jar" settingsRef="fs.ivy.settings" />
 	<ivy:retrieve pattern="${dir.target}/[conf]/lib/[artifact]-[revision]-[type](-[classifier]).[ext]" type="bundle,source" settingsRef="fs.ivy.settings" />
@@ -243,7 +255,7 @@
 </target>
 
 <target name="jar-">
-	<jar basedir="${dir.target}/${part}/classes" destfile="${dir.target}/${ant.project.name}-${part}-${revision}.jar">
+	<jar basedir="${dir.target}/${part}/classes" destfile="${dir.target}/${ant.project.name}-${part}-${fs.revision}.jar">
 		<manifest>
 		</manifest>
 		<fileset dir="${dir.src}/${part}/java" id="id">
@@ -261,7 +273,7 @@
 	<antcall target="jar-">
 		<param name="part" value="impl" />
 	</antcall>
-	
+
 </target>
 <target name="package" depends="compile-test" description="">
 	<antcall target="package-gwt" />
@@ -271,7 +283,7 @@
 	<antcall target="jar-">
 		<param name="part" value="impl" />
 	</antcall>
-	
+
 </target>
 
 <!-- Note:this task package gwt generated js,and package task include this package(jar). -->
@@ -295,9 +307,9 @@
 
 	<echo message="Publising : ${dir.fs.building}" />
 
-	<ivy:publish artifactspattern="${dir.target}/[artifact]-[revision].[ext]" resolver="internal" overwrite="true" pubrevision="${revision}" status="release" settingsRef="fs.ivy.settings" />
-	<echo message="|	${ant.project.name} rev: ${revision} published.					|" />
-
+	<ivy:publish artifactspattern="${dir.target}/[artifact]-[revision].[ext]" resolver="internal" overwrite="true" pubrevision="${fs.revision}" status="release" settingsRef="fs.ivy.settings" />
+	<echo message="|----${ant.project.name} rev: ${fs.revision} published					|" />
+	<antcall target="tearDown"/>
 </target>
 
 <target name="probe-proxy" depends="setup">
