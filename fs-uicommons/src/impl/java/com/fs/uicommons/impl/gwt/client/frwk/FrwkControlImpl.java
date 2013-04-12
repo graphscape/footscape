@@ -3,13 +3,17 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk;
 
+import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
+import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
+import com.fs.uicommons.api.gwt.client.frwk.ConsoleViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderViewI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI;
 import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
+import com.fs.uicommons.impl.gwt.client.frwk.console.ConsoleView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -69,6 +73,7 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 		//
 		return this.getFrwkView().getHeader();
 	}
+
 	@Override
 	public BottomViewI getBottomView() {
 		//
@@ -76,19 +81,31 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	}
 
 	/*
-	 *Mar 30, 2013
+	 * Mar 30, 2013
 	 */
 	@Override
 	public void addHeaderItemIfNotExist(Path path) {
-		// 
+		//
 		this.getHeaderView().addItemIfNotExist(path);
 	}
 
-	/*
-	 *Mar 30, 2013
-	 */
 	@Override
 	public void tryRemoveHeaderItem(Path path) {
 		this.getHeaderView().tryRemoveItem(path);
+	}
+
+	@Override
+	public ConsoleViewI openConsoleView() {
+		BodyViewI bv = this.getFrwkView().getBodyView();
+		ConsoleViewI rt = bv.getOrCreateItem(UiCommonsConstants.P_CONSOLE_VIEW,
+				new com.fs.uicommons.api.gwt.client.CreaterI<ConsoleViewI>() {
+
+					@Override
+					public ConsoleViewI create(ContainerI ct) {
+						// TODO Auto-generated method stub
+						return new ConsoleView(ct);
+					}
+				});
+		return rt;
 	}
 }

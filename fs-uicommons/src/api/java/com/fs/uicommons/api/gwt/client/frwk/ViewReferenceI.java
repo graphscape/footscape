@@ -8,7 +8,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated remove this class
  */
 public interface ViewReferenceI {
 

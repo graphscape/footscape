@@ -21,6 +21,12 @@ public class UiClientConstants {
 	public static final String NK_ID = "id_";
 	public static final Path P_SIGNUP = Path.valueOf("/signup");
 
+	public static final Path P_HTML = Path.valueOf("/open/resource/html");
+	
+	public static final Path P_HTML_ABOUT = P_HTML.getSubPath("about-us.html");
+	
+	public static final Path P_HTML_CONTACT =  P_HTML.getSubPath("contact-us.html");
+
 	public static final String PK_URL_CONTACT = "contactUrl";
 
 	public static final String PK_URL_ABOUTUS = "aboutUsUrl";

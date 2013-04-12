@@ -24,4 +24,10 @@ public class HeaderNames {
 
 	public static final Path H1_SEARCH = Path.valueOf("search");
 
+	public static final Path H1_ABOUT = Path.valueOf("about");
+
+	public static final Path H1_CONTACT = Path.valueOf("contact");
+
+	public static final Path H1_CONSOLE = Path.valueOf("console");
+
 }

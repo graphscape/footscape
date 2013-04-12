@@ -4,6 +4,7 @@
 package com.fs.uiclient.impl.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.expe.ExpEditControlI;
@@ -43,15 +44,16 @@ import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ProfileInitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitSuccessMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ResourceGetSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
-import com.fs.uiclient.impl.gwt.client.handler.other.AboutBottomItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
-import com.fs.uiclient.impl.gwt.client.handler.other.ContactBottomItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.OpenConsoleItemHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.OpenResourceItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SearchHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
@@ -117,13 +119,17 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_SEARCH),
 				new SearchHeaderItemHandler(c));
 
-		//bottom item
-		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(UiClientConstants.BI_ABOUT),new AboutBottomItemHandler(c));
-		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(UiClientConstants.BI_COTACT),new ContactBottomItemHandler(c));
-		
+		// bottom item
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
+				new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONTACT),
+				new OpenResourceItemHandler(c, UiClientConstants.P_HTML_CONTACT));
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONSOLE),
+				new OpenConsoleItemHandler(c));
+
 		// client start
 		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));
-		
+
 	}
 
 	/**
@@ -190,6 +196,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));//
 		// succ
 		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));//
+
+		// open resource
+		dis.addHandler(Path.valueOf("/endpoint/message/resource/get/success"), new ResourceGetSuccessMH(c));//
 
 	}
 

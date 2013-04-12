@@ -25,8 +25,10 @@ import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
+import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -68,7 +70,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 				return new ExpSearchView(ct);
 			}
 		}, showView);
-		
+
 		return esv;
 
 	}
@@ -291,6 +293,36 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void closeSignup() {
 		this.getBodyView().tryCloseItem(UiClientConstants.P_SIGNUP);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uiclient.api.gwt.client.main.MainControlI#openHtml(com.fs.uicore
+	 * .api.gwt.client.commons.Path)
+	 */
+	@Override
+	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh) {
+
+		final HtmlElementWidgetI rt = this.getOrCreateViewInBody(path, new CreaterI<HtmlElementWidgetI>() {
+
+			@Override
+			public HtmlElementWidgetI create(ContainerI ct) {
+				return ct.get(WidgetFactoryI.class, true).create(HtmlElementWidgetI.class);
+			}
+		}, true);
+		// refresh
+		if (refresh) {
+			MsgWrapper req = this.newRequest(Path.valueOf("/resource/get"));
+
+			req.setHeader("url", "classpath://" + path.toString());
+
+			this.sendMessage(req);
+
+		}
+		return rt;
+
 	}
 
 }

@@ -22,7 +22,7 @@ import com.fs.uicommons.api.gwt.client.event.UserLoginEvent;
 import com.fs.uicommons.api.gwt.client.frwk.BodyModelI;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
 import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
-import com.fs.uicommons.api.gwt.client.frwk.ConsoleModelI;
+import com.fs.uicommons.api.gwt.client.frwk.ConsoleViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkViewI;
 import com.fs.uicommons.api.gwt.client.frwk.HeaderModelI;
@@ -50,6 +50,7 @@ import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.basic.DateWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
+import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuItemWI;
 import com.fs.uicommons.api.gwt.client.widget.menu.MenuWI;
@@ -102,6 +103,7 @@ import com.fs.uicommons.impl.gwt.client.widget.basic.ButtonImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.DateWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.LabelImpl;
 import com.fs.uicommons.impl.gwt.client.widget.error.ErrorInfosWidgetImpl;
+import com.fs.uicommons.impl.gwt.client.widget.html.HtmlElementWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.list.ListImpl;
 import com.fs.uicommons.impl.gwt.client.widget.menu.MenuWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.panel.PanelWImpl;
@@ -160,7 +162,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		EventBusI eb = client.getEventBus(true);
 
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
-		
+
 		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
 		eb.addHandler(Actions.A_LOGIN_FACEBOOK, new FbLoginAP(c));
 		// password
@@ -176,7 +178,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		EndPointI ep = client.getEndpoint();
 		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
 				new SignupAnonymousSuccessMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), new LoginSuccessMH(c));		
+		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), new LoginSuccessMH(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
 		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(
 				c));
@@ -217,6 +219,15 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public ListI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new ListImpl(c, name, pts);
+
+			}
+		});
+
+		wf.addCreater(new WidgetCreaterSupport<HtmlElementWidgetI>(HtmlElementWidgetI.class) {
+			@Override
+			public HtmlElementWidgetI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
+
+				return new HtmlElementWidgetImpl(c, name, pts);
 
 			}
 		});
@@ -558,12 +569,12 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 				return o instanceof WindowPanelWI;
 			}
 		});
-		InstanceOf.addChecker(new CheckerSupport(ConsoleModelI.class) {
+		InstanceOf.addChecker(new CheckerSupport(ConsoleViewI.class) {
 
 			@Override
 			public boolean isInstance(Object o) {
 
-				return o instanceof ConsoleModelI;
+				return o instanceof ConsoleViewI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(WindowModelI.class) {
@@ -825,6 +836,16 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof BottomViewI;
+
+			}
+
+		});
+		InstanceOf.addChecker(new CheckerSupport(HtmlElementWidgetI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof HtmlElementWidgetI;
 
 			}
 

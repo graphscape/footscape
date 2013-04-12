@@ -6,6 +6,7 @@ package com.fs.uicore.api.gwt.client.data.message;
 
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.data.property.StringPropertiesData;
@@ -22,9 +23,11 @@ public class MessageData {
 	public static final String HK_ID = "_id";
 
 	public static final String HK_SOURCE_ID = "_source_id";
-	
+
 	public static final String PK_SOURCE = "_source";
-		
+
+	public static final String PK_ERROR_INFOS = "_ERROR_INFO_S";
+
 	private StringPropertiesData headers = new StringPropertiesData();
 
 	private ObjectPropertiesData payloads = new ObjectPropertiesData();
@@ -69,6 +72,14 @@ public class MessageData {
 	public String getHeader(String key) {
 		String rt = this.headers.getProperty(key, false);
 		return rt == null ? null : rt;
+	}
+
+	public ErrorInfosData getErrorInfos() {
+		ErrorInfosData rt = (ErrorInfosData) this.getPayload(PK_ERROR_INFOS);
+		if (rt == null) {
+			rt = new ErrorInfosData();
+		}
+		return rt;
 	}
 
 	public String getHeader(String key, boolean force) {
@@ -133,9 +144,9 @@ public class MessageData {
 		return this.getClass().getName() + ",headers:" + this.headers.toString() + ",payloads:"
 				+ this.payloads;
 	}
-	
-	public MessageData getSource(){
-		return (MessageData)this.getPayload(PK_SOURCE);
+
+	public MessageData getSource() {
+		return (MessageData) this.getPayload(PK_SOURCE);
 	}
 
 	/**

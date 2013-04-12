@@ -31,6 +31,32 @@
     font-size: 9px;
   	color:  rgba(0, 0, 0, 0.5);
 }
+/**
+Console View
+**/
+.console {
+	height: 300px;
+	width: 800px;
+	overflow: hidden;
+	color: rgba(0, 0, 0, 0.8);
+	background-color: rgba(0, 0, 0, 0.05);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.console:hover {
+	overflow: auto;
+}
+
+.console table {
+	margin: 3px;
+	padding: 3px;
+	border: 0px;
+}
+
+.console td {
+	white-space: nowrap;
+	
+}
 
 .disconnected {
 	background-color: rgba(50, 90, 150, 1);
@@ -241,31 +267,6 @@
 	height: auto !important;
 	height: 600px;
 	
-}
-/**
-Console View
-**/
-.wgt-ConsoleView {
-	height: 300px;
-	width: 600px;
-	overflow-x: scroll;
-	overflow-y: scroll;
-	border-radius: 2px;
-	box-shadow: inset 3px 3px 5px #000;
-}
-
-.wgt-ConsoleView table {
-	margin: 3px;
-	color: green;
-	background-color: #000;
-	padding: 3px;
-	border: 0px;
-	font-weight: bold;
-}
-
-.wgt-ConsoleView td {
-	white-space: nowrap;
-	border-bottom: 1px solid #ccc;
 }
 
 

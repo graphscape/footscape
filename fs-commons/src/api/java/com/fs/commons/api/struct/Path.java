@@ -143,12 +143,66 @@ public class Path {
 	}
 
 	public String toString(char sep) {
+		return toString(sep, true);
+	}
+
+	public String toString(char sep, boolean startBySep) {
 		String rt = "";
-		for (String n : this.nameList) {
-			rt += sep;
-			rt += n;
+
+		for (int i = 0; i < this.nameList.size(); i++) {
+			String name = this.nameList.get(i);
+			if (i > 0 || startBySep) {
+				rt += sep;
+			}
+
+			rt += name;
 		}
 		return rt;
+	}
+
+	public boolean contains(Path path) {
+		Path p = this;
+		while (p != null) {
+			if (path.isSubPath(p, true)) {
+				return true;
+			}
+			p = p.removeFirst();
+		}
+		return false;
+	}
+
+	public Path removeFirst() {
+		if (this.isRoot()) {
+			return null;
+		}
+
+		List<String> nL = new ArrayList<String>(this.nameList);
+		nL.remove(0);
+		return Path.valueOf(nL);
+	}
+
+	public Path removeLast() {
+		if (this.isRoot()) {
+			return null;
+		}
+
+		List<String> nL = new ArrayList<String>(this.nameList);
+		nL.remove(nL.size() - 1);
+		return Path.valueOf(nL);
+	}
+
+	/**
+	 * Jan 8, 2013
+	 */
+	public Path concat(Path p) {
+		//
+		List<String> names = new ArrayList<String>(this.nameList);
+		names.addAll(p.nameList);
+		return new Path(names);
+	}
+
+	public String toString(boolean startBySep) {
+		return toString('/', startBySep);
 	}
 
 	/*
@@ -157,7 +211,7 @@ public class Path {
 	@Override
 	public String toString() {
 		//
-		return toString('/');
+		return toString('/', true);
 	}
 
 	/*

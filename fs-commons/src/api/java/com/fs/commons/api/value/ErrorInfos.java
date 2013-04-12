@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.commons.api.lang.ObjectUtil;
+import com.fs.commons.api.struct.Path;
 
 /**
  * @author wu
@@ -30,6 +31,10 @@ public class ErrorInfos implements ValueI {
 		return this;
 	}
 
+	public ErrorInfos addError(Path ecode){
+		return this.add(new ErrorInfo(ecode));
+	}
+	@Deprecated
 	public ErrorInfos addError(String code) {
 		return this.addError(code, null);
 	}

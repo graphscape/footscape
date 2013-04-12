@@ -4,11 +4,10 @@
  */
 package com.fs.uicommons.impl.gwt.client.frwk.console;
 
-import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
+import com.fs.uicommons.api.gwt.client.frwk.ConsoleViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.google.gwt.user.client.DOM;
@@ -18,9 +17,7 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
-
-	protected ViewReferenceI managed;
+public class ConsoleView extends SimpleView implements ConsoleViewI {
 
 	protected Element table;
 
@@ -28,21 +25,19 @@ public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
 
 	protected int size;
 
-	protected int maxSize = 100;
+	protected int maxSize = 1000;
 
 	/**
 	 * @param ctn
 	 */
-	public ConsoleView(ContainerI c, String name) {
-		super(c,name);
+	public ConsoleView(ContainerI c) {
+		super(c, "console", DOM.createDiv());
+		this.element.addClassName("console");
 		table = DOM.createTable();
 		this.tbody = new ElementWrapper(DOM.createTBody());
 		DOM.appendChild(table, this.tbody.getElement());
 		DOM.appendChild(this.element, table);//
 
-	}
-
-	public void todoInInit(){
 		Console.getInstance().addMessageCallback(new UiCallbackI<Object, Boolean>() {
 
 			@Override
@@ -89,14 +84,6 @@ public class ConsoleView extends SimpleView implements ViewReferenceI.AwareI {
 			this.size--;
 		}
 
-	}
-
-	/*
-	 * Nov 11, 2012
-	 */
-	@Override
-	public void setViewReference(ViewReferenceI mgd) {
-		this.managed = mgd;
 	}
 
 }

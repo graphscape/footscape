@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 
 /**
  * @author wu
@@ -37,14 +38,19 @@ public class Console {
 			try {
 				cb.execute(obj);
 			} catch (Throwable t) {
-				System.out
-						.println(Console.class.getName()
-								+ ",error when dispatch println in console to callback:"
-								+ cb + ",throwable:" + t);
+				System.out.println(Console.class.getName()
+						+ ",error when dispatch println in console to callback:" + cb + ",throwable:" + t);
 				t.printStackTrace();
 			}
 		}
 
+	}
+
+	/**
+	 * @param eis
+	 */
+	public void error(ErrorInfosData eis) {
+		this.println(eis);
 	}
 
 }

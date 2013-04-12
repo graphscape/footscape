@@ -5,7 +5,6 @@
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
 import com.fs.uiclient.impl.gwt.client.HeaderNames;
-import com.fs.uiclient.impl.gwt.client.UiClientConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BottomViewI;
 import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
@@ -40,8 +39,9 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		//
 		BottomViewI bv = fc.getBottomView();
-		bv.addItem(UiClientConstants.BI_ABOUT);
-		bv.addItem(UiClientConstants.BI_COTACT);
+		bv.addItem(HeaderNames.H1_ABOUT);
+		bv.addItem(HeaderNames.H1_CONTACT);
+		bv.addItem(HeaderNames.H1_CONSOLE);//
 		
 	}
 

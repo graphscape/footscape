@@ -5,6 +5,7 @@
 package com.fs.uicore.impl.gwt.client.endpoint;
 
 import com.fs.uicore.api.gwt.client.CodecI;
+import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
@@ -12,6 +13,7 @@ import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
@@ -67,6 +69,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	private EndpointFreeEvent lastFreeEvent;
 
 	private EndpointBusyEvent lastBusyEvent;
+	
+	private Console console = Console.getInstance();
 
 	/**
 	 * @param md
@@ -318,7 +322,10 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		}
 		Path p = md.getPath();
 		Path tp = EndpointMessageEvent.TYPE.getAsPath();
-
+		ErrorInfosData eis = md.getErrorInfos();
+		if(eis.hasError()){
+			this.console.error(eis);
+		}
 		md.setHeader(MessageData.HK_PATH, tp.concat(p).toString());
 		new EndpointMessageEvent(this, md).dispatch();
 	}

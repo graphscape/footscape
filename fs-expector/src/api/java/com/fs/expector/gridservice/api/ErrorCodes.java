@@ -6,10 +6,11 @@ package com.fs.expector.gridservice.api;
 
 /**
  * @author wu
- * 
+ * @deprecated use constants
  */
 public class ErrorCodes {
 
-	public static final String FAILED_SIGNUP = "failed/signup";
+	public static final String FAILED_SIGNUP = "/error/failed/signup";
+	
 
 }

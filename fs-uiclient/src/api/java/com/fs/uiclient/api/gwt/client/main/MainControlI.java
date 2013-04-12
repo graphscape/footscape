@@ -11,6 +11,8 @@ import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
+import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
+import com.fs.uicore.api.gwt.client.commons.Path;
 
 /**
  * @author wu
@@ -44,5 +46,7 @@ public interface MainControlI extends ControlI {
 	public void closeLoginView();
 
 	public void closeAll();
+	
+	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh);
 
 }

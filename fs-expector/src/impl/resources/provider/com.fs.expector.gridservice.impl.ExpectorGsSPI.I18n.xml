@@ -35,6 +35,7 @@
 	
 	
 	<!-- Header Items,Tab title -->
+	<property name="/console" value="Console" />
 	<property name="/exp-search" value="Search" />
 	<property name="/search" value="Search"/>
 	<property name="/signup" value="Signup" />
@@ -84,4 +85,9 @@
 	<property name="/tip/action/expe/submit" value="Save"/>
 	<property name="/tip/action/signup/fblogin" value="Log in by facebook account." />
 	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with."/>
+	
+	<!-- Open resource -->
+	<property name="/open/resource/html/about-us.html" value="About Us" />
+	<property name="/open/resource/html/contact-us.html" value="Contact Us" />
+	
 </config>

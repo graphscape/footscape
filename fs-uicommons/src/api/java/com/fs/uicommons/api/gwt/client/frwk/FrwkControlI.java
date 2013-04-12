@@ -28,5 +28,7 @@ public interface FrwkControlI extends ControlI {
 	public BottomViewI getBottomView();
 
 	public LoginViewI openLoginView();
+	
+	public ConsoleViewI openConsoleView();
 
 }
