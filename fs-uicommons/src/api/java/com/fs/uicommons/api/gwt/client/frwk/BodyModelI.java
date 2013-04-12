@@ -9,7 +9,7 @@ import com.fs.uicore.api.gwt.client.core.WidgetI;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated
  */
 public interface BodyModelI extends ModelI {
 

@@ -30,10 +30,8 @@ import com.google.gwt.user.client.Element;
  */
 public class SimpleView extends ViewSupport {
 
-	private static final String ACTION_LIST = "actionList";
-
-	private ListI actionList;// TODO ActionsELement
-
+	protected ListI actionListInFooter;// 
+	protected ListI actionListInHeader;// 
 	protected Map<Path, ButtonI> actionMap;
 
 	private ErrorInfosWidgetI errorInfoDisplay;
@@ -76,21 +74,33 @@ public class SimpleView extends ViewSupport {
 
 		// TODO header
 		this.errorInfoDisplay = this.factory.create(ErrorInfosWidgetI.class);
+		this.errorInfoDisplay.setProperty("_parentElement",this.header);
 		this.errorInfoDisplay.parent(this);
-
 		// footer:
 
-		this.actionList = this.factory.create(ListI.class);
-		this.actionList.setName(ACTION_LIST);//
-		this.actionList.parent(this);
+		this.actionListInFooter = this.factory.create(ListI.class);
+		this.actionListInFooter.setProperty("_parentElement", this.footer);
+		this.actionListInFooter.parent(this);
+		
+		this.actionListInHeader = this.factory.create(ListI.class);
+		this.actionListInHeader.setProperty("_parentElement", this.header);
+		this.actionListInHeader.parent(this);
 
 	}
 
 	public ButtonI addAction(final Path aname) {
 		return this.addAction(aname, false);
 	}
+	
+	public ButtonI addAction(final Path aname, ListI parent) {
+		return this.addAction(aname, false, parent);
+	}
 
 	public ButtonI addAction(final Path aname, boolean hide) {
+		return this.addAction(aname,hide,this.actionListInFooter);
+	}
+	
+	public ButtonI addAction(final Path aname, boolean hide, ListI parent) {
 		// listen to the button clicked event,which is button state is changed.
 		ButtonI b = this.actionMap.get(aname);
 		if (b != null) {
@@ -100,7 +110,7 @@ public class SimpleView extends ViewSupport {
 		b = this.factory.create(ButtonI.class);// TODO,
 		b.setText(true, aname + "");
 
-		b.parent(this.actionList);
+		b.parent(parent);
 		// click event is raised in button,not button's model
 		b.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -111,7 +121,7 @@ public class SimpleView extends ViewSupport {
 		});
 		this.actionMap.put(aname, b);
 		this.hideAction(aname, hide);
-
+		
 		return b;
 	}
 
@@ -125,20 +135,11 @@ public class SimpleView extends ViewSupport {
 
 	@Override
 	protected void onAddChild(Element pe, ElementObjectI cw) {
-		Element parent = pe;
-		if (cw instanceof ErrorInfosWidgetI) {
-			parent = this.header;
-		} else if (ACTION_LIST.equals(cw.getName()) && (cw instanceof ListI)) {
-			// is
-			// action
-			// list
-			// ,see
-			// Constructor.
-			parent = this.footer;
-		} else {// all other add to body.
+		Element parent = (Element)cw.getProperty("_parentElement");
+		if(parent == null){			
 			parent = this.body;//
 		}
-
+		
 		super.onAddChild(parent, cw);
 	}
 

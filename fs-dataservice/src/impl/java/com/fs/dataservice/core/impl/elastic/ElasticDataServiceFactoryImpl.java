@@ -17,15 +17,17 @@ import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
-import org.elasticsearch.action.get.GetRequestBuilder;
-import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -134,12 +136,12 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 		int port = this.getPort();
 		client.addTransportAddress(new InetSocketTransportAddress(host, port));
 
-		MetaInfo mi = this.loadDataVersion(client, index, false);
+		MetaInfo mi = this.loadMetaInfos(client, index, false);
 		LOG.info("meta info readed from data base:" + mi);
 		if (mi == null) {// no index init
 
 			this.createIndex(client, index);
-		} else {// exist
+		} else {//index and the meta-info exist
 
 			// check is meet
 			MetaInfo expected = this.getExpectedMetaInfos();
@@ -156,7 +158,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 			boolean test = this.config.getPropertyAsBoolean("isTest", false);
 			if (ci) {
 				if (!test) {
-					throw new FsException("not in test mode,clean data in product mode?");
+					throw new FsException("not in test mode,clean data in product mode not allowed!");
 				}
 				this.deleteIndex(client, index);
 				this.createIndex(client, index);//
@@ -298,21 +300,29 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 			// create version meta info
 		{
 			MetaInfo mi = this.getExpectedMetaInfos();// for create index.
+			this.saveMetaInfo(mi, client, index);
+		}
+	}
+
+	protected void saveMetaInfo(MetaInfo mi, Client client, String index) {
+		for (String key : mi.keyList()) {
+
+			String value = mi.getProperty(key, true);
+
 			try {
 				XContentBuilder jb = JsonXContent.contentBuilder();
 				jb.startObject();
-				jb.field(MetaInfo.PK_VERSION, mi.getVersion());//
-				jb.field(MetaInfo.PK_OWNER, mi.getOwner());//
-				jb.field(MetaInfo.PK_PASSWORD, mi.getPassword());//
-
+				jb.field("value", value);//
 				jb.endObject();
-				IndexResponse response = client.prepareIndex(index, MetaInfo.TYPE, "0").setSource(jb)
+
+				IndexResponse response = client.prepareIndex(index, MetaInfo.TYPE, key).setSource(jb)
 						.execute().actionGet();
 				String rid = response.getId();
 			} catch (IOException e) {
 				throw new FsException(e);
 			}
 		}
+
 	}
 
 	protected MetaInfo getExpectedMetaInfos() {
@@ -322,7 +332,10 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 		String o = mc.getProperty(MetaInfo.PK_OWNER, true);
 		String p = mc.getProperty(MetaInfo.PK_PASSWORD, true);
 
-		MetaInfo rt = new MetaInfo(v, o, p);
+		MetaInfo rt = new MetaInfo();
+		rt.setProperty(MetaInfo.PK_VERSION, v);
+		rt.setProperty(MetaInfo.PK_OWNER, o);
+		rt.setProperty(MetaInfo.PK_PASSWORD, p);
 		return rt;
 	}
 
@@ -345,31 +358,26 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 		return ier.isExists();
 	}
 
-	private MetaInfo loadDataVersion(Client client, String index, boolean force) {
+	private MetaInfo loadMetaInfos(Client client, String index, boolean force) {
 		if (!this.isIndexExist(client, index)) {
 			return null;
 		}
 
-		GetRequestBuilder gr = client.prepareGet();
+		SearchRequestBuilder sr = client.prepareSearch(index).setTypes(MetaInfo.TYPE);
+		SearchResponse sb = sr.execute().actionGet();
+		MetaInfo rt = new MetaInfo();
+		SearchHits shs = sb.getHits();
 
-		gr = gr.setIndex(index).setType(MetaInfo.TYPE).setId("0");
+		for (SearchHit sh : sb.getHits()) {
+			String key = sh.getId();
 
-		GetResponse res = gr.execute().actionGet();
+			Map<String, Object> old = sh.sourceAsMap();
 
-		Map<String, Object> src = res.getSource();
-
-		if (src == null) {
-			if (force) {
-				throw new FsException("no meta info found for index:" + index
-						+ ",sorry this index cannot be recognized!");
-			}
-			return null;
+			String value = (String) old.get("value");
+			rt.setProperty(key, value);
 		}
-		String version = (String) src.get("version");
-		String owner = (String) src.get("owner");
-		String password = (String) src.get("password");
 
-		return new MetaInfo(version, owner, password);
+		return rt;
 	}
 
 }

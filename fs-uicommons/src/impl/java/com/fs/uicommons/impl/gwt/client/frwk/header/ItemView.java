@@ -92,7 +92,11 @@ public class ItemView extends LightWeightView {
 
 	public MenuItemWI getOrAddMenuItem(final String name) {
 
-		MenuItemWI rt = this.menu.addItem(name);
+		MenuItemWI rt = this.menu.getItem(name);
+		if (rt != null) {
+			return rt;
+		}
+		rt = this.menu.addItem(name);
 
 		rt.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 

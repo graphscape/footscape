@@ -46,19 +46,20 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 
 		this.ul = (com.google.gwt.user.client.Element) Document.get().createULElement().cast();
 		DOM.appendChild(this.element, this.ul);
-		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(), new GwtMouseOutHandler() {
-			protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
-				MenuWImpl.this.onGwtMouseOut(evt);
-			}
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOutEvent.getType(),
+				new GwtMouseOutHandler() {
+					protected void handleInternal(com.google.gwt.event.dom.client.MouseOutEvent evt) {
+						MenuWImpl.this.onGwtMouseOut(evt);
+					}
 
-		});
-		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(), new GwtMouseOverHandler() {
-			protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
-				MenuWImpl.this.onGwtMouseOver(evt);
-			}
+				});
+		this.addGwtEventHandler(com.google.gwt.event.dom.client.MouseOverEvent.getType(),
+				new GwtMouseOverHandler() {
+					protected void handleInternal(com.google.gwt.event.dom.client.MouseOverEvent evt) {
+						MenuWImpl.this.onGwtMouseOver(evt);
+					}
 
-		});
-		
+				});
 
 	}
 
@@ -77,11 +78,11 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 		};
 		timerToHide.schedule(UiCommonsConstants.MENU_HIDE_TIMEOUT_MS);
 	}
-	
-	protected void tryCancelHideTimer(){
+
+	protected void tryCancelHideTimer() {
 		if (timerToHide != null) {
 			timerToHide.cancel();
-		}		
+		}
 	}
 
 	protected void onGwtMouseOver(MouseOverEvent evt) {
@@ -95,7 +96,13 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	@Override
 	public MenuItemWI addItem(String name) {
 
-		MenuItemWI rt = new MenuItemWImpl(this.container, name);
+		MenuItemWI rt = this.getItem(name);
+		if (rt != null) {
+			throw new UiException("menu item duplicated:" + name + ",in menu:" + this.getName());
+		}
+
+		rt = new MenuItemWImpl(this.container, name);
+
 		rt.setText(true, name);
 
 		this.child(rt);
@@ -167,7 +174,7 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 																	// around.
 		ElementWrapper ele = this.getElementWrapper();
 		ele.tryMoveInside(topLeft, body);
-		
+
 	}
 
 	@Override
@@ -185,16 +192,16 @@ public class MenuWImpl extends LayoutSupport implements MenuWI {
 	 */
 	@Override
 	public MenuItemWI getItem(String name) {
-		throw new UiException("TODO");
+		return this.getChild(MenuItemWI.class, name, false);
 
 	}
 
 	/*
-	 *Mar 30, 2013
+	 * Mar 30, 2013
 	 */
 	@Override
 	public void attach() {
-		// 
+		//
 		super.attach();
 	}
 

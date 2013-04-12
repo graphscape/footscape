@@ -20,10 +20,8 @@ public class MetaInfo extends MapProperties<String> {
 
 	public static final String TYPE = "meta-infos";
 
-	public MetaInfo(String version, String owner, String password) {
-		this.setProperty(PK_VERSION, version);
-		this.setProperty(PK_OWNER, owner);
-		this.setProperty(PK_PASSWORD, password);
+	public MetaInfo() {
+		
 	}
 
 	public String getOwner() {

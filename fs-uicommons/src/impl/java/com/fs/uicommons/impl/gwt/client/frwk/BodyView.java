@@ -15,6 +15,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -64,6 +65,8 @@ public class BodyView extends LightWeightView implements BodyViewI {
 
 		final TabWI sitem = this.tabber.getTab(path, true);
 		sitem.select();
+		//TODO animate
+		Window.scrollTo(0, 0);
 	}
 
 	/**
