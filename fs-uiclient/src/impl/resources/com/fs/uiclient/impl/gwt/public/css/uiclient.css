@@ -9,8 +9,7 @@ a.user-icon img{ /*user image*/
 }
 
 a.user-icon:hover img {
-	width:52px;
-	height:52px;
+	
 }
 
 .header-item-logo {
@@ -100,11 +99,10 @@ a.user-icon:hover img {
 	text-align:right;
 }
 
-.myexp-message-expbody {
+.myexp-message-exptitle {
 	font-size:9px;
 	color:rgba(0, 0, 0, 0.5);
 	text-align:right;
-
 }
 
 .myexp-message-timestamp {

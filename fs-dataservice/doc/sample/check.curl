@@ -2,6 +2,7 @@
 #
 #Check settings 
 #
+curl -XGET 'http://localhost:9200/nodes/_mapping?pretty=true'
 
 curl -XGET 'http://localhost:9200/nodes/expectation/_search?pretty=true' -d '{
     "query" : {

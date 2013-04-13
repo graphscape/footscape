@@ -33,7 +33,6 @@ public abstract class AuthedNode extends NodeWrapper {
 	public String getAccountId() {
 		return (String) this.getProperty(ACCOUNT_ID);
 	}
-
 	public void setAccountId(String value) {
 		this.setProperty(ACCOUNT_ID, value);
 	}

@@ -252,8 +252,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	@Override
-	public void setMyExp(String body) {
-		this.title.setText(body);
+	public void setMyExp(String title, String body) {
+		this.title.setTextAndTitle(title,false,body);
 	}
 
 	/*

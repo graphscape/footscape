@@ -36,7 +36,7 @@ public class CooperRequestMessageView extends ExpMessageView {
 		super(c, msg);
 		String text = "Coooperation request from " + this.msg.getNick1() + ":" + this.msg.getExpBody1()
 				+ ",please click OK if you agree!";
-		this.messageDiv.getElement().setInnerText(text);
+		this.messageBodyDiv.getElement().setInnerText(text);
 
 		//
 		PropertiesData<Object> cr = msg.getPayload("cooperRequest", false);

@@ -49,7 +49,7 @@ public abstract class ExpMessageView extends ViewSupport {
 
 	protected ExpMessage msg;
 
-	protected ElementWrapper messageDiv;
+	protected ElementWrapper messageBodyDiv;
 
 	protected ElementWrapper actionsDiv;
 
@@ -96,8 +96,8 @@ public abstract class ExpMessageView extends ViewSupport {
 				TDWrapper td1 = tr0.addTd();
 				td1.addClassName("myexp-message-td1");
 				Element ele = DOM.createDiv();
-				this.messageDiv = new ElementWrapper(ele);
-				this.messageDiv.addClassName("myexp-message-body");
+				this.messageBodyDiv = new ElementWrapper(ele);
+				this.messageBodyDiv.addClassName("myexp-message-body");
 				td1.append(ele);
 
 			}
@@ -123,10 +123,10 @@ public abstract class ExpMessageView extends ViewSupport {
 
 				}
 				{
-					// exp body
+					// exp title1
 					Element ele = DOM.createDiv();
-					ele.addClassName("myexp-message-expbody");
-					ele.setInnerText("" + msg.getExpBody1() + "");
+					ele.addClassName("myexp-message-exptitle");
+					ele.setInnerText("" + msg.getExpTitle1() + "");
 					td2.append(ele);
 				}
 			}

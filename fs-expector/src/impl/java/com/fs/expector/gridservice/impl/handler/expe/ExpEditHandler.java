@@ -8,12 +8,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.validator.ValidatorI;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
@@ -26,10 +28,32 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class ExpEditHandler extends ExpectorTMREHSupport {
+	/* */
+	@Override
+	public void active(ActiveContext ac) {
 
+		super.active(ac);
+
+		{
+			ValidatorI<MessageI> vl = this.createValidator("submit");
+			vl.addExpression(prefix + "['title']!=null");
+			vl.addExpression(prefix + "['summary']!=null");
+			vl.addExpression(prefix + "['format']!=null");
+			vl.addExpression(prefix + "['body']!=null");
+			// passcode in session .
+			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
+		}
+		
+		// this.confirmCodeNotifier =
+		// this.top.finder(ConfirmCodeNotifierI.class).name("main").find(true);
+	}
+	
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
-
+	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res,ValidatorI<MessageI> vl) {
+		if(res.getErrorInfos().hasError()){
+			return;
+		
+		}
 		// the relation between activity and user.
 		SessionGd s = this.getSession(ew, true);
 		String aid = s.getAccountId();
@@ -41,10 +65,17 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 
 		MessageI req = ew.getMessage();//
 		String body = (String) req.getPayload("body", true);
+		String title = (String) req.getPayload("title", true);
+		String format = (String) req.getPayload("format", true);
+		String summary = (String) req.getPayload("summary", true);
+		
 
 		Expectation exp = new Expectation().forCreate(this.dataService);
 
 		exp.setAccountId(aid);
+		exp.setTitle(title);
+		exp.setSummary(summary);
+		exp.setFormat(format);
 		exp.setBody(body);
 		exp.save(true);
 

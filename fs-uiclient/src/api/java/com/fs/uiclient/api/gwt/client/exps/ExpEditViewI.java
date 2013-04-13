@@ -12,4 +12,11 @@ import com.fs.uicommons.api.gwt.client.mvc.ViewI;
  */
 public interface ExpEditViewI extends ViewI {
 
+	public static final String F_BODY = "body";
+	
+	public static final String F_TITLE = "title";
+	
+	public static final String F_SUMMARY = "summary";
+	
+	public static final String F_FORMAT = "format";
 }

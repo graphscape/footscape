@@ -22,17 +22,34 @@ public class LabelImpl extends WidgetSupport implements LabelI {
 
 	@Override
 	public void setText(String sd) {
-		this.setText(sd,false);
+		this.setText(sd, false);
 	}
+
 	@Override
 	public void setText(String sd, boolean loc) {
-		if(loc){
-			sd = this.localized(sd);			
+		//
+		if (loc) {
+			sd = this.localized(sd);
 		}
 		Element ele = this.getElement();
 
 		ele.setInnerText(sd);//
-		ele.setTitle(sd);
-		
+	}
+
+	/*
+	 * Apr 13, 2013
+	 */
+	@Override
+	public void setTitle(String title) {
+		this.getElement().setTitle(title);
+	}
+
+	/*
+	 * Apr 13, 2013
+	 */
+	@Override
+	public void setTextAndTitle(String sd, boolean loc, String title) {
+		this.setText(sd,loc);
+		this.setTitle(title);
 	}
 }

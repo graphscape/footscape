@@ -87,7 +87,9 @@ public class UserExpItemView extends ViewSupport {
 
 			td1.addClassName("uel-item-expbody");
 			td1.setAttribute("colspan", "1");//
-			td1.getElement().setInnerText(t.getBody());
+			String body = t.getBody();
+			String html = body.replace("\n", "<br>");
+			td1.getElement().setInnerHTML(html);
 			// td1,1
 		}
 
@@ -106,7 +108,7 @@ public class UserExpItemView extends ViewSupport {
 		actions.parent(this);
 		
 		ButtonI select = this.factory.create(ButtonI.class);
-		select.setText(true, "search");
+		select.setText(true, Actions.A_UEXPI_SELECT.toString());
 		select.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

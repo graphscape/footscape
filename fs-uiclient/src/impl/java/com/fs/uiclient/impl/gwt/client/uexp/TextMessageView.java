@@ -31,7 +31,7 @@ public class TextMessageView extends ExpMessageView {
 	public TextMessageView(ContainerI c, ExpMessage msg) {
 		super(c, msg);
 		String text = msg.getPayLoadAsString("text", true);
-		this.messageDiv.getElement().setInnerText(text);
+		this.messageBodyDiv.getElement().setInnerText(text);
 
 	}
 

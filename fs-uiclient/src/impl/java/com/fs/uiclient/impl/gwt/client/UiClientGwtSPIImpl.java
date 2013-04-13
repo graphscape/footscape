@@ -36,7 +36,8 @@ import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpDeletedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitFailureMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpGetMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
@@ -168,7 +169,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
 				new CooperConfirmSuccessMH(c));// search
 		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitMH(c));// create
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitSuccessMH(c));// create
+		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/failure"), new ExpEditSubmitFailureMH(c));// create
 		// exp
 		// exp
 		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search

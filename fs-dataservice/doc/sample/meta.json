@@ -1,13 +1,23 @@
 
 
-curl -XGET 'http://localhost:9200/nodes/meta-infos/_search?pretty=true' -d '{
+curl -XGET 'http://localhost:9200/nodes/meta-info/_search?pretty=true' -d '{
     "query": {
         "match_all":{}
     }
 }'
 
-curl -XPOST 'http://localhost:9200/nodes/meta-infos' -d '{
-    "_id" : "owner",
+curl -XPOST 'http://localhost:9200/nodes/meta-info' -d '{
+    "key" : "owner",
     "value" : "tester"
+}'
+
+curl -XPOST 'http://localhost:9200/nodes/meta-info' -d '{
+    "key" : "password",
+    "value" : "tester"
+}'
+
+curl -XPOST 'http://localhost:9200/nodes/meta-info' -d '{
+    "key" : "version",
+    "value" : "0.1.0"
 }'
 

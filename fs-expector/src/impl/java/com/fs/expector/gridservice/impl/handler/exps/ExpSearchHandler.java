@@ -29,12 +29,11 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  * 
  */
 public class ExpSearchHandler extends ExpectorTMREHSupport {
-	
+
 	private int defaultSearchSlop = 3;
-	
 
 	/*
-	 *Apr 3, 2013
+	 * Apr 3, 2013
 	 */
 	@Override
 	public void configure(Configuration cfg) {
@@ -92,9 +91,10 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 	private void processExpsResult(ResponseI res, List<Expectation> list) {
 		// convert
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
-				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID },//
-				new boolean[] { true, true, true, true }, // force
-				new String[] { "id", "body", "timestamp", "accountId" }//
+				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID, Expectation.FORMAT,
+				Expectation.TITLE, Expectation.SUMMARY },//
+				new boolean[] { true, true, true, true, true, true, true }, // force
+				new String[] { "id", "body", "timestamp", "accountId", "format", "title", "summary" }//
 				);
 		for (PropertiesI<Object> pts : el) {
 			String accId = (String) pts.getProperty("accountId");
@@ -115,13 +115,13 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		res.setPayload("expectations", el);
 	}
-	
+
 	@Handle("get")
 	public void handleGet(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		String expId = req.getString("expId", true);
 		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
-		res.setPayload("expectation", exp.getTarget());
+		res.setPayload("expectation", exp.getTarget());//good
 	}
 
 }

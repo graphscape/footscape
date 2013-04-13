@@ -16,7 +16,7 @@ import com.fs.uicore.api.gwt.client.data.basic.DateData;
 public interface MyExpViewI extends ViewI {
 
 	// TODO myexp model as parameter
-	public void setMyExp(String body);
+	public void setMyExp(String title, String body);
 
 	public DateData getLatestMessageTimestamp();
 

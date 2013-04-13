@@ -15,13 +15,13 @@ public class Actions {
 	public static final Path ACTION = ActionEvent.TYPE.getAsPath();
 
 	// user exp
-	public static final Path A_USEREXP = ACTION.getSubPath("userexp");
+	public static final Path A_UEL_ITEM = ACTION.getSubPath("uexpi");
 
-	public static final Path A_UEXPI_OPEN = A_USEREXP.getSubPath("open");
+	public static final Path A_UEXPI_OPEN = A_UEL_ITEM.getSubPath("open");
 
-	public static final Path A_UEXPI_SELECT = A_USEREXP.getSubPath("select");
+	public static final Path A_UEXPI_SELECT = A_UEL_ITEM.getSubPath("select");
 
-	public static final Path A_UEXP_COOPER_CONFIRM = A_USEREXP.getSubPath("cooperConfirm");
+	public static final Path A_UEXP_COOPER_CONFIRM = A_UEL_ITEM.getSubPath("cooperConfirm");
 	// activities
 
 	public static final Path A_ACTS = ACTION.getSubPath("activities");

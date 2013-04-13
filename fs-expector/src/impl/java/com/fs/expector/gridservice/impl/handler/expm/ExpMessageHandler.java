@@ -30,7 +30,6 @@ import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
-import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.handler.cooper.CooperHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -137,7 +136,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				String id = m.getId();
 				ds.deleteById(ExpMessage.class, id);
 			}
-			if(mL.isEmpty()){
+			if (mL.isEmpty()) {
 				break;
 			}
 		}
@@ -176,11 +175,11 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		MessageI req = ew.getMessage();//
 
 		String accountId2 = req.getString("accountId2", false);
-		
+
 		String expId2 = req.getString("expId2", true);
 		Date timestamp1 = (Date) req.getPayload("timestamp1", false);
 		Date timestamp2 = (Date) req.getPayload("timestamp2", false);
-		
+
 		Integer limit = (Integer) req.getPayload("limit", this.defaultLimit);
 
 		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
@@ -206,7 +205,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		NodeQueryResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
 		res.setPayload("limit", limit);
-		res.setPayload("expId2",expId2);
+		res.setPayload("expId2", expId2);
 	}
 
 	private void processExpsResult(ResponseI res, List<ExpMessage> list) {
@@ -231,16 +230,22 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 				msg.setPayload("nick1", acc.getNick());
 				String icon = this.efacade.getIconByAccountId(accId1);
-				//icon of acc1
-				msg.setPayload("icon1",icon);
+				// icon of acc1
+				msg.setPayload("icon1", icon);
 			}
 			{// exp1 body
-				String expB = this.getExpBodyForMessage(expId1);
+				Expectation exp = this.dataService.getNewestById(Expectation.class, expId1, false);
+				String expB = exp == null ? "Deleted" : exp.getBody();
+				String expT = exp == null ? "Deleted" : exp.getTitle();
+				msg.setPayload("expTitle1", expT);
 				msg.setPayload("expBody1", expB);
 
 			}
 			{// exp2 body
-				String expB = this.getExpBodyForMessage(expId1);
+				Expectation exp = this.dataService.getNewestById(Expectation.class, expId2, false);
+				String expB = exp == null ? "Deleted" : exp.getBody();
+				String expT = exp == null ? "Deleted" : exp.getTitle();
+				msg.setPayload("expTitle2", expT);
 				msg.setPayload("expBody2", expB);
 
 			}
@@ -261,9 +266,4 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		res.setPayload("expMessages", ml);
 	}
 
-	private String getExpBodyForMessage(String expId) {
-		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, false);
-		return exp == null ? "Deleted" : exp.getBody();
-
-	}
 }

@@ -38,8 +38,10 @@ public class ExpGetMH extends MHSupport {
 		// refresh the title of the tab
 		MainControlI c = this.getControl(MainControlI.class, true);
 		String expId = exp.getString(UiClientConstants.NK_ID, true);
+		String title = exp.getString(ExpEditView.F_TITLE, true);
 		String body = exp.getString(ExpEditView.F_BODY, true);
-		c.setExpDetail(expId, body);
+		
+		c.setExpDetail(expId,title, body);
 		//
 		
 	}

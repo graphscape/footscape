@@ -142,6 +142,8 @@ public class FormView extends ViewSupport implements FormViewI {
 			editorCallback.execute((T) pm.getEditor(true));
 
 		}
+		EditorI editor = pm.getEditor(true);
+		rt.setEditor(editor);
 		return rt;
 	}
 

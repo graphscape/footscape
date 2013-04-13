@@ -25,6 +25,8 @@
 	<signup value="Signup" />
 	<search value="Search" />
 	<savingAccount value="Remember Account" />
+	<title value="Title" />
+	
 	<!-- Error Code -->
 	<property name="/error/unknow" value="Unkow Error"/>
 	<property name="/error/login/failure" value="Login Failed" />
@@ -65,7 +67,7 @@
 	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
 	<property name="/action/login/facebook" value="Log In" />
-	<property name="/action/userexp/select" value="Select"/>
+	<property name="/action/uexpi/select" value="Select"/>
 	<property name="/action/uelist/create" value="New"/>
 	<property name="/action/expe/submit" value="Save"/>
 	<property name="/action/signup/fblogin" value="Log In" />
@@ -80,14 +82,16 @@
 	<property name="/tip/action/login/submit" value="Login"/>
 	<property name="/tip/action/login/logout" value="Logout"/>
 	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
-	<property name="/tip/action/userexp/select" value="Select"/>
 	<property name="/tip/action/uelist/create" value="Create a new expecation for you."/>
+	<property name="/tip/action/uexpi/open" value="Open view to show the detail of this expecation."/>
+	<property name="/tip/action/uexpi/select" value="Navigate to search view for this expectation."/>
+	
 	<property name="/tip/action/expe/submit" value="Save"/>
 	<property name="/tip/action/signup/fblogin" value="Log in by facebook account." />
 	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with."/>
 	
 	<!-- Open resource -->
-	<property name="/open/resource/html/about-us.html" value="About Us" />
-	<property name="/open/resource/html/contact-us.html" value="Contact Us" />
+	<property name="/open/resource/html/about-us.html" value="About-Us" />
+	<property name="/open/resource/html/contact-us.html" value="Contact-Us" />
 	
 </config>

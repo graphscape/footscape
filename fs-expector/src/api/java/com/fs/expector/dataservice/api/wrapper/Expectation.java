@@ -17,6 +17,12 @@ public class Expectation extends AuthedNode {
 
 	public static final String BODY = "body";
 
+	public static final String FORMAT = "format";
+
+	public static final String TITLE = "title";
+
+	public static final String SUMMARY = "summary";
+
 	/**
 	 * @param ntype
 	 * @param pts
@@ -33,12 +39,40 @@ public class Expectation extends AuthedNode {
 		this.setProperty(BODY, value);
 	}
 
+	public String getTitle() {
+		return (String) this.getProperty(TITLE);
+	}
+
+	public void setTitle(String value) {
+		this.setProperty(TITLE, value);
+	}
+
+
+	public String getSummary() {
+		return (String) this.getProperty(SUMMARY);
+	}
+
+	public void setSummary(String value) {
+		this.setProperty(SUMMARY, value);
+	}
+
+	public String getFormat() {
+		return (String) this.getProperty(FORMAT);
+	}
+
+	public void setFormat(String value) {
+		this.setProperty(FORMAT, value);
+	}
+
 	/**
 	 * Nov 2, 2012
 	 */
 	public static void config(DataSchema cfs) {
-		AuthedNode.config(cfs.addConfig(NodeTypes.EXPECTATION, Expectation.class).field(BODY,
-				AnalyzerType.TEXT));
+		AuthedNode.config(cfs.addConfig(NodeTypes.EXPECTATION, Expectation.class)//
+				.field(TITLE)//
+				.field(SUMMARY)//
+				.field(FORMAT)//
+				.field(BODY, AnalyzerType.TEXT));
 	}
 
 }

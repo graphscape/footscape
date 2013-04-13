@@ -14,12 +14,12 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  * @author wu
  * 
  */
-public class ExpEditSubmitMH extends MHSupport {
+public class ExpEditSubmitSuccessMH extends MHSupport {
 
 	/**
 	 * @param c
 	 */
-	public ExpEditSubmitMH(ContainerI c) {
+	public ExpEditSubmitSuccessMH(ContainerI c) {
 		super(c);
 		// TODO Auto-generated constructor stub
 	}

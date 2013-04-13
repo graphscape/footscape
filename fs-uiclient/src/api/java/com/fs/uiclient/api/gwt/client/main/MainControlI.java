@@ -39,7 +39,7 @@ public interface MainControlI extends ControlI {
 
 	public void closeMyExp(String expId);
 
-	public void setExpDetail(String expId, String title);
+	public void setExpDetail(String expId, String title, String body);
 
 	public void refreshUeList();
 
