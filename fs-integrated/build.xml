@@ -6,9 +6,15 @@
 <project name="fs-integrated" default="publish" xmlns:ivy="antlib:org.apache.ivy.ant">
 	 &common.build;
 	
-	<target name="binary" depends="package">
+	<target name="binary" >
+		
+		
+				
+	</target>
+	
+	<target name="zip">
 		<!-- -->
-		<zip destfile="${dir.target}/fs-bin-${revision}.zip" basedir="${dir.src}/impl/dist">
+		<zip destfile="${dir.target}/fs-bin-${fs.revision}.zip" basedir="${dir.src}/impl/dist">
 			<zipfileset dir="${dir.target}/runtime/lib" prefix="lib">
 
 				<exclude name="commons-daemon-*.jar" />
@@ -17,15 +23,18 @@
 				<exclude name="gwt-*.jar" />
 
 			</zipfileset>
-			<zipfileset dir="${dir.target}" includes="fs-integrated-api-${revision}.jar" prefix="bin" />
-			<zipfileset dir="${dir.target}" includes="fs-integrated-impl-${revision}.jar" prefix="bin" />
+			<zipfileset dir="${dir.target}" includes="fs-integrated-api-${fs.revision}.jar" prefix="bin" />
+			<zipfileset dir="${dir.target}" includes="fs-integrated-impl-${fs.revision}.jar" prefix="bin" />
 			<zipfileset dir="${dir.target}/runtime/lib" includes="commons-daemon-*.jar" prefix="bin" />
 
-		</zip>
+		</zip>		
 	</target>
-	<target name="install" depends="binary">
-		<unzip src="${dir.target}/fs-bin-${revision}.zip" dest="${dir.target}/fs-bin-${revision}" />
-		<chmod file="${dir.target}/fs-bin-${revision}/bin/fs.sh" perm="700" />
+	
+	<target name="install" >
+		<antcall target="package"/>
+		<antcall target="zip"/>
+		<unzip src="${dir.target}/fs-bin-${fs.revision}.zip" dest="${dir.target}/fs-bin-${fs.revision}" />
+		<chmod file="${dir.target}/fs-bin-${fs.revision}/bin/fs.sh" perm="700" />
 
 	</target>
 

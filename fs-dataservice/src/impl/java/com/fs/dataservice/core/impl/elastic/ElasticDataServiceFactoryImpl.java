@@ -312,10 +312,11 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 			try {
 				XContentBuilder jb = JsonXContent.contentBuilder();
 				jb.startObject();
+				jb.field("key",key);
 				jb.field("value", value);//
 				jb.endObject();
 
-				IndexResponse response = client.prepareIndex(index, MetaInfo.TYPE, key).setSource(jb)
+				IndexResponse response = client.prepareIndex(index, MetaInfo.TYPE).setSource(jb)
 						.execute().actionGet();
 				String rid = response.getId();
 			} catch (IOException e) {
@@ -369,10 +370,9 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 		SearchHits shs = sb.getHits();
 
 		for (SearchHit sh : sb.getHits()) {
-			String key = sh.getId();
 
 			Map<String, Object> old = sh.sourceAsMap();
-
+			String key = (String) old.get("key");
 			String value = (String) old.get("value");
 			rt.setProperty(key, value);
 		}

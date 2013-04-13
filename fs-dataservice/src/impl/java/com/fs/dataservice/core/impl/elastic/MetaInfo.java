@@ -18,7 +18,7 @@ public class MetaInfo extends MapProperties<String> {
 
 	public static final String PK_PASSWORD = "password";
 
-	public static final String TYPE = "meta-infos";
+	public static final String TYPE = "meta-info";
 
 	public MetaInfo() {
 		

@@ -1,0 +1,13 @@
+
+
+curl -XGET 'http://localhost:9200/nodes/meta-infos/_search?pretty=true' -d '{
+    "query": {
+        "match_all":{}
+    }
+}'
+
+curl -XPOST 'http://localhost:9200/nodes/meta-infos' -d '{
+    "_id" : "owner",
+    "value" : "tester"
+}'
+
