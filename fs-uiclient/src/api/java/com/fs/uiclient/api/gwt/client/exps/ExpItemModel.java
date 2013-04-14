@@ -23,6 +23,22 @@ public class ExpItemModel extends PropertiesData<Object> {
 		return (String) this.getProperty("id");
 	}
 
+	public String getExpTitle() {
+		return (String) this.getProperty("title");
+	}
+
+	public String getExpBodyAsHtml() {
+		return getExpBodyAsHtml(this.getExpBody());
+	}
+
+	public static String getExpBodyAsHtml(String rt) {
+		if (rt == null) {
+			return null;
+		}
+		rt = rt.replace("\n", "<br>");
+		return rt;
+	}
+
 	public String getExpBody() {
 		return (String) this.getProperty("body");
 	}

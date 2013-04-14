@@ -14,4 +14,6 @@ public interface OnlineNotifyServiceI {
 	public void tryNotifyAccount(String accId, MessageI msg);
 
 	public void tryNotifyAccount(String accId, String path);
+	
+	public void tryNotifyExpMessageCreated(String accId2, String expId1, String expId2);
 }

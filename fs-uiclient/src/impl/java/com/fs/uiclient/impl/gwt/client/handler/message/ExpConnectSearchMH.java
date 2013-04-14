@@ -11,6 +11,7 @@ import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.core.Cause;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -43,7 +44,7 @@ public class ExpConnectSearchMH extends MHSupport {
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);
 			ExpConnect ec = new ExpConnect(oi);
-			uec.addOrUpdateExpConnect(ec);
+			uec.addOrUpdateExpConnect(Cause.valueOf("ExpConnectSearchMH"),ec);
 		}
 	}
 

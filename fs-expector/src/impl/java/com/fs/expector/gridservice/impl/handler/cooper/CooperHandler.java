@@ -20,6 +20,7 @@ import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
+import com.fs.expector.gridservice.impl.handler.expm.ExpMessageHandler;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
 /**
@@ -29,6 +30,8 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 public class CooperHandler extends ExpectorTMREHSupport {
 
 	public static final String MP_CONNECT_REQUEST = "/connect/request";
+
+	public static final String MP_TEXT_MESSAGE = "/text-message";
 
 	private CodecI codec;
 
@@ -43,22 +46,22 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		// the relation between activity and user.
 		String expId1 = (String) req.getPayload("expId1", true);
 		String expId2 = (String) req.getPayload("expId2", true);
-		
-		//check if the max connect overflow
-		
+
+		// check if the max connect overflow
+
 		if (this.efacade.getOverflowConnectedExpCount(expId1) >= 0) {
 			//
-			res.getErrorInfos().addError("connection.overflow","source exp connected too much");
+			res.getErrorInfos().addError("connection.overflow", "source exp connected too much");
 			return;
 		}
-		
-		//check if the target exp connect overflow
+
+		// check if the target exp connect overflow
 		if (this.efacade.getOverflowConnectedExpCount(expId2) >= 0) {
 			//
-			res.getErrorInfos().addError("connection.overflow","target exp connected too much");
+			res.getErrorInfos().addError("connection.overflow", "target exp connected too much");
 			return;
 		}
-		
+
 		Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, true);
 		String accId2 = exp2.getAccountId();
 		ConnectRequest cr = new ConnectRequest().forCreate(this.dataService);
@@ -115,6 +118,26 @@ public class CooperHandler extends ExpectorTMREHSupport {
 
 	}
 
+	@Handle("reject")
+	public void handleReject(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
+		MessageI req = ew.getMessage();//
+		String crid = (String) req.getPayload("cooperRequestId", true);
+		ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crid, true);
+		String accId1 = cr.getAccountId1();
+		String expId1 = cr.getExpId1();
+		String accId2 = cr.getAccountId2();// todo check permission
+		String expId2 = cr.getExpId2();
+
+		this.dataService.deleteById(ConnectRequest.class, crid);// delete this
+		// cr,if
+
+		res.setPayload("crId", crid);//
+
+		String text = "Cooperation request is rejected.";
+		ExpMessageHandler.createTextMessage(this.dataService, codec, expId2, expId1, text);
+		this.onlineNotifyService.tryNotifyExpMessageCreated(accId1, expId2, expId1);
+	}
+
 	@Handle("confirm")
 	public void handleConfirm(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 		MessageI req = ew.getMessage();//
@@ -122,7 +145,8 @@ public class CooperHandler extends ExpectorTMREHSupport {
 		ConnectRequest cr = this.dataService.getNewestById(ConnectRequest.class, crid, true);
 		String accId1 = cr.getAccountId1();
 		String accId2 = cr.getAccountId2();
-
+		String expId1 = cr.getExpId1();
+		String expId2 = cr.getExpId2();
 		// from one to another
 		Connection c = new Connection().forCreate(this.dataService);
 		c.setAccountId1(cr.getAccountId1());
@@ -143,11 +167,18 @@ public class CooperHandler extends ExpectorTMREHSupport {
 																// cr,if
 
 		res.setPayload("crId", crid);//
+		{
+			MessageI msg = new MessageSupport("/notify/exp-connect-created");
+			msg.setPayload("expId", expId1);
+			this.onlineNotifyService.tryNotifyAccount(accId1, msg);
+		}
+		{
+			MessageI msg = new MessageSupport("/notify/exp-connect-created");
+			msg.setPayload("expId", expId2);
 
-		MessageI msg = new MessageSupport("/notify/exp-connect-created");
+			this.onlineNotifyService.tryNotifyAccount(accId2, msg);
 
-		this.onlineNotifyService.tryNotifyAccount(accId1, msg);
-		this.onlineNotifyService.tryNotifyAccount(accId2, msg);
+		}
 
 	}
 

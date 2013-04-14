@@ -7,10 +7,8 @@ package com.fs.uiclient.impl.gwt.client.uelist;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.support.ModelSupport;
@@ -21,13 +19,13 @@ import com.fs.uicore.api.gwt.client.support.ModelSupport;
  */
 public class UserExpListModel extends ModelSupport implements UserExpListModelI {
 
+	private List<UserExpModel> uelist;
 	/**
 	 * @param name
 	 */
 	public UserExpListModel(String name) {
 		super(name);
-		// new open the other view:ExpEditModel.
-		
+		this.uelist = new ArrayList<UserExpModel>();
 	}
 
 	/*
@@ -35,7 +33,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	 */
 	@Override
 	public void addUserExp(UserExpModel uem) {
-		uem.parent(this);
+		this.uelist.add(uem);
 	}
 
 	/*
@@ -47,9 +45,15 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	 */
 	@Override
 	public UserExpModel getUserExp(String id, boolean force) {
-
-		return this.getChild(UserExpModel.class, id, force);
-
+		for(UserExpModel ue:this.uelist){
+			if(ue.isExpId(id)){
+				return ue;
+			}
+		}
+		if(force){
+			throw new UiException("no user exp:"+id);
+		}
+		return null;
 	}
 
 	/*
@@ -58,14 +62,13 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	@Override
 	public UserExpModel getSelected(boolean force) {
 		//
-		List<UserExpModel> rtL = this.getChildList(UserExpModel.class);
-		for (UserExpModel uem : rtL) {
+		for (UserExpModel uem : this.uelist) {
 			if (uem.isSelected()) {
 				return uem;
 			}
 		}
 		if (force) {
-			throw new UiException("no selected exp in user exp msglist:" + rtL);
+			throw new UiException("no selected exp in user exp msglist:" + this.uelist);
 		}
 		return null;
 	}
@@ -76,8 +79,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	@Override
 	public void select(String expId) {
 		UserExpModel rt = null;
-		List<UserExpModel> ueL = this.getChildList(UserExpModel.class);
-		for (UserExpModel ue : ueL) {
+		for (UserExpModel ue : this.uelist) {
 			if (ue.isExpId(expId)) {
 				rt = ue;
 				if (!ue.isSelected()) {
@@ -100,7 +102,7 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 	 */
 	public Long getLastTimestamp(boolean force) {
 		Long rt = null;
-		List<UserExpModel> ueL = this.getChildList(UserExpModel.class);
+		List<UserExpModel> ueL = this.uelist;
 		for (UserExpModel ue : ueL) {
 			DateData ts = ue.getTimestamp(true);
 			if (rt == null || rt < ts.getValue()) {
@@ -112,6 +114,13 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 		}
 
 		return rt;
+	}
+
+	/**
+	 * @return the uelist
+	 */
+	public List<UserExpModel> getUelist() {
+		return uelist;
 	}
 
 

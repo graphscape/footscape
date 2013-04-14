@@ -56,7 +56,9 @@
 	<property name="/copyright" value="fs-v0.1.0-IR1 © 2012-2013 waitee.com.  All rights reserved." />
 	
 	<!-- Actions -->
-	<property name="/action/activity/openChatRoom" value="Chat" />
+	<property name="/action/cooper/confirm" value="Connect" />
+	<property name="/action/cooper/reject" value="Reject" />
+	
 	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/password/forgot" value="Forgot" />
 	<property name="/action/password/reset" value="Reset" />
@@ -73,6 +75,8 @@
 	<property name="/action/signup/fblogin" value="Log In" />
 	
 	<!-- tip -->
+	<property name="/tip/action/cooper/confirm" value="Agree this request, to make connection with this expecation." />
+	<property name="/tip/action/cooper/reject" value="Reject this request," />
 	<property name="/tip/action/profile/submit" value="Save" />
 	<property name="/tip/action/password/forgot" value="Forgot password? click will send a email to your for reset your password." />
 	<property name="/tip/action/password/reset" value="Reset Password" />

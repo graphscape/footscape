@@ -5,6 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.uexp;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
@@ -28,37 +29,67 @@ public class CooperRequestMessageView extends ExpMessageView {
 		}
 	};
 
+	private ButtonI ok;
+	private ButtonI reject;
+
 	/**
 	 * @param c
 	 * @param msg
 	 */
 	public CooperRequestMessageView(ContainerI c, ExpMessage msg) {
 		super(c, msg);
-		String text = "Coooperation request from " + this.msg.getNick1() + ":" + this.msg.getExpBody1()
-				+ ",please click OK if you agree!";
+		String text = "Coooperation request from " + this.msg.getNick1() + ":" + this.msg.getExpBody1() + "";
 		this.messageBodyDiv.getElement().setInnerText(text);
 
 		//
 		PropertiesData<Object> cr = msg.getPayload("cooperRequest", false);
 		boolean exist = cr != null;
+		if (exist) {
+			{
 
-		final ButtonI ok = this.factory.create(ButtonI.class);
-		ok.setText(true, "ok");
-		ok.parent(this.actions);
-		ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+				ok = this.factory.create(ButtonI.class);
+				ok.setText(true, UiClientConstants.AP_COOPER_CONFIRM.toString());
+				ok.parent(this.actions);
+				ok.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
-			@Override
-			public void handle(ClickEvent t) {
-				ok.disable(true);//
-				CooperRequestMessageView.this.onOk();
+					@Override
+					public void handle(ClickEvent t) {
+						CooperRequestMessageView.this.onOk();
+					}
+				});
+				// ok.disable(!exist);
 			}
-		});
-		ok.disable(!exist);
+			{
+				reject = this.factory.create(ButtonI.class);
+				reject.setText(true, UiClientConstants.AP_COOPER_REJECT.toString());
+				reject.parent(this.actions);
+				reject.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+
+					@Override
+					public void handle(ClickEvent t) {
+						CooperRequestMessageView.this.onReject();
+					}
+				});
+				// ok.disable(!exist);
+
+			}
+		}
 	}
 
 	protected void onOk() {
+		this.beforeOkOrReject();
+		this.dispatchActionEvent(UiClientConstants.AP_COOPER_CONFIRM);
+	}
+	
+	private void beforeOkOrReject(){
+		this.ok.disable(true);
+		this.reject.disable(true);
+	}
 
-		this.dispatchActionEvent(Actions.A_UEXP_COOPER_CONFIRM);
+	protected void onReject() {
+
+		this.beforeOkOrReject();
+		this.dispatchActionEvent(UiClientConstants.AP_COOPER_REJECT);
 	}
 
 	/*

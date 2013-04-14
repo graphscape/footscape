@@ -21,7 +21,6 @@ public class Actions {
 
 	public static final Path A_UEXPI_SELECT = A_UEL_ITEM.getSubPath("select");
 
-	public static final Path A_UEXP_COOPER_CONFIRM = A_UEL_ITEM.getSubPath("cooperConfirm");
 	// activities
 
 	public static final Path A_ACTS = ACTION.getSubPath("activities");

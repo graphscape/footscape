@@ -105,7 +105,7 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 	 */
 	@Override
 	public List<UserExpModel> getUserExpList() {
-		return this.model.getChildList(UserExpModel.class);
+		return this.model.getUelist();
 	}
 
 	/*

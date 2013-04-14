@@ -45,19 +45,25 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 	public void handleSearch(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 
-		String accountId1 = req.getString("accountId1", false);
+		String accountId1 = req.getString("accountId1", true);
+
+		this.assertAccout(ew, accountId1, res.getErrorInfos());
+		if (res.getErrorInfos().hasError()) {
+			return;
+		}
+
 		String expId1 = req.getString("expId1", false);
 
 		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
 
 		qo.first(0);
-		qo.maxSize(ExpectorDsFacadeImpl.maxSizeOfConnectQuery);// TODO application determine
-												// this?
+		qo.maxSize(ExpectorDsFacadeImpl.maxSizeOfConnectQuery);// TODO
+																// application
+																// determine
+		// this?
+		qo.propertyEq(ExpMessage.ACCOUNT_ID1, accountId1);
 		if (expId1 != null) {
 			qo.propertyEq(ExpMessage.EXP_ID1, expId1);
-		}
-		if (accountId1 != null) {
-			qo.propertyEq(ExpMessage.ACCOUNT_ID1, accountId1);
 		}
 
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);

@@ -34,10 +34,10 @@ public class LoginView extends FormsView implements LoginViewI {
 
 		this.accountLabel = this.factory.create(LabelI.class);
 		this.accountLabel.parent(this);
-		ButtonI fb = this.addAction(Actions.A_LOGIN_FACEBOOK);
-		fb.getElement().addClassName("facebook-login-button");
 		this.addAction(Actions.A_LOGIN_SUBMIT);
 		this.addAction(Actions.A_PASSWORD_FORGOT);
+		ButtonI fb = this.addAction(Actions.A_LOGIN_FACEBOOK);
+		fb.getElement().addClassName("facebook-login-button");
 
 		FormViewI def = this.getDefaultForm();
 		def.addField(FK_EMAIL, String.class);//

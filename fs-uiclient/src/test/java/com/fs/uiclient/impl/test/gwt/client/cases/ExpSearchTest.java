@@ -105,7 +105,7 @@ public class ExpSearchTest extends TestBase {
 		}
 		this.tryFinish("search.result");
 		// listen to the activity before click coper
-		this.listenToTheActivityIdSettingBeforeCoper();
+		//this.listenToTheActivityIdSettingBeforeCoper();
 		// click coper
 		String name = "expItem-" + eim.getExpId();// see ExpSearchView
 		ExpItemView eiv = this.root.find(ExpItemView.class, name, true);
@@ -115,18 +115,6 @@ public class ExpSearchTest extends TestBase {
 												// is set.
 
 		this.tryFinish("coper.submit");
-	}
-
-	protected void listenToTheActivityIdSettingBeforeCoper() {
-		UserExpModel ue = this.getTheUserExpModel();
-		ue.addValueHandler(null,// TODO UserExpModel.L_ACTIVITY_ID,
-				new EventHandlerI<ModelValueEvent>() {
-
-					@Override
-					public void handle(ModelValueEvent e) {
-						ExpSearchTest.this.onActivityIdSet(e);//
-					}
-				});
 	}
 
 	//

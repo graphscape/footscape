@@ -26,8 +26,10 @@ public class ExpConnectCreatedNotifyMH extends NotifyMH {
 	 */
 	@Override
 	public void handle(EndpointMessageEvent t) {
-		//TODO expId
-		this.getControl(MainControlI.class, true).refreshExpConnect(null);
+		// TODO expId
+		String expId = (String) t.getMessage().getPayload("expId", true);
+
+		this.getControl(MainControlI.class, true).refreshExpConnect(expId);
 
 	}
 

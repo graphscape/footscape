@@ -31,6 +31,7 @@ import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.commons.Holder;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.Cause;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.google.gwt.core.client.Scheduler;
@@ -151,7 +152,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * String)
 	 */
 	@Override
-	public MyExpViewI openMyExp(final String expId, boolean show) {
+	public MyExpViewI openMyExp(final Cause cause, final String expId, boolean show) {
+
 		Path path = this.getExpViewPath(expId);
 		final MyExpView esv = this.getOrCreateViewInBody(path, new CreaterI<MyExpView>() {
 
@@ -162,6 +164,10 @@ public class MainControl extends ControlSupport implements MainControlI {
 		}, show);
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
 		esv.setProperty("isNew", Boolean.FALSE);
+		if (this.logger.isDebugEnabled()) {
+			this.logger
+					.debug("cause:" + cause + ",openMyExp,expId:" + expId + ",show:" + show + ",isNew:" + b);
+		}
 		if (b) {
 
 			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -179,7 +185,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 
 		this.refreshExpContent(expId);
 		this.refreshExpConnect(expId);
-		this.refreshExpMessage(expId);//
+		this.refreshExpMessage(Cause.valueOf("afterOpenNewMyExp"), expId);//
 
 	}
 
@@ -194,10 +200,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	}
 
 	@Override
-	public void refreshExpMessage(String expId) {
+	public void refreshExpMessage(Cause cause, String expId) {
 		// TODO filter expId
 
-		MyExpViewI me = this.openMyExp(expId, false);
+		MyExpViewI me = this.openMyExp(cause.getChild("refreshExpMessage"), expId, false);
+
 		DateData timestamp1 = me.getLatestMessageTimestamp();
 		String accId = this.getUserInfo().getAccountId();
 
@@ -223,6 +230,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 		String accId = this.getUserInfo().getAccountId();
 		MsgWrapper req = this.newRequest(Path.valueOf("/expc/search"));
 		req.setPayload("accountId1", accId);//
+		req.setPayload("expId1", expId);
 		this.sendMessage(req);
 	}
 
@@ -248,9 +256,9 @@ public class MainControl extends ControlSupport implements MainControlI {
 		Path path = this.getExpViewPath(expId);
 		bv.setTitleOfItem(path, title, false);
 		//
-		MyExpViewI mv = this.openMyExp(expId, false);
-		
-		mv.setMyExp(title,body);
+		MyExpViewI mv = this.openMyExp(Cause.valueOf("setExpDetail"), expId, false);
+
+		mv.setMyExp(title, body);
 
 	}
 

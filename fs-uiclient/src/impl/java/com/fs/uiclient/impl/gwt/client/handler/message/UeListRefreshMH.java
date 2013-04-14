@@ -44,15 +44,9 @@ public class UeListRefreshMH extends MHSupport {
 		
 		for (int i = 0; i < ld.size(); i++) {
 			ObjectPropertiesData oi = ld.get(i);
-			String expId = (String) oi.getProperty(NodeFields.PK_ID, true);
-			String body = (String) oi.getProperty(ExpEditView.F_BODY, true);
+			
+			UserExpModel uem = new UserExpModel(oi);
 
-			DateData dd = (DateData) oi.getProperty(NodeFields.PK_TIMESTAMP, true);
-
-			UserExpModel uem = new UserExpModel(expId);
-
-			uem.setBody(body);//
-			uem.setTimestamp(dd);
 			uec.addOrUpdateUserExp(uem);
 		}
 	}

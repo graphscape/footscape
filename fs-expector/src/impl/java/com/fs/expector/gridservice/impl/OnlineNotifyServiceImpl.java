@@ -72,4 +72,16 @@ public class OnlineNotifyServiceImpl extends ConfigurableSupport implements Onli
 		this.sessionManager = this.facade.getSessionManager();
 		this.terminalManager = this.facade.getEntityManager(TerminalManagerI.class);
 	}
+	/*
+	 *Apr 14, 2013
+	 */
+	@Override
+	public void tryNotifyExpMessageCreated(String accId2, String expId1, String expId2) {
+		// 
+		MessageI msg = new MessageSupport("/notify/exp-message-created");
+		msg.setHeader("expId2", expId2);
+		msg.setHeader("expId1", expId1);
+		this.tryNotifyAccount(accId2, msg);
+		
+	}
 }

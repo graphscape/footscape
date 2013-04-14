@@ -4,55 +4,48 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
-import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpActivityEvent;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpCrConfirmEvent;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpIncomingCrEvent;
-import com.fs.uiclient.api.gwt.client.event.model.UserExpSelectEvent;
-import com.fs.uicommons.api.gwt.client.mvc.support.ControlUtil;
-import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
+import com.fs.uiclient.impl.gwt.client.NodeFields;
+import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
-import com.fs.uicore.api.gwt.client.support.ModelSupport;
+import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
 /**
  * @author wu
  * 
  */
-public class UserExpModel extends ModelSupport {
+public class UserExpModel {
 
-	public static final Location L_BODY = Location.valueOf("title");//
-
-	public static final Location L_TIMESTAMP = Location.valueOf("timestamp");//
-
-	private String expId;
-
+	private ObjectPropertiesData target;
 	private boolean selected;
 
 	/**
 	 * @param name
 	 */
 
-	public UserExpModel(String id) {
-		super(id);
-
-		this.expId = id;
+	public UserExpModel(ObjectPropertiesData target) {
+		this.target = target;
 	}
 
-	public void setBody(String body) {
-		this.setValue(L_BODY, body);
+	public String getTitle(){
+		return (String)this.target.getProperty(ExpEditView.F_TITLE);
 	}
-
+	
 	public String getBody() {
-		return this.getValue(String.class, L_BODY);
+		return (String)this.target.getProperty(ExpEditView.F_BODY);
+	}
+	
+	public String getBodyAsHtml(){
+		String rt = this.getBody();
+		return ExpItemModel.getExpBodyAsHtml(rt);
 	}
 
 	public String getExpId() {
-		return this.expId;
+		return (String)this.target.getProperty(NodeFields.PK_ID);
 	}
 
 	public void select(boolean sel) {
 		this.selected = sel;
-		new UserExpSelectEvent(this, sel).dispatch();
 	}
 
 	public boolean isExpId(String expId) {
@@ -63,12 +56,8 @@ public class UserExpModel extends ModelSupport {
 		return this.selected;
 	}
 
-	public void setTimestamp(DateData ts) {
-		this.setValue(L_TIMESTAMP, ts);
-	}
-
 	public DateData getTimestamp(boolean force) {
-		return (DateData) this.getValue(L_TIMESTAMP, force);
+		return (DateData) this.target.getProperty(NodeFields.PK_TIMESTAMP);
 	}
 
 }

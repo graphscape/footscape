@@ -32,6 +32,11 @@ public class UiClientConstants {
 	public static final String PK_URL_ABOUTUS = "aboutUsUrl";
 
 	public static final Path AP_COOPER = Path.valueOf("/action/exps/cooper");
+	
+	public static final Path AP_COOPER_CONFIRM = Path.valueOf("/action/cooper/confirm");
+	
+	public static final Path AP_COOPER_REJECT = Path.valueOf("/action/cooper/reject");
+	
 
 	// public static final Integer MESSAGE_LIMIT = 25;//
 

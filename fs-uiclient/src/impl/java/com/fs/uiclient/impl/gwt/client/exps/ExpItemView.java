@@ -54,13 +54,14 @@ public class ExpItemView extends ViewSupport {
 		// IMAGE|Body |Actions
 		// IMAGE|
 
-		// first line
 		{
-			// td 0,0-1-2
+			String rowspan = "3";
+			// first line
 			TRWrapper tr0 = this.table.addTr();
+			// Left td,3 rows
 			TDWrapper td0 = tr0.addTd();
 			td0.addClassName("exps-item-icon");
-			td0.setAttribute("rowspan", "3");
+			td0.setAttribute("rowspan", rowspan);
 			Element ar = DOM.createAnchor();
 			ar.addClassName("user-icon");
 			
@@ -70,26 +71,39 @@ public class ExpItemView extends ViewSupport {
 			ar.appendChild(image.getElement());
 			td0.append(ar);
 			
-			// middle,timestamp
+			// middle,exp title
 			TDWrapper td01 = tr0.addTd();
-			td01.addClassName("exps-item-timestamp");
-			String dateS = DateUtil.format(ei.getTimestamp(), false);
-			td01.getElement().setInnerText(dateS);
+			td01.addClassName("exps-item-exptitle");
+			
+			td01.getElement().setInnerText(ei.getExpTitle());
+			
 			// right
 			TDWrapper td02 = tr0.addTd();
-			td02.setAttribute("rowspan", "3");
+			td02.setAttribute("rowspan", rowspan);
 			this.actionsTd = td02;
 			this.actionsTd.addClassName("exps-item-actions");
 
 		}
 		//
-		{
+		{//middle
+			//second line
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
 			td1.addClassName("exps-item-expbody");
+			String html = ei.getExpBodyAsHtml();
+			td1.getElement().setInnerHTML(html);
+			// td1,1
+		}
+		//
+		{//middle
+			//third line
+			TRWrapper tr1 = this.table.addTr();
+			TDWrapper td1 = tr1.addTd();
 
-			td1.getElement().setInnerText(ei.getExpBody());
+			td1.addClassName("exps-item-timestamp");
+			String dateS = DateUtil.format(ei.getTimestamp(), false);
+			td1.getElement().setInnerText(dateS);
 			// td1,1
 		}
 

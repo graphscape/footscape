@@ -4,20 +4,17 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
-import java.util.List;
-
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
-import com.fs.uiclient.api.gwt.client.exps.ExpSearchControlI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.support.ControlSupport2;
 import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
-import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.Cause;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 
 /**
@@ -65,9 +62,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 		UserExpModel old = uelv.getUserExp(id, false);
 		if (old == null) {
 			uelv.addUserExp(uem);
-		} else {
-			old.setBody(uem.getBody());
-		}
+		} 
 		uelv.update(uem);
 	}
 
@@ -75,19 +70,20 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	 * Mar 6, 2013
 	 */
 	@Override
-	public void addOrUpdateExpMessage(ExpMessage msg) {
+	public void addOrUpdateExpMessage(Cause cause, ExpMessage msg) {
 		// get or open the ExpView
 		String expId = msg.getExpId2();
-		MyExpViewI me = this.openMyExpView(expId, false);
+		MyExpViewI me = this.openMyExpView(cause.getChild("addOrUpdateExpMessage"), expId, false);
 		me.addOrUpdateMessage(msg);
+
 	}
 
 	/**
 	 * Mar 6, 2013
 	 */
-	private MyExpViewI openMyExpView(String expId, boolean select) {
+	private MyExpViewI openMyExpView(Cause cause, String expId, boolean select) {
 		//
-		MyExpViewI rt = this.getMainControl().openMyExp(expId, select);
+		MyExpViewI rt = this.getMainControl().openMyExp(cause.getChild("openMyExpView"), expId, select);
 
 		return rt;
 	}
@@ -96,11 +92,11 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	 * Mar 10, 2013
 	 */
 	@Override
-	public void addOrUpdateExpConnect(ExpConnect ec) {
+	public void addOrUpdateExpConnect(Cause cause,ExpConnect ec) {
 		//
 
 		String expId = ec.getExpId1();
-		MyExpViewI me = this.openMyExpView(expId, false);
+		MyExpViewI me = this.openMyExpView(cause.getChild("addOrUpdateExpConnect"),expId, false);
 		me.addOrUpdateConnected(ec);
 	}
 

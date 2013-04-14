@@ -32,5 +32,5 @@ public interface UserExpListModelI extends ModelI {
 
 	public void select(String expId);// the current user exp,use select this
 										// one,for search or open it.
-
+	public List<UserExpModel> getUelist() ;
 }

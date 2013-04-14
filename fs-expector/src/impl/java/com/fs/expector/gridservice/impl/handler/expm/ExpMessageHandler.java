@@ -20,6 +20,7 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
@@ -52,7 +53,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				.getCodec(PropertiesI.class);
 	}
 
-	private PropertiesI<Object> decodeMessageExtend(String body) {
+	public static PropertiesI<Object> decodeMessageExtend(CodecI codec, String body) {
 		JSONArray jsn;
 		try {
 			jsn = (JSONArray) new JSONParser().parse(body);
@@ -60,12 +61,12 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			throw new FsException(e);
 		}
 
-		PropertiesI<Object> rt = (PropertiesI<Object>) this.codec.decode(jsn);
+		PropertiesI<Object> rt = (PropertiesI<Object>) codec.decode(jsn);
 		return rt;
 	}
 
-	private String encodeMessageExtend(PropertiesI<?> body) {
-		JSONArray ja = (JSONArray) this.codec.encode(body);
+	public static String encodeMessageExtend(CodecI codec, PropertiesI<?> body) {
+		JSONArray ja = (JSONArray) codec.encode(body);
 		return ja.toJSONString();
 	}
 
@@ -79,14 +80,14 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		String expId1 = req.getString("expId1", true);
 		Expectation exp1 = this.dataService.getNewestById(Expectation.class, expId1, true);
 
-		String path = req.getString("path", true);
+		String path = req.getString("path", true);//
 
 		PropertiesI<String> header = (PropertiesI<String>) req.getPayload("header", false);
 
 		PropertiesI<Object> body = (PropertiesI<Object>) req.getPayload("body", false);
 
-		String bodyS = body == null ? null : this.encodeMessageExtend(body);
-		String headerS = header == null ? null : this.encodeMessageExtend(header);
+		String bodyS = body == null ? null : this.encodeMessageExtend(this.codec, body);
+		String headerS = header == null ? null : this.encodeMessageExtend(this.codec, header);
 
 		List<String> expId2L = new ArrayList<String>();
 
@@ -119,11 +120,39 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			em.setBody(bodyS);
 			em.save(true);
 			// todo async notify
-			MessageI msg = new MessageSupport("/notify/exp-message-created");
-			msg.setHeader("expId2", expId2);
-			msg.setHeader("expId1", expId1);
-			this.onlineNotifyService.tryNotifyAccount(accId2, msg);
+
+			this.onlineNotifyService.tryNotifyExpMessageCreated(accId2, expId1, expId2);
 		}
+
+	}
+
+	public static void createTextMessage(DataServiceI ds, CodecI codec, String expId1, String expId2,
+			String text) {
+
+		Expectation exp1 = ds.getNewestById(Expectation.class, expId1, false);
+		Expectation exp2 = ds.getNewestById(Expectation.class, expId2, false);
+		String accId1 = exp1.getAccountId();
+		String accId2 = exp2.getAccountId();
+		ExpMessage em = new ExpMessage().forCreate(ds);
+		em.setExpId1(expId1);
+		em.setExpId2(expId2);
+		em.setAccountId1(accId1);
+		em.setAccountId2(accId2);
+		em.setPath(CooperHandler.MP_TEXT_MESSAGE);
+
+		{
+			PropertiesI<Object> pts = new MapProperties<Object>();
+			String header = ExpMessageHandler.encodeMessageExtend(codec, pts);
+			em.setHeader(header);
+		}
+		{
+
+			PropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty("text", text);// TODO remove
+			String body = ExpMessageHandler.encodeMessageExtend(codec, pts);
+			em.setBody(body);
+		}
+		em.save(true);
 
 	}
 
@@ -251,7 +280,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			}
 			{// body,extends properties
 				String body = em.getBody();
-				PropertiesI<Object> pls = this.decodeMessageExtend(body);
+				PropertiesI<Object> pls = this.decodeMessageExtend(this.codec, body);
 				msg.setPayloads(pls);
 				// is a cooper request message,add extends field
 				if (CooperHandler.MP_CONNECT_REQUEST.equals(path)) {//

@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.core.Cause;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
 /**
@@ -28,7 +29,7 @@ public class ExpMessageCreatedNotifyMH extends NotifyMH {
 	public void handle(EndpointMessageEvent t) {
 		String expId2 = t.getMessage().getHeader("expId2", true);
 
-		this.getControl(MainControlI.class, true).refreshExpMessage(expId2);
+		this.getControl(MainControlI.class, true).refreshExpMessage(Cause.valueOf("expMessageCreatedNotifyMH"),expId2);
 
 	}
 

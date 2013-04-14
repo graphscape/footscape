@@ -13,6 +13,7 @@ import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.core.Cause;
 
 /**
  * @author wu
@@ -20,13 +21,13 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public interface MainControlI extends ControlI {
 	public ExpSearchViewI openExpSearch(boolean show);
-	
+
 	public UserExpListViewI openUeList();
 
-	public MyExpViewI openMyExp(String expId,boolean show);
+	public MyExpViewI openMyExp(Cause cause, String expId, boolean show);
 
 	public SignupViewI openSignup();
-	
+
 	public void closeSignup();
 
 	public ExpEditViewI openExpEditView();
@@ -35,7 +36,7 @@ public interface MainControlI extends ControlI {
 
 	public void refreshExpConnect(String expId);
 
-	public void refreshExpMessage(String expId);
+	public void refreshExpMessage(Cause cause, String expId);
 
 	public void closeMyExp(String expId);
 
@@ -46,7 +47,7 @@ public interface MainControlI extends ControlI {
 	public void closeLoginView();
 
 	public void closeAll();
-	
+
 	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh);
 
 }

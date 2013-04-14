@@ -12,6 +12,7 @@ import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.core.Cause;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 
@@ -45,19 +46,19 @@ public class ExpMessageMH extends MHSupport {
 		for (int i = 0; i < expL.size(); i++) {
 			MessageData msgD = expL.get(i);
 			ExpMessage em = new ExpMessage(msgD);
-			c.addOrUpdateExpMessage(em);
+			c.addOrUpdateExpMessage(Cause.valueOf("expMessageHanlder"),em);
 		}
 		MainControlI mc = this.getControl(MainControlI.class, true);
 		// /
 		if (hasMore) {// if has more,continue to load more message,these message
 						// should be the new created message
 			// send
-			mc.refreshExpMessage(expId2);
+			mc.refreshExpMessage(Cause.valueOf("hasMoreMessage"),expId2);
 		} else {// no more message
 			MessageData req = res.getSource();
 			if (Boolean.valueOf(req.getHeader("isForMore"))) {
 				//disable the more button
-				MyExpViewI ev = mc.openMyExp(expId2, false);
+				MyExpViewI ev = mc.openMyExp(Cause.valueOf("noMoreMessage"),expId2, false);
 				ev.noMore();
 			}
 		}

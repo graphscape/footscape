@@ -59,10 +59,12 @@ public class UserExpItemView extends ViewSupport {
 		// first
 		{
 			// left
+			String rowspan = "4";
+			//line 1
 			TRWrapper tr0 = this.table.addTr();
-			TDWrapper td0 = tr0.addTd();
-			td0.addClassName("uel-item-td0");
-			td0.setAttribute("rowspan", "3");
+			TDWrapper td01 = tr0.addTd();
+			td01.addClassName("uel-item-td0");
+			td01.setAttribute("rowspan", rowspan);
 			/*
 			ElementWrapper image = new ElementWrapper(DOM.createImg());
 			image.addClassName("user-icon");
@@ -72,28 +74,36 @@ public class UserExpItemView extends ViewSupport {
 			td0.append(image);
 			*/
 			// middle
-			TDWrapper td01 = tr0.addTd();
-			td01.setAttribute("rowspan", "1");
-			// right
 			TDWrapper td02 = tr0.addTd();
-			td02.setAttribute("rowspan", "3");
-			this.actionsTd = td02;
+			td02.setAttribute("rowspan", "1");
+			// right
+			TDWrapper td03 = tr0.addTd();
+			td03.setAttribute("rowspan", rowspan);
+			this.actionsTd = td03;
 			this.actionsTd.addClassName("uel-item-actions");
 		}
 		//
-		{// tr1
+		{// line2
+			// timestamp
+			TRWrapper tr2 = this.table.addTr();
+			TDWrapper td = tr2.addTd();
+			td.addClassName("uel-item-exptitle");
+			String title = t.getTitle();
+			td.getElement().setInnerText(title);
+
+		}
+		{// line3
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
 			td1.addClassName("uel-item-expbody");
 			td1.setAttribute("colspan", "1");//
-			String body = t.getBody();
-			String html = body.replace("\n", "<br>");
-			td1.getElement().setInnerHTML(html);
+			String body = t.getBodyAsHtml();
+			td1.getElement().setInnerHTML(body);
 			// td1,1
 		}
 
-		{// tr 2
+		{// line4
 			// timestamp
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();

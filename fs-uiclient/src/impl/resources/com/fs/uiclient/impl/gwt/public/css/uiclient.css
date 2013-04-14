@@ -47,9 +47,12 @@ a.user-icon:hover img {
 	font-size: 9px;
 	color:  rgba(0, 0, 0, 0.5);
 }
-.exps-item-expbody {
+.exps-item-exptitle {
 	color:#0754A6;
 	font-weight:bold;
+}
+.exps-item-expbody {
+	
 }
 
 .facebook-login-button,
@@ -144,9 +147,13 @@ a.user-icon:hover img {
 	font-size: 9px;
 	color: rgba(0, 0, 0, 0.5);
 }
-.uel-item-expbody {
+.uel-item-exptitle {
 	color:#0754A6;
 	font-weight:bold;
+}
+
+.uel-item-expbody {
+	
 }
 
 
