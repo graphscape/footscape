@@ -96,14 +96,17 @@ public class ExpItemView extends ViewSupport {
 			// td1,1
 		}
 		//
-		{//middle
+		{//
 			//third line
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
-
+			
 			td1.addClassName("exps-item-timestamp");
 			String dateS = DateUtil.format(ei.getTimestamp(), false);
-			td1.getElement().setInnerText(dateS);
+			String nick = ei.getNick();
+			String html = "<span>"+dateS+",by:</span>"+"<span>"+nick+"</span>";
+			td1.getElement().setInnerHTML(html);
+			
 			// td1,1
 		}
 
