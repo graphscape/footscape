@@ -19,13 +19,16 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 public interface FormViewI extends ViewI {
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls);
-	
-	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Map<String,Object> editorPts);
+
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Map<String, Object> editorPts);
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback);
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass);
+
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
+			Map<String, Object> editorPts);
 
 	public FormModel getFormModel();
 

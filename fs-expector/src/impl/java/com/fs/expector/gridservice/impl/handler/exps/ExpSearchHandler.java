@@ -92,9 +92,9 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		// convert
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
 				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID, Expectation.FORMAT,
-				Expectation.TITLE, Expectation.SUMMARY },//
-				new boolean[] { true, true, true, true, true, true, true }, // force
-				new String[] { "id", "body", "timestamp", "accountId", "format", "title", "summary" }//
+				Expectation.TITLE, Expectation.SUMMARY,Expectation.ICON },//
+				new boolean[] { true, true, true, true, true, true, true,true }, // force
+				new String[] { "id", "body", "timestamp", "accountId", "format", "title", "summary", "icon" }//
 				);
 		for (PropertiesI<Object> pts : el) {
 			String accId = (String) pts.getProperty("accountId");
@@ -109,8 +109,15 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 			if (icon == null) {
 				icon = this.config.getProperty("defaultIconDataUrl");//
 			}
-			pts.setProperty("iconDataUrl", icon);//
-
+			pts.setProperty("userIcon", icon);//
+			//
+			{
+				String expIcon = (String)pts.getProperty("icon");
+				if(expIcon.equalsIgnoreCase("n/a")){
+					expIcon = this.config.getProperty("defaultExpIconDataUrl");
+					pts.setProperty("icon",expIcon);
+				}
+			}
 		}
 
 		res.setPayload("expectations", el);

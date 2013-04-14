@@ -12,6 +12,12 @@ a.user-icon:hover img {
 	
 }
 
+a.exp-icon img{ /*exp image*/
+	width:26px;
+	height:26px;
+	border-radius: 3px;
+}
+
 .header-item-logo {
 	font-size: 24px;
 	font-family: Helvetica;
@@ -33,10 +39,18 @@ a.user-icon:hover img {
 	border-top : 1px solid rgba(50, 90, 150, 0.1);
 	background: rgba(50, 90, 150, 0.1);
 }
-.exps-item-icon { /**td**/
+
+.exps-item-usericon { /**td**/
 	width:1%;
 	padding-right:6px;
 	vertical-align: top;
+}
+
+.exps-item-expicon { /**td**/
+	width:1%;
+	padding-left:6px;
+	padding-right:6px;
+	vertical-align: bottom;
 }
 
 .exps-item-actions {
@@ -134,7 +148,12 @@ a.user-icon:hover img {
 	background: rgba(50, 90, 150, 0.1);
 }
 
-.uel-item-icon { /**td**/
+.uel-item-expicon { /**td**/
+	width:1%;
+	padding-left:6px;
+}
+
+.uel-item-usericon { /**td**/
 	width:1%;
 	padding-right:6px;
 }

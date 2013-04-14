@@ -27,21 +27,21 @@ public class UserExpModel {
 		this.target = target;
 	}
 
-	public String getTitle(){
-		return (String)this.target.getProperty(ExpEditView.F_TITLE);
+	public String getTitle() {
+		return (String) this.target.getProperty(ExpEditView.F_TITLE);
 	}
-	
+
 	public String getBody() {
-		return (String)this.target.getProperty(ExpEditView.F_BODY);
+		return (String) this.target.getProperty(ExpEditView.F_BODY);
 	}
-	
-	public String getBodyAsHtml(){
+
+	public String getBodyAsHtml() {
 		String rt = this.getBody();
 		return ExpItemModel.getExpBodyAsHtml(rt);
 	}
 
 	public String getExpId() {
-		return (String)this.target.getProperty(NodeFields.PK_ID);
+		return (String) this.target.getProperty(NodeFields.PK_ID);
 	}
 
 	public void select(boolean sel) {
@@ -58,6 +58,15 @@ public class UserExpModel {
 
 	public DateData getTimestamp(boolean force) {
 		return (DateData) this.target.getProperty(NodeFields.PK_TIMESTAMP);
+	}
+
+	/**
+	 * Apr 14, 2013
+	 */
+	public String getIcon() {
+		//
+		return (String) this.target.getProperty(ExpEditView.F_ICON);
+
 	}
 
 }

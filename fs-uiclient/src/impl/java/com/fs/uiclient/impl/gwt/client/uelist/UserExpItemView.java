@@ -35,7 +35,7 @@ public class UserExpItemView extends ViewSupport {
 	protected UserExpModel model;
 
 	protected TDWrapper actionsTd;
-	
+
 	/**
 	 * @param ctn
 	 */
@@ -46,9 +46,7 @@ public class UserExpItemView extends ViewSupport {
 		UserExpModel t = (UserExpModel) this.model;
 		this.table = new TableWrapper();
 		this.element.appendChild(this.table.getElement());
-		
 
-		
 		// actions
 
 		//
@@ -60,27 +58,46 @@ public class UserExpItemView extends ViewSupport {
 		{
 			// left
 			String rowspan = "4";
-			//line 1
+			// line 1
 			TRWrapper tr0 = this.table.addTr();
-			TDWrapper td01 = tr0.addTd();
-			td01.addClassName("uel-item-td0");
-			td01.setAttribute("rowspan", rowspan);
+			{//
+
+				TDWrapper td01 = tr0.addTd();
+				td01.addClassName("uel-item-td0");
+				td01.setAttribute("rowspan", rowspan);
+			}
 			/*
-			ElementWrapper image = new ElementWrapper(DOM.createImg());
-			image.addClassName("user-icon");
-			image.setAttribute(
-					"src",
-					"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg==");//
-			td0.append(image);
-			*/
+			 * ElementWrapper image = new ElementWrapper(DOM.createImg());
+			 * image.addClassName("user-icon"); image.setAttribute( "src",
+			 * "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg=="
+			 * );// td0.append(image);
+			 */
 			// middle
 			TDWrapper td02 = tr0.addTd();
 			td02.setAttribute("rowspan", "1");
+			
+			{//
+
+				TDWrapper td03 = tr0.addTd();
+				td03.setAttribute("rowspan", rowspan);
+				td03.addClassName("uel-item-expicon");
+				Element ar = DOM.createAnchor();
+				ar.addClassName("exp-icon");
+
+				ElementWrapper image = new ElementWrapper(DOM.createImg());
+				image.setAttribute("src", t.getIcon());
+
+				ar.appendChild(image.getElement());
+				td03.append(ar);
+			}
+			{
+				
 			// right
-			TDWrapper td03 = tr0.addTd();
-			td03.setAttribute("rowspan", rowspan);
-			this.actionsTd = td03;
+			TDWrapper td04 = tr0.addTd();
+			td04.setAttribute("rowspan", rowspan);
+			this.actionsTd = td04;
 			this.actionsTd.addClassName("uel-item-actions");
+			}
 		}
 		//
 		{// line2
@@ -113,34 +130,33 @@ public class UserExpItemView extends ViewSupport {
 
 		}
 
-
 		ListI actions = this.factory.create(ListI.class);//
 		actions.parent(this);
-		
+
 		ButtonI select = this.factory.create(ButtonI.class);
 		select.setText(true, Actions.A_UEXPI_SELECT.toString());
 		select.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
-				//TODO open search view?
+				// TODO open search view?
 				UserExpItemView.this.dispatchActionEvent(Actions.A_UEXPI_SELECT);
 			}
 		});
 		select.parent(actions);
-		
+
 		ButtonI open = this.factory.create(ButtonI.class);
 		open.setText(true, "open");
 		open.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
-				//TODO open search view?
+				// TODO open search view?
 				UserExpItemView.this.dispatchActionEvent(Actions.A_UEXPI_OPEN);
 			}
 		});
 		open.parent(actions);
-		
+
 	}
 
 	@Override
@@ -157,7 +173,7 @@ public class UserExpItemView extends ViewSupport {
 	}
 
 	public void update() {
-		
+
 		new ViewUpdateEvent(this).dispatch();
 	}
 

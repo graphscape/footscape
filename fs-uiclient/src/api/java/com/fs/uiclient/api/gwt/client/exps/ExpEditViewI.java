@@ -19,4 +19,6 @@ public interface ExpEditViewI extends ViewI {
 	public static final String F_SUMMARY = "summary";
 	
 	public static final String F_FORMAT = "format";
+	
+	public static final String F_ICON = "icon";
 }

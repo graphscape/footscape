@@ -58,8 +58,13 @@ public class ExpItemModel extends PropertiesData<Object> {
 		return rt;
 	}
 
-	public String getIconDataUrl() {
-		return (String) this.getProperty("iconDataUrl");
+	public String getIcon() {
+		return (String) this.getProperty("icon");
+
+	}
+
+	public String getUserIcon() {
+		return (String) this.getProperty("userIcon");
 
 	}
 

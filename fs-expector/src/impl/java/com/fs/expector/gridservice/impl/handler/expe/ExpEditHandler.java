@@ -68,6 +68,7 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 		String title = (String) req.getPayload("title", true);
 		String format = (String) req.getPayload("format", true);
 		String summary = (String) req.getPayload("summary", true);
+		String icon = (String) req.getPayload("icon","n/a");
 		
 
 		Expectation exp = new Expectation().forCreate(this.dataService);
@@ -77,6 +78,7 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 		exp.setSummary(summary);
 		exp.setFormat(format);
 		exp.setBody(body);
+		exp.setIcon(icon);
 		exp.save(true);
 
 		String eid = exp.getId();

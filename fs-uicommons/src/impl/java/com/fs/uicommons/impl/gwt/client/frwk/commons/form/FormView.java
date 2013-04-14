@@ -108,7 +108,8 @@ public class FormView extends ViewSupport implements FormViewI {
 
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls) {
-		return this.addField(name, dcls, null, null);// default editor class
+		return this.addField(name, dcls, null, null, null);// default editor
+															// class
 	}
 
 	@Override
@@ -118,13 +119,19 @@ public class FormView extends ViewSupport implements FormViewI {
 
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass) {
-		return this.addField(name, dcls, editorClass, null);
+		return this.addField(name, dcls, editorClass, null, null);
 	}
 
 	@Override
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
 			final UiCallbackI<T, Object> editorCallback) {
 		return this.addField(name, dcls, editorClass, null, editorCallback);
+	}
+
+	@Override
+	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,
+			Map<String, Object> editorPts) {
+		return this.addField(name, dcls, editorClass, editorPts, null);
 	}
 
 	public <T extends EditorI> FieldModel addField(String name, Class<?> dcls, Class<T> editorClass,

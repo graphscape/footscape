@@ -59,34 +59,52 @@ public class ExpItemView extends ViewSupport {
 			// first line
 			TRWrapper tr0 = this.table.addTr();
 			// Left td,3 rows
-			TDWrapper td0 = tr0.addTd();
-			td0.addClassName("exps-item-icon");
-			td0.setAttribute("rowspan", rowspan);
-			Element ar = DOM.createAnchor();
-			ar.addClassName("user-icon");
-			
-			ElementWrapper image = new ElementWrapper(DOM.createImg());
-			image.setAttribute("src", ei.getIconDataUrl());
-			
-			ar.appendChild(image.getElement());
-			td0.append(ar);
-			
-			// middle,exp title
-			TDWrapper td01 = tr0.addTd();
-			td01.addClassName("exps-item-exptitle");
-			
-			td01.getElement().setInnerText(ei.getExpTitle());
-			
-			// right
-			TDWrapper td02 = tr0.addTd();
-			td02.setAttribute("rowspan", rowspan);
-			this.actionsTd = td02;
-			this.actionsTd.addClassName("exps-item-actions");
+			{
+				TDWrapper td0 = tr0.addTd();
+				td0.addClassName("exps-item-usericon");
+				td0.setAttribute("rowspan", rowspan);
+				Element ar = DOM.createAnchor();
+				ar.addClassName("user-icon");
 
+				ElementWrapper image = new ElementWrapper(DOM.createImg());
+				image.setAttribute("src", ei.getUserIcon());
+
+				ar.appendChild(image.getElement());
+				td0.append(ar);
+			}
+			{
+
+				// middle,exp title
+				TDWrapper td01 = tr0.addTd();
+				td01.addClassName("exps-item-exptitle");
+
+				td01.getElement().setInnerText(ei.getExpTitle());
+			}
+			{
+				// middle right
+				TDWrapper td02 = tr0.addTd();
+				td02.setAttribute("rowspan", rowspan);
+				td02.addClassName("exps-item-expicon");
+				Element image = DOM.createImg();
+				image.setAttribute("src", ei.getIcon());
+
+				Element ar = DOM.createAnchor();
+				ar.addClassName("exp-icon");
+				ar.appendChild(image);
+				td02.append(ar);
+			}
+			{
+
+				// right
+				TDWrapper td03 = tr0.addTd();
+				td03.setAttribute("rowspan", rowspan);
+				this.actionsTd = td03;
+				this.actionsTd.addClassName("exps-item-actions");
+			}
 		}
 		//
-		{//middle
-			//second line
+		{// middle
+			// second line
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
@@ -97,39 +115,40 @@ public class ExpItemView extends ViewSupport {
 		}
 		//
 		{//
-			//third line
+			// third line
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
-			
+
 			td1.addClassName("exps-item-timestamp");
 			String dateS = DateUtil.format(ei.getTimestamp(), false);
 			String nick = ei.getNick();
-			String html = "<span>"+dateS+",by:</span>"+"<span>"+nick+"</span>";
+			String html = "<span>" + dateS + ",by:</span>" + "<span>" + nick + "</span>";
 			td1.getElement().setInnerHTML(html);
-			
+
 			// td1,1
 		}
 
 		// actions
-		ListI actions = this.factory.create(ListI.class);//
-		actions.parent(this);// note,see on add child method
+		{
+			ListI actions = this.factory.create(ListI.class);//
+			actions.parent(this);// note,see on add child method
 
-		ButtonI cooper = this.factory.create(ButtonI.class);
-		cooper.setText(true, UiClientConstants.AP_COOPER.toString());
-		cooper.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+			ButtonI cooper = this.factory.create(ButtonI.class);
+			cooper.setText(true, UiClientConstants.AP_COOPER.toString());
+			cooper.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
-			@Override
-			public void handle(ClickEvent e) {
-				// TODO open search view?
-				ExpItemView.this.onCooperClicked();
-			}
-		});
-		cooper.parent(actions);
-
+				@Override
+				public void handle(ClickEvent e) {
+					// TODO open search view?
+					ExpItemView.this.onCooperClicked();
+				}
+			});
+			cooper.parent(actions);
+		}
 	}
 
 	protected void onCooperClicked() {
-		
+
 		this.dispatchActionEvent(Actions.A_EXPS_COOPER);
 
 	}

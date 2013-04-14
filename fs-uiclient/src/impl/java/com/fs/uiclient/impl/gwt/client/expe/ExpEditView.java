@@ -10,7 +10,7 @@ import java.util.Map;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
-import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
+import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FieldModel;
 import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.api.gwt.client.widget.EditorI;
@@ -24,8 +24,6 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
  * 
  */
 public class ExpEditView extends FormsView implements ExpEditViewI {
-
-	private ViewReferenceI managed;
 
 	/**
 	 * @param ctn
@@ -53,6 +51,11 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 				}
 			});
 		}
+		{
+			Map<String, Object> pts = new HashMap<String, Object>();
+			FieldModel iconFM = fv.addField("icon", String.class, ImageCropEditorI.class, pts);
+		}
+
 		fv.getFormModel().addAction(Actions.A_EXPE_SUBMIT);//
 	}
 
