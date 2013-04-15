@@ -6,6 +6,7 @@ package com.fs.uiclient.impl.gwt.client.handler.message;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wuzhen
@@ -29,6 +30,7 @@ public class CooperRequestSuccessMH extends MHSupport {
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		//DO nothing,wait the incoming cr notifiy
+		Window.alert("Request is sent successfully to the expecation.");
 	}
 
 }
