@@ -38,12 +38,16 @@ public final class WebSocketJSO extends AbstractJSO {
 
 	private static native WebSocketJSO tryCreate(String uri)
 	/*-{
+	    //$wnd.alert('WebSocketinGWT:'+$wnd.WebSocket);
 	    if($wnd.WebSocket){
-			var  rt = new WebSocket(uri); 		 
+	    	
+	    	//note: new WebSocket(uri) not work with Flash socket by web-socket-js package.
+	    	 
+			var  rt = new $wnd.WebSocket(uri); 		 
 			return rt;
 		}
 		if($wnd.MozWebSocket){
-			var  rt = new MozWebSocket(uri); 		 
+			var  rt = new $wnd.MozWebSocket(uri); 		 
 			return rt;
 		}
 		return null;
