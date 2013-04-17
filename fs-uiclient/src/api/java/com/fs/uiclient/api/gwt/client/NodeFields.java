@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 9, 2012
  */
-package com.fs.uiclient.impl.gwt.client;
+package com.fs.uiclient.api.gwt.client;
 
 /**
  * @author wu NOTE:see NodeI.java in data service

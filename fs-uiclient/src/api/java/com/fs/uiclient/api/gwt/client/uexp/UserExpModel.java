@@ -4,9 +4,9 @@
  */
 package com.fs.uiclient.api.gwt.client.uexp;
 
+import com.fs.uiclient.api.gwt.client.NodeFields;
+import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
-import com.fs.uiclient.impl.gwt.client.NodeFields;
-import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
@@ -28,11 +28,11 @@ public class UserExpModel {
 	}
 
 	public String getTitle() {
-		return (String) this.target.getProperty(ExpEditView.F_TITLE);
+		return (String) this.target.getProperty(ExpEditViewI.F_TITLE);
 	}
 
 	public String getBody() {
-		return (String) this.target.getProperty(ExpEditView.F_BODY);
+		return (String) this.target.getProperty(ExpEditViewI.F_BODY);
 	}
 
 	public String getBodyAsHtml() {
@@ -65,7 +65,7 @@ public class UserExpModel {
 	 */
 	public String getIcon() {
 		//
-		return (String) this.target.getProperty(ExpEditView.F_ICON);
+		return (String) this.target.getProperty(ExpEditViewI.F_ICON);
 
 	}
 
