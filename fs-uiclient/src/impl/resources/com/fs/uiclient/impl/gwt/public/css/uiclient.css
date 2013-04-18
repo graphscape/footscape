@@ -26,18 +26,16 @@ a.exp-icon img{ /*exp image*/
 }
 
 .exps-item {
-	border-left : 2px solid white;
-	border-top : 1px solid rgba(0, 0, 0, 0.05);
+
 	margin-top: 0px;
 	padding-bottom: 6px;
 	padding-left:0px;
 }
 
 .exps-item:hover {
-	background: rgba(0, 0, 0, 0.0);
-	border-left : 2px solid rgba(0, 0, 0, 0.0);
-	border-top : 1px solid rgba(50, 90, 150, 0.1);
-	background: rgba(50, 90, 150, 0.1);
+	border-left : 2px solid #646464;
+	border-top : 1px solid #6A8ED2;
+	background: #DCDCDC;
 }
 
 .exps-item-usericon { /**td**/
@@ -59,7 +57,7 @@ a.exp-icon img{ /*exp image*/
 }
 .exps-item-timestamp {
 	font-size: 9px;
-	color:  rgba(0, 0, 0, 0.5);
+	color:  #7A7A7A;
 }
 .exps-item-exptitle {
 	color:#0754A6;
@@ -97,7 +95,7 @@ a.exp-icon img{ /*exp image*/
 }
 .myexp-message {
 	margin-bottom : 6px;
-	background: rgba(50, 90, 150, 0.1);
+	background: #6A8ED2;
 	border-radius: 3px;
 }
 
@@ -112,19 +110,19 @@ a.exp-icon img{ /*exp image*/
 
 .myexp-message-nick {
 	font-size :9px;
-	color:rgba(0, 0, 0, 0.5);
+	color:#7A7A7A;
 	text-align:right;
 }
 
 .myexp-message-exptitle {
 	font-size:9px;
-	color:rgba(0, 0, 0, 0.5);
+	color:#7A7A7A;
 	text-align:right;
 }
 
 .myexp-message-timestamp {
 	font-size:9px;
-	color:rgba(0, 0, 0, 0.5);
+	color:#7A7A7A;
 	text-align:left;
 	white-space: nowrap;
 }
@@ -135,17 +133,15 @@ a.exp-icon img{ /*exp image*/
 
 .uel-item {
 	border-left : 2px solid white;
-	border-top : 1px solid rgba(0, 0, 0, 0.05);
+	border-top : 1px solid #EBEBEB;
 	margin-top: 0px;
 	padding-bottom: 6px;
 	padding-left:0px;
 }
 .uel-item.selected,
 .uel-item:hover {
-	background: rgba(0, 0, 0, 0.0);
-	border-left : 2px solid rgba(0, 0, 0, 0.0);
-	border-top : 1px solid rgba(50, 90, 150, 0.1);
-	background: rgba(50, 90, 150, 0.1);
+	border-left : 2px solid #646464;
+	background: #DCDCDC;
 }
 
 .uel-item-expicon { /**td**/
@@ -164,7 +160,7 @@ a.exp-icon img{ /*exp image*/
 }
 .uel-item-timestamp {
 	font-size: 9px;
-	color: rgba(0, 0, 0, 0.5);
+	color: #7A7A7A;
 }
 .uel-item-exptitle {
 	color:#0754A6;
@@ -176,21 +172,5 @@ a.exp-icon img{ /*exp image*/
 }
 
 
-
-
-.xwgt-UserExpView{
-	margin-top : 10px;
-	background: rgba(0, 0, 0, 0.0);
-	border-right : 2px solid rgba(0, 0, 0, 0.0);
-	border-bottom : 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.xwgt-UserExpView.selected,
-.xwgt-UserExpView:hover{
-	background: rgba(0, 0, 0, 0.0);
-	border-right : 2px solid rgba(0, 0, 0, 0.0);
-	border-bottom : 1px solid rgba(0, 0, 0, 0.5);
-	
-}
 
 

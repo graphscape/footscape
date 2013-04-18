@@ -14,7 +14,7 @@
 
 .bottom-list {
 	padding: 6px;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: #C7C7C7;
 }
 
 .bottom-bar {	
@@ -29,7 +29,7 @@
 	width:100%;
 	text-align:center;
     font-size: 9px;
-  	color:  rgba(0, 0, 0, 0.5);
+  	color:  #7D7D7D;
 }
 /**
 Console View
@@ -38,9 +38,9 @@ Console View
 	height: 300px;
 	width: 800px;
 	overflow: hidden;
-	color: rgba(0, 0, 0, 0.8);
-	background-color: rgba(0, 0, 0, 0.05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+	color: #525252;
+	background-color: #ADADAD;
+	box-shadow: 0 1px 1px #ADADAD;
 }
 
 .console:hover {
@@ -59,7 +59,7 @@ Console View
 }
 
 .disconnected {
-	background-color: rgba(50, 90, 150, 1);
+	background-color: #325A96;
 	position:absolute;
 	width:100%;
 	height:100%;
@@ -70,7 +70,7 @@ Console View
 
 .disconnected label{
 	color:#fff;
-	background-color: rgba(50, 90, 150, 1);
+	background-color: #325A96;
 	font-size: 16px;
 	font-weight: bold;
 }
@@ -95,12 +95,12 @@ Console View
 
 .error-id {
 	font-size: 9px;
-	color:  rgba(0, 0, 0, 0.5);
+	color:  #7D7D7D;
 }
 
 .error-code {
 	font-size: 9px;
-	color:  rgba(0, 0, 0, 0.5);
+	color:  #7D7D7D;
 }
 
 
@@ -172,7 +172,7 @@ Console View
 }
 
 .tabber-layout-left {
-	border-right: 1px solid rgba(50, 90, 150, 0.3);
+	border-right: 1px solid #C8C8C8;
 }
 
 .invisible {
@@ -198,7 +198,7 @@ Console View
 }
 
 .image-select-box.dragging {
-	box-shadow: 0 3px 6px rgba(0, 255, 0, 0.8);
+	box-shadow: 0 3px 6px #FFB300;
 	cursor: move;
 }
 
@@ -236,13 +236,12 @@ Console View
 
 .frwk-bottom {
 	width: 100%;
-	background-color: rgba(50, 90, 150, 0.6);
 	text-align: center;
-	color: rgba(50, 90, 150, 0.9);
+	color: #325a96;
 }
 
 .panel-header { /*DIV*/
-	border-bottom:1px solid rgba(50, 90, 150, 0.3);
+	border-bottom:1px solid #C8C8C8;
 }
 
 /*Anchor,button*/
@@ -288,7 +287,7 @@ Console View
 .wgt-HeaderView {
 	background-color: #034F82;
 	width: 100%;
-	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 2px 2px #7D7D7D;
 	padding: 0px 0px;
 	font-weight: bold;
 	margin-bottom: 6px;
@@ -341,9 +340,9 @@ Console View
 	border: 1px solid #CCC;
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
-	-moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 3px 6px #C7C7C7;
+	-webkit-box-shadow: 0 3px 6px #C7C7C7;
+	box-shadow: 0 3px 3px #C7C7C7;
 	margin-top: 0px;
 	font-weight: bold;
 	position: absolute;
@@ -426,8 +425,8 @@ Console View
 
 .wgt-TabberWImpl.layout-horizental .wgt-TabWImpl.position-selected,.wgt-TabberWImpl.layout-horizental .wgt-TabWImpl:hover
 	{
-	background: rgba(50, 90, 150, 0.3);
-	border-bottom: 1px solid rgba(50, 90, 150, 0.8);
+	background: #C8C8C8;
+	border-bottom: 1px solid #325A96;
 	font-weight: bold;
 	margin-bottom: 1px;
 }
@@ -461,7 +460,7 @@ Console View
 
 .tabber-layout-left ul .wgt-TabWImpl:hover,.tabber-layout-left ul .wgt-TabWImpl.position-selected
 	{
-	background: rgba(50, 90, 150, 0.3);
+	background: #C8C8C8;
 }
 
 /*End of CSS file*/
