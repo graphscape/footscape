@@ -21,6 +21,7 @@ public class Canvas extends ElementObjectSupport {
 	protected CanvasElement canvas;
 
 	// protected ImageElement image;// source image
+	protected boolean functional;
 
 	/**
 	 * @param ele
@@ -28,9 +29,15 @@ public class Canvas extends ElementObjectSupport {
 	public Canvas(int width, int height) {
 		super(null, DOM.createDiv());
 		this.canvas = Document.get().createCanvasElement();
-		this.canvas.setWidth(width);
-		this.canvas.setHeight(height);
-		this.elementWrapper.append((Element) this.canvas.cast());
+		if (this.canvas.getContext2d() == null) {
+			this.functional = false;
+
+		} else {
+			this.functional = true;
+			this.canvas.setWidth(width);
+			this.canvas.setHeight(height);
+			this.elementWrapper.append((Element) this.canvas.cast());
+		}
 
 		//
 		// this.image = ImageElement.as(DOM.createImg());
@@ -58,8 +65,8 @@ public class Canvas extends ElementObjectSupport {
 	 * dx, dy, dw, dh); }
 	 */
 
-	public void drawImage(ImageElement img, double sx, double sy, double sw,
-			double sh, double dx, double dy, double dw, double dh) {
+	public void drawImage(ImageElement img, double sx, double sy, double sw, double sh, double dx, double dy,
+			double dw, double dh) {
 
 		// this.image.setAttribute("src", dataUrl);
 		img.getAttribute("src");

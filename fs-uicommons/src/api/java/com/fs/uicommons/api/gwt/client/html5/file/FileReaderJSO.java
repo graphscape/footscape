@@ -23,17 +23,29 @@ public final class FileReaderJSO extends JavaScriptObject {
 
 	}
 
-	public native static FileReaderJSO newInstance()/*-{
-														return new FileReader();											
-														}-*/;
+	public native static boolean isSupport()
+	/*-{
+		if($wnd.FileReader){
+			return true;
+		}
+		return false;
+	}-*/;
+
+	public native static FileReaderJSO newInstance()
+	/*-{
+		if($wnd.FileReader){
+			return new $wnd.FileReader();														
+		}
+		return null;
+	}-*/;
 
 	public FileReaderJSO onLoadEnd(HandlerI<JavaScriptObject> handler) {
 		this.addEventHandler("onloadend", new ErrorReportProxyHandler<JavaScriptObject>(handler));
 		return this;
 	}
 
-	public native void addEventHandler(String eventType,
-			HandlerI<JavaScriptObject> handler) /*-{
+	public native void addEventHandler(String eventType, HandlerI<JavaScriptObject> handler)
+	/*-{
 														
 															this[eventType]=function(evt){
 																//alert('eventType:'+eventType+',event:'+evt+',handler:'+handler);
@@ -43,7 +55,8 @@ public final class FileReaderJSO extends JavaScriptObject {
 														
 														}-*/;
 
-	public native FileReaderJSO readAsDataURL(FileRefJSO fileRef)/*-{
+	public native FileReaderJSO readAsDataURL(FileRefJSO fileRef)
+	/*-{
 																		return this.readAsDataURL(fileRef);
 																		
 																		}-*/;

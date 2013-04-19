@@ -32,6 +32,8 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 	private int defaultSearchSlop = 3;
 
+	private String defaultExpIconDataUrl;
+
 	/*
 	 * Apr 3, 2013
 	 */
@@ -39,6 +41,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 	public void configure(Configuration cfg) {
 		super.configure(cfg);
 		this.defaultSearchSlop = cfg.getPropertyAsInt("defaultSearchSlop", 3);
+		this.defaultExpIconDataUrl = this.config.getProperty("defaultExpIconDataUrl");
 	}
 
 	// query the connected exp from specified exp by exp id.
@@ -92,8 +95,8 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		// convert
 		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
 				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID, Expectation.FORMAT,
-				Expectation.TITLE, Expectation.SUMMARY,Expectation.ICON },//
-				new boolean[] { true, true, true, true, true, true, true,true }, // force
+				Expectation.TITLE, Expectation.SUMMARY, Expectation.ICON },//
+				new boolean[] { true, true, true, true, true, true, true, true }, // force
 				new String[] { "id", "body", "timestamp", "accountId", "format", "title", "summary", "icon" }//
 				);
 		for (PropertiesI<Object> pts : el) {
@@ -111,16 +114,18 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 			}
 			pts.setProperty("userIcon", icon);//
 			//
-			{
-				String expIcon = (String)pts.getProperty("icon");
-				if(expIcon.equalsIgnoreCase("n/a")){
-					expIcon = this.config.getProperty("defaultExpIconDataUrl");
-					pts.setProperty("icon",expIcon);
-				}
-			}
+			this.icon(pts);
 		}
 
 		res.setPayload("expectations", el);
+	}
+
+	private void icon(PropertiesI<Object> pts) {
+		String expIcon = (String) pts.getProperty("icon");
+		if (expIcon.equalsIgnoreCase("n/a")) {
+			expIcon = this.defaultExpIconDataUrl;
+			pts.setProperty("icon", expIcon);
+		}
 	}
 
 	@Handle("get")
@@ -128,7 +133,9 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		MessageI req = ew.getMessage();//
 		String expId = req.getString("expId", true);
 		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
-		res.setPayload("expectation", exp.getTarget());//good
+		PropertiesI<Object> pts = exp.getTarget();
+		this.icon(pts);
+		res.setPayload("expectation", pts);// good
 	}
 
 }

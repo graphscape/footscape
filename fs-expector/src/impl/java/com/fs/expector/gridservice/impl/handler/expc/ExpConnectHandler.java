@@ -61,9 +61,9 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 																// application
 																// determine
 		// this?
-		qo.propertyEq(ExpMessage.ACCOUNT_ID1, accountId1);
+		qo.propertyEq(Connection.ACCOUNT_ID1, accountId1);
 		if (expId1 != null) {
-			qo.propertyEq(ExpMessage.EXP_ID1, expId1);
+			qo.propertyEq(Connection.EXP_ID1, expId1);
 		}
 
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);

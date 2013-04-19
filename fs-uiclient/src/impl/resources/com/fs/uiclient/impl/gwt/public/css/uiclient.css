@@ -28,13 +28,13 @@ a.exp-icon img{ /*exp image*/
 .exps-item {
 
 	margin-top: 0px;
+	border-top : 1px solid #EBEBEB;
 	padding-bottom: 6px;
 	padding-left:0px;
 }
 
 .exps-item:hover {
 	border-left : 2px solid #646464;
-	border-top : 1px solid #6A8ED2;
 	background: #DCDCDC;
 }
 
@@ -60,8 +60,9 @@ a.exp-icon img{ /*exp image*/
 	color:  #7A7A7A;
 }
 .exps-item-exptitle {
-	color:#0754A6;
-	font-weight:bold;
+	color:#000000;
+	font-size : 14px;
+	font-weight: bold;
 }
 .exps-item-expbody {
 	
@@ -95,7 +96,7 @@ a.exp-icon img{ /*exp image*/
 }
 .myexp-message {
 	margin-bottom : 6px;
-	background: #6A8ED2;
+	border-top : 1px solid #EBEBEB;
 	border-radius: 3px;
 }
 
@@ -163,7 +164,8 @@ a.exp-icon img{ /*exp image*/
 	color: #7A7A7A;
 }
 .uel-item-exptitle {
-	color:#0754A6;
+	font-size: 14px;
+	color:#000000;
 	font-weight:bold;
 }
 

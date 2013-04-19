@@ -14,7 +14,7 @@ import com.fs.expector.dataservice.api.NodeTypes;
  */
 public class ExpMessage extends NodeWrapper {
 
-	public static final String EXP_ID1 = "expId";
+	public static final String EXP_ID1 = "expId1";
 
 	public static final String EXP_ID2 = "expId2";
 

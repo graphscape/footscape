@@ -49,6 +49,7 @@ public class ImageCroper extends ElementObjectSupport {
 	protected double zoomX = 1;
 
 	protected double zoomY = 1;
+	
 
 	//protected ObjectElementHelper ok;
 

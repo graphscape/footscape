@@ -29,18 +29,9 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 		super(c, name);
 
 		this.image = ElementWrapper.valueOf(DOM.createImg());
-		this.dataRender.append(this.image);//
-
-	}
-
-	/**
-	 * Nov 21, 2012
-	 */
-	protected void onImageCroperData(DataEvent e) {
-		//
-		String ds = e.getData();
-
-		this.setData((ds), true);
+		if (this.functional) {
+			this.dataRender.append(this.image);//
+		}
 
 	}
 
@@ -77,6 +68,17 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 		imageCroper.setDataUrl(data);
 		// open croper
 		imageCroper.open();
+
+	}
+
+	/**
+	 * Nov 21, 2012
+	 */
+	protected void onImageCroperData(DataEvent e) {
+		//
+		String ds = e.getData();
+
+		this.setData((ds), true);
 
 	}
 

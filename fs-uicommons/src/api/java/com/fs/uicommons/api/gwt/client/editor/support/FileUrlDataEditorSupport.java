@@ -32,6 +32,8 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 	protected ObjectElementHelper input;
 
 	protected ElementWrapper dataRender;
+	
+	protected boolean functional;
 
 	/**
 	 * @param ele
@@ -40,9 +42,7 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 		super(c, name, DOM.createDiv());
 		this.dataRender = new ElementWrapper(DOM.createDiv());
 		this.elementWrapper.append(dataRender);//
-		this.input = this.helpers.addHelper("input", DOM.createElement("input"));
-		this.getMasterHelper().append(this.input);//
-		this.input.setAttribute("type", "file");
+		
 
 		//
 		// input = DOM.createElement("input");
@@ -51,16 +51,25 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 
 		// ?multiple
 		// TODO add outer element.
-		this.input.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(),
-				new GwtChangeHandler() {
+		this.functional = FileReaderJSO.isSupport();
+		
+		if (this.functional) {
+			this.input = this.helpers.addHelper("input", DOM.createElement("input"));
+			this.getMasterHelper().append(this.input);//
+			this.input.setAttribute("type", "file");
+			this.input.addGwtHandler(com.google.gwt.event.dom.client.ChangeEvent.getType(),
+					new GwtChangeHandler() {
 
-					@Override
-					protected void handleInternal(ChangeEvent evt) {
-						FileUrlDataEditorSupport.this.onChange(evt);
-						//
+						@Override
+						protected void handleInternal(ChangeEvent evt) {
+							FileUrlDataEditorSupport.this.onChange(evt);
+							//
 
-					}
-				});
+						}
+					});
+		}else{
+			this.dataRender.getElement().setInnerText("Your browser not support html5 file feader!");
+		}
 	}
 
 	/**

@@ -41,14 +41,12 @@ FS_LOGS=$FS_HOME/logs
 #Version
 FS_VERSION=1.0.0
 FS_LOG_LEVEL=INFO
-#JAVA_HOME
-JAVA_HOME=$JAVA_HOME
 #Daemon class
 CLASS=com.fs.integrated.Server
 #
 #CMD 
 #
-EXEC=$JAVA
+
 #Class path
 CLASS_PATH="$FS_HOME/bin/*":"$FS_HOME/lib/*":"$FS_HOME/conf"
 
@@ -59,4 +57,4 @@ OPTS="-cp $CLASS_PATH "
 ##
 ##
   
-$EXEC $OPTS $CLASS
+$JAVA_HOME/bin/java $OPTS $CLASS

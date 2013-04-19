@@ -22,7 +22,7 @@ body {
 	font-family: Helvetica;
 	font-variant: normal;
 	height:100%;
-	color: #646464;
+	color: #505050;
 }
 
 button {
@@ -41,7 +41,7 @@ button {
 }
 
 button:hover {
-	background: #325a96;
+
 	border-top: 1px solid #325a96;
 	border-left: 1px solid #325a96;
 	border-bottom: 1px solid #325a96;
@@ -50,25 +50,20 @@ button:hover {
 	color:#fff;
 }
 button.disable {
-	background: #7197D0;
-	border-top: 1px solid #000000;
-	border-left: 1px solid #000000;
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #FFFFFF;
 	border-bottom: 1px solid #325a96;
-	border-right: 1px solid #325a96;		
+	border-right: 1px solid #325a96;
+	color: #505050;
+	background: #7197D0;
 	border-radius: 2px;
-	color: #325a96;
 	cursor: pointer;
 	margin: 5px;
 }
 
 button.disable:hover {
 	background: #7197D0;
-	border-top: 1px solid #000000;
-	border-left: 1px solid #000000;
-	border-bottom: 1px solid #325a96;
-	border-right: 1px solid #325a96;		
 	border-radius: 2px;
-	color: #325a96;
 	cursor: pointer;
 	margin: 5px;
 }

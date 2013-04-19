@@ -20,7 +20,7 @@ public final class FileRefJSO extends JavaScriptObject {
 	protected FileRefJSO() {
 
 	}
-
+	
 	public native String getName()/*-{
 									// TODO Auto-generated method stub
 									return null;
