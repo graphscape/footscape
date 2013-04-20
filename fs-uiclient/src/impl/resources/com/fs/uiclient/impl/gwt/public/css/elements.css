@@ -12,9 +12,8 @@ a:hover {
 }
 
 body {
-background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAmSURBVBhXY/gPBW9+wlgQmhFEMGABTOhib39BRAjrgKmEmYBTBwAZiSeZb8/ORAAAAABJRU5ErkJggg==);	margin-left: 0px;
-	margin-right: 0px;
-	margin-top: -1px;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAvSURBVBhXY/gPBW9+wlj//4PYjCAuAxbABBN7+wvCgtEMyEYgDAOags0OkBhOOwCWcFMfk95x+AAAAABJRU5ErkJggg==);
+	margin: 0px;
 	border: 0px;
 	padding: 0px;
 	font-size: 12px;

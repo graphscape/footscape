@@ -19,8 +19,9 @@
 	
 }
 .bottom-list {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAvSURBVBhXYzx//vx/BiyACSZ297UyXBrEZiSoA6QcWRfcKJCEsuhduHEoEshuAACJUg25FTs06wAAAABJRU5ErkJggg==);	
 	padding: 6px;
-	background-color: #C7C7C7;
+	
 }
 
 .bottom-list td.vlist-item{
@@ -355,28 +356,21 @@ Console View
 
 /*Menu*/
 .wgt-MenuWImpl {
-	background-color: #fff;
-	border: 1px solid #CCC;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	-moz-box-shadow: 0 3px 6px #C7C7C7;
-	-webkit-box-shadow: 0 3px 6px #C7C7C7;
-	box-shadow: 0 3px 3px #C7C7C7;
+	background-color: #F8F8F8;
+	border: 1px solid #C0C0C0;
 	margin-top: 0px;
 	font-weight: bold;
 	position: absolute;
+	padding-right: 6px;
 }
 
 .wgt-MenuWImpl ul {
 	list-style: none;
 	margin: 2px 0;
 	padding-left: 0;
-	background-color: #fff;
 }
 
 .wgt-MenuWImpl .wgt-MenuItemWImpl {
-	border-width: 0;
-	border-radius: 0;
 	color: #034F82;
 	cursor: pointer;
 	display: inline-block;
