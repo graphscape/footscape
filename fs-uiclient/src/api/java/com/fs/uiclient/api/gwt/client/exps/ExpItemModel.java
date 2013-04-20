@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.exps;
 
+import com.fs.uiclient.api.gwt.client.NodeFields;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
@@ -20,7 +21,7 @@ public class ExpItemModel extends PropertiesData<Object> {
 	}
 
 	public String getExpId() {
-		return (String) this.getProperty("id");
+		return (String) this.getProperty(NodeFields.PK_ID,true);
 	}
 
 	public String getExpTitle() {
@@ -54,7 +55,7 @@ public class ExpItemModel extends PropertiesData<Object> {
 	}
 
 	public DateData getTimestamp() {
-		DateData rt = (DateData) this.getProperty("timestamp");
+		DateData rt = (DateData) this.getProperty(NodeFields.PK_TIMESTAMP,true);
 		return rt;
 	}
 

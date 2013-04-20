@@ -59,12 +59,8 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 		finder.propertyEq(Expectation.ACCOUNT_ID, login.getAccountId());
 		NodeQueryResultI<Expectation> rst = finder.execute().getResult().assertNoError();
 
-		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list());
-
-		// additional fields;TODO use snapshot
-		for (PropertiesI<Object> pts : el) {
-			String id = (String) pts.getProperty(NodeI.PK_ID, true);//
-		}
+		List<PropertiesI<Object>> el = this.efacade.convertToClientFormat(rst.list());
+		
 		res.setPayload("userExpList", el);
 	}
 

@@ -46,7 +46,13 @@ public class CooperRequestAP extends ActionHandlerSupport {
 
 		UserExpModel ue = sm.getExpId(false);
 		if (ue == null) {
-			Window.alert("Please select your expectation to cooperate with!");
+			boolean sel = Window.confirm("You must select one of your expectation before make the request, do you want to select one?");
+			if(!sel){
+				return;//do nothing				
+			}
+			
+			//open my expecation list
+			mc.openUeList(true);
 			return;
 		}
 		String expId1 = ue.getExpId();

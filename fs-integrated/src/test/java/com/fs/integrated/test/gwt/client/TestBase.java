@@ -5,6 +5,7 @@ package com.fs.integrated.test.gwt.client;
 
 import com.fs.uiclient.api.gwt.client.UiClientGwtSPI;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
+import com.fs.uicore.api.gwt.client.ClientLoader;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
@@ -13,7 +14,6 @@ import com.fs.uicore.api.gwt.client.WidgetFactoryI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -49,7 +49,7 @@ public class TestBase extends GWTTestCase {
 				GWT.create(UiCommonsGPI.class),
 				GWT.create(UiClientGwtSPI.class) };
 
-		factory = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
+		factory = ClientLoader.getInstance().getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {

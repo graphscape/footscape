@@ -32,8 +32,6 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 	private int defaultSearchSlop = 3;
 
-	private String defaultExpIconDataUrl;
-
 	/*
 	 * Apr 3, 2013
 	 */
@@ -41,7 +39,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 	public void configure(Configuration cfg) {
 		super.configure(cfg);
 		this.defaultSearchSlop = cfg.getPropertyAsInt("defaultSearchSlop", 3);
-		this.defaultExpIconDataUrl = this.config.getProperty("defaultExpIconDataUrl");
+
 	}
 
 	// query the connected exp from specified exp by exp id.
@@ -92,40 +90,9 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 	}
 
 	private void processExpsResult(ResponseI res, List<Expectation> list) {
-		// convert
-		List<PropertiesI<Object>> el = NodeWrapperUtil.convert(list, new String[] { NodeI.PK_ID,
-				Expectation.BODY, NodeI.PK_TIMESTAMP, Expectation.ACCOUNT_ID, Expectation.FORMAT,
-				Expectation.TITLE, Expectation.SUMMARY, Expectation.ICON },//
-				new boolean[] { true, true, true, true, true, true, true, true }, // force
-				new String[] { "id", "body", "timestamp", "accountId", "format", "title", "summary", "icon" }//
-				);
-		for (PropertiesI<Object> pts : el) {
-			String accId = (String) pts.getProperty("accountId");
-			// account must be exist
-			Account acc = this.dataService.getNewestById(Account.class, accId, true);
-			pts.setProperty("nick", acc.getNick());
-
-			// profile may not exist.
-
-			Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
-			String icon = pf == null ? null : pf.getIcon();
-			if (icon == null) {
-				icon = this.config.getProperty("defaultIconDataUrl");//
-			}
-			pts.setProperty("userIcon", icon);//
-			//
-			this.icon(pts);
-		}
+		List<PropertiesI<Object>> el = this.efacade.convertToClientFormat(list);
 
 		res.setPayload("expectations", el);
-	}
-
-	private void icon(PropertiesI<Object> pts) {
-		String expIcon = (String) pts.getProperty("icon");
-		if (expIcon.equalsIgnoreCase("n/a")) {
-			expIcon = this.defaultExpIconDataUrl;
-			pts.setProperty("icon", expIcon);
-		}
 	}
 
 	@Handle("get")
@@ -134,7 +101,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		String expId = req.getString("expId", true);
 		Expectation exp = this.dataService.getNewestById(Expectation.class, expId, true);
 		PropertiesI<Object> pts = exp.getTarget();
-		this.icon(pts);
+		this.efacade.processExpIcon(pts);
 		res.setPayload("expectation", pts);// good
 	}
 

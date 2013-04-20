@@ -37,7 +37,11 @@ public class LayoutSupport extends WidgetSupport implements CompositeI {
 	@Deprecated
 	// use processAddChildElementObject
 	protected void onAddChild(Element pe, ElementObjectI ceo) {
-		pe.appendChild(ceo.getElement());//
+		Element ele = ceo.getElement();
+		if(ele.hasParentElement()){
+			return;
+		}
+		pe.appendChild(ele);//
 	}
 
 	/* */

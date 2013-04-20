@@ -202,7 +202,12 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		this.uri = this.resolveWsUrl();
 		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
-		this.socket = WebSocketJSO.newInstance(uri, true);
+		this.socket = WebSocketJSO.newInstance(uri, false);
+		if(this.socket == null){
+			
+			Window.alert("Web socket is required but not supported by your browser!");
+			return;
+		}
 		this.socket.onOpen(new HandlerI<EventJSO>() {
 
 			@Override

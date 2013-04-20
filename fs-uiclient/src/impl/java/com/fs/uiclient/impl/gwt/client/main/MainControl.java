@@ -14,6 +14,7 @@ import com.fs.uiclient.api.gwt.client.profile.ProfileModelI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
+import com.fs.uiclient.api.gwt.client.user.UserInfoViewI;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
@@ -21,6 +22,7 @@ import com.fs.uiclient.impl.gwt.client.profile.ProfileView;
 import com.fs.uiclient.impl.gwt.client.signup.SignupView;
 import com.fs.uiclient.impl.gwt.client.uelist.UserExpListView;
 import com.fs.uiclient.impl.gwt.client.uexp.MyExpView;
+import com.fs.uiclient.impl.gwt.client.user.UserInfoViewImpl;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
@@ -80,7 +82,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Jan 31, 2013
 	 */
 	@Override
-	public UserExpListViewI openUeList() {
+	public UserExpListViewI openUeList(boolean show) {
 		//
 		final Holder<Boolean> holder = new Holder<Boolean>(Boolean.FALSE);
 		UserExpListViewI uelv = this.getOrCreateViewInBody(Path.valueOf("/uelist"),
@@ -91,7 +93,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 						holder.setTarget(true);//
 						return new UserExpListView(ct);
 					}
-				}, true);
+				}, show);
 		// created called,first created.
 		if (holder.getTarget()) {
 			this.refreshUeList();//
@@ -165,8 +167,8 @@ public class MainControl extends ControlSupport implements MainControlI {
 		Boolean b = (Boolean) esv.getProperty("isNew", Boolean.TRUE);
 		esv.setProperty("isNew", Boolean.FALSE);
 		if (this.logger.isDebugEnabled()) {
-			this.logger
-					.debug("cause:" + cause + ",openMyExp,expId:" + expId + ",show:" + show + ",isNew:" + b);
+			this.logger.debug("cause:" + cause + ",openMyExp,expId:" + expId + ",show:" + show + ",isNew:"
+					+ b);
 		}
 		if (b) {
 
@@ -179,6 +181,25 @@ public class MainControl extends ControlSupport implements MainControlI {
 			});
 		}
 		return esv;
+	}
+
+	@Override
+	public UserInfoViewI openUserInfo(boolean show) {
+		Path path = Path.valueOf("/tab/uinfo");
+		final UserInfoViewI esv = this.getOrCreateViewInBody(path, new CreaterI<UserInfoViewI>() {
+
+			@Override
+			public UserInfoViewI create(ContainerI ct) {
+				return new UserInfoViewImpl(ct);
+			}
+		}, show);
+		return esv;
+	}
+
+	protected void refreshUserInfo(String accId) {
+		MsgWrapper req = this.newRequest(UiClientConstants.RP_USERINFO_GET);
+		req.setPayload("accountId", accId);//
+		this.sendMessage(req);
 	}
 
 	protected void afterOpenNewMyExp(MyExpView esv, String expId) {

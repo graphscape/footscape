@@ -163,7 +163,10 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	}
 
 	protected void processAddChildElementObject(ElementObjectI ce) {
-
+		Element ele = ce.getElement();
+		if(ele.hasParentElement()){
+			return;
+		}
 		this.elementWrapper.append(ce.getElement());//
 
 	}

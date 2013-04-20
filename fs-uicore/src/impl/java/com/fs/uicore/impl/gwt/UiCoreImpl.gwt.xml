@@ -9,6 +9,10 @@
 
 	<source path='client' />
 	
+	<replace-with class="com.fs.uicore.impl.gwt.client.ClientLoaderImpl">
+		<when-type-is class="com.fs.uicore.api.gwt.client.ClientLoader" />
+	</replace-with>
+	
 	<replace-with class="com.fs.uicore.impl.gwt.client.UiCoreGwtSPIImpl">
 		<when-type-is class="com.fs.uicore.api.gwt.client.UiCoreGwtSPI" />
 	</replace-with>

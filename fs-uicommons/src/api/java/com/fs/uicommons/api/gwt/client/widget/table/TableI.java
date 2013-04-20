@@ -29,6 +29,8 @@ public interface TableI extends CompositeI {
 	}
 
 	public static interface CellI extends CompositeI {
+		public CellI colspan(int cs);
+		public CellI rowspan(int rs);
 		public CellI child(WidgetI w);
 	}
 

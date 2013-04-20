@@ -5,6 +5,7 @@ package com.fs.expector.gridservice.api.mock;
 
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.commons.api.value.support.ProxyPropertiesSupport;
+import com.fs.dataservice.api.core.NodeI;
 
 /**
  * @author wuzhen
@@ -17,7 +18,7 @@ public class MockExpItem extends ProxyPropertiesSupport<Object> {
 	}
 
 	public String getExpId() {
-		return (String) this.getProperty("id", true);
+		return (String) this.getProperty(NodeI.PK_ID, true);
 	}
 
 	public String getNick() {
@@ -33,7 +34,7 @@ public class MockExpItem extends ProxyPropertiesSupport<Object> {
 	}
 
 	public String getTimestamp() {
-		return (String) this.getProperty("timestamp", true);
+		return (String) this.getProperty(NodeI.PK_TIMESTAMP, true);
 	}
 
 	// iconDataUrl

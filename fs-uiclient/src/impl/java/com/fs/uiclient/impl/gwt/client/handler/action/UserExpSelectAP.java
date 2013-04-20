@@ -35,7 +35,7 @@ public class UserExpSelectAP extends ActionHandlerSupport {
 	public void handle(ActionEvent ae) {
 		String expId = (String) ae.getProperty("expId", true);
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		UserExpListViewI uelv = mc.openUeList();
+		UserExpListViewI uelv = mc.openUeList(false);
 		// model
 		List<UserExpModel> ueL = uelv.getUserExpList();
 		UserExpModel selected = null;

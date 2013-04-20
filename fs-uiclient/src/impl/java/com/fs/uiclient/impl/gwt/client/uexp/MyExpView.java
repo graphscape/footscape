@@ -111,7 +111,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			{// middleLeft/child
 				// more button
 				more = this.factory.create(ButtonI.class);
-				more.setText(true, "more");
+				more.setText(true, UiClientConstants.AP_EXPM_MORE.toString());
 				more.getElement().addClassName("more");
 				more.parent(this.middleLeft);
 				more.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {

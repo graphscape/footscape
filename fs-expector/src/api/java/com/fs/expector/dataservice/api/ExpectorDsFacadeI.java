@@ -3,7 +3,11 @@
  */
 package com.fs.expector.dataservice.api;
 
+import java.util.List;
+
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.dataservice.api.wrapper.Account;
+import com.fs.expector.dataservice.api.wrapper.Expectation;
 
 /**
  * @author wu
@@ -20,5 +24,14 @@ public interface ExpectorDsFacadeI {
 	public Account getAccountByEmail(String email);
 
 	public Account updatePassword(String aid, String pass);
+
+	/**
+	 * @param pts Expectation record
+	 */
+	public void processExpIcon(PropertiesI<Object> pts);
+	
+	public List<PropertiesI<Object>> convertToClientFormat(List<Expectation> el);
+	
+	public String getDefaultUserIconDataUrl();
 
 }

@@ -16,8 +16,6 @@ import com.google.gwt.user.client.Element;
  */
 public abstract class WidgetBase extends ElementObjectSupport implements WidgetI {
 
-	protected boolean visible;
-
 	protected WidgetFactoryI factory;
 
 	protected WidgetBase(ContainerI c, String name, Element element) {
@@ -36,9 +34,7 @@ public abstract class WidgetBase extends ElementObjectSupport implements WidgetI
 
 	@Override
 	public void setVisible(boolean vis) {
-		this.visible = vis;
-		//
-		this.elementWrapper.addAndRemoveClassName(vis, "visible", "invisible");
+		super.setVisible(vis);
 		if (!this.visible) {
 			new HideEvent(this).dispatch();
 		}

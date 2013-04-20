@@ -91,8 +91,11 @@ public class MockExpectorClient extends MockClientWrapper {
 	public String newExp(String body) {
 		MessageI req = this.newRequest("/expe/submit");
 		req.setPayload("body", body);
-
+		req.setPayload("title",body);
+		req.setPayload("format","n/a");//
+		req.setPayload("summary","n/a");
 		MessageI i = this.syncSendMessage(req);
+		i.assertNoError();
 		String rt = (String) i.getPayload("expId", true);
 
 		return rt;

@@ -26,46 +26,39 @@ body {
 }
 
 button {
-	background: #7197D0;
 	border-top: 1px solid #FFFFFF;
-	border-left: 1px solid #FFFFFF;
-	border-bottom: 1px solid #325a96;
-	border-right: 1px solid #325a96;		
-	border-radius: 3px;
+	border-left: 1px solid #FFFFFF;	
+	border-bottom: 1px solid #FFFFFF;
+	border-right: 1px solid #FFFFFF;		
+	background: #7197D0;
 	color: #325a96;
 	cursor: pointer;
 	font-weight: bold;
-	margin-rigt: 5px;
-	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-rigt: 1px;
+	margin-top: 1px;
 }
 
 button:hover {
-
-	border-top: 1px solid #325a96;
-	border-left: 1px solid #325a96;
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #FFFFFF;	
 	border-bottom: 1px solid #325a96;
 	border-right: 1px solid #325a96;	
-	box-shadow: 0 2px 2px #C7C7C7;
+	box-shadow: 0 1px 1px #C7C7C7;
+	border-radius: 3px;
 	color:#fff;
 }
 button.disable {
-	border-top: 1px solid #FFFFFF;
-	border-left: 1px solid #FFFFFF;
-	border-bottom: 1px solid #325a96;
-	border-right: 1px solid #325a96;
 	color: #505050;
-	background: #7197D0;
-	border-radius: 2px;
-	cursor: pointer;
-	margin: 5px;
 }
 
 button.disable:hover {
 	background: #7197D0;
-	border-radius: 2px;
-	cursor: pointer;
-	margin: 5px;
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #FFFFFF;	
+	border-bottom: 1px solid #FFFFFF;
+	border-right: 1px solid #FFFFFF;	
+	cursor: default;
+	box-shadow: none;
 }
 
 div {

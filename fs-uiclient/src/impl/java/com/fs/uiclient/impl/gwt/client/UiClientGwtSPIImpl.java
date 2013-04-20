@@ -26,6 +26,7 @@ import com.fs.uiclient.impl.gwt.client.handler.action.CooperRejectAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpEditSumbitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ExpSearchAP;
+import com.fs.uiclient.impl.gwt.client.handler.action.GetUserInfoAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenExpEditAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.OpenMyExpAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ProfileInitAP;
@@ -51,6 +52,7 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.UserInfoSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
@@ -158,6 +160,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(UiClientConstants.AP_COOPER_CONFIRM, new CooperConfirmAP(c));
 		
 		eb.addHandler(UiClientConstants.AP_COOPER_REJECT, new CooperRejectAP(c));
+		
+		eb.addHandler(Actions.A_EXPS_GETUSERINFO, new GetUserInfoAP(c));
+		
 	}
 
 	/**
@@ -204,6 +209,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		// open resource
 		dis.addHandler(Path.valueOf("/endpoint/message/resource/get/success"), new ResourceGetSuccessMH(c));//
+		
+		// userinfo
+		dis.addHandler(Path.valueOf("/endpoint/message/uinfo/get/success"), new UserInfoSuccessMH(c));//
 
 	}
 

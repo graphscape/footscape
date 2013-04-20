@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
+import com.fs.uiclient.api.gwt.client.user.UserInfoViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -22,8 +23,10 @@ import com.fs.uicore.api.gwt.client.core.Cause;
 public interface MainControlI extends ControlI {
 	public ExpSearchViewI openExpSearch(boolean show);
 
-	public UserExpListViewI openUeList();
+	public UserExpListViewI openUeList(boolean show);
 
+	public UserInfoViewI openUserInfo(boolean show);
+	
 	public MyExpViewI openMyExp(Cause cause, String expId, boolean show);
 
 	public SignupViewI openSignup();

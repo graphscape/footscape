@@ -50,11 +50,12 @@
 	<property name="/tab-confirm" value="Confirm"/>
 	<property name="/expMessageCount" value="Messages" />
 	<property name="/myExp" value="Expectations" />
-	<property name="/logo" value="Waitee" />
+	<property name="/logo" value="waitee" />
 	<property name="/about" value="About Us"/>
 	<property name="/contact" value="Contact Us"/>
 	<property name="/copyright" value="fs-v0.1.0-IR1 © 2012-2013 waitee.com.  All rights reserved." />
-	
+	<!-- Tabs -->
+	<property name="/tab/uinfo" value="User Info"/>
 	<!-- Actions -->
 	<property name="/action/cooper/confirm" value="Connect" />
 	<property name="/action/cooper/reject" value="Reject" />
@@ -66,6 +67,7 @@
 	<property name="/action/signup/confirm" value="Confirm"/>
 	<property name="/action/exps/search" value="Search"/>
 	<property name="/action/exps/cooper" value="Coop"/>
+	<property name="/action/exps/more" value="More Results" />
 	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
 	<property name="/action/login/facebook" value="Log In" />
@@ -73,6 +75,8 @@
 	<property name="/action/uelist/create" value="New"/>
 	<property name="/action/expe/submit" value="Save"/>
 	<property name="/action/signup/fblogin" value="Log In" />
+	<property name="/action/expm/more" value="More Messages" />
+	<property name="/action/expm/send" value="Send" />
 	
 	<!-- tip -->
 	<property name="/tip/action/cooper/confirm" value="Agree this request, to make connection with this expecation." />
@@ -83,6 +87,7 @@
 	<property name="/tip/action/signup/submit" value="Signup"/>
 	<property name="/tip/action/exps/search" value="Search expectations."/>
 	<property name="/tip/action/exps/cooper" value="Send a message to this expecation to ask cooperation with."/>
+	<property name="/tip/action/exps/more" value="Show more search results." />
 	<property name="/tip/action/login/submit" value="Login"/>
 	<property name="/tip/action/login/logout" value="Logout"/>
 	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
@@ -93,6 +98,7 @@
 	<property name="/tip/action/expe/submit" value="Save"/>
 	<property name="/tip/action/signup/fblogin" value="Log in by facebook account." />
 	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with."/>
+	<property name="/tip/action/expm/more" value="Click to show more messages." />
 	
 	<!-- Open resource -->
 	<property name="/open/resource/html/about-us.html" value="About-Us" />

@@ -18,9 +18,13 @@ a.exp-icon img{ /*exp image*/
 	border-radius: 3px;
 }
 
+a.exp-label {
+	font-weight: bold;	
+}
+
+
 .header-item-logo {
-	font-size: 24px;
-	font-family: Helvetica;
+	font-size: 22px;
 	font-variant: bold;
 	margin-left:-1px;
 }
@@ -60,7 +64,7 @@ a.exp-icon img{ /*exp image*/
 	color:  #7A7A7A;
 }
 .exps-item-exptitle {
-	color:#000000;
+	
 	font-size : 14px;
 	font-weight: bold;
 }
@@ -132,6 +136,10 @@ a.exp-icon img{ /*exp image*/
 	text-align:left;
 }
 
+.nick {
+	font-size: 22px;
+}
+
 .uel-item {
 	border-left : 2px solid white;
 	border-top : 1px solid #EBEBEB;
@@ -165,12 +173,24 @@ a.exp-icon img{ /*exp image*/
 }
 .uel-item-exptitle {
 	font-size: 14px;
-	color:#000000;
 	font-weight:bold;
 }
 
 .uel-item-expbody {
 	
+}
+
+.user-info td.seperator {
+	padding: 2px;
+	border-right: 1px solid #EBEBEB;
+}
+
+.user-info td.last{/*empty,space holder*/
+	width: 100%;
+}
+
+.user-info td.user-icon {
+	vertical-align: top;
 }
 
 

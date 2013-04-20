@@ -42,6 +42,8 @@ public class Actions {
 	public static final Path A_EXPS = ACTION.getSubPath("exps");
 
 	public static final Path A_EXPS_COOPER = A_EXPS.getSubPath("cooper");
+	
+	public static final Path A_EXPS_GETUSERINFO = A_EXPS.getSubPath("get-uinfo");
 
 	public static final Path A_EXPS_SEARCH = A_EXPS.getSubPath("search");
 	

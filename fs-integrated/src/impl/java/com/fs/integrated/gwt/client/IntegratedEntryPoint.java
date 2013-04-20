@@ -12,7 +12,6 @@ import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
@@ -31,7 +30,7 @@ public class IntegratedEntryPoint implements EntryPoint {
 		GwtSPI[] spis = new GwtSPI[] { (UiCoreGwtSPI) GWT.create(UiCoreGwtSPI.class),
 				(UiCommonsGPI) GWT.create(UiCommonsGPI.class),
 				(UiClientGwtSPI) GWT.create(UiClientGwtSPI.class) };
-		GwtSPI.Factory sf = ClientLoader.getOrLoadClient(spis, new EventHandlerI<Event>() {
+		GwtSPI.Factory sf = com.fs.uicore.api.gwt.client.ClientLoader.getInstance().getOrLoadClient(spis, new EventHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {

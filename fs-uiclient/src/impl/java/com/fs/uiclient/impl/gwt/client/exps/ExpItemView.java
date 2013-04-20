@@ -9,6 +9,7 @@ import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
+import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
@@ -17,7 +18,6 @@ import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
@@ -63,14 +63,21 @@ public class ExpItemView extends ViewSupport {
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("exps-item-usericon");
 				td0.setAttribute("rowspan", rowspan);
-				Element ar = DOM.createAnchor();
-				ar.addClassName("user-icon");
+				AnchorWI ar = this.factory.create(AnchorWI.class);
+				ar.getElement().addClassName("user-icon");
+				ar.setImage(ei.getUserIcon());//
+				td0.append(ar.getElement());// NOTE,parent is not
+											// this.element,but td0,a nother
+											// element,see ElementObjectSupport.
+				ar.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
-				ElementWrapper image = new ElementWrapper(DOM.createImg());
-				image.setAttribute("src", ei.getUserIcon());
+					@Override
+					public void handle(ClickEvent t) {
+						ExpItemView.this.onUserInfoClick();
+					}
+				});
+				ar.parent(this);
 
-				ar.appendChild(image.getElement());
-				td0.append(ar);
 			}
 			{
 
@@ -146,6 +153,10 @@ public class ExpItemView extends ViewSupport {
 			cooper.parent(actions);
 		}
 	}
+	
+	protected void onUserInfoClick(){
+		this.dispatchActionEvent(Actions.A_EXPS_GETUSERINFO);
+	}
 
 	protected void onCooperClicked() {
 
@@ -174,6 +185,7 @@ public class ExpItemView extends ViewSupport {
 	protected void beforeActionEvent(ActionEvent ae) {
 		//
 		super.beforeActionEvent(ae);
-		ae.setProperty("expId2", this.getExpId());
+		ae.setProperty("accountId", this.model.getAccountId());//for action:get userInfo
+		ae.setProperty("expId2", this.getExpId());//for action:cooper
 	}
 }

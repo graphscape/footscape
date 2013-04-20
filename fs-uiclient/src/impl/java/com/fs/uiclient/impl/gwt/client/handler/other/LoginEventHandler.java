@@ -51,7 +51,7 @@ public class LoginEventHandler extends UiHandlerSupport implements EventHandlerI
 			fc.tryRemoveHeaderItem(HeaderNames.H2_PROFILE);
 		} else {
 			fc.addHeaderItemIfNotExist(HeaderNames.H2_PROFILE);
-			mc.openUeList();
+			mc.openUeList(true);//
 		}
 		mc.closeAll();
 		mc.openExpSearch(true).search();//

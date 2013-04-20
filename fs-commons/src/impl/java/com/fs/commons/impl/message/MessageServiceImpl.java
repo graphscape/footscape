@@ -139,4 +139,12 @@ public class MessageServiceImpl extends ServiceSupport<MessageI, ResponseI, Mess
 		return new ResponseImpl(req);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.service.ServiceI#getChain()
+	 */
+	@Override
+	public ChainI<MessageI, ResponseI> getChain() {
+		return this.chain;
+	}
+
 }

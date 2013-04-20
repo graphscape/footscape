@@ -81,7 +81,7 @@ public class ExpTestWorker extends AbstractTestWorker {
 	public void start(UiClientI client) {
 		super.start(client);
 		this.userInfo = this.getRegisterUserInfo(true);//
-		this.ueListView = (UserExpListView) this.manager.getControl(MainControlI.class, true).openUeList();
+		this.ueListView = (UserExpListView) this.manager.getControl(MainControlI.class, true).openUeList(true);
 
 		this.tryFinish("founduelistview");
 		this.ueListView.clickAction(Actions.A_UEL_CREATE);// open ths edit

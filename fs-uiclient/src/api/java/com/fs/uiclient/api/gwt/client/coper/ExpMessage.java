@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.coper;
 
+import com.fs.uiclient.api.gwt.client.NodeFields;
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -23,7 +24,7 @@ public class ExpMessage extends MsgWrapper {
 	}
 
 	public String getId() {
-		return (String) this.getHeader("id", true);
+		return (String) this.getHeader(NodeFields.PK_ID, true);
 	}
 
 	/**
@@ -74,7 +75,7 @@ public class ExpMessage extends MsgWrapper {
 	}
 
 	public DateData getTimeStamp() {
-		return (DateData) this.getPayload("timestamp", true);
+		return (DateData) this.getPayload(NodeFields.PK_TIMESTAMP, true);
 	}
 
 	/**

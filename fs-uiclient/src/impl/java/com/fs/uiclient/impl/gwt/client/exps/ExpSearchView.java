@@ -5,17 +5,18 @@
 package com.fs.uiclient.impl.gwt.client.exps;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchModelI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.ExpLabelView;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.frwk.ViewReferenceI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
-import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -47,7 +48,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 	protected ExpSearchModelI model;
 
-	protected LabelI myexp;// TODO view
+	protected ExpLabelView myexp;// TODO view
 
 	/**
 	 * @param ele
@@ -75,7 +76,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		});
 		// search button
 		this.search = this.factory.create(ButtonI.class);
-		this.search.setText(true, "search");
+		this.search.setText(true, UiClientConstants.AP_EXPS_SEARCH.toString());
 		this.search.parent(this.header);
 		this.search.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -85,7 +86,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 			}
 		});
 		//
-		this.myexp = this.factory.create(LabelI.class);
+		this.myexp = new ExpLabelView(this.container);
 		this.myexp.parent(this.header);
 
 		this.list = this.factory.create(ListI.class);
@@ -94,7 +95,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		this.list.parent(this);
 
 		this.more = this.factory.create(ButtonI.class);
-		this.more.setText(true, "more");
+		this.more.setText(true, UiClientConstants.AP_EXPS_MORE.toString());
 		this.more.getElement().addClassName("more");
 
 		this.more.parent(this);
@@ -188,14 +189,16 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	 * .String)
 	 */
 	@Override
-	public void setExpId(UserExpModel expId) {
-		this.model.setExpId(expId);
+	public void setExpId(UserExpModel exp) {
+		this.model.setExpId(exp);
 		String text = null;
-		if (expId != null) {
-			text = expId.getBody();
+		if (exp != null) {
+			text = exp.getTitle();
+			this.myexp.setExp(exp.getExpId(), text);
+		}else{
+			this.myexp.clearExp();
 		}
-
-		this.myexp.setText(text);
+		
 
 	}
 

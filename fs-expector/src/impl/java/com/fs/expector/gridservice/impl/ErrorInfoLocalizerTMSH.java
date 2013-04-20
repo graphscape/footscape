@@ -14,7 +14,7 @@ import com.fs.gridservice.commons.api.terminal.MessageSendingContext;
 
 /**
  * @author wu
- *
+ * @see TerminalManagerI.addBeforeXXX
  */
 public class ErrorInfoLocalizerTMSH implements HandlerI<MessageSendingContext>{
 

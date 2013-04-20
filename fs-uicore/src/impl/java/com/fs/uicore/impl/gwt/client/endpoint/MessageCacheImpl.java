@@ -22,7 +22,8 @@ import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 
 /**
  * @author wu
- * 
+ * <p>
+ * Cache the request for tracking by response.
  */
 public class MessageCacheImpl extends UiObjectSupport implements MessageCacheI {
 	private static class Entry {

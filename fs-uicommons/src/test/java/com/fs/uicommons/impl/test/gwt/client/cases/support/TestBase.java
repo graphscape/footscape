@@ -9,7 +9,6 @@ import java.util.Set;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
-import com.fs.uicore.api.gwt.client.ModelI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.UiCoreGwtSPI;
@@ -20,7 +19,6 @@ import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.AttachedEvent;
 import com.fs.uicore.api.gwt.client.event.BeforeClientStartEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.api.gwt.client.util.ClientLoader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -63,7 +61,7 @@ public class TestBase extends GWTTestCase {
 
 		GwtSPI[] spis = new GwtSPI[] { GWT.create(UiCoreGwtSPI.class), GWT.create(UiCommonsGPI.class) };
 
-		factory = ClientLoader.getOrLoadClient(spis, new SyncHandlerI<Event>() {
+		factory = com.fs.uicore.api.gwt.client.ClientLoader.getInstance().getOrLoadClient(spis, new SyncHandlerI<Event>() {
 
 			@Override
 			public void handle(Event e) {

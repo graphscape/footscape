@@ -39,7 +39,7 @@ public class MyExpHeaderItemHandler extends UiHandlerSupport implements EventHan
 		}
 
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.openUeList();
+		mc.openUeList(true);
 	}
 
 }

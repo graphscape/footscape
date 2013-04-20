@@ -6,10 +6,13 @@ package com.fs.uicommons.impl.gwt.client.widget.basic;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.support.WidgetSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
 /**
@@ -18,6 +21,7 @@ import com.google.gwt.user.client.Element;
  */
 public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 
+	private ElementWrapper image;
 	public AnchorWImpl(ContainerI c, String name) {
 		super(c, name, (Element) Document.get().createAnchorElement().cast());
 		this.addGwtHandler(com.google.gwt.event.dom.client.ClickEvent.getType(), new ClickHandler() {
@@ -58,10 +62,34 @@ public class AnchorWImpl extends WidgetSupport implements AnchorWI {
 		if(loc){
 			txt = this.getClient(true).localized(txt);			
 		}
+		this.setTextAndTitle(txt, null);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI#setTextAndTitle(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void setTextAndTitle(String txt, String title) {
+		
 		AnchorElement ae = this.getElement().cast();
 		ae.setInnerText(txt);//
-		ae.setTitle(txt);// TODO replace this
+		ae.setTitle(title);// TODO replace this
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI#setImage(java.lang.String)
+	 */
+	@Override
+	public void setImage(String src) {
+		if(this.image == null){
+			image = new ElementWrapper(DOM.createImg());
+			this.element.appendChild(image.getElement());
+		}
+		if(src == null){
+			src = "";
+		}
+		image.setAttribute("src", src);
 	}
 
 }

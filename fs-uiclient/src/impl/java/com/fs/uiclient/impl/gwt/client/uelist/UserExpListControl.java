@@ -44,7 +44,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	 */
 	@Override
 	public void refresh(String expId) {
-		UserExpListViewI uelv = this.getMainControl().openUeList();
+		UserExpListViewI uelv = this.getMainControl().openUeList(true);
 		Long lts = null;// uelv.getLastTimestamp(false);
 		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/refresh"));
 		req.setPayload("lastTimestamp", DateData.valueOf(lts));// fresh from
@@ -58,7 +58,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void addOrUpdateUserExp(UserExpModel uem) {
 		String id = uem.getExpId();
-		UserExpListViewI uelv = this.getMainControl().openUeList();
+		UserExpListViewI uelv = this.getMainControl().openUeList(true);
 		UserExpModel old = uelv.getUserExp(id, false);
 		if (old == null) {
 			uelv.addUserExp(uem);
@@ -106,7 +106,7 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void deleteExp(String expId) {
 		//
-		UserExpListViewI uelv = this.getMainControl().openUeList();
+		UserExpListViewI uelv = this.getMainControl().openUeList(false);
 		uelv.delete(expId);
 	}
 

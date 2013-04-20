@@ -58,7 +58,7 @@ public class ExpectorDsSPI extends SPISupport {
 		//
 		PasswordForgot.config(cfs);
 		//facade
-		ac.active("EXPECTOR_DS_FACADE", new ExpectorDsFacadeImpl());
+		ac.active("expectorDsFacade", new ExpectorDsFacadeImpl());
 	}
 
 	/*

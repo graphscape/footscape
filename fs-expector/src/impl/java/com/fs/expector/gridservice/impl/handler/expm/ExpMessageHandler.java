@@ -246,12 +246,12 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			String expId2 = em.getExpId2();
 			String path = em.getPath();
 			MessageI msg = new MessageSupport(path);
-			msg.setHeader("id", em.getId());
+			msg.setHeader(NodeI.PK_ID, em.getId());
 			msg.setHeader("accountId1", em.getAccountId1());
 			msg.setHeader("accountId2", em.getAccountId2());
 			msg.setHeader("expId1", em.getExpId1());
 			msg.setHeader("expId2", em.getExpId2());
-			msg.setPayload("timestamp", em.getTimestamp());
+			msg.setPayload(NodeI.PK_TIMESTAMP, em.getTimestamp());
 			{// account
 				String accId1 = em.getAccountId1();
 				// account must be exist

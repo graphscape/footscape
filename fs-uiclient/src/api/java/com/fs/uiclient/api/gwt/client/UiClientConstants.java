@@ -23,6 +23,8 @@ public class UiClientConstants {
 
 	public static final Path P_HTML = Path.valueOf("/open/resource/html");
 	
+	public static final Path RP_USERINFO_GET = Path.valueOf("/uinfo/get");
+	
 	public static final Path P_HTML_ABOUT = P_HTML.getSubPath("about-us.html");
 	
 	public static final Path P_HTML_CONTACT =  P_HTML.getSubPath("contact-us.html");
@@ -32,6 +34,14 @@ public class UiClientConstants {
 	public static final String PK_URL_ABOUTUS = "aboutUsUrl";
 
 	public static final Path AP_COOPER = Path.valueOf("/action/exps/cooper");
+
+	public static final Path AP_EXPS_SEARCH = Path.valueOf("/action/exps/search");
+
+	public static final Path AP_EXPS_MORE = Path.valueOf("/action/exps/more");
+	
+	public static final Path AP_EXPM_MORE = Path.valueOf("/action/expm/more");
+	
+	public static final Path AP_EXPM_SEND = Path.valueOf("/action/expm/send");
 	
 	public static final Path AP_COOPER_CONFIRM = Path.valueOf("/action/cooper/confirm");
 	

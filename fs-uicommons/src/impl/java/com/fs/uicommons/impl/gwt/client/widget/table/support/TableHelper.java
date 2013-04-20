@@ -16,8 +16,6 @@ public class TableHelper extends LayoutSupport {
 
 	protected TableImpl table;
 
-	protected Element element;
-
 	public TableHelper(ContainerI c, Element ele, TableImpl t) {
 		super(c, ele);
 		this.table = t;
