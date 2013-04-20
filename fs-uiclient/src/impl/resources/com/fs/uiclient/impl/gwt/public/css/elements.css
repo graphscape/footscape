@@ -12,8 +12,7 @@ a:hover {
 }
 
 body {
-	background: #fff;
-	margin-left: 0px;
+background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAmSURBVBhXY/gPBW9+wlgQmhFEMGABTOhib39BRAjrgKmEmYBTBwAZiSeZb8/ORAAAAABJRU5ErkJggg==);	margin-left: 0px;
 	margin-right: 0px;
 	margin-top: -1px;
 	border: 0px;
