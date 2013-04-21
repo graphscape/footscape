@@ -35,7 +35,7 @@ public class ElementWrapper {
 
 	public ElementWrapper(Element ele, boolean addStyle) {
 		this.element = ele;
-		//this.addClassName("ewp-" + ObjectUtil.getClassShortName(this));
+		// this.addClassName("ewp-" + ObjectUtil.getClassShortName(this));
 	}
 
 	public static ElementWrapper valueOf(com.google.gwt.dom.client.Element ele) {
@@ -67,13 +67,21 @@ public class ElementWrapper {
 		DOM.appendChild(this.element, ew.element);//
 	}
 
+	@Deprecated
+	// note use this,
 	public Rectangle getAbsoluteRectangle() {
-		Point tl = Point.valueOf(this.element.getAbsoluteLeft(),
-				this.element.getAbsoluteTop());
-		Point br = Point.valueOf(this.element.getAbsoluteRight(),
-				this.element.getAbsoluteBottom());
+		Point tl = Point.valueOf(this.element.getAbsoluteLeft(), this.element.getAbsoluteTop());
+		Point br = Point.valueOf(this.element.getAbsoluteRight(), this.element.getAbsoluteBottom());
 
 		Rectangle rt = new Rectangle(tl, br);
+		return rt;
+	}
+
+	public Rectangle getOffsetRectangle() {
+		Point tl = Point.valueOf(this.element.getOffsetLeft(), this.element.getOffsetTop());
+		Size size = Size.valueOf(this.element.getOffsetWidth(), this.element.getOffsetHeight());
+
+		Rectangle rt = new Rectangle(tl, size);
 		return rt;
 	}
 
@@ -87,11 +95,11 @@ public class ElementWrapper {
 
 		return new ElementWrapper(rtE);
 	}
-	
+
 	public void moveToCenterOf(ElementWrapper ew) {
 		this.moveToCenterOf(ew.getAbsoluteRectangle());
 	}
-	
+
 	public void moveToCenterOf(Rectangle ew) {
 		Point targetCenter = ew.getCenter();
 		Point currentCenter = this.getAbsoluteRectangle().getCenter();
@@ -100,6 +108,11 @@ public class ElementWrapper {
 		this.moveTo(p3);//
 	}
 
+	/**
+	 * Note: move to offset,not absolute.
+	 * <p>
+	 * Apr 21, 2013
+	 */
 	public void moveTo(Point p) {
 		DOM.setStyleAttribute(this.element, "left", p.getX() + "px");
 		DOM.setStyleAttribute(this.element, "top", p.getY() + "px");
@@ -112,8 +125,7 @@ public class ElementWrapper {
 	public void click() {
 		// this.archorClick(ae);//TODO
 		// see com.google.gwt.user.client.ui.CustomButton
-		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false,
-				false, false, false);
+		NativeEvent evt = Document.get().createClickEvent(1, 0, 0, 0, 0, false, false, false, false);
 		this.element.dispatchEvent(evt);
 	}
 
@@ -151,8 +163,7 @@ public class ElementWrapper {
 			if (idx == 0 || oldStyle.charAt(idx - 1) == ' ') {
 				int last = idx + cname.length();
 				int lastPos = oldStyle.length();
-				if ((last == lastPos)
-						|| ((last < lastPos) && (oldStyle.charAt(last) == ' '))) {
+				if ((last == lastPos) || ((last < lastPos) && (oldStyle.charAt(last) == ' '))) {
 					break;
 				}
 			}
@@ -161,8 +172,7 @@ public class ElementWrapper {
 		return idx != -1;
 	}
 
-	public ElementWrapper addAndRemoveClassName(boolean addFirst, String c1,
-			String c2) {
+	public ElementWrapper addAndRemoveClassName(boolean addFirst, String c1, String c2) {
 		if (addFirst) {
 			this.addClassName(c1);
 			this.removeClassName(c2);
@@ -276,8 +286,7 @@ public class ElementWrapper {
 			p = p.getParent();
 		}
 		if (p == null && force) {
-			throw new UiException("no parent with tag:" + tag + " for element:"
-					+ this);
+			throw new UiException("no parent with tag:" + tag + " for element:" + this);
 		}
 		return p;
 	}

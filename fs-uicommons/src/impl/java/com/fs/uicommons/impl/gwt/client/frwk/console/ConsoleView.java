@@ -26,6 +26,8 @@ public class ConsoleView extends SimpleView implements ConsoleViewI {
 	protected int size;
 
 	protected int maxSize = 1000;
+	
+	protected UiCallbackI<Object, Boolean> handler;
 
 	/**
 	 * @param ctn
@@ -37,16 +39,17 @@ public class ConsoleView extends SimpleView implements ConsoleViewI {
 		this.tbody = new ElementWrapper(DOM.createTBody());
 		DOM.appendChild(table, this.tbody.getElement());
 		DOM.appendChild(this.element, table);//
-
-		Console.getInstance().addMessageCallback(new UiCallbackI<Object, Boolean>() {
+		this.handler = new UiCallbackI<Object, Boolean>() {
 
 			@Override
 			public Boolean execute(Object t) {
 				//
-				ConsoleView.this.processConsoleMessage(t);//
+				ConsoleView.this.onConsoleLine(t);//
 				return null;
 			}
-		});
+		};
+		Console.getInstance().addMessageCallback(this.handler);
+		Console.getInstance().replay(this.handler);
 	}
 
 	/**
@@ -54,7 +57,7 @@ public class ConsoleView extends SimpleView implements ConsoleViewI {
 	 * to call the Console.pringln();Otherwise,there will be dead loop. Nov 11,
 	 * 2012
 	 */
-	private void processConsoleMessage(Object msg) {
+	private void onConsoleLine(Object msg) {
 		Element tr = DOM.createTR();
 		DOM.appendChild(this.tbody.getElement(), tr);
 

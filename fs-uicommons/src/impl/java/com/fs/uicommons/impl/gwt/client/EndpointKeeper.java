@@ -20,7 +20,7 @@ import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
- * 
+ * @deprecated removed to uicore.
  */
 public class EndpointKeeper {
 
@@ -32,16 +32,10 @@ public class EndpointKeeper {
 
 	private String taskName = "endpoint-keeper";
 
-	private DisconnectedWidgetImpl disconnected;
-
 	public EndpointKeeper(UiClientI c) {
 		this.endpoint = c.getEndpoint();
 		this.client = c;
 
-		RootI root = this.client.getRoot();
-		disconnected = new DisconnectedWidgetImpl(this.client.getContainer());
-		disconnected.setVisible(false);
-		disconnected.parent(root);
 	}
 
 	public void start() {
@@ -53,18 +47,11 @@ public class EndpointKeeper {
 			}
 		});
 
-		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
-
-			@Override
-			public void handle(EndpointCloseEvent t) {
-				EndpointKeeper.this.onClose(t);
-			}
-		});
 
 		int hbI = this.client.getParameterAsInt(UiCommonsConstants.RK_WS_HEARTBEATINTERVAL, -1);
-		
+
 		if (hbI > 5 * 1000) {// must longer than 5 second
-			
+
 			SchedulerI s = this.endpoint.getContainer().get(SchedulerI.class, true);
 
 			s.scheduleRepeat(taskName, hbI, new EventHandlerI<ScheduleEvent>() {
@@ -75,20 +62,6 @@ public class EndpointKeeper {
 				}
 			});// 30S to send ping
 		}
-	}
-
-	/**
-	 * Jan 12, 2013
-	 */
-	protected void onClose(EndpointCloseEvent t) {
-		LOG.info("endpoint close:" + t);
-		this.disconnected.setVisible(true);
-		boolean rec = Window.confirm("Connection to server is lost, re-connect to server?");
-
-		if (rec) {
-			Window.Location.reload();
-		}
-
 	}
 
 	/**

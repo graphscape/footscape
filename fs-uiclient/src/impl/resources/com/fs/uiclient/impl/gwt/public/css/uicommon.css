@@ -16,31 +16,31 @@
 	background-color: #FFFFFF;
 	border-left: 1px solid #F0F0F0;
 	border-right: 1px solid #F0F0F0;
-	
 }
+
 .bottom-list {
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAvSURBVBhXYzx//vx/BiyACSZ297UyXBrEZiSoA6QcWRfcKJCEsuhduHEoEshuAACJUg25FTs06wAAAABJRU5ErkJggg==);	
+	background-image:
+		url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAvSURBVBhXYzx//vx/BiyACSZ297UyXBrEZiSoA6QcWRfcKJCEsuhduHEoEshuAACJUg25FTs06wAAAABJRU5ErkJggg==);
 	padding: 6px;
-	
 }
 
-.bottom-list td.vlist-item{
+.bottom-list td.vlist-item {
 	text-align: center;
 }
 
-.bottom-bar {	
-    color: #ccc;
+.bottom-bar {
+	color: #ccc;
 }
 
-.bottom-bar td.center{
+.bottom-bar td.center {
 	text-align: center;
 }
 
-.bottom-copyright{
-	width:100%;
-	text-align:center;
-    font-size: 9px;
-  	color:  #7D7D7D;
+.bottom-copyright {
+	width: 100%;
+	text-align: center;
+	font-size: 9px;
+	color: #7D7D7D;
 }
 /**
 Console View
@@ -66,24 +66,6 @@ Console View
 
 .console td {
 	white-space: nowrap;
-	
-}
-
-.disconnected {
-	background-color: #325A96;
-	position:absolute;
-	width:100%;
-	height:100%;
-	opacity: 0.8;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.disconnected label{
-	color:#fff;
-	background-color: #325A96;
-	font-size: 16px;
-	font-weight: bold;
 }
 
 .endpoint-busy-indicator {
@@ -92,10 +74,10 @@ Console View
 	width: 100px;
 	height: 20px;
 	margin: -10px 0 0 -50px;
-    top: 50%;
-    left: 50%;
-    text-align: center;
-    vertical-align: middle;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .error-infos {
@@ -106,14 +88,13 @@ Console View
 
 .error-id {
 	font-size: 9px;
-	color:  #7D7D7D;
+	color: #7D7D7D;
 }
 
 .error-code {
 	font-size: 9px;
-	color:  #7D7D7D;
+	color: #7D7D7D;
 }
-
 
 .header-bar td.left {
 	float: left;
@@ -123,8 +104,8 @@ Console View
 	padding-right: 0px;
 	text-align: right;
 }
+
 .header-item {
-	
 	border: 1px solid #034F82;
 	border-radius: 2px;
 	color: #ccc;
@@ -140,7 +121,6 @@ Console View
 	text-decoration: none;
 	text-shadow: 0 1px 0 #000;
 	white-space: nowrap;
-
 }
 
 .header-item.selected,.header-item:hover {
@@ -151,19 +131,97 @@ Console View
 	color: #fff;
 }
 
-.loader-loading{
-	position:absolute;
+.image-croper div.outer-box{
+	overflow: hidden;
+	position:relative;/*Note, must be relative for hidden the 'absolute' positioned child*/
+}
+
+.image-croper table.outer-box {
+	width: 500px;
+	height: 200px;
+}
+
+/*parent is thd center td*/
+.image-croper .inner-box { 
+	border:1px solid orange;
+	cursor: pointer;
+	height: 100px;
+	width: 100px;	
+}
+
+.image-croper .editing-image-box {
+	position: absolute;	
+	overflow: hidden ;
+}
+
+.image-croper td {
+	background: gray;
+	opacity: 0.8;
+}
+
+.image-croper td.td00 {
+	vertical-align: top;/*top the zoomer buttons*/
+	height: 50px;
+	width: 200px;	
+}
+
+.image-croper td.td11,
+.image-croper.moving td.td11 {
+	border: 1px solid orange;	
+	opacity: 0;
+}
+
+.image-croper td.td22 {
+	height: 50px;
+	width: 200px;
+}
+
+/*show when the mouse moving*/
+.image-croper .mouse-position {
+	color: #F0F0F0;
+	font-size: 8px;
+}
+
+.image-croper.moving td{
+	opacity: 0.5;
+}
+
+
+.image-croper .zoomer {
+	font-weight: bold;
+	width: 26px;
+	height: 26px;
+	font-size: 20px;	
+}
+.image-croper .plus {
+	margin-top: 0px;
+	margin-left: 0px;
+}
+
+.image-croper .minus {
+	margin-top: 0px;
+	margin-left: 30px;
+}
+
+
+.loader {
+	background-color: #325A96;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 	color: #325A96;
-	width:100%;
-	height:100%;
+	width: 100%;
+	height: 100%;
 	text-align: center;
 	vertical-align: middle;
 }
 
-.more{
+.more {
 	align: center;
 	width: 100%;
 }
+
 .opacities {
 	opacity: 0.4;
 	position: absolute;
@@ -181,7 +239,7 @@ Console View
 	display: block;
 }
 
-.vlist-item{
+.vlist-item {
 	text-align: left;
 }
 
@@ -207,52 +265,6 @@ Console View
 	display: block;
 }
 
-.image-select-box {
-	border: 1px solid orange;
-	position: absolute;
-	width: 110px;
-	height: 110px;
-	overflow: visible;
-	cursor: pointer;
-}
-
-.image-select-box.dragging {
-	box-shadow: 0 3px 6px #FFB300;
-	cursor: move;
-}
-
-.image-select-box-decorator {
-	position: absolute;
-	background: gray;
-	opacity: 0.3;
-	overflow: visible;
-	cursor: default;
-}
-
-.image-select-box-top {
-	color:white;
-	vertical-align: bottom;
-	text-align:center;
-}
-
-.image-select-box .plus {
-	position:absolute;
-	margin-top:-26px;
-	font-weight:bold;
-	width: 26px;
-	height: 26px;
-	font-size: 20px;
-}
-
-.image-select-box .minus {
-	position:absolute;
-	margin-left:-26px;
-	font-weight:bold;
-	width: 26px;
-	height: 26px;
-	font-size: 20px;
-}
-
 .frwk-bottom {
 	width: 100%;
 	text-align: center;
@@ -260,15 +272,11 @@ Console View
 }
 
 .panel-header { /*DIV*/
-	border-bottom:1px solid #F0F0F0;
+	border-bottom: 1px solid #F0F0F0;
 }
 
 /*Anchor,button*/
-
-
 /*BarWidget*/
-
-
 .body {
 	text-align: center;
 }
@@ -284,9 +292,7 @@ Console View
 	min-height: 600px;
 	height: auto !important;
 	height: 600px;
-	
 }
-
 
 /*FormView*/
 /*Let the column of title to align right*/
@@ -303,9 +309,9 @@ Console View
 }
 
 /*HeaderView*/
-.wgt-HeaderView {
-	/*background-color: #034F82;*/
-	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAALUlEQVQYV2NkCJj/n+HDQwZ0wIQiKCAPl2dCUYmkE1UCSRVCAskYkDxCAs0BANOpCZwFepifAAAAAElFTkSuQmCC);
+.wgt-HeaderView { /*background-color: #034F82;*/
+	background-image:
+		url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAALUlEQVQYV2NkCJj/n+HDQwZ0wIQiKCAPl2dCUYmkE1UCSRVCAskYkDxCAs0BANOpCZwFepifAAAAAElFTkSuQmCC);
 	width: 100%;
 	box-shadow: 0 2px 2px #7D7D7D;
 	padding: 0px 0px;
@@ -375,12 +381,12 @@ Console View
 	cursor: pointer;
 	display: inline-block;
 	float: none;
-	margin:0px;
+	margin: 0px;
 	height: auto;
 	padding: 3px 3px;
 	position: static;
 	text-decoration: none;
-	text-align:left;
+	text-align: left;
 	white-space: nowrap;
 	width: 100%;
 	text-shadow: 0 0px 0 #000;

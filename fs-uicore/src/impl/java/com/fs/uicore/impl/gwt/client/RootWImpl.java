@@ -39,7 +39,7 @@ public class RootWImpl extends WidgetBase implements RootI, ContainerI.AwareI {
 	 * 
 	 * @return the document's body element
 	 */
-	private static com.google.gwt.user.client.Element getRootElement() {
+	public static com.google.gwt.user.client.Element getRootElement() {
 		Element ele = Document.get().getElementById("_fs_root").cast();
 		if (ele == null) {
 			ele = getBodyElement();

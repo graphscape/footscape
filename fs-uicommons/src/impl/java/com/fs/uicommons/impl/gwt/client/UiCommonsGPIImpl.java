@@ -135,10 +135,15 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 	@Override
 	public void active(ContainerI c) {
 		final UiClientI client = c.get(UiClientI.class, true);
-
+		
+		
 		this.activeInstaneOf(c);
 
 		this.activeWidgetCreater(c);
+		
+		//note the console view must be after instanceof and widget creater registered.
+	
+		
 		//
 		this.activeActionHandlers(c, client);
 
@@ -157,7 +162,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		manager.child(new LoginControlImpl(c, "login"));
 
 	}
-
+	
 	public void activeActionHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
 

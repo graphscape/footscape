@@ -28,10 +28,15 @@ public class Size {
 		// TODO Auto-generated method stub
 		return new Size(w, h);
 	}
+	
+	public Size multiple(double zx, double zy){
+		return Size.valueOf((int) (this.width * zx),
+				(int) (this.height * zy));
+		
+	}
 
 	public Size multiple(double zoom) {
-		return Size.valueOf((int) (this.width * zoom),
-				(int) (this.height * zoom));
+		return this.multiple(zoom, zoom);
 	}
 
 	/**

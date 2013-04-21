@@ -34,16 +34,14 @@ import com.google.gwt.user.client.Element;
  */
 public class DragableWrapper extends UiObjectSupport {
 
-	public static Rectangle LARGE_ENOUGH = new Rectangle(Point.valueOf(-10000, 0),
-			Point.valueOf(10000, 10000));
+	public static Rectangle LARGE_ENOUGH = new Rectangle(Point.valueOf(-10000, -10000), Point.valueOf(10000,
+			10000));
 
 	protected DragableI dragable;
 
-	protected ObjectElementHelper draggedHelper;
+	protected ObjectElementHelper dragingOnHelper;
 
-	protected ElementWrapper dragableElement;
-
-	protected ElementWrapper outerElement;
+	protected ElementWrapper movingElement;
 
 	protected boolean dragging;
 
@@ -53,35 +51,37 @@ public class DragableWrapper extends UiObjectSupport {
 
 	protected boolean pickupByDoubleClick = true;// double click
 
+	protected Element logging;
+
 	/**
 	 * @param db
 	 */
 	public DragableWrapper(ContainerI c, DragableI db) {
 		super(c);
 		this.dragable = db;
-		this.outerElement = this.dragable.getOuterMostElement() == null ? null : new ElementWrapper(
-				this.dragable.getOuterMostElement());//
-		this.draggedHelper = new ObjectElementHelper(this.dragable.getDragedElement(), this);// this
-		this.dragableElement = this.dragable.getElementWrapper();//
+		this.logging = db.getLogingElement();
+
+		this.dragingOnHelper = new ObjectElementHelper(this.dragable.getDragingOnElement(), this);// this
+		this.movingElement = new ElementWrapper(this.dragable.getMovingElement());//
 		// or
 		// that?
-		this.dragableElement.addClassName("draggable");
+		this.movingElement.addClassName("moving");
 
-		this.draggedHelper.addGwtHandler(MouseDownEvent.getType(), new GwtMouseDownHandler() {
+		this.dragingOnHelper.addGwtHandler(MouseDownEvent.getType(), new GwtMouseDownHandler() {
 
 			@Override
 			protected void handleInternal(MouseDownEvent evt) {
 				DragableWrapper.this.onMouseDown(evt);
 			}
 		});
-		this.draggedHelper.addGwtHandler(MouseUpEvent.getType(), new GwtMouseUpHandler() {
+		this.dragingOnHelper.addGwtHandler(MouseUpEvent.getType(), new GwtMouseUpHandler() {
 
 			@Override
 			protected void handleInternal(MouseUpEvent evt) {
 				DragableWrapper.this.onMouseUp(evt);
 			}
 		});
-		this.draggedHelper.addGwtHandler(MouseMoveEvent.getType(), new GwtMouseMoveHandler() {
+		this.dragingOnHelper.addGwtHandler(MouseMoveEvent.getType(), new GwtMouseMoveHandler() {
 
 			@Override
 			protected void handleInternal(MouseMoveEvent evt) {
@@ -89,6 +89,25 @@ public class DragableWrapper extends UiObjectSupport {
 			}
 		});
 
+	}
+
+	protected void log(String txt) {
+		this.log(txt, true);
+	}
+
+	protected void log(String txt, boolean clear) {
+		if (this.logging == null) {
+			return;
+		}
+		String rt = txt;
+		if (!clear) {
+			String it = this.logging.getInnerText();
+			if (it != null) {
+				rt = it + rt;
+			}
+		}
+
+		this.logging.setInnerText(rt);
 	}
 
 	protected void onMouseMove(MouseMoveEvent event) {
@@ -102,21 +121,18 @@ public class DragableWrapper extends UiObjectSupport {
 		Point offSet = mousePoint.minus(this.startMousePoint);//
 		//
 		Point elePoint2 = this.startTopLeft.plus(offSet);
+		String txt = "smp:" + this.startMousePoint + ",stl:" + this.startTopLeft + ",msp:" + mousePoint
+				+ ",ofs:" + offSet + ",rst:" + elePoint2;
+		txt = offSet + "";
+		this.log(txt);
 		this.tryMoveTo(elePoint2);
 		new DraggingEvent(this.dragable, this.getDragger(), mousePoint).dispatch();//
 	}
 
-	protected Rectangle getOutermost() {
-		Rectangle rt = LARGE_ENOUGH;
-		if (this.outerElement != null) {
-			this.outerElement.getAbsoluteRectangle();
-		}
-		return rt;
-	}
-
 	protected void tryMoveTo(Point pt) {// target mouse point
-		Rectangle outRect = this.getOutermost();
-		Rectangle rec2 = this.dragableElement.getAbsoluteRectangle();
+		Rectangle outRect = this.LARGE_ENOUGH;
+		// Rectangle rec2 = this.movingElement.getAbsoluteRectangle();
+		Rectangle rec2 = this.movingElement.getOffsetRectangle();
 		Size size1 = outRect.getSize();
 		Size size2 = rec2.getSize();
 
@@ -126,8 +142,13 @@ public class DragableWrapper extends UiObjectSupport {
 		Rectangle rec3 = new Rectangle(outRect.getTopLeft(), Size.valueOf(w, h));
 
 		Point p2 = rec3.getShortestPointTo(pt);//
-		this.dragableElement.moveTo(p2);
+		// Note: x,y is offset not absolute.
+		this.movingElement.moveTo(p2);
 
+		Point newP = this.movingElement.getOffsetRectangle().getTopLeft();//
+
+		// this.log(",move-to:" + p2 + ",top-left:" + newP, false);
+		this.log("," + newP, false);
 	}
 
 	public DraggerI getDragger() {
@@ -148,57 +169,51 @@ public class DragableWrapper extends UiObjectSupport {
 	protected void endDrag(Point p) {
 		dragging = false;
 
-		DOM.releaseCapture(this.draggedHelper.getElement());
-		this.dragableElement.removeClassName("dragging");
+		DOM.releaseCapture(this.dragingOnHelper.getElement());
+		this.movingElement.removeClassName("moving");
 
 		new DragEndEvent(this.dragable, this.getDragger(), p).dispatch();//
 
 	}
 
 	protected void onMouseDown(MouseDownEvent event) {
-		Point p = this.getClientPoint(event);
-		Point rp = this.getRelativePoint(event, this.dragableElement.getElement());
+		Point clientPoint = this.getClientPoint(event);
 		if (this.pickupByDoubleClick) {
-			startOrEndDrag(p,rp);//switch
+			startOrEndDrag(clientPoint);// switch
 		} else {//
-			this.tryStartDrag(p,rp);
+
+			this.startDrag(clientPoint);
 
 		}
 
 	}
 
-	protected void startOrEndDrag(Point cp,Point rp) {
+	protected void startOrEndDrag(Point clientPoint) {
 		if (this.dragging) {
-			this.endDrag(cp);
+			this.endDrag(clientPoint);
 		} else {
-			this.tryStartDrag(cp,rp);
+			this.startDrag(clientPoint);
 		}
 	}
-	protected void tryStartDrag(Point cp,Point rp) {
-		Size size = this.dragableElement.getAbsoluteRectangle().getSize();
-		
-		if(rp.isFirstArea(true)&&rp.getX()<size.getWidth()&&rp.getY()<size.getHeight()){
-			this.startDrag(cp);
-		}
-		
-	}
+
+	//
 	protected void startDrag(Point p) {
 		dragging = true;
 		this.startMousePoint = p;
-		this.startTopLeft = this.dragableElement.getAbsoluteRectangle().getTopLeft();//
+		this.startTopLeft = this.movingElement.getOffsetRectangle().getTopLeft();//
 
-		this.dragableElement.addClassName("dragging");
+		this.movingElement.addClassName("moving");
 		// capturing the mouse to the dragged widget.
-		DOM.setCapture(this.draggedHelper.getElement());
+		DOM.setCapture(this.dragingOnHelper.getElement());
 
 		new DragStartEvent(this.dragable, this.getDragger(), this.startMousePoint).dispatch();//
 	}
-	
-	protected Point getClientPoint(MouseEvent event){
+
+	protected Point getClientPoint(MouseEvent event) {
 		return Point.valueOf(event.getClientX(), event.getClientY());
 	}
-	
-	protected Point getRelativePoint(MouseEvent event,Element ele) {
+
+	protected Point getRelativePoint(MouseEvent event, Element ele) {
 		int x = event.getRelativeX(ele);
 		int y = event.getRelativeY(ele);
 		return Point.valueOf(x, y);
@@ -212,7 +227,7 @@ public class DragableWrapper extends UiObjectSupport {
 	protected void doAttach() {
 		//
 		super.doAttach();
-		this.draggedHelper.attach();// TODO add listener in helper.
+		this.dragingOnHelper.attach();// TODO add listener in helper.
 	}
 
 }

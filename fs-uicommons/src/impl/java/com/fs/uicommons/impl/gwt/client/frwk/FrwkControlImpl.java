@@ -102,7 +102,7 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 
 					@Override
 					public ConsoleViewI create(ContainerI ct) {
-						// TODO Auto-generated method stub
+						
 						return new ConsoleView(ct);
 					}
 				});

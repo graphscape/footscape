@@ -32,7 +32,7 @@ import com.google.gwt.user.client.Element;
  * @author wu
  * 
  */
-public class ImageBox extends ElementObjectSupport implements DragableI {
+public class ImageBox2 extends ElementObjectSupport implements DragableI {
 	EventHandlerI<DragEndEvent> eh;
 
 	public static final String DK_TOP = "top";
@@ -59,7 +59,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	/**
 	 * @param ele
 	 */
-	public ImageBox(ContainerI c, Element outer) {
+	public ImageBox2(ContainerI c, Element outer) {
 		super(c, DOM.createDiv());
 		this.element.addClassName("image-select-box");
 		//
@@ -84,7 +84,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 
 			@Override
 			protected void handleInternal(ClickEvent evt) {
-				ImageBox.this.onPlus();
+				ImageBox2.this.onPlus();
 			}
 		});
 		this.minus = this.helpers.addHelper("minus", DOM.createButton());
@@ -95,7 +95,7 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 
 			@Override
 			protected void handleInternal(ClickEvent evt) {
-				ImageBox.this.onMinus();
+				ImageBox2.this.onMinus();
 			}
 		});
 	}
@@ -110,21 +110,21 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 
 			@Override
 			public void handle(DragStartEvent e) {
-				ImageBox.this.onStart(e);
+				ImageBox2.this.onStart(e);
 			}
 		});
 		this.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
 			@Override
 			public void handle(DragEndEvent e) {
-				ImageBox.this.onEnd(e);
+				ImageBox2.this.onEnd(e);
 			}
 		});
 		this.addHandler(DraggingEvent.TYPE, new EventHandlerI<DraggingEvent>() {
 
 			@Override
 			public void handle(DraggingEvent e) {
-				ImageBox.this.onDragging(e);
+				ImageBox2.this.onDragging(e);
 			}
 		});
 
@@ -274,9 +274,27 @@ public class ImageBox extends ElementObjectSupport implements DragableI {
 	 * Nov 24, 2012
 	 */
 	@Override
-	public Element getDragedElement() {
+	public Element getDragingOnElement() {
 		//
 		return this.element;
+	}
+
+	/*
+	 *Apr 21, 2013
+	 */
+	@Override
+	public Element getMovingElement() {
+		// 
+		return this.element;
+	}
+
+	/*
+	 *Apr 21, 2013
+	 */
+	@Override
+	public Element getLogingElement() {
+		// 
+		return null;
 	}
 
 }

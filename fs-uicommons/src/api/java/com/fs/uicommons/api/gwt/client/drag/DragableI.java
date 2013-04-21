@@ -18,10 +18,16 @@ import com.google.gwt.user.client.Element;
  */
 public interface DragableI extends ElementObjectI {
 
-	//move this elemen.
+	//move must inside in this elemen.
 	public Element getOuterMostElement();
 	
 	//mouse click on this element
-	public Element getDragedElement();
+	public Element getDragingOnElement();
+	
+	//move this element
+	public Element getMovingElement();
+	
+	public Element getLogingElement();
+	
 
 }
