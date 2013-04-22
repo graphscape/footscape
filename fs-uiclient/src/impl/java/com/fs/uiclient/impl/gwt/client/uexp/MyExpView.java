@@ -78,6 +78,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			this.title = this.factory.create(LabelI.class);
 			this.title.parent(this.outer);
 		}
+		{// outer/image,TODO
+			
+		}
+		
 		{ // close button
 			final ButtonI close = this.factory.create(ButtonI.class);
 			close.setText(true, "destroy");

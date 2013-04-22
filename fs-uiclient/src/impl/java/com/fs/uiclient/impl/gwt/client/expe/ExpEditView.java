@@ -17,6 +17,7 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.Size;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
@@ -53,7 +54,18 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 		}
 		{
 			Map<String, Object> pts = new HashMap<String, Object>();
-			FieldModel iconFM = fv.addField("icon", String.class, ImageCropEditorI.class, pts);
+			
+			FieldModel iconFM = fv.addField(ExpEditViewI.F_ICON, String.class, ImageCropEditorI.class, pts);
+		}
+		{
+			Map<String, Object> pts = new HashMap<String, Object>();
+			pts.put(ImageCropEditorI.PK_TARGET_SIZE, Size.valueOf(100*6, 100));
+			pts.put(ImageCropEditorI.PK_INNER_BOX_ZOOM, 1.0);
+			
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMX, 1.2);
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMY, 1.5);
+			
+			FieldModel iconFM = fv.addField(ExpEditViewI.F_IMAGE, String.class, ImageCropEditorI.class, pts);
 		}
 
 		fv.getFormModel().addAction(Actions.A_EXPE_SUBMIT);//

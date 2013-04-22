@@ -11,6 +11,7 @@ import com.fs.uicommons.api.gwt.client.html5.file.FileRefJSO;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtChangeHandler;
 import com.fs.uicore.api.gwt.client.support.ObjectElementHelper;
@@ -38,8 +39,8 @@ public class FileUrlDataEditorSupport extends EditorSupport<String> {
 	/**
 	 * @param ele
 	 */
-	public FileUrlDataEditorSupport(ContainerI c, String name) {
-		super(c, name, DOM.createDiv());
+	public FileUrlDataEditorSupport(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		super(c, name, DOM.createDiv(),pts);
 		this.dataRender = new ElementWrapper(DOM.createDiv());
 		this.elementWrapper.append(dataRender);//
 		

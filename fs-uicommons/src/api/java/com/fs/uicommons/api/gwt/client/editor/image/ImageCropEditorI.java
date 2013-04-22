@@ -13,5 +13,15 @@ import com.fs.uicommons.api.gwt.client.widget.EditorI;
  * 
  */
 public interface ImageCropEditorI extends EditorI<String> {
+	
+	public static final String PK_TARGET_SIZE = "targetSize";
+	
+	public static final String PK_INNER_BOX_ZOOM = "innerBoxZoom";
+	
+	public static final String PK_OUTER_BOX_ZOOMX = "outerBoxZoomX";
+	
+	public static final String PK_OUTER_BOX_ZOOMY = "innerBoxZoomY";
+	
+	
 
 }

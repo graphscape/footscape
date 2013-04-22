@@ -23,6 +23,9 @@ public class Canvas extends ElementObjectSupport {
 	// protected ImageElement image;// source image
 	protected boolean functional;
 
+	public Canvas(Size size) {
+		this(size.getWidth(),size.getHeight());
+	}
 	/**
 	 * @param ele
 	 */

@@ -30,7 +30,7 @@ a.exp-label {
 }
 
 .exps-item {
-
+	border-left : 2px solid white;
 	margin-top: 0px;
 	border-top : 1px solid #EBEBEB;
 	padding-bottom: 6px;

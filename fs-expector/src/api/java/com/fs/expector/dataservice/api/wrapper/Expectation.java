@@ -24,6 +24,8 @@ public class Expectation extends AuthedNode {
 	public static final String SUMMARY = "summary";
 	
 	public static final String ICON = "icon";
+	
+	public static final String IMAGE = "image";
 
 	/**
 	 * @param ntype
@@ -73,6 +75,14 @@ public class Expectation extends AuthedNode {
 	public void setIcon(String value){
 		this.setProperty(ICON, value);
 	}
+	
+	public String getImage(){
+		return (String) this.getProperty(IMAGE);
+	}
+	
+	public void setImage(String value){
+		this.setProperty(IMAGE, value);
+	}
 
 	/**
 	 * Nov 2, 2012
@@ -83,6 +93,7 @@ public class Expectation extends AuthedNode {
 				.field(SUMMARY)//
 				.field(FORMAT)//
 				.field(ICON)//
+				.field(IMAGE)//
 				.field(BODY, AnalyzerType.TEXT)//
 				);
 	}

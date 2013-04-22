@@ -21,4 +21,7 @@ public interface ExpEditViewI extends ViewI {
 	public static final String F_FORMAT = "format";
 	
 	public static final String F_ICON = "icon";
+	
+	public static final String F_IMAGE = "image";
+	
 }

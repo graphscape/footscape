@@ -54,11 +54,11 @@ public class ExpItemView extends ViewSupport {
 		// IMAGE|Body |Actions
 		// IMAGE|
 
-		{
-			String rowspan = "3";
+		{// first line/TR0
+			String rowspan = "4";
 			// first line
 			TRWrapper tr0 = this.table.addTr();
-			// Left td,3 rows
+			// Left/ td,the icon of user,span 3 rows
 			{
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("exps-item-usericon");
@@ -79,28 +79,32 @@ public class ExpItemView extends ViewSupport {
 				ar.parent(this);
 
 			}
-			{
+			{// first line, middle exp title,NOTE: this is the colum not rowspan
+				// 4
 
-				// middle,exp title
+				// middle/top exp title
 				TDWrapper td01 = tr0.addTd();
 				td01.addClassName("exps-item-exptitle");
 
 				td01.getElement().setInnerText(ei.getExpTitle());
 			}
-			{
-				// middle right
+			{// first line, middle right,exp icon,rows pan 4
 				TDWrapper td02 = tr0.addTd();
 				td02.setAttribute("rowspan", rowspan);
 				td02.addClassName("exps-item-expicon");
-				Element image = DOM.createImg();
-				image.setAttribute("src", ei.getIcon());
+				String icon = ei.getIcon();
+				if (icon != null) {//only show when has
 
-				Element ar = DOM.createAnchor();
-				ar.addClassName("exp-icon");
-				ar.appendChild(image);
-				td02.append(ar);
+					Element image = DOM.createImg();
+					image.setAttribute("src", icon);
+
+					Element ar = DOM.createAnchor();
+					ar.addClassName("exp-icon");
+					ar.appendChild(image);
+					td02.append(ar);
+				}
 			}
-			{
+			{// first line ,right span 3row
 
 				// right
 				TDWrapper td03 = tr0.addTd();
@@ -109,9 +113,9 @@ public class ExpItemView extends ViewSupport {
 				this.actionsTd.addClassName("exps-item-actions");
 			}
 		}
-		//
-		{// middle
-			// second line
+
+		{// middle,// // second line, middle, exp boxy
+
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
@@ -121,8 +125,23 @@ public class ExpItemView extends ViewSupport {
 			// td1,1
 		}
 		//
-		{//
-			// third line
+		{// // third line, middle, image, if the exp has an image, not
+			// icon;//icon is in the first line.
+
+			TRWrapper tr1 = this.table.addTr();
+			TDWrapper td1 = tr1.addTd();
+
+			td1.addClassName("exps-item-expimage");
+			String img = ei.getImage();
+			if (img != null) {// only add when as image
+				Element image = DOM.createImg();
+				image.setAttribute("src", img);
+				td1.getElement().appendChild(image);
+			}
+
+			// td1,1
+		}
+		{// // third line, middle, timestamp, small font
 			TRWrapper tr1 = this.table.addTr();
 			TDWrapper td1 = tr1.addTd();
 
@@ -153,8 +172,8 @@ public class ExpItemView extends ViewSupport {
 			cooper.parent(actions);
 		}
 	}
-	
-	protected void onUserInfoClick(){
+
+	protected void onUserInfoClick() {
 		this.dispatchActionEvent(Actions.A_EXPS_GETUSERINFO);
 	}
 
@@ -185,7 +204,8 @@ public class ExpItemView extends ViewSupport {
 	protected void beforeActionEvent(ActionEvent ae) {
 		//
 		super.beforeActionEvent(ae);
-		ae.setProperty("accountId", this.model.getAccountId());//for action:get userInfo
-		ae.setProperty("expId2", this.getExpId());//for action:cooper
+		ae.setProperty("accountId", this.model.getAccountId());// for action:get
+																// userInfo
+		ae.setProperty("expId2", this.getExpId());// for action:cooper
 	}
 }

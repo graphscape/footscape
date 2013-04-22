@@ -55,9 +55,9 @@ public class UserExpItemView extends ViewSupport {
 		// icon | timpstamp | open
 		// icon | nick |
 		// first
-		{
+		{// first line,left is , middle
 			// left
-			String rowspan = "4";
+			String rowspan = "5";
 			// line 1
 			TRWrapper tr0 = this.table.addTr();
 			{//
@@ -75,28 +75,32 @@ public class UserExpItemView extends ViewSupport {
 			// middle
 			TDWrapper td02 = tr0.addTd();
 			td02.setAttribute("rowspan", "1");
-			
+
 			{//
 
 				TDWrapper td03 = tr0.addTd();
 				td03.setAttribute("rowspan", rowspan);
 				td03.addClassName("uel-item-expicon");
-				Element ar = DOM.createAnchor();
-				ar.addClassName("exp-icon");
+				String icon = t.getIcon();
+				if (icon != null) {
 
-				ElementWrapper image = new ElementWrapper(DOM.createImg());
-				image.setAttribute("src", t.getIcon());
+					Element ar = DOM.createAnchor();
+					ar.addClassName("exp-icon");
 
-				ar.appendChild(image.getElement());
-				td03.append(ar);
+					ElementWrapper image = new ElementWrapper(DOM.createImg());
+					image.setAttribute("src", t.getIcon());
+
+					ar.appendChild(image.getElement());
+					td03.append(ar);
+				}
 			}
 			{
-				
-			// right
-			TDWrapper td04 = tr0.addTd();
-			td04.setAttribute("rowspan", rowspan);
-			this.actionsTd = td04;
-			this.actionsTd.addClassName("uel-item-actions");
+
+				// right
+				TDWrapper td04 = tr0.addTd();
+				td04.setAttribute("rowspan", rowspan);
+				this.actionsTd = td04;
+				this.actionsTd.addClassName("uel-item-actions");
 			}
 		}
 		//
@@ -121,6 +125,20 @@ public class UserExpItemView extends ViewSupport {
 		}
 
 		{// line4
+			TRWrapper tr1 = this.table.addTr();
+			TDWrapper td1 = tr1.addTd();
+
+			td1.addClassName("uel-item-expimage");
+			String img = t.getImage();
+			if (img != null) {
+				Element image = DOM.createImg();
+				image.setAttribute("src", img == null ? "" : img);
+				td1.getElement().appendChild(image);
+			}
+			// td1,1
+		}
+
+		{// line5, time stamp
 			// timestamp
 			TRWrapper tr2 = this.table.addTr();
 			TDWrapper td = tr2.addTd();

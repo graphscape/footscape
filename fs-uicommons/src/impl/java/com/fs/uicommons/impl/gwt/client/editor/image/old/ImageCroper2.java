@@ -2,10 +2,11 @@
  * All right is from Author of the file,to be explained in comming days.
  * Nov 19, 2012
  */
-package com.fs.uicommons.impl.gwt.client.editor.image;
+package com.fs.uicommons.impl.gwt.client.editor.image.old;
 
 import com.fs.uicommons.api.gwt.client.drag.event.DragEndEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DraggingEvent;
+import com.fs.uicommons.impl.gwt.client.editor.image.Canvas;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;

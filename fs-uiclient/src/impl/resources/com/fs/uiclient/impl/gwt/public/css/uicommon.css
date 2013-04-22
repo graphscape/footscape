@@ -136,17 +136,11 @@ Console View
 	position:relative;/*Note, must be relative for hidden the 'absolute' positioned child*/
 }
 
-.image-croper table.outer-box {
-	width: 500px;
-	height: 200px;
-}
 
 /*parent is thd center td*/
 .image-croper .inner-box { 
 	border:1px solid orange;
 	cursor: pointer;
-	height: 100px;
-	width: 100px;	
 }
 
 .image-croper .editing-image-box {
@@ -161,8 +155,6 @@ Console View
 
 .image-croper td.td00 {
 	vertical-align: top;/*top the zoomer buttons*/
-	height: 50px;
-	width: 200px;	
 }
 
 .image-croper td.td11,
@@ -188,6 +180,7 @@ Console View
 
 
 .image-croper .zoomer {
+	position: absolute;
 	font-weight: bold;
 	width: 26px;
 	height: 26px;
@@ -199,8 +192,8 @@ Console View
 }
 
 .image-croper .minus {
-	margin-top: 0px;
-	margin-left: 30px;
+	margin-top: 30px;
+	margin-left: 0px;
 }
 
 

@@ -21,7 +21,7 @@ public class ExpItemModel extends PropertiesData<Object> {
 	}
 
 	public String getExpId() {
-		return (String) this.getProperty(NodeFields.PK_ID,true);
+		return (String) this.getProperty(NodeFields.PK_ID, true);
 	}
 
 	public String getExpTitle() {
@@ -55,12 +55,23 @@ public class ExpItemModel extends PropertiesData<Object> {
 	}
 
 	public DateData getTimestamp() {
-		DateData rt = (DateData) this.getProperty(NodeFields.PK_TIMESTAMP,true);
+		DateData rt = (DateData) this.getProperty(NodeFields.PK_TIMESTAMP, true);
 		return rt;
 	}
 
 	public String getIcon() {
-		return (String) this.getProperty("icon");
+		String rt = (String) this.getProperty("icon");
+		return "n/a".equals(rt) ? null : rt;
+
+	}
+
+	public String getImage() {
+
+		String rt = (String) this.getProperty("image");
+		if (rt.equals("n/a")) {
+			rt = null;
+		}
+		return rt;
 
 	}
 

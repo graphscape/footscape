@@ -65,7 +65,15 @@ public class UserExpModel {
 	 */
 	public String getIcon() {
 		//
-		return (String) this.target.getProperty(ExpEditViewI.F_ICON);
+		String rt = (String) this.target.getProperty(ExpEditViewI.F_ICON);
+		return "n/a".equals(rt) ? null : rt;
+
+	}
+
+	public String getImage() {
+		//
+		String rt = (String) this.target.getProperty(ExpEditViewI.F_IMAGE);
+		return rt.equals("n/a") ? null : rt;
 
 	}
 

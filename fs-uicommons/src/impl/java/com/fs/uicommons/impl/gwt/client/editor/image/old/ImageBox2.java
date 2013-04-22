@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Nov 19, 2012
  */
-package com.fs.uicommons.impl.gwt.client.editor.image;
+package com.fs.uicommons.impl.gwt.client.editor.image.old;
 
 import java.util.HashMap;
 import java.util.Map;

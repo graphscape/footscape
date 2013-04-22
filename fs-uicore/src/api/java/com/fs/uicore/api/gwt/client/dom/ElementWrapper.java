@@ -257,6 +257,11 @@ public class ElementWrapper {
 		this.moveTo(rect.getTopLeft());
 		this.resize(rect.getSize());
 	}
+	
+	public void setSize(Size size){
+		this.setWidth(size.getWidth());
+		this.setHeight(size.getHeight());
+	}
 
 	public void resize(Size size) {
 		this.setWidth(size.getWidth());

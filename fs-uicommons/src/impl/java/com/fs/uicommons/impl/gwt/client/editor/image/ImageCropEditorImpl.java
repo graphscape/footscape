@@ -9,6 +9,8 @@ package com.fs.uicommons.impl.gwt.client.editor.image;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
 import com.fs.uicommons.api.gwt.client.editor.support.FileUrlDataEditorSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.Size;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.DataEvent;
@@ -25,8 +27,21 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 
 	protected ImageCroper imageCroper;
 
-	public ImageCropEditorImpl(ContainerI c, String name) {
-		super(c, name);
+	private static final Size DEFAULT_SIZE = Size.valueOf(52, 52);//
+
+	protected Size targetSize;
+	protected double innerBoxZoom;
+	protected double outerBoxZoomX;
+	protected double outerBoxZoomY;
+
+	public ImageCropEditorImpl(ContainerI c, String name, UiPropertiesI<Object> pts) {
+		super(c, name, pts);
+
+		this.targetSize = (Size) this.getProperty(ImageCropEditorI.PK_TARGET_SIZE, DEFAULT_SIZE);
+
+		this.innerBoxZoom = (Double) this.getProperty(ImageCropEditorI.PK_INNER_BOX_ZOOM, 1.0d);
+		this.outerBoxZoomX = (Double) this.getProperty(ImageCropEditorI.PK_OUTER_BOX_ZOOMX, 3.0d);
+		this.outerBoxZoomY = (Double) this.getProperty(ImageCropEditorI.PK_OUTER_BOX_ZOOMY, 2.0d);
 
 		this.image = ElementWrapper.valueOf(DOM.createImg());
 		if (this.functional) {
@@ -54,7 +69,7 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 			this.imageCroper = null;
 		}
 
-		imageCroper = new ImageCroper(this.container);
+		imageCroper = new ImageCroper(this.container, this.targetSize, this.innerBoxZoom, this.outerBoxZoomX, this.outerBoxZoomY);
 
 		imageCroper.parent(this);//
 		imageCroper.addHandler(DataEvent.TYPE, new EventHandlerI<DataEvent>() {

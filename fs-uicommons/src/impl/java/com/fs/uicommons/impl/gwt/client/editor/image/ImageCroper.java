@@ -36,7 +36,7 @@ public class ImageCroper extends ElementObjectSupport {
 	protected ElementWrapper originImageWrapper;// the image,not change it
 
 	protected ElementWrapper editingImageWrapper;
-	
+
 	protected ElementWrapper editingImageBox;
 
 	protected ImageElement editingImage;
@@ -46,7 +46,7 @@ public class ImageCroper extends ElementObjectSupport {
 	protected InnerImageBox innerBox;
 
 	protected ElementWrapper test;// remove this.
-	
+
 	protected Element outerBox;
 
 	protected String originalData;
@@ -62,20 +62,30 @@ public class ImageCroper extends ElementObjectSupport {
 	protected double zoomY = 1;
 
 	protected TableWrapper table;
-	
+
 	protected Element labelOfMouseMoving;
 
 	// plus the size
-		protected ObjectElementHelper plus;
+	protected ObjectElementHelper plus;
 
-		// minus the size
-		protected ObjectElementHelper minus;
+	// minus the size
+	protected ObjectElementHelper minus;
+
+	protected Size targetSize;
+
+	protected Size innerBoxSize;
+
+	protected Size outerBoxSize;
 
 	/**
 	 * @param ele
 	 */
-	public ImageCroper(ContainerI c) {
+	public ImageCroper(ContainerI c, Size targetSize, double innerBoxZoom, double outerBoxZoomX,
+			double outerBoxZoomY) {
 		super(c, DOM.createDiv());
+		this.targetSize = targetSize;
+		this.innerBoxSize = this.targetSize.multiple(innerBoxZoom);
+		this.outerBoxSize = this.innerBoxSize.multiple(outerBoxZoomX, outerBoxZoomY);
 		this.element.addClassName("image-croper");
 
 		{
@@ -88,7 +98,7 @@ public class ImageCroper extends ElementObjectSupport {
 		{
 			// canvas shoulb be hidden
 
-			canvas = new Canvas(60, 60);
+			canvas = new Canvas(this.targetSize);
 			canvas.parent(this);//
 		}
 		{
@@ -99,27 +109,35 @@ public class ImageCroper extends ElementObjectSupport {
 		{// image
 			// the image itself,
 			editingImage = ImageElement.as(DOM.createImg());
-			
+
 			this.editingImageWrapper = ElementWrapper.valueOf(this.editingImage);//
-			
+
 			editingImageBox = new ElementWrapper(DOM.createDiv());
-			
+
 			editingImageBox.append(editingImageWrapper);
 			editingImageBox.addClassName("editing-image-box");
 			this.outerBox.appendChild(editingImageBox.getElement());
-			
+
 		}
 		{
 			this.table = new TableWrapper();
+			// NOTE,size of outer box.
+			this.table.resize(this.outerBoxSize);// Size of outer box
+
 			this.table.addClassName("outer-box");//
 			this.outerBox.appendChild(this.table.getElement());//
-			{//tr1
+
+			Size sizeOfTd00AndTd22 = this.outerBoxSize.minus(this.innerBoxSize).divide(2.0d);
+
+			{// tr1
 				TRWrapper tr = this.table.addTr();
 				TDWrapper td0 = tr.addTd();
 				td0.addClassName("td00");
-				
+				//
+				td0.setSize(sizeOfTd00AndTd22);
+
 				{
-					
+
 					this.plus = this.helpers.addHelper("plus", DOM.createButton());
 					this.plus.getElement().setInnerText("+");
 					this.plus.addClassName("plus");
@@ -155,15 +173,18 @@ public class ImageCroper extends ElementObjectSupport {
 				TDWrapper td2 = tr.addTd();
 				td2.addClassName("td02");
 			}
-			{//tr2
+			{// tr2
 				TRWrapper tr = this.table.addTr();
 				TDWrapper td0 = tr.addTd();
 				td0.addClassName("td10");
 				TDWrapper td1 = tr.addTd();
 				td1.addClassName("td11");
+				td1.setSize(this.innerBoxSize);// no need to set this? because
+												// set the innerBOx is ok?
 				{// box is here,center of the table
 
-					this.innerBox = new InnerImageBox(c, this.editingImageBox.getElement(),this.labelOfMouseMoving);
+					this.innerBox = new InnerImageBox(c, this.editingImageBox.getElement(),
+							this.labelOfMouseMoving, this.innerBoxSize);//size is here
 
 					this.innerBox.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
@@ -186,18 +207,18 @@ public class ImageCroper extends ElementObjectSupport {
 							ImageCroper.this.onDragging(e);
 						}
 					});
-					
-					//note,already ad to the center td.
+
+					// note,already ad to the center td.
 					td1.append(this.innerBox.getElement());
 					this.innerBox.parent(this);
 
 				}
-				
+
 				TDWrapper td2 = tr.addTd();
 				td2.addClassName("td12");
 
 			}
-			{//tr 3
+			{// tr 3
 				TRWrapper tr = this.table.addTr();
 				TDWrapper td0 = tr.addTd();
 				td0.addClassName("td20");
@@ -205,6 +226,8 @@ public class ImageCroper extends ElementObjectSupport {
 				td1.addClassName("td21");
 				TDWrapper td2 = tr.addTd();
 				td2.addClassName("td22");
+
+				td2.setSize(sizeOfTd00AndTd22);//
 			}
 
 		}
@@ -236,19 +259,19 @@ public class ImageCroper extends ElementObjectSupport {
 	}
 
 	protected void onPlus() {
-		this.zoom(this.zoomX*1.1,this.zoomY*1.1);
+		this.zoom(this.zoomX * 1.1, this.zoomY * 1.1);
 	}
 
 	protected void onMinus() {
-		this.zoom(this.zoomX*0.9,this.zoomY*0.9);
-		
+		this.zoom(this.zoomX * 0.9, this.zoomY * 0.9);
+
 	}
 
 	protected void onDragging(DraggingEvent e) {
 		// this.buildResultDataUrl(false);
-		//this.showEventPoint(e);
+		// this.showEventPoint(e);
 	}
-	
+
 	/**
 	 * Nov 19, 2012
 	 */
@@ -263,51 +286,59 @@ public class ImageCroper extends ElementObjectSupport {
 
 	public void setDataUrl(String data) {
 		this.originalData = data;
-		if(this.originalData == null){
-			//TODO remove image.
+		if (this.originalData == null) {
+			// TODO remove image.
 			return;
 		}
 		this.originImageWrapper.setAttribute("src", data);//
 		this.editingImageWrapper.setAttribute("src", data);// TODO empty
-		//zoom to fit the size of this box
+		// zoom to fit the size of this box
 		// currently the size of image is 0,0,so try to do delay.
 		SchedulerI s = this.container.get(SchedulerI.class, true);
-		s.scheduleTimer(200, new HandlerI<Object>(){
+		s.scheduleTimer(200, new HandlerI<Object>() {
 
 			@Override
 			public void handle(Object t) {
-				// 
+				//
 				ImageCroper.this.afterSetDataUrl();
-				
-			}});
+
+			}
+		});
 	}
-	
-	private void afterSetDataUrl(){
+
+	private void afterSetDataUrl() {
 		Size osize = this.getOrininalSize();
-		if(osize.getHeight()==0||osize.getWidth()==0){
-			//NOTE,
+		if (osize.getHeight() == 0 || osize.getWidth() == 0) {
+			// NOTE,
 			return;
 		}
-		//target size
-		Size tsize = this.elementWrapper.getAbsoluteRectangle().getSize();//
+		
+		// initial, zoom to proper size,fit the outer box.
+		
+		Size tsize = this.outerBoxSize;
+		
+		int w1 = osize.getWidth();
+		int w2 = tsize.getWidth();
+		double zx = w1 == 0 ? 1 : (double) w2 / (double) w1;
 		
 		int h1 = osize.getHeight();
 		int h2 = tsize.getHeight();
-		double zy = h1 == 0?1:(double)h2/(double)h1;
-		
-		this.zoom(zy, zy);
+		double zy = h1 == 0 ? 1 : (double) h2 / (double) h1;
+
+		double zoom = zx>zy? zx:zy;//Zoom to large enough.
+		this.zoom(zoom,zoom);
 	}
 
 	// zoom the editing image?
 
-	public boolean zoom(double zx,double zy) {
+	public boolean zoom(double zx, double zy) {
 		Size size = this.getOrininalSize();
-		Size tsize = size.multiple(zx,zy);
-		if(tsize.getHeight()<100||tsize.getWidth()<100){
-			//too small
+		Size tsize = size.multiple(zx, zy);
+		if (tsize.getHeight() < 100 || tsize.getWidth() < 100) {
+			// too small
 			return false;
 		}
-		
+
 		this.zoomX = zx;
 		this.zoomY = zy;
 
@@ -340,7 +371,7 @@ public class ImageCroper extends ElementObjectSupport {
 		this.canvas.clear();//
 
 		Rectangle selectedRect = this.innerBox.getElementWrapper().getAbsoluteRectangle();// selected
-																						// area
+																							// area
 
 		Rectangle editingRect = this.editingImageWrapper.getAbsoluteRectangle();// image
 																				// area

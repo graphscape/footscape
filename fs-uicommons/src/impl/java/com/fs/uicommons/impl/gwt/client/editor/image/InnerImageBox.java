@@ -12,9 +12,9 @@ import com.fs.uicommons.api.gwt.client.drag.event.DragStartEvent;
 import com.fs.uicommons.api.gwt.client.drag.event.DraggingEvent;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.commons.Size;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.support.ElementObjectSupport;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -31,8 +31,9 @@ public class InnerImageBox extends ElementObjectSupport implements DragableI {
 	/**
 	 * @param ele
 	 */
-	public InnerImageBox(ContainerI c, Element image ,Element log) {
+	public InnerImageBox(ContainerI c, Element image ,Element log, Size size) {
 		super(c, DOM.createDiv());//box
+		this.elementWrapper.setSize(size);//
 		this.imageDiv = image;
 		this.element.addClassName("inner-box");
 		this.log = log;
