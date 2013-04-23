@@ -4,6 +4,7 @@
 package com.fs.uiclient.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.commons.Size;
 
 /**
  * @author wu
@@ -22,12 +23,12 @@ public class UiClientConstants {
 	public static final Path P_SIGNUP = Path.valueOf("/signup");
 
 	public static final Path P_HTML = Path.valueOf("/open/resource/html");
-	
+
 	public static final Path RP_USERINFO_GET = Path.valueOf("/uinfo/get");
-	
+
 	public static final Path P_HTML_ABOUT = P_HTML.getSubPath("about-us.html");
-	
-	public static final Path P_HTML_CONTACT =  P_HTML.getSubPath("contact-us.html");
+
+	public static final Path P_HTML_CONTACT = P_HTML.getSubPath("contact-us.html");
 
 	public static final String PK_URL_CONTACT = "contactUrl";
 
@@ -38,16 +39,18 @@ public class UiClientConstants {
 	public static final Path AP_EXPS_SEARCH = Path.valueOf("/action/exps/search");
 
 	public static final Path AP_EXPS_MORE = Path.valueOf("/action/exps/more");
-	
-	public static final Path AP_EXPM_MORE = Path.valueOf("/action/expm/more");
-	
-	public static final Path AP_EXPM_SEND = Path.valueOf("/action/expm/send");
-	
-	public static final Path AP_COOPER_CONFIRM = Path.valueOf("/action/cooper/confirm");
-	
-	public static final Path AP_COOPER_REJECT = Path.valueOf("/action/cooper/reject");
-	
 
+	public static final Path AP_EXPM_MORE = Path.valueOf("/action/expm/more");
+
+	public static final Path AP_EXPM_SEND = Path.valueOf("/action/expm/send");
+
+	public static final Path AP_COOPER_CONFIRM = Path.valueOf("/action/cooper/confirm");
+
+	public static final Path AP_COOPER_REJECT = Path.valueOf("/action/cooper/reject");
+
+	public static final Size EXPEDIT_IMAGE_SIZE = Size.valueOf(4*64, 64);
+
+	public static final double EXPEDIT_INNER_BOX_ZOOM = 1.0d;
 	// public static final Integer MESSAGE_LIMIT = 25;//
 
 	// public static final int EXPSEARCH_LIMIT = 3;

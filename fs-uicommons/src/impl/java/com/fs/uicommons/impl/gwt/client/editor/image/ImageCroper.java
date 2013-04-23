@@ -126,23 +126,33 @@ public class ImageCroper extends ElementObjectSupport {
 
 			this.table.addClassName("outer-box");//
 			this.outerBox.appendChild(this.table.getElement());//
-
-			Size sizeOfTd00AndTd22 = this.outerBoxSize.minus(this.innerBoxSize).divide(2.0d);
-
+			
+			
+			int width00 = (this.outerBoxSize.getWidth()-this.innerBoxSize.getWidth())/2;
+			int width01 = this.innerBoxSize.getWidth();
+			int width02=width00;
+			
+			int height01 =(this.outerBoxSize.getHeight()-this.innerBoxSize.getHeight())/2;
+			int height11 = this.innerBoxSize.getHeight();
+			int height21 = height01;
 			{// tr1
 				TRWrapper tr = this.table.addTr();
 				TDWrapper td0 = tr.addTd();
 				td0.addClassName("td00");
 				//
-				td0.setSize(sizeOfTd00AndTd22);
-
+				td0.setWidth(width00);
+				Element div = DOM.createDiv();
+				div.addClassName("image-croper-toolbar");
+				td0.append(div);
+				td0.setRowSpan(3);
 				{
 
 					this.plus = this.helpers.addHelper("plus", DOM.createButton());
 					this.plus.getElement().setInnerText("+");
 					this.plus.addClassName("plus");
 					this.plus.addClassName("zoomer");
-					this.plus.parent(td0);
+					div.appendChild(this.plus.getElement());
+					
 
 					this.plus.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
 
@@ -155,7 +165,7 @@ public class ImageCroper extends ElementObjectSupport {
 					this.minus.getElement().setInnerText("-");
 					this.minus.addClassName("minus");
 					this.minus.addClassName("zoomer");
-					this.minus.parent(td0);
+					div.appendChild(this.minus.getElement());
 					this.minus.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
 
 						@Override
@@ -170,17 +180,19 @@ public class ImageCroper extends ElementObjectSupport {
 					this.labelOfMouseMoving.addClassName("mouse-position");
 				}
 				td1.addClassName("td01");
+				td1.setWidth(width01);
+				td1.setHeight(height01);
 				TDWrapper td2 = tr.addTd();
+				td2.setRowSpan(3);
 				td2.addClassName("td02");
+				td2.setWidth(width02);
 			}
 			{// tr2
 				TRWrapper tr = this.table.addTr();
-				TDWrapper td0 = tr.addTd();
-				td0.addClassName("td10");
+				
 				TDWrapper td1 = tr.addTd();
 				td1.addClassName("td11");
-				td1.setSize(this.innerBoxSize);// no need to set this? because
-												// set the innerBOx is ok?
+				td1.setHeight(height11);
 				{// box is here,center of the table
 
 					this.innerBox = new InnerImageBox(c, this.editingImageBox.getElement(),
@@ -214,20 +226,14 @@ public class ImageCroper extends ElementObjectSupport {
 
 				}
 
-				TDWrapper td2 = tr.addTd();
-				td2.addClassName("td12");
 
 			}
 			{// tr 3
 				TRWrapper tr = this.table.addTr();
-				TDWrapper td0 = tr.addTd();
-				td0.addClassName("td20");
+				
 				TDWrapper td1 = tr.addTd();
 				td1.addClassName("td21");
-				TDWrapper td2 = tr.addTd();
-				td2.addClassName("td22");
-
-				td2.setSize(sizeOfTd00AndTd22);//
+				td1.setHeight(height21);
 			}
 
 		}

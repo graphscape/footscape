@@ -149,11 +149,13 @@ Console View
 }
 
 .image-croper td {
+	overflow: visible;
 	background: gray;
 	opacity: 0.8;
 }
 
 .image-croper td.td00 {
+	
 	vertical-align: top;/*top the zoomer buttons*/
 }
 
@@ -178,22 +180,24 @@ Console View
 	opacity: 0.5;
 }
 
-
-.image-croper .zoomer {
+.image-croper-toolbar {
 	position: absolute;
 	font-weight: bold;
 	width: 26px;
 	height: 26px;
 	font-size: 20px;	
-}
-.image-croper .plus {
 	margin-top: 0px;
 	margin-left: 0px;
 }
+.image-croper .zoomer {
+	
+}
+.image-croper .plus {
+	
+}
 
 .image-croper .minus {
-	margin-top: 30px;
-	margin-left: 0px;
+	
 }
 
 
@@ -226,6 +230,24 @@ Console View
 
 .opacities * {
 	position: absolute;
+}
+
+.properties-editor-key {
+	float: none;
+	align: right;
+}
+
+.properties-editor-row {
+	border-left: 2px solid white;
+}
+
+.properties-editor-row:hover {
+	border-left: 2px solid #646464;
+}
+
+.properties-editor-value {
+	float: none;
+	align: left;
 }
 
 .visible {
@@ -391,15 +413,6 @@ Console View
 	color: #fff;
 }
 
-.wgt-PropertiesEditorImpl .position-left {
-	float: none;
-	align: right;
-}
-
-.wgt-PropertiesEditorImpl .position-right {
-	float: none;
-	align: left;
-}
 
 .wgt-StackWImpl .wgt-PanelWImpl.position-unselected {
 	display: none;

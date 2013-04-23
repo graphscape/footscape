@@ -21,7 +21,10 @@ public class TableImpl extends LayoutSupport implements TableI {
 	/** */
 	public TableImpl(ContainerI c, String name) {
 		super(c,name, DOM.createTable());
-
+		this.element.setAttribute("cellspacing", "0");
+		
+		this.element.setAttribute("cellspading", "0");
+		
 		this.headers = new HeadersImpl(this.container,this);
 		this.child(this.headers);
 		this.body = new BodyImpl(this.container,this);

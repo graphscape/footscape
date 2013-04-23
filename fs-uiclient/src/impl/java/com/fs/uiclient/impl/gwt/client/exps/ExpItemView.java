@@ -7,9 +7,9 @@ package com.fs.uiclient.impl.gwt.client.exps;
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
+import com.fs.uiclient.impl.gwt.client.uexp.UserIconView;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
-import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
@@ -63,20 +63,14 @@ public class ExpItemView extends ViewSupport {
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("exps-item-usericon");
 				td0.setAttribute("rowspan", rowspan);
-				AnchorWI ar = this.factory.create(AnchorWI.class);
-				ar.getElement().addClassName("user-icon");
-				ar.setImage(ei.getUserIcon());//
-				td0.append(ar.getElement());// NOTE,parent is not
+				//
+				UserIconView uiv = new UserIconView(this.container,ei.getAccountId(),ei.getUserIcon());
+				td0.append(uiv.getElement());// NOTE,parent is not
 											// this.element,but td0,a nother
 											// element,see ElementObjectSupport.
-				ar.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
-
-					@Override
-					public void handle(ClickEvent t) {
-						ExpItemView.this.onUserInfoClick();
-					}
-				});
-				ar.parent(this);
+				//note must after append to td0.other wise the element will be add to the top element.
+				uiv.parent(this);
+				
 
 			}
 			{// first line, middle exp title,NOTE: this is the colum not rowspan
@@ -173,9 +167,6 @@ public class ExpItemView extends ViewSupport {
 		}
 	}
 
-	protected void onUserInfoClick() {
-		this.dispatchActionEvent(Actions.A_EXPS_GETUSERINFO);
-	}
 
 	protected void onCooperClicked() {
 
@@ -204,8 +195,6 @@ public class ExpItemView extends ViewSupport {
 	protected void beforeActionEvent(ActionEvent ae) {
 		//
 		super.beforeActionEvent(ae);
-		ae.setProperty("accountId", this.model.getAccountId());// for action:get
-																// userInfo
 		ae.setProperty("expId2", this.getExpId());// for action:cooper
 	}
 }

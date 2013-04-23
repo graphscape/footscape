@@ -93,19 +93,20 @@ public class PropertiesEditorImpl extends EditorSupport<ObjectPropertiesData> im
 		Class<? extends EditorI> ecls = pm.getEditorClass();
 
 		RowI r = body.createRow();
-
+		r.getElement().addClassName("properties-editor-row");
+		
 		LabelI l = this.factory.create(LabelI.class);// key
 														// i18n
 		String text = this.localized(pm.getI18nKey());
 		l.setText(text);//
 
 		CellI cell1 = r.createCell();
-		cell1.getElement().addClassName("position-left");
+		cell1.getElement().addClassName("properties-editor-key");
 		cell1.child(l);
 
 		// TODO by type to create editor
 		TableI.CellI cel2 = r.createCell();
-		cel2.getElement().addClassName("position-right");
+		cel2.getElement().addClassName("properties-editor-value");
 		Map<String,Object> epts = pm.getEditorPts();
 		MapProperties<Object> pts = new MapProperties<Object>();
 		

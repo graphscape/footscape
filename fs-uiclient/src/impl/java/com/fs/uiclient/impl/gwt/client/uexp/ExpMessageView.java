@@ -80,16 +80,10 @@ public abstract class ExpMessageView extends ViewSupport {
 			{
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("myexp-message-td0");
-				//anchor
-				Element ar = DOM.createAnchor();
-				ar.addClassName("user-icon");
-				//img
-				ElementWrapper image = new ElementWrapper(DOM.createImg());
-				image.setAttribute(
-						"src",
-						msg.getIcon1());//
-				ar.appendChild(image.getElement());//
-				td0.append(ar);
+				// anchor
+				UserIconView uiv = new UserIconView(this.container, msg.getAccountId1(), msg.getIcon1());//				
+				td0.append(uiv.getElement());
+				uiv.parent(this);//
 			}
 			// message
 			{
@@ -104,10 +98,10 @@ public abstract class ExpMessageView extends ViewSupport {
 			{
 				TDWrapper td2 = tr0.addTd();
 				td2.addClassName("myexp-message-td2");
-				
+
 				{
 					// time
-					
+
 					Element ele = DOM.createDiv();
 					ele.addClassName("myexp-message-timestamp");
 					String dateS = DateUtil.format(msg.getTimeStamp(), false);
@@ -148,8 +142,8 @@ public abstract class ExpMessageView extends ViewSupport {
 		//
 
 	}
-	
-	public ExpMessage getExpMessage(){
+
+	public ExpMessage getExpMessage() {
 		return this.msg;
 	}
 

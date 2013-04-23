@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
@@ -52,18 +53,19 @@ public class ExpEditView extends FormsView implements ExpEditViewI {
 				}
 			});
 		}
+		//
+//		{
+//			Map<String, Object> pts = new HashMap<String, Object>();
+//			
+//			FieldModel iconFM = fv.addField(ExpEditViewI.F_ICON, String.class, ImageCropEditorI.class, pts);
+//		}
 		{
 			Map<String, Object> pts = new HashMap<String, Object>();
+			pts.put(ImageCropEditorI.PK_TARGET_SIZE,UiClientConstants.EXPEDIT_IMAGE_SIZE);
+			pts.put(ImageCropEditorI.PK_INNER_BOX_ZOOM, UiClientConstants.EXPEDIT_INNER_BOX_ZOOM);
 			
-			FieldModel iconFM = fv.addField(ExpEditViewI.F_ICON, String.class, ImageCropEditorI.class, pts);
-		}
-		{
-			Map<String, Object> pts = new HashMap<String, Object>();
-			pts.put(ImageCropEditorI.PK_TARGET_SIZE, Size.valueOf(100*6, 100));
-			pts.put(ImageCropEditorI.PK_INNER_BOX_ZOOM, 1.0);
-			
-			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMX, 1.2);
-			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMY, 1.5);
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMX, 1.5d);
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMY, 1.5d);
 			
 			FieldModel iconFM = fv.addField(ExpEditViewI.F_IMAGE, String.class, ImageCropEditorI.class, pts);
 		}
