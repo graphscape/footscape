@@ -1,21 +1,23 @@
-.adjusters {
-	background: #fff;
-	position: absolute;
-	display: none;
-}
 
-.adjusters.visible {
-	display: block;
-}
-
-.adjuster {
-	cursor: pointer;
+.body {
+	text-align: center;
 }
 
 .body-tabber {
-	background-color: #FFFFFF;
-	border-left: 1px solid #F0F0F0;
-	border-right: 1px solid #F0F0F0;
+	background-color: #FDFDFD;
+	border-left: 1px solid #CCCCCC;
+	border-right: 1px solid #CCCCCC;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1024px;
+	height: 100%;
+}
+
+
+.body-tabber-stack {
+	min-height: 600px;
+	height: auto !important;
+	height: 600px;
 }
 
 .bottom-list {
@@ -200,6 +202,10 @@ Console View
 	
 }
 
+.invisible {
+	display: none;
+}
+
 
 .loader {
 	background-color: #325A96;
@@ -260,15 +266,13 @@ Console View
 
 .tabber-layout-right {
 	vertical-align: top;
-	padding-left: 15px;
+	padding-left: 6px;
+	padding-right: 6px;
+	
 }
 
 .tabber-layout-left {
-	border-right: 1px solid #F0F0F0;
-}
-
-.invisible {
-	display: none;
+	border-right: 1px solid #CCCCCC;
 }
 
 .elo-Canvas.invisible {
@@ -287,27 +291,12 @@ Console View
 }
 
 .panel-header { /*DIV*/
-	border-bottom: 1px solid #F0F0F0;
+	border-bottom: 1px solid #CCCCCC;
 }
 
 /*Anchor,button*/
 /*BarWidget*/
-.body {
-	text-align: center;
-}
 
-.body-tabber {
-	margin-left: auto;
-	margin-right: auto;
-	width: 1024px;
-	height: 100%;
-}
-
-.body-tabber-stack {
-	min-height: 600px;
-	height: auto !important;
-	height: 600px;
-}
 
 /*FormView*/
 /*Let the column of title to align right*/
@@ -338,41 +327,6 @@ Console View
 	margin-left: auto;
 	margin-right: auto;
 	width: 1024px;
-}
-
-/*Label*/
-.wgt-LabelImpl {
-	
-}
-
-/**/
-.wgt-ManagersView {
-	margin-top: 50px;
-}
-
-.wgt-ManagersView td {
-	vertical-align: top;
-}
-
-.wgt-ManagersView .position-left {
-	width: 1%;
-}
-
-.wgt-ManagersView .position-right {
-	width: 1%;
-}
-
-.wgt-ManagersView .position-topLeft {
-	width: 1%;
-	height: 1px;
-}
-
-/**/
-.position-left .wgt-ManagerView {
-	margin-left: 10px;
-	margin-top: 10px;
-	padding-top: 10px;
-	padding-left: 10px;
 }
 
 /*Menu*/
