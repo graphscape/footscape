@@ -31,8 +31,6 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	public static int maxAllowedConnectPerExp = 100;
 
-	private String defaultExpIconDataUrl;
-	
 	private String defaultUserIconDataUrl;
 
 	private DataServiceI dataService;
@@ -41,7 +39,6 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	public void configure(Configuration cfg) {
 		// TODO Auto-generated method stub
 		super.configure(cfg);
-		this.defaultExpIconDataUrl = this.config.getProperty("defaultExpIconDataUrl");
 		this.defaultUserIconDataUrl = this.config.getProperty("defaultUserIconDataUrl");
 	}
 
@@ -57,8 +54,7 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	public void processExpIcon(PropertiesI<Object> pts) {
 		String expIcon = (String) pts.getProperty("icon");
 		if (expIcon.equalsIgnoreCase("n/a")) {
-			expIcon = this.defaultExpIconDataUrl;
-			pts.setProperty("icon", expIcon);
+			pts.setProperty("icon", null);
 		}
 	}
 

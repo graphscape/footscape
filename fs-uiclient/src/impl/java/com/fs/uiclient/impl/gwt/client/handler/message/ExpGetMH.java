@@ -5,6 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.handler.message;
 
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
+import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
@@ -34,14 +35,12 @@ public class ExpGetMH extends MHSupport {
 
 		MessageData res = t.getMessage();
 
-		ObjectPropertiesData exp = (ObjectPropertiesData) res.getPayloads().getProperty("expectation", true);
+		ObjectPropertiesData expD = (ObjectPropertiesData) res.getPayloads().getProperty("expectation", true);
 		// refresh the title of the tab
 		MainControlI c = this.getControl(MainControlI.class, true);
-		String expId = exp.getString(UiClientConstants.NK_ID, true);
-		String title = exp.getString(ExpEditView.F_TITLE, true);
-		String body = exp.getString(ExpEditView.F_BODY, true);
+		MyExp exp = new MyExp(expD);
 		
-		c.setExpDetail(expId,title, body);
+		c.setExpDetail(exp);
 		//
 		
 	}

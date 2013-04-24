@@ -10,11 +10,13 @@ import java.util.Map;
 
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
+import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
 import com.fs.uiclient.api.gwt.client.uexp.ExpConnect;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
+import com.fs.uicommons.api.gwt.client.widget.basic.ImageI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
@@ -64,7 +66,11 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	protected boolean isNew = true;
 
+	protected DateData firstMessageTimestamp;
+
 	protected DateData latestMessageTimestamp;
+
+	protected ImageI image;
 
 	/**
 	 * @param ctn
@@ -79,9 +85,12 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			this.title.parent(this.outer);
 		}
 		{// outer/image,TODO
-			
+
+			image = this.factory.create(ImageI.class);
+
+			image.parent(this.outer);
 		}
-		
+
 		{ // close button
 			final ButtonI close = this.factory.create(ButtonI.class);
 			close.setText(true, "destroy");
@@ -108,7 +117,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
-				this.middleLeft = this.factory.create(ListI.class, this.getChildName("middle-left"),pts);
+				this.middleLeft = this.factory.create(ListI.class, this.getChildName("middle-left"), pts);
 				this.middleLeft.parent(this.middle);
 				this.middleLeft.getElement().addClassName("myexp-middle-left");
 			}
@@ -138,16 +147,16 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 					}
 				});
 
-				this.msglist = this.factory.create(ListI.class, this.getChildName("message-list"),pts);
+				this.msglist = this.factory.create(ListI.class, this.getChildName("message-list"), pts);
 				this.msglist.parent(this.middleLeft);
-				//TODO remove
+				// TODO remove
 				this.msglist.getElement().addClassName("myexp-messagelist");
 			}
 			// outer/middleLeft/msg input
 			{
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(StringEditorI.PK_TEXAREA, true);
-				this.statement = this.factory.create(StringEditorI.class, this.getChildName("textarea"),pts);
+				this.statement = this.factory.create(StringEditorI.class, this.getChildName("textarea"), pts);
 				this.statement.parent(this.middleLeft);
 				this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 
@@ -189,13 +198,13 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
-				this.middleLeft = this.factory.create(ListI.class, this.getChildName("midle-left"),pts);
+				this.middleLeft = this.factory.create(ListI.class, this.getChildName("midle-left"), pts);
 				this.middleLeft.parent(this.middle);
 				this.middleLeft.getElement().addClassName("myexp-middle-left");
 			}
 			{
 
-				// 
+				//
 				this.connected = this.factory.create(ListI.class);
 				this.connected.parent(this.middle);
 				this.connected.getElement().addClassName("myexp-connected");
@@ -213,10 +222,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		req.setHeader("isForMore", "true");
 		req.setPayload("accountId2", this.getAccountId());
 		req.setPayload("expId2", this.expId);
-		req.setPayload("timestamp2", this.latestMessageTimestamp);
-		int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_MESSAGE_QUERY_LIMIT,10);
+		req.setPayload("timestamp2", this.firstMessageTimestamp);
+		int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_MESSAGE_QUERY_LIMIT, 10);
 		req.setPayload("limit", limit);
-		
+
 		this.getClient(true).getEndpoint().sendMessage(req);
 	}
 
@@ -256,8 +265,12 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	@Override
-	public void setMyExp(String title, String body) {
-		this.title.setTextAndTitle(title,false,body);
+	public void setMyExp(MyExp me) {
+		this.title.setTextAndTitle(me.getTitle(), false, me.getBody());
+		String img = me.getImage();
+		if (img != null) {
+			this.image.setSrc(img);
+		}
 	}
 
 	/*
@@ -275,6 +288,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		if (this.latestMessageTimestamp == null || ts.getValue() > this.latestMessageTimestamp.getValue()) {
 			this.latestMessageTimestamp = ts;
 		}
+		if (this.firstMessageTimestamp == null || ts.getValue() < this.firstMessageTimestamp.getValue()) {
+			this.firstMessageTimestamp = ts;
+		}
+
 		ExpMessageView ev = ExpMessageView.createViewForMessage(this.container, msg);
 		ev.parent(this.msglist);
 		this.map.put(id, msg);
@@ -310,7 +327,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	/*
-	 *Apr 3, 2013
+	 * Apr 3, 2013
 	 */
 	@Override
 	public void noMore() {

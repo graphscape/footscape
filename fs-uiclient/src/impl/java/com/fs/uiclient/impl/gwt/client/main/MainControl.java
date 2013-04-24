@@ -5,6 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
+import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
@@ -271,15 +272,17 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void setExpDetail(String expId, String title, String body) {
+	public void setExpDetail(MyExp me) {
+		
+		String expId = me.getId();
 		// update title of tab that point to the exp view
 		BodyViewI bv = this.getBodyView();
-		Path path = this.getExpViewPath(expId);
-		bv.setTitleOfItem(path, title, false);
+		Path path = this.getExpViewPath(me.getId());
+		bv.setTitleOfItem(path, me.getTitle(), false);
 		//
 		MyExpViewI mv = this.openMyExp(Cause.valueOf("setExpDetail"), expId, false);
 
-		mv.setMyExp(title, body);
+		mv.setMyExp(me);
 
 	}
 
