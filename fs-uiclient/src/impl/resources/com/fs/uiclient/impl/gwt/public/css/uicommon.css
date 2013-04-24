@@ -13,9 +13,9 @@
 }
 
 .body-tabber {
-	background-color: #FCFCFC;
-	border-left: 1px solid #E0E0E0;
-	border-right: 1px solid #E0E0E0;
+	background-color: #FFFFFF;
+	border-left: 1px solid #F0F0F0;
+	border-right: 1px solid #F0F0F0;
 }
 
 .bottom-list {
@@ -264,7 +264,7 @@ Console View
 }
 
 .tabber-layout-left {
-	border-right: 1px solid #E0E0E0;
+	border-right: 1px solid #F0F0F0;
 }
 
 .invisible {
@@ -377,9 +377,10 @@ Console View
 
 /*Menu*/
 .wgt-MenuWImpl {
-	background-color: #FCFCFC;
+	background-color: #F8F8F8;
 	border: 1px solid #C0C0C0;
 	margin-top: 0px;
+	font-weight: bold;
 	position: absolute;
 	padding-right: 6px;
 }
@@ -408,7 +409,7 @@ Console View
 
 .wgt-MenuWImpl li:hover,.wgt-MenuWImpl li:focus,.wgt-MenuItemWImpl:hover
 	{
-	background: #E0E0E0;
+	background: #4BA1DE;
 	color: #fff;
 }
 
@@ -473,6 +474,7 @@ Console View
 	list-style: none;
 	margin: 2px 0;
 	padding-left: 0;
+	background-color: #fff;
 }
 
 .tabber-layout-left ul li {
@@ -483,7 +485,7 @@ Console View
 
 .tabber-layout-left ul .wgt-TabWImpl:hover,.tabber-layout-left ul .wgt-TabWImpl.position-selected
 	{
-	background: #E0E0E0;
+	background: #F0F0F0;
 }
 
 /*End of CSS file*/
