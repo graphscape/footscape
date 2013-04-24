@@ -48,6 +48,7 @@ import com.fs.uicommons.api.gwt.client.widget.bar.BarWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.basic.DateWI;
+import com.fs.uicommons.api.gwt.client.widget.basic.ImageI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.error.ErrorInfosWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
@@ -101,6 +102,7 @@ import com.fs.uicommons.impl.gwt.client.widget.bar.BarWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.AnchorWImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.ButtonImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.DateWImpl;
+import com.fs.uicommons.impl.gwt.client.widget.basic.ImageImpl;
 import com.fs.uicommons.impl.gwt.client.widget.basic.LabelImpl;
 import com.fs.uicommons.impl.gwt.client.widget.error.ErrorInfosWidgetImpl;
 import com.fs.uicommons.impl.gwt.client.widget.html.HtmlElementWidgetImpl;
@@ -266,6 +268,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public TableI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
 
 				return new TableImpl(c, name);
+
+			}
+		});
+		wf.addCreater(new WidgetCreaterSupport<ImageI>(ImageI.class) {
+			@Override
+			public ImageI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
+
+				return new ImageImpl(c, name);
 
 			}
 		});
@@ -487,6 +497,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof PanelWI;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(ImageI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof ImageI;
 			}
 		});
 

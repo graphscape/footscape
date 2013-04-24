@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
@@ -43,7 +44,7 @@ public interface MainControlI extends ControlI {
 
 	public void closeMyExp(String expId);
 
-	public void setExpDetail(String expId, String title, String body);
+	public void setExpDetail(MyExp me);
 
 	public void refreshUeList();
 

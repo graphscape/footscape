@@ -68,7 +68,7 @@ public class ExpItemModel extends PropertiesData<Object> {
 	public String getImage() {
 
 		String rt = (String) this.getProperty("image");
-		if (rt.equals("n/a")) {
+		if ("n/a".equals(rt)) {
 			rt = null;
 		}
 		return rt;

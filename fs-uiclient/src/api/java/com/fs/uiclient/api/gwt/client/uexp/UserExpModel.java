@@ -73,7 +73,7 @@ public class UserExpModel {
 	public String getImage() {
 		//
 		String rt = (String) this.target.getProperty(ExpEditViewI.F_IMAGE);
-		return rt.equals("n/a") ? null : rt;
+		return "n/a".equals(rt) ? null : rt;
 
 	}
 
