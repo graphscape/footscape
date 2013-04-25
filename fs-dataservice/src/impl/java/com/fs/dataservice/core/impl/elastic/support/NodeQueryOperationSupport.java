@@ -86,9 +86,9 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 	public NodeQueryOperationSupport(DataServiceI ds, R rst) {
 		super(rst);
 		this.elastic = (ElasticClientI) ds;
-		this.parameters.setProperties(PK_TERMS, new ArrayList<Term>());
-		this.parameters.setProperties(PK_RANGES, new ArrayList<Range>());
-		this.parameters.setProperties(PK_MATCHES, new MapProperties<Match>());
+		this.parameters.setPropertiesByArray(PK_TERMS, new ArrayList<Term>());
+		this.parameters.setPropertiesByArray(PK_RANGES, new ArrayList<Range>());
+		this.parameters.setPropertiesByArray(PK_MATCHES, new MapProperties<Match>());
 
 	}
 

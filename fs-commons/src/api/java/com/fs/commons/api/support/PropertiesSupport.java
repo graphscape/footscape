@@ -20,7 +20,7 @@ import com.fs.commons.api.value.PropertiesI;
 public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 	/* */
 	@Override
-	public void setProperties(Object... keyValues) {
+	public void setPropertiesByArray(Object... keyValues) {
 		int i = 0;
 		while (i < keyValues.length) {
 			String key = String.valueOf(keyValues[i++]);

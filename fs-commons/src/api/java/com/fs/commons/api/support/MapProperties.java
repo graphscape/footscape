@@ -35,7 +35,7 @@ public class MapProperties<T> extends PropertiesSupport<T> {
 
 	public static <T> MapProperties<T> valueOf(Object... keyValues) {
 		MapProperties<T> rt = new MapProperties<T>();
-		rt.setProperties(keyValues);
+		rt.setPropertiesByArray(keyValues);
 		return rt;
 	}
 

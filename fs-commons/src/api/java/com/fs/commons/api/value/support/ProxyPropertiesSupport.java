@@ -78,9 +78,9 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 	}
 
 	@Override
-	public void setProperties(Object... keyValues) {
+	public void setPropertiesByArray(Object... keyValues) {
 		//
-		this.target.setProperties(keyValues);
+		this.target.setPropertiesByArray(keyValues);
 		//
 	}
 

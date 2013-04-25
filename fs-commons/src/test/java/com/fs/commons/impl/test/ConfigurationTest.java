@@ -26,7 +26,7 @@ public class ConfigurationTest extends TestCase {
 		PropertiesI<String> pts = cfg.parseAsProperties("prefix", "keySuffix",
 				"valueSuffix");
 		PropertiesI<String> expected = new MapProperties<String>();
-		expected.setProperties("key0", "value0", "key1", "value1", "key3",
+		expected.setPropertiesByArray("key0", "value0", "key1", "value1", "key3",
 				"value3", "key5", "value5");
 		Assert.assertEquals("", expected, pts);
 	}

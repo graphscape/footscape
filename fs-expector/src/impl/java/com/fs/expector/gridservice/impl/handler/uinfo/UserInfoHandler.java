@@ -31,7 +31,7 @@ public class UserInfoHandler extends ExpectorTMREHSupport {
 		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);		
 		
 		if(p != null){
-			pts.setProperties(p);
+			pts.setProperties(p.getTarget());
 		}else{
 			pts.setProperty(Profile.ACCOUNTID,accId);
 			pts.setProperty(Profile.AGE, 0);

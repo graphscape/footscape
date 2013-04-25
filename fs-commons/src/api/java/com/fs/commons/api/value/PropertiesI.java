@@ -30,8 +30,7 @@ public interface PropertiesI<T> extends ValueI {
 
 	public void setProperties(Map<String, T> map);
 	
-	@Deprecated
-	public void setProperties(Object... keyValues);
+	public void setPropertiesByArray(Object... keyValues);
 
 	public void setProperties(PropertiesI<T> pts);
 
