@@ -6,7 +6,7 @@ package com.fs.dataservice.impl.test.cases;
 
 import java.util.List;
 
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.impl.test.MockNode;
 import com.fs.dataservice.impl.test.cases.support.TestBase;
 
@@ -32,7 +32,7 @@ public class NotEqTest extends TestBase {
 		mn3.setProperty(MockNode.FIELD2, "value32");
 		mn3.setProperty(MockNode.FIELD3, "value33");
 		mn3.save(true);
-		NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
+		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyEq(MockNode.FIELD1, "value1");
 		qo.propertyNotEq(MockNode.FIELD2, "value12");
 		qo.sortTimestamp(false);//

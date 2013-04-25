@@ -9,7 +9,8 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.meta.DataSchema;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeCountOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -33,15 +34,15 @@ public class ProxyDataServiceImpl implements DataServiceI {
 	}
 
 	@Override
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls) {
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(Class<W> cls) {
 
-		return target.prepareNodeQuery(cls);
+		return target.prepareNodeSearch(cls);
 	}
 
 	@Override
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype) {
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(NodeType ntype) {
 
-		return target.prepareNodeQuery(ntype);
+		return target.prepareNodeSearch(ntype);
 	}
 
 	@Override
@@ -117,6 +118,20 @@ public class ProxyDataServiceImpl implements DataServiceI {
 	public DataSchema getConfigurations() {
 
 		return target.getConfigurations();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.dataservice.api.core.DataServiceI#prepareNodeCount(java.lang.Class
+	 * )
+	 */
+	@Override
+	public <W extends NodeWrapper> NodeCountOperationI<W> prepareNodeCount(Class<W> cls) {
+		// TODO Auto-generated method stub
+		return this.target.prepareNodeCount(cls);
+
 	}
 
 }

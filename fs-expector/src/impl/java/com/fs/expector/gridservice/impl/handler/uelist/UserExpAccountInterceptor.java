@@ -5,7 +5,7 @@
 package com.fs.expector.gridservice.impl.handler.uelist;
 
 import com.fs.dataservice.api.core.InterceptorI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 
 /**
@@ -13,13 +13,13 @@ import com.fs.expector.dataservice.api.wrapper.Expectation;
  * 
  */
 public class UserExpAccountInterceptor implements
-		InterceptorI<NodeQueryOperationI<Expectation>> {
+		InterceptorI<NodeSearchOperationI<Expectation>> {
 
 	/*
 	 *Nov 29, 2012
 	 */
 	@Override
-	public void intercept(NodeQueryOperationI<Expectation> opt) {
+	public void intercept(NodeSearchOperationI<Expectation> opt) {
 		// 
 		
 	}

@@ -28,6 +28,14 @@ public class ExpItemModel extends PropertiesData<Object> {
 		return (String) this.getProperty("title");
 	}
 
+	public Long getMessageCount() {
+		return (Long) this.getProperty("messageCount");
+	}
+
+	public Long getConnectionCount() {
+		return (Long) this.getProperty("connectionCount");
+	}
+
 	public String getExpBodyAsHtml() {
 		return getExpBodyAsHtml(this.getExpBody());
 	}

@@ -55,6 +55,16 @@ public class UserExpModel {
 	public boolean isSelected() {
 		return this.selected;
 	}
+	
+	public Long getConnectionCount(){
+		return (Long)this.target.getProperty("connectionCount");
+	}
+	
+	public Long getMessageCount(){
+	
+		return (Long)this.target.getProperty("messageCount");
+	}
+	
 
 	public DateData getTimestamp(boolean force) {
 		return (DateData) this.target.getProperty(NodeFields.PK_TIMESTAMP);

@@ -37,6 +37,12 @@ a.exp-label {
 	padding-left:0px;
 }
 
+.exps-item-count{
+	width:1%;
+	font-size:20px;
+}
+
+
 .exps-item:hover {
 	border-left : 2px solid #646464;
 	background: #DCDCDC;
@@ -147,6 +153,11 @@ a.exp-label {
 	padding-bottom: 6px;
 	padding-left:0px;
 }
+
+.uel-item-count{
+	width:1%;
+}
+
 .uel-item.selected,
 .uel-item:hover {
 	border-left : 2px solid #646464;

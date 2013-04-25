@@ -11,7 +11,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.support.ResultSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
@@ -19,11 +19,11 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  * @author wu
  * 
  */
-public class NodeQueryResult<W extends NodeWrapper> extends
-		ResultSupport<NodeQueryResultI<W>, List<W>> implements
-		NodeQueryResultI<W> {
+public class NodeSearchResult<W extends NodeWrapper> extends
+		ResultSupport<NodeSearchResultI<W>, List<W>> implements
+		NodeSearchResultI<W> {
 
-	public NodeQueryResult(DataServiceI ds) {
+	public NodeSearchResult(DataServiceI ds) {
 		super(ds);
 	}
 

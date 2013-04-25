@@ -5,7 +5,7 @@ package com.fs.dataservice.impl.test.cases;
 
 import java.util.List;
 
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.impl.test.MockNode;
 import com.fs.dataservice.impl.test.cases.support.TestBase;
 
@@ -34,7 +34,7 @@ public class ESITest extends TestBase {
 		Thread.sleep(100);
 		
 		
-		NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
+		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyEq(MockNode.FIELD1, "value1");
 		qo.sortTimestamp(true);
 		qo.first(0);

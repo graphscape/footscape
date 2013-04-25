@@ -11,13 +11,16 @@ import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.NodeI;
+import com.fs.dataservice.api.core.operations.NodeCountOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.Connection;
+import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 
@@ -60,13 +63,13 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	@Override
 	public int getConnectedExpCount(String expId) {
-		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
+		NodeSearchOperationI<Connection> qo = this.dataService.prepareNodeSearch(Connection.class);
 
 		qo.first(0);
 		qo.maxSize(this.maxSizeOfConnectQuery);// TODO application determine
 												// this?
 		qo.propertyEq(Connection.EXP_ID1, expId);
-		NodeQueryResultI<Connection> rst = qo.execute().getResult().assertNoError();
+		NodeSearchResultI<Connection> rst = qo.execute().getResult().assertNoError();
 
 		return rst.size();
 	}
@@ -141,27 +144,62 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		// convert
 		List<PropertiesI<Object>> rt = NodeWrapperUtil.convert(list);
 		for (PropertiesI<Object> pts : rt) {
+			String expId = (String) pts.getProperty(NodeI.PK_ID, true);
 			String accId = (String) pts.getProperty("accountId");
 			// account must be exist
 			Account acc = this.dataService.getNewestById(Account.class, accId, true);
 			pts.setProperty("nick", acc.getNick());
+			{// total connections
+				long count = this.getExpConnectCount(expId);
+				pts.setProperty("connectionCount", count);
 
-			// profile may not exist.
-
-			Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
-			String icon = pf == null ? null : pf.getIcon();
-			if (icon == null) {
-				icon = this.defaultUserIconDataUrl;
 			}
-			pts.setProperty("userIcon", icon);//
+			{// total messages
+				long count = this.getExpMessageCount(expId);
+				pts.setProperty("messageCount", count);
+
+			}
+			{// profile may not exist.
+
+				Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
+				String icon = pf == null ? null : pf.getIcon();
+				if (icon == null) {
+					icon = this.defaultUserIconDataUrl;
+				}
+				pts.setProperty("userIcon", icon);//
+			}
 			//
 			this.processExpIcon(pts);
 		}
 		return rt;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.fs.expector.dataservice.api.ExpectorDsFacadeI#getDefaultUserIconDataUrl()
+	/**
+	 * @param expId
+	 */
+	private long getExpConnectCount(String expId) {
+		NodeCountOperationI<Connection> nco = this.dataService.prepareNodeCount(Connection.class);
+		nco.propertyEq(Connection.EXP_ID1, expId);
+		return nco.execute().getResult().assertNoError().get(true);
+
+	}
+
+	/**
+	 * @param expId
+	 */
+	private long getExpMessageCount(String expId) {
+		NodeCountOperationI<ExpMessage> nco = this.dataService.prepareNodeCount(ExpMessage.class);
+		nco.propertyEq(ExpMessage.EXP_ID2, expId);
+		return nco.execute().getResult().assertNoError().get(true);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.expector.dataservice.api.ExpectorDsFacadeI#getDefaultUserIconDataUrl
+	 * ()
 	 */
 	@Override
 	public String getDefaultUserIconDataUrl() {

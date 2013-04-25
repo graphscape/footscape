@@ -24,8 +24,8 @@ import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
@@ -211,7 +211,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 
 		Integer limit = (Integer) req.getPayload("limit", this.defaultLimit);
 
-		NodeQueryOperationI<ExpMessage> qo = this.dataService.prepareNodeQuery(ExpMessage.class);
+		NodeSearchOperationI<ExpMessage> qo = this.dataService.prepareNodeSearch(ExpMessage.class);
 
 		if (timestamp1 != null) {
 			qo.propertyGt(NodeI.PK_TIMESTAMP, timestamp1, true);
@@ -231,7 +231,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 		}
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 
-		NodeQueryResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();
+		NodeSearchResultI<ExpMessage> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
 		res.setPayload("limit", limit);
 		res.setPayload("expId2", expId2);

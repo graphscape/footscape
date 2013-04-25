@@ -20,8 +20,8 @@ import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
 import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.DataServiceI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.expector.dataservice.api.NodeTypes;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
@@ -131,13 +131,13 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 	public static void confirm(DataServiceI ds, String email, String confirmCode, ErrorInfos eis) {
 		email = email.toLowerCase();
-		NodeQueryOperationI<SignupRequest> qo = ds.prepareNodeQuery(NodeTypes.SIGNUP_REQUEST);
+		NodeSearchOperationI<SignupRequest> qo = ds.prepareNodeSearch(NodeTypes.SIGNUP_REQUEST);
 
 		qo.propertyEq(SignupRequest.PK_CONFIRM_CODE, confirmCode);
 		qo.propertyEq(SignupRequest.PK_EMAIL, email);// query by email and the
 		// confirm code.
 
-		NodeQueryResultI<SignupRequest> rst = qo.execute().getResult().assertNoError().cast();
+		NodeSearchResultI<SignupRequest> rst = qo.execute().getResult().assertNoError().cast();
 		List<SignupRequest> srl = rst.list();
 		if (srl.isEmpty()) {
 			eis.add(new ErrorInfo(null, "confirmCode or username error,or already confirmed."));// TODO

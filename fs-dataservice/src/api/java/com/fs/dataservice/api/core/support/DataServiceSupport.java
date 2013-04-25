@@ -14,11 +14,12 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.meta.DataSchema;
+import com.fs.dataservice.api.core.operations.NodeCountOperationI;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.api.core.result.NodeResultI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -83,16 +84,23 @@ public abstract class DataServiceSupport implements DataServiceI {
 	 * Oct 30, 2012
 	 */
 	@Override
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls) {
-		NodeQueryOperationI<W> rt = this.prepareOperation(NodeQueryOperationI.class);
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(Class<W> cls) {
+		NodeSearchOperationI<W> rt = this.prepareOperation(NodeSearchOperationI.class);
 		rt.nodeType(cls);
 		return rt;
 	}
 
 	@Override
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype) {
+	public <W extends NodeWrapper> NodeCountOperationI<W> prepareNodeCount(Class<W> cls) {
+		NodeCountOperationI<W> rt = this.prepareOperation(NodeCountOperationI.class);
+		rt.nodeType(cls);
+		return rt;
+	}
+
+	@Override
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(NodeType ntype) {
 		//
-		NodeQueryOperationI<W> rt = this.prepareOperation(NodeQueryOperationI.class);
+		NodeSearchOperationI<W> rt = this.prepareOperation(NodeSearchOperationI.class);
 		rt.nodeType(ntype);
 		return rt;
 	}
@@ -104,12 +112,12 @@ public abstract class DataServiceSupport implements DataServiceI {
 
 	@Override
 	public <T extends NodeWrapper> T getNewest(Class<T> wpcls, String[] fields, Object[] values, boolean force) {
-		NodeQueryOperationI<T> qo = this.prepareNodeQuery(wpcls);
+		NodeSearchOperationI<T> qo = this.prepareNodeSearch(wpcls);
 		for (int i = 0; i < fields.length; i++) {
 			qo.propertyEq(fields[i], values[i]);
 		}
 		qo.sortTimestamp(true);
-		NodeQueryResultI<T> rst = qo.execute().getResult();
+		NodeSearchResultI<T> rst = qo.execute().getResult();
 		T node = rst.first(false);
 		if (node == null) {
 			if (force) {

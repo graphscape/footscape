@@ -6,8 +6,8 @@ package com.fs.expector.dataservice.impl.test.cases.support;
 
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.expector.dataservice.api.NodeTypes;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Session;
@@ -98,8 +98,8 @@ public class AuthedTestBase extends TestBase {
 
 		// query account
 		// this.dump();
-		NodeQueryOperationI<Account> qo = this.datas
-				.prepareOperation(NodeQueryOperationI.class);
+		NodeSearchOperationI<Account> qo = this.datas
+				.prepareOperation(NodeSearchOperationI.class);
 
 		qo.nodeType(NodeTypes.ACCOUNT);
 		qo.id(acc.getId());
@@ -111,7 +111,7 @@ public class AuthedTestBase extends TestBase {
 
 		// qo.propertyEq("uniqueId", acc.getUniqueId());
 
-		NodeQueryResultI<Account> rsts = qo.getResult();
+		NodeSearchResultI<Account> rsts = qo.getResult();
 		this.dump();//
 		assertEquals("no account found with email and password:" + acc.getId()
 				+ "," + acc.getPassword(), 1, rsts.size());

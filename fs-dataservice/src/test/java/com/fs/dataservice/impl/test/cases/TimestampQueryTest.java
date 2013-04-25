@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fs.dataservice.api.core.NodeI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.impl.test.MockNode;
 import com.fs.dataservice.impl.test.cases.support.TestBase;
 
@@ -35,7 +35,7 @@ public class TimestampQueryTest extends TestBase {
 		// query the #1 node
 		Date timestamp1 = null;
 		{
-			NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
+			NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 			qo.propertyEq(MockNode.FIELD1, "value1-" + fromIdx);
 			qo.sortTimestamp(true);//
 			{
@@ -53,7 +53,7 @@ public class TimestampQueryTest extends TestBase {
 
 		}
 		// query from #1,so result is #1,#2,#3
-		NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
+		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyGt(NodeI.PK_TIMESTAMP, timestamp1, true);
 		qo.sortTimestamp(true);//
 		{

@@ -18,19 +18,21 @@ import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.meta.DataSchema;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
+import com.fs.dataservice.api.core.operations.NodeCountOperationI;
 import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.api.core.operations.RefreshOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.support.DataServiceSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.dataservice.core.impl.elastic.operations.DumpOperationE;
+import com.fs.dataservice.core.impl.elastic.operations.NodeCountOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeCreateOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeDeleteOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeGetOperationE;
-import com.fs.dataservice.core.impl.elastic.operations.NodeQueryOperationE;
+import com.fs.dataservice.core.impl.elastic.operations.NodeSearchOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.RefreshOperationE;
 
 /**
@@ -54,7 +56,8 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 
 		this.registerOperation("core.nodeget", NodeGetOperationI.class, NodeGetOperationE.class);
 		this.registerOperation("core.nodecreate", NodeCreateOperationI.class, NodeCreateOperationE.class);
-		this.registerOperation("core.nodequery", NodeQueryOperationI.class, NodeQueryOperationE.class);
+		this.registerOperation("core.nodesearch", NodeSearchOperationI.class, NodeSearchOperationE.class);
+		this.registerOperation("core.nodecount", NodeCountOperationI.class, NodeCountOperationE.class);
 
 		this.registerOperation("core.dump", DumpOperationI.class, DumpOperationE.class);
 		this.registerOperation("core.refresh", RefreshOperationI.class, RefreshOperationE.class);
@@ -151,14 +154,14 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls, String[] fields,
 			Object[] values, int from, int maxSize) {
 		//
-		NodeQueryOperationI<T> qo = this.prepareNodeQuery(wpcls);
+		NodeSearchOperationI<T> qo = this.prepareNodeSearch(wpcls);
 		for (int i = 0; i < fields.length; i++) {
 			qo.propertyEq(fields[i], values[i]);
 		}
 		qo.first(from);
 		qo.maxSize(maxSize);
 		qo.sortTimestamp(true);
-		NodeQueryResultI<T> rst = qo.execute().getResult();
+		NodeSearchResultI<T> rst = qo.execute().getResult();
 
 		return rst.list();
 	}

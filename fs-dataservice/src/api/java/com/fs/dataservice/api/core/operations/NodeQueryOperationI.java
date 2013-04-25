@@ -8,60 +8,44 @@ import java.util.Date;
 
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.OperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
  * @author wu TODO separate a Query interface for different query style.
  */
-public interface NodeQueryOperationI<W extends NodeWrapper> extends
-		OperationI<NodeQueryOperationI<W>, NodeQueryResultI<W>> {
+public interface NodeQueryOperationI<O extends NodeQueryOperationI<O, W, R>, W extends NodeWrapper, R extends ResultI<R, ?>>
+		extends OperationI<O, R> {
 
 	public NodeType getNodeType(boolean force);
 
-	public NodeQueryOperationI<W> nodeType(NodeType ntype);
+	public O nodeType(NodeType ntype);
 
-	public NodeQueryOperationI<W> nodeType(Class<W> cls);
+	public O nodeType(Class<W> cls);
 
-	public NodeQueryOperationI<W> propertyNotEq(String key, Object value);
-	
-	public NodeQueryOperationI<W> propertyEq(String key, Object value);
+	public O propertyNotEq(String key, Object value);
 
-	public NodeQueryOperationI<W> propertyGt(String key, Object value, boolean include);
+	public O propertyEq(String key, Object value);
 
-	public NodeQueryOperationI<W> propertyMatch(String key, String pharse);
+	public O propertyGt(String key, Object value, boolean include);
 
-	public NodeQueryOperationI<W> propertyMatch(String key, String pharse, int slop);
+	public O propertyMatch(String key, String pharse);
 
-	public NodeQueryOperationI<W> propertyLt(String key, Object value, boolean include);
+	public O propertyMatch(String key, String pharse, int slop);
 
-	public NodeQueryOperationI<W> propertyRange(String key, Object from, boolean includeFrom, Object to,
-			boolean includeTo);
+	public O propertyLt(String key, Object value, boolean include);
 
-	public NodeQueryOperationI<W> uniqueId(String uid);
+	public O propertyRange(String key, Object from, boolean includeFrom, Object to, boolean includeTo);
 
-	public NodeQueryOperationI<W> id(String id);
+	public O uniqueId(String uid);
 
-	public NodeQueryOperationI<W> first(int from);
+	public O id(String id);
 
-	public NodeQueryOperationI<W> maxSize(int maxs);
+	public O timestampRange(Date from, boolean includeFrom, Date to, boolean includeTo);
 
-	public NodeQueryOperationI<W> sort(String key);
-
-	public NodeQueryOperationI<W> sort(String key, boolean desc);
-
-	public NodeQueryOperationI<W> sortTimestamp(boolean desc);
-
-	public NodeQueryOperationI<W> singleNewest(boolean nf);
-
-	public NodeQueryOperationI<W> timestampRange(Date from, boolean includeFrom, Date to, boolean includeTo);
-	
-	public NodeQueryOperationI<W> explain(boolean expl);
+	public O explain(boolean expl);
 
 	public String getUniqueId();
 
-	public int getFrom();
-
-	public int getMaxSize();
 
 }

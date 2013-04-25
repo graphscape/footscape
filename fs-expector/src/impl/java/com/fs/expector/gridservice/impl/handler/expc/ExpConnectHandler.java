@@ -14,8 +14,8 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
@@ -54,7 +54,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 
 		String expId1 = req.getString("expId1", false);
 
-		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
+		NodeSearchOperationI<Connection> qo = this.dataService.prepareNodeSearch(Connection.class);
 
 		qo.first(0);
 		qo.maxSize(ExpectorDsFacadeImpl.maxSizeOfConnectQuery);// TODO
@@ -68,7 +68,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 
-		NodeQueryResultI<Connection> rst = qo.execute().getResult().assertNoError();
+		NodeSearchResultI<Connection> rst = qo.execute().getResult().assertNoError();
 		/*
 		 * List<PropertiesI<Object>> el = NodeWrapperUtil.convert(rst.list(),
 		 * new String[] { NodeI.PK_ID, Connection.ACCOUNT_ID1,

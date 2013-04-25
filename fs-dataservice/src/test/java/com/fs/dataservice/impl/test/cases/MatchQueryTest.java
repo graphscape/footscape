@@ -6,7 +6,7 @@ package com.fs.dataservice.impl.test.cases;
 
 import java.util.List;
 
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.impl.test.MockNode;
 import com.fs.dataservice.impl.test.cases.support.TestBase;
 
@@ -130,13 +130,13 @@ curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 		mn2.setProperty(MockNode.FIELD2, "value22");
 		mn2.setProperty(MockNode.FIELD3, "value23 and value231 value232 value233");
 		mn2.save(true);
-		NodeQueryOperationI<MockNode> qo = this.datas.prepareNodeQuery(MockNode.class);
+		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyMatch(MockNode.FIELD3, "value13 value132");
 		List<MockNode> mnl = qo.execute().getResult().assertNoError().list();
 
 		assertEquals("slop=0,should not match", 0, mnl.size());
 
-		qo = this.datas.prepareNodeQuery(MockNode.class);
+		qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyMatch(MockNode.FIELD3, "value13 value132", 2);
 		mnl = qo.execute().getResult().assertNoError().list();
 		assertEquals("slop=3,should match one", 1, mnl.size());

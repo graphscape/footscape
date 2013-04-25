@@ -14,8 +14,8 @@ import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.NodeI;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Connection;
@@ -47,9 +47,9 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 	public void handleConnected(MessageContext hc, TerminalMsgReceiveEW ew, ResponseI res) {
 		MessageI req = ew.getMessage();//
 		String expId1 = req.getString("expId1", true);
-		NodeQueryOperationI<Connection> qo = this.dataService.prepareNodeQuery(Connection.class);
+		NodeSearchOperationI<Connection> qo = this.dataService.prepareNodeSearch(Connection.class);
 		qo.propertyEq(Connection.EXP_ID1, expId1);
-		NodeQueryResultI<Connection> rst = qo.execute().getResult().assertNoError();
+		NodeSearchResultI<Connection> rst = qo.execute().getResult().assertNoError();
 
 		List<Expectation> expL = new ArrayList<Expectation>();
 		for (Connection c : rst.list()) {
@@ -74,7 +74,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		String phrase = (String) req.getPayload("phrase");// may null
 
-		NodeQueryOperationI<Expectation> qo = this.dataService.prepareNodeQuery(Expectation.class);
+		NodeSearchOperationI<Expectation> qo = this.dataService.prepareNodeSearch(Expectation.class);
 
 		qo.first(from);
 		qo.maxSize(max);
@@ -84,7 +84,7 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 		}
 		qo.propertyMatch(Expectation.BODY, phrase, slop);
 		qo.sort(NodeI.PK_TIMESTAMP, true);
-		NodeQueryResultI<Expectation> rst = qo.execute().getResult().assertNoError();
+		NodeSearchResultI<Expectation> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());
 
 	}

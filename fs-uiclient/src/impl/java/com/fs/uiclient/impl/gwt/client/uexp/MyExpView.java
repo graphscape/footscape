@@ -262,6 +262,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		req.setPayload("header", header);
 		req.setPayload("path", "/text-message");
 		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.statement.setData(null);
 	}
 
 	@Override

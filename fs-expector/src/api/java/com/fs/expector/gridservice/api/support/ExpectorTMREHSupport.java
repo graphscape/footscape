@@ -19,8 +19,8 @@ import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.result.NodeQueryResultI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.gridservice.api.OnlineNotifyServiceI;
@@ -98,14 +98,14 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI findNodeList(String expPrefix, MessageContext hc,
+	protected <T extends NodeWrapper> NodeSearchResultI findNodeList(String expPrefix, MessageContext hc,
 			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap) {
 		return this.findNodeList(expPrefix, hc, type, cls, payloadKeyMap, true);//
 	}
 
-	protected <T extends NodeWrapper> NodeQueryResultI<T> findNodeList(String expPrefix, MessageContext hc,
+	protected <T extends NodeWrapper> NodeSearchResultI<T> findNodeList(String expPrefix, MessageContext hc,
 			NodeType type, Class<T> cls, Map<String, String> payloadKeyMap, boolean sortTimeStampDesc) {
-		NodeQueryOperationI<T> dbo = this.dataService.prepareOperation(NodeQueryOperationI.class);
+		NodeSearchOperationI<T> dbo = this.dataService.prepareOperation(NodeSearchOperationI.class);
 		dbo.nodeType(type);
 
 		for (Map.Entry<String, String> e : payloadKeyMap.entrySet()) {
@@ -121,7 +121,7 @@ public class ExpectorTMREHSupport extends TerminalMsgReseiveEventHandler {
 			dbo.sortTimestamp(true);
 		}
 
-		NodeQueryResultI<T> rt = dbo.execute().getResult().assertNoError();// TODO
+		NodeSearchResultI<T> rt = dbo.execute().getResult().assertNoError();// TODO
 																			// error
 																			// info
 																			// pass

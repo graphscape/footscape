@@ -10,6 +10,7 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
+import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
@@ -73,10 +74,28 @@ public class UserExpItemView extends ViewSupport {
 			 * );// td0.append(image);
 			 */
 			// middle
-			TDWrapper td02 = tr0.addTd();
-			td02.setAttribute("rowspan", "1");
+			{
 
-			{//
+				TDWrapper td02 = tr0.addTd();
+				td02.setAttribute("rowspan", "1");
+			}
+			{// ConnectionCount, messagecount
+
+				TDWrapper td02 = tr0.addTd();
+				td02.setAttribute("rowspan", rowspan);
+				td02.addClassName("uel-item-count");
+
+				String text = "" + um.getConnectionCount() + "/" + um.getMessageCount();
+				{// Connections
+					LabelI ccL = this.factory.create(LabelI.class);
+					ccL.setText(text);
+					ccL.setTitle("Total connected expectations/messages");
+					td02.getElement().appendChild(ccL.getElement());
+					ccL.parent(this);
+				}
+
+			}
+			{// expIcon TODO remove
 
 				TDWrapper td03 = tr0.addTd();
 				td03.setAttribute("rowspan", rowspan);
@@ -102,8 +121,8 @@ public class UserExpItemView extends ViewSupport {
 				this.actionsTd = td04;
 				this.actionsTd.addClassName("uel-item-actions");
 			}
-		}
-		//
+		}// end of line1
+			//
 		{// line2
 			// timestamp
 			TRWrapper tr2 = this.table.addTr();

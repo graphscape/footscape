@@ -7,7 +7,8 @@ package com.fs.dataservice.api.core;
 import java.util.List;
 
 import com.fs.dataservice.api.core.meta.DataSchema;
-import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
+import com.fs.dataservice.api.core.operations.NodeCountOperationI;
+import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -31,9 +32,11 @@ public interface DataServiceI {
 
 	public <T extends OperationI> T prepareOperation(Class<T> opc);
 
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(Class<W> cls);
+	public <W extends NodeWrapper> NodeCountOperationI<W> prepareNodeCount(Class<W> cls);
+	
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(Class<W> cls);
 
-	public <W extends NodeWrapper> NodeQueryOperationI<W> prepareNodeQuery(NodeType ntype);
+	public <W extends NodeWrapper> NodeSearchOperationI<W> prepareNodeSearch(NodeType ntype);
 
 	public <T extends NodeWrapper> List<T> getListNewestFirst(Class<T> wpcls, String[] fields,
 			Object[] value, int from, int maxSize);
