@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.fs.commons.api.value.ErrorInfos;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
+import com.fs.dataservice.api.core.wrapper.PropertyConverterI;
 
 /**
  * @author wu

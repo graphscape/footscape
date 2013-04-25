@@ -79,17 +79,17 @@ public class UserExpItemView extends ViewSupport {
 				TDWrapper td02 = tr0.addTd();
 				td02.setAttribute("rowspan", "1");
 			}
-			{// ConnectionCount, messagecount
+			{// ConnectionCount, messagecount,newMessageCount
 
 				TDWrapper td02 = tr0.addTd();
 				td02.setAttribute("rowspan", rowspan);
 				td02.addClassName("uel-item-count");
 
-				String text = "" + um.getConnectionCount() + "/" + um.getMessageCount();
+				String text = "" + um.getConnectionCount() + "][" + um.getMessageCount()+"]["+um.getNewMessageCount();
 				{// Connections
 					LabelI ccL = this.factory.create(LabelI.class);
 					ccL.setText(text);
-					ccL.setTitle("Total connected expectations/messages");
+					ccL.setTitle("Total connected expectations,messages and new messages.");
 					td02.getElement().appendChild(ccL.getElement());
 					ccL.parent(this);
 				}

@@ -3,6 +3,7 @@
  */
 package com.fs.expector.dataservice.api;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fs.commons.api.value.PropertiesI;
@@ -26,12 +27,15 @@ public interface ExpectorDsFacadeI {
 	public Account updatePassword(String aid, String pass);
 
 	/**
-	 * @param pts Expectation record
+	 * @param pts
+	 *            Expectation record
 	 */
 	public void processExpIcon(PropertiesI<Object> pts);
-	
+
 	public List<PropertiesI<Object>> convertToClientFormat(List<Expectation> el);
-	
+
 	public String getDefaultUserIconDataUrl();
+
+	public void acknowledgeExpMessage(String accId, String expId, Date ts);
 
 }

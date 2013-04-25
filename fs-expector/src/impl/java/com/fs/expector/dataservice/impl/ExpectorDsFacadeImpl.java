@@ -3,6 +3,7 @@
  */
 package com.fs.expector.dataservice.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fs.commons.api.ActiveContext;
@@ -19,6 +20,7 @@ import com.fs.dataservice.api.core.util.NodeWrapperUtil;
 import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
+import com.fs.expector.dataservice.api.wrapper.Acknowledge;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
@@ -159,6 +161,10 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 				pts.setProperty("messageCount", count);
 
 			}
+			{// total new messages,not acknowledged
+				long count = this.getNewExpMessageCount(expId);
+				pts.setProperty("newMessageCount", count);
+			}
 			{// profile may not exist.
 
 				Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
@@ -194,6 +200,30 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	}
 
+	/**
+	 * @param expId
+	 */
+	private long getNewExpMessageCount(String expId) {
+		Acknowledge ack = this.getExpMessageAcknowledge(expId);
+		NodeCountOperationI<ExpMessage> nco = this.dataService.prepareNodeCount(ExpMessage.class);
+		nco.propertyEq(ExpMessage.EXP_ID2, expId);
+		Date timestamp1 = ack == null ? null : ack.getAcknowledged();
+		if (timestamp1 != null) {
+			nco.propertyGt(NodeI.PK_TIMESTAMP, timestamp1, true);
+		}
+
+		return nco.execute().getResult().assertNoError().get(true);
+
+	}
+
+	public Acknowledge getExpMessageAcknowledge(String expId) {
+		Acknowledge rt = this.dataService.getNewest(Acknowledge.class, new String[] {
+				Acknowledge.PK_CATEGORY, Acknowledge.PK_OBJECT_ID }, new Object[] { Acknowledge.CAT_EXPM,
+				expId }, false);
+
+		return rt;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -204,6 +234,23 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	@Override
 	public String getDefaultUserIconDataUrl() {
 		return this.defaultUserIconDataUrl;
+	}
+
+	/*
+	 * Apr 25, 2013
+	 */
+	@Override
+	public void acknowledgeExpMessage(String accId, String expId, Date ts) {
+		//
+
+		Acknowledge ack = new Acknowledge().forCreate(this.dataService);
+		ack.setAccountId(accId);
+		ack.setCategory(Acknowledge.CAT_EXPM);
+		ack.setObjectId(expId);
+		ack.setAcknowledged(ts);
+		ack.save(true);
+		// TODO delete by query? or in a common place for all node types.
+
 	}
 
 }

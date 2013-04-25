@@ -13,6 +13,8 @@ import org.elasticsearch.search.SearchHit;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
 import com.fs.dataservice.api.core.NodeType;
+import com.fs.dataservice.api.core.meta.FieldMeta;
+import com.fs.dataservice.api.core.meta.FieldType;
 import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.support.NodeSupport;
 import com.fs.dataservice.api.core.wrapper.PropertyConverterI;
@@ -23,9 +25,9 @@ import com.fs.dataservice.core.impl.ElasticTimeFormat;
  * 
  */
 public class SearchHitNode extends NodeSupport {
-	private static Map<String, PropertyConverterI> pcMap = new HashMap<String, PropertyConverterI>();
+	private static Map<FieldType, PropertyConverterI> pcMap = new HashMap<FieldType, PropertyConverterI>();
 	static {
-		pcMap.put(NodeI.PK_TIMESTAMP, new PropertyConverterI<String, Date>() {
+		pcMap.put(FieldType.DATE, new PropertyConverterI<String, Date>() {
 
 			@Override
 			public Date convertFromStore(String s) {
@@ -36,14 +38,6 @@ public class SearchHitNode extends NodeSupport {
 		});
 	}
 
-	protected Object convertFromStore(String key, Object value) {
-		PropertyConverterI pc = pcMap.get(key);
-		if (pc == null) {
-			return value;
-		}
-		return pc.convertFromStore(value);
-	}
-
 	/**
 	 * @param type
 	 * @param uid
@@ -52,13 +46,19 @@ public class SearchHitNode extends NodeSupport {
 		super(nodeType, "todo");
 
 		NodeMeta nc = ds.getConfigurations().getNodeConfig(nodeType, true);
-
 		Map<String, Object> old = sh.sourceAsMap();
 		for (Map.Entry<String, Object> me : old.entrySet()) {
+
 			String key = me.getKey();
 			Object value = me.getValue();
-			Object v = this.convertFromStore(key, value);
-			this.setProperty(key, v);
+			FieldMeta fm = nc.getField(key, false);
+			if (fm != null) {// not defined,TODO throw expcetion.
+				PropertyConverterI pc = this.pcMap.get(fm.getType());
+				if (pc != null) {
+					value = pc.convertFromStore(value);
+				}
+			}
+			this.setProperty(key, value);
 		}
 
 	}

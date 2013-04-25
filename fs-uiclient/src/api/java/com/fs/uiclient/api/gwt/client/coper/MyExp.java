@@ -17,10 +17,10 @@ public class MyExp extends PropertiesData<Object> {
 		this.setProperties(pts);
 	}
 
-	public String getId(){
-		return (String)this.getProperty(UiClientConstants.NK_ID);
+	public String getId() {
+		return (String) this.getProperty(UiClientConstants.NK_ID);
 	}
-	
+
 	public String getTitle() {
 		return (String) this.getProperty("title");
 	}
@@ -31,6 +31,9 @@ public class MyExp extends PropertiesData<Object> {
 
 	public String getImage() {
 		String rt = (String) this.getProperty("image");
+		if ("n/a".equals(rt)) {
+			rt = null;
+		}
 		return rt;
 
 	}

@@ -102,7 +102,8 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				expId2L.add(expId2);
 			}
 		}
-
+		// for ack
+		Date acked = null;
 		for (String expId2 : expId2L) {
 
 			Expectation exp2 = this.dataService.getNewestById(Expectation.class, expId2, false);
@@ -121,9 +122,13 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 			em.save(true);
 			// todo async notify
 
+			acked = em.getTimestamp();// the latest exp message?
+
 			this.onlineNotifyService.tryNotifyExpMessageCreated(accId2, expId1, expId2);
 		}
+		String accId = exp1.getAccountId();
 
+		this.efacade.acknowledgeExpMessage(accId, expId1, acked);
 	}
 
 	public static void createTextMessage(DataServiceI ds, CodecI codec, String expId1, String expId2,

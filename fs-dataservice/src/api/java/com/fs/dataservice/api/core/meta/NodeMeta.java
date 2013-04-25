@@ -45,6 +45,12 @@ public class NodeMeta {
 		return this;
 	}
 
+	public NodeMeta field(String name, FieldType ft) {
+		this.addField(name, ft);
+		return this;
+
+	}
+
 	public NodeMeta field(String name, boolean mand) {
 		this.addField(name).manditory(mand);
 		return this;
@@ -52,8 +58,12 @@ public class NodeMeta {
 	}
 
 	public FieldMeta addField(String fname) {
+		return this.addField(fname, null);
+	}
 
-		FieldMeta rt = new FieldMeta(this, fname, true);
+	public FieldMeta addField(String fname, FieldType type) {
+
+		FieldMeta rt = new FieldMeta(this, fname, true, type);
 		if (null != this.getField(fname, false)) {
 			throw new FsException("field already exist:" + fname + " for type:" + this.nodeType);
 		}
