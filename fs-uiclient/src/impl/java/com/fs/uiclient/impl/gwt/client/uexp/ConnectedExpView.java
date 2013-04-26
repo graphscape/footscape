@@ -27,6 +27,7 @@ public class ConnectedExpView extends ViewSupport {
 	public ConnectedExpView(ContainerI c, ExpConnect ec) {
 		super(c, DOM.createDiv());
 		TableI table = this.factory.create(TableI.class);
+		table.parent(this);
 		BodyI bd = table.getBody();
 		{// row 1
 			RowI r = bd.createRow();
