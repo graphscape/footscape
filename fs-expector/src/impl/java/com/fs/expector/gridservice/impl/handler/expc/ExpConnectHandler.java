@@ -97,9 +97,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 			}
 			{
 				String accId1 = c.getAccountId1();
-				Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
-
-				String icon1 = p == null ? null : p.getIcon();
+				String icon1 = this.efacade.getIconByAccountId(accId1);
 				pts.setProperty("icon1", icon1);
 			}
 			el.add(pts);

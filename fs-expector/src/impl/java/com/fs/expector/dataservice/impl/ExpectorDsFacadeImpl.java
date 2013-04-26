@@ -97,7 +97,7 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		//
 		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
 		if (p == null) {
-			return null;
+			return this.defaultUserIconDataUrl;
 		}
 		return p.getIcon();
 	}
