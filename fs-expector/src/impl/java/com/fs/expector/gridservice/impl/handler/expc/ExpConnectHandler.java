@@ -86,6 +86,7 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 				String expId2 = c.getExpId2();
 				Expectation exp2 = this.getExpectation(expId2);
 				pts.setProperty("expBody2", exp2.getBody());
+				pts.setProperty("expTitle2", exp2.getTitle());
 			}//
 
 			{

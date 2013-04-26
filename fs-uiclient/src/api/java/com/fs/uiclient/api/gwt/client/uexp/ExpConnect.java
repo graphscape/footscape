@@ -34,10 +34,14 @@ public class ExpConnect extends PropertiesData<Object> {
 		return (String) this.getProperty("nick2", force);
 	}
 
+	public String getExpTitle2(boolean force) {
+		return (String) this.getProperty("expTitle2", force);
+	}
+
 	public String getExpBody2(boolean force) {
 		return (String) this.getProperty("expBody2", force);
 	}
-
+	
 	public String getExpId1() {
 		return (String) this.getProperty("expId1", true);
 	}

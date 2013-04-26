@@ -107,11 +107,17 @@ a.exp-label {
 }
 
 .myexp-connected-exp {
-	border-left: 1px solid #EBEBEB;
+	border: 1px solid #EBEBEB;
+	
+}
+
+.myexp-connected-exp:hover {
+	background: #DCDCDC;
 }
 
 .myexp-connected-exp .user-nick {	
 	font-weight: normal;
+	font-size: 9px;
 }
 
 .myexp-messagelist {

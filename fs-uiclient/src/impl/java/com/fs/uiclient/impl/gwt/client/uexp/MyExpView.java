@@ -195,7 +195,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			}
 		}
 		{
-			{// middleRight
+			{// middleRight,
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
 				pts.setProperty(ListI.PK_IS_VERTICAL, Boolean.TRUE);
 
@@ -205,7 +205,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			}
 			{
 
-				//
+				//connected exp list.
 				this.connected = this.factory.create(ListI.class);
 				this.connected.setProperty(ListI.PK_LIST_ITEM_CLASSNAME, "myexp-connected-td");//NOTE set the td's cname.
 				this.connected.parent(this.middle);
