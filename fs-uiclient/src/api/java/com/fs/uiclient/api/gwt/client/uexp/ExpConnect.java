@@ -47,4 +47,12 @@ public class ExpConnect extends PropertiesData<Object> {
 		return (String) this.getProperty("expId2", true);
 	}
 
+	/**
+	 * @return
+	 */
+	public String getIcon1() {
+		return (String) this.getProperty("icon1");
+
+	}
+
 }

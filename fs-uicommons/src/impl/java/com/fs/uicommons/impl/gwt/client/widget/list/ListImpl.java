@@ -36,9 +36,10 @@ public class ListImpl extends LayoutSupport implements ListI {
 	protected Comparator comparator;
 
 	protected List<WidgetI> childList;
-
+	
 	public ListImpl(ContainerI c, String name, UiPropertiesI<Object> pts) {
 		super(c, name, DOM.createDiv(), pts);
+		
 		this.childList = new ArrayList<WidgetI>();
 		table = new TableWrapper();
 		this.elementWrapper.append(table);
@@ -81,7 +82,7 @@ public class ListImpl extends LayoutSupport implements ListI {
 			}
 		}
 		this.childList.add(idx, (WidgetI)ceo);
-		
+		String cname = (String)ceo.getProperty(ListI.PK_LIST_ITEM_CLASSNAME);
 		if (this.vertical) {
 			
 			TRWrapper beforeTr = before==null?null:(TRWrapper) before.getProperty("externalParentElement");
@@ -89,18 +90,26 @@ public class ListImpl extends LayoutSupport implements ListI {
 			TRWrapper tr = this.table.insertTrBefore(beforeTr);
 			
 			TDWrapper td = tr.addTd();
-			
 			td.append(ceo.getElement());
 			td.addClassName(UiCommonsConstants.CN_VLIST_ITEM);
-			//td.append(ceo.getElement());
+			
+			if(cname!= null){
+				td.addClassName(cname);
+			}
+			
 			ceo.setProperty("externalParentElement", tr);
 		} else {//
 			TDWrapper td = this.firstTRForHorizental.addTd();
 			td.append(ceo.getElement());
+			if(cname!= null){
+				td.addClassName(cname);
+			}
 			td.addClassName(UiCommonsConstants.CN_HLIST_ITEM);
 			ceo.setProperty("externalParentElement", td);
 		}
 	}
+	
+	
 
 	@Override
 	protected void onRemoveChild(Element ele, WidgetI cw) {

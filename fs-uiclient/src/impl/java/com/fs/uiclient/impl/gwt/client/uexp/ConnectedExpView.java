@@ -22,14 +22,23 @@ public class ConnectedExpView extends ViewSupport {
 	 */
 	public ConnectedExpView(ContainerI c, ExpConnect ec) {
 		super(c, DOM.createDiv());
-		LabelI l1 = this.factory.create(LabelI.class);
-		l1.setText(ec.getNick2(true) + ":");
-		l1.parent(this);
-
+	
+		String accId = ec.getAccountId1();
+		String icon = ec.getIcon1();
+		//
 		LabelI l2 = this.factory.create(LabelI.class);
 		l2.setText(ec.getExpBody2(true));
 		l2.parent(this);
 
+		//
+		UserIconView iv = new UserIconView(c,accId,icon);
+		iv.parent(this);
+		
+		LabelI l1 = this.factory.create(LabelI.class);
+		l1.getElement().addClassName("user-nick");
+		l1.setText(ec.getNick2(true) + "");
+		l1.parent(this);
+		
 	}
 
 }

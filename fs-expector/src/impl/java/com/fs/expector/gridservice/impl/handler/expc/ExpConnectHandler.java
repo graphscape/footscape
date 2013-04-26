@@ -20,6 +20,7 @@ import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.dataservice.impl.ExpectorDsFacadeImpl;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -81,13 +82,25 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 
 		for (Connection c : rst.list()) {
 			PropertiesI<Object> pts = c.getTarget();
-			String expId2 = c.getExpId2();
-			Expectation exp2 = this.getExpectation(expId2);
-			pts.setProperty("expBody2", exp2.getBody());
-			//
-			String accId2 = c.getAccountId2();
-			Account a = this.dataService.getNewestById(Account.class, accId2, true);
-			pts.setProperty("nick2", a.getNick());
+			{
+				String expId2 = c.getExpId2();
+				Expectation exp2 = this.getExpectation(expId2);
+				pts.setProperty("expBody2", exp2.getBody());
+			}//
+
+			{
+				String accId2 = c.getAccountId2();
+				Account a = this.dataService.getNewestById(Account.class, accId2, true);
+				pts.setProperty("nick2", a.getNick());
+
+			}
+			{
+				String accId1 = c.getAccountId1();
+				Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
+
+				String icon1 = p == null ? null : p.getIcon();
+				pts.setProperty("icon1", icon1);
+			}
 			el.add(pts);
 		}
 

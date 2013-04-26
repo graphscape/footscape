@@ -97,10 +97,23 @@ a.exp-label {
 	
 }
 
-.myexp-connected {
-	vertial-align:top;
-	height:100%;
+/*The td contains list of connected exp*/
+.myexp-connected-td {
+	vertical-align:top;	
 }
+
+.myexp-connected {
+	
+}
+
+.myexp-connected-exp {
+	border-left: 1px solid #EBEBEB;
+}
+
+.myexp-connected-exp .user-nick {	
+	font-weight: normal;
+}
+
 .myexp-messagelist {
 	width:600px;
 }

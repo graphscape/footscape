@@ -14,6 +14,8 @@ public interface ListI extends WidgetI {
 	public static final String PK_IS_VERTICAL = "isVertical";
 	
 	public static final String PK_COMPARATOR = "comparator";
+	
+	public static final String PK_LIST_ITEM_CLASSNAME = "itemClassName"; 
 
 	public int getSize();
 }

@@ -56,6 +56,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	// message msglist
 	protected ListI msglist;
 
+	// connected exp list
 	protected ListI connected;
 
 	protected Map<String, ExpMessage> map;
@@ -206,6 +207,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 				//
 				this.connected = this.factory.create(ListI.class);
+				this.connected.setProperty(ListI.PK_LIST_ITEM_CLASSNAME, "myexp-connected-td");//NOTE set the td's cname.
 				this.connected.parent(this.middle);
 				this.connected.getElement().addClassName("myexp-connected");
 			}
@@ -311,7 +313,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			return;
 		}
 		ConnectedExpView l = new ConnectedExpView(this.container, ec);
-
+		l.getElement().addClassName("myexp-connected-exp");
 		l.parent(this.connected);
 
 		this.map2.put(cid, ec);
