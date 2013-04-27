@@ -3,10 +3,12 @@
 
 	<config name="WebApp.INTEGRATED" context.path="/integrated" />
 	<!-- TODO package when build -->
+	
 	<config name="webResource.integrated" format="zip" url="classpath:com.fs.integrated.gwt.Integrated.jar">
-		<name value="integrated" />
+		<contextPath value="" />
 	</config>
-	<config name="webResource.homePage" format="text" url="classpath:index.html">
-		
+	
+	<config name="webResource.root" format="zip" url="classpath:com.fs.integrated.RootWebResource.jar">
+		<contextPath value=""/>
 	</config>
 </config>

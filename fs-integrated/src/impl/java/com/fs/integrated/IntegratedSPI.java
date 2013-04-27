@@ -26,11 +26,18 @@ public class IntegratedSPI extends SPISupport {
 		// add the compiled gwt js to web server
 		// WebAppI wa = ac.getContainer().find(WebServerI.class, true)
 		// .getWebApp("UICORE");
-		WebAppI wa = ac.getContainer().find(WebServerI.class, true)
-				.addWebApp(ac, "INTEGRATED", this.id + ".WebApp.INTEGRATED");
+		WebServerI ws = ac.getContainer().find(WebServerI.class, true);
+		{
+			WebAppI wa = ws.addWebApp(ac, "INTEGRATED", this.id + ".WebApp.INTEGRATED");
 
-		wa.addResource(ac, "INTEGRATED", this.id + ".webResource.integrated");
+			wa.addResource(ac, "INTEGRATED", this.id + ".webResource.integrated");
+		}
+		{
+			WebAppI root = ws.getRootWebApp();
+			root.addResource(ac, "ROOT", this.id + ".webResource.root");
+			root.setWellcomeFiles(new String[] { "home.html", "integrated/fs.html" });
 
+		}
 	}
 
 	/*

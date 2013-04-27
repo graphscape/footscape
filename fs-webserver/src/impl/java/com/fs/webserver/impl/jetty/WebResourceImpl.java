@@ -18,8 +18,7 @@ import com.fs.webserver.impl.util.ZipUtil;
  * @author wu
  * 
  */
-public class WebResourceImpl extends ConfigurableSupport implements
-		WebResourceI {
+public class WebResourceImpl extends ConfigurableSupport implements WebResourceI {
 
 	private JettyWebAppImpl jettyWebApp;
 
@@ -34,7 +33,7 @@ public class WebResourceImpl extends ConfigurableSupport implements
 
 		super.active(ac);
 		String urlS = this.config.getProperty("url", true);
-		String name = this.config.getProperty("name", true);
+		String cpath = this.config.getProperty("contextPath", true);
 		String format = this.config.getProperty("format");
 		if (!"zip".equals(format)) {
 			throw new FsException("todo");
@@ -44,8 +43,7 @@ public class WebResourceImpl extends ConfigurableSupport implements
 		}
 
 		String res = urlS.substring("classpath:".length());
-		InputStream is = this.getClass().getClassLoader()
-				.getResourceAsStream(res);
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(res);
 		if (is == null) {
 			throw new FsException("web resource not found:" + urlS);
 		}
@@ -53,12 +51,16 @@ public class WebResourceImpl extends ConfigurableSupport implements
 		File whome = this.jettyWebApp.getHome();//
 		// TODO check exists
 		String destS = whome.getAbsolutePath();
-		destS = destS + File.separator + name;
 		File dest = new File(destS);
-		if (dest.exists()) {
-			throw new FsException("dest:" + dest + " already exist.");
+		if (cpath.length()>0) {
+
+			destS = destS + File.separator + cpath;
+			dest = new File(destS);
+			if (dest.exists()) {
+				throw new FsException("dest:" + dest + " already exist.");
+			}
+			dest.mkdir();//
 		}
-		dest.mkdir();//
 
 		try {
 			ZipUtil.extract(is, dest);

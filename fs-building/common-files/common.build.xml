@@ -241,11 +241,11 @@
 	<tstamp>
 		<format property="ended" pattern="yyyy/MM/dd HH:mm:ss" />
 	</tstamp>
-	
+
 	<echo message="--------------------------------" />
 	<echo message="${ended} end building:${ant.project.name}" />
 	<echo message="--------------------------------" />
-	
+
 </target>
 <target name="resolve" depends="setup" description="--> retreive dependencies with ivy">
 	<ivy:retrieve pattern="${dir.target}/[conf]/lib/[artifact]-[revision](-[classifier]).[ext]" type="jar" settingsRef="fs.ivy.settings" />
@@ -263,6 +263,7 @@
 		</fileset>
 
 		<fileset dir="${dir.target}/gwt" includes="${gwt.module.name}.jar" />
+		<fileset dir="${dir.target}" includes="${root.web}.jar" />
 	</jar>
 
 </target>
@@ -277,6 +278,7 @@
 </target>
 <target name="package" depends="compile-test" description="">
 	<antcall target="package-gwt" />
+	<antcall target="package-root-web" />
 	<antcall target="jar-">
 		<param name="part" value="api" />
 	</antcall>
@@ -303,13 +305,29 @@
 
 </target>
 
+<!-- NOTE:web resources that should be add to root web app -->
+<target name="package-root-web">
+	<if>
+		<isset property="root.web" />
+		<then>
+			<jar basedir="${dir.src}/impl/root" destfile="${dir.target}/${root.web}.jar">
+				<manifest>
+				</manifest>
+			</jar>
+		</then>
+		<else>
+
+		</else>
+	</if>
+
+</target>
 <target name="publish" depends="package">
 
 	<echo message="Publising : ${dir.fs.building}" />
 
 	<ivy:publish artifactspattern="${dir.target}/[artifact]-[revision].[ext]" resolver="internal" overwrite="true" pubrevision="${fs.revision}" status="release" settingsRef="fs.ivy.settings" />
 	<echo message="|----${ant.project.name} rev: ${fs.revision} published					|" />
-	<antcall target="tearDown"/>
+	<antcall target="tearDown" />
 </target>
 
 <target name="probe-proxy" depends="setup">

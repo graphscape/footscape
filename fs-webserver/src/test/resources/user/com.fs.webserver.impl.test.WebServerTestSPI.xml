@@ -14,12 +14,12 @@
 		</prefix>
 	</config>
 	<config name="webResource.test">
-		<name value="testres"/>
+		<contextPath value="testres"/>
 		<format value="zip"/>
 		<url value="classpath:user/testres.jar" />
 	</config>
 	<config name="webResource.testResourceNotFound">
-		<name value="testResourceNotFound"/>
+		<contextPath value="testResourceNotFound"/>
 		<format value="zip"/>
 		<url value="classpath:user/notfound.jar" />
 	</config>
