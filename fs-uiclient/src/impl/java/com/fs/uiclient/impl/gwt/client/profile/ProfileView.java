@@ -13,6 +13,7 @@ import com.fs.uicommons.api.gwt.client.frwk.commons.FormViewI;
 import com.fs.uicommons.impl.gwt.client.frwk.commons.form.FormsView;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 
@@ -45,7 +46,8 @@ public class ProfileView extends FormsView implements ProfileViewI {
 
 		FormViewI def = this.getDefaultForm();
 		// def.addField("email", String.class);
-		def.addField("age", Integer.class);
+		//def.addField("age", Integer.class);
+		def.addField("birthDay", DateData.class);
 		def.addField("gender", String.class, EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
 
 			@Override
@@ -78,9 +80,9 @@ public class ProfileView extends FormsView implements ProfileViewI {
 	 * @see com.fs.uiclient.api.gwt.client.profile.ProfileViewI#setAge(int)
 	 */
 	@Override
-	public void setAge(int age) {
+	public void setBirthDay(DateData bd){
 		FormViewI def = this.getDefaultForm();
-		def.setFieldValue("age", age);
+		def.setFieldValue("birthDay", bd);
 
 	}
 

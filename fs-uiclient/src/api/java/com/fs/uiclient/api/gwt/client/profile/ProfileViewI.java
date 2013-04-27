@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.profile;
 
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 
 /**
  * @author wu
@@ -17,7 +18,7 @@ public interface ProfileViewI extends ViewI {
 	 */
 	// public void setEmail(String email);
 
-	public void setAge(int age);
+	public void setBirthDay(DateData bd);
 
 	public void setGender(String gender);
 

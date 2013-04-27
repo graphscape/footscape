@@ -15,7 +15,7 @@
 	</config>
 
 	<config name="WebApp.ROOT">
-		<context.path value="/ROOT" />
+		<context.path value="" />
 	</config>
 
 </config>

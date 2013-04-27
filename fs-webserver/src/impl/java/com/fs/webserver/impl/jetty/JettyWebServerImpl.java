@@ -58,12 +58,18 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 	private String keyStorePassword;
 
+	private JettyWebAppImpl root;
+
 	private HandlerCollection handlers;
 
 	@Override
 	public void doStart() {
 		LOG.info("starting web server at:" + this.home + " with port:" + this.port);
+		if (this.root != null) {
+			this.handlers.addHandler(this.root.getJettyWebApp());
+		}
 		try {
+
 			this.server.start();
 
 		} catch (Exception e) {
@@ -130,6 +136,7 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 		this.server = new Server(port);
 		this.handlers = new HandlerList();
+
 		this.server.setHandler(this.handlers);
 		// not start here
 		if (this.sslEnable) {
@@ -141,6 +148,35 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 					+ this.keyStoreType);
 		}
 
+	}
+
+	/* */
+	@Override
+	public WebAppI addWebApp(ActiveContext ac, String name, String cfgId) {
+		if (this.isState(ServerI.STARTING, ServerI.RUNNING)) {
+
+			throw new FsException("not supported while server is running");
+
+		}
+
+		JettyWebAppImpl wai = new JettyWebAppImpl(this);
+		ac.activitor().context(ac).container(this.internal).object(wai).name(name).cfgId(cfgId).active();
+		WebAppContext wac = wai.getJettyWebApp();
+		// wac.get
+		// this.server.addHandler(wac);//jetty 6
+
+		if (wai.isRootContextPath()) {
+			if (this.root != null) {
+				throw new FsException("duplicated root web app");
+			}
+			// add to the last when start.
+			this.root = wai;
+		} else {
+			this.handlers.addHandler(wac);//
+		}
+
+		LOG.info("addWebApp,contextPath:" + wai.getContextPath() + ",spi:" + ac.getSpi());
+		return wai;
 	}
 
 	private ServerConnector getSslServerConnector(Server svr) {
@@ -192,45 +228,6 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 	/* */
 	@Override
-	public WebAppI addWebApp(ActiveContext ac, String name, String cfgId) {
-		if (this.isState(ServerI.STARTING, ServerI.RUNNING)) {
-
-			throw new FsException("not supported while server is running");
-
-		}
-
-		JettyWebAppImpl wai = new JettyWebAppImpl(this);
-		ac.activitor().context(ac).container(this.internal).object(wai).name(name).cfgId(cfgId).active();
-		WebAppContext wac = wai.getJettyWebApp();
-		// wac.get
-		// this.server.addHandler(wac);//jetty 6
-
-		this.handlers.addHandler(wac);//
-		// this.handlers.start();
-		// this.server.addBean(wac);// TODO test form jetty6 to 9.0
-		/**
-		 * <code>
-		try {
-			this.server.getHandler().start();
-			// NOTE this handler will be a collection handler when the second
-			// handler added to the server,
-			// and then this new handler should be start,other wise the server
-			// see it not started and return 404 NOT FOUND error.
-		} catch (Exception e1) {
-			throw new FsException();
-		}// NOTE this is
-		try {
-			wac.start();
-		} catch (Exception e) {
-			throw new FsException(e);
-		}</code>
-		 */
-		LOG.info("addWebApp,contextPath:" + wai.getContextPath() + ",spi:" + ac.getSpi());
-		return wai;
-	}
-
-	/* */
-	@Override
 	public WebAppI getWebApp(String name) {
 
 		return this.internal.finder(WebAppI.class).name(name).find(true);
@@ -248,6 +245,17 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 		} catch (Exception e) {
 			throw FsException.toRtE(e);
 		}//
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.webserver.api.WebServerI#getRootWebApp()
+	 */
+	@Override
+	public WebAppI getRootWebApp() {
+		// TODO Auto-generated method stub
+		return this.root;
 	}
 
 }

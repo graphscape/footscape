@@ -3,6 +3,8 @@
  */
 package com.fs.expector.gridservice.impl.handler.profile;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,7 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		super.active(ac);
 		{// submit
 			ValidatorI<MessageI> vl = this.createValidator("submit");
-			vl.addExpression(prefix + "['age']!=null");
+			vl.addExpression(prefix + "['birthDay']!=null");
 			vl.addExpression(prefix + "['gender']!=null");
 			vl.addExpression(prefix + "['icon']!=null");
 
@@ -88,13 +90,13 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		}
 		SessionGd login = this.getSession(ew, true);//
 		// here the data is valid for save processing.
-		Integer age = (Integer) req.getPayload("age", true);// just for display.
+		Date bd = (Date) req.getPayload("birthDay", true);// just for display.
 		String gender = (String) req.getPayload("gender", true);
 		String icon = (String) req.getPayload("icon", true);
 
 		Profile pts = new Profile().forCreate(this.dataService);// NOTE
 		pts.setAccountId(login.getAccountId());//
-		pts.setAge(age);
+		pts.setBirthDay(bd);
 		pts.setGender(gender);
 		pts.setIcon(icon);
 		pts.save(true);

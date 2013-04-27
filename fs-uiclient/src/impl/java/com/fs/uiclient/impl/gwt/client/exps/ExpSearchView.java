@@ -66,6 +66,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		this.header.parent(this);
 
 		this.statement = this.factory.create(StringEditorI.class);
+		this.statement.getElement().addClassName("search");
 		this.statement.parent(this.header);
 		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
 

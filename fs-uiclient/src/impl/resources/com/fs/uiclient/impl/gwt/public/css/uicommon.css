@@ -70,6 +70,9 @@ Console View
 	white-space: nowrap;
 }
 
+.date-editor input.date{
+	float:left;
+}
 .endpoint-busy-indicator {
 	position: absolute;
 	border: 2px solid orange;

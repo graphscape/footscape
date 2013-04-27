@@ -15,5 +15,7 @@ public interface WebServerI extends ServerI {
 	public WebAppI addWebApp(ActiveContext ac, String name, String cfgId);
 
 	public WebAppI getWebApp(String name);
+	
+	public WebAppI getRootWebApp();
 
 }

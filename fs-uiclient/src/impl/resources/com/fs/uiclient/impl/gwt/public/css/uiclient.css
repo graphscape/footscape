@@ -78,6 +78,16 @@ a.exp-label {
 	
 }
 
+.expm-list {
+	height: 300px;
+	width: 600px;
+	overflow: hidden;
+}
+
+.expm-list:hover {
+	overflow: auto;
+}
+
 .facebook-login-button,
 .facebook-login-button:hover {
 	background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yf/r/S-DbSHszr4D.png);
@@ -98,72 +108,79 @@ a.exp-label {
 }
 
 /*The td contains list of connected exp*/
-.myexp-connected-td {
+
+.cexplist-td{
+	width:200px;
+}
+
+.cexp-item-td {
 	vertical-align:top;	
 	border-left: 1px solid #EBEBEB;
 }
 
-.myexp-connected {
-	
-}
-
-.myexp-connected-exp {
+.cexp-item {
 	border: 1px solid #EBEBEB;
 	
 }
 
-.myexp-connected-exp:hover {
+.cexp-item:hover {
 	background: #DCDCDC;
 }
 
-.myexp-connected-exp .user-nick {	
+.cexp-item .user-nick {	
 	font-weight: normal;
 	font-size: 9px;
 }
 
-.myexp-messagelist {
-	width:600px;
-}
-.myexp-message {
+.expm {
 	margin-bottom : 6px;
 	border-top : 1px solid #EBEBEB;
 	border-radius: 3px;
 }
 
-.myexp-message-td1{/*message td*/
+.expm-td1{/*message td*/
 	width:100%;
 }
 
-.myexp-message-body {
+.expm-body {
 	font-weight:normal;
 	margin : 6px;
 }
 
-.myexp-message-nick {
+.expm-nick {
 	font-size :9px;
 	color:#7A7A7A;
 	text-align:right;
 }
 
-.myexp-message-exptitle {
+.expm-exptitle {
 	font-size:9px;
 	color:#7A7A7A;
 	text-align:right;
 }
 
-.myexp-message-timestamp {
+.expm-timestamp {
 	font-size:9px;
 	color:#7A7A7A;
 	text-align:left;
 	white-space: nowrap;
 }
 
-.myexp-textarea {
+.expmi-textarea {
 	text-align:left;
 }
 
 .nick {
 	font-size: 22px;
+}
+
+
+.search input {
+	margin-top : 5px;
+	margin-bottom : 3px;
+	height: 26px;
+	width : 415px;
+	maxlength : 1024;
 }
 
 .uel-item {

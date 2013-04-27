@@ -70,7 +70,7 @@ public abstract class ExpMessageView extends ViewSupport {
 
 		this.msg = msg;
 
-		this.elementWrapper.addClassName("myexp-message");
+		this.elementWrapper.addClassName("expm");
 		this.outer = new TableWrapper();
 		this.elementWrapper.append(this.outer);
 		// first line
@@ -79,7 +79,7 @@ public abstract class ExpMessageView extends ViewSupport {
 			// image
 			{
 				TDWrapper td0 = tr0.addTd();
-				td0.addClassName("myexp-message-td0");
+				td0.addClassName("expm-td0");
 				// anchor
 				UserIconView uiv = new UserIconView(this.container, msg.getAccountId1(), msg.getIcon1());//				
 				td0.append(uiv.getElement());
@@ -88,22 +88,22 @@ public abstract class ExpMessageView extends ViewSupport {
 			// message
 			{
 				TDWrapper td1 = tr0.addTd();
-				td1.addClassName("myexp-message-td1");
+				td1.addClassName("expm-td1");
 				Element ele = DOM.createDiv();
 				this.messageBodyDiv = new ElementWrapper(ele);
-				this.messageBodyDiv.addClassName("myexp-message-body");
+				this.messageBodyDiv.addClassName("expm-item-body");
 				td1.append(ele);
 
 			}
 			{
 				TDWrapper td2 = tr0.addTd();
-				td2.addClassName("myexp-message-td2");
+				td2.addClassName("expm-td2");
 
 				{
 					// time
 
 					Element ele = DOM.createDiv();
-					ele.addClassName("myexp-message-timestamp");
+					ele.addClassName("expm-timestamp");
 					String dateS = DateUtil.format(msg.getTimeStamp(), false);
 					ele.setInnerText("" + dateS + "");
 					td2.append(ele);
@@ -112,25 +112,25 @@ public abstract class ExpMessageView extends ViewSupport {
 					// nick
 					Element ele = DOM.createDiv();
 					ele.setInnerText("" + msg.getNick1() + ":");
-					ele.addClassName("myexp-message-nick");
+					ele.addClassName("expm-nick");
 					td2.append(ele);
 
 				}
 				{
 					// exp title1
 					Element ele = DOM.createDiv();
-					ele.addClassName("myexp-message-exptitle");
+					ele.addClassName("expm-exptitle");
 					ele.setInnerText("" + msg.getExpTitle1() + "");
 					td2.append(ele);
 				}
 			}
 			{
 				TDWrapper td3 = tr0.addTd();
-				td3.addClassName("myexp-message-td3");
+				td3.addClassName("expm-td3");
 				Element ele = DOM.createDiv();
 				td3.append(ele);
 				this.actionsDiv = new ElementWrapper(ele);
-				this.actionsDiv.addClassName("myexp-message-actions");
+				this.actionsDiv.addClassName("expm-actions");
 				this.actions = this.factory.create(ListI.class);//
 				this.actions.parent(this);
 			}

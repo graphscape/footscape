@@ -4,6 +4,7 @@
  */
 package com.fs.expector.dataservice.impl.test.cases;
 
+import java.util.Date;
 import java.util.Map;
 
 import com.fs.expector.dataservice.api.wrapper.Profile;
@@ -17,7 +18,7 @@ public class SortTest extends TestBase {
 
 	public void testSortOnTimetamp() {
 		Profile p = new Profile().forCreate(this.datas);
-		p.setAge(1);
+		p.setBirthDay(new Date());
 		// p.setEmail("email");
 		p.setGender("gender1");
 		p.setIcon("icon1");
@@ -25,7 +26,7 @@ public class SortTest extends TestBase {
 		p.save();
 
 		p = new Profile().forCreate(this.datas);
-		p.setAge(2);
+		p.setBirthDay(new Date());
 		// p.setEmail("email");
 		p.setGender("gender2");
 		p.setIcon("icon2");

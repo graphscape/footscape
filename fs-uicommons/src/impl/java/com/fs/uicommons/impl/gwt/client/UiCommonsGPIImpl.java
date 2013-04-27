@@ -9,6 +9,7 @@ import com.fs.uicommons.api.gwt.client.HeaderItems;
 import com.fs.uicommons.api.gwt.client.UiCommonsGPI;
 import com.fs.uicommons.api.gwt.client.drag.DraggerI;
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
+import com.fs.uicommons.api.gwt.client.editor.basic.DateEditorI;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.editor.basic.IntegerEditorI;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
@@ -64,6 +65,7 @@ import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.wpanel.WindowPanelWI;
 import com.fs.uicommons.impl.gwt.client.drag.DraggerImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.BooleanEditorImpl;
+import com.fs.uicommons.impl.gwt.client.editor.basic.DateEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.EnumEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.IntegerEditorImpl;
 import com.fs.uicommons.impl.gwt.client.editor.basic.StringEditorImpl;
@@ -331,6 +333,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 			}
 		});
+		wf.addCreater(new WidgetCreaterSupport<DateEditorI>(DateEditorI.class) {
+			@Override
+			public DateEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
+
+				return new DateEditorImpl(c, name, pts);
+
+			}
+		});
 		wf.addCreater(new WidgetCreaterSupport<PropertiesEditorI>(PropertiesEditorI.class) {
 			@Override
 			public PropertiesEditorI create(ContainerI c, String name, UiPropertiesI<Object> pts) {
@@ -556,6 +566,14 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 			public boolean isInstance(Object o) {
 
 				return o instanceof IntegerEditorI;
+			}
+		});
+		InstanceOf.addChecker(new CheckerSupport(DateEditorI.class) {
+
+			@Override
+			public boolean isInstance(Object o) {
+
+				return o instanceof DateEditorI;
 			}
 		});
 		InstanceOf.addChecker(new CheckerSupport(MenuWI.class) {

@@ -8,6 +8,7 @@ import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.support.MHSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
@@ -36,11 +37,11 @@ public class ProfileInitSuccessMH extends MHSupport {
 
 		ObjectPropertiesData opd = (ObjectPropertiesData) res.getPayload("profile");
 		String icon = null;
-		Integer age = 0;
+		DateData bd = null;
 		String gender = null;
 		if (opd != null) {
 
-			age = (Integer) opd.getProperty("age", true);
+			bd = (DateData) opd.getProperty("birthDay", true);
 
 			gender = opd.getString("gender", true);
 			icon = opd.getString("icon", true);
@@ -51,7 +52,7 @@ public class ProfileInitSuccessMH extends MHSupport {
 		// pv.setEmail(email);
 		pv.setIcon(icon);
 		pv.setGender(gender);
-		pv.setAge(age);
+		pv.setBirthDay(bd);
 
 	}
 

@@ -4,8 +4,11 @@
  */
 package com.fs.expector.dataservice.api.wrapper;
 
+import java.util.Date;
+
 import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.meta.DataSchema;
+import com.fs.dataservice.api.core.meta.FieldType;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
 /**
@@ -20,7 +23,7 @@ public class Profile extends NodeWrapper {
 
 	public static final String ICON = "icon";
 
-	public static final String AGE = "age";
+	public static final String BIRTHDAY = "birthDay";
 
 	public static final String GENDER = "gender";
 
@@ -32,8 +35,8 @@ public class Profile extends NodeWrapper {
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(TYPE, Profile.class).field(ACCOUNTID).field(AGE)
-				.field(GENDER).field(ICON);
+		cfs.addConfig(TYPE, Profile.class).field(ACCOUNTID).field(BIRTHDAY, FieldType.DATE).field(GENDER)
+				.field(ICON);
 
 	}
 
@@ -53,12 +56,12 @@ public class Profile extends NodeWrapper {
 		this.target.setProperty(GENDER, g);
 	}
 
-	public Integer getAge() {
-		return (Integer) this.target.getProperty(AGE);
+	public Date getBirthDay() {
+		return (Date) this.target.getProperty(BIRTHDAY);
 	}
 
-	public void setAge(Integer a) {
-		this.target.setProperty(AGE, a);
+	public void setBirthDay(Date a) {
+		this.target.setProperty(BIRTHDAY, a);
 	}
 
 	/**

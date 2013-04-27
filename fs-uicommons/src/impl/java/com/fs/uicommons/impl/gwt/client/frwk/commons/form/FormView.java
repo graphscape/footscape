@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fs.uicommons.api.gwt.client.editor.basic.BooleanEditorI;
+import com.fs.uicommons.api.gwt.client.editor.basic.DateEditorI;
 import com.fs.uicommons.api.gwt.client.editor.basic.IntegerEditorI;
 import com.fs.uicommons.api.gwt.client.editor.basic.StringEditorI;
 import com.fs.uicommons.api.gwt.client.editor.properties.PropertiesEditorI;
@@ -22,6 +23,7 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 import com.google.gwt.user.client.DOM;
 
@@ -43,6 +45,8 @@ public class FormView extends ViewSupport implements FormViewI {
 		typeEditorMap.put(String.class, StringEditorI.class);
 		typeEditorMap.put(Boolean.class, BooleanEditorI.class);
 		typeEditorMap.put(Integer.class, IntegerEditorI.class);
+		typeEditorMap.put(DateData.class, DateEditorI.class);
+		
 
 	}
 

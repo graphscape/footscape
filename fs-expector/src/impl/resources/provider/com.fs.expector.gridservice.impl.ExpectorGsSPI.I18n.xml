@@ -1,6 +1,7 @@
 <config>
 	
 	<age value="Age" />
+	<birthDay value="Birth Day" />
 	<body value="Expecting:" />
 	<cancel value="Cancel" />
 	<cooper value="Coop" />

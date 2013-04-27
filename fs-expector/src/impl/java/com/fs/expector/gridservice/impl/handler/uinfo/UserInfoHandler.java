@@ -34,7 +34,7 @@ public class UserInfoHandler extends ExpectorTMREHSupport {
 			pts.setProperties(p.getTarget());
 		}else{
 			pts.setProperty(Profile.ACCOUNTID,accId);
-			pts.setProperty(Profile.AGE, 0);
+			pts.setProperty(Profile.BIRTHDAY, null);//
 			pts.setProperty(Profile.GENDER, "n/a");
 			pts.setProperty(Profile.ICON, this.efacade.getDefaultUserIconDataUrl());
 		}

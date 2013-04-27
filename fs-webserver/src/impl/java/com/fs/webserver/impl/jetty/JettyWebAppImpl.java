@@ -54,9 +54,12 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 		this.jettyWebApp = new WebAppContext();
 		String cpath = this.config.getProperty("context.path", true);
-
+		String wpath = cpath;
+		if(cpath.length()==0){//is root
+			wpath="root";
+		}
 		String war = this.jettyWebServer.getHome().getAbsolutePath()
-				+ File.separator + cpath;
+				+ File.separator + wpath;
 		this.home = new File(war);
 
 		if (!this.home.exists()) {
@@ -125,6 +128,9 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 		return jsh;
 	}
 
+	public boolean isRootContextPath(){
+		return this.getContextPath().length() == 0;
+	}
 	/**
 	 * @return the jettyWebApp
 	 */
@@ -146,6 +152,14 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 		return this.internal2.finder(WebResourceI.class).name(name).find(true);
 
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.webserver.api.WebAppI#setWellcomeFiles(java.lang.String[])
+	 */
+	@Override
+	public void setWellcomeFiles(String[] wfs) {
+		this.jettyWebApp.setWelcomeFiles(wfs);
 	}
 
 }

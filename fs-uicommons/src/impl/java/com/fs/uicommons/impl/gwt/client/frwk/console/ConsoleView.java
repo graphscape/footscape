@@ -67,7 +67,7 @@ public class ConsoleView extends SimpleView implements ConsoleViewI {
 		DOM.appendChild(tr, td);
 
 		this.size++;
-		this.getElement().setAttribute("scrollTop", "10000px");// Scroll to
+		this.getElement().setPropertyInt("scrollTop", 10000);// Scroll to
 																// bottom.
 		this.shrink();
 

@@ -6,5 +6,7 @@
 	<config name="webResource.integrated" format="zip" url="classpath:com.fs.integrated.gwt.Integrated.jar">
 		<name value="integrated" />
 	</config>
-
+	<config name="webResource.homePage" format="text" url="classpath:index.html">
+		
+	</config>
 </config>
