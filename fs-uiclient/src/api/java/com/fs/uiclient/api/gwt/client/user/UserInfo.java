@@ -3,7 +3,10 @@
  */
 package com.fs.uiclient.api.gwt.client.user;
 
+import java.util.Date;
+
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 
 /**
  * @author wu
@@ -28,8 +31,12 @@ public class UserInfo extends PropertiesData<Object> {
 		return (String) this.getProperty("gender", true);
 	}
 
+	public DateData getBirthDay() {
+		return (DateData) this.getProperty("birthDay", true);
+	}
+
 	public int getAge() {
-		return (Integer) this.getProperty("age", true);
+		return new Date().getYear() - new Date(this.getBirthDay().getValue()).getYear();
 	}
 
 	/**
