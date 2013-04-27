@@ -17,9 +17,11 @@ public interface Constants {
 	public static Path P_ERROR = Path.valueOf("error");
 
 	public static Path P_ERROR_INPUT = P_ERROR.getSubPath("input");
-	
+
 	public static Path P_ERROR_NOTALLOW = P_ERROR.getSubPath("notallow");
-	
+
 	public static Path P_ERROR_NOTFOUND = P_ERROR.getSubPath("notfound");
+
+	public static Path P_ERROR_SIGNUP = P_ERROR.getSubPath("signup").getSubPath("failure");
 
 }

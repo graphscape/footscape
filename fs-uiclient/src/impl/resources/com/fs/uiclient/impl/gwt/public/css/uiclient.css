@@ -39,9 +39,16 @@ a.exp-label {
 
 .exps-item-count{
 	width:1%;
-	font-size:20px;
+	
 }
 
+.exps-item-count .count{
+	font-size:16px;
+}
+
+.exps-item-count .info{
+	font-size:6px;
+}
 
 .exps-item:hover {
 	border-left : 2px solid #646464;
@@ -64,6 +71,7 @@ a.exp-label {
 .exps-item-actions {
 	width:1%;
 	align:right;	
+	vertical-align:bottom;
 }
 .exps-item-timestamp {
 	font-size: 9px;
@@ -195,6 +203,23 @@ a.exp-label {
 	width:1%;
 }
 
+.uel-item-count .info {
+	font-size: 6px;
+}
+
+.uel-item-expcount .count {
+	font-size: 16px;
+}
+
+.uel-item-msgcount .count {
+	font-size: 16px;
+}
+
+.uel-item-msgcount.gt0 .count{	
+	color : #FFFFFF;
+	background-color: #505050;	
+}
+
 .uel-item.selected,
 .uel-item:hover {
 	border-left : 2px solid #646464;
@@ -214,6 +239,7 @@ a.exp-label {
 .uel-item-actions {
 	width:1%;
 	align:right;	
+	vertical-align:bottom;
 }
 .uel-item-timestamp {
 	font-size: 9px;

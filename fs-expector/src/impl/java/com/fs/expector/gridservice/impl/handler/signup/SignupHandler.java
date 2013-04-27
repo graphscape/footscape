@@ -26,6 +26,7 @@ import com.fs.expector.dataservice.api.NodeTypes;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.SignupRequest;
+import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.ErrorCodes;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -106,7 +107,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		
 		Account old = this.dataService.getNewestById(Account.class,email, false);
 		if(old != null){
-			res.getErrorInfos().addError(ErrorCodes.FAILED_SIGNUP);
+			res.getErrorInfos().addError(Constants.P_ERROR_SIGNUP);
 			return;
 		}
 		String nick = (String) req.getPayload("nick");// just for display.

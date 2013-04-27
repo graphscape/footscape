@@ -35,6 +35,7 @@
 	<property name="/error/login/missing/password" value="Please input password" />
 	<property name="/error/login/missing/nick" value="Please input nick" />
 	<property name="/error/password-forgot/failure" value="Failured when send message to the email address!" />
+	<property name="/error/signup/failure" value="Please make sure the provided information is correct and not sign up before!" />
 	
 	
 	<!-- Header Items,Tab title -->

@@ -10,7 +10,5 @@ package com.fs.expector.gridservice.api;
  */
 public class ErrorCodes {
 
-	public static final String FAILED_SIGNUP = "/error/failed/signup";
-	
 
 }

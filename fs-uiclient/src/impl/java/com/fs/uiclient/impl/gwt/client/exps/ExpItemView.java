@@ -54,16 +54,16 @@ public class ExpItemView extends ViewSupport {
 		// IMAGE|time,author|Actions
 		// IMAGE|Body |Actions
 		// IMAGE|
+		int rowspan = 4;
 
 		{// first line/TR0
-			String rowspan = "4";
 			// first line
 			TRWrapper tr0 = this.table.addTr();
-			// Left/ td,the icon of user,span 3 rows
-			{
+
+			{// user icon 4 rows
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("exps-item-usericon");
-				td0.setAttribute("rowspan", rowspan);
+				td0.setAttribute("rowspan", "" + rowspan);
 				//
 				UserIconView uiv = new UserIconView(this.container, ei.getAccountId(), ei.getUserIcon());
 				td0.append(uiv.getElement());// NOTE,parent is not
@@ -75,10 +75,7 @@ public class ExpItemView extends ViewSupport {
 				uiv.parent(this);
 
 			}
-			{// first line, middle exp title,NOTE: this is the colum not rowspan
-				// 4
-
-				// middle/top exp title
+			{// title
 				TDWrapper td01 = tr0.addTd();
 				td01.addClassName("exps-item-exptitle");
 
@@ -86,79 +83,65 @@ public class ExpItemView extends ViewSupport {
 			}
 			{
 				TDWrapper td02 = tr0.addTd();
-				td02.setAttribute("rowspan", rowspan);
+
 				td02.addClassName("exps-item-count");
-				LabelI ccL = this.factory.create(LabelI.class);
-				
-				String text = "" + ei.getConnectionCount();
-				ccL.setText(text);
-				ccL.setTitle("The total expectations that connected with this expectations.");
-				td02.getElement().appendChild(ccL.getElement());
-				ccL.parent(this);
+				String html = "<span class='count'>" + ei.getConnectionCount()
+						+ "</span><span class='info'>EXPs</span>";
+				td02.getElement().setInnerHTML(html);
 			}
-			{// first line, middle right,exp icon,rows pan 4
-				TDWrapper td02 = tr0.addTd();
-				td02.setAttribute("rowspan", rowspan);
-				td02.addClassName("exps-item-expicon");
-				String icon = ei.getIcon();
-				if (icon != null) {// only show when has
+		}// end of first line
+		{// second line
 
-					Element image = DOM.createImg();
-					image.setAttribute("src", icon);
+			TRWrapper tr1 = this.table.addTr();
+			{// exp body
+				TDWrapper td1 = tr1.addTd();
 
-					Element ar = DOM.createAnchor();
-					ar.addClassName("exp-icon");
-					ar.appendChild(image);
-					td02.append(ar);
-				}
+				td1.addClassName("exps-item-expbody");
+				String html = ei.getExpBodyAsHtml();
+				td1.getElement().setInnerHTML(html);
+				// td1,1
 			}
-			{// first line ,right span 3row
 
-				// right
-				TDWrapper td03 = tr0.addTd();
-				td03.setAttribute("rowspan", rowspan);
+			{//
+				TDWrapper td03 = tr1.addTd();
+				td03.setAttribute("rowspan", "" + (rowspan - 1));
 				this.actionsTd = td03;
 				this.actionsTd.addClassName("exps-item-actions");
 			}
 		}
-
-		{// middle,// // second line, middle, exp boxy
-
-			TRWrapper tr1 = this.table.addTr();
-			TDWrapper td1 = tr1.addTd();
-
-			td1.addClassName("exps-item-expbody");
-			String html = ei.getExpBodyAsHtml();
-			td1.getElement().setInnerHTML(html);
-			// td1,1
-		}
 		//
-		{// // third line, middle, image, if the exp has an image, not
-			// icon;//icon is in the first line.
+		{// third line
 
 			TRWrapper tr1 = this.table.addTr();
-			TDWrapper td1 = tr1.addTd();
+			{// exp image
 
-			td1.addClassName("exps-item-expimage");
-			String img = ei.getImage();
-			if (img != null) {// only add when as image
-				Element image = DOM.createImg();
-				image.setAttribute("src", img);
-				td1.getElement().appendChild(image);
+				TDWrapper td1 = tr1.addTd();
+
+				td1.addClassName("exps-item-expimage");
+				String img = ei.getImage();
+				if (img != null) {// only add when as image
+					Element image = DOM.createImg();
+					image.setAttribute("src", img);
+					td1.getElement().appendChild(image);
+				}
 			}
 
 			// td1,1
 		}
-		{// // third line, middle, timestamp, small font
+		{// // third line
+
 			TRWrapper tr1 = this.table.addTr();
-			TDWrapper td1 = tr1.addTd();
 
-			td1.addClassName("exps-item-timestamp");
-			String dateS = DateUtil.format(ei.getTimestamp(), false);
-			String nick = ei.getNick();
-			String html = "<span>" + dateS + ",by:</span>" + "<span>" + nick + "</span>";
-			td1.getElement().setInnerHTML(html);
+			{// timestamp
+				TDWrapper td1 = tr1.addTd();
 
+				td1.addClassName("exps-item-timestamp");
+				String dateS = DateUtil.format(ei.getTimestamp(), false);
+				String nick = ei.getNick();
+				String html = "<span>" + dateS + ",by:</span>" + "<span>" + nick + "</span>";
+				td1.getElement().setInnerHTML(html);
+
+			}
 			// td1,1
 		}
 
@@ -210,4 +193,23 @@ public class ExpItemView extends ViewSupport {
 		super.beforeActionEvent(ae);
 		ae.setProperty("expId2", this.getExpId());// for action:cooper
 	}
+	/**
+	 * <code>
+	 {// first line, middle right,exp icon,rows pan 4
+				TDWrapper td02 = tr0.addTd();
+				td02.setAttribute("rowspan", rowspan);
+				td02.addClassName("exps-item-expicon");
+				String icon = ei.getIcon();
+				if (icon != null) {// only show when has
+
+					Element image = DOM.createImg();
+					image.setAttribute("src", icon);
+
+					Element ar = DOM.createAnchor();
+					ar.addClassName("exp-icon");
+					ar.appendChild(image);
+					td02.append(ar);
+				}
+			}</code>
+	 */
 }

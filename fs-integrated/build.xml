@@ -34,7 +34,7 @@
 		<antcall target="package"/>
 		<antcall target="zip"/>
 		<unzip src="${dir.target}/fs-bin-${fs.revision}.zip" dest="${dir.target}/fs-bin-${fs.revision}" />
-		<chmod file="${dir.target}/fs-bin-${fs.revision}/bin/fs.sh" perm="700" />
+		<chmod file="${dir.target}/fs-bin-${fs.revision}/bin/*.sh" perm="700" />
 
 	</target>
 

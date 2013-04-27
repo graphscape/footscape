@@ -56,115 +56,94 @@ public class UserExpItemView extends ViewSupport {
 		// icon | timpstamp | open
 		// icon | nick |
 		// first
+		int rowspan = 4;
+		int colspan = 2;
 		{// first line,left is , middle
 			// left
-			String rowspan = "5";
 			// line 1
-			TRWrapper tr0 = this.table.addTr();
-			{//
+			TRWrapper tr = this.table.addTr();
 
-				TDWrapper td01 = tr0.addTd();
-				td01.addClassName("uel-item-td0");
-				td01.setAttribute("rowspan", rowspan);
+			{// title
+				TDWrapper td = tr.addTd();
+				td.addClassName("uel-item-exptitle");
+				String title = t.getTitle();
+				td.getElement().setInnerText(title);
 			}
-			/*
-			 * ElementWrapper image = new ElementWrapper(DOM.createImg());
-			 * image.addClassName("user-icon"); image.setAttribute( "src",
-			 * "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAL1JREFUWMPtl9ENgCAMRKFxIhZyDTfQMWQgXUm/VCSFUtMPYq5/QnM+7hqifl63w3VQ5DopgAAkrWkMbhoDHLndwIxwtcT99TzULMub0758r7Re0k7Xlrg/IJdAKUPNDOQwnHbeQ63WWUDWtOnLizghbq3LYZUOSdaxSM6U9skiX4v5oRYhKzdU0XwRk0Clu6cpGu5eaL3INLpkcVILBwepqWanNs7azerTr3gthCYOKUKP3wmAAAQgAPkryAkar2RFS9XbgwAAAABJRU5ErkJggg=="
-			 * );// td0.append(image);
-			 */
-			// middle
-			{
 
-				TDWrapper td02 = tr0.addTd();
-				td02.setAttribute("rowspan", "1");
-			}
-			{// ConnectionCount, messagecount,newMessageCount
+			{// newMessageCount
 
-				TDWrapper td02 = tr0.addTd();
-				td02.setAttribute("rowspan", rowspan);
-				td02.addClassName("uel-item-count");
+				TDWrapper td = tr.addTd();
+				td.addClassName("uel-item-count");
+				td.addClassName("uel-item-msgcount");
 
-				String text = "" + um.getConnectionCount() + "][" + um.getMessageCount()+"]["+um.getNewMessageCount();
-				{// Connections
-					LabelI ccL = this.factory.create(LabelI.class);
-					ccL.setText(text);
-					ccL.setTitle("Total connected expectations,messages and new messages.");
-					td02.getElement().appendChild(ccL.getElement());
-					ccL.parent(this);
+				long msgs = um.getNewMessageCount();
+				if (msgs > 0) {
+					td.addClassName("gt0");
 				}
 
+				String html = "<span class='count'>" + msgs + "</span><span class='info'>MSGs</span>";
+				td.getElement().setInnerHTML(html);
 			}
-			{// expIcon TODO remove
+			{// ConnectionCount, 
 
-				TDWrapper td03 = tr0.addTd();
-				td03.setAttribute("rowspan", rowspan);
-				td03.addClassName("uel-item-expicon");
-				String icon = t.getIcon();
-				if (icon != null) {
+				TDWrapper td = tr.addTd();
+				td.addClassName("uel-item-count");
+				td.addClassName("uel-item-expcount");
 
-					Element ar = DOM.createAnchor();
-					ar.addClassName("exp-icon");
-
-					ElementWrapper image = new ElementWrapper(DOM.createImg());
-					image.setAttribute("src", t.getIcon());
-
-					ar.appendChild(image.getElement());
-					td03.append(ar);
-				}
-			}
-			{
-
-				// right
-				TDWrapper td04 = tr0.addTd();
-				td04.setAttribute("rowspan", rowspan);
-				this.actionsTd = td04;
-				this.actionsTd.addClassName("uel-item-actions");
+				String text = "" + um.getConnectionCount();
+				String html = "<span class='count'>" + um.getConnectionCount()
+						+ "</span><span class='info'>EXPs</span>";
+				td.getElement().setInnerHTML(html);
 			}
 		}// end of line1
 			//
 		{// line2
-			// timestamp
 			TRWrapper tr2 = this.table.addTr();
-			TDWrapper td = tr2.addTd();
-			td.addClassName("uel-item-exptitle");
-			String title = t.getTitle();
-			td.getElement().setInnerText(title);
+			{// body of exp
+				TDWrapper td1 = tr2.addTd();
 
+				td1.addClassName("uel-item-expbody");
+				td1.setAttribute("colspan", "1");//
+				String body = t.getBodyAsHtml();
+				td1.getElement().setInnerHTML(body);
+			}
+			{// actions
+
+				// right
+				TDWrapper td04 = tr2.addTd();
+				td04.setAttribute("colspan", "" + colspan);
+				td04.setAttribute("rowspan", "" + (rowspan - 1));
+				this.actionsTd = td04;
+				this.actionsTd.addClassName("uel-item-actions");
+			}
 		}
 		{// line3
+
 			TRWrapper tr1 = this.table.addTr();
-			TDWrapper td1 = tr1.addTd();
+			{// image
 
-			td1.addClassName("uel-item-expbody");
-			td1.setAttribute("colspan", "1");//
-			String body = t.getBodyAsHtml();
-			td1.getElement().setInnerHTML(body);
-			// td1,1
-		}
+				TDWrapper td1 = tr1.addTd();
 
-		{// line4
-			TRWrapper tr1 = this.table.addTr();
-			TDWrapper td1 = tr1.addTd();
-
-			td1.addClassName("uel-item-expimage");
-			String img = t.getImage();
-			if (img != null) {
-				Element image = DOM.createImg();
-				image.setAttribute("src", img == null ? "" : img);
-				td1.getElement().appendChild(image);
+				td1.addClassName("uel-item-expimage");
+				String img = t.getImage();
+				if (img != null) {
+					Element image = DOM.createImg();
+					image.setAttribute("src", img == null ? "" : img);
+					td1.getElement().appendChild(image);
+				}
 			}
 			// td1,1
 		}
 
-		{// line5, time stamp
+		{// line4, time stamp
 			// timestamp
 			TRWrapper tr2 = this.table.addTr();
-			TDWrapper td = tr2.addTd();
-			td.addClassName("uel-item-timestamp");
-			String dateS = DateUtil.format(t.getTimestamp(false), false);
-			td.getElement().setInnerText(dateS);
-
+			{
+				TDWrapper td = tr2.addTd();
+				td.addClassName("uel-item-timestamp");
+				String dateS = DateUtil.format(t.getTimestamp(false), false);
+				td.getElement().setInnerText(dateS);
+			}
 		}
 
 		ListI actions = this.factory.create(ListI.class);//
