@@ -9,7 +9,6 @@ import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
@@ -29,6 +28,7 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointUnbondEvent;
 import com.fs.uicore.api.gwt.client.event.StateChangeEvent;
+import com.fs.uicore.api.gwt.client.html5.CloseEventJSO;
 import com.fs.uicore.api.gwt.client.html5.ErrorJSO;
 import com.fs.uicore.api.gwt.client.html5.EventJSO;
 import com.fs.uicore.api.gwt.client.html5.ReadyState;
@@ -38,6 +38,7 @@ import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
+import com.fs.uicore.impl.gwt.client.endpoint.WsProtocolAndPorts.ProtocolPort;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.Window;
@@ -69,7 +70,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	private EndpointFreeEvent lastFreeEvent;
 
 	private EndpointBusyEvent lastBusyEvent;
-	
+
 	private Console console = Console.getInstance();
 
 	/**
@@ -177,22 +178,10 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 	}
 
 	protected String resolveWsUrl() {
-
-		String protocol = Window.Location.getProtocol();
 		String host = Window.Location.getHostName();
-		String wsProtocol = Window.Location.getParameter(UiCoreConstants.PK_WS_PROTOCOL);
-		if (wsProtocol == null) {// determine by http
-			boolean https = protocol.equals("https:");
-			wsProtocol = https ? "wss" : "ws";
-		}
-		String wsPort = Window.Location.getParameter(UiCoreConstants.PK_WS_PORT);
-		if (wsPort == null) {
-			wsPort = Window.Location.getPort();
-		}
+		ProtocolPort pp = WsProtocolAndPorts.getInstance().getFirstOrDefault();
 
-		//
-
-		String rt = wsProtocol + "://" + host + ":" + wsPort + "/wsa/default";
+		String rt = pp.protocol + "://" + host + ":" + pp.port + "/wsa/default";
 
 		return rt;
 	}
@@ -203,8 +192,8 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 
 		this.socket = WebSocketJSO.newInstance(uri, false);
-		if(this.socket == null){
-			
+		if (this.socket == null) {
+
 			Window.alert("Web socket is required but not supported by your browser!");
 			return;
 		}
@@ -225,10 +214,10 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 			}
 		});
-		this.socket.onClose(new HandlerI<EventJSO>() {
+		this.socket.onClose(new HandlerI<CloseEventJSO>() {
 
 			@Override
-			public void handle(EventJSO t) {
+			public void handle(CloseEventJSO t) {
 				//
 				EndpointWsImpl.this.onWsClose(t);
 			}
@@ -295,12 +284,13 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 
 	}
 
-	protected void onWsClose(EventJSO evt) {
-		LOG.info("onWsClose,evt:" + evt);
+	protected void onWsClose(CloseEventJSO evt) {
+		LOG.info("onWsClose,code:" + evt.getCode() + ",reason:" + evt.getReason() + ",wasClean:"
+				+ evt.getWasClean() + ",evt:" + evt);
 		this.serverIsReady = false;
 		this.clientId = null;
 		this.terminalId = null;//
-		new EndpointCloseEvent(this).dispatch();
+		new EndpointCloseEvent(this, "" + evt.getCode(), evt.getReason()).dispatch();
 
 	}
 
@@ -328,7 +318,7 @@ public class EndpointWsImpl extends UiObjectSupport implements EndPointI {
 		Path p = md.getPath();
 		Path tp = EndpointMessageEvent.TYPE.getAsPath();
 		ErrorInfosData eis = md.getErrorInfos();
-		if(eis.hasError()){
+		if (eis.hasError()) {
 			this.console.error(eis);
 		}
 		md.setHeader(MessageData.HK_PATH, tp.concat(p).toString());

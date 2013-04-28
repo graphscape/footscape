@@ -13,6 +13,8 @@ import com.google.gwt.user.client.Window;
 /**
  * @author wu
  *         <p>
+ *         http://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-17
+ *         <p>
  *         http://dev.w3.org/html5/websockets/#the-websocket-interface
  */
 public final class WebSocketJSO extends AbstractJSO {
@@ -67,13 +69,13 @@ public final class WebSocketJSO extends AbstractJSO {
 
 	}
 
-	public final void onClose(final HandlerI<EventJSO> handler) {
+	public final void onClose(final HandlerI<CloseEventJSO> handler) {
 
 		this.onEvent("onclose", new HandlerI<JavaScriptObject>() {
 
 			@Override
 			public void handle(JavaScriptObject t) {
-				EventJSO jso = t.cast();
+				CloseEventJSO jso = t.cast();
 				handler.handle(jso);
 			}
 

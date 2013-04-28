@@ -14,8 +14,6 @@ public class UiCoreConstants {
 
 	// URL parameter key:
 	
-	public static final String PK_WS_PORT = "fs.wsPort";
-
-	public static final String PK_WS_PROTOCOL = "fs.wsProtocol";
-
+	public static final String PK_WS_PROTOCOL_PORT_S = "fs.wspps";
+	
 }

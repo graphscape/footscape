@@ -12,6 +12,7 @@ import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
@@ -19,6 +20,8 @@ import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
+import com.fs.uicore.impl.gwt.client.endpoint.WsProtocolAndPorts;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
@@ -157,10 +160,37 @@ public class ClientLoaderImpl extends ClientLoader {
 	protected void onEndpointClose(ContainerI container, EndpointCloseEvent t) {
 		// disconnected to server,
 		this.enable();
-		boolean rec = Window.confirm("Connection to server is lost, re-connect to server?");
+		String code = t.getCode();
+		int retry = 0;
+		String retryS = Window.Location.getParameter("fs.retry");
 
-		if (rec) {
-			Window.Location.reload();
+		UrlBuilder urlB = Window.Location.createUrlBuilder();
+		String orignal = null;
+		if (retryS == null) {//
+			orignal = urlB.buildString();
+			urlB.setParameter("fs.orignal", orignal);
+		} else {
+			orignal = Window.Location.getParameter("fs.orignal");
+			retry = Integer.parseInt(retryS);
+		}
+		retry++;
+
+		WsProtocolAndPorts wpps = WsProtocolAndPorts.getInstance();
+
+		if (retry < wpps.getConfiguredList().size()) {
+			WsProtocolAndPorts wpps2 = wpps.shiftLeft();//
+			urlB.setParameter("fs.retry", "" + retry);
+			urlB.setParameter(UiCoreConstants.PK_WS_PROTOCOL_PORT_S, wpps2.getAsParameter());
+			String newURL = urlB.buildString();
+			Window.Location.assign(newURL);
+			return;
+		}
+
+		boolean rec = Window.confirm("Connection to server is closed, retry?");
+
+		if (rec) {// use the orignal url.
+			//
+			Window.Location.assign(orignal);
 		}
 	}
 
