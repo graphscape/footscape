@@ -41,6 +41,10 @@
 		</antcall>
 	</target>
 
+	<target name="package">
+		<antcall target="publish" />
+	</target>
+
 	<target name="clean">
 		<antcall target="invoke-all-">
 			<param name="task" value="clean" />

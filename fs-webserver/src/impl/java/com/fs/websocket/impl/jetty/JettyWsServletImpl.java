@@ -4,7 +4,12 @@
 package com.fs.websocket.impl.jetty;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.ServiceLoader;
 
 import javax.servlet.ServletException;
@@ -107,26 +112,29 @@ public class JettyWsServletImpl extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException {
-		if (factory.isUpgradeRequest(request, response)) {
-			// We have an upgrade request
-			if (factory.acceptWebSocket(request, response)) {
-				// We have a socket instance created
-				return;
-			}
-			// If we reach this point, it means we had an incoming request to
-			// upgrade
-			// but it was either not a proper websocket upgrade, or it was
-			// possibly rejected
-			// due to incoming request constraints (controlled by
-			// WebSocketCreator)
-			if (response.isCommitted()) {
-				// not much we can do at this point.
-				return;
-			}
+		boolean accept = false;
+		boolean isupgrade = factory.isUpgradeRequest(request, response);
+		if (isupgrade) {
+			accept = factory.acceptWebSocket(request, response);
 		}
+		String userAgent = request.getHeader("User-Agent");
+		LOG.info("accept:" + accept + ",user-agent:" + userAgent);
+		if (LOG.isDebugEnabled()) {
 
-		// All other processing
-		super.service(request, response);
+			Map<String, List<String>> headers = new HashMap<String, List<String>>();
+
+			for (Enumeration<String> nE = request.getHeaderNames(); nE.hasMoreElements();) {
+				String name = nE.nextElement();
+				List<String> vL = new ArrayList<String>();
+				headers.put(name, vL);
+				for (Enumeration<String> vE = request.getHeaders(name); vE.hasMoreElements();) {
+					vL.add(vE.nextElement());
+				}
+			}
+
+			LOG.debug("accept:" + accept + ",headers:" + headers);
+
+		}
 	}
 
 	public void configure(WebSocketServletFactory factory) {

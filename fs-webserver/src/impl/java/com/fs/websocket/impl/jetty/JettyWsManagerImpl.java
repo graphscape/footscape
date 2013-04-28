@@ -88,7 +88,7 @@ public class JettyWsManagerImpl extends ConfigurableSupport implements
 
 		String id = this.nextId();
 
-		JettyWebSocketImpl rt = new JettyWebSocketImpl(id);
+		JettyWebSocketImpl rt = new JettyWebSocketImpl(id,arg0);
 
 		rt.addListener(this);//
 		rt.addListener(this.listeners);//

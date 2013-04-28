@@ -6,13 +6,7 @@
 <project name="fs-integrated" default="publish" xmlns:ivy="antlib:org.apache.ivy.ant">
 	 &common.build;
 	
-	<target name="binary" >
-		
-		
-				
-	</target>
-	
-	<target name="zip">
+	<target name="post-package">
 		<!-- -->
 		<zip destfile="${dir.target}/fs-bin-${fs.revision}.zip" basedir="${dir.src}/impl/dist">
 			<zipfileset dir="${dir.target}/runtime/lib" prefix="lib">
@@ -30,9 +24,9 @@
 		</zip>		
 	</target>
 	
-	<target name="install" >
+	<target name="unzip" >
 		<antcall target="package"/>
-		<antcall target="zip"/>
+		
 		<unzip src="${dir.target}/fs-bin-${fs.revision}.zip" dest="${dir.target}/fs-bin-${fs.revision}" />
 		<chmod file="${dir.target}/fs-bin-${fs.revision}/bin/*.sh" perm="700" />
 

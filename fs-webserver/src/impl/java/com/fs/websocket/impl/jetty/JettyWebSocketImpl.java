@@ -7,7 +7,7 @@ package com.fs.websocket.impl.jetty;
 import java.io.IOException;
 
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketException;
+import org.eclipse.jetty.websocket.api.UpgradeRequest;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.api.io.WebSocketBlockingConnection;
 import org.slf4j.Logger;
@@ -32,9 +32,11 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 
 	protected String id;
 
-	public JettyWebSocketImpl(String id) {
+	public JettyWebSocketImpl(String id, UpgradeRequest ur) {
 		this.id = id;
-
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("" + ur.getHeaders());
+		}
 	}
 
 	/*
@@ -107,4 +109,5 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 		//
 		super.add(ln);
 	}
+
 }

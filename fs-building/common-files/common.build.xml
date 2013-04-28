@@ -219,13 +219,6 @@
 	</exec>
 </target>
 
-<target name="git-status">
-	<echo message="git pull project : ${ant.project.name}" />
-	<exec executable="git">
-		<arg value="status" />
-	</exec>
-</target>
-
 <target name="setup" depends="fail" if="allIsWellBool">
 	<tstamp>
 		<format property="started" pattern="yyyy/MM/dd HH:mm:ss" />
@@ -267,15 +260,7 @@
 	</jar>
 
 </target>
-<target name="package-impl" depends="compile-test">
-	<antcall target="jar-">
-		<param name="part" value="api" />
-	</antcall>
-	<antcall target="jar-">
-		<param name="part" value="impl" />
-	</antcall>
 
-</target>
 <target name="package" depends="compile-test" description="">
 	<antcall target="package-gwt" />
 	<antcall target="package-root-web" />
@@ -285,8 +270,21 @@
 	<antcall target="jar-">
 		<param name="part" value="impl" />
 	</antcall>
+	<antcall target="post-package">
+		
+	</antcall>
+</target>
+
+<target name="package-impl" depends="compile-test">
+	<antcall target="jar-">
+		<param name="part" value="api" />
+	</antcall>
+	<antcall target="jar-">
+		<param name="part" value="impl" />
+	</antcall>
 
 </target>
+
 
 <!-- Note:this task package gwt generated js,and package task include this package(jar). -->
 <target name="package-gwt" depends="compile-gwt">
@@ -321,6 +319,7 @@
 	</if>
 
 </target>
+
 <target name="publish" depends="package">
 
 	<echo message="Publising : ${dir.fs.building}" />

@@ -9,7 +9,7 @@ import com.fs.commons.api.context.ContextI;
  * @author wuzhen
  * 
  */
-public interface WebSocketI extends ContextI{
+public interface WebSocketI extends ContextI {
 
 	public String getId();
 

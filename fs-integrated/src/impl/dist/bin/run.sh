@@ -50,7 +50,7 @@ CLASS=com.fs.integrated.Server
 #Class path
 CLASS_PATH="$FS_HOME/bin/*":"$FS_HOME/lib/*":"$FS_HOME/conf"
 
-OPTS="-cp $CLASS_PATH "
+OPTS="-cp $CLASS_PATH -Dfs.home=$FS_HOME -Dfs.log.level=$FS_LOG_LEVEL"
 ##
 #
 ##
