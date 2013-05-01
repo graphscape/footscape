@@ -38,12 +38,12 @@ a.exp-label {
 }
 
 .exps-item-count{
-	width:1%;
-	
+	width: 1%;
+	text-align: right;
 }
 
 .exps-item-count .count{
-	font-size:16px;
+	font-weight:bold;
 }
 
 .exps-item-count .info{
@@ -51,8 +51,8 @@ a.exp-label {
 }
 
 .exps-item:hover {
-	border-left : 2px solid #646464;
-	background: #DCDCDC;
+	border-left : 2px solid #dcdcdc;
+	background: #fafafa;
 }
 
 .exps-item-usericon { /**td**/
@@ -78,13 +78,20 @@ a.exp-label {
 	color:  #7A7A7A;
 }
 .exps-item-exptitle {
-	
-	font-size : 14px;
 	font-weight: bold;
 }
 .exps-item-expbody {
 	
 }
+
+.exps-item button{
+	display: none;
+}
+
+.exps-item:hover button{
+	display: block;
+}
+
 
 .expm-list {
 	height: 300px;
@@ -199,8 +206,10 @@ a.exp-label {
 	padding-left:0px;
 }
 
+
 .uel-item-count{
 	width:1%;
+	text-align: right;
 }
 
 .uel-item-count .info {
@@ -222,8 +231,8 @@ a.exp-label {
 
 .uel-item.selected,
 .uel-item:hover {
-	border-left : 2px solid #646464;
-	background: #DCDCDC;
+	border-left : 2px solid #dcdcdc;
+	background: #fafafa;
 }
 
 .uel-item-expicon { /**td**/
@@ -238,7 +247,6 @@ a.exp-label {
 
 .uel-item-actions {
 	width:1%;
-	align:right;	
 	vertical-align:bottom;
 }
 .uel-item-timestamp {
@@ -246,12 +254,19 @@ a.exp-label {
 	color: #7A7A7A;
 }
 .uel-item-exptitle {
-	font-size: 14px;
 	font-weight:bold;
 }
 
 .uel-item-expbody {
 	
+}
+
+.uel-item button{
+	display: none;
+}
+
+.uel-item:hover button{
+	display: block;
 }
 
 .user-info td.seperator {
