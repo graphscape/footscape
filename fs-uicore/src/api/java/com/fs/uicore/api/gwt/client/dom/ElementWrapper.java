@@ -257,8 +257,8 @@ public class ElementWrapper {
 		this.moveTo(rect.getTopLeft());
 		this.resize(rect.getSize());
 	}
-	
-	public void setSize(Size size){
+
+	public void setSize(Size size) {
 		this.setWidth(size.getWidth());
 		this.setHeight(size.getHeight());
 	}
@@ -266,6 +266,21 @@ public class ElementWrapper {
 	public void resize(Size size) {
 		this.setWidth(size.getWidth());
 		this.setHeight(size.getHeight());
+	}
+
+	public void resizeAndKeepCenter(Size size) {
+		
+		
+		Rectangle rect1 = this.getOffsetRectangle();
+		Size size1 = rect1.getSize();
+		Size sizeOffset = size1.minus(size);
+		sizeOffset = sizeOffset.divide(2.0d);//
+		Point topleft1= rect1.getTopLeft();
+		
+		Point topleft2 = topleft1.add(sizeOffset.getWidth(), sizeOffset.getHeight());
+		Rectangle rect2 = new Rectangle(topleft2,size);
+		this.moveAndResize(rect2);
+
 	}
 
 	public void setWidth(int w) {

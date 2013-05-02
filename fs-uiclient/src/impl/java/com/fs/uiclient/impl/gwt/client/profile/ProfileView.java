@@ -4,7 +4,11 @@
  */
 package com.fs.uiclient.impl.gwt.client.profile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fs.uiclient.api.gwt.client.Actions;
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.editor.image.ImageCropEditorI;
@@ -37,7 +41,7 @@ public class ProfileView extends FormsView implements ProfileViewI {
 	public ProfileView(ContainerI ctn, ProfileModel pm) {
 		super(ctn, "profile");
 		this.model = pm;
-		//this.addAction(Actions.A_PROFILE_INIT);
+		// this.addAction(Actions.A_PROFILE_INIT);
 		this.addAction(Actions.A_PROFILE_SUBMIT);
 		if (this.listenIcon) {
 			this.image = DOM.createImg();
@@ -46,7 +50,7 @@ public class ProfileView extends FormsView implements ProfileViewI {
 
 		FormViewI def = this.getDefaultForm();
 		// def.addField("email", String.class);
-		//def.addField("age", Integer.class);
+		// def.addField("age", Integer.class);
 		def.addField("birthDay", DateData.class);
 		def.addField("gender", String.class, EnumEditorI.class, new UiCallbackI<EnumEditorI, Object>() {
 
@@ -62,8 +66,15 @@ public class ProfileView extends FormsView implements ProfileViewI {
 		// options
 		// FieldModel iconFM = def.addField("icon", String.class,
 		// ImageFileUrlDataEditorI.class);
+		{
+			Map<String, Object> pts = new HashMap<String, Object>();
+			pts.put(ImageCropEditorI.PK_TARGET_SIZE, UiClientConstants.USER_ICON_SIZE);
+			pts.put(ImageCropEditorI.PK_INNER_BOX_ZOOM, 2.0d);
 
-		FieldModel iconFM = def.addField("icon", String.class, ImageCropEditorI.class);
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMX, 3.0d);
+			pts.put(ImageCropEditorI.PK_OUTER_BOX_ZOOMY, 2.0d);
+			FieldModel iconFM = def.addField("icon", String.class, ImageCropEditorI.class, pts);
+		}
 
 		def.getFormModel().addAction(Actions.A_PROFILE_SUBMIT);//
 	}
@@ -80,7 +91,7 @@ public class ProfileView extends FormsView implements ProfileViewI {
 	 * @see com.fs.uiclient.api.gwt.client.profile.ProfileViewI#setAge(int)
 	 */
 	@Override
-	public void setBirthDay(DateData bd){
+	public void setBirthDay(DateData bd) {
 		FormViewI def = this.getDefaultForm();
 		def.setFieldValue("birthDay", bd);
 

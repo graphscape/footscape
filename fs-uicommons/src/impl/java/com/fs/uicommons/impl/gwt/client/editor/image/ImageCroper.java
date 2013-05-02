@@ -126,13 +126,12 @@ public class ImageCroper extends ElementObjectSupport {
 
 			this.table.addClassName("outer-box");//
 			this.outerBox.appendChild(this.table.getElement());//
-			
-			
-			int width00 = (this.outerBoxSize.getWidth()-this.innerBoxSize.getWidth())/2;
+
+			int width00 = (this.outerBoxSize.getWidth() - this.innerBoxSize.getWidth()) / 2;
 			int width01 = this.innerBoxSize.getWidth();
-			int width02=width00;
-			
-			int height01 =(this.outerBoxSize.getHeight()-this.innerBoxSize.getHeight())/2;
+			int width02 = width00;
+
+			int height01 = (this.outerBoxSize.getHeight() - this.innerBoxSize.getHeight()) / 2;
 			int height11 = this.innerBoxSize.getHeight();
 			int height21 = height01;
 			{// tr1
@@ -152,7 +151,6 @@ public class ImageCroper extends ElementObjectSupport {
 					this.plus.addClassName("plus");
 					this.plus.addClassName("zoomer");
 					div.appendChild(this.plus.getElement());
-					
 
 					this.plus.addGwtHandler(ClickEvent.getType(), new GwtClickHandler() {
 
@@ -189,14 +187,16 @@ public class ImageCroper extends ElementObjectSupport {
 			}
 			{// tr2
 				TRWrapper tr = this.table.addTr();
-				
+
 				TDWrapper td1 = tr.addTd();
 				td1.addClassName("td11");
 				td1.setHeight(height11);
 				{// box is here,center of the table
 
 					this.innerBox = new InnerImageBox(c, this.editingImageBox.getElement(),
-							this.labelOfMouseMoving, this.innerBoxSize);//size is here
+							this.labelOfMouseMoving, this.innerBoxSize);// size
+																		// is
+																		// here
 
 					this.innerBox.addHandler(DragEndEvent.TYPE, new EventHandlerI<DragEndEvent>() {
 
@@ -226,11 +226,10 @@ public class ImageCroper extends ElementObjectSupport {
 
 				}
 
-
 			}
 			{// tr 3
 				TRWrapper tr = this.table.addTr();
-				
+
 				TDWrapper td1 = tr.addTd();
 				td1.addClassName("td21");
 				td1.setHeight(height21);
@@ -265,11 +264,11 @@ public class ImageCroper extends ElementObjectSupport {
 	}
 
 	protected void onPlus() {
-		this.zoom(this.zoomX * 1.1, this.zoomY * 1.1);
+		this.zoom(this.zoomX * 1.1, this.zoomY * 1.1, true);
 	}
 
 	protected void onMinus() {
-		this.zoom(this.zoomX * 0.9, this.zoomY * 0.9);
+		this.zoom(this.zoomX * 0.9, this.zoomY * 0.9, true);
 
 	}
 
@@ -318,36 +317,73 @@ public class ImageCroper extends ElementObjectSupport {
 			// NOTE,
 			return;
 		}
-		
+
 		// initial, zoom to proper size,fit the outer box.
-		
+
 		Size tsize = this.outerBoxSize;
-		
+
 		int w1 = osize.getWidth();
 		int w2 = tsize.getWidth();
 		double zx = w1 == 0 ? 1 : (double) w2 / (double) w1;
-		
+
 		int h1 = osize.getHeight();
 		int h2 = tsize.getHeight();
 		double zy = h1 == 0 ? 1 : (double) h2 / (double) h1;
 
-		double zoom = zx>zy? zx:zy;//Zoom to large enough.
-		this.zoom(zoom,zoom);
+		double zoom = zx > zy ? zx : zy;// Zoom to large enough.
+		this.zoom(zoom, zoom, false);
 	}
 
 	// zoom the editing image?
 
-	public boolean zoom(double zx, double zy) {
+	public boolean zoom(double zx, double zy, boolean keepcenter) {
 		Size size = this.getOrininalSize();
 		Size tsize = size.multiple(zx, zy);
 		if (tsize.getHeight() < 100 || tsize.getWidth() < 100) {
 			// too small
 			return false;
 		}
-
+		double oldZx = this.zoomX;
+		double oldZy = this.zoomY;
 		this.zoomX = zx;
 		this.zoomY = zy;
 
+		if (keepcenter) {
+			// vector2-vector1=vector3
+
+			Point absCenter1 = this.innerBox.getElementWrapper().getAbsoluteRectangle().getCenter();
+
+			Point absOuterTopleft = new ElementWrapper(this.outerBox).getAbsoluteRectangle().getTopLeft();
+
+			// NOte,the center of the innerbox in the system of the outer box.
+			Point vecter1 = absCenter1.minus(absOuterTopleft);
+
+			Point absImageBoxTopLeft = this.editingImageBox.getAbsoluteRectangle().getTopLeft();// current
+
+			// Note, the current top left of the image box in the system of the
+			// outer box
+			// This is also the offset topleft of the image box.
+			Point vecter2 = absImageBoxTopLeft.minus(absOuterTopleft);//
+
+			// Note, the top left of the image box te be zoom/scale
+			Point vecter3 = vecter2.minus(vecter1);
+			//
+			// NOTE,zoom scale from current size
+			double zoomX2 = this.zoomX / oldZx;
+			double zoomY2 = this.zoomY / oldZy;
+			int x32 = (int) (vecter3.getX() * zoomX2);
+			int y32 = (int) (vecter3.getY() * zoomY2);
+			// the target vector3
+			Point vecter32 = Point.valueOf(x32, y32);
+			// the tareget
+			Point vector22 = vecter1.add(vecter32.getX(), vecter32.getY());
+
+			// keep center of the image box
+			// Note, move the box that contains the image,not the image itself
+
+			this.editingImageBox.moveTo(vector22);
+
+		}
 		this.editingImageWrapper.resize(tsize);
 		this.buildResultDataUrl(true);
 		return true;

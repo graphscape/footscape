@@ -49,6 +49,8 @@ public class UiClientConstants {
 	public static final Path AP_COOPER_REJECT = Path.valueOf("/action/cooper/reject");
 
 	public static final Size EXPEDIT_IMAGE_SIZE = Size.valueOf(4*64, 64);
+	
+	public static final Size USER_ICON_SIZE = Size.valueOf(52, 52);
 
 	public static final double EXPEDIT_INNER_BOX_ZOOM = 1.0d;
 	// public static final Integer MESSAGE_LIMIT = 25;//

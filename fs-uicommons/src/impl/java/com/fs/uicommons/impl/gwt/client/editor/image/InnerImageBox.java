@@ -31,10 +31,10 @@ public class InnerImageBox extends ElementObjectSupport implements DragableI {
 	/**
 	 * @param ele
 	 */
-	public InnerImageBox(ContainerI c, Element image ,Element log, Size size) {
+	public InnerImageBox(ContainerI c, Element div ,Element log, Size size) {
 		super(c, DOM.createDiv());//box
 		this.elementWrapper.setSize(size);//
-		this.imageDiv = image;
+		this.imageDiv = div;
 		this.element.addClassName("inner-box");
 		this.log = log;
 		
