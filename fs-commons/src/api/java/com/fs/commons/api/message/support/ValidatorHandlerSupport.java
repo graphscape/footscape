@@ -12,6 +12,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.validator.ValidateItem;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
@@ -93,8 +94,8 @@ public class ValidatorHandlerSupport extends HandlerSupport {
 		ErrorInfos eis = res.getErrorInfos();//
 
 		for (ValidateItem<MessageI> vi : viL) {// TODO ?
-			eis.add(new ErrorInfo(vi.getCondition().toString(),
-					"validate failed"));
+			Path ecode = vi.getErrorCode();
+			eis.add(new ErrorInfo(ecode));
 		}
 
 		return rt;

@@ -27,6 +27,8 @@ import com.fs.uiclient.impl.gwt.client.user.UserInfoViewImpl;
 import com.fs.uicommons.api.gwt.client.CreaterI;
 import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicommons.api.gwt.client.frwk.BodyViewI;
+import com.fs.uicommons.api.gwt.client.frwk.FrwkControlI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.support.ControlSupport;
 import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -356,6 +358,17 @@ public class MainControl extends ControlSupport implements MainControlI {
 		}
 		return rt;
 
+	}
+
+	/*
+	 *May 2, 2013
+	 */
+	@Override
+	public LoginViewI openLoginView() {
+		// 
+		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
+		
+		return fc.openLoginView();
 	}
 
 }

@@ -5,6 +5,7 @@ package com.fs.commons.impl.test.cases;
 
 import java.util.List;
 
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.validator.ValidateItem;
 import com.fs.commons.api.validator.ValidateResult;
@@ -71,8 +72,8 @@ public class ValidatorTest extends TestBase {
 		ValidatorI.FactoryI vf = this.container.find(ValidatorI.FactoryI.class,
 				true);
 		ValidatorI<Context> v = vf.createValidator();
-		v.addExpression("target.string1=='string1-value'");
-		v.addExpression("target.pts1.property['string2']=='string2-value'");
+		v.addExpression(Path.valueOf("test"),"target.string1=='string1-value'");
+		v.addExpression(Path.valueOf("test"),"target.pts1.property['string2']=='string2-value'");
 
 		Target target = new Target();
 		target.string1 = "string1-value";
@@ -100,7 +101,7 @@ public class ValidatorTest extends TestBase {
 
 		// test not meet.
 		target.pts1.setProperty("string3", "string3-value");
-		v.addExpression("target.pts1.property['string3']=='no-value'");
+		v.addExpression(Path.valueOf("test"),"target.pts1.property['string3']=='no-value'");
 		//
 		vr = v.validate(ctx);
 		il = vr.getItemList(true, false);

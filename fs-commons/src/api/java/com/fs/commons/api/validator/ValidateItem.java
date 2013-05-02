@@ -3,6 +3,7 @@
  */
 package com.fs.commons.api.validator;
 
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.ValueI;
 
 /**
@@ -11,17 +12,17 @@ import com.fs.commons.api.value.ValueI;
  */
 public class ValidateItem<T> implements ValueI {
 
-	protected T target;
-
 	protected boolean evaluated;
 
 	protected boolean valid;
 
 	protected ConditionI<T> condition;
-
-	public ValidateItem(T target, ConditionI<T> c) {
-		this.target = target;
+	
+	protected Path errorCode;
+	
+	public ValidateItem(Path errorCode,ConditionI<T> c) {
 		this.condition = c;
+		this.errorCode = errorCode;
 	}
 
 	public boolean evaluate(T t) {
@@ -41,7 +42,7 @@ public class ValidateItem<T> implements ValueI {
 	/**
 	 * @return the condition
 	 */
-	public Object getCondition() {
+	public ConditionI<T> getCondition() {
 		return condition;
 	}
 
@@ -50,6 +51,13 @@ public class ValidateItem<T> implements ValueI {
 	 */
 	public boolean isEvaluated() {
 		return evaluated;
+	}
+
+	/**
+	 * @return the errorCode
+	 */
+	public Path getErrorCode() {
+		return errorCode;
 	}
 
 }

@@ -24,4 +24,41 @@ public interface Constants {
 
 	public static Path P_ERROR_SIGNUP = P_ERROR.getSubPath("signup").getSubPath("failure");
 
+	public static Path P_ERROR_SIGNUP_NICK = P_ERROR.getSubPath("signup").getSubPath("nick");
+	
+	public static Path P_ERROR_SIGNUP_EMAIL = P_ERROR.getSubPath("signup").getSubPath("email");
+	
+	public static Path P_ERROR_SIGNUP_PASSWORD = P_ERROR.getSubPath("signup").getSubPath("password");
+	
+	public static Path P_ERROR_EXPE = P_ERROR.getSubPath("expe");
+
+	public static Path P_ERROR_EXPE_SUBMIT = P_ERROR_EXPE.getSubPath("submit");
+
+	public static Path P_ERROR_EXPE_SUBMIT_TITLE = P_ERROR_EXPE_SUBMIT.getSubPath("title");
+	
+	public static Path P_ERROR_EXPE_SUBMIT_SUMMARY = P_ERROR_EXPE_SUBMIT.getSubPath("summary");
+	
+	public static Path P_ERROR_EXPE_SUBMIT_FORMAT = P_ERROR_EXPE_SUBMIT.getSubPath("format");
+	
+	public static Path P_ERROR_EXPE_SUBMIT_BODY = P_ERROR_EXPE_SUBMIT.getSubPath("body");
+	
+	public static Path P_ERROR_PASSWORD = P_ERROR.getSubPath("password");
+	
+	public static Path P_ERROR_PASSWORD_EMAIL = P_ERROR_PASSWORD.getSubPath("email");
+	
+	public static Path P_ERROR_PASSWORD_NEWPASSWORD = P_ERROR_PASSWORD.getSubPath("newPassword");
+	
+	public static Path P_ERROR_PASSWORD_PFID = P_ERROR_PASSWORD.getSubPath("pfId");
+	
+	public static Path P_ERROR_PROFILE = P_ERROR.getSubPath("profile");
+	
+	public static Path P_ERROR_PROFILE_BIRTHDAY = P_ERROR_PROFILE.getSubPath("birthDay");
+	
+	public static Path P_ERROR_PROFILE_GENDER = P_ERROR_PROFILE.getSubPath("gender");
+	
+	public static Path P_ERROR_PROFILE_ICON = P_ERROR_PROFILE.getSubPath("icon");
+	
+	
+	
+
 }

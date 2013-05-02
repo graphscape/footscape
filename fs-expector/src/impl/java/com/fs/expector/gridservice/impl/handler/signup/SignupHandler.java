@@ -55,13 +55,13 @@ public class SignupHandler extends ExpectorTMREHSupport {
 
 		{
 			ValidatorI<MessageI> vl = this.createValidator("submit");
-			vl.addExpression(prefix + "['nick']!=null");
-			vl.addExpression(prefix + "['email']!=null");
-			vl.addExpression(prefix + "['password']!=null");
+			vl.addExpression(Constants.P_ERROR_SIGNUP_NICK, prefix + "['nick']!=null");
+			vl.addExpression(Constants.P_ERROR_SIGNUP_EMAIL, prefix + "['email']!=null");
+			vl.addExpression(Constants.P_ERROR_SIGNUP_PASSWORD, prefix + "['password']!=null");
 			// passcode in session .
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
-		
+
 		// this.confirmCodeNotifier =
 		// this.top.finder(ConfirmCodeNotifierI.class).name("main").find(true);
 	}
@@ -95,7 +95,7 @@ public class SignupHandler extends ExpectorTMREHSupport {
 	 */
 	@Handle("submit")
 	public void handleSubmit(TerminalMsgReceiveEW mw, ResponseI res, MessageContext hc,
-			ValidatorI<MessageI> vl, ValidateResult<MessageI> vr) {
+			ValidateResult<MessageI> vr) {
 		MessageI req = mw.getMessage();
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
@@ -104,9 +104,9 @@ public class SignupHandler extends ExpectorTMREHSupport {
 		// here the data is valid for save processing.
 		String email = (String) req.getPayload("email");// this is account
 		email = email.toLowerCase();//
-		
-		Account old = this.dataService.getNewestById(Account.class,email, false);
-		if(old != null){
+
+		Account old = this.dataService.getNewestById(Account.class, email, false);
+		if (old != null) {
 			res.getErrorInfos().addError(Constants.P_ERROR_SIGNUP);
 			return;
 		}

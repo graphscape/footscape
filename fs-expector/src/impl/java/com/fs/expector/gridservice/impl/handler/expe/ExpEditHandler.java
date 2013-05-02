@@ -15,9 +15,11 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.expector.gridservice.impl.handler.expm.ExpMessageHandler;
 import com.fs.gridservice.commons.api.data.SessionGd;
@@ -36,10 +38,10 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 
 		{
 			ValidatorI<MessageI> vl = this.createValidator("submit");
-			vl.addExpression(prefix + "['title']!=null");
-			vl.addExpression(prefix + "['summary']!=null");
-			vl.addExpression(prefix + "['format']!=null");
-			vl.addExpression(prefix + "['body']!=null");
+			vl.addExpression(Constants.P_ERROR_EXPE_SUBMIT_TITLE,prefix + "['title']!=null");
+			vl.addExpression(Constants.P_ERROR_EXPE_SUBMIT_SUMMARY,prefix + "['summary']!=null");
+			vl.addExpression(Constants.P_ERROR_EXPE_SUBMIT_FORMAT,prefix + "['format']!=null");
+			vl.addExpression(Constants.P_ERROR_EXPE_SUBMIT_BODY,prefix + "['body']!=null");
 			// passcode in session .
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
@@ -49,7 +51,7 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 	}
 	
 	@Handle("submit")
-	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res,ValidatorI<MessageI> vl) {
+	public void handleSubmit(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res, ValidateResult<MessageI> vl) {
 		if(res.getErrorInfos().hasError()){
 			return;
 		

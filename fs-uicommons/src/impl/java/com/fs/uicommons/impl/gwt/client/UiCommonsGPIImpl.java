@@ -171,7 +171,7 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 		eb.addHandler(Actions.A_LOGIN_SUBMIT, new LoginSubmitAH(c));
 
-		eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
+		//eb.addHandler(Actions.A_LOGIN_LOGOUT, new LogoutAP(c));
 		eb.addHandler(Actions.A_LOGIN_FACEBOOK, new FbLoginAP(c));
 		// password
 		eb.addHandler(Actions.A_PASSWORD_FORGOT, new PasswordForgotAP(c));

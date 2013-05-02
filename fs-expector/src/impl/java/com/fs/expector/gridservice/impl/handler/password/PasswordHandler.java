@@ -20,6 +20,7 @@ import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.PasswordForgot;
+import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 
@@ -48,17 +49,16 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 		this.mailSender = this.top.find(MailSenderI.class, true);
 		this.rootUrl = this.config.getProperty("rootUrl", true);
 
-
 		{
 			ValidatorI<MessageI> vl = this.createValidator("forgot");
-			vl.addExpression(prefix + "['email']!=null");
+			vl.addExpression(Constants.P_ERROR_PASSWORD_EMAIL, prefix + "['email']!=null");
 			// passcode in session .
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
 		}
 		{
 			ValidatorI<MessageI> vl = this.createValidator("reset");
-			vl.addExpression(prefix + "['pfId']!=null");
-			vl.addExpression(prefix + "['newPassword']!=null");
+			vl.addExpression(Constants.P_ERROR_PASSWORD_PFID, prefix + "['pfId']!=null");
+			vl.addExpression(Constants.P_ERROR_PASSWORD_NEWPASSWORD, prefix + "['newPassword']!=null");
 
 			// passcode in session .
 			// vl.addExpression("payloads.property['passcode']==property['session'].property['passcode']");
@@ -82,7 +82,8 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 	}
 
 	@Handle("reset")
-	public void handleReset(TerminalMsgReceiveEW mw, ResponseI res, MessageContext hc,ValidateResult<MessageI> vr) {
+	public void handleReset(TerminalMsgReceiveEW mw, ResponseI res, MessageContext hc,
+			ValidateResult<MessageI> vr) {
 		if (res.getErrorInfos().hasError()) {
 			// if has error such as validate error,then not continue.
 			return;
@@ -154,8 +155,8 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 	}
 
 	private String getResetUrl(String pid) {
-		
-		String rt =  this.rootUrl+ "&action=pf&pfId=" + pid;
+
+		String rt = this.rootUrl + "&action=pf&pfId=" + pid;
 
 		return rt;
 	}

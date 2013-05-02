@@ -4,7 +4,6 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.action;
 
-import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
@@ -14,6 +13,7 @@ import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.commons.Path;
+import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -45,16 +45,29 @@ public class CooperRequestAP extends ActionHandlerSupport {
 		ExpSearchViewI sm = mc.openExpSearch(false);
 
 		UserExpModel ue = sm.getExpId(false);
-		if (ue == null) {
-			boolean sel = Window.confirm("You must select one of your expectation before make the request, do you want to select one?");
-			if(!sel){
-				return;//do nothing				
+		UserInfo ui = this.getEndpoint().getUserInfo();
+		if (ui.isAnonymous()) {
+			boolean login = Window
+					.confirm("You must log in before make the request, do you want to login in?");
+			if (!login) {
+				return;// do nothing
 			}
-			
-			//open my expecation list
-			mc.openUeList(true);
-			return;
+			mc.openLoginView();
+			return;//anonymous user should not continue;
 		}
+		// is register user
+		if (ue == null) {
+			boolean sel = Window
+					.confirm("You must select one of your expectation before make the request, do you want to select one?");
+			if (!sel) {
+				return;// do nothing
+			}
+
+			// open my expecation list
+			mc.openUeList(true);
+			return;//if not select one exp, not continue;
+		}
+
 		String expId1 = ue.getExpId();
 
 		// CooperControlI cc= c.getManager().find(CooperControlI.class, true);

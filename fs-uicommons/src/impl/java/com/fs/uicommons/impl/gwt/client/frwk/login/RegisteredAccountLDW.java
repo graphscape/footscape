@@ -13,7 +13,7 @@ import com.fs.uicommons.api.gwt.client.ldata.LocalData;
 public class RegisteredAccountLDW extends AbstractAccountLDW {
 
 	private static String K_EMAIL = "email";
-
+	
 	public RegisteredAccountLDW(LocalData localData) {
 		super(localData);
 	}

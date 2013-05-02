@@ -36,7 +36,10 @@
 	<property name="/error/login/missing/nick" value="Please input nick" />
 	<property name="/error/password-forgot/failure" value="Failured when send message to the email address!" />
 	<property name="/error/signup/failure" value="Please make sure the provided information is correct and not sign up before!" />
-	
+	<property name="/error/expe/submit/title" value="Title of the expecation is error!" />
+	<property name="/error/expe/submit/body" value="Please input the detail of the expectation!" />
+	<property name="/error/expe/submit/format" value="Format error!" />
+	<property name="/error/expe/submit/summary" value="Summary is missing!" />
 	
 	<!-- Header Items,Tab title -->
 	<property name="/console" value="Console" />

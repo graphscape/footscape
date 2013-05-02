@@ -79,18 +79,20 @@ div.popup .dragged{
 html{
 	height:100%;
 }
-input {
-	border: 1px solid #999;
-	border-bottom: 1px solid #999;
-	border-radius: 2px;
+input,
+textarea {
+	border: 1px solid #dddddd;
 	height: 20px;
 	padding: 3px;
 	width: 200px;
 }
 
-input:hover,input:focus {
-	border: 1px solid #777;
-	box-shadow: 0 0 5px orange;
+input:hover,
+input:focus,
+textarea:hover,
+textarea:focus  {
+	outline: none;
+	border: 1px solid orange;
 }
 
 input.date {
@@ -112,15 +114,7 @@ td {
 	text-align: left;
 }
 textarea {
-	border: 1px solid #999;
-	border-bottom: 1px solid #999;
-	border-radius: 2px;
-	padding: 3px;
 	width: 450px;
 	height: 120px;
 }
 
-textarea:hover,textarea:focus {
-	border: 1px solid #777;
-	box-shadow: 0 0 5px orange;
-}

@@ -4,6 +4,7 @@
 package com.fs.commons.impl.validator;
 
 import com.fs.commons.api.jexl.ExpressionI;
+import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.validator.ConditionI;
 
 /**
@@ -32,9 +33,7 @@ public class ExpressionCondition<X> implements ConditionI<X> {
 	@Override
 	public String toString() {
 		return String.valueOf(this.expression);
-		
+
 	}
-	
-	
 
 }

@@ -18,6 +18,7 @@ import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.dataservice.api.wrapper.Profile;
+import com.fs.expector.gridservice.api.Constants;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.data.SessionGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -41,9 +42,9 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		super.active(ac);
 		{// submit
 			ValidatorI<MessageI> vl = this.createValidator("submit");
-			vl.addExpression(prefix + "['birthDay']!=null");
-			vl.addExpression(prefix + "['gender']!=null");
-			vl.addExpression(prefix + "['icon']!=null");
+			vl.addExpression(Constants.P_ERROR_PROFILE_BIRTHDAY, prefix + "['birthDay']!=null");
+			vl.addExpression(Constants.P_ERROR_PROFILE_GENDER, prefix + "['gender']!=null");
+			vl.addExpression(Constants.P_ERROR_PROFILE_ICON, prefix + "['icon']!=null");
 
 		}
 

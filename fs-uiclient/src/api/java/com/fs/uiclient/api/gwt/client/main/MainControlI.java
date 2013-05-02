@@ -12,6 +12,7 @@ import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.user.UserInfoViewI;
+import com.fs.uicommons.api.gwt.client.frwk.login.LoginViewI;
 import com.fs.uicommons.api.gwt.client.mvc.ControlI;
 import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -53,5 +54,7 @@ public interface MainControlI extends ControlI {
 	public void closeAll();
 
 	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh);
+
+	public LoginViewI openLoginView();
 
 }
