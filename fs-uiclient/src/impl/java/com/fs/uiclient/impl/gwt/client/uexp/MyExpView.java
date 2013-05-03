@@ -97,6 +97,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 			});
 			
 			
+			
 		}
 		// middle
 		{// middle
@@ -157,10 +158,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	public void setMyExp(MyExp me) {
 		
 		this.title.setTextAndTitle(me.getTitle(), false, me.getBody());
-		String status = me.getStatus();
 		
-		this.status.setText(status);
-		
+		if(!me.getIsOpen()){
+			this.expClosed();
+		}
 		String img = me.getImage();
 		
 		if (img != null) {

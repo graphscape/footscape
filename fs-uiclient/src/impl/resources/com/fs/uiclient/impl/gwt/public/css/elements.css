@@ -28,6 +28,7 @@ button {
 	display: inline-block;
 	font-weight: bold;
 	font-size: 11px;
+	margin:0px;
     text-decoration: none;
     padding: 3px 6px;
     border: 1px solid #d0d0d0;

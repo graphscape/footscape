@@ -51,11 +51,14 @@ public class ExpItemView extends ViewSupport {
 		this.table = new TableWrapper();
 
 		this.element.appendChild(this.table.getElement());
-		// IMAGE|time,author|Actions
-		// IMAGE|Body |Actions
-		// IMAGE|
+		// Icon|time,author|count
+		// Icon|Body 
+		// Icon|Image	  |Actions
+		// Icon|timestamp |Actions
 		int rowspan = 4;
-
+		int colspanOfExpBody = 2;
+		int rowspanOfActions = rowspan - 2;
+		
 		{// first line/TR0
 			// first line
 			TRWrapper tr0 = this.table.addTr();
@@ -81,7 +84,7 @@ public class ExpItemView extends ViewSupport {
 
 				td01.getElement().setInnerText(ei.getExpTitle());
 			}
-			{
+			{//count 
 				TDWrapper td02 = tr0.addTd();
 
 				td02.addClassName("exps-item-count");
@@ -90,6 +93,7 @@ public class ExpItemView extends ViewSupport {
 				td02.getElement().setInnerHTML(html);
 			}
 		}// end of first line
+		
 		{// second line
 
 			TRWrapper tr1 = this.table.addTr();
@@ -99,15 +103,11 @@ public class ExpItemView extends ViewSupport {
 				td1.addClassName("exps-item-expbody");
 				String html = ei.getExpBodyAsHtml();
 				td1.getElement().setInnerHTML(html);
+				td1.setAttribute("colspan", "" + colspanOfExpBody);
 				// td1,1
 			}
 
-			{//
-				TDWrapper td03 = tr1.addTd();
-				td03.setAttribute("rowspan", "" + (rowspan - 1));
-				this.actionsTd = td03;
-				this.actionsTd.addClassName("exps-item-actions");
-			}
+			
 		}
 		//
 		{// third line
@@ -124,6 +124,13 @@ public class ExpItemView extends ViewSupport {
 					image.setAttribute("src", img);
 					td1.getElement().appendChild(image);
 				}
+			}
+			
+			{//
+				TDWrapper td03 = tr1.addTd();
+				td03.setAttribute("rowspan", "" + rowspanOfActions);
+				this.actionsTd = td03;
+				this.actionsTd.addClassName("exps-item-actions");
 			}
 
 			// td1,1

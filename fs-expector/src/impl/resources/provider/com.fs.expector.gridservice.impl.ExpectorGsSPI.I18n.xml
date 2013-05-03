@@ -71,7 +71,7 @@
 	<property name="/action/signup/submit" value="Signup"/>
 	<property name="/action/signup/confirm" value="Confirm"/>
 	<property name="/action/exps/search" value="Search"/>
-	<property name="/action/exps/cooper" value="Coop"/>
+	<property name="/action/exps/cooper" value="Connect"/>
 	<property name="/action/exps/more" value="More Results" />
 	<property name="/action/login/submit" value="Login"/>
 	<property name="/action/login/logout" value="Logout"/>
@@ -99,6 +99,7 @@
 	<property name="/tip/action/login/submit" value="Login"/>
 	<property name="/tip/action/login/logout" value="Logout"/>
 	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
+	<property name="/tip/action/myexp/close" value="Closed expectation will not accept new connection request!" />
 	<property name="/tip/action/uelist/create" value="Create a new expecation for you."/>
 	<property name="/tip/action/uexpi/open" value="To show the detail of this expecation."/>
 	<property name="/tip/action/uexpi/select" value="Navigate to search view for this expectation."/>

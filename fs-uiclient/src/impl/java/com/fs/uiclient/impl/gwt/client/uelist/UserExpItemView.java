@@ -9,8 +9,8 @@ import com.fs.uiclient.api.gwt.client.event.view.ViewUpdateEvent;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
+import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
-import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
@@ -18,9 +18,7 @@ import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.fs.uicore.api.gwt.client.support.ObjectElementHelper;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -59,7 +57,10 @@ public class UserExpItemView extends ViewSupport {
 		// icon | nick |
 		// first
 		int rowspan = 4;
-		int colspan = 3;
+		int rowspanOfActions = rowspan - 2;
+		int colspanOfActions = 3;
+		int colspanOfExpBody = colspanOfActions+1;
+		
 		{// first line,left is , middle
 			// left
 			// line 1
@@ -69,7 +70,17 @@ public class UserExpItemView extends ViewSupport {
 				TDWrapper td = tr.addTd();
 				td.addClassName("uel-item-exptitle");
 				String title = t.getTitle();
-				td.getElement().setInnerText(title);
+				AnchorWI ar = this.factory.create(AnchorWI.class);
+				ar.setDisplayText(title);
+				ar.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>(){
+
+					@Override
+					public void handle(ClickEvent t) {
+						UserExpItemView.this.dispatchActionEvent(Actions.A_UEXPI_OPEN);
+					}});
+				td.getElement().appendChild(ar.getElement());
+				ar.parent(this);//
+				
 			}
 			{//status
 				TDWrapper td = tr.addTd();
@@ -110,19 +121,11 @@ public class UserExpItemView extends ViewSupport {
 				TDWrapper td1 = tr2.addTd();
 
 				td1.addClassName("uel-item-expbody");
-				td1.setAttribute("colspan", "1");//
+				td1.setAttribute("colspan", ""+colspanOfExpBody);//
 				String body = t.getBodyAsHtml();
 				td1.getElement().setInnerHTML(body);
 			}
-			{// actions
-
-				// right
-				TDWrapper td04 = tr2.addTd();
-				td04.setAttribute("colspan", "" + colspan);
-				td04.setAttribute("rowspan", "" + (rowspan - 1));
-				this.actionsTd = td04;
-				this.actionsTd.addClassName("uel-item-actions");
-			}
+			
 		}
 		{// line3
 
@@ -138,6 +141,15 @@ public class UserExpItemView extends ViewSupport {
 					image.setAttribute("src", img == null ? "" : img);
 					td1.getElement().appendChild(image);
 				}
+			}
+			{// actions
+
+				// right
+				TDWrapper td04 = tr1.addTd();
+				td04.setAttribute("colspan", "" + colspanOfActions);
+				td04.setAttribute("rowspan", "" + rowspanOfActions);
+				this.actionsTd = td04;
+				this.actionsTd.addClassName("uel-item-actions");
 			}
 			// td1,1
 		}
@@ -167,7 +179,7 @@ public class UserExpItemView extends ViewSupport {
 			}
 		});
 		select.parent(actions);
-
+/*
 		ButtonI show = this.factory.create(ButtonI.class);
 		show.setText(true, Actions.A_UEXPI_OPEN.toString());
 		
@@ -180,7 +192,7 @@ public class UserExpItemView extends ViewSupport {
 			}
 		});
 		show.parent(actions);
-
+*/
 	}
 
 	/**
