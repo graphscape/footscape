@@ -47,6 +47,8 @@ public class UiClientConstants {
 	public static final Path AP_COOPER_CONFIRM = Path.valueOf("/action/cooper/confirm");
 
 	public static final Path AP_COOPER_REJECT = Path.valueOf("/action/cooper/reject");
+	
+	public static final Path AP_EXPE_CLOSE = Path.valueOf("/action/myexp/close");
 
 	public static final Size EXPEDIT_IMAGE_SIZE = Size.valueOf(4*64, 64);
 	

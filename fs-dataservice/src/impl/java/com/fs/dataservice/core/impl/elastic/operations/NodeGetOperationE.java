@@ -26,8 +26,7 @@ import com.fs.dataservice.core.impl.elastic.GetResponseNodeImpl;
  * @author wu
  * 
  */
-public class NodeGetOperationE extends
-		OperationSupport<NodeGetOperationI, NodeResultI> implements
+public class NodeGetOperationE extends OperationSupport<NodeGetOperationI, NodeResultI> implements
 		NodeGetOperationI {
 
 	private static final String PK_UNIQUE = "uniqueId";
@@ -35,8 +34,7 @@ public class NodeGetOperationE extends
 
 	private ElasticClientI elastic;
 
-	private static class GetResult extends ResultSupport<NodeResultI, NodeI>
-			implements NodeResultI {
+	private static class GetResult extends ResultSupport<NodeResultI, NodeI> implements NodeResultI {
 
 		public GetResult(DataServiceI ds) {
 			super(ds);
@@ -113,14 +111,15 @@ public class NodeGetOperationE extends
 	protected void executeInternal(NodeResultI rst) throws Exception {
 		Client client = elastic.getClient();
 		GetResponse gr = client
-				.prepareGet(this.elastic.getIndex(),
-						this.getNodeType(true).toString(),
+				.prepareGet(this.elastic.getIndex(), this.getNodeType(true).toString(),
 						this.getUniqueId(true)).execute().actionGet();
 		Map<String, Object> src = gr.getSource();
 		if (src == null) {
 			rst.set(null);//
 		} else {
-			NodeI node = new GetResponseNodeImpl(gr);
+			NodeType ntype = this.getNodeType(true);
+
+			NodeI node = new GetResponseNodeImpl(ntype, this.dataService, gr);
 			rst.set(node);//
 		}
 	}

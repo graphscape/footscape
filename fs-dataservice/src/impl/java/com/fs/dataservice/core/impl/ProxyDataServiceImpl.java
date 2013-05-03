@@ -134,4 +134,22 @@ public class ProxyDataServiceImpl implements DataServiceI {
 
 	}
 
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public <T extends NodeWrapper> boolean updateByUid(Class<T> wpcls, String uid, String field, Object value) {
+		//
+		return this.target.updateByUid(wpcls, uid, field, value);
+	}
+
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public <T extends NodeWrapper> boolean updateByUid(Class<T> wpcls, String uid, String[] fields,
+			Object[] values) {
+		return this.target.updateByUid(wpcls, uid, fields, values);
+	}
+
 }

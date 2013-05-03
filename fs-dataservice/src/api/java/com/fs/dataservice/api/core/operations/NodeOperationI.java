@@ -13,8 +13,8 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  * @author wu
  * 
  */
-public interface NodeOperationI<W extends NodeWrapper, O extends NodeOperationI<W, O, T>, T extends ResultI<T, ?>>
-		extends OperationI<O, T> {
+public interface NodeOperationI<O extends NodeOperationI<O, W, R>, W extends NodeWrapper, R extends ResultI<R, ?>>
+		extends OperationI<O, R> {
 
 	public NodeType getNodeType(boolean force);
 

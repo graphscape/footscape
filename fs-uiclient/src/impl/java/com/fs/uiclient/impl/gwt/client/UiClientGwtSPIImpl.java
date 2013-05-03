@@ -35,6 +35,7 @@ import com.fs.uiclient.impl.gwt.client.handler.action.SignupSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ExpClosedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectCreatedNotifyMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectSearchMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpDeletedNotifyMH;
@@ -192,6 +193,8 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-connect-created"),
 				new ExpConnectCreatedNotifyMH(c));// search
+		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-closed"), new ExpClosedNotifyMH(c));
+		
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
 
 		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));//

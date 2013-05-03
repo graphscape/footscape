@@ -12,6 +12,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.json.JsonXContent;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.NodeI;
@@ -28,12 +29,16 @@ import com.fs.dataservice.core.impl.elastic.ElasticClientI;
  * @author wu
  * 
  */
-public class NodeCreateOperationE extends NodeOperationSupport<NodeCreateOperationI, NodeCreateResultI>
-		implements NodeCreateOperationI {
+public class NodeCreateOperationE<W extends NodeWrapper> extends
+		NodeOperationSupport<NodeCreateOperationI<W>, W, NodeCreateResultI> implements
+		NodeCreateOperationI<W> {
 
 	private ElasticClientI elastic;
 
 	private boolean allowNullValue = false;
+
+	public static final String PK_PROPERTIES = "properties";// node
+	// propertiesKey
 
 	private NodeWrapper wrapper;
 
@@ -42,7 +47,37 @@ public class NodeCreateOperationE extends NodeOperationSupport<NodeCreateOperati
 	 */
 	public NodeCreateOperationE(DataServiceI ds) {
 		super(new ResultImpl(ds));
+		this.parameter(PK_PROPERTIES, new MapProperties<Object>());
 		this.elastic = (ElasticClientI) ds;
+	}
+
+	public String getUniqueId(boolean force) {
+		return (String) this.getParameter(NodeI.PK_UNIQUE_ID, force);
+	}
+
+	public String getId(boolean force) {
+		return (String) this.properties().getProperty(NodeI.PK_ID, force);
+	}
+
+	protected <T> T getProperty(String key) {
+		return (T) this.properties().getProperty(key);
+	}
+
+	protected PropertiesI<Object> properties() {
+		return (PropertiesI<Object>) this.parameters.getProperty(PK_PROPERTIES,
+				true);
+	}
+
+	public void setId(String id) {
+		this.properties().setProperty(NodeI.PK_ID, id);
+	}
+	/*
+	 * Oct 27, 2012
+	 */
+	@Override
+	public NodeCreateOperationI<W> uniqueId(String uid) {
+		this.parameter(NodeI.PK_UNIQUE_ID, uid);
+		return this.cast();
 	}
 
 	/*
@@ -177,6 +212,30 @@ public class NodeCreateOperationE extends NodeOperationSupport<NodeCreateOperati
 		this.wrapper = nw;
 		this.wrapper.attachTo(this.getNodeProperties());
 		return this;
+	}
+
+	/*
+	 * Oct 27, 2012
+	 */
+	@Override
+	public NodeCreateOperationI<W> properties(PropertiesI<Object> pts) {
+		this.getNodeProperties().setProperties(pts);
+		return this.cast();
+	}
+
+	/*
+	 * Oct 27, 2012
+	 */
+	@Override
+	public NodeCreateOperationI<W> property(String key, Object value) {
+		this.getNodeProperties().setProperty(key, value);
+		return this.cast();
+	}
+
+	@Override
+	public PropertiesI<Object> getNodeProperties() {
+		//
+		return (PropertiesI<Object>) this.getParameter(PK_PROPERTIES);
 	}
 
 }

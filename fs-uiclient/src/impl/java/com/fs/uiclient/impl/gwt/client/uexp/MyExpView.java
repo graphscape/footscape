@@ -7,6 +7,7 @@ package com.fs.uiclient.impl.gwt.client.uexp;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uiclient.api.gwt.client.coper.ExpMessage;
 import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.MyExpViewI;
@@ -37,6 +38,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	protected ListI outer;
 
 	protected LabelI title;
+	
+	protected LabelI status;
 
 	protected ListI middle;
 
@@ -50,6 +53,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	protected ConnectedExpListView connectedExpList;
 
 	protected Map<String, ExpConnect> map2;
+	
+	protected ButtonI close;
 
 	protected String expId;
 
@@ -75,18 +80,23 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 			image.parent(this.outer);
 		}
-
+		{//status
+			this.status = this.factory.create(LabelI.class);
+			this.status.parent(this.outer);//
+		}
 		{ // close button
-			final ButtonI close = this.factory.create(ButtonI.class);
-			close.setText(true, "destroy");
+			this.close = this.factory.create(ButtonI.class);
+			close.setText(true, UiClientConstants.AP_EXPE_CLOSE.toString());
 			close.parent(this.outer);
 			close.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 				@Override
 				public void handle(ClickEvent t) {
-					MyExpView.this.onDestroyClick();
+					MyExpView.this.onCloseClick();
 				}
 			});
+			
+			
 		}
 		// middle
 		{// middle
@@ -133,8 +143,8 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	// close
-	protected void onDestroyClick() {
-		if (!Window.confirm("Do you confirm to destroy this expectation?")) {
+	protected void onCloseClick() {
+		if (!Window.confirm("Do you confirm to close this expectation?")) {
 			return;
 		}
 
@@ -145,8 +155,14 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 	@Override
 	public void setMyExp(MyExp me) {
+		
 		this.title.setTextAndTitle(me.getTitle(), false, me.getBody());
+		String status = me.getStatus();
+		
+		this.status.setText(status);
+		
 		String img = me.getImage();
+		
 		if (img != null) {
 			this.image.setSrc(img);
 		}
@@ -184,5 +200,15 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	@Override
 	public void noMore() {
 		this.messageList.noMore();
+	}
+
+	/*
+	 *May 3, 2013
+	 */
+	@Override
+	public void expClosed() {
+		this.status.setText("close");
+		this.close.disable(true);//
+		//
 	}
 }

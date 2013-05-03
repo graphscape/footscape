@@ -206,8 +206,13 @@ a.exp-label {
 	padding-left:0px;
 }
 
+.uel-item-status {
+	width:1%;
+	padding-right: 6px;
+	font-weight: bold;
+}
 
-.uel-item-count{
+.uel-item-count {
 	width:1%;
 	text-align: right;
 }

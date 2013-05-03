@@ -14,6 +14,10 @@ import com.fs.expector.dataservice.api.NodeTypes;
  * 
  */
 public class Expectation extends AuthedNode {
+	
+	public static final String ST_OPEN = "open";
+	
+	public static final String ST_CLOSE = "close";
 
 	public static final String BODY = "body";
 
@@ -26,6 +30,8 @@ public class Expectation extends AuthedNode {
 	public static final String ICON = "icon";
 	
 	public static final String IMAGE = "image";
+	
+	public static final String STATUS = "status";
 
 	/**
 	 * @param ntype
@@ -35,6 +41,14 @@ public class Expectation extends AuthedNode {
 		super(NodeTypes.EXPECTATION);
 	}
 
+	public String getStatus(){
+		return (String)this.getProperty(STATUS);
+	}
+	
+	public void setStatus(String status){
+		this.setProperty(STATUS, status);
+	}
+	
 	public String getBody() {
 		return (String) this.getProperty(BODY);
 	}
@@ -95,6 +109,7 @@ public class Expectation extends AuthedNode {
 				.field(ICON)//
 				.field(IMAGE)//
 				.field(BODY, AnalyzerType.TEXT)//
+				.field(STATUS)//
 				);
 	}
 

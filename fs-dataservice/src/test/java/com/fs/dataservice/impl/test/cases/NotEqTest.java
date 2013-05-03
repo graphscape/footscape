@@ -32,6 +32,7 @@ public class NotEqTest extends TestBase {
 		mn3.setProperty(MockNode.FIELD2, "value32");
 		mn3.setProperty(MockNode.FIELD3, "value33");
 		mn3.save(true);
+		
 		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyEq(MockNode.FIELD1, "value1");
 		qo.propertyNotEq(MockNode.FIELD2, "value12");

@@ -36,6 +36,8 @@ public class UserExpItemView extends ViewSupport {
 	protected UserExpModel model;
 
 	protected TDWrapper actionsTd;
+	
+	protected TDWrapper statusTd;
 
 	/**
 	 * @param ctn
@@ -57,7 +59,7 @@ public class UserExpItemView extends ViewSupport {
 		// icon | nick |
 		// first
 		int rowspan = 4;
-		int colspan = 2;
+		int colspan = 3;
 		{// first line,left is , middle
 			// left
 			// line 1
@@ -69,7 +71,12 @@ public class UserExpItemView extends ViewSupport {
 				String title = t.getTitle();
 				td.getElement().setInnerText(title);
 			}
-
+			{//status
+				TDWrapper td = tr.addTd();
+				td.addClassName("uel-item-status");
+				this.statusTd = td;
+				this.updateStatus(t.getStatus());
+			}
 			{// newMessageCount
 
 				TDWrapper td = tr.addTd();
@@ -161,9 +168,10 @@ public class UserExpItemView extends ViewSupport {
 		});
 		select.parent(actions);
 
-		ButtonI open = this.factory.create(ButtonI.class);
-		open.setText(true, "open");
-		open.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
+		ButtonI show = this.factory.create(ButtonI.class);
+		show.setText(true, Actions.A_UEXPI_OPEN.toString());
+		
+		show.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override
 			public void handle(ClickEvent e) {
@@ -171,8 +179,17 @@ public class UserExpItemView extends ViewSupport {
 				UserExpItemView.this.dispatchActionEvent(Actions.A_UEXPI_OPEN);
 			}
 		});
-		open.parent(actions);
+		show.parent(actions);
 
+	}
+
+	/**
+	 *May 3, 2013
+	 */
+	private void updateStatus(String status) {
+		// 
+		String html = "<span class='status'>" + status + "</span>";
+		this.statusTd.getElement().setInnerHTML(html);
 	}
 
 	@Override
@@ -188,6 +205,11 @@ public class UserExpItemView extends ViewSupport {
 		this.elementWrapper.addAndRemoveClassName(sel, "selected", "unselected");
 	}
 
+	public void update(UserExpModel uem){
+		//TODO move the init code here;
+		this.updateStatus(uem.getStatus());
+	}
+	
 	public void update() {
 
 		new ViewUpdateEvent(this).dispatch();

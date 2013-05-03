@@ -21,14 +21,13 @@ public class NodeOperationTest extends TestBase {
 
 	public void testNodeOperations() {
 
-		NodeCreateOperationI nco = this.datas.prepareOperation(NodeCreateOperationI.class);
+		NodeCreateOperationI<?> nco = this.datas.prepareOperation(NodeCreateOperationI.class);
 		nco.nodeType(NodeTypes.SIGNUP_REQUEST);
 		nco.uniqueId(null);//
 		nco.property(SignupRequest.PK_CONFIRM_CODE, "test1");
 		nco.property(SignupRequest.PK_EMAIL, "email1");
 		nco.property(SignupRequest.PK_NICK, "nick1");
 		nco.property(SignupRequest.PK_PASSWORD, "password1");
-
 		NodeCreateResultI rst = nco.execute().getResult();
 		rst.assertNoError();
 		String uid = rst.get(true);

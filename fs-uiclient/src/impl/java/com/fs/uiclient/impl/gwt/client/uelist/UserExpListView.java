@@ -82,7 +82,7 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 		if (ue == null) {
 			this.addUserExpModel(uem);
 		} else {
-			ue.update();
+			ue.update(uem);
 		}
 
 	}
@@ -130,6 +130,16 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 	@Override
 	public void addUserExp(UserExpModel uem) {
 		this.model.addUserExp(uem);
+	}
+
+	/*
+	 *May 3, 2013
+	 */
+	@Override
+	public void expClosed(String expId) {
+		// 
+		UserExpItemView ue = this.getUserExpView(expId, false);
+		
 	}
 
 }

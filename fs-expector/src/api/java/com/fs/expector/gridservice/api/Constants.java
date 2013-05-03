@@ -42,6 +42,8 @@ public interface Constants {
 	
 	public static Path P_ERROR_EXPE_SUBMIT_BODY = P_ERROR_EXPE_SUBMIT.getSubPath("body");
 	
+	public static Path P_ERROR_EXP_OVERFLOW = P_ERROR_EXPE.getSubPath("overflow");
+	
 	public static Path P_ERROR_PASSWORD = P_ERROR.getSubPath("password");
 	
 	public static Path P_ERROR_PASSWORD_EMAIL = P_ERROR_PASSWORD.getSubPath("email");

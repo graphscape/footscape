@@ -16,7 +16,6 @@ import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.MatchQueryBuilder.Type;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ import com.fs.dataservice.api.core.NodeType;
 import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.core.meta.NodeMeta;
 import com.fs.dataservice.api.core.operations.NodeQueryOperationI;
-import com.fs.dataservice.api.core.support.OperationSupport;
+import com.fs.dataservice.api.core.support.NodeOperationSupport;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 import com.fs.dataservice.core.impl.elastic.ElasticClientI;
 
@@ -39,7 +38,7 @@ import com.fs.dataservice.core.impl.elastic.ElasticClientI;
  * 
  */
 public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O, W, R>, W extends NodeWrapper, R extends ResultI<R, ?>>
-		extends OperationSupport<O, R> implements NodeQueryOperationI<O, W, R> {
+		extends NodeOperationSupport<O,W, R> implements NodeQueryOperationI<O, W, R> {
 
 	
 	private static Logger LOG = LoggerFactory.getLogger(NodeQueryOperationSupport.class);
@@ -64,10 +63,6 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 		int slop;
 	}
 
-	private static final String PK_NODETYPE = "nodeType";
-
-	private static final String PK_WRAPPER_CLS = "wrapperClass";
-
 	private static final String PK_TERMS = "terms";
 
 	private static final String PK_RANGES = "ranges";
@@ -75,8 +70,6 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 	private static final String PK_MATCHES = "matches";
 
 	private ElasticClientI elastic;
-
-	protected NodeMeta nodeConfig;
 
 	protected boolean explain;
 
@@ -90,18 +83,6 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 		this.parameters.setPropertiesByArray(PK_RANGES, new ArrayList<Range>());
 		this.parameters.setPropertiesByArray(PK_MATCHES, new MapProperties<Match>());
 
-	}
-
-	/*
-	 * Oct 27, 2012
-	 */
-	@Override
-	public O nodeType(NodeType ntype) {
-
-		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(ntype, true);
-		this.nodeType(nc);
-
-		return (O) this;
 	}
 
 	@Override
@@ -209,15 +190,6 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 		}
 	}
 
-	/**
-	 * Oct 27, 2012
-	 */
-	@Override
-	public NodeType getNodeType(boolean force) {
-		//
-		return (NodeType) this.getParameter(PK_NODETYPE, force);
-	}
-
 	@Override
 	public O propertyNotEq(String key, Object value) {
 		//
@@ -317,15 +289,6 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 		NodeMeta nc = this.dataService.getConfigurations().getNodeConfig(cls, true);
 		this.nodeType(nc);
 		return (O) this;
-	}
-
-	/**
-	 * Nov 28, 2012
-	 */
-	private void nodeType(NodeMeta nc) {
-		this.parameter(PK_NODETYPE, nc.getNodeType());
-		this.parameter(PK_WRAPPER_CLS, nc.getWrapperClass());
-		this.nodeConfig = nc;
 	}
 
 	/*

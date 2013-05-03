@@ -12,6 +12,10 @@ import com.fs.uicore.api.gwt.client.data.PropertiesData;
  */
 public class MyExp extends PropertiesData<Object> {
 
+	public static final String F_STATUS = "status";
+	
+	public static String OPEN = "open";//NOTE see entity def.
+	
 	public MyExp(PropertiesData<Object> pts) {
 		super();
 		this.setProperties(pts);
@@ -36,6 +40,18 @@ public class MyExp extends PropertiesData<Object> {
 		}
 		return rt;
 
+	}
+
+	public String getStatus(){
+		return (String)this.getProperty("status");
+	}
+	/**
+	 *May 3, 2013
+	 */
+	public boolean getIsOpen() {
+		// 
+		String status = this.getStatus();
+		return OPEN.equals(status);
 	}
 
 }

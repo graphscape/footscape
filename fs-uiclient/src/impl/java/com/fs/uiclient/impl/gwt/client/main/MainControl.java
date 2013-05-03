@@ -292,7 +292,7 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 * Mar 16, 2013
 	 */
 	@Override
-	public void closeMyExp(String expId) {
+	public void expDeleted(String expId) {
 		//
 		Path path = this.getExpViewPath(expId);
 		this.getBodyView().tryCloseItem(path);
@@ -305,6 +305,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	@Override
 	public void refreshUeList() {
 		this.getUeListControl().refresh(null);//
+	}
+	
+	@Override
+	public void refreshUeList(String expId) {
+		this.getUeListControl().refresh(expId);//
 	}
 
 	@Override
@@ -369,6 +374,16 @@ public class MainControl extends ControlSupport implements MainControlI {
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		
 		return fc.openLoginView();
+	}
+
+	/*
+	 *May 3, 2013
+	 */
+	@Override
+	public void expClosed(String expId) {
+		this.refreshUeList(expId);
+		MyExpViewI mv = this.openMyExp(Cause.valueOf("expClosed"), expId, false);
+		mv.expClosed();
 	}
 
 }

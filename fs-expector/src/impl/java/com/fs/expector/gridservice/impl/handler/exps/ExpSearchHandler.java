@@ -78,6 +78,12 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		qo.first(from);
 		qo.maxSize(max);
+		
+		boolean isOpen = true;
+		if (isOpen) {
+			qo.propertyEq(Expectation.STATUS, Expectation.ST_OPEN);
+		}
+		
 		if (!includeMe) {
 			String thisAccId = this.getAccountId(ew, true);//
 			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);

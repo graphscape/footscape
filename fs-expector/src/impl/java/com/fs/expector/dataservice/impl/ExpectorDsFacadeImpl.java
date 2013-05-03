@@ -36,6 +36,8 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	public static int maxAllowedConnectPerExp = 100;
 
+	public static int maxLimitOfOpenExpectation = 200;
+
 	private String defaultUserIconDataUrl;
 
 	private DataServiceI dataService;
@@ -251,6 +253,28 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		ack.save(true);
 		// TODO delete by query? or in a common place for all node types.
 
+	}
+
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public int getExpectationOpenCount(String aid) {
+		//
+		NodeCountOperationI<Expectation> nco = this.dataService.prepareNodeCount(Expectation.class);
+		nco.propertyEq(Expectation.STATUS, Expectation.ST_OPEN);
+
+		long rt = nco.execute().getResult().assertNoError().get(true);
+		return (int) rt;
+	}
+
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public int getMaxLimitOfExpectationOpenCount() {
+		//
+		return maxLimitOfOpenExpectation;
 	}
 
 }

@@ -18,6 +18,8 @@ import com.fs.dataservice.api.core.operations.NodeCountOperationI;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
 import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.operations.NodeUpdateOperationI;
+import com.fs.dataservice.api.core.result.BooleanResultI;
 import com.fs.dataservice.api.core.result.NodeResultI;
 import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
@@ -183,5 +185,34 @@ public abstract class DataServiceSupport implements DataServiceI {
 			String uid = t.getUniqueId();
 			this.deleteByUid(wpcls, uid);
 		}
+	}
+
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public <T extends NodeWrapper> boolean updateByUid(Class<T> wpcls, String uid, String field, Object value) {
+		//
+		return this.updateByUid(wpcls, uid, new String[] { field }, new Object[] { value });
+	}
+
+	/*
+	 * May 3, 2013
+	 */
+	@Override
+	public <T extends NodeWrapper> boolean updateByUid(Class<T> wpcls, String uid, String[] fields,
+			Object[] values) {
+		NodeUpdateOperationI<T> op = this.prepareOperation(NodeUpdateOperationI.class);
+		op.nodeType(wpcls);
+		op.uniqueId(uid);
+		for (int i = 0; i < fields.length; i++) {
+			String key = fields[i];
+			Object value = values[i];
+			op.property(key, value);
+		}
+		BooleanResultI br = op.execute().getResult().assertNoError();
+
+		return br.get(true);
+
 	}
 }

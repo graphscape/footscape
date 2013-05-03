@@ -6,8 +6,6 @@ package com.fs.dataservice.api.core.operations;
 
 import java.util.Date;
 
-import com.fs.dataservice.api.core.NodeType;
-import com.fs.dataservice.api.core.OperationI;
 import com.fs.dataservice.api.core.ResultI;
 import com.fs.dataservice.api.core.wrapper.NodeWrapper;
 
@@ -15,13 +13,7 @@ import com.fs.dataservice.api.core.wrapper.NodeWrapper;
  * @author wu TODO separate a Query interface for different query style.
  */
 public interface NodeQueryOperationI<O extends NodeQueryOperationI<O, W, R>, W extends NodeWrapper, R extends ResultI<R, ?>>
-		extends OperationI<O, R> {
-
-	public NodeType getNodeType(boolean force);
-
-	public O nodeType(NodeType ntype);
-
-	public O nodeType(Class<W> cls);
+		extends NodeOperationI<O,W, R> {
 
 	public O propertyNotEq(String key, Object value);
 

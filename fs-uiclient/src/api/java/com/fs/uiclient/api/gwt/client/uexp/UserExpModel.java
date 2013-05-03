@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.uexp;
 
 import com.fs.uiclient.api.gwt.client.NodeFields;
+import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -15,7 +16,7 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  * 
  */
 public class UserExpModel {
-
+	
 	private ObjectPropertiesData target;
 	private boolean selected;
 
@@ -89,6 +90,14 @@ public class UserExpModel {
 		String rt = (String) this.target.getProperty(ExpEditViewI.F_IMAGE);
 		return "n/a".equals(rt) ? null : rt;
 
+	}
+
+	/**
+	 *May 3, 2013
+	 */
+	public String getStatus() {
+		// 
+		return (String)this.target.getProperty(MyExp.F_STATUS);
 	}
 
 }

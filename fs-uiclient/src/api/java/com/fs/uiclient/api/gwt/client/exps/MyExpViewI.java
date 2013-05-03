@@ -29,4 +29,6 @@ public interface MyExpViewI extends ViewI {
 	public void addOrUpdateConnected(ExpConnect exp);
 
 	public void noMore();
+
+	public void expClosed();
 }

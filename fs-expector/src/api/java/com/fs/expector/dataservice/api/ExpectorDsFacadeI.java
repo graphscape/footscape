@@ -38,4 +38,12 @@ public interface ExpectorDsFacadeI {
 
 	public void acknowledgeExpMessage(String accId, String expId, Date ts);
 
+	/**
+	 *May 3, 2013
+	 */
+	
+	public int getExpectationOpenCount(String aid);
+	
+	public int getMaxLimitOfExpectationOpenCount();
+
 }

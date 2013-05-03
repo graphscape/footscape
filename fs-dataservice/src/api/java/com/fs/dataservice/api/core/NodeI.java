@@ -18,6 +18,16 @@ public interface NodeI extends RowI {
 	public static final String PK_TYPE = "type_";
 	public static final String PK_ID = "id_";// business id set from outer
 	public static final String PK_TIMESTAMP = "timestamp_";
+	public static final String PK_EXTEND1="extend1_";
+	public static final String PK_EXTEND2="extend2_";
+	public static final String PK_EXTEND3="extend3_";
+	public static final String PK_EXTEND4="extend4_";
+	public static final String PK_EXTEND5="extend5_";
+	public static final String PK_EXTEND6="extend6_";
+	public static final String PK_EXTEND7="extend7_";
+	public static final String PK_EXTEND8="extend8_";
+	public static final String PK_EXTEND9="extend9_";
+	
 
 	public String getUniqueId();// unique in the same type.
 

@@ -28,7 +28,7 @@ public class TestBase extends TestCase {
 		DataServiceFactoryI dsf = sm.getContainer().finder(DataServiceFactoryI.class).find(true);
 
 		this.datas = dsf.getDataService();//
-
+		
 	}
 
 	protected void dump() {

@@ -34,6 +34,16 @@ public class NodeMeta {
 		this.addField(NodeI.PK_UNIQUE_ID).manditory(false);
 		this.addField(NodeI.PK_ID).manditory(false);
 		this.addField(NodeI.PK_TIMESTAMP).type(FieldType.DATE).manditory(false);
+		this.addField(NodeI.PK_EXTEND1).manditory(false);
+		this.addField(NodeI.PK_EXTEND2).manditory(false);
+		this.addField(NodeI.PK_EXTEND3).manditory(false);
+		this.addField(NodeI.PK_EXTEND4).manditory(false);
+		this.addField(NodeI.PK_EXTEND5).manditory(false);
+		this.addField(NodeI.PK_EXTEND6).manditory(false);
+		this.addField(NodeI.PK_EXTEND7).manditory(false);
+		this.addField(NodeI.PK_EXTEND8).manditory(false);
+		this.addField(NodeI.PK_EXTEND9).manditory(false);
+		
 	}
 
 	public NodeMeta field(String name) {

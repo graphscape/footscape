@@ -23,6 +23,7 @@ import com.fs.dataservice.api.core.operations.NodeCreateOperationI;
 import com.fs.dataservice.api.core.operations.NodeDeleteOperationI;
 import com.fs.dataservice.api.core.operations.NodeGetOperationI;
 import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
+import com.fs.dataservice.api.core.operations.NodeUpdateOperationI;
 import com.fs.dataservice.api.core.operations.RefreshOperationI;
 import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.dataservice.api.core.support.DataServiceSupport;
@@ -33,6 +34,7 @@ import com.fs.dataservice.core.impl.elastic.operations.NodeCreateOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeDeleteOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeGetOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.NodeSearchOperationE;
+import com.fs.dataservice.core.impl.elastic.operations.NodeUpdateOperationE;
 import com.fs.dataservice.core.impl.elastic.operations.RefreshOperationE;
 
 /**
@@ -58,6 +60,7 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 		this.registerOperation("core.nodecreate", NodeCreateOperationI.class, NodeCreateOperationE.class);
 		this.registerOperation("core.nodesearch", NodeSearchOperationI.class, NodeSearchOperationE.class);
 		this.registerOperation("core.nodecount", NodeCountOperationI.class, NodeCountOperationE.class);
+		this.registerOperation("core.nodeupdate", NodeUpdateOperationI.class, NodeUpdateOperationE.class);
 
 		this.registerOperation("core.dump", DumpOperationI.class, DumpOperationE.class);
 		this.registerOperation("core.refresh", RefreshOperationI.class, RefreshOperationE.class);
@@ -169,5 +172,6 @@ public class ElasticDataServiceImpl extends DataServiceSupport implements Elasti
 	public void close() {
 		this.client.close();
 	}
+
 
 }

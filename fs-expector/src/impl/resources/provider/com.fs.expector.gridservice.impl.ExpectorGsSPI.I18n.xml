@@ -77,11 +77,14 @@
 	<property name="/action/login/logout" value="Logout"/>
 	<property name="/action/login/facebook" value="Log In" />
 	<property name="/action/uexpi/select" value="Select"/>
+	<property name="/action/uexpi/open" value="Detail"/>
+	
 	<property name="/action/uelist/create" value="New"/>
 	<property name="/action/expe/submit" value="Save"/>
 	<property name="/action/signup/fblogin" value="Log In" />
 	<property name="/action/expm/more" value="More Messages" />
 	<property name="/action/expm/send" value="Send" />
+	<property name="/action/myexp/close" value="Close" />
 	
 	<!-- tip -->
 	<property name="/tip/action/cooper/confirm" value="Agree this request, to make connection with this expecation." />
@@ -97,7 +100,7 @@
 	<property name="/tip/action/login/logout" value="Logout"/>
 	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
 	<property name="/tip/action/uelist/create" value="Create a new expecation for you."/>
-	<property name="/tip/action/uexpi/open" value="Open view to show the detail of this expecation."/>
+	<property name="/tip/action/uexpi/open" value="To show the detail of this expecation."/>
 	<property name="/tip/action/uexpi/select" value="Navigate to search view for this expectation."/>
 	
 	<property name="/tip/action/expe/submit" value="Save"/>

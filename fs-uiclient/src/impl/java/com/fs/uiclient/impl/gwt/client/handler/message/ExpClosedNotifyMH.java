@@ -13,12 +13,12 @@ import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
  * @author wu
  * 
  */
-public class ExpDeletedNotifyMH extends NotifyMH {
+public class ExpClosedNotifyMH extends NotifyMH {
 
 	/**
 	 * @param c
 	 */
-	public ExpDeletedNotifyMH(ContainerI c) {
+	public ExpClosedNotifyMH(ContainerI c) {
 		super(c);
 	}
 
@@ -31,10 +31,8 @@ public class ExpDeletedNotifyMH extends NotifyMH {
 		String expId = t.getMessage().getHeader("expId", true);
 		// try close my exp
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.expDeleted(expId);
+		mc.expClosed(expId);
 		//
-		UserExpListControlI uec = this.getControl(UserExpListControlI.class, true);
-		uec.deleteExp(expId);
 
 	}
 
