@@ -2,7 +2,7 @@
 a {
 	color: #325a96;
 	cursor: pointer;
-	padding: 3px;
+	padding: 0px;
 }
 
 a:hover {
@@ -76,6 +76,9 @@ div.popup td.right{
 div.popup .dragged{
 	width:100%;
 	height:25px;
+}
+hr{
+	border: 0px inset #fafafa;
 }
 html{
 	height:100%;

@@ -32,11 +32,14 @@ a.exp-label {
 .exps-item {
 	border-left : 2px solid white;
 	margin-top: 0px;
-	border-top : 1px solid #EBEBEB;
+	border-top : 1px solid #ebebeb;
 	padding-bottom: 6px;
 	padding-left:0px;
 }
 
+.exps-item td{
+	padding: 3px;
+}
 .exps-item-count{
 	width: 1%;
 	text-align: right;
@@ -51,7 +54,7 @@ a.exp-label {
 }
 
 .exps-item:hover {
-	border-left : 2px solid #dcdcdc;
+	border-left : 2px solid #808080;
 	background: #fafafa;
 }
 
@@ -81,7 +84,10 @@ a.exp-label {
 	font-weight: bold;
 }
 .exps-item-expbody {
-	
+	color: #505050;
+}
+.exps-item-expimage img{
+
 }
 
 .exps-item button{
@@ -139,7 +145,7 @@ a.exp-label {
 }
 
 .cexp-item:hover {
-	background: #DCDCDC;
+	background: #fafafa;
 }
 
 .cexp-item .user-nick {	
@@ -148,9 +154,15 @@ a.exp-label {
 }
 
 .expm {
-	margin-bottom : 6px;
-	border-top : 1px solid #EBEBEB;
-	border-radius: 3px;
+	margin-top:3px;
+	margin-bottom : 3px;
+	border: 1px solid #ebebeb;
+	border-radius: 1px;
+	box-shadow:0 1px 3px 0 #ebebeb;
+}
+
+.expm:hover {
+	background: #fafafa;
 }
 
 .expm-td1{/*message td*/
@@ -185,6 +197,15 @@ a.exp-label {
 	text-align:left;
 }
 
+/*H*/
+.hlist-item.search-input-td {
+	width:1%;
+}
+
+.hlist-item.search-myexp-td {
+	width:50%;
+}
+
 .nick {
 	font-size: 22px;
 }
@@ -204,6 +225,10 @@ a.exp-label {
 	margin-top: 0px;
 	padding-bottom: 6px;
 	padding-left:0px;
+}
+
+.uel-item td{
+	padding: 3px;
 }
 
 .uel-item-status {
@@ -263,7 +288,7 @@ a.exp-label {
 }
 
 .uel-item-expbody {
-	
+	color: #505050;
 }
 
 .uel-item button{

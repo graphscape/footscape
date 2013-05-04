@@ -66,6 +66,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		this.header.parent(this);
 
 		this.statement = this.factory.create(StringEditorI.class);
+		this.statement.setProperty(ListI.PK_LIST_ITEM_CLASSNAME, "search-input-td");
 		this.statement.getElement().addClassName("search");
 		this.statement.parent(this.header);
 		this.statement.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>() {
@@ -78,6 +79,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		// search button
 		this.search = this.factory.create(ButtonI.class);
 		this.search.setText(true, UiClientConstants.AP_EXPS_SEARCH.toString());
+		this.search.setProperty(ListI.PK_LIST_ITEM_CLASSNAME, "search-button-td");
 		this.search.parent(this.header);
 		this.search.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
@@ -88,6 +90,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		});
 		//
 		this.myexp = new ExpLabelView(this.container);
+		this.myexp.setProperty(ListI.PK_LIST_ITEM_CLASSNAME, "search-myexp-td");
 		this.myexp.parent(this.header);
 
 		this.list = this.factory.create(ListI.class);

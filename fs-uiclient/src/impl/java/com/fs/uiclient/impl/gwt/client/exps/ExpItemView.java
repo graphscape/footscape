@@ -55,9 +55,10 @@ public class ExpItemView extends ViewSupport {
 		// Icon|Body 
 		// Icon|Image	  |Actions
 		// Icon|timestamp |Actions
-		int rowspan = 4;
+		int rowspan = 5;
 		int colspanOfExpBody = 2;
-		int rowspanOfActions = rowspan - 2;
+		int colspanOfSep = colspanOfExpBody;
+		int rowspanOfActions = rowspan - 3;
 		
 		{// first line/TR0
 			// first line
@@ -93,13 +94,21 @@ public class ExpItemView extends ViewSupport {
 				td02.getElement().setInnerHTML(html);
 			}
 		}// end of first line
-		
+		{//seperator
+			TRWrapper tr1 = this.table.addTr();
+			TDWrapper td1 = tr1.addTd();
+//			td1.setAttribute("colspan", ""+colspanOfSep);
+//			Element hr = DOM.createElement("hr");
+//			hr.addClassName("seperator");
+//			td1.append(hr);
+		}
 		{// second line
 
 			TRWrapper tr1 = this.table.addTr();
 			{// exp body
 				TDWrapper td1 = tr1.addTd();
-
+				
+				//
 				td1.addClassName("exps-item-expbody");
 				String html = ei.getExpBodyAsHtml();
 				td1.getElement().setInnerHTML(html);
