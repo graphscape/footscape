@@ -24,15 +24,16 @@ a.exp-label {
 
 
 .exps-item {
-	border-left : 2px solid white;
+	border-left : 0px solid white;
 	margin-top: 0px;
-	border-top : 1px solid #ebebeb;
+	border-bottom : 1px dashed #ebebeb;
 	padding-bottom: 6px;
 	padding-left:0px;
 }
 
 .exps-item td{
 	padding: 3px;
+	padding-left:0px;
 }
 .exps-item-count{
 	width: 1%;
@@ -47,12 +48,12 @@ a.exp-label {
 	font-size:6px;
 }
 
-.exps-item:hover {
-	border-left : 2px solid #808080;
-	background: #fafafa;
+.exps-item:hover {	
+	background: #fefefe;
 }
 
 .exps-item-usericon { /**td**/
+	
 	width:1%;
 	padding-right:6px;
 	vertical-align: top;
@@ -141,7 +142,7 @@ a.exp-label {
 }
 
 .cexp-item:hover {
-	background: #fafafa;
+	background: #fefefe;
 }
 
 .cexp-item .user-nick {	
@@ -154,13 +155,18 @@ a.exp-label {
 	margin-bottom : 3px;
 	border: 1px solid #ebebeb;
 	border-radius: 1px;
-	box-shadow:0 1px 3px 0 #ebebeb;
+	border-top-style:double;
+	border-left-style:double;
+	border-bottom-style: groove;
+	border-right-style: groove;
 }
 
 .expm:hover {
-	background: #fafafa;
+	background: #fefefe;
 }
-
+.expm-td0 {/*icon*/
+	vertical-align:top;
+}
 .expm-td1{/*message td*/
 	width:100%;
 }
@@ -216,8 +222,8 @@ a.exp-label {
 }
 
 .uel-item {
-	border-left : 2px solid white;
-	border-top : 1px solid #EBEBEB;
+	border-left : 0px solid white;
+	border-bottom : 1px dashed #ebebeb;
 	margin-top: 0px;
 	padding-bottom: 6px;
 	padding-left:0px;
@@ -225,6 +231,7 @@ a.exp-label {
 
 .uel-item td{
 	padding: 3px;
+	padding-left:0px;
 }
 
 .uel-item-status {
@@ -257,8 +264,7 @@ a.exp-label {
 
 .uel-item.selected,
 .uel-item:hover {
-	border-left : 2px solid #808080;
-	background: #fafafa;
+	background: #fefefe;
 }
 
 .uel-item-expicon { /**td**/
