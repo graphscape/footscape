@@ -42,8 +42,10 @@ select {
 
 button.disable,
 button.disable:hover {
-	color: #dddddd;
-	border: 1px solid #dedede;
+	color: #d0d0d0;
+	border: 1px solid #d0d0d0;
+	background: #d0d0d0;
+	cursor:not-allowed;
 }
 
 button:hover,

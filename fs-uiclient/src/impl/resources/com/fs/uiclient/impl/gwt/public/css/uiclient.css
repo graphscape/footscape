@@ -23,12 +23,6 @@ a.exp-label {
 }
 
 
-.header-item-logo {
-	font-size: 22px;
-	font-variant: bold;
-	margin-left:-1px;
-}
-
 .exps-item {
 	border-left : 2px solid white;
 	margin-top: 0px;
@@ -263,7 +257,7 @@ a.exp-label {
 
 .uel-item.selected,
 .uel-item:hover {
-	border-left : 2px solid #dcdcdc;
+	border-left : 2px solid #808080;
 	background: #fafafa;
 }
 
