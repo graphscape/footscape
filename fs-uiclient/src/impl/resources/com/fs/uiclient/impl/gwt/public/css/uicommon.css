@@ -1,4 +1,15 @@
 
+/*TODO remove below defs, td.vlist-item,td.hlist-item*/
+td.vlist-item {
+	padding-top:0px;
+	padding-bottom:2px;
+}
+
+td.hlist-item {
+	padding-left:0px;
+	padding-right:2px;
+}
+
 .body {
 	text-align: center;
 }
@@ -302,6 +313,7 @@ Console View
 .panel-header { /*DIV*/
 	border-bottom: 1px solid #EEEEEE;
 }
+
 
 /*Anchor,button*/
 /*BarWidget*/

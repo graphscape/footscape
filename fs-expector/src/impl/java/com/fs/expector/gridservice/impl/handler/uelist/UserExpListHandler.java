@@ -49,18 +49,23 @@ public class UserExpListHandler extends ExpectorTMREHSupport {
 	 * Refresh the summary list of ue. Nov 28, 2012
 	 */
 	@Handle("refresh")
-	public void handleRefresh(TerminalMsgReceiveEW ew, MessageContext hc, MessageI req, ResponseI res) {
+	public void handleRefresh(TerminalMsgReceiveEW ew, MessageContext hc, ResponseI res) {
 		SessionGd login = this.getSession(ew, true);
+		MessageI req = ew.getMessage();//
+		String status = req.getString("status");
 
 		NodeSearchOperationI<Expectation> finder = this.dataService.prepareNodeSearch(Expectation.class);
 
 		// finder.addBeforeInterceptor(null);//TODO
-
+		if (status != null) {
+			finder.propertyEq(Expectation.STATUS, status);
+		}
 		finder.propertyEq(Expectation.ACCOUNT_ID, login.getAccountId());
+
 		NodeSearchResultI<Expectation> rst = finder.execute().getResult().assertNoError();
 
 		List<PropertiesI<Object>> el = this.efacade.convertToClientFormat(rst.list());
-		
+
 		res.setPayload("userExpList", el);
 	}
 

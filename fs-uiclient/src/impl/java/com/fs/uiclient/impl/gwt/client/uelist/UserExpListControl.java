@@ -45,8 +45,10 @@ public class UserExpListControl extends ControlSupport2 implements UserExpListCo
 	@Override
 	public void refresh(String expId) {
 		UserExpListViewI uelv = this.getMainControl().openUeList(true);
-		Long lts = null;// uelv.getLastTimestamp(false);
+		String status = uelv.getStatus();
+		Long lts = null;// TODO 
 		MsgWrapper req = this.newRequest(Path.valueOf("/uelist/refresh"));
+		req.setPayload("status", status);
 		req.setPayload("lastTimestamp", DateData.valueOf(lts));// fresh from
 																// here
 		this.sendMessage(req);

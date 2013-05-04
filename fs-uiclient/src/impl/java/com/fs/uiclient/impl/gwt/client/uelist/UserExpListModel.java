@@ -123,5 +123,13 @@ public class UserExpListModel extends ModelSupport implements UserExpListModelI 
 		return uelist;
 	}
 
+	/*
+	 *May 4, 2013
+	 */
+	@Override
+	public void reset() {
+		this.uelist.clear();//
+	}
+
 
 }

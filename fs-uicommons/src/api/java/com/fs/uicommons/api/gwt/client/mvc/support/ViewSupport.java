@@ -4,6 +4,8 @@
 package com.fs.uicommons.api.gwt.client.mvc.support;
 
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
+import com.fs.uicommons.api.gwt.client.mvc.ControlI;
+import com.fs.uicommons.api.gwt.client.mvc.ControlManagerI;
 import com.fs.uicommons.api.gwt.client.mvc.ViewI;
 import com.fs.uicommons.api.gwt.client.widget.support.LayoutSupport;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -64,6 +66,15 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 
 	protected void sendMessage(MessageData req) {
 		this.getEndpoint().sendMessage(req);
+	}
+
+	protected <T extends ControlI> T getControl(Class<T> cls, boolean force) {
+		return this.getControlManager().getControl(cls, force);
+	}
+
+	protected ControlManagerI getControlManager() {
+
+		return this.getClient(true).getChild(ControlManagerI.class, true);
 	}
 
 	/*

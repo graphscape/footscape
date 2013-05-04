@@ -22,7 +22,8 @@ body {
 
 }
 
-button {
+button,
+select {
 	color: #606060;
 	cursor: pointer;
 	display: inline-block;
@@ -45,7 +46,8 @@ button.disable:hover {
 	border: 1px solid #dedede;
 }
 
-button:hover {
+button:hover,
+select:hover {
 	background: #f8f8f8;
 	color: #303030;
     border: 1px solid #a0a0a0;

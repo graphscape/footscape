@@ -31,5 +31,7 @@ public interface UserExpListViewI extends ViewI {
 	public void addUserExp(UserExpModel uem);
 
 	public void expClosed(String expId);
+	
+	public String getStatus();
 
 }

@@ -8,11 +8,15 @@ import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.Actions;
 import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
+import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
+import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 
 /**
  * @author wu
@@ -25,6 +29,7 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 	protected ListI list;
 
 	UserExpListModelI model = new UserExpListModel("ue-msglist");
+	EnumEditorI status;
 
 	/**
 	 * @param ctn
@@ -33,11 +38,46 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 		super(ctn, "uelist");
 		this.addAction(Actions.A_UEL_CREATE, this.actionListInHeader);
 		// click and open one exp,enter the exp's main view.
+		status = this.factory.create(EnumEditorI.class);
+		status.addOption("open");
+		status.addOption("close");
+		status.addOption("all");
+		this.status.setData("open");//
+		this.actionListInHeader.child(status);
+		status.addHandler(ChangeEvent.TYPE, new EventHandlerI<ChangeEvent>(){
 
+			@Override
+			public void handle(ChangeEvent t) {
+				// 
+				String opt = t.getData();
+				
+				UserExpListView.this.onStatusChange(opt);
+			}});
+		
 		this.list = this.factory.create(ListI.class);
 		this.list.setName("expListContainer");
 		this.list.parent(this);
 	}
+	
+	public void onStatusChange(String status){
+		this.model.reset();
+		this.list.clean();//
+		MainControlI mc = this.getControl(MainControlI.class, true);
+		
+		mc.refreshUeList();
+		
+	}
+	
+	@Override
+	public String getStatus(){
+		String rt = this.status.getData();
+		if("all".equals(rt)){
+			rt = null;
+		}
+		return rt;
+	}
+	
+	
 
 	/**
 	 * @param cm
