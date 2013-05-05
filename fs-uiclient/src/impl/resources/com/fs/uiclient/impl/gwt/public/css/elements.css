@@ -122,8 +122,9 @@ td {
 	vertical-align: center;
 	text-align: left;
 }
+
 textarea {
 	width: 450px;
-	height: 120px;
+	height: 60px;
 }
 
