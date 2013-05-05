@@ -2,7 +2,7 @@
 	
 	<age value="Age" />
 	<birthDay value="Birth Day" />
-	<body value="Expecting:" />
+	<body value="Detail" />
 	<cancel value="Cancel" />
 	<cooper value="Coop" />
 	<confirmCode value="Confirm Code" />
@@ -16,6 +16,7 @@
 	<login value="Login" />
 	<logout value="Logout" />
 	<more value="More"/>
+	<name value="Your Name" />
 	<next.page value="Next"/>
 	<nick value="Nick" /> 
 	<ok value="OK" />
@@ -26,6 +27,7 @@
 	<signup value="Signup" />
 	<search value="Search" />
 	<savingAccount value="Remember Account" />
+	<subject value="Subject" />
 	<title value="Title" />
 	
 	<!-- Error Code -->
@@ -40,6 +42,11 @@
 	<property name="/error/expe/submit/body" value="Please input the detail of the expectation!" />
 	<property name="/error/expe/submit/format" value="Format error!" />
 	<property name="/error/expe/submit/summary" value="Summary is missing!" />
+	<property name="/error/cttmsg/submit/name" value="Name is missing!" />
+	<property name="/error/cttmsg/submit/email" value="Email is missing!" />
+	<property name="/error/cttmsg/submit/subject" value="Subject is missing!" />
+	<property name="/error/cttmsg/submit/body" value="Body is missing!" />
+	
 	
 	<!-- Header Items,Tab title -->
 	<property name="/console" value="Console" />
@@ -60,10 +67,13 @@
 	<property name="/contact" value="Contact Us"/>
 	<property name="/copyright" value="fs-v0.1.0-IR2 © 2012-2013 waitee.com.  All rights reserved." />
 	<!-- Tabs -->
+	<property name="/tab/contact-us" value="Contact-Us" />
 	<property name="/tab/uinfo" value="User Info"/>
 	<!-- Actions -->
 	<property name="/action/cooper/confirm" value="Connect" />
 	<property name="/action/cooper/reject" value="Reject" />
+	
+	<property name="/action/cttmsg/submit" value="Send" />
 	
 	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/password/forgot" value="Forgot" />
@@ -111,6 +121,6 @@
 	
 	<!-- Open resource -->
 	<property name="/open/resource/html/about-us.html" value="About-Us" />
-	<property name="/open/resource/html/contact-us.html" value="Contact-Us" />
+	
 	
 </config>

@@ -1,13 +1,12 @@
 
 a {
-	color: #325a96;
+	color: #1535EB;
 	cursor: pointer;
 	padding: 0px;
 }
 
 a:hover {
-	background: #325a96;
-	color: #FFFFFF;
+	background: #eeeeee;
 	text-decoration: underline;
 }
 

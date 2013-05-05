@@ -13,6 +13,7 @@ import com.fs.expector.dataservice.api.wrapper.AccountInfo;
 import com.fs.expector.dataservice.api.wrapper.Acknowledge;
 import com.fs.expector.dataservice.api.wrapper.ConnectRequest;
 import com.fs.expector.dataservice.api.wrapper.Connection;
+import com.fs.expector.dataservice.api.wrapper.ContactMessage;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
 import com.fs.expector.dataservice.api.wrapper.PasswordForgot;
@@ -59,6 +60,8 @@ public class ExpectorDsSPI extends SPISupport {
 		//
 		PasswordForgot.config(cfs);
 		Acknowledge.config(cfs);
+		
+		ContactMessage.config(cfs);
 		//facade
 		ac.active("expectorDsFacade", new ExpectorDsFacadeImpl());
 	}

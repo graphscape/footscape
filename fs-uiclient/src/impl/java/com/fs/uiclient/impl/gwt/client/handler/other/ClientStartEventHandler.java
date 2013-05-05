@@ -39,7 +39,7 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		//
 		BottomViewI bv = fc.getBottomView();
-		bv.addItem(HeaderNames.H1_ABOUT);
+		//bv.addItem(HeaderNames.H1_ABOUT);
 		bv.addItem(HeaderNames.H1_CONTACT);
 		bv.addItem(HeaderNames.H1_CONSOLE);//
 		

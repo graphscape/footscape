@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.api.gwt.client.main;
 
+import com.fs.uiclient.api.gwt.client.contactus.ContactUsViewI;
 import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
@@ -60,5 +61,7 @@ public interface MainControlI extends ControlI {
 	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh);
 
 	public LoginViewI openLoginView();
+	
+	public ContactUsViewI openContactUsView(boolean show);
 
 }

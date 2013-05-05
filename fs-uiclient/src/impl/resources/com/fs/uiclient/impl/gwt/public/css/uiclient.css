@@ -153,6 +153,7 @@ a.exp-label {
 .expm {
 	margin-top:3px;
 	margin-bottom : 3px;
+	padding:3px;
 	border: 1px solid #ebebeb;
 	border-radius: 1px;
 	border-top-style:double;
@@ -219,7 +220,7 @@ a.exp-label {
 .search input {
 	margin-top : 5px;
 	margin-bottom : 3px;
-	height: 26px;
+	height: 22px;
 	width : 415px;
 	maxlength : 1024;
 }

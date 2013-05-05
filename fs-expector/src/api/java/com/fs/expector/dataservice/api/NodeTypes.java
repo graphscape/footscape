@@ -30,5 +30,6 @@ public class NodeTypes {
 	
 	public static final NodeType CONNECTION = NodeType
 			.valueOf("connection");
-
+	
+	public static final NodeType CONTACT_MESSAGE = NodeType.valueOf("contact-message");
 }

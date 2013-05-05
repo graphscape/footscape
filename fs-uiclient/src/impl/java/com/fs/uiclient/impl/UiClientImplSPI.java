@@ -8,7 +8,7 @@ import com.fs.commons.api.support.SPISupport;
 
 /**
  * @author wu
- * 
+ * @deprecated TODO REMOVE 
  */
 public class UiClientImplSPI extends SPISupport {
 

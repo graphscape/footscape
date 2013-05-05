@@ -54,7 +54,10 @@ public class Actions {
 
 	public static final Path A_PROFILE_INIT = A_PROFILE.getSubPath("init");
 
+	// contact us
+	public static final Path A_CONTACTUS_SUBMIT = ACTION.getSubPath("cttmsg").getSubPath("submit");
 	// signup
+	
 	public static final Path A_SIGNUP = ACTION.getSubPath("signup");
 
 	public static final Path A_SIGNUP_SUBMIT = A_SIGNUP.getSubPath("submit");

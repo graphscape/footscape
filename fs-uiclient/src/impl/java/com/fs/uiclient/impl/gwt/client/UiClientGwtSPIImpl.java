@@ -21,6 +21,7 @@ import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
 import com.fs.uiclient.impl.gwt.client.exps.ExpItemView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchControl;
+import com.fs.uiclient.impl.gwt.client.handler.action.ContactMsgSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperConfirmAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRejectAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.CooperRequestAP;
@@ -33,6 +34,8 @@ import com.fs.uiclient.impl.gwt.client.handler.action.ProfileInitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SignupSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
+import com.fs.uiclient.impl.gwt.client.handler.message.ContactMsgFailureMH;
+import com.fs.uiclient.impl.gwt.client.handler.message.ContactMsgSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.ExpClosedNotifyMH;
@@ -55,10 +58,10 @@ import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
 import com.fs.uiclient.impl.gwt.client.handler.message.UserInfoSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.ContactUsBottomItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.OpenConsoleItemHandler;
-import com.fs.uiclient.impl.gwt.client.handler.other.OpenResourceItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ProfileHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SearchHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.SignupHeaderItemHandler;
@@ -125,10 +128,10 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new SearchHeaderItemHandler(c));
 
 		// bottom item
-		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
-				new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));
+		//eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
+		//		new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONTACT),
-				new OpenResourceItemHandler(c, UiClientConstants.P_HTML_CONTACT));
+				new ContactUsBottomItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONSOLE),
 				new OpenConsoleItemHandler(c));
 
@@ -151,6 +154,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_PROFILE_INIT, new ProfileInitAP(c));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
+		
+		eb.addHandler(Actions.A_CONTACTUS_SUBMIT, new ContactMsgSubmitAP(c));
+		
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new SignupSubmitAP(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
@@ -198,6 +204,10 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
 
 		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));//
+		
+		dis.addHandler(Path.valueOf("/endpoint/message/cttmsg/submit/success"), new ContactMsgSuccessMH(c));//
+		
+		dis.addHandler(Path.valueOf("/endpoint/message/cttmsg/submit/failure"), new ContactMsgFailureMH(c));//
 
 		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/failure"),
 				new ProfileSubmitFailureMH(c));//

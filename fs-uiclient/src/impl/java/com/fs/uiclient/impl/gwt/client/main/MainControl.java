@@ -5,6 +5,7 @@
 package com.fs.uiclient.impl.gwt.client.main;
 
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
+import com.fs.uiclient.api.gwt.client.contactus.ContactUsViewI;
 import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpSearchViewI;
@@ -16,6 +17,7 @@ import com.fs.uiclient.api.gwt.client.profile.ProfileViewI;
 import com.fs.uiclient.api.gwt.client.signup.SignupViewI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListControlI;
 import com.fs.uiclient.api.gwt.client.user.UserInfoViewI;
+import com.fs.uiclient.impl.gwt.client.contactus.ContactUsView;
 import com.fs.uiclient.impl.gwt.client.expe.ExpEditView;
 import com.fs.uiclient.impl.gwt.client.exps.ExpSearchView;
 import com.fs.uiclient.impl.gwt.client.profile.ProfileModel;
@@ -384,6 +386,22 @@ public class MainControl extends ControlSupport implements MainControlI {
 		this.refreshUeList(expId);
 		MyExpViewI mv = this.openMyExp(Cause.valueOf("expClosed"), expId, false);
 		mv.expClosed();
+	}
+
+	/*
+	 *May 5, 2013
+	 */
+	@Override
+	public ContactUsViewI openContactUsView(boolean show) {
+		Path path = Path.valueOf("/tab/contact-us");
+		final ContactUsViewI esv = this.getOrCreateViewInBody(path, new CreaterI<ContactUsViewI>() {
+
+			@Override
+			public ContactUsViewI create(ContainerI ct) {
+				return new ContactUsView(ct);
+			}
+		}, show);
+		return esv;
 	}
 
 }
