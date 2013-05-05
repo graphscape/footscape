@@ -235,10 +235,20 @@ a.exp-label {
 }
 
 .uel-item-status {
-	width:1%;
+	width:1%;	
 	padding-right: 6px;
 	font-weight: bold;
 }
+.uel-item-status[status='open'] .status{
+	color : #ffffff;
+	background-color: #505050;	
+}
+
+.uel-item-status[status='close'] .status{
+	color : #505050;
+	background-color: #ffffff;	
+}
+
 
 .uel-item-count {
 	width:1%;

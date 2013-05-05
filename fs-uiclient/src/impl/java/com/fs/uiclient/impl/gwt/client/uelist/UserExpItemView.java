@@ -18,6 +18,7 @@ import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
 import com.fs.uicore.api.gwt.client.util.DateUtil;
 import com.google.gwt.user.client.DOM;
@@ -202,6 +203,7 @@ public class UserExpItemView extends ViewSupport {
 		// 
 		String html = "<span class='status'>" + status + "</span>";
 		this.statusTd.getElement().setInnerHTML(html);
+		this.statusTd.setAttribute("status", status);
 	}
 
 	@Override
@@ -229,6 +231,10 @@ public class UserExpItemView extends ViewSupport {
 
 	public String getExpId() {
 		return this.model.getExpId();
+	}
+	
+	public DateData getTimestamp(){
+		return this.model.getTimestamp(true);
 	}
 
 	/*

@@ -4,6 +4,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.uelist;
 
+import java.util.Comparator;
 import java.util.List;
 
 import com.fs.uiclient.api.gwt.client.Actions;
@@ -11,12 +12,15 @@ import com.fs.uiclient.api.gwt.client.exps.UserExpListViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpListModelI;
 import com.fs.uiclient.api.gwt.client.uexp.UserExpModel;
+import com.fs.uiclient.impl.gwt.client.uexp.ExpMessageView;
 import com.fs.uicommons.api.gwt.client.editor.basic.EnumEditorI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.SimpleView;
 import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.support.MapProperties;
 
 /**
  * @author wu
@@ -53,10 +57,21 @@ public class UserExpListView extends SimpleView implements UserExpListViewI {
 				
 				UserExpListView.this.onStatusChange(opt);
 			}});
+		{
+			UiPropertiesI<Object> pts = new MapProperties<Object>();
+			pts.setProperty(ListI.PK_COMPARATOR, new Comparator<UserExpItemView>() {
+
+				@Override
+				public int compare(UserExpItemView o1, UserExpItemView o2) {
+					//
+					return (int) (o2.getTimestamp().getValue() - o1.getTimestamp().getValue());
+				}
+			});
+			this.list = this.factory.create(ListI.class,"list",pts);
+			this.list.setName("expListContainer");
+			this.list.parent(this);
+		}
 		
-		this.list = this.factory.create(ListI.class);
-		this.list.setName("expListContainer");
-		this.list.parent(this);
 	}
 	
 	public void onStatusChange(String status){
