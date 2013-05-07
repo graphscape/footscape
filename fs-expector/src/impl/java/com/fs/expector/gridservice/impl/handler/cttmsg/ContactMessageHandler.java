@@ -56,7 +56,7 @@ public class ContactMessageHandler extends ExpectorTMREHSupport {
 		String email = (String) req.getPayload("email", true);
 
 		ContactMessage cms = new ContactMessage().forCreate(this.dataService);
-		cms.setSubject("n/a");//
+		cms.setStatus("n/a");//
 		cms.setName(name);
 		cms.setEmail(email);
 		cms.setSubject(subject);

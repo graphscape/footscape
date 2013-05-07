@@ -9,7 +9,7 @@
 	</config>
 
 
-	<config name="webSocketFactory" class="com.fs.gridservice.commons.impl.terminal.websocket.WebSocketTerminalFactory">
+	<config name="terminalFactoryWebSocketListener" class="com.fs.gridservice.commons.impl.terminal.websocket.TerminalFactoryWebSocketListener">
 
 	</config>
 

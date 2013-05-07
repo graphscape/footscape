@@ -53,7 +53,7 @@ public class TerminalAuthHandler extends TerminalMsgReseiveEventHandler {
 			res.getErrorInfos().addAll(eis);
 			return;
 		}
-		String tid = reqE.getTerminalId();
+		String tid = reqE.getTerminalId(true);
 		TerminalGd tg = this.terminalManager.getTerminal(tid);
 		String cid = tg.getClientId(true);// terminal must be bind to
 											// client.

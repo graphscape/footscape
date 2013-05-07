@@ -41,7 +41,7 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("gridMember");
 		ac.active("gridFacade");
 
-		ac.active("webSocketFactory");
+		ac.active("terminalFactoryWebSocketListener");
 		ac.active("webSocketGoManager");
 
 		ac.active("terminalManager");
@@ -53,6 +53,7 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("sessionManager");
 		ac.active("globalEventDispatcher");
 		ac.active("localEventDispatcher");
+		
 		// servlet
 		WebAppI wa = ac.getContainer().find(WebServerI.class, true)
 				.addWebApp(ac, "GS", this.getId() + ".webApp.GS");

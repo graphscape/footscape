@@ -27,7 +27,7 @@ select {
 	cursor: pointer;
 	display: inline-block;
 	font-weight: bold;
-	font-size: 11px;
+	font-size: 9px;
 	margin:0px;
     text-decoration: none;
     padding: 3px 6px;
@@ -35,9 +35,10 @@ select {
     border-bottom-style:groove;
     border-right-style:groove;
     border-radius: 2px;
+    box-shadow: 0 1px 0 #fafafa inset;
     background: #eeeeee;
     text-shadow: 0 1px 0 #fff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
+    background: linear-gradient(#eeeeee, #dddddd) repeat scroll 0 0 transparent;
 }
 
 button.disable,

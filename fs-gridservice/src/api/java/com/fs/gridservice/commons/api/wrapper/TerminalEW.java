@@ -35,7 +35,11 @@ public abstract class TerminalEW extends EventWrapper {
 	}
 
 	public String getTerminalId() {
-		return (String) this.target.getHeader(HK_TID);
+		return this.getTerminalId(false);
+	}
+	
+	public String getTerminalId(boolean force) {
+		return (String) this.target.getHeader(HK_TID,force);
 	}
 
 	public String getClientId() {

@@ -47,6 +47,10 @@ public class ContactMessage extends NodeWrapper {
 	public void setSubject(String value) {
 		this.setProperty(SUBJECT, value);
 	}
+	
+	public void setStatus(String st){
+		this.setProperty(STATUS, st);
+	}
 
 	public void setName(String value) {
 		this.setProperty(NAME, value);

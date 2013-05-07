@@ -345,6 +345,7 @@ Console View
 		url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB90FBAwjGxgg+p8AAAAiSURBVAjXYxTQcfvPgAUwMeAAKBIsrOzYJf78/kmiUcgAAJkZBI30e/7NAAAAAElFTkSuQmCC);
 	
 	width: 100%;
+	box-shadow: 0 1px 1px #fafafa inset;
 	border-bottom: 1px solid #d0d0d0;
 	padding: 0px 0px;
 	margin-bottom: 1px;
