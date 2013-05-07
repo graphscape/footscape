@@ -17,8 +17,8 @@
 
 	</config>
 
-	<config name="webSocketGoManager" class="com.fs.gridservice.commons.impl.GridedObjectManagerImpl">
-		<goItfClass value="com.fs.gridservice.commons.api.gobject.WebSocketGoI" />
+	<config name="endPointGoManager" class="com.fs.gridservice.commons.impl.GridedObjectManagerImpl">
+		<goItfClass value="com.fs.gridservice.commons.api.gobject.EndPointGoI" />
 	</config>
 
 	<config name="terminalManager" class="com.fs.gridservice.commons.impl.terminal.TerminalManagerImpl">
@@ -62,7 +62,7 @@
 	<config name="servletHolder.terminal">
 		<property name="path" value="/terminal/*" />
 		<prefix name="servlet">
-			<property name="class" value="com.fs.gridservice.commons.impl.terminal.web20.Web20TerminalFactoryServlet" />
+			<property name="class" value="com.fs.gridservice.commons.impl.terminal.ajax.AjaxTerminalFactoryServlet" />
 			<config name="config" property="config">
 
 			</config>

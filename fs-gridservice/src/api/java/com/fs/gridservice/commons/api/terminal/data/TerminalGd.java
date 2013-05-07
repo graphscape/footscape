@@ -12,8 +12,6 @@ import com.fs.gridservice.commons.api.data.EntityGd;
  */
 public class TerminalGd extends EntityGd {
 
-	public static final String PK_PROTOCAL = "_protocol";
-
 	public static final String PK_ADDRESS = "_address";
 
 	public static final String PK_CLIENTID = "_clientId";
@@ -34,11 +32,6 @@ public class TerminalGd extends EntityGd {
 
 	public String getClientId(boolean force) {
 		return (String) this.getProperty(PK_CLIENTID, force);
-
-	}
-
-	public String getProtocol() {
-		return (String) this.getProperty(PK_PROTOCAL);
 
 	}
 

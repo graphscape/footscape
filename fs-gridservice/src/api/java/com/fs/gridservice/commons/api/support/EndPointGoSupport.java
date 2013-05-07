@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 15, 2012
  */
-package com.fs.gridservice.commons.impl.gobject;
+package com.fs.gridservice.commons.api.support;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
@@ -13,17 +13,15 @@ import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
-import com.fs.gridservice.commons.api.support.GridedObjectSupport;
-import com.fs.websocket.api.WebSocketI;
+import com.fs.gridservice.commons.api.gobject.EndPointGoI;
 
 /**
  * @author wu
  * 
  */
-public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI {
-	private static final Logger LOG = LoggerFactory.getLogger(WebSoketGoImpl.class);
-	protected WebSocketI target;
+public abstract class EndPointGoSupport<T> extends GridedObjectSupport implements EndPointGoI {
+	private static final Logger LOG = LoggerFactory.getLogger(EndPointGoSupport.class);
+	protected T target;
 
 	protected CodecI messageCodec;
 
@@ -34,7 +32,7 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	/**
 	 * @param ws
 	 */
-	public WebSoketGoImpl(WebSocketI ws, CodecI messageCodec) {
+	public EndPointGoSupport(T ws, CodecI messageCodec) {
 		this.target = ws;
 		this.messageCodec = messageCodec;
 	}
@@ -63,13 +61,15 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 		JSONArray js = (JSONArray) this.messageCodec.encode(msg);
 		String value = JSONValue.toJSONString(js);
 
-		this.target.sendMessage(value);
+		this.doSendMessage(value);
 	}
+	
+	protected abstract void doSendMessage(String msg);
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.fs.gridservice.commons.api.gobject.WebSocketGoI#sendReady()
+	 * @see com.fs.gridservice.commons.api.gobject.EndPointGoI#sendReady()
 	 */
 	@Override
 	public void sendReady(String sourceMsgId, String termId, String clientId) {
@@ -90,13 +90,13 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.fs.gridservice.commons.api.gobject.WebSocketGoI#getTerminalId(boolean
+	 * com.fs.gridservice.commons.api.gobject.EndPointGoI#getTerminalId(boolean
 	 * )
 	 */
 	@Override
 	public String getTerminalId(boolean b) {
 		if (this.terminalId == null && b) {
-			throw new FsException("no terminal binding for websocket:" + this.getId());
+			throw new FsException("no terminal binding for endpoint:" + this.getId());
 		}
 		return this.terminalId;
 	}
@@ -107,7 +107,7 @@ public class WebSoketGoImpl extends GridedObjectSupport implements WebSocketGoI 
 	@Override
 	public String getClientId(boolean force) {
 		if (this.clientId == null && force) {
-			throw new FsException("no client binding for websocket:" + this.getId());
+			throw new FsException("no client binding for endpoint:" + this.getId());
 		}
 		return this.clientId;
 	}

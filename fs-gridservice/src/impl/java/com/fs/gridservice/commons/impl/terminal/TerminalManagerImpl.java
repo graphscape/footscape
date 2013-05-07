@@ -13,7 +13,7 @@ import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.support.CollectionHandler;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridedObjectManagerI;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.gobject.EndPointGoI;
 import com.fs.gridservice.commons.api.support.EntityGdManagerSupport;
 import com.fs.gridservice.commons.api.terminal.MessageSendingContext;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
@@ -25,7 +25,7 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  */
 public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> implements TerminalManagerI {
 
-	public static final String N_WEBSOCKET_GOMANAGER = "webSocketGoManager";
+	public static final String N_WEBSOCKET_GOMANAGER = "endPointGoManager";
 
 	public CollectionHandler<MessageSendingContext> beforeMessageSendingHandlers = new CollectionHandler<MessageSendingContext>();
 
@@ -54,14 +54,6 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.gridservice.commons.api.terminal.TerminalManagerI#bindingWebSocket
-	 * (java.lang.String, java.lang.String)
-	 */
-
 	@Override
 	public void sendMessage(MessageI msg) {
 		String termId = msg.getHeader("terminalId", true);
@@ -74,14 +66,10 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 		if (tg == null) {
 			throw new FsException("TODO");
 		}
-		String pro = tg.getProtocol();
-		if (!"websocket".equals(pro)) {
-			throw new FsException("protocol:" + pro + " not supported for send message to");
-		}
-
-		String wsoId = tg.getAddress();
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
-		WebSocketGoI wso = gom.getGridedObject(wsoId, true);
+	
+		String id = tg.getAddress();
+		GridedObjectManagerI<EndPointGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		EndPointGoI wso = gom.getGridedObject(id, true);
 
 		MessageSendingContext msc = new MessageSendingContext(msg, tg, this.facade);
 		this.beforeMessageSendingHandlers.handle(msc);
@@ -145,28 +133,14 @@ public class TerminalManagerImpl extends EntityGdManagerSupport<TerminalGd> impl
 	}
 
 	@Override
-	public TerminalGd webSocketTerminal(WebSocketGoI wso) {
+	public TerminalGd createTerminal(EndPointGoI wso) {
 
-		GridedObjectManagerI<WebSocketGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
+		GridedObjectManagerI<EndPointGoI> gom = this.facade.getGridedObjectManager(N_WEBSOCKET_GOMANAGER);
 		gom.addGridedObject(wso);
 		TerminalGd rt = new TerminalGd();
-		rt.setProperty(TerminalGd.PK_PROTOCAL, "websocket");
 		rt.setProperty(TerminalGd.PK_ADDRESS, wso.getId());
 		this.addEntity(rt);
 
-		return rt;
-	}
-
-	@Override
-	public TerminalGd web20Terminal(String address, PropertiesI<Object> pts) {
-		if (this.status == S_CLOSING || this.status == S_CLOSED) {
-			throw new FsException("closing or closed,system is shuting down?");
-		}
-		TerminalGd rt = new TerminalGd();
-		rt.setProperties(pts);
-		rt.setProperty(TerminalGd.PK_PROTOCAL, "web20");
-		rt.setProperty(TerminalGd.PK_ADDRESS, address);
-		this.addEntity(rt);
 		return rt;
 	}
 

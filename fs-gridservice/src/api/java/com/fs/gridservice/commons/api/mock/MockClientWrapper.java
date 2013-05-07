@@ -16,7 +16,7 @@ import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.gobject.EndPointGoI;
 import com.fs.websocket.api.mock.WSClient;
 import com.fs.websocket.api.mock.WSClientWrapper;
 
@@ -51,7 +51,7 @@ public class MockClientWrapper extends WSClientWrapper {
 	public MockClientWrapper(WSClient t) {
 		super(t);
 
-		this.target.addHandler(WebSocketGoI.P_SERVER_IS_READY, new HandlerI<MessageContext>() {
+		this.target.addHandler(EndPointGoI.P_SERVER_IS_READY, new HandlerI<MessageContext>() {
 
 			@Override
 			public void handle(MessageContext sc) {
@@ -76,7 +76,7 @@ public class MockClientWrapper extends WSClientWrapper {
 
 			//
 			this.serverIsReady = new Semaphore(0);
-			MessageI msg = new MessageSupport(WebSocketGoI.P_CLIENT_IS_READY.toString());// cause
+			MessageI msg = new MessageSupport(EndPointGoI.P_CLIENT_IS_READY.toString());// cause
 																							// serverIsReady
 			super.sendMessage(msg);
 

@@ -4,13 +4,13 @@
  */
 package com.fs.gridservice.commons.api.data;
 
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.gobject.EndPointGoI;
 
 /**
  * @author wu
  * 
  */
-public class WebSocketRefGd extends ObjectRefGd<WebSocketGoI> {
+public class WebSocketRefGd extends ObjectRefGd<EndPointGoI> {
 
 	/**
 	 * @param id

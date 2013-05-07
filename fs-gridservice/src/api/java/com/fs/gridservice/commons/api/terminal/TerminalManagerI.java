@@ -7,7 +7,7 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.EntityGdManagerI;
-import com.fs.gridservice.commons.api.gobject.WebSocketGoI;
+import com.fs.gridservice.commons.api.gobject.EndPointGoI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 
 /**
@@ -22,9 +22,7 @@ public interface TerminalManagerI extends EntityGdManagerI<TerminalGd> {
 
 	public TerminalGd getTerminal(String id, boolean force);
 
-	public TerminalGd webSocketTerminal(WebSocketGoI wso);
-
-	public TerminalGd web20Terminal(String address, PropertiesI<Object> pts);//
+	public TerminalGd createTerminal(EndPointGoI wso);
 
 	public void sendMessage(String termId, MessageI msg);
 

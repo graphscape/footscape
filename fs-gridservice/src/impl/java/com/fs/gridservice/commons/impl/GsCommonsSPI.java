@@ -42,7 +42,7 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("gridFacade");
 
 		ac.active("terminalFactoryWebSocketListener");
-		ac.active("webSocketGoManager");
+		ac.active("endPointGoManager");
 
 		ac.active("terminalManager");
 		ac.active("clientManager");

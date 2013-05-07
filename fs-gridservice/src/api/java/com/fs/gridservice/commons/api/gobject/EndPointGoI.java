@@ -12,7 +12,7 @@ import com.fs.gridservice.commons.api.GridedObjectI;
  * @author wu
  * 
  */
-public interface WebSocketGoI extends GridedObjectI {
+public interface EndPointGoI extends GridedObjectI {
 
 	public static final Path P_SERVER_IS_READY = Path.valueOf("/control/status/serverIsReady");
 
