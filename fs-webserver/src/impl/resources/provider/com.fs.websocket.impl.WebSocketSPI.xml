@@ -6,9 +6,8 @@
 		<context.path value="/wsa" />
 	</config>
 
-	<config name="Object.WS_FACTORY">
-		<!-- This servletHolder will as the template -->
-		<config name="servletHolder.WS_MGR">
+	<config name="WebSocketCometProtocol">
+		<config name="servletHolderTemplate">
 			<property name="path" value="/{name}" />
 			<prefix name="servlet">
 				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
@@ -20,9 +19,10 @@
 
 		</config>
 	</config>
+
 	<config name="FLASH_POLICY_SERVER">
 		<property name="port" value="$flash.policyPort" />
-		
+
 	</config>
 
 

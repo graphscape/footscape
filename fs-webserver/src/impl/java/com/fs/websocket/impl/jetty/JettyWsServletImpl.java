@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.webcomet.api.CometProtocolI;
 
 /**
  * @author wuzhen
@@ -148,8 +149,8 @@ public class JettyWsServletImpl extends HttpServlet {
 	/**
 	 * Dec 11, 2012
 	 */
-	public JettyWsManagerImpl attachManager(String name) {
-		this.manager = new JettyWsManagerImpl(name);
+	public JettyWsManagerImpl attachManager(CometProtocolI cp, String name) {
+		this.manager = new JettyWsManagerImpl(cp, name);
 
 		return this.manager;
 	}

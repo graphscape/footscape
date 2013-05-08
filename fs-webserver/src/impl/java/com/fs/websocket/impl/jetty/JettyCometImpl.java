@@ -14,38 +14,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.lang.FsException;
-import com.fs.websocket.api.WebSocketI;
-import com.fs.websocket.api.WsListenerI;
-import com.fs.websocket.api.support.CollectionWsListener;
+import com.fs.webcomet.api.CometListenerI;
+import com.fs.webcomet.api.support.CometSupport;
 
 /**
  * @author wu
  * 
  */
-public class JettyWebSocketImpl extends CollectionWsListener implements WebSocketI, WebSocketListener {
+public class JettyCometImpl extends CometSupport implements WebSocketListener {
 
-	private static final Logger LOG = LoggerFactory.getLogger(JettyWebSocketImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JettyCometImpl.class);
 
 	protected Session connection;
 
 	protected WebSocketBlockingConnection blocking;
 
-	protected String id;
-
-	public JettyWebSocketImpl(String id, UpgradeRequest ur) {
-		this.id = id;
+	public JettyCometImpl(String id, UpgradeRequest ur) {
+		super("websocket", id);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("" + ur.getHeaders());
 		}
-	}
-
-	/*
-	 * Dec 11, 2012
-	 */
-	@Override
-	public String getId() {
-		//
-		return this.id;
 	}
 
 	/*
@@ -105,7 +93,7 @@ public class JettyWebSocketImpl extends CollectionWsListener implements WebSocke
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void addListener(WsListenerI ln) {
+	public void addListener(CometListenerI ln) {
 		//
 		super.add(ln);
 	}

@@ -4,23 +4,24 @@
  */
 package com.fs.websocket.api.support;
 
-import com.fs.websocket.api.WebSocketI;
-import com.fs.websocket.api.WsFactoryI;
-import com.fs.websocket.api.WsManagerI;
+import com.fs.webcomet.api.CometFactoryI;
+import com.fs.webcomet.api.CometI;
+import com.fs.webcomet.api.CometManagerI;
+import com.fs.webcomet.api.support.AbstractCometListener;
 
 /**
  * @author wu
  * 
  */
-public class ManagerWsListener extends AbstractWsListener {
+public class ManagerWsListener extends AbstractCometListener {
 
-	protected WsFactoryI factory;
+	protected CometFactoryI factory;
 
 	protected String name;
 
-	protected WsManagerI manager;
+	protected CometManagerI manager;
 
-	public ManagerWsListener(WsFactoryI wf, String manager) {
+	public ManagerWsListener(CometFactoryI wf, String manager) {
 		this.factory = wf;
 		this.name = manager;
 	}
@@ -37,16 +38,14 @@ public class ManagerWsListener extends AbstractWsListener {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onMessage(WebSocketI ws, String ms) {
-		super.onMessage(ws, ms);
+	public void onMessage(CometI ws, String ms) {
 	}
 
 	/*
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onException(WebSocketI ws, Throwable t) {
-		super.onException(ws, t);
+	public void onException(CometI ws, Throwable t) {
 
 	}
 
@@ -54,16 +53,14 @@ public class ManagerWsListener extends AbstractWsListener {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onConnect(WebSocketI ws) {
-		super.onConnect(ws);
+	public void onConnect(CometI ws) {
 	}
 
 	/*
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onClose(WebSocketI ws, int statusCode, String reason) {
-		super.onClose(ws, statusCode, reason);
+	public void onClose(CometI ws, int statusCode, String reason) {
 	}
 
 }

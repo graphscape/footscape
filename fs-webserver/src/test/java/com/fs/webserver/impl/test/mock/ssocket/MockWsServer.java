@@ -20,10 +20,10 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.struct.Path;
+import com.fs.webcomet.api.CometFactoryI;
+import com.fs.webcomet.api.CometI;
+import com.fs.webcomet.api.support.CometListenerAdaptor;
 import com.fs.webserver.impl.test.mock.MockMessageWrapper;
-import com.fs.websocket.api.WebSocketI;
-import com.fs.websocket.api.WsFactoryI;
-import com.fs.websocket.api.support.AbstractWsListener;
 import com.fs.websocket.api.support.ManagerWsListener;
 
 /**
@@ -45,7 +45,7 @@ public class MockWsServer extends ManagerWsListener {
 	}
 
 	public MockWsServer(String manager, ContainerI c, boolean srmac) {
-		super(c.find(WsFactoryI.class, true), manager);
+		super(c.find(CometFactoryI.class, true), manager);
 		this.container = c;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		MessageServiceI.FactoryI mf = c.find(MessageServiceI.FactoryI.class, true);
@@ -109,7 +109,7 @@ public class MockWsServer extends ManagerWsListener {
 	 * .api.websocket.WebSocketI, java.lang.String)
 	 */
 	@Override
-	public void onMessage(WebSocketI ws, String msgS) {
+	public void onMessage(CometI ws, String msgS) {
 		super.onMessage(ws, msgS);
 		LOG.debug("server received message:" + msgS);
 		JSONArray ser = (JSONArray) JSONValue.parse(msgS);
@@ -124,7 +124,7 @@ public class MockWsServer extends ManagerWsListener {
 
 	public void sendMessage(String wsId, MessageI msg) {
 
-		WebSocketI toWs = this.manager.getSocket(wsId, true);
+		CometI toWs = this.manager.getSocket(wsId, true);
 		JSONArray jso = (JSONArray) this.codec.encode(msg);
 		String msgS = jso.toJSONString();
 		toWs.sendMessage(msgS);//
@@ -135,7 +135,7 @@ public class MockWsServer extends ManagerWsListener {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onException(WebSocketI ws, Throwable t) {
+	public void onException(CometI ws, Throwable t) {
 		super.onException(ws, t);
 		// LOG.debug("onConnect,ws:" + ws);
 	}
@@ -144,7 +144,7 @@ public class MockWsServer extends ManagerWsListener {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onConnect(WebSocketI ws) {
+	public void onConnect(CometI ws) {
 		super.onConnect(ws);
 		// LOG.debug("onConnect,ws:" + ws);
 	}
@@ -153,7 +153,7 @@ public class MockWsServer extends ManagerWsListener {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onClose(WebSocketI ws, int statusCode, String reason) {
+	public void onClose(CometI ws, int statusCode, String reason) {
 		super.onClose(ws, statusCode, reason);
 		LOG.debug("onClose of ws:" + ws + ",statusCode:" + statusCode + ",reason:" + reason);
 	}
@@ -161,11 +161,11 @@ public class MockWsServer extends ManagerWsListener {
 	public void waitClientClose() {
 		final Semaphore s = new Semaphore(0);
 
-		this.manager.addListener(new AbstractWsListener() {
+		this.manager.addListener(new CometListenerAdaptor() {
 
 			@Override
-			public void onClose(WebSocketI ws, int statusCode, String reason) {
-				List<WebSocketI> sL = MockWsServer.this.manager.getSocketList();
+			public void onClose(CometI ws, int statusCode, String reason) {
+				List<CometI> sL = MockWsServer.this.manager.getSocketList();
 				if (sL.isEmpty()) {
 					s.release();
 				}

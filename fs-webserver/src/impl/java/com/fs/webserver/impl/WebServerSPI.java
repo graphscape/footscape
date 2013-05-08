@@ -5,11 +5,11 @@ package com.fs.webserver.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.support.SPISupport;
+import com.fs.webcomet.api.CometFactoryI;
+import com.fs.webcomet.impl.CometFactoryImpl;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
 import com.fs.webserver.impl.jetty.JettyWebServerImpl;
-import com.fs.websocket.api.WsFactoryI;
-import com.fs.websocket.impl.jetty.JettyWsFactoryImpl;
 
 /**
  * @author wu

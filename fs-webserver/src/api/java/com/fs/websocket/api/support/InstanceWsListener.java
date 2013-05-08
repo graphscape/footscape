@@ -4,22 +4,24 @@
  */
 package com.fs.websocket.api.support;
 
-import com.fs.websocket.api.WebSocketI;
-import com.fs.websocket.api.WsListenerI;
+import java.io.Reader;
+
+import com.fs.webcomet.api.CometI;
+import com.fs.webcomet.api.CometListenerI;
 
 /**
  * @author wu
  * 
  */
-public class InstanceWsListener implements WsListenerI {
+public class InstanceWsListener implements CometListenerI {
 
-	protected WebSocketI socket;
+	protected CometI socket;
 
 	/*
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onMessage(WebSocketI ws, String ms) {
+	public void onMessage(CometI ws, String ms) {
 		//
 
 	}
@@ -28,7 +30,7 @@ public class InstanceWsListener implements WsListenerI {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onException(WebSocketI ws, Throwable t) {
+	public void onException(CometI ws, Throwable t) {
 		//
 
 	}
@@ -37,7 +39,7 @@ public class InstanceWsListener implements WsListenerI {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onConnect(WebSocketI ws) {
+	public void onConnect(CometI ws) {
 		//
 		this.socket = ws;
 	}
@@ -46,9 +48,18 @@ public class InstanceWsListener implements WsListenerI {
 	 * Dec 12, 2012
 	 */
 	@Override
-	public void onClose(WebSocketI ws, int statusCode, String reason) {
+	public void onClose(CometI ws, int statusCode, String reason) {
 		//
 
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.websocket.api.WsListenerI#onMessage(com.fs.websocket.api.WebSocketI, java.io.Reader)
+	 */
+	@Override
+	public void onMessage(CometI ws, Reader reader) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
