@@ -7,9 +7,10 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
+import com.fs.commons.api.client.BClientManagerI;
+import com.fs.webserver.impl.test.mock.MockWsBClient;
 import com.fs.webserver.impl.test.mock.ssocket.MockWsServer;
-import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.impl.mock.MockWSClientImpl;
 import com.fs.websocket.impl.test.WebSocketTestSPI;
 
 /**
@@ -21,21 +22,22 @@ public class TestBase extends TestCase {
 	protected static SPIManagerI sm;
 	protected ContainerI container;
 
-	protected WSClientManager<MockWSClientWrapper> manager;
+	protected BClientManagerI<MockWsBClient> manager;
 
 	protected MockWsServer server;
+
 	/* */
 	@Override
 	protected void setUp() throws Exception {
 		if (sm != null) {
 			return;
 		}
-		
+
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		manager = WSClientManager.newInstance(WebSocketTestSPI.TEST_WS_URI, MockWSClientWrapper.class,
-				this.container);
+		manager = BClientManagerI.Factory.newInstance(MockWSClientImpl.class, WebSocketTestSPI.TEST_WS_URI,
+				MockWsBClient.class, this.container);
 		server = new MockWsServer("testws", this.container);
 		server.start();
 	}

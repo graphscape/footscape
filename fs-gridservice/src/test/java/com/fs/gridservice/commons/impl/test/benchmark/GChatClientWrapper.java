@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.client.AClientI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.message.MessageContext;
@@ -23,9 +24,9 @@ import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.struct.Path;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.impl.test.mock.chat.MockParticipant;
-import com.fs.websocket.api.mock.WSClient;
 
 /**
  * @author wu
@@ -53,8 +54,8 @@ public class GChatClientWrapper extends MockClientWrapper {
 
 	protected Semaphore exitWait;
 
-	public GChatClientWrapper(WSClient target) {
-		super(target);
+	public GChatClientWrapper(AClientI target,PropertiesI pts) {
+		super(target,pts);
 
 		this.participantMap = new HashMap<String, MockParticipant>();
 		this.messageQueue = new LinkedBlockingQueue<MessageI>();

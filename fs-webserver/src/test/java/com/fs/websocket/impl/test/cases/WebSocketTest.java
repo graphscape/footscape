@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.struct.Path;
 import com.fs.webserver.impl.test.cases.support.TestBase;
 import com.fs.webserver.impl.test.mock.MockMessageWrapper;
-import com.fs.webserver.impl.test.mock.MockWSClientWrapper;
+import com.fs.webserver.impl.test.mock.MockWsBClient;
 
 /**
  * @author wuzhen
@@ -27,14 +27,14 @@ public class WebSocketTest extends TestBase {
 
 		int CLS = 2;
 		for (int i = 0; i < CLS; i++) {
-			MockWSClientWrapper ci = manager.createClient(false);
+			MockWsBClient ci = manager.createClient(false);
 			
 			ci.connect();//
 			// sessionID
 		}
-		List<MockWSClientWrapper> cl = manager.getClientList();
+		List<MockWsBClient> cl = manager.getClientList();
 		for (int i = 0; i < CLS; i++) {
-			MockWSClientWrapper ci = cl.get(i);
+			MockWsBClient ci = cl.get(i);
 			int idx = (i + 1 == CLS) ? 0 : (i + 1);
 			String to = cl.get(idx).getWsId(true);
 

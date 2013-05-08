@@ -9,6 +9,7 @@ import org.junit.Before;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.client.BClientManagerI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
@@ -17,7 +18,7 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.expector.gridservice.impl.test.ExpectorGsTestSPI;
-import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.api.Components;
 
 /**
  * @author wu
@@ -31,7 +32,7 @@ public class TestBase extends TestCase {
 
 	protected MessageServiceI engine;
 
-	protected WSClientManager<MockExpectorClient> clients;
+	protected BClientManagerI<MockExpectorClient> clients;
 
 	@Before
 	public void setUp() {
@@ -41,8 +42,8 @@ public class TestBase extends TestCase {
 		DataServiceFactoryI dsf = this.container.find(DataServiceFactoryI.class, true);
 		this.dataService = dsf.getDataService();//
 
-		this.clients = WSClientManager.newInstance(ExpectorGsTestSPI.DEFAULT_WS_URI,
-				MockExpectorClient.class, this.container);
+		this.clients = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
+				ExpectorGsTestSPI.DEFAULT_WS_URI, MockExpectorClient.class, this.container);
 
 	}
 
@@ -50,7 +51,7 @@ public class TestBase extends TestCase {
 		return newClient(this.clients, email, nick);
 	}
 
-	public static MockExpectorClient newClient(WSClientManager<MockExpectorClient> clients, String email,
+	public static MockExpectorClient newClient(BClientManagerI<MockExpectorClient> clients, String email,
 			String nick) {// anonymous
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(MockExpectorClient.SIGNUP_AT_CONNECT, true);

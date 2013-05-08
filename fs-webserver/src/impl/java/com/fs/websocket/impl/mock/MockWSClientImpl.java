@@ -4,7 +4,6 @@
 package com.fs.websocket.impl.mock;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -12,27 +11,19 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jetty.io.ChannelEndPoint;
 import org.eclipse.jetty.io.EndPoint;
 import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.eclipse.jetty.websocket.common.LogicalConnection;
 import org.eclipse.jetty.websocket.common.WebSocketSession;
 import org.eclipse.jetty.websocket.common.io.AbstractWebSocketConnection;
 import org.eclipse.jetty.websocket.common.io.IOState;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.commons.api.codec.CodecI;
+import com.fs.commons.api.client.AClientI;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.message.MessageContext;
-import com.fs.commons.api.message.MessageI;
-import com.fs.commons.api.message.MessageServiceI;
-import com.fs.commons.api.message.ResponseI;
-import com.fs.commons.api.service.HandlerI;
-import com.fs.commons.api.struct.Path;
-import com.fs.websocket.api.mock.WSClient;
+import com.fs.commons.api.support.AClientSupport;
+import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wuzhen
@@ -42,10 +33,9 @@ import com.fs.websocket.api.mock.WSClient;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWSClientImpl extends WSClient implements WebSocketListener {
+public class MockWSClientImpl extends AClientSupport implements WebSocketListener {
+	
 	private static final Logger LOG = LoggerFactory.getLogger(MockWSClientImpl.class);
-
-	protected URI uri;
 
 	protected WebSocketClient client;
 
@@ -57,34 +47,14 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 
 	protected Session session;
 
-	protected String name;
-
-	protected MessageServiceI engine;
-
-	protected CodecI codec;
-
-	protected long lastSendMessageTs;
-
-	public MockWSClientImpl(String name, URI uri, MessageServiceI ms, CodecI codec) {
-		this.name = name;
-		this.uri = uri;
-		this.engine = ms;
-		this.codec = codec;
+	public MockWSClientImpl(PropertiesI<Object> pts) {
+		super(pts);
 		this.client = new WebSocketClient();
 	}
 
 	@Override
 	public void onWebSocketText(String message) {
-		LOG.info(this.name + ".onWebSocketText,message:" + message);
-		try {
-			JSONArray ser = (JSONArray) JSONValue.parse(message);
-			MessageI msg = (MessageI) this.codec.decode(ser);
-			ResponseI res = this.engine.service(msg);
-
-			res.assertNoError();
-		} catch (Throwable t) {
-			LOG.error("onWebSocketText error", t);
-		}
+		super.onMessage(message);
 	}
 
 	@Override
@@ -116,24 +86,16 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 	}
 
 	@Override
-	public void sendMessage(MessageI msg) {
-		if (this.connection == null) {
-			throw new FsException("not connected");
-		}
-
-		JSONArray jsm = (JSONArray) this.codec.encode(msg);//
-		String code = jsm.toJSONString();
+	protected void sendMessage(String msg) {
 		try {
-			this.connection.getRemote().sendString(code);
+			this.connection.getRemote().sendString(msg);
 		} catch (IOException e) {
 			throw new FsException(e);
 		}
-		this.lastSendMessageTs = System.currentTimeMillis();
-
 	}
 
 	@Override
-	public WSClient connect() {
+	public AClientI connect() {
 		try {
 			this.client.start();
 			this.connected = new Semaphore(0);
@@ -201,34 +163,6 @@ public class MockWSClientImpl extends WSClient implements WebSocketListener {
 				+ " ],[,channelEndpoint:,isopen:" + cep.isOpen() + ",isInputShutdown:"
 				+ cep.isInputShutdown() + "," + cep.isOutputShutdown() + ",]", e);
 
-	}
-
-	/*
-	 * Jan 26, 2013
-	 */
-	@Override
-	public String getName() {
-		//
-		return this.name;
-	}
-
-	/*
-	 * Jan 26, 2013
-	 */
-	@Override
-	public void addHandler(Path p, HandlerI<MessageContext> mh) {
-		this.addHandler(p, false, mh);
-	}
-
-	@Override
-	public void addHandler(Path p, boolean strict, HandlerI<MessageContext> mh) {
-		this.engine.getDispatcher().addHandler(p, strict, mh);
-	}
-
-	@Override
-	public int getIdleTime() {
-		long now = System.currentTimeMillis();
-		return (int) (now - this.lastSendMessageTs);
 	}
 
 }

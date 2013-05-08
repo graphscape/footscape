@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.client.AClientI;
+import com.fs.commons.api.client.BClient;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
@@ -17,8 +19,6 @@ import com.fs.commons.api.service.HandlerI;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.gobject.EndPointGoI;
-import com.fs.websocket.api.mock.WSClient;
-import com.fs.websocket.api.mock.WSClientWrapper;
 
 /**
  * @author wuzhen
@@ -28,12 +28,11 @@ import com.fs.websocket.api.mock.WSClientWrapper;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockClientWrapper extends WSClientWrapper {
+public class MockClientWrapper extends BClient {
 	private static final Logger LOG = LoggerFactory.getLogger(MockClientWrapper.class);
 
-
 	public static final String AUTH_AT_CONNECT = "authAtConnect";
-	
+
 	public static final String CREDENTIAL = "credential";
 
 	protected Semaphore serverIsReady;
@@ -48,8 +47,8 @@ public class MockClientWrapper extends WSClientWrapper {
 
 	protected String sessionId;// app level session.
 
-	public MockClientWrapper(WSClient t) {
-		super(t);
+	public MockClientWrapper(AClientI t, PropertiesI pts) {
+		super(t, pts);
 
 		this.target.addHandler(EndPointGoI.P_SERVER_IS_READY, new HandlerI<MessageContext>() {
 
@@ -77,7 +76,7 @@ public class MockClientWrapper extends WSClientWrapper {
 			//
 			this.serverIsReady = new Semaphore(0);
 			MessageI msg = new MessageSupport(EndPointGoI.P_CLIENT_IS_READY.toString());// cause
-																							// serverIsReady
+																						// serverIsReady
 			super.sendMessage(msg);
 
 			if (!this.serverIsReady.tryAcquire(10, TimeUnit.SECONDS)) {
@@ -90,7 +89,8 @@ public class MockClientWrapper extends WSClientWrapper {
 		}
 		boolean auth = this.properties.getPropertyAsBoolean(MockClientWrapper.AUTH_AT_CONNECT, false);
 		if (auth) {
-			PropertiesI<Object> cred = (PropertiesI<Object>) this.properties.getProperty(MockClientWrapper.CREDENTIAL, true);
+			PropertiesI<Object> cred = (PropertiesI<Object>) this.properties.getProperty(
+					MockClientWrapper.CREDENTIAL, true);
 			this.auth(cred);
 		}
 		return this;

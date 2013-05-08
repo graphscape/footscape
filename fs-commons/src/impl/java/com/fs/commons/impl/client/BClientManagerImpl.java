@@ -2,7 +2,7 @@
  * All right is from Author of the file,to be explained in comming days.
  * Jan 25, 2013
  */
-package com.fs.websocket.impl.mock;
+package com.fs.commons.impl.client;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -11,30 +11,32 @@ import java.util.List;
 import java.util.Random;
 
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.client.AClientI;
+import com.fs.commons.api.client.BClient;
+import com.fs.commons.api.client.BClient.KeepLiveI;
+import com.fs.commons.api.client.BClientManagerI;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.MessageServiceI;
+import com.fs.commons.api.support.AClientSupport;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.websocket.api.mock.WSClient;
-import com.fs.websocket.api.mock.WSClientKeepLive;
-import com.fs.websocket.api.mock.WSClientManager;
-import com.fs.websocket.api.mock.WSClientWrapper;
-import com.fs.websocket.api.mock.WSClientWrapper.KeepLiveI;
 
 /**
  * @author wu
  * 
  */
-public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientManager<T> {
+public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T> {
 
 	private List<T> clientList;
 
 	private int next;
 
 	protected URI uri;
+
+	protected Class<? extends AClientI> clientClass;
 
 	protected Class<? extends T> wcls;
 
@@ -45,11 +47,11 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 	protected MessageServiceI.FactoryI factory;
 
 	protected KeepLiveI keepLive;
-	
-	public WSClientManagerImpl() {
+
+	public BClientManagerImpl() {
 		this.clientList = new ArrayList<T>();
 		this.clientList = Collections.synchronizedList(this.clientList);
-		this.keepLive = new WSClientKeepLive();
+		this.keepLive = new BClientKeepLive();
 	}
 
 	public int size() {
@@ -111,11 +113,13 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 	protected T newClient(int idx, PropertiesI<Object> pts) {
 		String name = "client-" + idx;
 		MessageServiceI engine = this.factory.create(name);
-		
-		WSClient client = new MockWSClientImpl(name, uri, engine, codec);
-		T rt = ClassUtil.newInstance(this.wcls, new Class[] { WSClient.class }, new Object[] { client });
-		rt.init(pts);
-		
+		pts.setProperty(AClientSupport.PK_CODEC, this.codec);
+		pts.setProperty(AClientSupport.PK_ENGINE,engine);
+		pts.setProperty(AClientSupport.PK_NAME,name);
+		pts.setProperty(AClientSupport.PK_URI, this.uri);
+		AClientI client = ClassUtil.newInstance(this.clientClass,new Class[]{PropertiesI.class},new Object[]{pts});
+		T rt = ClassUtil.newInstance(this.wcls, new Class[] { AClientI.class,PropertiesI.class }, new Object[] { client,pts });
+
 		return rt;
 	}
 
@@ -145,12 +149,13 @@ public class WSClientManagerImpl<T extends WSClientWrapper> extends WSClientMana
 	 * Jan 26, 2013
 	 */
 	@Override
-	public void init(URI uri, Class<? extends T> wcls, ContainerI c) {
+	public void init(Class<? extends AClientI> cls, URI uri, Class<? extends T> wcls, ContainerI c) {
 		this.uri = uri;
 		this.wcls = wcls;
 		this.container = c;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		this.factory = c.find(MessageServiceI.FactoryI.class, true);
+		this.clientClass = cls;
 	}
 
 	/*

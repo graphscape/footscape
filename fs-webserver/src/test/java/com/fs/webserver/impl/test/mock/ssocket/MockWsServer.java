@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ContainerI;
+import com.fs.commons.api.client.BClient.KeepLiveI;
 import com.fs.commons.api.codec.CodecI;
-import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
@@ -23,7 +23,6 @@ import com.fs.commons.api.struct.Path;
 import com.fs.webserver.impl.test.mock.MockMessageWrapper;
 import com.fs.websocket.api.WebSocketI;
 import com.fs.websocket.api.WsFactoryI;
-import com.fs.websocket.api.mock.WSClientWrapper.KeepLiveI;
 import com.fs.websocket.api.support.AbstractWsListener;
 import com.fs.websocket.api.support.ManagerWsListener;
 

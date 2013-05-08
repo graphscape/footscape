@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.client.BClient;
+import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
 
@@ -23,7 +26,7 @@ import com.fs.commons.api.util.benchmark.TimeMeasures;
  * @author wu
  * 
  */
-public abstract class WSClientRunner<T extends WSClientWrapper> {
+public abstract class WSClientRunner<T extends BClient> {
 	protected static Logger LOG = LoggerFactory.getLogger(WSClientRunner.class);
 
 	protected SPIManagerI sm;
@@ -38,7 +41,7 @@ public abstract class WSClientRunner<T extends WSClientWrapper> {
 
 	protected URI uri;
 
-	protected WSClientManager<T> clients;
+	protected BClientManagerI<T> clients;
 
 	protected int max;
 
@@ -98,7 +101,9 @@ public abstract class WSClientRunner<T extends WSClientWrapper> {
 		sm = SPIManagerI.FACTORY.get();
 		sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.clients = WSClientManager.newInstance(this.uri, this.wcls, this.container);
+
+		Class cls = ClassUtil.forName("com.fs.websocket.impl.mock.MockWSClientImpl");
+		this.clients = BClientManagerI.Factory.newInstance(cls, this.uri, this.wcls, this.container);
 	}
 
 	protected void initClients() {

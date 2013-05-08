@@ -14,6 +14,8 @@
 	<dependencies>
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.6.1" conf="api->master" />
 		<dependency org="javax.mail" name="mail" rev="1.4.5" force="true" conf="api->master" />
+		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" force="true" conf="api->master" />
+		
 		<dependency org="com.google.guava" name="guava" rev="12.0" force="true" conf="impl->master(default)" />
 
 		<dependency org="commons-dbcp" name="commons-dbcp" rev="1.4" force="true" conf="impl->master" />
@@ -25,7 +27,6 @@
 		<dependency org="commons-logging" name="commons-logging" rev="1.1.1" force="true" conf="impl->master" />
 
 		<dependency org="commons-pool" name="commons-pool" rev="1.5.6" force="true" conf="impl->master" />
-		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" force="true" conf="impl->master" />
 
 		<dependency org="dom4j" name="dom4j" rev="1.6.1" force="true" conf="impl->master" />
 		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master" />

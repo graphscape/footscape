@@ -8,13 +8,14 @@ import java.util.concurrent.Semaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.client.AClientI;
+import com.fs.commons.api.client.BClient;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageHandlerI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
-import com.fs.websocket.api.mock.WSClient;
-import com.fs.websocket.api.mock.WSClientWrapper;
+import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wuzhen
@@ -24,28 +25,28 @@ import com.fs.websocket.api.mock.WSClientWrapper;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWSClientWrapper extends WSClientWrapper {
-	private static final Logger LOG = LoggerFactory.getLogger(MockWSClientWrapper.class);
+public class MockWsBClient extends BClient {
+	private static final Logger LOG = LoggerFactory.getLogger(MockWsBClient.class);
 
 	protected String wsId;
 
 	protected Semaphore serverIsReady;
 
-	public MockWSClientWrapper(WSClient t) {
-		super(t);
+	public MockWsBClient(AClientI t, PropertiesI pts) {
+		super(t, pts);
 
 		this.addHandler(Path.valueOf("server-is-ready"), true, new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWSClientWrapper.this.serverIsReady(sc);
+				MockWsBClient.this.serverIsReady(sc);
 			}
 		});
 		this.addHandler(Path.valueOf("echo-from-server"), true, new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWSClientWrapper.this.echoFromServer(sc);
+				MockWsBClient.this.echoFromServer(sc);
 
 			}
 		});
@@ -53,7 +54,7 @@ public class MockWSClientWrapper extends WSClientWrapper {
 	}
 
 	@Override
-	public WSClientWrapper connect() {
+	public BClient connect() {
 		super.connect();
 
 		MockMessageWrapper mw = MockMessageWrapper.valueOf("client-is-ready", null);

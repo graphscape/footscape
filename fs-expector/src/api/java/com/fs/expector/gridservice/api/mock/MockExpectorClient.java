@@ -6,12 +6,12 @@ package com.fs.expector.gridservice.api.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fs.commons.api.client.AClientI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
-import com.fs.websocket.api.mock.WSClient;
 
 /**
  * @author wuzhen
@@ -32,8 +32,8 @@ public class MockExpectorClient extends MockClientWrapper {
 	/**
 	 * @param c
 	 */
-	public MockExpectorClient(WSClient mc) {
-		super(mc);
+	public MockExpectorClient(AClientI mc, PropertiesI pts) {
+		super(mc, pts);
 
 	}
 
@@ -91,9 +91,9 @@ public class MockExpectorClient extends MockClientWrapper {
 	public String newExp(String body) {
 		MessageI req = this.newRequest("/expe/submit");
 		req.setPayload("body", body);
-		req.setPayload("title",body);
-		req.setPayload("format","n/a");//
-		req.setPayload("summary","n/a");
+		req.setPayload("title", body);
+		req.setPayload("format", "n/a");//
+		req.setPayload("summary", "n/a");
 		MessageI i = this.syncSendMessage(req);
 		i.assertNoError();
 		String rt = (String) i.getPayload("expId", true);

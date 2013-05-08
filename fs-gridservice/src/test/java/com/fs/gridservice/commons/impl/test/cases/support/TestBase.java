@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
+import com.fs.commons.api.client.BClientManagerI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
@@ -18,7 +19,7 @@ import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
 import com.fs.gridservice.commons.impl.test.benchmark.GChatClientWrapper;
-import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.api.Components;
 
 /**
  * @author wu
@@ -32,9 +33,9 @@ public class TestBase extends TestCase {
 
 	protected GridFacadeI facade;
 
-	protected WSClientManager<MockClientWrapper> factory;
+	protected BClientManagerI<MockClientWrapper> factory;
 
-	protected WSClientManager<GChatClientWrapper> gcfactory;
+	protected BClientManagerI<GChatClientWrapper> gcfactory;
 
 	protected SessionManagerI smanager;
 
@@ -50,10 +51,8 @@ public class TestBase extends TestCase {
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
-		factory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class,
-				this.container);
-		gcfactory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, GChatClientWrapper.class,
-				this.container);
+		factory = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
+				GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class, this.container);
 
 		this.smanager = this.container.find(SessionManagerI.class, true);
 		this.cmanager = facade.getEntityManager(ClientManagerI.class);

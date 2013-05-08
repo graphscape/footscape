@@ -14,7 +14,7 @@
 
 	</publications>
 	<dependencies>
-
+	
 
 		<dependency org="com.fs" name="commons" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
 		<dependency org="com.fs" name="webserver" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />

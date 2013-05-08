@@ -14,11 +14,12 @@ import java.util.concurrent.TimeUnit;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.callback.CallbackI;
+import com.fs.commons.api.client.BClientManagerI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
-import com.fs.websocket.api.mock.WSClientManager;
+import com.fs.websocket.api.Components;
 
 /**
  * @author wuzhen
@@ -29,7 +30,7 @@ public class TerminalBenchmark {
 	protected SPIManagerI sm;
 	protected ContainerI container;
 
-	protected WSClientManager<MockClientWrapper> factory;
+	protected BClientManagerI<MockClientWrapper> factory;
 
 	private List<MockClientWrapper> clientList;
 
@@ -74,8 +75,8 @@ public class TerminalBenchmark {
 		this.sm = SPIManagerI.FACTORY.get();
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.factory = WSClientManager.newInstance(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class,
-				this.container);
+		this.factory = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
+				GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class, this.container);
 
 	}
 
