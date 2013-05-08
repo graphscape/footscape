@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONValue;
+
+import com.fs.commons.api.lang.FsException;
 import com.fs.webcomet.api.CometListenerI;
 import com.fs.webcomet.api.support.CometSupport;
 
@@ -35,7 +38,11 @@ public class AjaxComet extends CometSupport {
 	 */
 	public void sendMessage(String msg) {
 		//
-
+		try {
+			this.queue.put(msg);
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		}//
 	}
 
 	/**
@@ -44,6 +51,7 @@ public class AjaxComet extends CometSupport {
 	public void fetchMessages(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		PrintWriter writer = res.getWriter();
 		// json array,seperator of message.
+		// see JSONArray.writeXXX.
 		writer.write("[");
 		boolean first = true;
 		while (true) {
@@ -62,7 +70,8 @@ public class AjaxComet extends CometSupport {
 			} else {
 				writer.write(",");
 			}
-			writer.write(msg);
+			JSONValue.writeJSONString(msg, writer);
+
 		}
 		writer.write("]");
 		writer.flush();

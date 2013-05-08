@@ -7,7 +7,7 @@ package com.fs.websocket.impl.test.benchmark;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fs.webserver.impl.test.mock.MockWsBClient;
+import com.fs.webcomet.impl.test.mock.MockCometBClient;
 
 /**
  * @author wu
@@ -33,7 +33,7 @@ public class WebSocketBenchmark3 extends WebSocketWSClientRunner {
 	}
 
 	@Override
-	protected MockWsBClient createClient(int idx) {
+	protected MockCometBClient createClient(int idx) {
 		return super.createClient(idx);
 	}
 
@@ -44,7 +44,7 @@ public class WebSocketBenchmark3 extends WebSocketWSClientRunner {
 	 */
 	@Override
 	protected void work(int idx) {
-		MockWsBClient client = this.clients.getRandomClient();
+		MockCometBClient client = this.clients.getRandomClient();
 		String text = "text-for-echo-" + idx;
 		client.echo(text);
 

@@ -1,7 +1,7 @@
 /**
  *  Dec 12, 2012
  */
-package com.fs.webserver.impl.test.mock;
+package com.fs.webcomet.impl.test.mock;
 
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;

@@ -1,7 +1,24 @@
 <config>
 
-	<config name="Object.WS_FACTORY">
-		
+	<config name="Object.COMET_FACTORY">
+
+	</config>
+
+	<config name="WebApp.AJA">
+		<context.path value="/aja" />
+	</config>
+
+	<config name="AjaxCometProtocol">
+		<config name="servletHolderTemplate">
+			<property name="path" value="/{name}" />
+			<prefix name="servlet">
+				<property name="class" value="com.fs.webcomet.impl.ajax.AjaxCometServlet" />
+			</prefix>
+			<config name="init-parameters">
+				
+			</config>
+
+		</config>
 	</config>
 
 </config>

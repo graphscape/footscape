@@ -1,6 +1,5 @@
 <config>
 
-	<property name="Object.WS_FACTORY.class" value="com.fs.websocket.impl.jetty.JettyWsFactoryImpl" />
 
 	<config name="WebApp.WSA">
 		<context.path value="/wsa" />

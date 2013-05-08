@@ -1,7 +1,7 @@
 /**
  *  Dec 12, 2012
  */
-package com.fs.webserver.impl.test.mock.ssocket;
+package com.fs.webcomet.impl.test.mock;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -23,16 +23,15 @@ import com.fs.commons.api.struct.Path;
 import com.fs.webcomet.api.CometFactoryI;
 import com.fs.webcomet.api.CometI;
 import com.fs.webcomet.api.support.CometListenerAdaptor;
-import com.fs.webserver.impl.test.mock.MockMessageWrapper;
-import com.fs.websocket.api.support.ManagerWsListener;
+import com.fs.webcomet.api.support.ManagerCometListener;
 
 /**
  * @author wuzhen
  * 
  */
-public class MockWsServer extends ManagerWsListener {
+public class MockCometServer extends ManagerCometListener {
 
-	private static final Logger LOG = LoggerFactory.getLogger(MockWsServer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MockCometServer.class);
 
 	protected ContainerI container;
 
@@ -40,11 +39,11 @@ public class MockWsServer extends ManagerWsListener {
 
 	protected MessageServiceI engine;
 
-	public MockWsServer(String manager, ContainerI c) {
+	public MockCometServer(String manager, ContainerI c) {
 		this(manager, c, false);
 	}
 
-	public MockWsServer(String manager, ContainerI c, boolean srmac) {
+	public MockCometServer(String manager, ContainerI c, boolean srmac) {
 		super(c.find(CometFactoryI.class, true), manager);
 		this.container = c;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
@@ -54,7 +53,7 @@ public class MockWsServer extends ManagerWsListener {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWsServer.this.clientIsReady(sc);
+				MockCometServer.this.clientIsReady(sc);
 			}
 		});
 
@@ -62,7 +61,7 @@ public class MockWsServer extends ManagerWsListener {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWsServer.this.echo(sc);
+				MockCometServer.this.echo(sc);
 			}
 		});
 		this.addHandler(KeepLiveI.PATH, true, new MessageHandlerI() {
@@ -165,7 +164,7 @@ public class MockWsServer extends ManagerWsListener {
 
 			@Override
 			public void onClose(CometI ws, int statusCode, String reason) {
-				List<CometI> sL = MockWsServer.this.manager.getSocketList();
+				List<CometI> sL = MockCometServer.this.manager.getSocketList();
 				if (sL.isEmpty()) {
 					s.release();
 				}

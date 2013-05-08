@@ -1,7 +1,7 @@
 /**
  *  Dec 12, 2012
  */
-package com.fs.webserver.impl.test.mock;
+package com.fs.webcomet.impl.test.mock;
 
 import java.util.concurrent.Semaphore;
 
@@ -25,28 +25,28 @@ import com.fs.commons.api.value.PropertiesI;
  *         http://webtide.intalio.com/2011/08/websocket-example-server-client-
  *         and-loadtest/
  */
-public class MockWsBClient extends BClient {
-	private static final Logger LOG = LoggerFactory.getLogger(MockWsBClient.class);
+public class MockCometBClient extends BClient {
+	private static final Logger LOG = LoggerFactory.getLogger(MockCometBClient.class);
 
 	protected String wsId;
 
 	protected Semaphore serverIsReady;
 
-	public MockWsBClient(AClientI t, PropertiesI pts) {
+	public MockCometBClient(AClientI t, PropertiesI pts) {
 		super(t, pts);
 
 		this.addHandler(Path.valueOf("server-is-ready"), true, new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWsBClient.this.serverIsReady(sc);
+				MockCometBClient.this.serverIsReady(sc);
 			}
 		});
 		this.addHandler(Path.valueOf("echo-from-server"), true, new MessageHandlerI() {
 
 			@Override
 			public void handle(MessageContext sc) {
-				MockWsBClient.this.echoFromServer(sc);
+				MockCometBClient.this.echoFromServer(sc);
 
 			}
 		});

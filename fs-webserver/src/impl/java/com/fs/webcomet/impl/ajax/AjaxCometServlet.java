@@ -14,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONValue;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.webcomet.api.support.CollectionCometListener;
 import com.fs.webserver.api.support.ConfigurableServletSupport;
@@ -24,16 +27,13 @@ import com.fs.webserver.api.support.ConfigurableServletSupport;
  */
 public class AjaxCometServlet extends ConfigurableServletSupport {
 
-	public static final String HK_ACTION = "x-fs-action";
+	public static final String HK_ACTION = "x-ajax-commet-action";
 
-	public static final String HK_TERMINAL_ID = "x-fs-terminal-id";
+	public static final String HK_SESSION_ID = "x-ajax-commet-session-id";
 
-	public static final String HK_CLIENT_ID = "x-fs-client-id";
-	
+	protected Map<String, AjaxComet> sessionMap;
 
-	protected Map<String,AjaxComet> sessionMap; 
-	
-	protected CollectionCometListener tfactory = new CollectionCometListener();
+	protected AjaxCometManagerImpl manager;
 
 	/*
 	 * Dec 15, 2012
@@ -42,7 +42,8 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	public void active(ActiveContext ac) {
 		//
 		super.active(ac);
-		this.sessionMap = new HashMap<String,AjaxComet>();
+		this.sessionMap = new HashMap<String, AjaxComet>();
+
 		//
 	}
 
@@ -52,42 +53,64 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			IOException {
 		// virtual terminal id
 		String action = req.getHeader(HK_ACTION);
-		
-		if(action == null){
-			
-			return;//ignore
+
+		if (action == null) {
+
+			return;// ignore
 		}
-		
-		if(action.equals("connect")){
-			//do connection
+
+		if (action.equals("connect")) {
+			// do connection
 			String tid = UUID.randomUUID().toString();
 			AjaxComet as = new AjaxComet(tid);
 			this.sessionMap.put(tid, as);//
-			this.tfactory.onConnect(as);
+			this.manager.onConnect(as);
+			// TODO
+			// client is ready should be come with connect?
+
 			return;
 		}
-		
-		String tid = req.getHeader(HK_TERMINAL_ID);
-		
-		String cid = req.getHeader(HK_CLIENT_ID);
-		AjaxComet as = this.sessionMap.get(tid);
 
-		if(action.equals("close")){
-			this.tfactory.onClose(as,0,"");
+		String sid = req.getHeader(HK_SESSION_ID);
+
+		if (sid == null) {
+
+			return;// report error ?
+		}
+
+		AjaxComet as = this.sessionMap.get(sid);
+
+		if (action.equals("close")) {
+			this.manager.onClose(as, 0, "");
 			return;//
 		}
 
-		if(action.equals("message")){
-			
+		if (action.equals("message")) {
+
 			Reader rd = req.getReader();
-			
-			this.tfactory.onMessage(as,rd);
-			
+			// note, is string array:["abc","def]
+			JSONArray jsa = (JSONArray) JSONValue.parse(rd);
+			for (int i = 0; i < jsa.size(); i++) {
+				String msg = (String) jsa.get(i);
+				this.manager.onMessage(as, msg);
+			}
+			//
+
 		}
-		as.fetchMessages(req,res);
+		as.fetchMessages(req, res);
 
 	}
 
+	/**
+	 * @param ajaxCometProtocol
+	 * @param name
+	 * @return
+	 */
+	public AjaxCometManagerImpl attachManager(AjaxCometProtocol ap, String name) {
+		AjaxCometManagerImpl rt = new AjaxCometManagerImpl(ap, name);
+		this.manager = rt;
+		return rt;
 
+	}
 
 }

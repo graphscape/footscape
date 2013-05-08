@@ -2,18 +2,17 @@
  * All right is from Author of the file,to be explained in comming days.
  * Dec 12, 2012
  */
-package com.fs.websocket.api.support;
+package com.fs.webcomet.api.support;
 
 import com.fs.webcomet.api.CometFactoryI;
 import com.fs.webcomet.api.CometI;
 import com.fs.webcomet.api.CometManagerI;
-import com.fs.webcomet.api.support.AbstractCometListener;
 
 /**
  * @author wu
  * 
  */
-public class ManagerWsListener extends AbstractCometListener {
+public class ManagerCometListener extends AbstractCometListener {
 
 	protected CometFactoryI factory;
 
@@ -21,7 +20,7 @@ public class ManagerWsListener extends AbstractCometListener {
 
 	protected CometManagerI manager;
 
-	public ManagerWsListener(CometFactoryI wf, String manager) {
+	public ManagerCometListener(CometFactoryI wf, String manager) {
 		this.factory = wf;
 		this.name = manager;
 	}

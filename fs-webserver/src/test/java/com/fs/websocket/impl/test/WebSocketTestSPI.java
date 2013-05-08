@@ -23,9 +23,11 @@ public class WebSocketTestSPI extends SPISupport {
 
 	private static Logger LOG = Log.getLog();//
 	public static final URI TEST_WS_URI;
+	public static final URI TEST_AJAX_URI;
 	static {
 		try {
 			TEST_WS_URI = new URI("ws://localhost:8080/wsa/testws");
+			TEST_AJAX_URI= new URI("http://localhost:8080/aja/testajax");
 		} catch (URISyntaxException e) {
 			throw new FsException(e);
 		}
@@ -42,7 +44,9 @@ public class WebSocketTestSPI extends SPISupport {
 	public void doActive(ActiveContext ac) {
 
 		CometFactoryI f = ac.getContainer().find(CometFactoryI.class, true);
-		CometManagerI mnr = f.addManager(ac, "websocket", "testws");
+		CometManagerI mnr1 = f.addManager(ac, "websocket", "testws");//manager a
+		CometManagerI mnr2 = f.addManager(ac, "ajax", "testajax");//manager a
+		
 
 	}
 

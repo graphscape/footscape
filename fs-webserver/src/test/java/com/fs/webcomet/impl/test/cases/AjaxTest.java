@@ -1,7 +1,7 @@
 /**
  *  Dec 11, 2012
  */
-package com.fs.websocket.impl.test.cases;
+package com.fs.webcomet.impl.test.cases;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +12,16 @@ import com.fs.webcomet.impl.test.support.CometTestBase;
  * @author wuzhen
  * 
  */
-public class WebSocketTest extends CometTestBase {
+public class AjaxTest extends CometTestBase {
 
 	/**
 	 * @param protocol
 	 */
-	public WebSocketTest() {
-		super("websocket");
+	public AjaxTest() {
+		super("ajax");
 	}
 
-	private static final Logger LOG = LoggerFactory.getLogger(WebSocketTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AjaxTest.class);
 
 	private static final boolean srmac = false;
 
