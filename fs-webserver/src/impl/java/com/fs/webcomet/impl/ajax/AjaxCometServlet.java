@@ -65,9 +65,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			AjaxComet as = new AjaxComet(tid);
 			this.sessionMap.put(tid, as);//
 			this.manager.onConnect(as);
-			// TODO
-			// client is ready should be come with connect?
-
+			res.setHeader(HK_SESSION_ID, tid);
 			return;
 		}
 
