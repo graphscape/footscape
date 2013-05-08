@@ -24,58 +24,35 @@ import com.fs.webcomet.api.support.CometSupport;
  */
 public class AjaxComet extends CometSupport {
 
-	private BlockingQueue<String> queue;
+	private BlockingQueue<AjaxMsg> queue;
 
 	private long timeoutMs = 1000;
 
 	public AjaxComet(String tid) {
 		super("ajax", tid);
-		this.queue = new LinkedBlockingQueue<String>();
+		this.queue = new LinkedBlockingQueue<AjaxMsg>();
 	}
 
-	/**
-	 * May 7, 2013
-	 */
+	@Override
 	public void sendMessage(String msg) {
+		AjaxMsg am = new AjaxMsg(AjaxMsg.MESSAGE);
+		am.setProperty(AjaxMsg.PK_TEXTMESSAGE, msg);
+		this.putAjaxMessage(am);
+	}
+	
+	public BlockingQueue<AjaxMsg> getQueue(){
+		return queue;
+	}
+
+	public void putAjaxMessage(AjaxMsg am) {
 		//
 		try {
-			this.queue.put(msg);
+			this.queue.put(am);
 		} catch (InterruptedException e) {
 			throw new FsException(e);
 		}//
 	}
 
-	/**
-	 * May 7, 2013
-	 */
-	public void fetchMessages(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		PrintWriter writer = res.getWriter();
-		// json array,seperator of message.
-		// see JSONArray.writeXXX.
-		writer.write("[");
-		boolean first = true;
-		while (true) {
-
-			String msg = null;
-			try {
-				msg = this.queue.poll(this.timeoutMs, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				continue;
-			}
-			if (msg == null) {// timeout
-				break;
-			}
-			if (first) {
-				first = false;
-			} else {
-				writer.write(",");
-			}
-			JSONValue.writeJSONString(msg, writer);
-
-		}
-		writer.write("]");
-		writer.flush();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -98,6 +75,13 @@ public class AjaxComet extends CometSupport {
 	public String getProtocol() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @return the timeoutMs
+	 */
+	public long getTimeoutMs() {
+		return timeoutMs;
 	}
 
 }

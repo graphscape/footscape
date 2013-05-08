@@ -17,8 +17,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONValue;
 import org.slf4j.Logger;
@@ -53,7 +55,8 @@ public class MockAjaxClientImpl extends AClientSupport {
 	public MockAjaxClientImpl(PropertiesI<Object> pts) {
 		super(pts);
 		this.request = new Semaphore(2);
-		this.httpclient = new DefaultHttpClient();
+		ClientConnectionManager cm = new PoolingClientConnectionManager();
+		this.httpclient = new DefaultHttpClient(cm);
 		this.resExecutor = Executors.newFixedThreadPool(2);
 	}
 
@@ -67,10 +70,10 @@ public class MockAjaxClientImpl extends AClientSupport {
 		try {
 
 			HttpGet httpget = new HttpGet(uri);
-			httpget.addHeader(AjaxCometServlet.HK_ACTION, "connect");
+			//httpget.addHeader(AjaxCometServlet.HK_ACTION, "connect");
 
 			HttpResponse response = httpclient.execute(httpget);
-			Header sidH = response.getFirstHeader(AjaxCometServlet.HK_SESSION_ID);
+			Header sidH = null;// response.getFirstHeader(AjaxCometServlet.HK_SESSION_ID);
 			if (sidH == null) {
 				throw new FsException("connection failed, response without a sid");
 			}
@@ -96,8 +99,8 @@ public class MockAjaxClientImpl extends AClientSupport {
 	@Override
 	public void close() {
 		HttpGet httpget = new HttpGet(uri);
-		httpget.addHeader(AjaxCometServlet.HK_ACTION, "close");
-		httpget.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
+		//httpget.addHeader(AjaxCometServlet.HK_ACTION, "close");
+		//httpget.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
 
 		try {
 			HttpResponse res = httpclient.execute(httpget);
@@ -128,16 +131,16 @@ public class MockAjaxClientImpl extends AClientSupport {
 	protected void sendMessage(String msg) {
 
 		this.assertConnected();
-		try {
-			this.request.acquire();
-		} catch (InterruptedException e1) {
-			throw new FsException(e1);
-		}
+		// try {
+		// this.request.acquire();
+		// } catch (InterruptedException e1) {
+		// throw new FsException(e1);
+		// }
 
 		try {
 			HttpPost req = new HttpPost(uri);
-			req.addHeader(AjaxCometServlet.HK_ACTION, "message");
-			req.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
+			//req.addHeader(AjaxCometServlet.HK_ACTION, "message");
+			//req.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
 
 			StringBuffer sb = new StringBuffer();
 
@@ -162,9 +165,10 @@ public class MockAjaxClientImpl extends AClientSupport {
 
 		} catch (Exception e) {
 			throw new FsException(e);
-		} finally {
-			this.request.release();
 		}
+		// finally {
+		// this.request.release();
+		// }
 	}
 
 	/**
@@ -180,6 +184,8 @@ public class MockAjaxClientImpl extends AClientSupport {
 			String msgS = (String) jsa.get(i);
 			this.onMessage(msgS);
 		}
+		
+		
 
 	}
 

@@ -8,17 +8,17 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-
 import com.fs.commons.api.ActiveContext;
-import com.fs.webcomet.api.support.CollectionCometListener;
+import com.fs.commons.api.struct.Path;
+import com.fs.webcomet.impl.ajax.handlers.AjaxCloseHandler;
+import com.fs.webcomet.impl.ajax.handlers.AjaxConnectHandler;
+import com.fs.webcomet.impl.ajax.handlers.AjaxDefaultHandler;
+import com.fs.webcomet.impl.ajax.handlers.AjaxMessageHandler;
 import com.fs.webserver.api.support.ConfigurableServletSupport;
 
 /**
@@ -27,13 +27,13 @@ import com.fs.webserver.api.support.ConfigurableServletSupport;
  */
 public class AjaxCometServlet extends ConfigurableServletSupport {
 
-	public static final String HK_ACTION = "x-ajax-commet-action";
-
-	public static final String HK_SESSION_ID = "x-ajax-commet-session-id";
-
 	protected Map<String, AjaxComet> sessionMap;
 
 	protected AjaxCometManagerImpl manager;
+
+	protected Map<Path, AjaxMsgHandler> handlers;
+
+	protected AjaxMsgHandler defaultAjaxMsgHandler;
 
 	/*
 	 * Dec 15, 2012
@@ -52,50 +52,16 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException,
 			IOException {
 		// virtual terminal id
-		String action = req.getHeader(HK_ACTION);
-
-		if (action == null) {
-
-			return;// ignore
-		}
-
-		if (action.equals("connect")) {
-			// do connection
-			String tid = UUID.randomUUID().toString();
-			AjaxComet as = new AjaxComet(tid);
-			this.sessionMap.put(tid, as);//
-			this.manager.onConnect(as);
-			res.setHeader(HK_SESSION_ID, tid);
+		Reader reader = req.getReader();
+		AjaxMsg am = AjaxMsg.tryParse(reader);
+		if (am == null) {
 			return;
 		}
-
-		String sid = req.getHeader(HK_SESSION_ID);
-
-		if (sid == null) {
-
-			return;// report error ?
+		Path path = am.getPath();
+		AjaxMsgHandler hdl = this.handlers.get(path);
+		if (hdl == null) {
+			hdl = this.defaultAjaxMsgHandler;
 		}
-
-		AjaxComet as = this.sessionMap.get(sid);
-
-		if (action.equals("close")) {
-			this.manager.onClose(as, 0, "");
-			return;//
-		}
-
-		if (action.equals("message")) {
-
-			Reader rd = req.getReader();
-			// note, is string array:["abc","def]
-			JSONArray jsa = (JSONArray) JSONValue.parse(rd);
-			for (int i = 0; i < jsa.size(); i++) {
-				String msg = (String) jsa.get(i);
-				this.manager.onMessage(as, msg);
-			}
-			//
-
-		}
-		as.fetchMessages(req, res);
 
 	}
 
@@ -107,8 +73,15 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	public AjaxCometManagerImpl attachManager(AjaxCometProtocol ap, String name) {
 		AjaxCometManagerImpl rt = new AjaxCometManagerImpl(ap, name);
 		this.manager = rt;
+
+		//default handler
+		this.defaultAjaxMsgHandler = new AjaxDefaultHandler(this.sessionMap, this.manager);
+		//handlers
+		this.handlers.put(AjaxMsg.CLOSE, new AjaxCloseHandler(this.sessionMap, this.manager));
+		this.handlers.put(AjaxMsg.CONNECT, new AjaxConnectHandler(this.sessionMap, this.manager));
+		this.handlers.put(AjaxMsg.MESSAGE, new AjaxMessageHandler(this.sessionMap, this.manager));
+
 		return rt;
 
 	}
-
 }
