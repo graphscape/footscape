@@ -7,16 +7,23 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.webcomet.impl.test.mock.MockCometBClient;
-import com.fs.webserver.impl.test.cases.support.TestBase;
+import com.fs.webcomet.impl.test.support.CometTestBase;
 
 /**
  * @author wuzhen
  * 
  */
-public class KeepLiveTest extends TestBase {
+public class KeepLiveTest extends CometTestBase {
+
+	/**
+	 * @param protocol
+	 */
+	public KeepLiveTest() {
+		super("websocket");
+	}
 
 	public void testKeepLive() {
-		MockCometBClient client = this.manager.createClient(true);
+		MockCometBClient client = this.clients.createClient(true);
 		String text = "test-keep-live-0";
 		MessageI msg = new MessageSupport("echo");
 		msg.setPayload("text", text);

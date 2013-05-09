@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.fs.webcomet.impl.ajax.AjaxComet;
 import com.fs.webcomet.impl.ajax.AjaxCometManagerImpl;
-import com.fs.webcomet.impl.ajax.AjaxMsg;
 import com.fs.webcomet.impl.ajax.AjaxMsgContext;
 import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
 
@@ -32,13 +31,13 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 	 */
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
-		if (amc.as == null) {
+		if (amc.arc.as == null) {
 			// ignore the session already closed.
 			return;
 		}
 		//fetch?
-		this.fetchMessage(amc);
-		this.manager.onClose(amc.as, 0, "");
+		//this.fetchMessage(amc);
+		this.manager.onClose(amc.arc.as, 0, "");
 
 	}
 }

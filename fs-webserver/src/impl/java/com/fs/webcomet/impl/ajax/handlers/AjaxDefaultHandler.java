@@ -32,7 +32,7 @@ public class AjaxDefaultHandler extends AjaxMsgHandler {
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
 
-		amc.writeError("no-handler", "for path:" + amc.am.getPath().toString());
+		amc.arc.writeError("no-handler", "for path:" + amc.am.getPath().toString());
 
 	}
 }

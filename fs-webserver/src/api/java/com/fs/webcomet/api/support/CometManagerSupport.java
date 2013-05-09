@@ -120,8 +120,7 @@ public class CometManagerSupport extends ConfigurableSupport implements
 	 */
 	@Override
 	public void onMessage(CometI ws, String ms) {
-		//
-
+		this.listeners.onMessage(ws, ms);
 	}
 
 	/*
@@ -130,7 +129,7 @@ public class CometManagerSupport extends ConfigurableSupport implements
 	@Override
 	public void onException(CometI ws, Throwable t) {
 		//
-
+		this.listeners.onException(ws, t);
 	}
 
 	/*

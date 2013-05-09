@@ -22,7 +22,7 @@ import com.fs.websocket.impl.test.WebSocketTestSPI;
  */
 public class CometTestBase extends TestBase {
 
-	protected BClientManagerI<MockCometBClient> manager;
+	protected BClientManagerI<MockCometBClient> clients;
 
 	protected MockCometServer server;
 
@@ -50,7 +50,7 @@ public class CometTestBase extends TestBase {
 		} else {
 			throw new FsException("no this protocol:" + this.protocol);
 		}
-		manager = BClientManagerI.Factory.newInstance(acls, uri, MockCometBClient.class, this.container);
+		clients = BClientManagerI.Factory.newInstance(acls, uri, MockCometBClient.class, this.container);
 
 		server = new MockCometServer(smanager, this.container);
 		server.start();
@@ -60,12 +60,12 @@ public class CometTestBase extends TestBase {
 
 		int CLS = 2;
 		for (int i = 0; i < CLS; i++) {
-			MockCometBClient ci = manager.createClient(false);
+			MockCometBClient ci = clients.createClient(false);
 			
 			ci.connect();//
 			// sessionID
 		}
-		List<MockCometBClient> cl = manager.getClientList();
+		List<MockCometBClient> cl = clients.getClientList();
 		for (int i = 0; i < CLS; i++) {
 			MockCometBClient ci = cl.get(i);
 			int idx = (i + 1 == CLS) ? 0 : (i + 1);

@@ -4,12 +4,7 @@
  */
 package com.fs.webcomet.impl.ajax;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import com.fs.commons.api.lang.FsException;
 
 /**
  * @author wu
@@ -25,38 +20,7 @@ public abstract class AjaxMsgHandler {
 	}
 
 	public void handle(AjaxMsgContext amc) {
-		Writer writer = amc.getWriter();
-		try {
-			writer.write("[");
-			try {
-				this.handlerInternal(amc);
-			} finally {
-				writer.write("]");
-				writer.flush();
-			}
-		} catch (IOException e) {
-			throw new FsException(e);
-		}
-	}
-
-	protected void fetchMessage(AjaxMsgContext amc) {
-
-		while (true) {
-
-			AjaxMsg msg = null;
-			try {
-				msg = amc.as.getQueue().poll(amc.as.getTimeoutMs(), TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				continue;
-			}
-
-			if (msg == null) {// timeout
-				break;
-			}
-
-			amc.write(msg);
-
-		}
+		this.handlerInternal(amc);
 	}
 
 	public abstract void handlerInternal(AjaxMsgContext amc);

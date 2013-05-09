@@ -4,19 +4,11 @@
  */
 package com.fs.webcomet.impl.ajax.handlers;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONValue;
-
-import com.fs.commons.api.lang.FsException;
 import com.fs.webcomet.impl.ajax.AjaxComet;
 import com.fs.webcomet.impl.ajax.AjaxCometManagerImpl;
+import com.fs.webcomet.impl.ajax.AjaxMsg;
 import com.fs.webcomet.impl.ajax.AjaxMsgContext;
 import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
 
@@ -40,19 +32,8 @@ public class AjaxMessageHandler extends AjaxMsgHandler {
 	 */
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
-		Reader rd = null;
-		try {
-			rd = amc.req.getReader();
-		} catch (IOException e) {
-			throw new FsException(e);
-		}
-		// note, is string array:["abc","def]
-		JSONArray jsa = (JSONArray) JSONValue.parse(rd);
-		for (int i = 0; i < jsa.size(); i++) {
-			String msg = (String) jsa.get(i);
-			this.manager.onMessage(amc.as, msg);
-		}
-		this.fetchMessage(amc);
+		String msg = (String) amc.am.getProperty(AjaxMsg.PK_TEXTMESSAGE, true);
+		this.manager.onMessage(amc.arc.as, msg);
 
 	}
 }

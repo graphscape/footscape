@@ -3,16 +3,8 @@
  */
 package com.fs.webcomet.impl.ajax;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.simple.JSONValue;
 
 import com.fs.commons.api.lang.FsException;
 import com.fs.webcomet.api.CometListenerI;
@@ -64,17 +56,6 @@ public class AjaxComet extends CometSupport {
 	@Override
 	public void addListener(CometListenerI ln) {
 		this.addListener(ln);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.fs.webcomet.api.CometI#getProtocol()
-	 */
-	@Override
-	public String getProtocol() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**

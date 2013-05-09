@@ -42,7 +42,7 @@ public class AjaxConnectHandler extends AjaxMsgHandler {
 		// response
 		AjaxMsg am2 = new AjaxMsg(AjaxMsg.CONNECT.getSubPath("success"));
 		am2.setProperty(AjaxMsg.PK_SESSION_ID, sid);
-		amc.write(am2);
+		amc.arc.write(am2);
 
 	}
 }
