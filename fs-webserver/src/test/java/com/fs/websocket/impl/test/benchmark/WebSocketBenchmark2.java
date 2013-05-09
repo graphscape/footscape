@@ -4,8 +4,15 @@
  */
 package com.fs.websocket.impl.test.benchmark;
 
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fs.commons.api.client.BClientFactoryI;
+import com.fs.webcomet.api.WebCometComponents;
+import com.fs.websocket.api.Components;
+import com.fs.websocket.impl.test.WebSocketTestSPI;
 
 /**
  * @author wu
@@ -16,13 +23,14 @@ import org.slf4j.LoggerFactory;
 public class WebSocketBenchmark2 extends WebSocketWSClientRunner {
 	private static Logger LOG = LoggerFactory.getLogger(WebSocketBenchmark2.class);
 
-	public WebSocketBenchmark2(int cc, int max, int duration) {
-		super(0, cc, max, duration);
+	public WebSocketBenchmark2(BClientFactoryI.ProtocolI pro, URI uri, int cc, int max, int duration) {
+		super(pro, uri, 0, cc, max, duration);
 	}
 
 	public static void main(String[] args) {
 		// TODO cmd line argument
-		new WebSocketBenchmark2(100, 1000, -1).start();
+		new WebSocketBenchmark2(Components.WEBSOCKET, WebSocketTestSPI.TEST_WS_URI, 100, 1000, -1)
+				.start();
 	}
 
 	/*
@@ -43,7 +51,7 @@ public class WebSocketBenchmark2 extends WebSocketWSClientRunner {
 
 		LOG.debug("tryOpenOrCloseClient,size:" + this.clients.size());
 		if (this.concurrent > this.clients.size()) {
-			this.clients.createClient(true);
+			this.clients.createClient(this.protocol.getName(), true);
 		} else {
 			this.clients.removeClient(true);
 		}

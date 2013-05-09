@@ -3,25 +3,24 @@
  */
 package com.fs.expector.gridservice.impl.test.cases;
 
-import com.fs.expector.gridservice.api.mock.MockExpectorClient;
-import com.fs.expector.gridservice.impl.test.cases.support.TestBase;
+import com.fs.expector.gridservice.impl.test.cases.support.SignupTestBase;
+import com.fs.webcomet.api.WebCometComponents;
 
 /**
  * @author wuzhen
  * 
  */
-public class SignupTest extends TestBase {
+public class SignupTest extends SignupTestBase {
+
+	/**
+	 * @param p
+	 */
+	public SignupTest() {
+		super(WebCometComponents.AJAX);
+	}
 
 	public void testSignup() throws Exception {
-
-		String nick = "user1";
-		String email = nick + "@domain.com";
-		MockExpectorClient client = this.newClient(email, nick);
-
-		String accId = client.getAccountId();
-		assertNotNull(accId);
-		String sid = client.getSessionId();
-		assertNotNull(sid);
+		this.doTestSignup();
 
 	}
 }

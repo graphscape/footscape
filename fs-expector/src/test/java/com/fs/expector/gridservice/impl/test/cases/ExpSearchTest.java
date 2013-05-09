@@ -5,6 +5,7 @@ package com.fs.expector.gridservice.impl.test.cases;
 
 import java.util.List;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.expector.gridservice.api.mock.MockExpItem;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
@@ -59,6 +60,13 @@ import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
  * </code>
  */
 public class ExpSearchTest extends AuthedTestBase {
+
+	/**
+	 * @param p
+	 */
+	public ExpSearchTest(ProtocolI p) {
+		super(p);
+	}
 
 	private MockExpectorClient client1;
 

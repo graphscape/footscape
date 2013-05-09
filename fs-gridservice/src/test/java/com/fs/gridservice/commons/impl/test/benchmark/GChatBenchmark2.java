@@ -14,7 +14,7 @@ import com.fs.websocket.api.mock.WSClientRunner;
 /**
  * @author wuzhen
  * 
- * 
+ * @deprecated
  */
 public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 
@@ -36,7 +36,7 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 	}
 
 	public GChatBenchmark2(URI uri, Class<? extends GChatClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, 0, cc, max, duration);
+		super(null, uri, wcls, 0, cc, max, duration);
 		this.nextGid = new AtomicInteger();
 		this.nextAid = new AtomicInteger();
 
@@ -68,7 +68,7 @@ public class GChatBenchmark2 extends WSClientRunner<GChatClientWrapper> {
 			pts.setProperty(GChatClientWrapper.JOIN_AT_CONNECT, true);
 			pts.setProperty(GChatClientWrapper.CREDENTIAL, cre);
 
-			GChatClientWrapper mc = this.clients.createClient(true, pts);
+			GChatClientWrapper mc = this.clients.createClient(null, true, pts);
 
 		} else {
 			this.clients.removeClient(true);

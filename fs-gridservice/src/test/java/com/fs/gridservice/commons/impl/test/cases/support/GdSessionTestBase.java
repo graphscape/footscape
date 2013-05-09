@@ -1,8 +1,9 @@
 /**
  *  Dec 14, 2012
  */
-package com.fs.gridservice.commons.impl.test.cases;
+package com.fs.gridservice.commons.impl.test.cases.support;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.QueueMessageHandler;
 import com.fs.commons.api.struct.Path;
@@ -14,15 +15,22 @@ import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
-import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
 
 /**
  * @author wuzhen
  * 
  */
-public class GdSessionTest extends TestBase {
+public class GdSessionTestBase extends TestBase {
 
-	public void testSession() throws Exception {
+	
+	/**
+	 * @param protocol
+	 */
+	public GdSessionTestBase(ProtocolI protocol) {
+		super(protocol);
+	}
+
+	public void doTestSession() throws Exception {
 		TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
 		SessionManagerI sm = this.facade.getSessionManager();
 

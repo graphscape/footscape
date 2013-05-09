@@ -14,12 +14,10 @@ import java.util.concurrent.TimeUnit;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.callback.CallbackI;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
-import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
-import com.fs.websocket.api.Components;
 
 /**
  * @author wuzhen
@@ -30,21 +28,25 @@ public class TerminalBenchmark {
 	protected SPIManagerI sm;
 	protected ContainerI container;
 
-	protected BClientManagerI<MockClientWrapper> factory;
+	protected BClientFactoryI<MockClientWrapper> factory;
 
 	private List<MockClientWrapper> clientList;
 
 	protected int clients;
 	protected int messages;
 
-	public TerminalBenchmark(int clients, int messages) {
+	protected BClientFactoryI.ProtocolI protocol;
+
+	public TerminalBenchmark(BClientFactoryI.ProtocolI protocol, int clients, int messages) {
+		this.protocol = protocol;
 		this.clients = clients;
 		this.messages = messages;
 		this.clientList = new ArrayList<MockClientWrapper>();
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		new TerminalBenchmark(100, 10).start();
+		new TerminalBenchmark(null, 100, 10).start();
 	}
 
 	public void start() {
@@ -75,14 +77,13 @@ public class TerminalBenchmark {
 		this.sm = SPIManagerI.FACTORY.get();
 		this.sm.load("/boot/test-spim.properties");
 		this.container = sm.getContainer();
-		this.factory = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
-				GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class, this.container);
+		this.factory = BClientFactoryI.Builder.newInstance(MockClientWrapper.class, this.container);
 
 	}
 
 	public void startClients() {
 		for (int i = 0; i < this.clients; i++) {
-			MockClientWrapper ci = this.factory.createClient(false);
+			MockClientWrapper ci = this.factory.createClient(this.protocol.getName(), false);
 
 			this.clientList.add(ci);
 		}

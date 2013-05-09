@@ -23,7 +23,7 @@ public class KeepLiveTest extends CometTestBase {
 	}
 
 	public void testKeepLive() {
-		MockCometBClient client = this.clients.createClient(true);
+		MockCometBClient client = this.clients.createClient(this.protocol, true);
 		String text = "test-keep-live-0";
 		MessageI msg = new MessageSupport("echo");
 		msg.setPayload("text", text);

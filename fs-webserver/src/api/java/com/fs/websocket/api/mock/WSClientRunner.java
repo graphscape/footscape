@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.client.BClient;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.benchmark.TimeMeasures;
@@ -39,9 +39,7 @@ public abstract class WSClientRunner<T extends BClient> {
 
 	protected Class<? extends T> wcls;
 
-	protected URI uri;
-
-	protected BClientManagerI<T> clients;
+	protected BClientFactoryI<T> clients;
 
 	protected int max;
 
@@ -53,8 +51,13 @@ public abstract class WSClientRunner<T extends BClient> {
 
 	protected Semaphore workers;// concurrent number of workers
 
-	public WSClientRunner(URI uri, Class<? extends T> wcls, int initClients, int maxCon, int maxEffort,
-			int duration) {
+	protected BClientFactoryI.ProtocolI protocol;
+
+	protected URI uri;
+
+	public WSClientRunner(BClientFactoryI.ProtocolI pro, URI uri, Class<? extends T> wcls, int initClients,
+			int maxCon, int maxEffort, int duration) {
+		this.protocol = pro;
 		this.uri = uri;
 		this.wcls = wcls;
 		this.concurrent = maxCon;
@@ -103,7 +106,8 @@ public abstract class WSClientRunner<T extends BClient> {
 		this.container = sm.getContainer();
 
 		Class cls = ClassUtil.forName("com.fs.websocket.impl.mock.MockWSClientImpl");
-		this.clients = BClientManagerI.Factory.newInstance(cls, this.uri, this.wcls, this.container);
+		this.clients = BClientFactoryI.Builder.newInstance(this.wcls, this.container);
+		this.clients.registerProtocol(this.protocol, this.uri);
 	}
 
 	protected void initClients() {
@@ -113,7 +117,7 @@ public abstract class WSClientRunner<T extends BClient> {
 	}
 
 	protected T createClient(int idx) {
-		return this.clients.createClient(true);
+		return this.clients.createClient(this.protocol.getName(), true);
 	}
 
 	protected void doWork() {

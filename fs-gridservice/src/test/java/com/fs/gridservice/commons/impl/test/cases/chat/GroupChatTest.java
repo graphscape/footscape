@@ -7,6 +7,7 @@ package com.fs.gridservice.commons.impl.test.cases.chat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
 import com.fs.gridservice.commons.impl.test.benchmark.GChatClientWrapper;
@@ -20,6 +21,13 @@ import com.fs.gridservice.commons.impl.test.mock.chat.MockParticipant;
  */
 public class GroupChatTest extends TestBase {
 
+	/**
+	 * @param protocol
+	 */
+	public GroupChatTest(ProtocolI protocol) {
+		super(protocol);
+	}
+
 	public void testGroupChat() throws Exception {
 
 		String accId1 = "acc1";
@@ -27,9 +35,9 @@ public class GroupChatTest extends TestBase {
 		String accId3 = "acc3";
 
 		String groupId = "group1";
-		GChatClientWrapper gc1 = this.newGChatClientAndAuth(accId1,groupId);
-		GChatClientWrapper gc2 = this.newGChatClientAndAuth(accId2,groupId);
-		GChatClientWrapper gc3 = this.newGChatClientAndAuth(accId3,groupId);
+		GChatClientWrapper gc1 = this.newGChatClientAndAuth(accId1, groupId);
+		GChatClientWrapper gc2 = this.newGChatClientAndAuth(accId2, groupId);
+		GChatClientWrapper gc3 = this.newGChatClientAndAuth(accId3, groupId);
 		MockParticipant pt = null;
 		List<MockParticipant> pL = null;
 		{ // acc1 join
@@ -124,7 +132,8 @@ public class GroupChatTest extends TestBase {
 
 		}
 		{// accId2 exit from group
-			gc2.exit();;
+			gc2.exit();
+			;
 			assertFalse("should exit ", gc2.isJoined());
 			// check c3's list
 			pt = gc3.acquireNextExit(10, TimeUnit.SECONDS);
@@ -132,7 +141,8 @@ public class GroupChatTest extends TestBase {
 
 		}
 		{// last exist
-			gc3.exit();;
+			gc3.exit();
+			;
 			assertFalse("should exit ", gc3.isJoined());
 
 		}

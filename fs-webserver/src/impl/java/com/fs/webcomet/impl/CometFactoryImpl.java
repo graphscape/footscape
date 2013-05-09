@@ -19,6 +19,7 @@ import com.fs.webcomet.api.CometProtocolI;
  * 
  */
 public class CometFactoryImpl extends ConfigurableSupport implements CometFactoryI {
+
 	protected Map<String, CometManagerI> managers;
 
 	protected Map<String, CometProtocolI> protocolMap;
@@ -29,28 +30,32 @@ public class CometFactoryImpl extends ConfigurableSupport implements CometFactor
 
 	}
 
-	/*
-	 * Dec 11, 2012
-	 */
 	@Override
 	public CometManagerI addManager(ActiveContext ac, String protocol, String name) {
 		// create a
 		CometProtocolI cp = this.getProtocol(protocol, true);
-		CometManagerI rt = cp.createManager(ac,name);
-		this.managers.put(name, rt);
+		CometManagerI rt = cp.createManager(ac, name);
+		String key = toKey(protocol, name);
+		this.managers.put(key, rt);
 
 		return rt;
+	}
+
+	private String toKey(String protocol, String name) {
+		String key = protocol + "(" + name + ")";
+		return key;
 	}
 
 	/*
 	 * Dec 11, 2012
 	 */
 	@Override
-	public CometManagerI getManager(String name, boolean force) {
+	public CometManagerI getManager(String protocol, String name, boolean force) {
 		//
-		CometManagerI rt = this.managers.get(name);
+		String key = toKey(protocol, name);
+		CometManagerI rt = this.managers.get(key);
 		if (rt == null && force) {
-			throw new FsException("no manager found:" + name);
+			throw new FsException("no manager found:" + key);
 		}
 		return rt;
 	}

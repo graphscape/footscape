@@ -23,10 +23,13 @@ import com.fs.gridservice.commons.api.GlobalEventDispatcherI;
  */
 public class ExpectorGsTestSPI extends SPISupport {
 	public static final URI DEFAULT_WS_URI;
+	public static final URI DEFAULT_AJAX_URI;
 	static {
 		try {
 			DEFAULT_WS_URI = new URI("ws://localhost:8080/wsa/default");
+			DEFAULT_AJAX_URI = new URI("http://localhost:8080/aja/default");
 		} catch (URISyntaxException e) {
+			
 			throw new FsException(e);
 		}
 	}

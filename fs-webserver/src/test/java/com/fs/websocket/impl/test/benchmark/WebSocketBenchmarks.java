@@ -4,6 +4,9 @@
  */
 package com.fs.websocket.impl.test.benchmark;
 
+import com.fs.websocket.api.Components;
+import com.fs.websocket.impl.test.WebSocketTestSPI;
+
 /**
  * @author wu
  *         <p>
@@ -14,7 +17,7 @@ package com.fs.websocket.impl.test.benchmark;
 public class WebSocketBenchmarks {
 
 	public static void main(String[] args) {
-		new WebSocketBenchmark3(100, 30, 10000).start();
+		new WebSocketBenchmark3(Components.WEBSOCKET, WebSocketTestSPI.TEST_WS_URI, 100, 30, 10000).start();
 	}
 
 }

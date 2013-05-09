@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import org.apache.http.HttpResponse;
@@ -59,8 +60,8 @@ public class MockAjaxClientImpl extends AClientSupport {
 	protected ClientAjaxHandler defaultHandler;
 
 	private int timeout = 5 * 1000;
-	
-	private ExecutorService heartBeat;
+
+	private Timer heartBeatTimer;
 
 	public MockAjaxClientImpl(PropertiesI<Object> pts) {
 		super(pts);
@@ -74,6 +75,7 @@ public class MockAjaxClientImpl extends AClientSupport {
 		this.handlers.put(AjaxMsg.ERROR, new ErrorHandler(this));
 
 		this.defaultHandler = new DefaultClientHandler(this);
+		this.heartBeatTimer = new Timer();
 
 	}
 
@@ -154,10 +156,28 @@ public class MockAjaxClientImpl extends AClientSupport {
 
 				this.onAjaxMsg(am2);
 			}
+			
+			// timer for heart beat.
+			long delay = 500;
+			//TODO cancle the old task if not executed.
+			this.heartBeatTimer.schedule(new TimerTask() {
 
+				@Override
+				public void run() {
+					MockAjaxClientImpl.this.sendHeartBeat();
+				}
+			}, delay);
 		} catch (Exception e) {
 			throw new FsException(e);
 		}
+	}
+
+	/**
+	 * 
+	 */
+	protected void sendHeartBeat() {
+		AjaxMsg am = new AjaxMsg(AjaxMsg.HEART_BEAT);
+		this.doRequest(am);
 	}
 
 	/**

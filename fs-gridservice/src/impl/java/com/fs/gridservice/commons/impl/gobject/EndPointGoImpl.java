@@ -6,18 +6,18 @@ package com.fs.gridservice.commons.impl.gobject;
 
 import com.fs.commons.api.codec.CodecI;
 import com.fs.gridservice.commons.api.support.EndPointGoSupport;
-import com.fs.gridservice.commons.impl.terminal.ajax.AjaxSession;
+import com.fs.webcomet.api.CometI;
 
 /**
  * @author wu
  * 
  */
-public class AjaxEndPointGoImpl extends EndPointGoSupport<AjaxSession> {
+public class EndPointGoImpl extends EndPointGoSupport<CometI> {
 
 	/**
 	 * @param ws
 	 */
-	public AjaxEndPointGoImpl(AjaxSession ws, CodecI messageCodec) {
+	public EndPointGoImpl(CometI ws, CodecI messageCodec) {
 		super(ws, messageCodec);
 	}
 

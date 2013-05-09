@@ -6,6 +6,7 @@ package com.fs.expector.gridservice.impl.test.cases;
 
 import java.util.List;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.expector.gridservice.api.mock.MockExpItem;
 import com.fs.expector.gridservice.api.mock.MockExpMessage;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
@@ -17,11 +18,20 @@ import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
  */
 public class ExpClientTest extends AuthedTestBase {
 
+	/**
+	 * @param p
+	 */
+	public ExpClientTest(ProtocolI p) {
+		super(p);
+		// TODO Auto-generated constructor stub
+	}
+
 	private MockExpectorClient client1;
 
 	private MockExpectorClient client2;
 
 	public void testExpAndConnect() {
+		
 		this.client1 = this.newClient("user1@domain1.com", "user1");
 		this.client2 = this.newClient("user2@domain2.com", "user2");
 

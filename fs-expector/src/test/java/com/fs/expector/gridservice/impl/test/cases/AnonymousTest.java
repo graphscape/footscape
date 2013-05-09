@@ -4,6 +4,7 @@
  */
 package com.fs.expector.gridservice.impl.test.cases;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
 import com.fs.expector.gridservice.impl.test.mock.MockClient;
 
@@ -12,6 +13,14 @@ import com.fs.expector.gridservice.impl.test.mock.MockClient;
  *
  */
 public class AnonymousTest extends AuthedTestBase{
+
+	/**
+	 * @param p
+	 */
+	public AnonymousTest(ProtocolI p) {
+		super(p);
+		// TODO Auto-generated constructor stub
+	}
 
 	public void testAnonymous(){
 	//	MockClient mc = this.startClient();

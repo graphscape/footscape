@@ -6,13 +6,10 @@ package com.fs.gridservice.commons.impl;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.support.SPISupport;
-import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgSendEW;
 import com.fs.gridservice.commons.api.wrapper.internal.InternalMsgEW;
 import com.fs.gridservice.commons.impl.converter.EventWrapperC;
-import com.fs.webserver.api.WebAppI;
-import com.fs.webserver.api.WebServerI;
 
 /**
  * @author wuzhen
@@ -21,6 +18,7 @@ import com.fs.webserver.api.WebServerI;
 public class GsCommonsSPI extends SPISupport {
 
 	public static final int shutdownLoop = 20;
+
 	/**
 	 * @param id
 	 */
@@ -41,7 +39,7 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("gridMember");
 		ac.active("gridFacade");
 
-		ac.active("terminalFactoryWebSocketListener");
+		ac.active("cometListener");
 		ac.active("endPointGoManager");
 
 		ac.active("terminalManager");
@@ -53,21 +51,16 @@ public class GsCommonsSPI extends SPISupport {
 		ac.active("sessionManager");
 		ac.active("globalEventDispatcher");
 		ac.active("localEventDispatcher");
-		
-		// servlet
-		WebAppI wa = ac.getContainer().find(WebServerI.class, true)
-				.addWebApp(ac, "GS", this.getId() + ".webApp.GS");
-		wa.addServlet(ac, "terminal", this.getId() + ".servletHolder.terminal");
+
 	}
 
 	/*
-	 *Apr 6, 2013
+	 * Apr 6, 2013
 	 */
 	@Override
 	protected void doBeforeShutdown(int loop) {
-		// 
-		
+		//
+
 	}
-	
 
 }

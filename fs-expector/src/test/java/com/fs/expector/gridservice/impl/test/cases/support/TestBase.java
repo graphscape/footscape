@@ -9,7 +9,7 @@ import org.junit.Before;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.message.MessageServiceI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
@@ -18,6 +18,7 @@ import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.dataservice.api.core.operations.DumpOperationI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.expector.gridservice.impl.test.ExpectorGsTestSPI;
+import com.fs.webcomet.api.WebCometComponents;
 import com.fs.websocket.api.Components;
 
 /**
@@ -32,7 +33,13 @@ public class TestBase extends TestCase {
 
 	protected MessageServiceI engine;
 
-	protected BClientManagerI<MockExpectorClient> clients;
+	protected BClientFactoryI<MockExpectorClient> clients;
+
+	protected BClientFactoryI.ProtocolI protocol;
+
+	public TestBase(BClientFactoryI.ProtocolI p) {
+		this.protocol = p;
+	}
 
 	@Before
 	public void setUp() {
@@ -42,17 +49,17 @@ public class TestBase extends TestCase {
 		DataServiceFactoryI dsf = this.container.find(DataServiceFactoryI.class, true);
 		this.dataService = dsf.getDataService();//
 
-		this.clients = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
-				ExpectorGsTestSPI.DEFAULT_WS_URI, MockExpectorClient.class, this.container);
-
+		this.clients = BClientFactoryI.Builder.newInstance(MockExpectorClient.class, this.container);
+		this.clients.registerProtocol(Components.WEBSOCKET, ExpectorGsTestSPI.DEFAULT_WS_URI);
+		this.clients.registerProtocol(WebCometComponents.AJAX, ExpectorGsTestSPI.DEFAULT_AJAX_URI);
 	}
 
 	protected MockExpectorClient newClient(String email, String nick) {// anonymous
-		return newClient(this.clients, email, nick);
+		return newClient(this.protocol, this.clients, email, nick);
 	}
 
-	public static MockExpectorClient newClient(BClientManagerI<MockExpectorClient> clients, String email,
-			String nick) {// anonymous
+	public static MockExpectorClient newClient(BClientFactoryI.ProtocolI pro,
+			BClientFactoryI<MockExpectorClient> clients, String email, String nick) {// anonymous
 		PropertiesI<Object> pts = new MapProperties<Object>();
 		pts.setProperty(MockExpectorClient.SIGNUP_AT_CONNECT, true);
 		pts.setProperty(MockExpectorClient.AUTH_WITH_SIGNUP, true);
@@ -61,7 +68,7 @@ public class TestBase extends TestCase {
 		pts.setProperty(MockExpectorClient.SIGNUP_NICK, nick);
 		pts.setProperty(MockExpectorClient.SIGNUP_PASS, nick);
 
-		MockExpectorClient rt = clients.createClient(true, pts);
+		MockExpectorClient rt = clients.createClient(pro.getName(), true, pts);
 		return rt;
 	}
 

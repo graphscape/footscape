@@ -7,14 +7,16 @@ package com.fs.commons.impl.client;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.client.AClientI;
 import com.fs.commons.api.client.BClient;
 import com.fs.commons.api.client.BClient.KeepLiveI;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.codec.CodecI;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
@@ -28,15 +30,15 @@ import com.fs.commons.api.value.PropertiesI;
  * @author wu
  * 
  */
-public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T> {
+public class BClientManagerImpl<T extends BClient> implements BClientFactoryI<T> {
 
 	private List<T> clientList;
 
 	private int next;
 
-	protected URI uri;
+	protected Map<String, URI> uriMap;
 
-	protected Class<? extends AClientI> clientClass;
+	protected Map<String, ProtocolI> protocolMap;
 
 	protected Class<? extends T> wcls;
 
@@ -52,6 +54,8 @@ public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T>
 		this.clientList = new ArrayList<T>();
 		this.clientList = Collections.synchronizedList(this.clientList);
 		this.keepLive = new BClientKeepLive();
+		this.uriMap = new HashMap<String, URI>();
+		this.protocolMap = new HashMap<String, ProtocolI>();
 	}
 
 	public int size() {
@@ -93,14 +97,14 @@ public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T>
 	}
 
 	@Override
-	public T createClient(boolean connect) {
-		return this.createClient(connect, new MapProperties<Object>());
+	public T createClient(String prot, boolean connect) {
+		return this.createClient(prot, connect, new MapProperties<Object>());
 	}
 
 	@Override
-	public T createClient(boolean connect, PropertiesI<Object> pts) {
+	public T createClient(String prot, boolean connect, PropertiesI<Object> pts) {
 
-		final T client = this.newClient(this.next++, pts);
+		final T client = this.newClient(this.next++, prot, pts);
 		client.keepLive(this.keepLive);
 		if (connect) {
 			client.connect();
@@ -110,15 +114,26 @@ public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T>
 		return client;
 	}
 
-	protected T newClient(int idx, PropertiesI<Object> pts) {
+	protected T newClient(int idx, String prot, PropertiesI<Object> pts) {
 		String name = "client-" + idx;
 		MessageServiceI engine = this.factory.create(name);
 		pts.setProperty(AClientSupport.PK_CODEC, this.codec);
-		pts.setProperty(AClientSupport.PK_ENGINE,engine);
-		pts.setProperty(AClientSupport.PK_NAME,name);
-		pts.setProperty(AClientSupport.PK_URI, this.uri);
-		AClientI client = ClassUtil.newInstance(this.clientClass,new Class[]{PropertiesI.class},new Object[]{pts});
-		T rt = ClassUtil.newInstance(this.wcls, new Class[] { AClientI.class,PropertiesI.class }, new Object[] { client,pts });
+		pts.setProperty(AClientSupport.PK_ENGINE, engine);
+		pts.setProperty(AClientSupport.PK_NAME, name);
+
+		ProtocolI pro = this.protocolMap.get(prot);
+		if (pro == null) {
+			throw new FsException("no this protocol:" + prot + ",all:" + this.protocolMap.keySet());
+		}
+		URI uri = this.uriMap.get(prot);
+		if (uri == null) {
+			throw new FsException("no uri for protocol:" + prot);
+		}
+		pts.setProperty(AClientSupport.PK_URI, uri);
+		AClientI client = ClassUtil.newInstance(pro.getClientClass(), new Class[] { PropertiesI.class },
+				new Object[] { pts });
+		T rt = ClassUtil.newInstance(this.wcls, new Class[] { AClientI.class, PropertiesI.class },
+				new Object[] { client, pts });
 
 		return rt;
 	}
@@ -149,13 +164,11 @@ public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T>
 	 * Jan 26, 2013
 	 */
 	@Override
-	public void init(Class<? extends AClientI> cls, URI uri, Class<? extends T> wcls, ContainerI c) {
-		this.uri = uri;
+	public void init(Class<? extends T> wcls, ContainerI c) {
 		this.wcls = wcls;
 		this.container = c;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		this.factory = c.find(MessageServiceI.FactoryI.class, true);
-		this.clientClass = cls;
 	}
 
 	/*
@@ -166,5 +179,19 @@ public class BClientManagerImpl<T extends BClient> implements BClientManagerI<T>
 		//
 		return this.clientList;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.client.BClientFactoryI#registerProtocol(com.fs.commons
+	 * .api.client.BClientFactoryI.ProtocolI, java.net.URI)
+	 */
+	@Override
+	public void registerProtocol(BClientFactoryI.ProtocolI pro, URI uri) {
+		this.protocolMap.put(pro.getName(), pro);
+		this.uriMap.put(pro.getName(), uri);
+	}
+
 
 }

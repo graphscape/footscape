@@ -18,6 +18,6 @@ public interface CometFactoryI {
 
 	public CometManagerI addManager(ActiveContext ac, String protocol, String name);
 
-	public CometManagerI getManager(String name, boolean force);
+	public CometManagerI getManager(String protocol, String name, boolean force);
 
 }

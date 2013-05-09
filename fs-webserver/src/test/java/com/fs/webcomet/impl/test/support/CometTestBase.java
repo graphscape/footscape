@@ -5,15 +5,19 @@ package com.fs.webcomet.impl.test.support;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
-import com.fs.commons.api.client.AClientI;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.lang.FsException;
-import com.fs.webcomet.impl.mock.MockAjaxClientImpl;
+import com.fs.commons.api.message.MessageI;
+import com.fs.commons.api.struct.Path;
+import com.fs.webcomet.api.WebCometComponents;
 import com.fs.webcomet.impl.test.mock.MockCometBClient;
 import com.fs.webcomet.impl.test.mock.MockCometServer;
+import com.fs.webcomet.impl.test.mock.MockMessageWrapper;
 import com.fs.webserver.impl.test.cases.support.TestBase;
-import com.fs.websocket.impl.mock.MockWSClientImpl;
+import com.fs.websocket.api.Components;
 import com.fs.websocket.impl.test.WebSocketTestSPI;
 
 /**
@@ -22,11 +26,13 @@ import com.fs.websocket.impl.test.WebSocketTestSPI;
  */
 public class CometTestBase extends TestBase {
 
-	protected BClientManagerI<MockCometBClient> clients;
+	protected BClientFactoryI<MockCometBClient> clients;
 
 	protected MockCometServer server;
 
 	protected String protocol;
+
+	protected long timeout = 5 * 1000;
 
 	public CometTestBase(String protocol) {
 		this.protocol = protocol;
@@ -38,30 +44,56 @@ public class CometTestBase extends TestBase {
 		super.setUp();
 		URI uri = null;
 		String smanager = null;
-		Class<? extends AClientI> acls = null;
+		BClientFactoryI.ProtocolI cpro = null;
 		if (this.protocol.equals("websocket")) {
 			uri = WebSocketTestSPI.TEST_WS_URI;
-			acls = MockWSClientImpl.class;
+			cpro = Components.WEBSOCKET;
 			smanager = "testws";
 		} else if (this.protocol.equals("ajax")) {
 			uri = WebSocketTestSPI.TEST_AJAX_URI;
-			acls = MockAjaxClientImpl.class;
 			smanager = "testajax";
+			cpro = WebCometComponents.AJAX;
 		} else {
 			throw new FsException("no this protocol:" + this.protocol);
 		}
-		clients = BClientManagerI.Factory.newInstance(acls, uri, MockCometBClient.class, this.container);
-
-		server = new MockCometServer(smanager, this.container);
+		clients = BClientFactoryI.Builder.newInstance(MockCometBClient.class, this.container);
+		clients.registerProtocol(cpro, uri);
+		server = new MockCometServer(this.protocol, smanager, this.container);
 		server.start();
+	}
+
+	protected void doTestPushMessageFromServer() {
+		MockCometBClient ci = this.clients.createClient(this.protocol, false);
+		ci.connect();
+		String wsId = ci.getWsId(true);
+		BlockingQueue<MessageI> queue = ci.getPushFromServerQueue();
+
+		//
+		MockMessageWrapper mm = MockMessageWrapper.valueOf("/push-from-server", "yes,pushed");
+		this.server.sendMessage(wsId, mm);
+		MessageI msg2 = null;
+		try {
+			msg2 = queue.poll(this.timeout, TimeUnit.MILLISECONDS);
+
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		}
+		assertNotNull("pushed message not received by client", msg2);
+		
+		assertEquals(Path.valueOf("/push-from-server"), msg2.getPath());
+
+		//
+		ci.close();
+
+		this.server.waitClientClose();
 	}
 
 	protected void doTestClients() throws Exception {
 
 		int CLS = 2;
 		for (int i = 0; i < CLS; i++) {
-			MockCometBClient ci = clients.createClient(false);
-			
+			MockCometBClient ci = clients.createClient(this.protocol, false);
+
 			ci.connect();//
 			// sessionID
 		}

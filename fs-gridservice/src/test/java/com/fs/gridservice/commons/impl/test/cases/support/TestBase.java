@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPIManagerI;
-import com.fs.commons.api.client.BClientManagerI;
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.gridservice.commons.api.GridFacadeI;
@@ -19,6 +19,7 @@ import com.fs.gridservice.commons.api.session.SessionManagerI;
 import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
 import com.fs.gridservice.commons.impl.test.benchmark.GChatClientWrapper;
+import com.fs.webcomet.api.WebCometComponents;
 import com.fs.websocket.api.Components;
 
 /**
@@ -33,15 +34,21 @@ public class TestBase extends TestCase {
 
 	protected GridFacadeI facade;
 
-	protected BClientManagerI<MockClientWrapper> factory;
+	protected BClientFactoryI<MockClientWrapper> factory;
 
-	protected BClientManagerI<GChatClientWrapper> gcfactory;
+	protected BClientFactoryI<GChatClientWrapper> gcfactory;
 
 	protected SessionManagerI smanager;
 
 	protected ClientManagerI cmanager;
 
 	protected TerminalManagerI tmanager;
+
+	protected BClientFactoryI.ProtocolI protocol;
+
+	public TestBase(BClientFactoryI.ProtocolI protocol) {
+		this.protocol = protocol;
+	}
 
 	@Override
 	public void setUp() {
@@ -51,9 +58,9 @@ public class TestBase extends TestCase {
 		this.container = sm.getContainer();
 		this.facade = sm.getContainer().find(GridFacadeI.class, true);
 
-		factory = BClientManagerI.Factory.newInstance(Components.CLS_MOCK_WSCLIENT,
-				GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class, this.container);
-
+		factory = BClientFactoryI.Builder.newInstance(MockClientWrapper.class, this.container);
+		factory.registerProtocol(Components.WEBSOCKET, GsCommonsTestSPI.DEFAULT_WS_URI);
+		factory.registerProtocol(WebCometComponents.AJAX, GsCommonsTestSPI.DEFAULT_AJAX_URI);
 		this.smanager = this.container.find(SessionManagerI.class, true);
 		this.cmanager = facade.getEntityManager(ClientManagerI.class);
 		this.tmanager = facade.getEntityManager(TerminalManagerI.class);
@@ -72,13 +79,13 @@ public class TestBase extends TestCase {
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty(SessionGd.ACCID, accId);//
 		rt.setProperty(GChatClientWrapper.CREDENTIAL, cre);
-		return this.gcfactory.createClient(true, rt);
+		return this.gcfactory.createClient(this.protocol.getName(), true, rt);
 	}
 
 	protected MockClientWrapper newClientAndAuth(String accId) throws Exception {
 		PropertiesI<Object> cre = new MapProperties<Object>();
 		cre.setProperty(SessionGd.ACCID, accId);//
-		MockClientWrapper rt = this.factory.createClient(true);
+		MockClientWrapper rt = this.factory.createClient(this.protocol.getName(), true);
 		rt.auth(cre);
 		return rt;
 

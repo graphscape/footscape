@@ -28,6 +28,8 @@ public class AjaxMsg extends MapProperties<String> {
 	public static final Path MESSAGE = Path.valueOf("ajax/message");
 
 	public static final Path ERROR = Path.valueOf("ajax/error");
+	
+	public static final Path HEART_BEAT = Path.valueOf("ajax/heart-beat");
 
 	public static final String PK_PATH = "_path";
 

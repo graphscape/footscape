@@ -1,30 +1,29 @@
 /**
  *  
  */
-package com.fs.websocket.api;
+package com.fs.webcomet.api;
 
 import com.fs.commons.api.client.AClientI;
 import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.commons.api.lang.ClassUtil;
 
 /**
- * @deprecated
- * @author wu <br>
- *         TODO component factory.
+ * @author wu
+ * 
  */
-public class Components {
+public class WebCometComponents {
 
-	public static BClientFactoryI.ProtocolI WEBSOCKET = new BClientFactoryI.ProtocolI() {
+	public static final BClientFactoryI.ProtocolI AJAX = new BClientFactoryI.ProtocolI() {
 
 		@Override
 		public String getName() {
 			// TODO Auto-generated method stub
-			return "websocket";
+			return "ajax";
 		}
 
 		@Override
 		public Class<? extends AClientI> getClientClass() {
-			return ClassUtil.forName("com.fs.websocket.impl.mock.MockWSClientImpl");
+			return ClassUtil.forName("com.fs.webcomet.impl.mock.MockAjaxClientImpl");
 		}
 	};
 }

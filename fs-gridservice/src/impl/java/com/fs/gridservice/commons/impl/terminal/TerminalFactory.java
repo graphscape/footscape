@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.codec.CodecI;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.struct.Path;
 import com.fs.gridservice.commons.api.GridFacadeI;
@@ -26,7 +27,6 @@ import com.fs.gridservice.commons.api.terminal.TerminalManagerI;
 import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
 import com.fs.gridservice.core.api.objects.DgQueueI;
-import com.fs.websocket.api.WebSocketI;
 
 /**
  * @author wu
@@ -90,9 +90,17 @@ public abstract class TerminalFactory<T> {
 
 	public abstract EndPointGoI getEndPointGo(T ws);
 
+	public EndPointGoI getEndPointGo(T ws, boolean force) {
+		EndPointGoI rt = this.getEndPointGo(ws);
+		if (rt == null && force) {
+			throw new FsException("End point object not attached with the native comet session");
+		}
+		return rt;
+	}
+
 	public TerminalGd create(T ws) {
 		TerminalManagerI tm = this.facade.getEntityManager(TerminalManagerI.class);
-		EndPointGoI wso = this.getEndPointGo(ws);
+		EndPointGoI wso = this.getEndPointGo(ws, true);
 		TerminalGd t = tm.createTerminal(wso);
 		return t;
 	}

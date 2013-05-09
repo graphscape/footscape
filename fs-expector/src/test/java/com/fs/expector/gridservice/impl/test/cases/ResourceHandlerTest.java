@@ -4,6 +4,7 @@
  */
 package com.fs.expector.gridservice.impl.test.cases;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.value.ErrorInfo;
@@ -17,6 +18,14 @@ import com.fs.expector.gridservice.impl.test.cases.support.TestBase;
  * 
  */
 public class ResourceHandlerTest extends TestBase {
+
+	/**
+	 * @param p
+	 */
+	public ResourceHandlerTest(ProtocolI p) {
+		super(p);
+		// TODO Auto-generated constructor stub
+	}
 
 	private MockExpectorClient client1;
 

@@ -3,6 +3,8 @@
  */
 package com.fs.webcomet.impl.test.mock;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 
 import org.slf4j.Logger;
@@ -32,9 +34,12 @@ public class MockCometBClient extends BClient {
 
 	protected Semaphore serverIsReady;
 
+	protected BlockingQueue<MessageI> pushFromServerQueue;
+
+
 	public MockCometBClient(AClientI t, PropertiesI pts) {
 		super(t, pts);
-
+		this.pushFromServerQueue = new LinkedBlockingQueue<MessageI>();
 		this.addHandler(Path.valueOf("server-is-ready"), true, new MessageHandlerI() {
 
 			@Override
@@ -50,9 +55,21 @@ public class MockCometBClient extends BClient {
 
 			}
 		});
+		this.addHandler(Path.valueOf("push-from-server"), true, new MessageHandlerI() {
+
+			@Override
+			public void handle(MessageContext sc) {
+				MockCometBClient.this.pushFromServer(sc);
+
+			}
+		});
 
 	}
 
+	public BlockingQueue<MessageI> getPushFromServerQueue() {
+		return pushFromServerQueue;
+	}
+	
 	@Override
 	public BClient connect() {
 		super.connect();
@@ -68,6 +85,18 @@ public class MockCometBClient extends BClient {
 	 */
 	protected void echoFromServer(MessageContext sc) {
 		LOG.info("echo-from-server:" + sc.getRequest());
+	}
+
+	/**
+	 * @param sc
+	 */
+	protected void pushFromServer(MessageContext sc) {
+		LOG.info("push-from-server:" + sc.getRequest());
+		try {
+			this.pushFromServerQueue.put(sc.getRequest());
+		} catch (InterruptedException e) {
+			throw new FsException(e);
+		}
 	}
 
 	/**

@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-
 import com.fs.commons.api.config.support.ConfigurableSupport;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.util.StringUtil;
@@ -35,8 +33,6 @@ public class CometManagerSupport extends ConfigurableSupport implements
 	protected List<CometCreatingInterceptorI> interceptors;
 
 	protected String name;
-
-	protected WebSocketServletFactory factory;
 
 	protected Map<String, CometI> socketMap;
 	
@@ -113,6 +109,7 @@ public class CometManagerSupport extends ConfigurableSupport implements
 		if (old == null) {
 			throw new FsException("bug,no this websocket:" + ws.getId());
 		}
+		this.listeners.onClose(ws, statusCode, reason);
 	}
 
 	/*
@@ -138,6 +135,7 @@ public class CometManagerSupport extends ConfigurableSupport implements
 	@Override
 	public void onConnect(CometI ws) {
 		this.socketMap.put(ws.getId(), ws);//
+		this.listeners.onConnect(ws);
 	}
 
 	/*

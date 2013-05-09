@@ -3,14 +3,17 @@
  */
 package com.fs.expector.gridservice.impl.test.benchmark;
 
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.expector.gridservice.impl.test.ExpectorGsTestSPI;
 import com.fs.expector.gridservice.impl.test.cases.support.TestBase;
+import com.fs.webcomet.api.WebCometComponents;
 import com.fs.websocket.api.mock.WSClientRunner;
 
 /**
@@ -23,8 +26,9 @@ public class ExpSearchBenchmark extends WSClientRunner<MockExpectorClient> {
 
 	protected int expCountForEachUser;
 
-	public ExpSearchBenchmark(int initClients, int con, int maxSearch, int expCount) {
-		super(ExpectorGsTestSPI.DEFAULT_WS_URI, MockExpectorClient.class, initClients, con, maxSearch, -1);
+	public ExpSearchBenchmark(BClientFactoryI.ProtocolI pro, URI uri, int initClients, int con,
+			int maxSearch, int expCount) {
+		super(pro, uri, MockExpectorClient.class, initClients, con, maxSearch, -1);
 		this.expCountForEachUser = expCount;
 
 	}
@@ -61,7 +65,7 @@ public class ExpSearchBenchmark extends WSClientRunner<MockExpectorClient> {
 		String email = "user-" + idx + "@some.com";
 		String nick = "user-" + idx;
 
-		return TestBase.newClient(this.clients, email, nick);
+		return TestBase.newClient(WebCometComponents.AJAX, this.clients, email, nick);
 	}
 
 	/*

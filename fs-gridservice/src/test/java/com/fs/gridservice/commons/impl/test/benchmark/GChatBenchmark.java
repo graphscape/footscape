@@ -16,7 +16,7 @@ import com.fs.websocket.api.mock.WSClientRunner;
 /**
  * @author wuzhen
  * 
- * 
+ * @deprecated
  */
 public class GChatBenchmark extends WSClientRunner<GChatClientWrapper> {
 
@@ -28,7 +28,7 @@ public class GChatBenchmark extends WSClientRunner<GChatClientWrapper> {
 	}
 
 	protected GChatBenchmark(URI uri, Class<? extends GChatClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, 1, cc, max, -1);
+		super(null, uri, wcls, 1, cc, max, -1);
 
 	}
 
@@ -57,7 +57,7 @@ public class GChatBenchmark extends WSClientRunner<GChatClientWrapper> {
 		cre.setProperty("accountId", aid);//
 
 		pts.setProperty(GChatClientWrapper.CREDENTIAL, cre);
-		this.gclient = this.clients.createClient(true, pts);
+		// this.gclient = this.clients.createClient(true, pts);
 		return this.gclient;
 	}
 

@@ -18,15 +18,18 @@ public class ManagerCometListener extends AbstractCometListener {
 
 	protected String name;
 
+	protected String protocol;
+
 	protected CometManagerI manager;
 
-	public ManagerCometListener(CometFactoryI wf, String manager) {
+	public ManagerCometListener(CometFactoryI wf, String protocol, String manager) {
 		this.factory = wf;
 		this.name = manager;
+		this.protocol = protocol;
 	}
 
 	public void start() {
-		this.manager = this.factory.getManager(this.name, true);
+		this.manager = this.factory.getManager(this.protocol, this.name, true);
 		this.manager.addListener(this);
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("started manager ws listener:" + this.name);

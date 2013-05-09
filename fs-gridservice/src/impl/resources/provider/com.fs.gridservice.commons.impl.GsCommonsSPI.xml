@@ -9,7 +9,7 @@
 	</config>
 
 
-	<config name="terminalFactoryWebSocketListener" class="com.fs.gridservice.commons.impl.terminal.websocket.TerminalFactoryWebSocketListener">
+	<config name="cometListener" class="com.fs.gridservice.commons.impl.terminal.comet.TerminalFactoryCometListener">
 
 	</config>
 
@@ -53,20 +53,6 @@
 
 		<config name="wsmsg" path="/events/terminal" class="com.fs.gridservice.commons.impl.handler.local.terminal.TermialMessageSendEventHandler" />
 
-	</config>
-
-	<config name="webApp.GS">
-		<context.path value="/gs" />
-	</config>
-
-	<config name="servletHolder.terminal">
-		<property name="path" value="/terminal/*" />
-		<prefix name="servlet">
-			<property name="class" value="com.fs.gridservice.commons.impl.terminal.ajax.AjaxTerminalFactoryServlet" />
-			<config name="config" property="config">
-
-			</config>
-		</prefix>
 	</config>
 
 

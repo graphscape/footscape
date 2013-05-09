@@ -3,6 +3,7 @@
  */
 package com.fs.gridservice.commons.impl.test.cases;
 
+import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.message.support.QueueMessageHandler;
@@ -15,6 +16,13 @@ import com.fs.gridservice.commons.impl.test.cases.support.TestBase;
  * 
  */
 public class ResponseTest extends TestBase {
+
+	/**
+	 * @param protocol
+	 */
+	public ResponseTest(ProtocolI protocol) {
+		super(protocol);
+	}
 
 	public void testSession() throws Exception {
 

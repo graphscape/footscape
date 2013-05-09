@@ -4,6 +4,9 @@
  */
 package com.fs.expector.gridservice.impl.test.benchmark;
 
+import com.fs.expector.gridservice.impl.test.ExpectorGsTestSPI;
+import com.fs.webcomet.api.WebCometComponents;
+
 /**
  * @author wu
  * 
@@ -11,6 +14,8 @@ package com.fs.expector.gridservice.impl.test.benchmark;
 public class ExpectorBenchmark {
 
 	public static void main(String[] args) {
-		new ExpSearchBenchmark(1000, 100, 100000, 20).start();
+
+		new ExpSearchBenchmark(WebCometComponents.AJAX, ExpectorGsTestSPI.DEFAULT_AJAX_URI, 1000, 100,
+				100000, 20).start();
 	}
 }

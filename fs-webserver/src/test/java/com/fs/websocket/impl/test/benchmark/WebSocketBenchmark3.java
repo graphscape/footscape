@@ -4,9 +4,12 @@
  */
 package com.fs.websocket.impl.test.benchmark;
 
+import java.net.URI;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.webcomet.impl.test.mock.MockCometBClient;
 
 /**
@@ -19,8 +22,9 @@ public class WebSocketBenchmark3 extends WebSocketWSClientRunner {
 
 	private static Logger LOG = LoggerFactory.getLogger(WebSocketBenchmark3.class);
 
-	public WebSocketBenchmark3(int initClients, int maxCon, int maxEffort) {
-		super(initClients, maxCon, maxEffort, -1);
+	public WebSocketBenchmark3(BClientFactoryI.ProtocolI pro, URI uri, int initClients, int maxCon,
+			int maxEffort) {
+		super(pro, uri, initClients, maxCon, maxEffort, -1);
 	}
 
 	/*

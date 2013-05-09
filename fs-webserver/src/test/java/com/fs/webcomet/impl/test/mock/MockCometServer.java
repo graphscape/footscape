@@ -39,12 +39,12 @@ public class MockCometServer extends ManagerCometListener {
 
 	protected MessageServiceI engine;
 
-	public MockCometServer(String manager, ContainerI c) {
-		this(manager, c, false);
+	public MockCometServer(String protocol, String manager, ContainerI c) {
+		this(protocol, manager, c, false);
 	}
 
-	public MockCometServer(String manager, ContainerI c, boolean srmac) {
-		super(c.find(CometFactoryI.class, true), manager);
+	public MockCometServer(String protocol, String manager, ContainerI c, boolean srmac) {
+		super(c.find(CometFactoryI.class, true), protocol, manager);
 		this.container = c;
 		this.codec = c.find(CodecI.FactoryI.class, true).getCodec(MessageI.class);
 		MessageServiceI.FactoryI mf = c.find(MessageServiceI.FactoryI.class, true);
@@ -113,7 +113,6 @@ public class MockCometServer extends ManagerCometListener {
 		LOG.debug("server received message:" + msgS);
 		JSONArray ser = (JSONArray) JSONValue.parse(msgS);
 		MessageI msg = (MessageI) this.codec.decode(ser);
-		
 
 		msg.setHeader("wsId", ws.getId());
 		ResponseI res = this.engine.service(msg);
@@ -157,6 +156,9 @@ public class MockCometServer extends ManagerCometListener {
 		LOG.debug("onClose of ws:" + ws + ",statusCode:" + statusCode + ",reason:" + reason);
 	}
 
+	/**
+	 * Client cause the close event is raise in server side.
+	 */
 	public void waitClientClose() {
 		final Semaphore s = new Semaphore(0);
 

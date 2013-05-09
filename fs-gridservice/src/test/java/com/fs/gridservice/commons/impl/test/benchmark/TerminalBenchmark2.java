@@ -5,8 +5,8 @@ package com.fs.gridservice.commons.impl.test.benchmark;
 
 import java.net.URI;
 
+import com.fs.commons.api.client.BClientFactoryI;
 import com.fs.gridservice.commons.api.mock.MockClientWrapper;
-import com.fs.gridservice.commons.impl.test.GsCommonsTestSPI;
 import com.fs.websocket.api.mock.WSClientRunner;
 
 /**
@@ -23,13 +23,14 @@ public class TerminalBenchmark2 extends WSClientRunner<MockClientWrapper> {
 	 * @param rate
 	 * @param duration
 	 */
-	public TerminalBenchmark2(int cc, int max, int duration) {
-		this(GsCommonsTestSPI.DEFAULT_WS_URI, MockClientWrapper.class, cc, max, duration);
+	public TerminalBenchmark2(BClientFactoryI.ProtocolI pro, URI uri, int cc, int max, int duration) {
+		this(pro, uri, MockClientWrapper.class, cc, max, duration);
 
 	}
 
-	public TerminalBenchmark2(URI uri, Class<? extends MockClientWrapper> wcls, int cc, int max, int duration) {
-		super(uri, wcls, 0, cc, max, duration);
+	public TerminalBenchmark2(BClientFactoryI.ProtocolI pro, URI uri,
+			Class<? extends MockClientWrapper> wcls, int cc, int max, int duration) {
+		super(pro, uri, wcls, 0, cc, max, duration);
 	}
 
 	/*
