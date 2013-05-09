@@ -20,6 +20,8 @@ public interface EndPointI extends UiObjectI {
 	public void sendMessage(MessageData req);
 
 	public void sendMessage(MsgWrapper req);
+	
+	public String getProtocol();
 
 	public void open();
 

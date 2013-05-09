@@ -47,14 +47,17 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	private EndPointI endpoint;
 
 	private UiPropertiesI<String> localized;
+	
+	private String protocol;
 
 	public UiClientImpl(ContainerI c, RootI root) {
 		super(c);
+		this.protocol = "websocket";//
 		this.root = root;
 		this.parameters = new MapProperties<String>();
 		this.localized = new MapProperties<String>();
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
-		this.endpoint = new EndpointWsImpl(c, md);
+		this.endpoint = new EndpointWsImpl(c, this.protocol, md);
 		this.endpoint.parent(this);
 
 		Window.addWindowClosingHandler(new GwtClosingHandler() {
