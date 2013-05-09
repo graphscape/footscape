@@ -22,7 +22,6 @@ import com.fs.gridservice.commons.api.terminal.data.TerminalGd;
  */
 public class GdSessionTestBase extends TestBase {
 
-	
 	/**
 	 * @param protocol
 	 */
@@ -54,7 +53,7 @@ public class GdSessionTestBase extends TestBase {
 
 			// session->terminal
 			TerminalGd t2 = tm.getTerminalBySessionId(sid, false);
-			assertNotNull("terminal not found with sessionid:" + sid);
+			assertNotNull("terminal not found with sessionid:" + sid, t2);
 			assertEquals("terminal by session should be same as that from client.", t.getId(), t2.getId());
 			// send message to client side
 			String text = "this is a text message from server.";

@@ -33,7 +33,7 @@ public class JettyWsManagerImpl extends CometManagerSupport implements WebSocket
 		JettyCometImpl rt = new JettyCometImpl(id, arg0);
 
 		rt.addListener(this);//
-		rt.addListener(this.listeners);//
+		
 		for (CometCreatingInterceptorI ci : this.interceptors) {
 			ci.afterWsCreated(rt);
 		}
