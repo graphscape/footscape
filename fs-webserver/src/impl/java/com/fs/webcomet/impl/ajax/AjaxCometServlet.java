@@ -127,7 +127,6 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			if (hdl == null) {
 				hdl = this.defaultAjaxMsgHandler;
 			}
-
 			AjaxMsgContext amc = new AjaxMsgContext(i, total, am, arc);
 
 			hdl.handle(amc);

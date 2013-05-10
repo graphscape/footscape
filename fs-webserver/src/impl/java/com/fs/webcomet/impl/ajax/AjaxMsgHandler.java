@@ -17,6 +17,7 @@ public abstract class AjaxMsgHandler {
 	protected boolean sessionRequired;
 
 	public AjaxMsgHandler(boolean sr, SessionManagerI sessionMap, AjaxCometManagerImpl manager) {
+
 		this.sessionMap = sessionMap;
 		this.manager = manager;
 		this.sessionRequired = sr;
@@ -26,7 +27,7 @@ public abstract class AjaxMsgHandler {
 		if (this.sessionRequired && amc.arc.as == null) {
 			throw new FsException("session required for handler:" + this);
 		}
-		
+
 		this.handlerInternal(amc);
 
 	}

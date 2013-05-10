@@ -33,8 +33,8 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 			// ignore the session already closed.
 			return;
 		}
-		//fetch?
-		//this.fetchMessage(amc);
+		// fetch?
+		// this.fetchMessage(amc);
 		this.manager.onClose(amc.arc.as, 0, "");
 
 	}
