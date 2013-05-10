@@ -133,4 +133,24 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI, Contai
 			}
 		}.schedule(delay);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.uicore.api.gwt.client.scheduler.SchedulerI#scheduleDelay(com.fs
+	 * .uicore.api.gwt.client.HandlerI)
+	 */
+	@Override
+	public void scheduleDelay(final HandlerI<Object> eh) {
+		new Timer() {
+
+			@Override
+			public void run() {
+				//
+				eh.handle(null);
+			}
+		}.schedule(0);
+
+	}
 }

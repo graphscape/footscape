@@ -20,7 +20,7 @@ import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.impl.gwt.client.endpoint.WsProtocolAndPorts;
+import com.fs.uicore.impl.gwt.client.endpoint.CometPPs;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -45,7 +45,7 @@ public class ClientLoaderImpl extends ClientLoader {
 
 	private UiCallbackI<Object, Boolean> handler;
 
-	private boolean enable;
+	private boolean show;
 
 	public ClientLoaderImpl() {
 		Element root = RootWImpl.getRootElement();
@@ -66,7 +66,7 @@ public class ClientLoaderImpl extends ClientLoader {
 				return null;
 			}
 		};
-		this.enable();
+		this.show();
 	}
 
 	private void println(Object msg) {
@@ -159,7 +159,7 @@ public class ClientLoaderImpl extends ClientLoader {
 	 */
 	protected void onEndpointClose(ContainerI container, EndpointCloseEvent t) {
 		// disconnected to server,
-		this.enable();
+		this.show();
 		String code = t.getCode();
 		int retry = 0;
 		String retryS = Window.Location.getParameter("fs.retry");
@@ -175,10 +175,10 @@ public class ClientLoaderImpl extends ClientLoader {
 		}
 		retry++;
 
-		WsProtocolAndPorts wpps = WsProtocolAndPorts.getInstance();
+		CometPPs wpps = CometPPs.getInstance();
 
 		if (retry < wpps.getConfiguredList().size()) {
-			WsProtocolAndPorts wpps2 = wpps.shiftLeft();//
+			CometPPs wpps2 = wpps.shiftLeft();//
 			urlB.setParameter("fs.retry", "" + retry);
 			urlB.setParameter(UiCoreConstants.PK_WS_PROTOCOL_PORT_S, wpps2.getAsParameter());
 			String newURL = urlB.buildString();
@@ -200,28 +200,28 @@ public class ClientLoaderImpl extends ClientLoader {
 	protected void afterClientStart(ContainerI container) {
 		//
 		UiClientI client = container.get(UiClientI.class, true);
-		this.disable();
+		this.hide();
 	}
 
-	private void enable() {
-		if (this.enable) {
+	private void show() {
+		if (this.show) {
 			return;
 		}
 		Console.getInstance().addMessageCallback(this.handler);//
 		// hide the loader view.
 		this.element.removeClassName("invisible");
-		this.enable = true;
+		this.show = true;
 
 	}
 
-	private void disable() {
-		if (!this.enable) {
+	private void hide() {
+		if (!this.show) {
 			return;
 		}
 		// not listen more message from console
 		Console.getInstance().removeMessageCallback(this.handler);//
 		// hide the loader view.
 		this.element.addClassName("invisible");// hiden
-		this.enable = false;
+		this.show = false;
 	}
 }

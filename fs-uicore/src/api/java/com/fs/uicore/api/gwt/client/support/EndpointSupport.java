@@ -14,6 +14,7 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.ErrorInfosData;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
+import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.endpoint.MessageCacheI;
 import com.fs.uicore.api.gwt.client.endpoint.UserInfo;
@@ -60,13 +61,13 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	private Console console = Console.getInstance();
 
-	protected String protocol;
+	protected Address uri;
 	/**
 	 * @param md
 	 */
-	public EndpointSupport(ContainerI c, String protocol,MessageDispatcherI md,MessageCacheI mc) {
+	public EndpointSupport(ContainerI c, Address uri,MessageDispatcherI md,MessageCacheI mc) {
 		super(c);
-		this.protocol = protocol;
+		this.uri = uri;
 		this.messageCache = mc;
 		this.messageCache.addHandler(new EventHandlerI<StateChangeEvent>() {
 
@@ -343,7 +344,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	@Override
 	public String getProtocol() {
-		return protocol;
+		return this.uri.getProtocol();
 	}
 
 }

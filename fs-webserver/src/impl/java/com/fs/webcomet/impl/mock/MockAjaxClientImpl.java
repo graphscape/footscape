@@ -30,6 +30,7 @@ import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.struct.Path;
 import com.fs.commons.api.support.AClientSupport;
 import com.fs.commons.api.value.PropertiesI;
+import com.fs.webcomet.impl.ajax.AjaxCometServlet;
 import com.fs.webcomet.impl.ajax.AjaxMsg;
 import com.fs.webcomet.impl.mock.handlers.ClosedHandler;
 import com.fs.webcomet.impl.mock.handlers.ConnectedHandler;
@@ -58,8 +59,6 @@ public class MockAjaxClientImpl extends AClientSupport {
 	protected Map<Path, ClientAjaxHandler> handlers;
 
 	protected ClientAjaxHandler defaultHandler;
-
-	private int timeout = 5 * 1000;
 
 	private Timer heartBeatTimer;
 
@@ -123,16 +122,16 @@ public class MockAjaxClientImpl extends AClientSupport {
 	}
 
 	protected void doRequest(AjaxMsg am) {
-		if (this.sid != null) {
-			am.setProperty(AjaxMsg.PK_SESSION_ID, this.sid);
-		}
-
+		
 		try {
 			HttpPost req = new HttpPost(uri);
 			// req.addHeader(AjaxCometServlet.HK_ACTION, "message");
 			// req.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
 
 			// only one element,but also in array.
+			if (this.sid != null) {
+				req.setHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
+			}
 
 			JSONObject json = new JSONObject();
 			json.putAll(am.getAsMap());
@@ -158,7 +157,7 @@ public class MockAjaxClientImpl extends AClientSupport {
 			}
 			
 			// timer for heart beat.
-			long delay = 500;
+			long delay = 0;//no need to delay more time,unless some error situation.
 			//TODO cancle the old task if not executed.
 			this.heartBeatTimer.schedule(new TimerTask() {
 

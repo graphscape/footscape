@@ -25,7 +25,7 @@ public class AjaxConnectHandler extends AjaxMsgHandler {
 	 */
 
 	public AjaxConnectHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
-		super(sessionMap, manager);
+		super(false, sessionMap, manager);
 	}
 
 	/*
@@ -41,7 +41,7 @@ public class AjaxConnectHandler extends AjaxMsgHandler {
 		this.manager.onConnect(as);
 		// response
 		AjaxMsg am2 = new AjaxMsg(AjaxMsg.CONNECT.getSubPath("success"));
-		am2.setProperty(AjaxMsg.PK_SESSION_ID, sid);
+		am2.setProperty(AjaxMsg.PK_CONNECT_SESSION_ID, sid);
 		amc.arc.write(am2);
 
 	}

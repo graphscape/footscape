@@ -14,7 +14,7 @@ import com.google.gwt.user.client.Window;
  * @author wu
  * 
  */
-public class WsProtocolAndPorts {
+public class CometPPs {
 
 	public static class ProtocolPort {
 
@@ -35,14 +35,11 @@ public class WsProtocolAndPorts {
 
 	private List<ProtocolPort> configuredL = new ArrayList<ProtocolPort>();
 
-	private ProtocolPort default_;
-
-	private WsProtocolAndPorts(List<ProtocolPort> ppL, ProtocolPort def) {
+	private CometPPs(List<ProtocolPort> ppL) {
 		this.configuredL.addAll(ppL);
-		this.default_ = def;
 	}
 
-	public static WsProtocolAndPorts getInstance() {
+	public static CometPPs getInstance() {
 		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>();
 
 		String config = Window.Location.getParameter(UiCoreConstants.PK_WS_PROTOCOL_PORT_S);
@@ -68,27 +65,12 @@ public class WsProtocolAndPorts {
 			}
 		}
 
-		// the last one is default
-		String hpro = Window.Location.getProtocol();
-		boolean https = hpro.equals("https:");
-		String wsp = https ? "wss" : "ws";
-		String portS = Window.Location.getPort();
-		int port = Integer.parseInt(portS);
-		ProtocolPort def = new ProtocolPort(wsp, port);
 
-		return new WsProtocolAndPorts(ppL, def);
+		return new CometPPs(ppL);
 	}
 
 	public List<ProtocolPort> getConfiguredList() {
 		return configuredL;
-	}
-
-	public ProtocolPort getFirstOrDefault() {
-		ProtocolPort rt = this.getFirst(false);
-		if (rt != null) {
-			return rt;
-		}
-		return this.default_;
 	}
 
 	public ProtocolPort getFirst(boolean force) {
@@ -101,7 +83,7 @@ public class WsProtocolAndPorts {
 		return this.configuredL.get(0);
 	}
 
-	public WsProtocolAndPorts shiftLeft() {
+	public CometPPs shiftLeft() {
 		List<ProtocolPort> ppl = new ArrayList<ProtocolPort>();
 
 		for (int i = 1; i < this.configuredL.size(); i++) {
@@ -112,11 +94,7 @@ public class WsProtocolAndPorts {
 			ppl.add(ppl.get(0));
 		}
 
-		return new WsProtocolAndPorts(ppl, this.default_);
-	}
-
-	public ProtocolPort getDefault() {
-		return this.default_;
+		return new CometPPs(ppl);
 	}
 
 	/**

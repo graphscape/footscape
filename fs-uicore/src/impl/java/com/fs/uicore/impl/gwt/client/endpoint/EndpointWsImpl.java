@@ -10,14 +10,15 @@ import java.util.Map;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.support.EndpointSupport;
 import com.fs.uicore.impl.gwt.client.comet.GometI;
-import com.fs.uicore.impl.gwt.client.comet.ws.AjaxGomet;
+import com.fs.uicore.impl.gwt.client.comet.ajax.AjaxGomet;
 import com.fs.uicore.impl.gwt.client.comet.ws.WsGomet;
-import com.fs.uicore.impl.gwt.client.endpoint.WsProtocolAndPorts.ProtocolPort;
+import com.fs.uicore.impl.gwt.client.endpoint.CometPPs.ProtocolPort;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -27,7 +28,7 @@ import com.google.gwt.user.client.Window;
 public class EndpointWsImpl extends EndpointSupport {
 
 	public static interface ProtocolI {
-		public GometI open(boolean force);
+		public GometI open(Address uri, boolean force);
 	}
 
 	public static class WsProtocol implements ProtocolI {
@@ -36,10 +37,12 @@ public class EndpointWsImpl extends EndpointSupport {
 		 * May 9, 2013
 		 */
 		@Override
-		public GometI open(boolean force) {
+		public GometI open(Address uri, boolean force) {
 			//
-			String uri = this.resolveWsUrl();
-			WebSocketJSO wso = WebSocketJSO.newInstance(uri, false);
+
+			String uriS = uri.getUri();
+
+			WebSocketJSO wso = WebSocketJSO.newInstance(uriS, false);
 			if (wso == null) {
 				if (force) {
 					throw new UiException("browser not support ws");
@@ -53,58 +56,46 @@ public class EndpointWsImpl extends EndpointSupport {
 
 		}
 
-		protected String resolveWsUrl() {
-			String host = Window.Location.getHostName();
-			ProtocolPort pp = WsProtocolAndPorts.getInstance().getFirstOrDefault();
-
-			String rt = pp.protocol + "://" + host + ":" + pp.port + "/wsa/default";
-
-			return rt;
-		}
-
 	}
 
 	public static class AjaxProtocol implements ProtocolI {
+
+		private ContainerI c;
+
+		public AjaxProtocol(ContainerI c) {
+			this.c = c;
+		}
 
 		/*
 		 * May 9, 2013
 		 */
 		@Override
-		public GometI open(boolean force) {
+		public GometI open(Address uri, boolean force) {
 			//
-			String uri = this.resolveWsUrl();
 
-			AjaxGomet rt = new AjaxGomet(uri);
+			AjaxGomet rt = new AjaxGomet(this.c, uri);
 			rt.open();
 			return rt;
 
-		}
-
-		protected String resolveWsUrl() {
-			String host = Window.Location.getHostName();
-			String port = Window.Location.getPort();
-
-			String rt = "http://" + host + ":" + port + "/aja/default";
-
-			return rt;
 		}
 
 	}
 
 	private GometI socket;
 
-	private String uri;
-
 	private Map<String, ProtocolI> protocols;
 
 	/**
 	 * @param md
 	 */
-	public EndpointWsImpl(ContainerI c, String protocol, MessageDispatcherI md) {
-		super(c, protocol, md, new MessageCacheImpl(c));
+	public EndpointWsImpl(ContainerI c, Address uri, MessageDispatcherI md) {
+		super(c, uri, md, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, ProtocolI>();
-		this.protocols.put("websocket", new WsProtocol());
-		this.protocols.put("ajax", new AjaxProtocol());
+		this.protocols.put("ws", new WsProtocol());
+		this.protocols.put("wss", new WsProtocol());
+
+		this.protocols.put("http", new AjaxProtocol(c));
+		this.protocols.put("https", new AjaxProtocol(c));
 
 	}
 
@@ -132,11 +123,14 @@ public class EndpointWsImpl extends EndpointSupport {
 	@Override
 	public void open() {
 		super.open();
-		ProtocolI pro = this.protocols.get(this.protocol);
 
-		this.socket = pro.open(false);
+		String proS = this.uri.getProtocol();
+
+		ProtocolI pro = this.protocols.get(proS);
+
+		this.socket = pro.open(this.uri, false);
 		if (this.socket == null) {
-			Window.alert("protocol is not support:" + this.protocol);
+			Window.alert("protocol is not support:" + proS);
 		}
 
 		this.socket.onOpen(new HandlerI<GometI>() {
@@ -195,7 +189,7 @@ public class EndpointWsImpl extends EndpointSupport {
 
 	@Override
 	public String getUri() {
-		return this.uri;
+		return this.uri.getUri();
 	}
 
 }

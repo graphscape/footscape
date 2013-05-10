@@ -24,7 +24,7 @@ public class AjaxMessageHandler extends AjaxMsgHandler {
 	 */
 
 	public AjaxMessageHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
-		super(sessionMap, manager);
+		super(true, sessionMap, manager);
 	}
 
 	/*

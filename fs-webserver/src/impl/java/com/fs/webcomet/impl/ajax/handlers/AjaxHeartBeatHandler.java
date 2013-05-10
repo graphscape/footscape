@@ -15,14 +15,14 @@ import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
  * @author wu
  * 
  */
-public class AjaxCloseHandler extends AjaxMsgHandler {
+public class AjaxHeartBeatHandler extends AjaxMsgHandler {
 
 	/**
 	 * @param sessionMap
 	 * @param manager
 	 */
 
-	public AjaxCloseHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
+	public AjaxHeartBeatHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
 		super(true, sessionMap, manager);
 	}
 
@@ -31,13 +31,6 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 	 */
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
-		if (amc.arc.as == null) {
-			// ignore the session already closed.
-			return;
-		}
-		//fetch?
-		//this.fetchMessage(amc);
-		this.manager.onClose(amc.arc.as, 0, "");
-
+		// do nothing.
 	}
 }

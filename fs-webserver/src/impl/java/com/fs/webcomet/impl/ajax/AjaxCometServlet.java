@@ -6,23 +6,27 @@ package com.fs.webcomet.impl.ajax;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.lang.ObjectUtil;
 import com.fs.commons.api.struct.Path;
+import com.fs.commons.api.util.StringUtil;
 import com.fs.webcomet.impl.ajax.handlers.AjaxCloseHandler;
 import com.fs.webcomet.impl.ajax.handlers.AjaxConnectHandler;
 import com.fs.webcomet.impl.ajax.handlers.AjaxDefaultHandler;
+import com.fs.webcomet.impl.ajax.handlers.AjaxHeartBeatHandler;
 import com.fs.webcomet.impl.ajax.handlers.AjaxMessageHandler;
 import com.fs.webserver.api.support.ConfigurableServletSupport;
 
@@ -31,6 +35,11 @@ import com.fs.webserver.api.support.ConfigurableServletSupport;
  * 
  */
 public class AjaxCometServlet extends ConfigurableServletSupport {
+
+	private static final Logger LOG = LoggerFactory.getLogger(AjaxCometServlet.class);
+
+	//NOTE,must same as client.
+	public static final String HK_SESSION_ID = "x-fs-ajax-sessionId";
 
 	protected Map<String, AjaxComet> sessionMap;
 
@@ -56,20 +65,52 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException,
 			IOException {
-		AjaxRequestContext arc = new AjaxRequestContext(req, res);
-		arc.writeMessageStart();
-		try {
-			this.doRequest(arc);
-			arc.tryFetchMessage();
-		} finally {
-			arc.writeMessageEnd();
+		Reader reader = req.getReader();
+		// if reader cannot read, check Content-Length
+		// http://osdir.com/ml/java.jetty.general/2002-12/msg00198.html
+		if (false) {// debug
+			String str = StringUtil.readAsString(reader);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("request text:" + str);
+			}
+			reader = new StringReader(str);
 		}
 
+		// find the session
+		String sid = req.getHeader(HK_SESSION_ID);
+		AjaxComet as = null;
+
+		if (sid != null) {// no session before,to establish the new session
+			as = this.sessionMap.get(sid);
+		}
+
+		AjaxRequestContext arc = new AjaxRequestContext(as, res);
+		// NOTE write to response will cause the EOF of the reader?
+		if (as != null) {
+			as.startRequest(arc);// may blocking if has old request .
+		}
+		try {
+
+			arc.writeMessageStart();
+			try {
+				this.doRequest(req, arc);
+				arc.tryFetchMessage();
+			} finally {
+				arc.writeMessageEnd();
+			}
+		} finally {
+
+			if (as != null) {
+				as.endRequest();
+			}
+
+		}
 	}
 
-	protected void doRequest(AjaxRequestContext arc) throws ServletException, IOException {
+	protected void doRequest(HttpServletRequest req, AjaxRequestContext arc) throws ServletException,
+			IOException {
 		// virtual terminal id
-		Reader reader = arc.req.getReader();
+		Reader reader = req.getReader();
 		List<AjaxMsg> amL = AjaxMsg.tryParseMsgArray(reader);
 
 		String firstSid = null;
@@ -82,22 +123,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			if (hdl == null) {
 				hdl = this.defaultAjaxMsgHandler;
 			}
-
-			AjaxComet as = null;
-			String sid2 = am.getSessionId(false);
-			if (i == 0) {
-				firstSid = sid2;
-				if (sid2 != null) {
-					as = this.sessionMap.get(sid2);
-					arc.as = as;//
-
-				}
-			} else {// must be same sid;
-				if (!ObjectUtil.nullSafeEquals(firstSid, sid2)) {
-					throw new FsException("sid must be same in same request.");
-				}
-			}
-
+			
 			AjaxMsgContext amc = new AjaxMsgContext(i, total, am, arc);
 
 			hdl.handle(amc);
@@ -121,6 +147,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		this.handlers.put(AjaxMsg.CLOSE, new AjaxCloseHandler(this.sessionMap, this.manager));
 		this.handlers.put(AjaxMsg.CONNECT, new AjaxConnectHandler(this.sessionMap, this.manager));
 		this.handlers.put(AjaxMsg.MESSAGE, new AjaxMessageHandler(this.sessionMap, this.manager));
+		this.handlers.put(AjaxMsg.HEART_BEAT, new AjaxHeartBeatHandler(this.sessionMap, this.manager));
 
 		return rt;
 

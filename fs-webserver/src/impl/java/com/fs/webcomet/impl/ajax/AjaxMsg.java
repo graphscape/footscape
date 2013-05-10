@@ -28,36 +28,35 @@ public class AjaxMsg extends MapProperties<String> {
 	public static final Path MESSAGE = Path.valueOf("ajax/message");
 
 	public static final Path ERROR = Path.valueOf("ajax/error");
-	
+
 	public static final Path HEART_BEAT = Path.valueOf("ajax/heart-beat");
+	
+	public static final Path INTERRUPT = Path.valueOf("ajax/interrupt");//FOR interrupt,see ajax msg context 
 
 	public static final String PK_PATH = "_path";
 
-	public static final String PK_SESSION_ID = "_session_id";
-
 	public static final String PK_TEXTMESSAGE = "_text_message";
+
+	public static final String PK_CONNECT_SESSION_ID = "_session_id";
 
 	public AjaxMsg(JSONObject jo) {
 		this.setProperties(jo);
 	}
 
 	public AjaxMsg(Path path) {
-		this(path, null);
-	}
-
-	public AjaxMsg(Path path, String sid) {
 		this.setProperty(PK_PATH, path.toString());
-		if (sid != null) {
-			this.setProperty(PK_SESSION_ID, sid);
-		}
+	}
+	
+	public static AjaxMsg interruptMsg(){
+		return new AjaxMsg(AjaxMsg.INTERRUPT);
+	}
+	
+	public boolean isInterruptMsg(){
+		return this.isPath(INTERRUPT);
 	}
 
 	public boolean isPath(Path path) {
 		return path.equals(this.getPath());
-	}
-
-	public String getSessionId(boolean force) {
-		return this.getProperty(PK_SESSION_ID, force);
 	}
 
 	public Path getPath() {

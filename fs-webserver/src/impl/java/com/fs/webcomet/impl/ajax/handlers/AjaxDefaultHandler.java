@@ -23,7 +23,7 @@ public class AjaxDefaultHandler extends AjaxMsgHandler {
 	 */
 
 	public AjaxDefaultHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
-		super(sessionMap, manager);
+		super(true, sessionMap, manager);
 	}
 
 	/*
