@@ -69,7 +69,7 @@ public class ContainerAndBridgeServlet extends HttpServlet {
 		for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();) {
 			String key = e.nextElement();
 
-			if (!key.startsWith("X_FS")
+			if (!key.startsWith("x-fs-")
 					&& !key.equalsIgnoreCase("Accept-Language")) {// NOTE
 				// if let all the header pass though,there will be a exception
 				// reported by apache http client request.

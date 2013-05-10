@@ -19,6 +19,8 @@ public interface SchedulerI extends UiObjectI {
 	public void scheduleRepeat(String name, int intervelMS, EventHandlerI<ScheduleEvent> eh);
 	
 	public void scheduleTimer(int timeout, HandlerI<Object> eh);
+	
+	public void scheduleDelay(HandlerI<Object> eh);
 
 	public void cancel(String name);
 }

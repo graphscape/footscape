@@ -1,12 +1,12 @@
 /**
  *  
  */
-package com.fs.webcomet.impl.mock.handlers;
+package com.fs.uicore.impl.gwt.client.comet.ajax.handlers;
 
-import com.fs.webcomet.impl.ajax.AjaxMsg;
-import com.fs.webcomet.impl.mock.ClientAjaxHandler;
-import com.fs.webcomet.impl.mock.ClientAjaxMsgContext;
-import com.fs.webcomet.impl.mock.MockAjaxClientImpl;
+import com.fs.uicore.impl.gwt.client.comet.ajax.AjaxGomet;
+import com.fs.uicore.impl.gwt.client.comet.ajax.ClientAjaxHandler;
+import com.fs.uicore.impl.gwt.client.comet.ajax.ClientAjaxMsgContext;
+
 
 /**
  * @author wu
@@ -17,7 +17,7 @@ public class ConnectedHandler extends ClientAjaxHandler{
 	/**
 	 * @param client
 	 */
-	public ConnectedHandler(MockAjaxClientImpl client) {
+	public ConnectedHandler(AjaxGomet client) {
 		super(client);
 		// TODO Auto-generated constructor stub
 	}
@@ -27,7 +27,7 @@ public class ConnectedHandler extends ClientAjaxHandler{
 	 */
 	@Override
 	public void handle(ClientAjaxMsgContext amc) {
-		String sid = amc.am.getProperty(AjaxMsg.PK_CONNECT_SESSION_ID);
+		String sid = amc.am.getSessionId(true);
 		this.client.conected(sid);
 		
 	}

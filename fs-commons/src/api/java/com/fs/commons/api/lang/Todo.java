@@ -9,6 +9,10 @@ package com.fs.commons.api.lang;
  */
 public class Todo extends FsException {
 
+	public Todo() {
+		this("todo");
+	}
+
 	public Todo(String msg) {
 		super(msg);
 	}

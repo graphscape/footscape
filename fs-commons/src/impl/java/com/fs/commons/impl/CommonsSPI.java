@@ -11,7 +11,6 @@ import com.fs.commons.api.future.FutureMonitorI;
 import com.fs.commons.api.jexl.JexlEngineI;
 import com.fs.commons.api.mail.MailReceiverI;
 import com.fs.commons.api.mock.MockFactoryI;
-import com.fs.commons.api.service.DispatcherI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.impl.codec.JsonCodecFactory;
@@ -24,7 +23,7 @@ import com.fs.commons.impl.future.FutureMonitorImpl;
 import com.fs.commons.impl.jexl.JexlEngineImpl;
 import com.fs.commons.impl.mail.MailReceiverFactory;
 import com.fs.commons.impl.mail.MailSenderImpl;
-import com.fs.commons.impl.service.DispatcherFactoryImpl;
+import com.fs.commons.impl.session.SessionServerImpl;
 import com.fs.commons.impl.ssh.client.SshClientFactory;
 import com.fs.commons.impl.ssh.shell.SshShellFactory;
 import com.fs.commons.impl.testing.MockFactoryImpl;
@@ -95,6 +94,8 @@ public class CommonsSPI extends SPISupport {
 		//
 		ac.active("dispatcherFactory");
 		ac.active("messageServiceFactory");
+		//
+		ac.active("SESSION_SERVER", new SessionServerImpl());
 	}
 
 	/*

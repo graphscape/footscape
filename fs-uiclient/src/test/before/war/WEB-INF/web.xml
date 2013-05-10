@@ -19,7 +19,7 @@
 	<!-- Mappings -->
 	<servlet-mapping>
 		<servlet-name>test</servlet-name>
-		<url-pattern>/uicore/*</url-pattern>
+		<url-pattern>/aja/*</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

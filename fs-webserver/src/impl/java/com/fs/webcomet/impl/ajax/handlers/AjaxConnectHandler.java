@@ -4,11 +4,13 @@
  */
 package com.fs.webcomet.impl.ajax.handlers;
 
-import java.util.Map;
 import java.util.UUID;
 
+import com.fs.commons.api.session.SessionI;
+import com.fs.commons.api.session.SessionManagerI;
 import com.fs.webcomet.impl.ajax.AjaxComet;
 import com.fs.webcomet.impl.ajax.AjaxCometManagerImpl;
+import com.fs.webcomet.impl.ajax.AjaxCometServlet;
 import com.fs.webcomet.impl.ajax.AjaxMsg;
 import com.fs.webcomet.impl.ajax.AjaxMsgContext;
 import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
@@ -19,13 +21,15 @@ import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
  */
 public class AjaxConnectHandler extends AjaxMsgHandler {
 
+	private long timeout = 120 * 1000;// TODO
+
 	/**
 	 * @param sessionMap
 	 * @param manager
 	 */
 
-	public AjaxConnectHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
-		super(sessionMap, manager);
+	public AjaxConnectHandler(SessionManagerI sessionMap, AjaxCometManagerImpl manager) {
+		super(false, sessionMap, manager);
 	}
 
 	/*
@@ -36,12 +40,15 @@ public class AjaxConnectHandler extends AjaxMsgHandler {
 		//
 		// do connection
 		String sid = UUID.randomUUID().toString();
+		
 		AjaxComet as = new AjaxComet(sid);
-		this.sessionMap.put(sid, as);//
+		SessionI s = this.sessionMap.createSession(sid, timeout);//
+		s.setProperty(AjaxCometServlet.SK_COMET, as);
+
 		this.manager.onConnect(as);
 		// response
 		AjaxMsg am2 = new AjaxMsg(AjaxMsg.CONNECT.getSubPath("success"));
-		am2.setProperty(AjaxMsg.PK_SESSION_ID, sid);
+		am2.setProperty(AjaxMsg.PK_CONNECT_SESSION_ID, sid);
 		amc.arc.write(am2);
 
 	}

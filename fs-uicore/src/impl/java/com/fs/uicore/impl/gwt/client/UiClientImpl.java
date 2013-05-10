@@ -16,6 +16,7 @@ import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
+import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
@@ -26,7 +27,9 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
+import com.fs.uicore.impl.gwt.client.endpoint.CometPPs;
 import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
+import com.fs.uicore.impl.gwt.client.endpoint.CometPPs.ProtocolPort;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -47,17 +50,17 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	private EndPointI endpoint;
 
 	private UiPropertiesI<String> localized;
-	
-	private String protocol;
+
+	private Address uri;
 
 	public UiClientImpl(ContainerI c, RootI root) {
 		super(c);
-		this.protocol = "websocket";//
+		this.uri = this.resolveUri();
 		this.root = root;
 		this.parameters = new MapProperties<String>();
 		this.localized = new MapProperties<String>();
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
-		this.endpoint = new EndpointWsImpl(c, this.protocol, md);
+		this.endpoint = new EndpointWsImpl(c, this.uri, md);
 		this.endpoint.parent(this);
 
 		Window.addWindowClosingHandler(new GwtClosingHandler() {
@@ -68,6 +71,56 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 				new ClientClosingEvent(UiClientImpl.this).dispatch();
 			}
 		});
+	}
+
+	private Address resolveUri() {
+		// check if it is configured by url parameters.
+
+		ProtocolPort pp = CometPPs.getInstance().getFirst(false);
+
+		String resource = null;
+
+		if (pp == null) {// http,ajax
+
+			String pro = getWindowLocationProtocol();			
+			int port = getWindowLocationPort();
+			pp = new ProtocolPort(pro, port);
+			
+		}
+
+		if (pp == null) {//
+			// the last one is default
+			String hpro = getWindowLocationProtocol();			
+			boolean https = hpro.equals("https");
+			String wsp = https ? "wss" : "ws";
+			String portS = Window.Location.getPort();
+			int port = Integer.parseInt(portS);
+			pp = new ProtocolPort(wsp, port);
+
+		}
+		if (pp.protocol.startsWith("http")) {
+			resource = "/aja/default";
+		} else if (pp.protocol.startsWith("ws")) {
+			resource = "/wsa/default";
+		}
+
+		String host = Window.Location.getHostName();
+		Address rt = new Address(pp.protocol, host, pp.port, resource);
+		return rt;
+
+	}
+	private int getWindowLocationPort(){
+		String portS = Window.Location.getPort();
+		int port = Integer.parseInt(portS);
+		return port;
+	}
+	private String getWindowLocationProtocol(){
+		String pro = Window.Location.getProtocol();
+		
+		if(pro.endsWith(":")){
+			pro = pro.substring(0,pro.length()-1);
+		}
+		return pro;
 	}
 
 	@Override

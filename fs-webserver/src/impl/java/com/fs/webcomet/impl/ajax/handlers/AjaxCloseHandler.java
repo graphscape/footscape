@@ -4,9 +4,7 @@
  */
 package com.fs.webcomet.impl.ajax.handlers;
 
-import java.util.Map;
-
-import com.fs.webcomet.impl.ajax.AjaxComet;
+import com.fs.commons.api.session.SessionManagerI;
 import com.fs.webcomet.impl.ajax.AjaxCometManagerImpl;
 import com.fs.webcomet.impl.ajax.AjaxMsgContext;
 import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
@@ -22,8 +20,8 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 	 * @param manager
 	 */
 
-	public AjaxCloseHandler(Map<String, AjaxComet> sessionMap, AjaxCometManagerImpl manager) {
-		super(sessionMap, manager);
+	public AjaxCloseHandler(SessionManagerI sessionMap, AjaxCometManagerImpl manager) {
+		super(true, sessionMap, manager);
 	}
 
 	/*

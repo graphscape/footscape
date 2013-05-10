@@ -20,6 +20,7 @@ public interface GometI {
 
 	public void send(String jsS);
 
+	//regist listeners
 	public void onOpen(HandlerI<GometI> handler);
 
 	public void onClose(HandlerI<String> handler);
