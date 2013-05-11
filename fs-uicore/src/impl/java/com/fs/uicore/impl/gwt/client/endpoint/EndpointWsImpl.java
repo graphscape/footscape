@@ -88,8 +88,8 @@ public class EndpointWsImpl extends EndpointSupport {
 	/**
 	 * @param md
 	 */
-	public EndpointWsImpl(ContainerI c, Address uri, MessageDispatcherI md) {
-		super(c, uri, md, new MessageCacheImpl(c));
+	public EndpointWsImpl(ContainerI c,  MessageDispatcherI md) {
+		super(c, md, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, ProtocolI>();
 		this.protocols.put("ws", new WsProtocol());
 		this.protocols.put("wss", new WsProtocol());
@@ -121,14 +121,14 @@ public class EndpointWsImpl extends EndpointSupport {
 	}
 
 	@Override
-	public void open() {
-		super.open();
+	public void open(Address uri) {
+		super.open(uri);
 
-		String proS = this.uri.getProtocol();
+		String proS = uri.getProtocol();
 
 		ProtocolI pro = this.protocols.get(proS);
 
-		this.socket = pro.open(this.uri, false);
+		this.socket = pro.open(uri, false);
 		if (this.socket == null) {
 			Window.alert("protocol is not support:" + proS);
 		}
@@ -187,9 +187,5 @@ public class EndpointWsImpl extends EndpointSupport {
 		this.socket.send(jsS);
 	}
 
-	@Override
-	public String getUri() {
-		return this.uri.getUri();
-	}
 
 }

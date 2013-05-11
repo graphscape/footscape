@@ -58,9 +58,11 @@ public class AjaxRequestContext {
 
 	public void writeError(String code, String msg) {
 		AjaxMsg am = new AjaxMsg(AjaxMsg.ERROR);
+		am.setProperty(AjaxMsg.PK_ERROR_CODE, code);
+		am.setProperty(AjaxMsg.PK_ERROR_MSG, msg);
 		this.write(am);
 	}
-
+	
 	/**
 	 * May 8, 2013
 	 */
@@ -115,6 +117,7 @@ public class AjaxRequestContext {
 			this.write(msg);
 
 		}
+		
 	}
 
 	public void writeMessageStart() {
@@ -130,6 +133,7 @@ public class AjaxRequestContext {
 		Writer writer = this.getWriter();
 		try {
 			writer.write("]");
+			writer.flush();
 		} catch (IOException e) {
 			throw new FsException(e);
 		}

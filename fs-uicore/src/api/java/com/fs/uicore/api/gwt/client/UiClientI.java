@@ -4,6 +4,7 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
+import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 
 /**

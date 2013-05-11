@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fs.commons.api.ActiveContext;
+import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.session.SessionI;
 import com.fs.commons.api.session.SessionManagerI;
 import com.fs.commons.api.session.SessionServerI;
@@ -68,7 +69,21 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException,
 			IOException {
+		if (LOG.isDebugEnabled()) {
+
+			String ccode = req.getCharacterEncoding();
+			String ctype = req.getContentType();
+			if (!"utf-8".equalsIgnoreCase(ccode)) {//
+				throw new FsException("only support utf-8");
+			}
+			int len = req.getContentLength();
+			if (len == 0) {//
+				throw new FsException("len is zero");
+			}
+		}
+
 		Reader reader = req.getReader();
+		res.setContentType("application/json; charset=UTF-8");
 		// if reader cannot read, check Content-Length
 		// http://osdir.com/ml/java.jetty.general/2002-12/msg00198.html
 		if (false) {// debug
@@ -84,8 +99,12 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		AjaxComet as = null;
 
 		if (sid != null) {// no session before,to establish the new session
-			SessionI s = this.sessions.getSession(sid);
-			as = s == null ? null : (AjaxComet) s.getProperty(SK_COMET, true);
+			SessionI s = this.sessions.touchSession(sid);
+			if (s == null) {// session is missing,
+				//
+			} else {
+				as = (AjaxComet) s.getProperty(SK_COMET, true);
+			}
 		}
 
 		AjaxRequestContext arc = new AjaxRequestContext(as, res);
@@ -97,7 +116,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 
 			arc.writeMessageStart();
 			try {
-				this.doRequest(req, arc);
+				this.doRequest(sid,req, arc);
 				arc.tryFetchMessage();
 			} finally {
 				arc.writeMessageEnd();
@@ -111,9 +130,14 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		}
 	}
 
-	protected void doRequest(HttpServletRequest req, AjaxRequestContext arc) throws ServletException,
+	protected void doRequest(String sid, HttpServletRequest req, AjaxRequestContext arc) throws ServletException,
 			IOException {
 		// virtual terminal id
+		if(sid != null && arc.as == null){//missing session
+			arc.writeError(AjaxMsg.ERROR_CODE_SESSION_NOTFOUND,"yes,not found!");
+			return;
+		}
+		
 		Reader reader = req.getReader();
 		List<AjaxMsg> amL = AjaxMsg.tryParseMsgArray(reader);
 

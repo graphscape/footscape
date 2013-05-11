@@ -61,13 +61,11 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	private Console console = Console.getInstance();
 
-	protected Address uri;
 	/**
 	 * @param md
 	 */
-	public EndpointSupport(ContainerI c, Address uri,MessageDispatcherI md,MessageCacheI mc) {
+	public EndpointSupport(ContainerI c, MessageDispatcherI md, MessageCacheI mc) {
 		super(c);
-		this.uri = uri;
 		this.messageCache = mc;
 		this.messageCache.addHandler(new EventHandlerI<StateChangeEvent>() {
 
@@ -154,7 +152,6 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		this.close();
 	}
 
-
 	protected void onServerIsReady(MsgWrapper e) {
 		MessageData md = e.getMessage();
 		this.clientId = md.getString("clientId", true);
@@ -163,15 +160,15 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		new EndpointOpenEvent(this).dispatch();
 	}
 
-
 	@Override
-	public void open() {
-		
-		this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
+	public void open(Address uri) {
+		if(this.messageCodec == null){
+			this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);			
+		}
 
 	}
 
-	protected void assertSocketOpen(boolean appLevel){
+	protected void assertSocketOpen(boolean appLevel) {
 
 		this.assertNativeIsOpen();
 		if (appLevel && !this.serverIsReady) {
@@ -179,9 +176,8 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		}
 
 	}
-	
-	protected abstract void assertNativeIsOpen() ;
-	
+
+	protected abstract void assertNativeIsOpen();
 
 	/*
 	 * Dec 20, 2012
@@ -206,10 +202,9 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		this.messageCache.addMessage(req);// for later reference
 		this.doSendMessage(jsS);
 	}
-	
+
 	protected abstract void doSendMessage(String msg);
 
-	
 	protected void onConnected() {
 		// wait server is ready
 		LOG.info("ws open, send client is ready to server,and wait server is ready.");
@@ -222,7 +217,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		this.serverIsReady = false;
 		this.clientId = null;
 		this.terminalId = null;//
-		new EndpointCloseEvent(this, code , reason).dispatch();
+		new EndpointCloseEvent(this, code, reason).dispatch();
 
 	}
 
@@ -340,11 +335,6 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	public UserInfo getUserInfo() {
 		//
 		return this.userInfo;
-	}
-
-	@Override
-	public String getProtocol() {
-		return this.uri.getProtocol();
 	}
 
 }

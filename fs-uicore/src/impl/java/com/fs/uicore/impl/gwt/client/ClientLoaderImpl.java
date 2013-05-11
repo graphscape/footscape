@@ -12,15 +12,13 @@ import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.UiCoreConstants;
 import com.fs.uicore.api.gwt.client.core.Event;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
-import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
+import com.fs.uicore.api.gwt.client.event.ClientStartFailureEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
-import com.fs.uicore.impl.gwt.client.endpoint.CometPPs;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -46,6 +44,8 @@ public class ClientLoaderImpl extends ClientLoader {
 	private UiCallbackI<Object, Boolean> handler;
 
 	private boolean show;
+
+	private int retry;
 
 	public ClientLoaderImpl() {
 		Element root = RootWImpl.getRootElement();
@@ -136,12 +136,12 @@ public class ClientLoaderImpl extends ClientLoader {
 				ClientLoaderImpl.this.afterClientStart(container);
 			}
 		});
-		eb.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
+		eb.addHandler(ClientStartFailureEvent.TYPE, new EventHandlerI<ClientStartFailureEvent>() {
 
 			@Override
-			public void handle(EndpointCloseEvent t) {
+			public void handle(ClientStartFailureEvent t) {
 				//
-				ClientLoaderImpl.this.onEndpointClose(container, t);
+				ClientLoaderImpl.this.onClientStartFailureEvent(container, t);
 			}
 		});
 
@@ -157,41 +157,17 @@ public class ClientLoaderImpl extends ClientLoader {
 	/**
 	 * Apr 21, 2013
 	 */
-	protected void onEndpointClose(ContainerI container, EndpointCloseEvent t) {
+	protected void onClientStartFailureEvent(ContainerI container, ClientStartFailureEvent t) {
 		// disconnected to server,
-		this.show();
-		String code = t.getCode();
-		int retry = 0;
-		String retryS = Window.Location.getParameter("fs.retry");
+		// this.show();
+		boolean rec = Window.confirm("Client starting failed, retry?");
+		if (rec) {
 
-		UrlBuilder urlB = Window.Location.createUrlBuilder();
-		String orignal = null;
-		if (retryS == null) {//
-			orignal = urlB.buildString();
-			urlB.setParameter("fs.orignal", orignal);
-		} else {
-			orignal = Window.Location.getParameter("fs.orignal");
-			retry = Integer.parseInt(retryS);
-		}
-		retry++;
-
-		CometPPs wpps = CometPPs.getInstance();
-
-		if (retry < wpps.getConfiguredList().size()) {
-			CometPPs wpps2 = wpps.shiftLeft();//
-			urlB.setParameter("fs.retry", "" + retry);
-			urlB.setParameter(UiCoreConstants.PK_WS_PROTOCOL_PORT_S, wpps2.getAsParameter());
-			String newURL = urlB.buildString();
-			Window.Location.assign(newURL);
-			return;
+			UrlBuilder urlB = Window.Location.createUrlBuilder();
+			String uri = urlB.buildString();
+			Window.Location.assign(uri);
 		}
 
-		boolean rec = Window.confirm("Connection to server is closed, retry?");
-
-		if (rec) {// use the orignal url.
-			//
-			Window.Location.assign(orignal);
-		}
 	}
 
 	/**

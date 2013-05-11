@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -36,12 +38,21 @@ import com.fs.commons.api.SPIManagerI;
  */
 public class ContainerAndBridgeServlet extends HttpServlet {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(ContainerAndBridgeServlet.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ContainerAndBridgeServlet.class);
 
 	private HttpClient httpclient;
 
 	private boolean trace = true;
+
+	// if let all the header pass though,there will be a exception
+	// reported by apache http client request.
+	// TODO a good enough proxy http client.
+	private static Set<String> allowHeaderKeyPrefix = new HashSet<String>();
+	static {
+		allowHeaderKeyPrefix.add("content-type");
+		allowHeaderKeyPrefix.add("accept-language");
+		allowHeaderKeyPrefix.add("x-fs-");
+	}
 
 	@Override
 	public void init() throws ServletException {
@@ -53,8 +64,8 @@ public class ContainerAndBridgeServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException,
+			IOException {
 		String uriS = req.getRequestURI();
 
 		URI uri;
@@ -68,20 +79,15 @@ public class ContainerAndBridgeServlet extends HttpServlet {
 
 		for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();) {
 			String key = e.nextElement();
+			if (!this.allowHeader(key)) {// NOTE
 
-			if (!key.startsWith("x-fs-")
-					&& !key.equalsIgnoreCase("Accept-Language")) {// NOTE
-				// if let all the header pass though,there will be a exception
-				// reported by apache http client request.
-				// TODO a good enough proxy http client.
 				continue;
 			}
 			String value = req.getHeader(key);
 			post.setHeader(key, value);//
 		}
 
-		HttpEntity reqE = new InputStreamEntity(req.getInputStream(),
-				req.getContentLength());
+		HttpEntity reqE = new InputStreamEntity(req.getInputStream(), req.getContentLength());
 		post.setEntity(reqE);
 
 		HttpResponse response = httpclient.execute(post);
@@ -100,14 +106,24 @@ public class ContainerAndBridgeServlet extends HttpServlet {
 		}
 
 		String s = new String(bos.toByteArray());
-		//String path = req.getHeader(UiRequest.PATH);
-		//String sid = req.getHeader(UiRequest.SESSION_ID);
-		//LOG.debug("sid:" + sid + ",path:" + path + ",payloads:" + s);//
+		// String path = req.getHeader(UiRequest.PATH);
+		// String sid = req.getHeader(UiRequest.SESSION_ID);
+		// LOG.debug("sid:" + sid + ",path:" + path + ",payloads:" + s);//
 
 	}
 
-	private void writeResponse(HttpResponse response, OutputStream... oss)
-			throws IOException {
+	private boolean allowHeader(String key) {
+		for (String k : allowHeaderKeyPrefix) {
+			if (key.toLowerCase().startsWith(k)) {
+				return true;
+			}
+
+		}
+		return false;
+
+	}
+
+	private void writeResponse(HttpResponse response, OutputStream... oss) throws IOException {
 		HttpEntity entity = response.getEntity();
 		InputStream is = entity.getContent();
 		while (true) {

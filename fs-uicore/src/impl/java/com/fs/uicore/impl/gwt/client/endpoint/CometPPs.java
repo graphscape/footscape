@@ -82,7 +82,7 @@ public class CometPPs {
 		}
 		return this.configuredL.get(0);
 	}
-
+/*
 	public CometPPs shiftLeft() {
 		List<ProtocolPort> ppl = new ArrayList<ProtocolPort>();
 
@@ -96,7 +96,7 @@ public class CometPPs {
 
 		return new CometPPs(ppl);
 	}
-
+*/
 	/**
 	 * @return
 	 */

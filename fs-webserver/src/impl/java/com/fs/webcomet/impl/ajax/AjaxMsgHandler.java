@@ -25,6 +25,7 @@ public abstract class AjaxMsgHandler {
 
 	public void handle(AjaxMsgContext amc) {
 		if (this.sessionRequired && amc.arc.as == null) {
+			
 			throw new FsException("session required for handler:" + this);
 		}
 

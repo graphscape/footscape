@@ -38,6 +38,12 @@ public class AjaxMsg extends MapProperties<String> {
 	public static final String PK_TEXTMESSAGE = "_text_message";
 
 	public static final String PK_CONNECT_SESSION_ID = "_session_id";
+	
+	public static final String PK_ERROR_CODE = "_error_code";
+	
+	public static final String PK_ERROR_MSG = "_error_message";
+	
+	public static final String ERROR_CODE_SESSION_NOTFOUND = "session-not-found";
 
 	public AjaxMsg(JSONObject jo) {
 		this.setProperties(jo);

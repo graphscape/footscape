@@ -64,6 +64,8 @@ public class AjaxGomet extends GometSupport {
 
 	private SchedulerI scheduler;
 
+	private int requests;
+
 	/**
 	 * @param wso
 	 */
@@ -85,6 +87,7 @@ public class AjaxGomet extends GometSupport {
 			@Override
 			public void onSuccess(Method method, JSONValue response) {
 				//
+
 				AjaxGomet.this.onRequestSuccess(method, response);
 				//
 			}
@@ -116,20 +119,20 @@ public class AjaxGomet extends GometSupport {
 	}
 
 	protected void doRequest(AjaxMsg am) {
-
+		this.requests++;
 		JSONArray jsa = new JSONArray();
 		jsa.set(0, am.getAsJsonObject());
 		String text = jsa.toString();
 		Method m = this.resource.post().text(text);
 		// Content-Type: text/plain; charset=ISO-8859-1
+		m.header("Content-Type", "application/json; charset=UTF-8");
 		m.header("Content-Length", "" + len(text));
 		m.header("x-fs-debug", "debug:" + am.getPath());
-		//session id is in request header.
+		// session id is in request header.
 		if (this.sid != null) {
 			m.header(HK_SESSION_ID, this.sid);//
 		}
 		m.send(jcb);
-
 	}
 
 	private int len(String text) {
@@ -141,16 +144,35 @@ public class AjaxGomet extends GometSupport {
 	 * @param response
 	 */
 	protected void onRequestSuccess(Method method, JSONValue response) {
-		JSONArray jsa = (JSONArray) response;
-		for (int i = 0; i < jsa.size(); i++) {
-			JSONObject amS = (JSONObject) jsa.get(i);
 
-			AjaxMsg am2 = new AjaxMsg(amS);
+		this.requests--;
+		try {
 
-			this.onAjaxMsg(am2);
+			JSONArray jsa = (JSONArray) response;
+			for (int i = 0; i < jsa.size(); i++) {
+				JSONObject amS = (JSONObject) jsa.get(i);
+
+				AjaxMsg am2 = new AjaxMsg(amS);
+
+				this.onAjaxMsg(am2);
+			}
+		} finally {
+			this.checkToScheduleHeartBeat();
 		}
+	}
 
+	private void checkToScheduleHeartBeat() {
+		if (this.requests > 0) {
+			return;
+		}
+		// only for the last request,
+		// no request for now, so do a new request
+		// immediately.
 		// each request finish,should schedule a new request immediately.
+//		if (!this.isOpen()) {
+//			// if not open for some error,how to do?
+//			return;
+//		}
 		this.scheduler.scheduleTimer(0, new HandlerI<Object>() {
 
 			@Override
@@ -158,6 +180,8 @@ public class AjaxGomet extends GometSupport {
 				AjaxGomet.this.sendHeartBeat();
 			}
 		});
+		//
+
 	}
 
 	/**
@@ -165,6 +189,7 @@ public class AjaxGomet extends GometSupport {
 	 * @param exception
 	 */
 	protected void onRequestFailure(Method method, Throwable exception) {
+		this.requests--;
 		String data = exception.getMessage();
 		this.dispatch(EVT_ONERROR, data);
 	}
@@ -196,17 +221,27 @@ public class AjaxGomet extends GometSupport {
 	}
 
 	/**
-	 * 
+	 * Only send if connected,else stop the heart beat.
 	 */
-	protected void sendHeartBeat() {
+	protected boolean sendHeartBeat() {
+
 		AjaxMsg am = new AjaxMsg(AjaxMsg.HEART_BEAT);
 		this.doRequest(am);
+		return true;
+	}
+
+	public void closeByError() {
+		this.doClose();
 	}
 
 	/**
 	 * 
 	 */
 	public void closedByServer() {
+		this.doClose();
+	}
+
+	public void doClose() {
 		this.sid = null;
 		this.dispatch(EVT_ONCLOSE, "");
 	}
@@ -222,8 +257,11 @@ public class AjaxGomet extends GometSupport {
 	/**
 	 * 
 	 */
-	public void errorFromServer(String error) {
-		this.dispatch(EVT_ONERROR, error);
+	public void errorFromServer(String error, String msg) {
+		this.dispatch(EVT_ONERROR, error + "," + msg);
+		if (AjaxMsg.ERROR_CODE_SESSION_NOTFOUND.equals(error)) {//
+			this.closeByError();
+		}
 	}
 
 	public void messageFromServer(String msg) {

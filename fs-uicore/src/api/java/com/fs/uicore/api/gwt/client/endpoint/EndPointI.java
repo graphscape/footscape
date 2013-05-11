@@ -20,10 +20,8 @@ public interface EndPointI extends UiObjectI {
 	public void sendMessage(MessageData req);
 
 	public void sendMessage(MsgWrapper req);
-	
-	public String getProtocol();
 
-	public void open();
+	public void open(Address uri);
 
 	public void close();
 
@@ -38,7 +36,5 @@ public interface EndPointI extends UiObjectI {
 	public String getSessionId();
 
 	public UserInfo getUserInfo();
-
-	public String getUri();
 
 }

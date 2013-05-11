@@ -4,6 +4,7 @@
 package com.fs.uicore.impl.gwt.client.comet.ajax.handlers;
 
 import com.fs.uicore.impl.gwt.client.comet.ajax.AjaxGomet;
+import com.fs.uicore.impl.gwt.client.comet.ajax.AjaxMsg;
 import com.fs.uicore.impl.gwt.client.comet.ajax.ClientAjaxHandler;
 import com.fs.uicore.impl.gwt.client.comet.ajax.ClientAjaxMsgContext;
 
@@ -22,8 +23,12 @@ public class ErrorHandler extends ClientAjaxHandler {
 
 	@Override
 	public void handle(ClientAjaxMsgContext amc) {
-		String error = "TODO";// TODO
-		this.client.errorFromServer(error);
+		
+		
+		String errorCode = amc.am.getProperty(AjaxMsg.PK_ERROR_CODE,true);
+		String errorMsg = amc.am.getProperty(AjaxMsg.PK_ERROR_MSG);
+		
+		this.client.errorFromServer(errorCode,errorMsg);
 	}
 
 }

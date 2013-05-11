@@ -3,6 +3,11 @@
  */
 package com.fs.uicore.impl.gwt.client;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
 import com.fs.uicore.api.gwt.client.ContainerI;
@@ -20,16 +25,20 @@ import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
+import com.fs.uicore.api.gwt.client.event.ClientStartFailureEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
+import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtClosingHandler;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
+import com.fs.uicore.api.gwt.client.state.State;
 import com.fs.uicore.api.gwt.client.support.ContainerAwareUiObjectSupport;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 import com.fs.uicore.impl.gwt.client.endpoint.CometPPs;
-import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.endpoint.CometPPs.ProtocolPort;
+import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -51,16 +60,28 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	private UiPropertiesI<String> localized;
 
-	private Address uri;
+	private List<Address> uriList;
+
+	private int tryingUriIdx = -1;
+	
+	private Set<Integer> tryedIndex = new HashSet<Integer>();
+
+	public static final State UNKNOWN = State.valueOf("UNKNOWN");
+
+	public static final State STARTING = State.valueOf("STARTING");
+
+	public static final State FAILED = State.valueOf("FAILED");
+
+	public static final State STARTED = State.valueOf("STARTED");
 
 	public UiClientImpl(ContainerI c, RootI root) {
 		super(c);
-		this.uri = this.resolveUri();
+
 		this.root = root;
 		this.parameters = new MapProperties<String>();
 		this.localized = new MapProperties<String>();
 		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
-		this.endpoint = new EndpointWsImpl(c, this.uri, md);
+		this.endpoint = new EndpointWsImpl(c, md);
 		this.endpoint.parent(this);
 
 		Window.addWindowClosingHandler(new GwtClosingHandler() {
@@ -71,54 +92,20 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 				new ClientClosingEvent(UiClientImpl.this).dispatch();
 			}
 		});
+		this.setState(UNKNOWN);
 	}
 
-	private Address resolveUri() {
-		// check if it is configured by url parameters.
-
-		ProtocolPort pp = CometPPs.getInstance().getFirst(false);
-
-		String resource = null;
-
-		if (pp == null) {// http,ajax
-
-			String pro = getWindowLocationProtocol();			
-			int port = getWindowLocationPort();
-			pp = new ProtocolPort(pro, port);
-			
-		}
-
-		if (pp == null) {//
-			// the last one is default
-			String hpro = getWindowLocationProtocol();			
-			boolean https = hpro.equals("https");
-			String wsp = https ? "wss" : "ws";
-			String portS = Window.Location.getPort();
-			int port = Integer.parseInt(portS);
-			pp = new ProtocolPort(wsp, port);
-
-		}
-		if (pp.protocol.startsWith("http")) {
-			resource = "/aja/default";
-		} else if (pp.protocol.startsWith("ws")) {
-			resource = "/wsa/default";
-		}
-
-		String host = Window.Location.getHostName();
-		Address rt = new Address(pp.protocol, host, pp.port, resource);
-		return rt;
-
-	}
-	private int getWindowLocationPort(){
+	private int getWindowLocationPort() {
 		String portS = Window.Location.getPort();
 		int port = Integer.parseInt(portS);
 		return port;
 	}
-	private String getWindowLocationProtocol(){
+
+	private String getWindowLocationProtocol() {
 		String pro = Window.Location.getProtocol();
-		
-		if(pro.endsWith(":")){
-			pro = pro.substring(0,pro.length()-1);
+
+		if (pro.endsWith(":")) {
+			pro = pro.substring(0, pro.length() - 1);
 		}
 		return pro;
 	}
@@ -133,6 +120,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	@Override
 	public void start() {
+		if (!this.isState(UNKNOWN)) {
+			throw new UiException("state should be:" + UNKNOWN + ",but state is:" + this.state);
+		}
+		this.setState(STARTING);
+
 		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
 
 			@Override
@@ -140,6 +132,21 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 				UiClientImpl.this.onEndpointOpen();
 			}
 		});
+		this.endpoint.addHandler(EndpointErrorEvent.TYPE, new EventHandlerI<EndpointErrorEvent>() {
+
+			@Override
+			public void handle(EndpointErrorEvent t) {
+				UiClientImpl.this.onEndpointError();
+			}
+		});
+		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
+
+			@Override
+			public void handle(EndpointCloseEvent t) {
+				UiClientImpl.this.onEndpointClose();
+			}
+		});
+
 		this.endpoint.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
 				new MessageHandlerI<MsgWrapper>() {
 
@@ -148,8 +155,77 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 						UiClientImpl.this.onInitSuccess(t);
 					}
 				});
-		this.endpoint.open();
+		this.uriList = new ArrayList<Address>();
+		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(CometPPs.getInstance().getConfiguredList());
 
+		if (ppL.isEmpty()) {// not configured,then default ones
+
+			{// try ws/wss first,
+				String hpro = getWindowLocationProtocol();
+				boolean https = hpro.equals("https");
+				String wsp = https ? "wss" : "ws";
+				String portS = Window.Location.getPort();
+				int port = Integer.parseInt(portS);
+				ppL.add(new ProtocolPort(wsp, port));
+			}
+			{// try ajax second
+				String pro = getWindowLocationProtocol();
+				int port = getWindowLocationPort();
+				ppL.add(new ProtocolPort(pro, port));
+			}
+
+		}
+
+		String host = Window.Location.getHostName();
+		String ajaRes = "/aja/default";
+		String wsRes = "/wsa/default";
+
+		for (ProtocolPort pp : ppL) {
+			String pro = pp.protocol;
+			String resource;
+			int port = pp.port;
+
+			if (pro.startsWith("http")) {
+				resource = ajaRes;
+			} else if (pro.startsWith("ws")) {
+				resource = wsRes;
+			} else {
+				throw new UiException("not supported pro:" + pro);
+			}
+			Address uri = new Address(pro, host, port, resource);
+			this.uriList.add(uri);
+		}
+
+		this.tryConnect(0);
+	}
+
+	public boolean tryConnect(int uriIdx) {
+		if(this.tryedIndex.contains(uriIdx)){
+			return true;//
+		}		
+		this.tryedIndex.add(uriIdx);
+		
+		if (this.tryingUriIdx == uriIdx) {
+			// is already in trying this uri
+			// LOG.warn("");
+			return true;// ignore
+		}
+
+		this.tryingUriIdx = uriIdx;
+
+		if (uriIdx < this.uriList.size()) {
+
+			Address uri = this.uriList.get(uriIdx);
+			this.endpoint.open(uri);
+			return true;
+		}
+		
+		//failed 
+		this.setState(FAILED);// all protocols is failed, how to do? only
+								// failed,notify user.
+		new ClientStartFailureEvent(this).dispatch();
+		// see the on error/onclose event processing methods
+		return false;
 	}
 
 	/**
@@ -187,8 +263,24 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 			}
 		}
 		// event
-
+		this.setState(STARTED);// started is here.
 		new AfterClientStartEvent(this).dispatch();
+	}
+
+	private void onEndpointErrorOrClose() {
+		if (this.isState(STARTED)) {
+			return;// ignore ,because it may a applevel error.
+		}
+		// close event may not raise for some error?
+		this.tryConnect(this.tryingUriIdx + 1);
+	}
+
+	public void onEndpointError() {
+		this.onEndpointErrorOrClose();
+	}
+
+	public void onEndpointClose() {
+		this.onEndpointErrorOrClose();
 	}
 
 	public void onEndpointOpen() {
