@@ -4,9 +4,9 @@
 package com.fs.uicore.impl.gwt.client;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.CodecI.FactoryI;
@@ -25,6 +25,7 @@ import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
+import com.fs.uicore.api.gwt.client.event.ClientConnectLostEvent;
 import com.fs.uicore.api.gwt.client.event.ClientStartFailureEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
@@ -38,7 +39,7 @@ import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 import com.fs.uicore.impl.gwt.client.endpoint.CometPPs;
 import com.fs.uicore.impl.gwt.client.endpoint.CometPPs.ProtocolPort;
-import com.fs.uicore.impl.gwt.client.endpoint.EndpointWsImpl;
+import com.fs.uicore.impl.gwt.client.endpoint.EndpointImpl;
 import com.fs.uicore.impl.gwt.client.factory.JsonCodecFactoryC;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.Window.ClosingEvent;
@@ -56,15 +57,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	private UiPropertiesI<String> parameters;
 
-	private EndPointI endpoint;
-
 	private UiPropertiesI<String> localized;
 
 	private List<Address> uriList;
 
-	private int tryingUriIdx = -1;
-	
-	private Set<Integer> tryedIndex = new HashSet<Integer>();
+	private Map<Integer, EndPointI> tryedEndpointMap = new HashMap<Integer, EndPointI>();
 
 	public static final State UNKNOWN = State.valueOf("UNKNOWN");
 
@@ -74,15 +71,19 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	public static final State STARTED = State.valueOf("STARTED");
 
+	private static final String PK_TRYING_INDEX = "_trying_idx";
+
+	/**
+	 * Note:only set after client start.
+	 */
+	private EndPointI endpoint;
+
 	public UiClientImpl(ContainerI c, RootI root) {
 		super(c);
 
 		this.root = root;
 		this.parameters = new MapProperties<String>();
 		this.localized = new MapProperties<String>();
-		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
-		this.endpoint = new EndpointWsImpl(c, md);
-		this.endpoint.parent(this);
 
 		Window.addWindowClosingHandler(new GwtClosingHandler() {
 
@@ -118,6 +119,45 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	}
 
+	protected EndPointI newEndpoint(int tryIdx) {
+		MessageDispatcherI md = new MessageDispatcherImpl("endpoint");
+		Address uri = this.uriList.get(tryIdx);
+		final EndPointI rt = new EndpointImpl(this.container, uri, md);
+		rt.setProperty(PK_TRYING_INDEX, tryIdx);// the trying idx.
+
+		rt.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
+
+			@Override
+			public void handle(EndpointOpenEvent t) {
+				UiClientImpl.this.onEndpointOpen(t.getEndPoint());
+			}
+		});
+		rt.addHandler(EndpointErrorEvent.TYPE, new EventHandlerI<EndpointErrorEvent>() {
+
+			@Override
+			public void handle(EndpointErrorEvent t) {
+				UiClientImpl.this.onEndpointError(t.getEndPoint());
+			}
+		});
+		rt.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
+
+			@Override
+			public void handle(EndpointCloseEvent t) {
+				UiClientImpl.this.onEndpointClose(t.getEndPoint());
+			}
+		});
+
+		rt.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
+				new MessageHandlerI<MsgWrapper>() {
+
+					@Override
+					public void handle(MsgWrapper t) {
+						UiClientImpl.this.onInitSuccess(rt, t);
+					}
+				});
+		return rt;
+	}
+
 	@Override
 	public void start() {
 		if (!this.isState(UNKNOWN)) {
@@ -125,36 +165,6 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		}
 		this.setState(STARTING);
 
-		this.endpoint.addHandler(EndpointOpenEvent.TYPE, new EventHandlerI<EndpointOpenEvent>() {
-
-			@Override
-			public void handle(EndpointOpenEvent t) {
-				UiClientImpl.this.onEndpointOpen();
-			}
-		});
-		this.endpoint.addHandler(EndpointErrorEvent.TYPE, new EventHandlerI<EndpointErrorEvent>() {
-
-			@Override
-			public void handle(EndpointErrorEvent t) {
-				UiClientImpl.this.onEndpointError();
-			}
-		});
-		this.endpoint.addHandler(EndpointCloseEvent.TYPE, new EventHandlerI<EndpointCloseEvent>() {
-
-			@Override
-			public void handle(EndpointCloseEvent t) {
-				UiClientImpl.this.onEndpointClose();
-			}
-		});
-
-		this.endpoint.addHandler(Path.valueOf("/endpoint/message/client/init/success"),
-				new MessageHandlerI<MsgWrapper>() {
-
-					@Override
-					public void handle(MsgWrapper t) {
-						UiClientImpl.this.onInitSuccess(t);
-					}
-				});
 		this.uriList = new ArrayList<Address>();
 		List<ProtocolPort> ppL = new ArrayList<ProtocolPort>(CometPPs.getInstance().getConfiguredList());
 
@@ -200,27 +210,21 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	}
 
 	public boolean tryConnect(int uriIdx) {
-		if(this.tryedIndex.contains(uriIdx)){
-			return true;//
-		}		
-		this.tryedIndex.add(uriIdx);
-		
-		if (this.tryingUriIdx == uriIdx) {
-			// is already in trying this uri
-			// LOG.warn("");
-			return true;// ignore
-		}
 
-		this.tryingUriIdx = uriIdx;
+		EndPointI ep = this.tryedEndpointMap.get(uriIdx);
+		if (ep != null) {// tryed before.
+			return true;//
+		}
 
 		if (uriIdx < this.uriList.size()) {
-
-			Address uri = this.uriList.get(uriIdx);
-			this.endpoint.open(uri);
+			// try the new endpoint.
+			ep = this.newEndpoint(uriIdx);
+			this.tryedEndpointMap.put(uriIdx, ep);
+			ep.open();
 			return true;
 		}
-		
-		//failed 
+
+		// failed
 		this.setState(FAILED);// all protocols is failed, how to do? only
 								// failed,notify user.
 		new ClientStartFailureEvent(this).dispatch();
@@ -231,7 +235,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	/**
 	 * Jan 1, 2013
 	 */
-	protected void onInitSuccess(MsgWrapper evt) {
+	protected void onInitSuccess(EndPointI ep, MsgWrapper evt) {
 		MessageData t = evt.getMessage();
 		String sd = (String) t.getPayloads().getProperty("clientId", true);
 		String sid = sd;
@@ -262,34 +266,75 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 			}
 		}
+		//
+		this.endpoint = ep;
 		// event
 		this.setState(STARTED);// started is here.
 		new AfterClientStartEvent(this).dispatch();
 	}
 
-	private void onEndpointErrorOrClose() {
-		if (this.isState(STARTED)) {
+	private void tryConnectAfterEndpoint(EndPointI ep) {
+
+	}
+
+	public void onEndpointError(EndPointI ep) {
+
+		if (this.isState(STARTED)) {//
 			return;// ignore ,because it may a applevel error.
 		}
+
+		// ws error will delay the ajax request for that the limit is 2
+		// connections.
+
+		if (ep.isOpen()) {
+			// this endpoint is open,but error before client/server is ready, so
+			// we
+			// cannot relay on this endpoint, we close it.
+			ep.close();//
+		}
+
+		int uriIdx = (Integer) ep.getProperty(PK_TRYING_INDEX, true);
 		// close event may not raise for some error?
-		this.tryConnect(this.tryingUriIdx + 1);
+		this.tryConnect(uriIdx + 1);
 	}
 
-	public void onEndpointError() {
-		this.onEndpointErrorOrClose();
+	public void onEndpointClose(EndPointI ep) {
+
+		if (this.isState(STARTED)) {//
+
+			new ClientConnectLostEvent(this).dispatch();
+			return;// ignore ,because it may a applevel error.
+		}
+
+		// ws error will delay the ajax request for that the limit is 2
+		// connections.
+
+		if (ep.isOpen()) {
+			// this endpoint is open,but error before client/server is ready, so
+			// we
+			// cannot relay on this endpoint, we close it.
+			ep.close();//
+		}
+
+		int uriIdx = (Integer) ep.getProperty(PK_TRYING_INDEX, true);
+		// close event may not raise for some error?
+		this.tryConnect(uriIdx + 1);
 	}
 
-	public void onEndpointClose() {
-		this.onEndpointErrorOrClose();
-	}
-
-	public void onEndpointOpen() {
+	/**
+	 * open does not gurantee the endpoint is the final one.after client start
+	 * is gurantee this. May 12, 2013
+	 */
+	public void onEndpointOpen(EndPointI ep) {
 
 		MsgWrapper req = new MsgWrapper(Path.valueOf("/client/init"));
 		String locale = this.getPreferedLocale();
 
 		req.setPayload("preferedLocale", (locale));
-		this.endpoint.sendMessage(req);
+
+		// int uriIdx = (Integer) ep.getProperty(PK_TRYING_INDEX, true);
+
+		ep.sendMessage(req);
 
 	}
 
@@ -376,8 +421,11 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 	 * Jan 1, 2013
 	 */
 	@Override
-	public EndPointI getEndpoint() {
+	public EndPointI getEndpoint(boolean force) {
 		//
+		if (this.endpoint == null && force) {
+			throw new UiException("end point is null, client not started?");
+		}
 		return this.endpoint;
 	}
 

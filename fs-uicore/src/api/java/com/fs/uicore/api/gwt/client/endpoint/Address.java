@@ -37,4 +37,14 @@ public class Address {
 		return this.protocol + "://" + this.host + ":" + this.port + this.resource;
 	}
 
+	/*
+	 *May 12, 2013
+	 */
+	@Override
+	public String toString() {
+		return this.getUri();
+	}
+	
+	
+
 }

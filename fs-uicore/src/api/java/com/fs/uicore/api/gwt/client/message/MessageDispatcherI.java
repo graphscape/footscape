@@ -24,4 +24,6 @@ public interface MessageDispatcherI extends MessageHandlerI<MsgWrapper> {
 	public void addExceptionHandler(MessageExceptionHandlerI eh);
 
 	public void dispatch(MsgWrapper mw);
+
+	public void cleanAllHanlders();
 }

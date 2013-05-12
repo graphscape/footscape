@@ -39,6 +39,10 @@ import com.google.gwt.json.client.JSONValue;
  * @author wu
  * 
  */
+/**
+ * @author wu
+ * 
+ */
 public abstract class EndpointSupport extends UiObjectSupport implements EndPointI {
 
 	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(EndpointSupport.class);
@@ -61,11 +65,17 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	private Console console = Console.getInstance();
 
+	protected Address uri;
+
+	protected String protocol;
+
 	/**
 	 * @param md
 	 */
-	public EndpointSupport(ContainerI c, MessageDispatcherI md, MessageCacheI mc) {
+	public EndpointSupport(ContainerI c, Address uri, MessageDispatcherI md, MessageCacheI mc) {
 		super(c);
+		this.uri = uri;
+		this.protocol = uri.getProtocol();
 		this.messageCache = mc;
 		this.messageCache.addHandler(new EventHandlerI<StateChangeEvent>() {
 
@@ -161,9 +171,9 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	}
 
 	@Override
-	public void open(Address uri) {
-		if(this.messageCodec == null){
-			this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);			
+	public void open() {
+		if (this.messageCodec == null) {
+			this.messageCodec = this.getClient(true).getCodecFactory().getCodec(MessageData.class);
 		}
 
 	}
@@ -172,7 +182,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 		this.assertNativeIsOpen();
 		if (appLevel && !this.serverIsReady) {
-			throw new UiException("server is not ready");
+			throw new UiException(getShortName() + ",server is not ready");
 		}
 
 	}
@@ -207,7 +217,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	protected void onConnected() {
 		// wait server is ready
-		LOG.info("ws open, send client is ready to server,and wait server is ready.");
+		LOG.info(getShortName() + " is open, send client is ready to server,and wait server is ready.");
 		MessageData req = new MessageData("/control/status/clientIsReady");
 		this.sendMessageDirect(req);
 
@@ -222,7 +232,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	}
 
 	protected void onError(String msg) {
-		LOG.error("onWsError,errorJSO:" + msg, null);
+		LOG.error(getShortName() + ",onError,errorJSO:" + msg, null);
 		new EndpointErrorEvent(this, msg).dispatch();
 
 	}
@@ -234,7 +244,8 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		if (sid != null) {
 			MessageData req = this.messageCache.removeMessage(sid);
 			if (req == null) {
-				LOG.info("request not found,may timeout or the source message is from other side,message:"
+				LOG.info(getShortName()
+						+ ",request not found,may timeout or the source message is from other side,message:"
 						+ md);
 			} else {
 				md.setPayload(MessageData.PK_SOURCE, req);
@@ -291,7 +302,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	 */
 	public void onBindingSuccess(MsgWrapper evt) {
 		MessageData md = evt.getTarget();
-		System.out.println("onBindingSuccess:" + md);
+		LOG.info(getShortName() + ",onBindingSuccess:" + md);
 		this.userInfo = new UserInfo();
 		String sid = md.getString("sessionId", true);
 		this.userInfo.setProperties(md.getPayloads());
@@ -312,6 +323,10 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		this.sendMessage(req.getTarget());//
 	}
 
+	private String getShortName() {
+		return "endpoint(" + this.uri + ")";
+	}
+
 	/*
 	 * Jan 2, 2013
 	 */
@@ -319,7 +334,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	public void logout() {
 		//
 		if (!this.isBond()) {
-			throw new UiException("not bound yet.");
+			throw new UiException(getShortName() + " not bound yet.");
 		}
 
 		MessageData req = new MessageData("/terminal/unbinding");
@@ -335,6 +350,11 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	public UserInfo getUserInfo() {
 		//
 		return this.userInfo;
+	}
+
+	@Override
+	public Address getUri() {
+		return uri;
 	}
 
 }

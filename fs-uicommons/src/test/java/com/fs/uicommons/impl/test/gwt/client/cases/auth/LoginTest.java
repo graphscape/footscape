@@ -101,7 +101,7 @@ public class LoginTest extends TestBase {
 	 */
 	private void onBondEvent(EndpointBondEvent e) {
 		//
-		UserInfo ui = this.client.getEndpoint().getUserInfo();
+		UserInfo ui = this.client.getEndpoint(true).getUserInfo();
 		if (ui.isAnonymous()) {
 
 			this.tryFinish("bound-anonymous");

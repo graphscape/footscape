@@ -261,8 +261,9 @@ public class MainControl extends ControlSupport implements MainControlI {
 	}
 
 	public UserInfo getUserInfo() {
-		return this.getClient(true).getEndpoint().getUserInfo();
+		return this.getClient(true).getEndpoint(true).getUserInfo();
 	}
+	
 
 	private Path getExpViewPath(String expId) {
 		return Path.valueOf("/myexp/" + expId);

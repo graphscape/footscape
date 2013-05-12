@@ -107,11 +107,11 @@ public class ExpMessageListView extends ViewSupport {
 		int limit = this.getClient(true).getParameterAsInt(UiClientConstants.PK_MESSAGE_QUERY_LIMIT, 10);
 		req.setPayload("limit", limit);
 
-		this.getClient(true).getEndpoint().sendMessage(req);
+		this.getClient(true).getEndpoint(true).sendMessage(req);
 	}
 
 	protected String getAccountId() {
-		return this.getClient(true).getEndpoint().getUserInfo().getAccountId();
+		return this.getClient(true).getEndpoint(true).getUserInfo().getAccountId();
 	}
 
 	// close
@@ -122,7 +122,7 @@ public class ExpMessageListView extends ViewSupport {
 
 		MsgWrapper req = new MsgWrapper("/expe/close");
 		req.setPayload("expId", this.expId);
-		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.getClient(true).getEndpoint(true).sendMessage(req);//
 	}
 
 	/*

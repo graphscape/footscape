@@ -26,7 +26,7 @@ import com.fs.uicore.api.gwt.client.support.MessageDispatcherImpl;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public class GChatControlImpl extends ControlSupport implements GChatControlI {
 
@@ -52,31 +52,33 @@ public class GChatControlImpl extends ControlSupport implements GChatControlI {
 		//
 		super.doAttach();
 
-		this.endpoint = this.getClient(true).getChild(EndPointI.class, true);
+		
+		// //
 		//
-
-		// side
-		this.dispatcher1 = new MessageDispatcherImpl("gchat");
-		// dispatcher another:
-		this.endpoint.addHandler(Path.valueOf("/endpoint/message/gchat"),
-				new MessageHandlerI<EndpointMessageEvent>() {
-
-					@Override
-					public void handle(EndpointMessageEvent t) {
-						Path p = t.getPath();
-						MessageData md = t.getMessage();
-						MessageData md2 = new MessageData(md);
-						md2.setHeader(MessageData.HK_PATH, p.subPath(2).toString());
-						MsgWrapper mw = new MsgWrapper(md2);
-						GChatControlImpl.this.dispatcher1.handle(mw);
-					}
-				});
-
-		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf(new String[] { "gchat", "join" }), true, new JoinGMH(
-				this.container));
-		// strict mode
-		this.dispatcher1.addHandler(Path.valueOf("/gchat/message"), true, new MessageGMH(this.container));
+		// // side
+		// this.dispatcher1 = new MessageDispatcherImpl("gchat");
+		// // dispatcher another:
+		// this.endpoint.addHandler(Path.valueOf("/endpoint/message/gchat"),
+		// new MessageHandlerI<EndpointMessageEvent>() {
+		//
+		// @Override
+		// public void handle(EndpointMessageEvent t) {
+		// Path p = t.getPath();
+		// MessageData md = t.getMessage();
+		// MessageData md2 = new MessageData(md);
+		// md2.setHeader(MessageData.HK_PATH, p.subPath(2).toString());
+		// MsgWrapper mw = new MsgWrapper(md2);
+		// GChatControlImpl.this.dispatcher1.handle(mw);
+		// }
+		// });
+		//
+		// // strict mode
+		// this.dispatcher1.addHandler(Path.valueOf(new String[] { "gchat",
+		// "join" }), true, new JoinGMH(
+		// this.container));
+		// // strict mode
+		// this.dispatcher1.addHandler(Path.valueOf("/gchat/message"), true, new
+		// MessageGMH(this.container));
 
 	}
 

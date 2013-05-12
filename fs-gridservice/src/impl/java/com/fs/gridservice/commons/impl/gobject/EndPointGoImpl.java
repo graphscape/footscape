@@ -29,4 +29,13 @@ public class EndPointGoImpl extends EndPointGoSupport<CometI> {
 		this.target.sendMessage(msg);
 	}
 
+	/*
+	 * May 12, 2013
+	 */
+	@Override
+	public String getProtocol() {
+		//
+		return this.target.getProtocol();
+	}
+
 }

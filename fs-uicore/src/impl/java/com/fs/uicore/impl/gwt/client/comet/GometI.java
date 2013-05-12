@@ -11,23 +11,23 @@ import com.fs.uicore.api.gwt.client.HandlerI;
  * 
  */
 public interface GometI {
-
+	
 	public String getProtocol();
 	
-	public void open();
+	public void open(long timeoutMs);
 
 	public void close();
 
 	public void send(String jsS);
 
 	//regist listeners
-	public void onOpen(HandlerI<GometI> handler);
+	public void addOpenHandler(HandlerI<GometI> handler);
 
-	public void onClose(HandlerI<String> handler);
+	public void addCloseHandler(HandlerI<String> handler);
 
-	public void onError(HandlerI<String> handler);
+	public void addErrorHandler(HandlerI<String> handler);
 
-	public void onMessage(HandlerI<String> handler);
+	public void addMessageHandler(HandlerI<String> handler);
 
 	public boolean isOpen();
 

@@ -21,7 +21,9 @@ public interface EndPointI extends UiObjectI {
 
 	public void sendMessage(MsgWrapper req);
 
-	public void open(Address uri);
+	public Address getUri();
+	
+	public void open();
 
 	public void close();
 
@@ -36,5 +38,7 @@ public interface EndPointI extends UiObjectI {
 	public String getSessionId();
 
 	public UserInfo getUserInfo();
+
+	public void destroy();
 
 }

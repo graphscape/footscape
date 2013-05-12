@@ -37,7 +37,8 @@ public class CommetTerminalFactory extends TerminalFactory<CometI> {
 		setEPG(ws, wso);
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("onConnected,wsoId:" + wso.getId() + ",wsId:" + ws.getId());
+			LOG.debug("onConnected," + wso.getProtocol() + ",endpointId:" + wso.getId() + ",cometId:"
+					+ ws.getId());
 		}
 
 	}

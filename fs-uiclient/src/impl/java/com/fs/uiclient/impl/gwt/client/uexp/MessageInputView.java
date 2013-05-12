@@ -96,7 +96,7 @@ public class MessageInputView extends ViewSupport {
 	}
 
 	protected String getAccountId() {
-		return this.getClient(true).getEndpoint().getUserInfo().getAccountId();
+		return this.getClient(true).getEndpoint(true).getUserInfo().getAccountId();
 	}
 
 	
@@ -117,7 +117,7 @@ public class MessageInputView extends ViewSupport {
 		ObjectPropertiesData header = new ObjectPropertiesData();
 		req.setPayload("header", header);
 		req.setPayload("path", "/text-message");
-		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.getClient(true).getEndpoint(true).sendMessage(req);//
 		this.statement.setData(null);
 	}
 

@@ -12,87 +12,37 @@ import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
-import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.support.EndpointSupport;
 import com.fs.uicore.impl.gwt.client.comet.GometI;
-import com.fs.uicore.impl.gwt.client.comet.ajax.AjaxGomet;
-import com.fs.uicore.impl.gwt.client.comet.ws.WsGomet;
-import com.fs.uicore.impl.gwt.client.endpoint.CometPPs.ProtocolPort;
+import com.fs.uicore.impl.gwt.client.endpoint.protocols.AjaxProtocol;
+import com.fs.uicore.impl.gwt.client.endpoint.protocols.WsProtocolImpl;
 import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
  * 
  */
-public class EndpointWsImpl extends EndpointSupport {
+public class EndpointImpl extends EndpointSupport {
 
 	public static interface ProtocolI {
-		public GometI open(Address uri, boolean force);
-	}
-
-	public static class WsProtocol implements ProtocolI {
-
-		/*
-		 * May 9, 2013
-		 */
-		@Override
-		public GometI open(Address uri, boolean force) {
-			//
-
-			String uriS = uri.getUri();
-
-			WebSocketJSO wso = WebSocketJSO.newInstance(uriS, false);
-			if (wso == null) {
-				if (force) {
-					throw new UiException("browser not support ws");
-				}
-				return null;
-			}
-
-			WsGomet rt = new WsGomet(wso);
-			rt.open();
-			return rt;
-
-		}
-
-	}
-
-	public static class AjaxProtocol implements ProtocolI {
-
-		private ContainerI c;
-
-		public AjaxProtocol(ContainerI c) {
-			this.c = c;
-		}
-
-		/*
-		 * May 9, 2013
-		 */
-		@Override
-		public GometI open(Address uri, boolean force) {
-			//
-
-			AjaxGomet rt = new AjaxGomet(this.c, uri);
-			rt.open();
-			return rt;
-
-		}
-
+		public GometI createGomet(Address uri, boolean force);
 	}
 
 	private GometI socket;
 
 	private Map<String, ProtocolI> protocols;
+	
+	private long openTimeout = 3000;//
 
 	/**
 	 * @param md
 	 */
-	public EndpointWsImpl(ContainerI c,  MessageDispatcherI md) {
-		super(c, md, new MessageCacheImpl(c));
+	public EndpointImpl(ContainerI c, Address uri, MessageDispatcherI md) {
+		super(c, uri, md, new MessageCacheImpl(c));
 		this.protocols = new HashMap<String, ProtocolI>();
-		this.protocols.put("ws", new WsProtocol());
-		this.protocols.put("wss", new WsProtocol());
+		this.protocols.put("ws", new WsProtocolImpl());
+		this.protocols.put("wss", new WsProtocolImpl());
 
 		this.protocols.put("http", new AjaxProtocol(c));
 		this.protocols.put("https", new AjaxProtocol(c));
@@ -121,49 +71,50 @@ public class EndpointWsImpl extends EndpointSupport {
 	}
 
 	@Override
-	public void open(Address uri) {
-		super.open(uri);
+	public void open() {
+		super.open();
 
 		String proS = uri.getProtocol();
 
 		ProtocolI pro = this.protocols.get(proS);
 
-		this.socket = pro.open(uri, false);
+		this.socket = pro.createGomet(uri, false);
+		this.socket.open(this.openTimeout);
 		if (this.socket == null) {
 			Window.alert("protocol is not support:" + proS);
 		}
 
-		this.socket.onOpen(new HandlerI<GometI>() {
+		this.socket.addOpenHandler(new HandlerI<GometI>() {
 
 			@Override
 			public void handle(GometI t) {
 				//
-				EndpointWsImpl.this.onConnected();
+				EndpointImpl.this.onConnected();
 			}
 		});
-		this.socket.onMessage(new HandlerI<String>() {
+		this.socket.addMessageHandler(new HandlerI<String>() {
 
 			@Override
 			public void handle(String t) {
 				//
-				EndpointWsImpl.this.onMessage(t);
+				EndpointImpl.this.onMessage(t);
 
 			}
 		});
-		this.socket.onClose(new HandlerI<String>() {
+		this.socket.addCloseHandler(new HandlerI<String>() {
 
 			@Override
 			public void handle(String t) {
 				//
-				EndpointWsImpl.this.onClosed(t, "");
+				EndpointImpl.this.onClosed(t, "");
 			}
 		});
-		this.socket.onError(new HandlerI<String>() {
+		this.socket.addErrorHandler(new HandlerI<String>() {
 
 			@Override
 			public void handle(String t) {
 				//
-				EndpointWsImpl.this.onError(t);
+				EndpointImpl.this.onError(t);
 			}
 		});
 
@@ -187,5 +138,10 @@ public class EndpointWsImpl extends EndpointSupport {
 		this.socket.send(jsS);
 	}
 
+	@Override
+	public void destroy() {
+		this.parent(null);
+		this.eventDispatcher.cleanAllHanlders();
+	}
 
 }

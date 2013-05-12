@@ -57,7 +57,7 @@ public class ViewSupport extends LayoutSupport implements ViewI {
 	}
 
 	protected EndPointI getEndpoint() {
-		return this.getClient(true).getEndpoint();
+		return this.getClient(true).getEndpoint(true);
 	}
 
 	protected void sendMessage(MsgWrapper req) {

@@ -33,7 +33,7 @@ public class EndpointKeeper {
 	private String taskName = "endpoint-keeper";
 
 	public EndpointKeeper(UiClientI c) {
-		this.endpoint = c.getEndpoint();
+		this.endpoint = c.getEndpoint(true);
 		this.client = c;
 
 	}

@@ -27,6 +27,10 @@ public class EndpointEvent extends Event {
 		super(type, source, md);
 	}
 
+	public EndPointI getEndPoint() {
+		return (EndPointI) this.source;
+	}
+
 	public EndPointI getChannel() {
 		return (EndPointI) this.source;
 	}

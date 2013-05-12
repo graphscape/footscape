@@ -72,7 +72,6 @@ public abstract class TestBase extends GWTTestCase {
 		});
 		this.container = this.factory.getContainer();
 		this.client = this.container.get(UiClientI.class, true);
-		this.endpoint = this.client.getEndpoint();
 		if (this.start) {
 			this.client.start();//
 		}
@@ -82,7 +81,10 @@ public abstract class TestBase extends GWTTestCase {
 	protected void onEvent(Event e) {
 		System.out.println("TestBase.onEvent(),e:" + e);
 		if (e instanceof AfterClientStartEvent) {
-			this.onClientStart((AfterClientStartEvent) e);
+			AfterClientStartEvent afe = (AfterClientStartEvent)e;
+			this.endpoint = afe.getClient().getEndpoint(true);
+			this.onClientStart(afe);
+			
 		}
 	}
 

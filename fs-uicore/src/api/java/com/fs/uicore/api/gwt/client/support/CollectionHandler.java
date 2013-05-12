@@ -24,6 +24,12 @@ public class CollectionHandler<T> implements HandlerI<T> {
 	public int size() {
 		return this.handlers.size();
 	}
+	
+	public int cleanAll(){
+		int rt = this.handlers.size();
+		this.handlers.clear();
+		return rt;
+	}
 
 	/*
 	 * Dec 23, 2012

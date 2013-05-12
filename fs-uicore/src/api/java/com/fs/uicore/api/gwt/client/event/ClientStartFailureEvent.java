@@ -8,6 +8,7 @@ import com.fs.uicore.api.gwt.client.UiClientI;
 /**
  * @author wu
  * 
+ * 
  */
 public class ClientStartFailureEvent extends ClientEvent {
 	public static Type<ClientStartFailureEvent> TYPE = new Type<ClientStartFailureEvent>(

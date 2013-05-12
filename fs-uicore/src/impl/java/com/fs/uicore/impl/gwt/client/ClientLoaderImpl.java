@@ -17,6 +17,7 @@ import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
+import com.fs.uicore.api.gwt.client.event.ClientConnectLostEvent;
 import com.fs.uicore.api.gwt.client.event.ClientStartFailureEvent;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
 import com.google.gwt.http.client.UrlBuilder;
@@ -144,6 +145,14 @@ public class ClientLoaderImpl extends ClientLoader {
 				ClientLoaderImpl.this.onClientStartFailureEvent(container, t);
 			}
 		});
+		eb.addHandler(ClientConnectLostEvent.TYPE, new EventHandlerI<ClientConnectLostEvent>() {
+
+			@Override
+			public void handle(ClientConnectLostEvent t) {
+				//
+				ClientLoaderImpl.this.onClientConnectLostEvent(container, t);
+			}
+		});
 
 		factory.active(spis);
 
@@ -157,17 +166,24 @@ public class ClientLoaderImpl extends ClientLoader {
 	/**
 	 * Apr 21, 2013
 	 */
+	protected void onClientConnectLostEvent(ContainerI container, ClientConnectLostEvent t) {
+		this.retry("Connection to server is lost, retry?");
+	}
+
 	protected void onClientStartFailureEvent(ContainerI container, ClientStartFailureEvent t) {
+		this.retry("Client starting failed, retry?");
+	}
+
+	protected void retry(String msg) {
 		// disconnected to server,
 		// this.show();
-		boolean rec = Window.confirm("Client starting failed, retry?");
+		boolean rec = Window.confirm(msg);
 		if (rec) {
 
 			UrlBuilder urlB = Window.Location.createUrlBuilder();
 			String uri = urlB.buildString();
 			Window.Location.assign(uri);
 		}
-
 	}
 
 	/**

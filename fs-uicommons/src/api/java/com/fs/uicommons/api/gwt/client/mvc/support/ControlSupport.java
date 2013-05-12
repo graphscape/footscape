@@ -78,7 +78,7 @@ public class ControlSupport extends AbstractControl {
 	}
 
 	protected void sendMessage(MsgWrapper req) {
-		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.getClient(true).getEndpoint(true).sendMessage(req);//
 	}
 
 	protected FrwkViewI getFrwkView() {

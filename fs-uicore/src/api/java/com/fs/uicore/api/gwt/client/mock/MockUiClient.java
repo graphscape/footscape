@@ -26,12 +26,15 @@ public class MockUiClient extends UiObjectSupport {
 	protected EndPointI endpoint;
 
 	protected String email;
-
+	/**
+	 * Must after client is started.
+	 * @param client
+	 */
 	public MockUiClient(UiClientI client) {
 		super(client.getContainer());
 
 		this.client = client;
-		this.endpoint = this.client.getEndpoint();
+		this.endpoint = this.client.getEndpoint(true);
 		this.endpoint.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"),
 				new MessageHandlerI<MsgWrapper>() {
 

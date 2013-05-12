@@ -154,7 +154,6 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 		//
 		new DraggerImpl(c).parent(client);
 
-		this.activeMessageHandlers(c, client);
 		//
 
 		// controls
@@ -182,30 +181,17 @@ public class UiCommonsGPIImpl implements UiCommonsGPI {
 
 	}
 
-	public void activeMessageHandlers(ContainerI c, UiClientI client) {
-		EndPointI ep = client.getEndpoint();
-		ep.addHandler(Path.valueOf("/endpoint/message/signup/anonymous/success"),
-				new SignupAnonymousSuccessMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/success"), new LoginSuccessMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/terminal/auth/failure"), new LoginFailureMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/success"), new PasswordForgotSuccessMH(
-				c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/forgot/failure"), new PasswordForgotFailureMH(
-				c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/failure"), new PasswordResetFailureMH(c));
-		ep.addHandler(Path.valueOf("/endpoint/message/password/reset/success"), new PasswordResetSuccessMH(c));
-
-	}
+	
 
 	public void activeOtherHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
+		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));//NOTE
 		eb.addHandler(EndpointBondEvent.TYPE, new EndpointBondHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderItems.USER_LOGIN),
 				new LoginHeaderItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderItems.USER_LOGOUT),
 				new LogoutHeaderItemHandler(c));
 
-		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartedHandler(c));
 		eb.addHandler(UserLoginEvent.TYPE, new UserLoginHandler(c));
 		eb.addHandler(AutoLoginRequireEvent.TYPE, new AutoLoginHandler(c));
 	}

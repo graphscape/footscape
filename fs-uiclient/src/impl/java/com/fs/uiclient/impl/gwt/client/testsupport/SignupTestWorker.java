@@ -55,7 +55,7 @@ public abstract class SignupTestWorker extends AbstractTestWorker {
 	}
 
 	protected void doStart() {
-		UserInfo ui = this.endpoint.getUserInfo();
+		UserInfo ui = this.getUserInfo(true);
 		if (ui == null) {
 			Window.alert("anonymous user info is null");
 			return;

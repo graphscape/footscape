@@ -61,10 +61,10 @@ public abstract class TerminalFactory<T> {
 		// WS.
 		// and also the Client object is created and bind to this terminal.
 		// TODO move to a common place for exit logic
-
+		String pro = wso.getProtocol();
 		String tid = wso.getTerminalId(false);
 		if (tid == null) {//
-			LOG.warn("ws closed,but no terminal is bound with.");
+			LOG.warn("endpoint closed,pro:" + pro + ",but no terminal is bound with.");
 			return;
 		}
 
@@ -72,7 +72,7 @@ public abstract class TerminalFactory<T> {
 		TerminalGd t = tm.removeEntity(tid);
 		String cid = t.getClientId(false);
 		if (cid == null) {
-			LOG.warn("terminal:" + tid + " destroyed, but no client bound with.");
+			LOG.warn("terminal destroyed, but no client bound with" + ",pro:" + pro);
 		} else {
 			ClientManagerI cm = this.facade.getEntityManager(ClientManagerI.class);
 
@@ -80,7 +80,7 @@ public abstract class TerminalFactory<T> {
 		}
 		String sid = t.getSessionId(false);
 		if (sid == null) {
-			LOG.warn("terminal:" + tid + " destroyed,but no session bound with.");
+			LOG.warn("terminal:" + tid + " destroyed,but no session bound with" + ",pro:" + pro);
 		} else {
 			SessionManagerI sm = this.facade.getEntityManager(SessionManagerI.class);
 			SessionGd sg = sm.removeEntity(sid);
@@ -93,7 +93,7 @@ public abstract class TerminalFactory<T> {
 	public EndPointGoI getEndPointGo(T ws, boolean force) {
 		EndPointGoI rt = this.getEndPointGo(ws);
 		if (rt == null && force) {
-			throw new FsException("End point object not attached with the native comet session");
+			throw new FsException("End point object not attached with the native comet session:" + ws);
 		}
 		return rt;
 	}
@@ -129,10 +129,10 @@ public abstract class TerminalFactory<T> {
 			this.onClientIsReadyMessage(ws, msg);
 		} else {
 
-			String tid = this.getEndPointGo(ws).getTerminalId(true);
-			String cid = this.getEndPointGo(ws).getClientId(true);
-
-			this.onAppMessage(tid, cid, path, msg);
+			
+			EndPointGoI ego = this.getEndPointGo(ws);
+			
+			this.onAppMessage(ego,path, msg);
 		}
 	}
 
@@ -153,15 +153,16 @@ public abstract class TerminalFactory<T> {
 		this.sendReady(nativeTerminal, msg.getId(), t.getId(), cid);//
 	}
 
-	public void onAppMessage(String tId, String cid, Path path, MessageI msg) {
-
+	public void onAppMessage(EndPointGoI ego,Path path, MessageI msg) {
+		String tid = ego.getTerminalId(true);
+		String cid = ego.getClientId(true);
 		// NOTE,below is a new message,which payloaded the msg as nested.
 		// NOTE,the two message with same id.
 		// this is a event,of which the path is not same as the message from
 		// client, but a prefix on that
 		Path eventPath = Path.valueOf("events", path);
 
-		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(eventPath, tId, cid, msg);
+		TerminalMsgReceiveEW ew = TerminalMsgReceiveEW.valueOf(eventPath, tid, cid, msg);
 
 		// eventWrapper->target:EventGd->payload:Message
 		// RequestI->payload:EventGd->payload:Message
@@ -169,7 +170,7 @@ public abstract class TerminalFactory<T> {
 		ew.getTarget().setHeader(MessageI.HK_RESPONSE_ADDRESS, msg.getHeader(MessageI.HK_RESPONSE_ADDRESS));
 		ew.getTarget().setHeader(MessageI.HK_SILENCE, msg.getHeader(MessageI.HK_SILENCE));
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("new ws message event:" + ew.getTarget());
+			LOG.debug("new comet message event:" + ew.getTarget());
 		}
 		// send to global event queue
 		this.global.offer(ew.getTarget());

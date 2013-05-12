@@ -15,7 +15,7 @@ import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public abstract class AbstractGChatMH<T extends GChatMW> extends UiHandlerSupport implements
 		MessageHandlerI<MsgWrapper> {
@@ -37,7 +37,7 @@ public abstract class AbstractGChatMH<T extends GChatMW> extends UiHandlerSuppor
 	
 	protected UserInfo getUserInfo() {
 		
-		return this.getClient(true).getEndpoint().getUserInfo();
+		return null;//TODO this.getClient(true).getEndpoint().getUserInfo();
 	}
 
 	protected abstract T wrap(MessageData msg);

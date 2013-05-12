@@ -35,7 +35,7 @@ public final class ResetTestWorker extends AbstractTestWorker {
 		MsgWrapper req = new MsgWrapper(Path.valueOf("test/reset"));
 		req.setPayload("credential", "reset-test-worker/password");
 
-		this.endpoint.sendMessage(req);
+		//TODO this.endpoint.sendMessage(req);
 	}
 
 	@Override

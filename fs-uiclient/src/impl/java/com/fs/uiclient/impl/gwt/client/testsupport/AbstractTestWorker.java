@@ -32,8 +32,6 @@ public abstract class AbstractTestWorker extends TestWorker {
 
 	protected ControlManagerI manager;
 
-	protected EndPointI endpoint;
-
 	protected List<String> tasks = new ArrayList<String>();
 
 	protected void tryFinish(String item) {
@@ -65,14 +63,14 @@ public abstract class AbstractTestWorker extends TestWorker {
 				AbstractTestWorker.this.onEvent(t);//
 			}
 		});
-		this.endpoint = this.client.getEndpoint();
+	
 		this.manager = client.find(ControlManagerI.class, true);
 		this.mcontrol = client.find(MainControlI.class, true);
 
 	}
 
 	public UserInfo getUserInfo(boolean force) {
-		UserInfo ui = this.client.getEndpoint().getUserInfo();
+		UserInfo ui = this.client.getEndpoint(true).getUserInfo();
 		if (ui == null && force) {
 			throw new UiException("no user info");
 		}

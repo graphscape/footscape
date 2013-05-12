@@ -138,4 +138,12 @@ public class MessageDispatcherImpl implements MessageDispatcherI {
 		this.handle(mw);
 	}
 
+	/*
+	 *May 12, 2013
+	 */
+	@Override
+	public void cleanAllHanlders() {
+		this.exceptionHandlers.cleanAll();
+	}
+
 }

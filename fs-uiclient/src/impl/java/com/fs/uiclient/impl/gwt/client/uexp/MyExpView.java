@@ -140,7 +140,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	}
 
 	protected String getAccountId() {
-		return this.getClient(true).getEndpoint().getUserInfo().getAccountId();
+		return this.getClient(true).getEndpoint(true).getUserInfo().getAccountId();
 	}
 
 	// close
@@ -151,7 +151,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 
 		MsgWrapper req = new MsgWrapper("/expe/close");
 		req.setPayload("expId", this.expId);
-		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.getClient(true).getEndpoint(true).sendMessage(req);//
 	}
 
 	@Override

@@ -15,7 +15,7 @@ public interface UiClientI extends UiObjectI {
 
 	public String getClientId();
 
-	public EndPointI getEndpoint();
+	public EndPointI getEndpoint(boolean force);
 
 	public RootI getRoot();
 

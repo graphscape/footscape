@@ -101,7 +101,6 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		this.activeInstanceOfChecker(c);
 
 		this.activeActionHandlers(c, client);
-		this.activeMessageHandlers(c, client);
 		this.activeOtherHandlers(c, client);
 
 		this.activeControls(c, client);
@@ -113,6 +112,7 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 	 */
 	private void activeOtherHandlers(ContainerI c, UiClientI client) {
 		EventBusI eb = client.getEventBus(true);
+		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));// NOTE
 
 		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler(c));
 
@@ -128,15 +128,14 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new SearchHeaderItemHandler(c));
 
 		// bottom item
-		//eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
-		//		new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));
+		// eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
+		// new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONTACT),
 				new ContactUsBottomItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CONSOLE),
 				new OpenConsoleItemHandler(c));
 
 		// client start
-		eb.addHandler(AfterClientStartEvent.TYPE, new ClientStartEventHandler(c));
 
 	}
 
@@ -154,9 +153,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(Actions.A_PROFILE_INIT, new ProfileInitAP(c));
 		eb.addHandler(Actions.A_PROFILE_SUBMIT, new ProfileSubmitAP(c));
-		
+
 		eb.addHandler(Actions.A_CONTACTUS_SUBMIT, new ContactMsgSubmitAP(c));
-		
+
 		eb.addHandler(Actions.A_SIGNUP_SUBMIT, new SignupSubmitAP(c));
 
 		eb.addHandler(Actions.A_UEL_CREATE, new OpenExpEditAP(c));
@@ -165,68 +164,16 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		eb.addHandler(Actions.A_UEXPI_OPEN, new OpenMyExpAP(c));
 
 		eb.addHandler(UiClientConstants.AP_COOPER_CONFIRM, new CooperConfirmAP(c));
-		
+
 		eb.addHandler(UiClientConstants.AP_COOPER_REJECT, new CooperRejectAP(c));
-		
+
 		eb.addHandler(Actions.A_EXPS_GETUSERINFO, new GetUserInfoAP(c));
-		
+
 	}
 
 	/**
 	 * Jan 3, 2013
 	 */
-	private void activeMessageHandlers(ContainerI c, UiClientI client) {
-		EndPointI dis = client.getEndpoint();
-		dis.addHandler(Path.valueOf("/endpoint/message"), new SuccessOrFailureEventMH(c));
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/request/success"),
-				new CooperRequestSuccessMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/cooper/confirm/success"),
-				new CooperConfirmSuccessMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/expc/search/success"), new ExpConnectSearchMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/success"), new ExpEditSubmitSuccessMH(c));// create
-		dis.addHandler(Path.valueOf("/endpoint/message/expe/submit/failure"), new ExpEditSubmitFailureMH(c));// create
-		// exp
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/search/success"), new ExpSearchMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/exps/get/success"), new ExpGetMH(c));// search
-
-		dis.addHandler(Path.valueOf("/endpoint/message/expm/search/success"), new ExpMessageMH(c));// search
-		//
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-message-created"),
-				new ExpMessageCreatedNotifyMH(c));// search
-
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-connect-created"),
-				new ExpConnectCreatedNotifyMH(c));// search
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-closed"), new ExpClosedNotifyMH(c));
-		
-		dis.addHandler(Path.valueOf("/endpoint/message/notify/exp-deleted"), new ExpDeletedNotifyMH(c));
-
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/init/success"), new ProfileInitSuccessMH(c));//
-		
-		dis.addHandler(Path.valueOf("/endpoint/message/cttmsg/submit/success"), new ContactMsgSuccessMH(c));//
-		
-		dis.addHandler(Path.valueOf("/endpoint/message/cttmsg/submit/failure"), new ContactMsgFailureMH(c));//
-
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/failure"),
-				new ProfileSubmitFailureMH(c));//
-		dis.addHandler(Path.valueOf("/endpoint/message/profile/submit/success"),
-				new ProfileSubmitSuccessMH(c));//
-		// exp
-		// exp
-		dis.addHandler(Path.valueOf("/endpoint/message/uelist/refresh/success"), new UeListRefreshMH(c));// refresh
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/success"), new SignupSubmitSuccessMH(c));//
-		// succ
-		dis.addHandler(Path.valueOf("/endpoint/message/signup/submit/failure"), new SignupSubmitFailureMH(c));//
-
-		// open resource
-		dis.addHandler(Path.valueOf("/endpoint/message/resource/get/success"), new ResourceGetSuccessMH(c));//
-		
-		// userinfo
-		dis.addHandler(Path.valueOf("/endpoint/message/uinfo/get/success"), new UserInfoSuccessMH(c));//
-
-	}
 
 	private void activeControls(ContainerI c, UiClientI client) {
 		//

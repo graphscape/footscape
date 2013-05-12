@@ -27,5 +27,7 @@ public interface EndPointGoI extends GridedObjectI {
 	public String getTerminalId(boolean b);
 
 	public String getClientId(boolean b);
+	
+	public String getProtocol();
 
 }

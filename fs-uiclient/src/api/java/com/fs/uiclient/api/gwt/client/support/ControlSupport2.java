@@ -28,7 +28,7 @@ public class ControlSupport2 extends ControlSupport {
 	}
 
 	protected UserInfo getUserInfo() {
-		UserInfo rt = this.getClient(true).getEndpoint().getUserInfo();
+		UserInfo rt = this.getClient(true).getEndpoint(true).getUserInfo();
 		return rt;
 	}
 

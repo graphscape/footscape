@@ -26,7 +26,7 @@ public class UiHandlerSupport {
 	}
 
 	protected EndPointI getEndpoint() {
-		return this.getClient(true).getEndpoint();
+		return this.getClient(true).getEndpoint(true);
 	}
 
 	protected MsgWrapper newRequest(Path path) {
@@ -34,7 +34,7 @@ public class UiHandlerSupport {
 	}
 
 	protected void sendMessage(MsgWrapper req) {
-		this.getClient(true).getEndpoint().sendMessage(req);//
+		this.getClient(true).getEndpoint(true).sendMessage(req);//
 	}
 
 	protected ControlManagerI getControlManager() {

@@ -17,8 +17,6 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
-import com.fs.uicore.api.gwt.client.support.CollectionHandler;
-import com.fs.uicore.impl.gwt.client.comet.GometI;
 import com.fs.uicore.impl.gwt.client.comet.GometSupport;
 import com.fs.uicore.impl.gwt.client.comet.ajax.handlers.ClosedHandler;
 import com.fs.uicore.impl.gwt.client.comet.ajax.handlers.ConnectedHandler;
@@ -38,19 +36,7 @@ public class AjaxGomet extends GometSupport {
 	// See serverlet in webserver
 	public static final String HK_SESSION_ID = "x-fs-ajax-sessionId";
 
-	public static final String EVT_ONOPEN = "onopen";
-
-	public static final String EVT_ONCLOSE = "onclose";
-
-	public static final String EVT_ONERROR = "onerror";
-
-	public static final String EVT_ONMESSAGE = "onmessage";
-
-	private Address uri;
-
 	private Resource resource;
-
-	private JsonCallback jcb;
 
 	protected String sid;
 
@@ -60,8 +46,6 @@ public class AjaxGomet extends GometSupport {
 
 	// private Timer heartBeatTimer;
 
-	private Map<String, CollectionHandler> handlersMap;
-
 	private SchedulerI scheduler;
 
 	private int requests;
@@ -70,28 +54,10 @@ public class AjaxGomet extends GometSupport {
 	 * @param wso
 	 */
 	public AjaxGomet(ContainerI c, Address uri) {
-		super("ajax");
+		super(uri);
 		this.scheduler = c.get(SchedulerI.class, true);
-		this.uri = uri;
 		this.resource = new Resource(this.uri.getUri());
 
-		jcb = new JsonCallback() {
-
-			@Override
-			public void onFailure(Method method, Throwable exception) {
-				//
-				// TODO
-				AjaxGomet.this.onRequestFailure(method, exception); //
-			}
-
-			@Override
-			public void onSuccess(Method method, JSONValue response) {
-				//
-
-				AjaxGomet.this.onRequestSuccess(method, response);
-				//
-			}
-		};
 		//
 		this.handlers = new HashMap<Path, ClientAjaxHandler>();
 		this.handlers.put(AjaxMsg.CONNECT.getSubPath("success"), new ConnectedHandler(this));
@@ -100,12 +66,6 @@ public class AjaxGomet extends GometSupport {
 		this.handlers.put(AjaxMsg.ERROR, new ErrorHandler(this));
 
 		this.defaultHandler = new DefaultClientHandler(this);
-		// this.heartBeatTimer = new Timer();
-		this.handlersMap = new HashMap<String, CollectionHandler>();
-		this.handlersMap.put(EVT_ONCLOSE, new CollectionHandler());
-		this.handlersMap.put(EVT_ONOPEN, new CollectionHandler());
-		this.handlersMap.put(EVT_ONERROR, new CollectionHandler());
-		this.handlersMap.put(EVT_ONMESSAGE, new CollectionHandler());
 
 	}
 
@@ -113,9 +73,11 @@ public class AjaxGomet extends GometSupport {
 	 * May 9, 2013
 	 */
 	@Override
-	public void open() {
+	public void open(long timeout) {
+		super.open(timeout);
 		AjaxMsg am = new AjaxMsg(AjaxMsg.CONNECT);
 		this.doRequest(am);
+
 	}
 
 	protected void doRequest(AjaxMsg am) {
@@ -132,6 +94,25 @@ public class AjaxGomet extends GometSupport {
 		if (this.sid != null) {
 			m.header(HK_SESSION_ID, this.sid);//
 		}
+		final String sid = this.sid;
+
+		JsonCallback jcb = new JsonCallback() {
+
+			@Override
+			public void onFailure(Method method, Throwable exception) {
+				//
+				// TODO
+				AjaxGomet.this.onRequestFailure(sid, method, exception); //
+			}
+
+			@Override
+			public void onSuccess(Method method, JSONValue response) {
+				//
+
+				AjaxGomet.this.onRequestSuccess(sid, method, response);
+				//
+			}
+		};
 		m.send(jcb);
 	}
 
@@ -143,7 +124,7 @@ public class AjaxGomet extends GometSupport {
 	 * @param method
 	 * @param response
 	 */
-	protected void onRequestSuccess(Method method, JSONValue response) {
+	protected void onRequestSuccess(String sid, Method method, JSONValue response) {
 
 		this.requests--;
 		try {
@@ -157,27 +138,44 @@ public class AjaxGomet extends GometSupport {
 				this.onAjaxMsg(am2);
 			}
 		} finally {
-			this.checkToScheduleHeartBeat();
+
+			this.afterRequestSuccess(sid);
 		}
 	}
 
-	private void checkToScheduleHeartBeat() {
+	private void afterRequestSuccess(String oldSid) {
 		if (this.requests > 0) {
+			return;
+		}
+
+		final String fsid = this.sid;
+		if (oldSid == null && fsid != null) {// new session opened.
+
+		}
+
+		if (oldSid != null && fsid == null) {// old session closed.
+
+		}
+
+		if (fsid == null) {
+			// not opened successfully before,must not send heart beat.
+			// Just ignore?
 			return;
 		}
 		// only for the last request,
 		// no request for now, so do a new request
 		// immediately.
 		// each request finish,should schedule a new request immediately.
-//		if (!this.isOpen()) {
-//			// if not open for some error,how to do?
-//			return;
-//		}
+		// if (!this.isOpen()) {
+		// // if not open for some error,how to do?
+		// return;
+		// }
+
 		this.scheduler.scheduleTimer(0, new HandlerI<Object>() {
 
 			@Override
 			public void handle(Object t) {
-				AjaxGomet.this.sendHeartBeat();
+				AjaxGomet.this.doSendHeartBeat(fsid);
 			}
 		});
 		//
@@ -188,10 +186,10 @@ public class AjaxGomet extends GometSupport {
 	 * @param method
 	 * @param exception
 	 */
-	protected void onRequestFailure(Method method, Throwable exception) {
+	protected void onRequestFailure(String sid, Method method, Throwable exception) {
 		this.requests--;
 		String data = exception.getMessage();
-		this.dispatch(EVT_ONERROR, data);
+		this.errorHandlers.handle(data);
 	}
 
 	/**
@@ -223,7 +221,7 @@ public class AjaxGomet extends GometSupport {
 	/**
 	 * Only send if connected,else stop the heart beat.
 	 */
-	protected boolean sendHeartBeat() {
+	protected boolean doSendHeartBeat(String sid) {
 
 		AjaxMsg am = new AjaxMsg(AjaxMsg.HEART_BEAT);
 		this.doRequest(am);
@@ -243,7 +241,7 @@ public class AjaxGomet extends GometSupport {
 
 	public void doClose() {
 		this.sid = null;
-		this.dispatch(EVT_ONCLOSE, "");
+		this.closeHandlers.handle("closed");
 	}
 
 	/**
@@ -251,21 +249,21 @@ public class AjaxGomet extends GometSupport {
 	 */
 	public void conected(String sid2) {
 		this.sid = sid2;
-		this.dispatch(EVT_ONOPEN, this);
+		this.openHandlers.handle(this);
 	}
 
 	/**
 	 * 
 	 */
 	public void errorFromServer(String error, String msg) {
-		this.dispatch(EVT_ONERROR, error + "," + msg);
+		this.errorHandlers.handle(error + "," + msg);
 		if (AjaxMsg.ERROR_CODE_SESSION_NOTFOUND.equals(error)) {//
 			this.closeByError();
 		}
 	}
 
 	public void messageFromServer(String msg) {
-		this.dispatch(EVT_ONMESSAGE, msg);
+		this.msgHandlers.handle(msg);
 	}
 
 	/*
@@ -287,61 +285,6 @@ public class AjaxGomet extends GometSupport {
 		AjaxMsg am = new AjaxMsg(AjaxMsg.MESSAGE);
 		am.setProperty(AjaxMsg.PK_TEXTMESSAGE, jsS);
 		this.doRequest(am);
-	}
-
-	protected void dispatch(String event, Object data) {
-		CollectionHandler hs = this.getEventHandlers(event);
-		hs.handle(data);
-	}
-
-	protected CollectionHandler getEventHandlers(String event) {
-
-		CollectionHandler hs = this.handlersMap.get(event);
-		if (hs == null) {
-			throw new UiException("no this event:" + event);
-		}
-		return hs;
-	}
-
-	public void addEventHandler(String event, HandlerI h) {
-		CollectionHandler hs = this.getEventHandlers(event);
-		hs.addHandler(h);
-	}
-
-	/*
-	 * May 9, 2013
-	 */
-	@Override
-	public void onOpen(HandlerI<GometI> handler) {
-		//
-		this.addEventHandler(EVT_ONOPEN, handler);
-	}
-
-	/*
-	 * May 9, 2013
-	 */
-	@Override
-	public void onClose(HandlerI<String> handler) {
-		//
-		this.addEventHandler(EVT_ONCLOSE, handler);
-	}
-
-	/*
-	 * May 9, 2013
-	 */
-	@Override
-	public void onError(HandlerI<String> handler) {
-		//
-		this.addEventHandler(EVT_ONERROR, handler);
-	}
-
-	/*
-	 * May 9, 2013
-	 */
-	@Override
-	public void onMessage(HandlerI<String> handler) {
-		//
-		this.addEventHandler(EVT_ONMESSAGE, handler);
 	}
 
 	/*
