@@ -6,21 +6,18 @@ package com.fs.uicommons.impl.gwt.client;
 
 import com.fs.uicommons.api.gwt.client.UiCommonsConstants;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
-import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
-import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointMessageEvent;
 import com.fs.uicore.api.gwt.client.event.ScheduleEvent;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
-import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
- * @deprecated removed to uicore.
+ * @deprecated move to uicore.
  */
 public class EndpointKeeper {
 

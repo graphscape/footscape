@@ -48,6 +48,7 @@ public abstract class GometSupport implements GometI {
 				GometSupport.this.onError(t);
 			}
 		});
+
 	}
 
 	public String getProtocol() {
@@ -60,6 +61,14 @@ public abstract class GometSupport implements GometI {
 
 	public void setState(State s) {
 		this.state = s;
+	}
+
+	protected void opened() {
+		this.setState(OPENED);
+	}
+	
+	protected void closed(){
+		this.setState(CLOSED);
 	}
 
 	@Override

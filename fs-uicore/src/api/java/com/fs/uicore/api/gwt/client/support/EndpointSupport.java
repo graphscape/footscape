@@ -232,7 +232,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	}
 
 	protected void onError(String msg) {
-		LOG.error(getShortName() + ",onError,errorJSO:" + msg, null);
+		LOG.error(getShortName() + ",error msg:" + msg, null);
 		new EndpointErrorEvent(this, msg).dispatch();
 
 	}

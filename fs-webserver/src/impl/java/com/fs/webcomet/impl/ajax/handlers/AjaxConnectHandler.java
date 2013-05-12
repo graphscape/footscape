@@ -6,6 +6,9 @@ package com.fs.webcomet.impl.ajax.handlers;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fs.commons.api.session.SessionI;
 import com.fs.commons.api.session.SessionManagerI;
 import com.fs.webcomet.impl.ajax.AjaxComet;
@@ -21,8 +24,7 @@ import com.fs.webcomet.impl.ajax.AjaxMsgHandler;
  */
 public class AjaxConnectHandler extends AjaxMsgHandler {
 
-	private long timeout = 120 * 1000;// TODO
-
+	public static final Logger LOG = LoggerFactory.getLogger(AjaxConnectHandler.class);
 	/**
 	 * @param sessionMap
 	 * @param manager
@@ -38,11 +40,15 @@ public class AjaxConnectHandler extends AjaxMsgHandler {
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
 		//
+		String userAgent = amc.arc.req.getHeader("User-Agent");
+		LOG.info("connect:" + "user-agent:" + userAgent);
+		
 		// do connection
 		String sid = UUID.randomUUID().toString();
-		
+
 		AjaxComet as = new AjaxComet(sid);
-		SessionI s = this.sessionMap.createSession(sid, timeout);//
+
+		SessionI s = this.sessionMap.createSession(sid, amc.arc.timeoutForSession);//
 		s.setProperty(AjaxCometServlet.SK_COMET, as);
 
 		this.manager.onConnect(as);

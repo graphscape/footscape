@@ -15,7 +15,8 @@
 				<property name="class" value="com.fs.webcomet.impl.ajax.AjaxCometServlet" />
 			</prefix>
 			<config name="init-parameters">
-				
+				<heartBeatInterval value="$ws.heartBeatIntervalMs"/>
+				<maxIdleTime value="$ws.maxIdleTimeMs" />
 			</config>
 
 		</config>

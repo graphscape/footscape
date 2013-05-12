@@ -6,10 +6,10 @@ package com.fs.webcomet.impl.ajax;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
@@ -22,25 +22,28 @@ import com.fs.commons.api.lang.FsException;
  */
 public class AjaxRequestContext {
 
-	public int timeoutForFirstMessage = 120 * 1000;// 2 mins.
+	public int timeoutForSession;
+	public int timeoutForFirstMessage;// 2 mins.
 
-	public int timeoutForMoreMessage = 100;// should be short enough.
+	public int timeoutForMoreMessage = 1;// should be short enough.
 
+	public HttpServletRequest req;
 	public HttpServletResponse res;
 
 	public int totalMessages = 0;
 
 	public AjaxComet as;
 
-	private Thread fetchingThread;
-
 	/**
 	 * @param req2
 	 * @param res2
 	 */
-	public AjaxRequestContext(AjaxComet as, HttpServletResponse res2) {
+	public AjaxRequestContext(int timeoutForSession,int heartBeatInterval, AjaxComet as, HttpServletRequest req, HttpServletResponse res2) {
+		this.req = req;
 		this.res = res2;
 		this.as = as;
+		this.timeoutForSession = timeoutForSession;
+		this.timeoutForFirstMessage = heartBeatInterval;
 	}
 
 	/**
@@ -62,7 +65,7 @@ public class AjaxRequestContext {
 		am.setProperty(AjaxMsg.PK_ERROR_MSG, msg);
 		this.write(am);
 	}
-	
+
 	/**
 	 * May 8, 2013
 	 */
@@ -117,7 +120,7 @@ public class AjaxRequestContext {
 			this.write(msg);
 
 		}
-		
+
 	}
 
 	public void writeMessageStart() {

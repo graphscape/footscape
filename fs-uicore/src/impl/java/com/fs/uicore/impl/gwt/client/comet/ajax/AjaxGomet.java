@@ -7,6 +7,7 @@ package com.fs.uicore.impl.gwt.client.comet.ajax;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.fusesource.restygwt.client.FailedStatusCodeException;
 import org.fusesource.restygwt.client.JsonCallback;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.Resource;
@@ -16,7 +17,10 @@ import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.endpoint.Address;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
+import com.fs.uicore.api.gwt.client.util.ExceptionUtil;
 import com.fs.uicore.impl.gwt.client.comet.GometSupport;
 import com.fs.uicore.impl.gwt.client.comet.ajax.handlers.ClosedHandler;
 import com.fs.uicore.impl.gwt.client.comet.ajax.handlers.ConnectedHandler;
@@ -32,6 +36,8 @@ import com.google.gwt.json.client.JSONValue;
  * 
  */
 public class AjaxGomet extends GometSupport {
+
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(AjaxGomet.class);
 
 	// See serverlet in webserver
 	public static final String HK_SESSION_ID = "x-fs-ajax-sessionId";
@@ -188,8 +194,24 @@ public class AjaxGomet extends GometSupport {
 	 */
 	protected void onRequestFailure(String sid, Method method, Throwable exception) {
 		this.requests--;
-		String data = exception.getMessage();
+
+		String data = "request failure,sid:" + sid;
+
+		if (exception instanceof FailedStatusCodeException) {
+			FailedStatusCodeException fsce = (FailedStatusCodeException) exception;
+			int code = fsce.getStatusCode();
+			data += ",failed state code:" + code;
+		}
+		data += ",exceptions:\n" + ExceptionUtil.getStacktraceAsString(exception, "\n");
+
 		this.errorHandlers.handle(data);
+
+		// close connection?
+		// TODO if the browser not allow 2 connections,the second request my
+		// report failure here, this should be resolved by some trick.
+		// Then, we should provide another solution?????
+
+		this.closeByError();
 	}
 
 	/**
@@ -228,6 +250,10 @@ public class AjaxGomet extends GometSupport {
 		return true;
 	}
 
+	public void closeByRequestFailure() {
+		this.doClose();
+	}
+
 	public void closeByError() {
 		this.doClose();
 	}
@@ -241,6 +267,7 @@ public class AjaxGomet extends GometSupport {
 
 	public void doClose() {
 		this.sid = null;
+		this.closed();
 		this.closeHandlers.handle("closed");
 	}
 
@@ -248,6 +275,7 @@ public class AjaxGomet extends GometSupport {
 	 * @param sid2
 	 */
 	public void conected(String sid2) {
+		this.opened();
 		this.sid = sid2;
 		this.openHandlers.handle(this);
 	}

@@ -20,5 +20,5 @@ public class AjaxCometManagerImpl extends CometManagerSupport {
 	public AjaxCometManagerImpl(CometProtocolI cp,String name) {
 		super(cp,name);
 	}
-
+	
 }

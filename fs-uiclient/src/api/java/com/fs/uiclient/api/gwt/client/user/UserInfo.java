@@ -32,11 +32,17 @@ public class UserInfo extends PropertiesData<Object> {
 	}
 
 	public DateData getBirthDay() {
-		return (DateData) this.getProperty("birthDay", true);
+		return (DateData) this.getProperty("birthDay", false);//may not known
+		
 	}
 
 	public int getAge() {
-		return new Date().getYear() - new Date(this.getBirthDay().getValue()).getYear();
+		DateData bd = this.getBirthDay();
+		if(bd == null){
+			return -1;
+		}
+		
+		return new Date().getYear() - new Date(bd.getValue()).getYear();
 	}
 
 	/**

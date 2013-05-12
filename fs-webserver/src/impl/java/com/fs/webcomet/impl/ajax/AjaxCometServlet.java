@@ -15,6 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.websocket.api.WebSocketBehavior;
+import org.eclipse.jetty.websocket.api.WebSocketPolicy;
+import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +56,36 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	protected AjaxMsgHandler defaultAjaxMsgHandler;
 
 	protected SessionManagerI sessions;
+
+	protected long maxIdleTimeout;// default
+
+	public String getInitParameter(String key, boolean force) {
+		String v = this.getInitParameter(key);
+		if (v == null && force) {
+			throw new FsException("parameter:" + key + " not found for servlet:" + this);
+		}
+		return v;
+	}
+
+	@Override
+	public void init() throws ServletException {
+		try {
+			String bs = getInitParameter("inputBufferSize");
+			WebSocketPolicy policy = new WebSocketPolicy(WebSocketBehavior.SERVER);
+			if (bs != null) {
+				policy.setInputBufferSize(Integer.parseInt(bs));
+			}
+
+			{
+				String max = getInitParameter("maxIdleTime", true);
+				this.maxIdleTimeout = (Integer.parseInt(max));
+				LOG.info("maxIdleTime:" + max);//
+			}
+
+		} catch (Exception x) {
+			throw new ServletException(x);
+		}
+	}
 
 	/*
 	 * Dec 15, 2012
@@ -107,7 +140,13 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			}
 		}
 
-		AjaxRequestContext arc = new AjaxRequestContext(as, res);
+		// NOTE, the timeout for first message should be long enough,
+		//
+		// it's rely on the client's applevel to keep the connection open, then
+		// it will send applevel's heartbeat.
+		//
+		AjaxRequestContext arc = new AjaxRequestContext((int) this.maxIdleTimeout, (int) this.maxIdleTimeout,
+				as, req, res);
 		// NOTE write to response will cause the EOF of the reader?
 		if (as != null) {
 			as.startRequest(arc);// may blocking if has old request .
@@ -116,7 +155,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 
 			arc.writeMessageStart();
 			try {
-				this.doRequest(sid,req, arc);
+				this.doRequest(sid, req, arc);
 				arc.tryFetchMessage();
 			} finally {
 				arc.writeMessageEnd();
@@ -130,14 +169,14 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		}
 	}
 
-	protected void doRequest(String sid, HttpServletRequest req, AjaxRequestContext arc) throws ServletException,
-			IOException {
+	protected void doRequest(String sid, HttpServletRequest req, AjaxRequestContext arc)
+			throws ServletException, IOException {
 		// virtual terminal id
-		if(sid != null && arc.as == null){//missing session
-			arc.writeError(AjaxMsg.ERROR_CODE_SESSION_NOTFOUND,"yes,not found!");
+		if (sid != null && arc.as == null) {// missing session
+			arc.writeError(AjaxMsg.ERROR_CODE_SESSION_NOTFOUND, "yes,not found!");
 			return;
 		}
-		
+
 		Reader reader = req.getReader();
 		List<AjaxMsg> amL = AjaxMsg.tryParseMsgArray(reader);
 
@@ -165,6 +204,9 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 	 * @return
 	 */
 	public AjaxCometManagerImpl attachManager(AjaxCometProtocol ap, String name) {
+
+		// NOTE,init have not yet called for now.
+
 		SessionServerI ss = this.container.find(SessionServerI.class, true);
 		this.sessions = ss.createManager("ajax-servelt-for-manager-" + name);
 
@@ -178,7 +220,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		this.handlers.put(AjaxMsg.CONNECT, new AjaxConnectHandler(this.sessions, this.manager));
 		this.handlers.put(AjaxMsg.MESSAGE, new AjaxMessageHandler(this.sessions, this.manager));
 		this.handlers.put(AjaxMsg.HEART_BEAT, new AjaxHeartBeatHandler(this.sessions, this.manager));
-
+		//
 		return rt;
 
 	}
