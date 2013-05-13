@@ -176,7 +176,7 @@ public class ClientLoaderImpl extends ClientLoader {
 
 	protected void retry(String msg) {
 		// disconnected to server,
-		// this.show();
+		this.show();
 		boolean rec = Window.confirm(msg);
 		if (rec) {
 

@@ -12,8 +12,8 @@
 				<property name="class" value="com.fs.websocket.impl.jetty.JettyWsServletImpl" />
 			</prefix>
 			<config name="init-parameters">
-				<maxMessageSize value="$ws.maxMessageSize" />
-				<maxIdleTime value="$ws.maxIdleTimeMs" />
+				<maxMessageSize value="$comet.maxMessageSize" />
+				<maxIdleTime value="$comet.maxIdleTimeMs" />
 			</config>
 
 		</config>

@@ -15,8 +15,10 @@
 				<property name="class" value="com.fs.webcomet.impl.ajax.AjaxCometServlet" />
 			</prefix>
 			<config name="init-parameters">
-				<heartBeatInterval value="$ws.heartBeatIntervalMs"/>
-				<maxIdleTime value="$ws.maxIdleTimeMs" />
+				<!-- The default setting for long-live request to wait the first msg. -->
+				<!-- Client should be able to provide this argument when request? -->
+				<timeoutForFirstMessage value="$ajax.timeoutForFirstMessage" />
+				<maxIdleTime value="$comet.maxIdleTimeMs" />
 			</config>
 
 		</config>

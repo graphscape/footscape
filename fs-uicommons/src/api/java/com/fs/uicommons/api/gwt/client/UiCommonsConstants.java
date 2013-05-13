@@ -19,7 +19,7 @@ public class UiCommonsConstants {
 
 	public static final Path PASSWORDRESET_VIEW = Path.valueOf("password-reset");
 
-	public static String RK_WS_HEARTBEATINTERVAL = "wsHeartBeatIntervalMs";
+	public static String RK_COMET_HEARTBEATINTERVAL = "cometHeartBeatIntervalMs";
 
 	public static final int MENU_HIDE_TIMEOUT_MS = 100;
 	// client parameters

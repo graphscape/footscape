@@ -45,7 +45,7 @@ public class EndpointKeeper {
 		});
 
 
-		int hbI = this.client.getParameterAsInt(UiCommonsConstants.RK_WS_HEARTBEATINTERVAL, -1);
+		int hbI = this.client.getParameterAsInt(UiCommonsConstants.RK_COMET_HEARTBEATINTERVAL, -1);
 
 		if (hbI > 5 * 1000) {// must longer than 5 second
 

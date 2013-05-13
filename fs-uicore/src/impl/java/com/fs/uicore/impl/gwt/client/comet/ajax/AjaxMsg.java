@@ -30,6 +30,8 @@ public class AjaxMsg extends MapProperties<String> {
 
 	public static final String PK_PATH = "_path";
 
+	public static final String PK_TIMESTAMP = "_timestamp";
+
 	public static final String PK_SESSION_ID = "_session_id";
 
 	public static final String PK_TEXTMESSAGE = "_text_message";
@@ -58,6 +60,8 @@ public class AjaxMsg extends MapProperties<String> {
 		if (sid != null) {
 			this.setProperty(PK_SESSION_ID, sid);
 		}
+		long now = System.currentTimeMillis();
+		this.setProperty(PK_TIMESTAMP, now + "");
 	}
 
 	public boolean isPath(Path path) {

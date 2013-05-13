@@ -59,6 +59,8 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 
 	protected long maxIdleTimeout;// default
 
+	protected long timeoutForFirstMessage;
+
 	public String getInitParameter(String key, boolean force) {
 		String v = this.getInitParameter(key);
 		if (v == null && force) {
@@ -80,6 +82,11 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 				String max = getInitParameter("maxIdleTime", true);
 				this.maxIdleTimeout = (Integer.parseInt(max));
 				LOG.info("maxIdleTime:" + max);//
+			}
+			{
+				String max = getInitParameter("timeoutForFirstMessage", true);
+				this.timeoutForFirstMessage = (Integer.parseInt(max));
+				LOG.info("timeoutForFirstMessage:" + max);//
 			}
 
 		} catch (Exception x) {
@@ -119,13 +126,13 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		res.setContentType("application/json; charset=UTF-8");
 		// if reader cannot read, check Content-Length
 		// http://osdir.com/ml/java.jetty.general/2002-12/msg00198.html
-		if (false) {// debug
-			String str = StringUtil.readAsString(reader);
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("request text:" + str);
-			}
-			reader = new StringReader(str);
-		}
+		// if (false) {// debug
+		// String str = StringUtil.readAsString(reader);
+		// if (LOG.isDebugEnabled()) {
+		// LOG.debug("request text:" + str);
+		// }
+		// reader = new StringReader(str);
+		// }
 
 		// find the session
 		String sid = req.getHeader(HK_SESSION_ID);
@@ -145,8 +152,8 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 		// it's rely on the client's applevel to keep the connection open, then
 		// it will send applevel's heartbeat.
 		//
-		AjaxRequestContext arc = new AjaxRequestContext((int) this.maxIdleTimeout, (int) this.maxIdleTimeout,
-				as, req, res);
+		AjaxRequestContext arc = new AjaxRequestContext((int) this.maxIdleTimeout,
+				(int) this.timeoutForFirstMessage, as, req, res);
 		// NOTE write to response will cause the EOF of the reader?
 		if (as != null) {
 			as.startRequest(arc);// may blocking if has old request .

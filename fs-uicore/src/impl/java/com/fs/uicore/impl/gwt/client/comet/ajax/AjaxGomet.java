@@ -86,11 +86,11 @@ public class AjaxGomet extends GometSupport {
 
 	}
 
-	protected void doRequest(AjaxMsg am) {
+	protected void doRequest(final AjaxMsg am) {
 		this.requests++;
 		JSONArray jsa = new JSONArray();
 		jsa.set(0, am.getAsJsonObject());
-		String text = jsa.toString();
+		final String text = jsa.toString();
 		Method m = this.resource.post().text(text);
 		// Content-Type: text/plain; charset=ISO-8859-1
 		m.header("Content-Type", "application/json; charset=UTF-8");
@@ -108,14 +108,14 @@ public class AjaxGomet extends GometSupport {
 			public void onFailure(Method method, Throwable exception) {
 				//
 				// TODO
-				AjaxGomet.this.onRequestFailure(sid, method, exception); //
+				AjaxGomet.this.onRequestFailure(am, method, exception); //
 			}
 
 			@Override
 			public void onSuccess(Method method, JSONValue response) {
 				//
 
-				AjaxGomet.this.onRequestSuccess(sid, method, response);
+				AjaxGomet.this.onRequestSuccess(am, method, response);
 				//
 			}
 		};
@@ -130,7 +130,7 @@ public class AjaxGomet extends GometSupport {
 	 * @param method
 	 * @param response
 	 */
-	protected void onRequestSuccess(String sid, Method method, JSONValue response) {
+	protected void onRequestSuccess(AjaxMsg am, Method method, JSONValue response) {
 
 		this.requests--;
 		try {
@@ -145,15 +145,16 @@ public class AjaxGomet extends GometSupport {
 			}
 		} finally {
 
-			this.afterRequestSuccess(sid);
+			this.afterRequestSuccess(am);
 		}
 	}
 
-	private void afterRequestSuccess(String oldSid) {
+	private void afterRequestSuccess(AjaxMsg am) {
 		if (this.requests > 0) {
 			return;
 		}
 
+		String oldSid = am.getSessionId(false);
 		final String fsid = this.sid;
 		if (oldSid == null && fsid != null) {// new session opened.
 
@@ -192,10 +193,10 @@ public class AjaxGomet extends GometSupport {
 	 * @param method
 	 * @param exception
 	 */
-	protected void onRequestFailure(String sid, Method method, Throwable exception) {
+	protected void onRequestFailure(AjaxMsg req, Method method, Throwable exception) {
 		this.requests--;
 
-		String data = "request failure,sid:" + sid;
+		String data = "request failure for request:" + req + ",now:" + System.currentTimeMillis();
 
 		if (exception instanceof FailedStatusCodeException) {
 			FailedStatusCodeException fsce = (FailedStatusCodeException) exception;
@@ -206,10 +207,7 @@ public class AjaxGomet extends GometSupport {
 
 		this.errorHandlers.handle(data);
 
-		// close connection?
-		// TODO if the browser not allow 2 connections,the second request my
-		// report failure here, this should be resolved by some trick.
-		// Then, we should provide another solution?????
+		// HOW this happen?,may be because the network issue?
 
 		this.closeByError();
 	}

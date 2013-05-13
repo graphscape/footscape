@@ -155,8 +155,14 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 	}
 
 	private String getResetUrl(String pid) {
+		String rt = this.rootUrl;
+		if (rt.contains("?")) {
+			rt += "&";
+		} else {
+			rt += "?";
+		}
 
-		String rt = this.rootUrl + "&action=pf&pfId=" + pid;
+		rt += "action=pf&pfId=" + pid;
 
 		return rt;
 	}

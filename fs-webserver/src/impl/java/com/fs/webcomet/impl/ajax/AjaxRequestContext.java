@@ -22,7 +22,9 @@ import com.fs.commons.api.lang.FsException;
  */
 public class AjaxRequestContext {
 
+	@Deprecated //move to servlet.
 	public int timeoutForSession;
+	
 	public int timeoutForFirstMessage;// 2 mins.
 
 	public int timeoutForMoreMessage = 1;// should be short enough.
@@ -38,12 +40,12 @@ public class AjaxRequestContext {
 	 * @param req2
 	 * @param res2
 	 */
-	public AjaxRequestContext(int timeoutForSession,int heartBeatInterval, AjaxComet as, HttpServletRequest req, HttpServletResponse res2) {
+	public AjaxRequestContext(int timeoutForSession,int timeoutForFirstMessage, AjaxComet as, HttpServletRequest req, HttpServletResponse res2) {
 		this.req = req;
 		this.res = res2;
 		this.as = as;
 		this.timeoutForSession = timeoutForSession;
-		this.timeoutForFirstMessage = heartBeatInterval;
+		this.timeoutForFirstMessage = timeoutForFirstMessage;
 	}
 
 	/**
