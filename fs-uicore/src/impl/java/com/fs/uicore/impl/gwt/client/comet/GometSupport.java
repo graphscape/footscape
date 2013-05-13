@@ -22,6 +22,8 @@ public abstract class GometSupport implements GometI {
 
 	public static final State OPENED = State.valueOf("opened");
 
+	public static final State CLOSING = State.valueOf("closing");
+	
 	public static final State CLOSED = State.valueOf("closed");
 
 	protected String protocol;

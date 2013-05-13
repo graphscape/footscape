@@ -29,10 +29,13 @@ public class AjaxCloseHandler extends AjaxMsgHandler {
 	 */
 	@Override
 	public void handlerInternal(AjaxMsgContext amc) {
+		amc.arc.writeCloseSuccess();
 		if (amc.arc.as == null) {
 			// ignore the session already closed.
 			return;
 		}
+		//TODO remove the session from manager.
+		//this.sessionMap.
 		// fetch?
 		// this.fetchMessage(amc);
 		this.manager.onClose(amc.arc.as, 0, "");

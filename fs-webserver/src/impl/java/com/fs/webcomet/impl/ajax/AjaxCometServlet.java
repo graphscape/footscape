@@ -180,6 +180,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			throws ServletException, IOException {
 		// virtual terminal id
 		if (sid != null && arc.as == null) {// missing session
+			//
 			arc.writeError(AjaxMsg.ERROR_CODE_SESSION_NOTFOUND, "yes,not found!");
 			return;
 		}

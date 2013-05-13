@@ -20,6 +20,7 @@ import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
 import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
+import com.fs.uicore.api.gwt.client.state.State;
 import com.fs.uicore.api.gwt.client.util.ExceptionUtil;
 import com.fs.uicore.impl.gwt.client.comet.GometSupport;
 import com.fs.uicore.impl.gwt.client.comet.ajax.handlers.ClosedHandler;
@@ -150,7 +151,14 @@ public class AjaxGomet extends GometSupport {
 	}
 
 	private void afterRequestSuccess(AjaxMsg am) {
-		if (this.requests > 0) {
+		if (this.requests > 0) {// only schedule after the last request is
+								// responsed.
+			return;
+		}
+		
+		if (this.isState(CLOSED) || this.isState(CLOSING)) {
+			// if is closing or closed, no more things to do.
+			//the close success handler will call the tryClose() method.
 			return;
 		}
 
@@ -164,7 +172,7 @@ public class AjaxGomet extends GometSupport {
 
 		}
 
-		if (fsid == null) {
+		if (fsid == null) {//is openning
 			// not opened successfully before,must not send heart beat.
 			// Just ignore?
 			return;
@@ -208,8 +216,8 @@ public class AjaxGomet extends GometSupport {
 		this.errorHandlers.handle(data);
 
 		// HOW this happen?,may be because the network issue?
-
-		this.closeByError();
+		
+		this.tryCloseByError();
 	}
 
 	/**
@@ -248,22 +256,22 @@ public class AjaxGomet extends GometSupport {
 		return true;
 	}
 
-	public void closeByRequestFailure() {
-		this.doClose();
-	}
-
-	public void closeByError() {
-		this.doClose();
+	public void tryCloseByError() {
+		this.tryClose();
 	}
 
 	/**
 	 * 
 	 */
-	public void closedByServer() {
-		this.doClose();
+	public void tryClosedByServer() {
+		this.tryClose();
 	}
 
-	public void doClose() {
+	public void tryClose() {
+		if(this.isState(CLOSED)){
+			//already closed,not raise event again.
+			return;//duplicated close?
+		}
 		this.sid = null;
 		this.closed();
 		this.closeHandlers.handle("closed");
@@ -284,7 +292,7 @@ public class AjaxGomet extends GometSupport {
 	public void errorFromServer(String error, String msg) {
 		this.errorHandlers.handle(error + "," + msg);
 		if (AjaxMsg.ERROR_CODE_SESSION_NOTFOUND.equals(error)) {//
-			this.closeByError();
+			this.tryCloseByError();
 		}
 	}
 
@@ -298,6 +306,11 @@ public class AjaxGomet extends GometSupport {
 	@Override
 	public void close() {
 		//
+		if(!this.isState(OPENED)){
+			throw new UiException("not openned");
+		}
+		this.state = CLOSING;
+		// TODO send a async message to server?
 		AjaxMsg am = new AjaxMsg(AjaxMsg.CLOSE);
 		this.doRequest(am);
 	}

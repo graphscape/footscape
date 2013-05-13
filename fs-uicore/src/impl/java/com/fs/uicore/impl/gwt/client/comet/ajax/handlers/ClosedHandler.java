@@ -25,7 +25,7 @@ public class ClosedHandler extends ClientAjaxHandler{
 	 */
 	@Override
 	public void handle(ClientAjaxMsgContext amc) {
-		this.client.closedByServer();
+		this.client.tryClosedByServer();
 	}
 
 }
