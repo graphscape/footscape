@@ -55,6 +55,8 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 	protected ExpLabelView myexp;// TODO view
 
+	protected boolean noMore;
+
 	/**
 	 * @param ele
 	 * @param ctn
@@ -104,7 +106,6 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		this.list.parent(this);
 
 		this.more = this.factory.create(ButtonI.class);
-		this.more.setText(true, UiClientConstants.AP_EXPS_MORE.toString());
 		this.more.getElement().addClassName("more");
 
 		this.more.parent(this);
@@ -115,6 +116,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 				ExpSearchView.this.onMore();
 			}
 		});
+		this.setNoMore(false);
 		// listen window scroll event to trigger the more button.
 		WindowI window = this.container.get(WindowI.class, true);
 		window.addScrollHandler(new EventHandlerI<ScrollEvent>() {
@@ -129,15 +131,19 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	}
 
 	protected void onWindowScroll(ScrollEvent se) {
+
+		if (this.noMore) {
+			return;
+		}
+
 		Rectangle rect = this.more.getElementWrapper().getBoundingClientRect();
 		Point tl = rect.getTopLeft();
 		int top = rect.getTopY();
-		
 
 		WindowI w = (WindowI) se.getSource();
 		int wheight = Window.getClientHeight();
 
-		if (top < wheight) {//visible of button
+		if (top < wheight) {// visible of button
 			this.onMore();
 		}
 
@@ -202,6 +208,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 	public void reset() {
 		this.model.reset();
 		this.list.clean(ExpItemView.class);
+		this.setNoMore(false);
 	}
 
 	/*
@@ -260,6 +267,18 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		//
 		this.reset();//
 		this.dispatchActionEvent(Actions.A_EXPS_SEARCH);
+	}
+
+	@Override
+	public void noMore() {
+		this.setNoMore(true);
+	}
+
+	public void setNoMore(boolean nomore) {
+		this.noMore = nomore;
+		this.more.disable(nomore);
+		String text = this.noMore ? "/action/no-more" : UiClientConstants.AP_EXPS_MORE.toString();
+		this.more.setText(true, text);
 	}
 
 }

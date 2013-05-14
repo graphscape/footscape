@@ -59,4 +59,9 @@ public class UiType<T> {
 	public String toString() {
 		return "idx:" + this.index + ",parent:" + parent;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj == this;
+	}
 }

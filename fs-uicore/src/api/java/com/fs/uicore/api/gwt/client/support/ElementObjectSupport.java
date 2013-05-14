@@ -6,11 +6,17 @@ package com.fs.uicore.api.gwt.client.support;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.GwtHandlerI;
 import com.fs.uicore.api.gwt.client.UiException;
+import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
+import com.fs.uicore.api.gwt.client.core.Event;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
+import com.fs.uicore.api.gwt.client.core.Event.Type;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
 import com.fs.uicore.api.gwt.client.core.WidgetI;
 import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
+import com.fs.uicore.api.gwt.client.event.ScrollEvent;
+import com.fs.uicore.api.gwt.client.gwthandlers.GwtScrollHandler;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
@@ -38,9 +44,13 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 										// opancity=1.0;
 
 	protected boolean visible = true;
+	
+	protected GwtScrollHandler scrollHandler;
 
 	protected static final String HK_MASTER = "_master";// helper for the top
 														// element
+	
+	
 
 	public ElementObjectSupport(ContainerI c, Element element) {
 		this(c, null, element);
@@ -197,6 +207,8 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 		}
 		this.opacities.append(ew);//
 	}
+	
+	
 
 	@Override
 	public void setVisible(boolean v) {
@@ -218,5 +230,28 @@ public abstract class ElementObjectSupport extends UiObjectSupport implements El
 	public static native void _setVisible(Element elem, boolean visible) /*-{
 																			elem.style.display = visible ? '' : 'none';
 																			}-*/;
+
+	/*
+	 *May 14, 2013
+	 */
+	@Override
+	public <E extends Event> void addHandler(Type<E> ec, final EventHandlerI<E> l) {
+		super.addHandler(ec, l);
+		//TODO toward a more generic method. sink event?
+		if(this.scrollHandler == null && ScrollEvent.TYPE.equals(ec)){//
+			
+			this.scrollHandler = new GwtScrollHandler(){
+
+				@Override
+				protected void handleInternal(com.google.gwt.event.dom.client.ScrollEvent evt) {
+					Point topLeft = Point.valueOf(0, 0);
+					ScrollEvent se = new ScrollEvent(topLeft,ElementObjectSupport.this);
+					se.dispatch();
+				}
+			};
+			
+			this.addGwtEventHandler(com.google.gwt.event.dom.client.ScrollEvent.getType(), this.scrollHandler);
+		}
+	}
 
 }

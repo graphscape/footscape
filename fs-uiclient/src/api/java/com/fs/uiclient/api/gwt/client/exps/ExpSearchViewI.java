@@ -26,5 +26,7 @@ public interface ExpSearchViewI extends ViewI {
 	public String getPhrase(boolean b);
 
 	public int getSize();
+	
+	public void noMore();
 
 }

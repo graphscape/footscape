@@ -311,7 +311,7 @@ public class ElementWrapper {
 
 	public Rectangle getBoundingClientRect() {
 		RectJSO rjs = getBoundingClientRect(this.element);
-		Point topLeft = Point.valueOf(rjs.getTop(), rjs.getLeft());
+		Point topLeft = Point.valueOf(rjs.getLeft(), rjs.getTop());
 		Size size = Size.valueOf(rjs.getWidth(), rjs.getHeight());
 
 		Rectangle rt = new Rectangle(topLeft, size);

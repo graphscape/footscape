@@ -22,7 +22,7 @@ public class ScrollEvent extends Event {
 	 * @param type
 	 */
 	public ScrollEvent(Point topLeft, UiObjectI src) {
-		super(TYPE);
+		super(TYPE, src);
 		this.topLeft = topLeft;
 	}
 

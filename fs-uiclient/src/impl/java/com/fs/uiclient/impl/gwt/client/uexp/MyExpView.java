@@ -200,7 +200,7 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 	 */
 	@Override
 	public void noMore() {
-		this.messageList.noMore();
+		this.messageList.setNoMore(true);
 	}
 
 	/*

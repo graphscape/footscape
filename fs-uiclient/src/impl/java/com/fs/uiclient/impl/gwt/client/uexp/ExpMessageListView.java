@@ -15,10 +15,14 @@ import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.WindowI;
+import com.fs.uicore.api.gwt.client.commons.Point;
+import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.event.ScrollEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
@@ -43,6 +47,8 @@ public class ExpMessageListView extends ViewSupport {
 
 	protected DateData latestMessageTimestamp;
 
+	protected boolean noMore;
+
 	/**
 	 * @param ctn
 	 */
@@ -64,16 +70,28 @@ public class ExpMessageListView extends ViewSupport {
 			{// middleLeft/child
 				// more button
 				more = this.factory.create(ButtonI.class);
-				more.setText(true, UiClientConstants.AP_EXPM_MORE.toString());
+
 				more.getElement().addClassName("more");
 				more.parent(this.outer);
 				more.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 					@Override
 					public void handle(ClickEvent t) {
-						ExpMessageListView.this.onMoreClick();
+						ExpMessageListView.this.onMore();
 					}
 				});
+				
+
+				// NOTE,this not work,scroll event not raised, TODO in future.
+				this.outer.addHandler(ScrollEvent.TYPE, new EventHandlerI<ScrollEvent>() {
+
+					@Override
+					public void handle(ScrollEvent t) {
+						ExpMessageListView.this.onOuterScroll(t);
+					}
+				});
+
+				this.setNoMore(false);
 			}
 			{// middleLeft/messagelist
 				UiPropertiesI<Object> pts = new MapProperties<Object>();
@@ -94,11 +112,24 @@ public class ExpMessageListView extends ViewSupport {
 
 		}
 
-		
+	}
+
+	//TODO in future.
+	protected void onOuterScroll(ScrollEvent se) {
+
+		if (this.noMore) {
+			return;
+		}
+		// scroll to top
+		int topOfButton = this.more.getElementWrapper().getOffsetRectangle().getTopY();
+
+		if (topOfButton >= 0) {// visible of button
+			this.onMore();
+		}
 
 	}
 
-	protected void onMoreClick() {
+	protected void onMore() {
 		MsgWrapper req = new MsgWrapper("expm/search");
 		req.setHeader("isForMore", "true");
 		req.setPayload("accountId2", this.getAccountId());
@@ -149,9 +180,9 @@ public class ExpMessageListView extends ViewSupport {
 		ExpMessageView ev = ExpMessageView.createViewForMessage(this.container, msg);
 		ev.parent(this.msglist);
 		this.map.put(id, msg);
-		//scroll top to show the new message.
+		// scroll top to show the new message.
 		int scroll = 0;
-		if(!first){
+		if (!first) {
 			scroll = 10000;
 		}
 		this.getElement().setPropertyInt("scrollTop", scroll);
@@ -164,7 +195,11 @@ public class ExpMessageListView extends ViewSupport {
 		return this.latestMessageTimestamp;
 	}
 
-	public void noMore() {
-		this.more.disable(true);
+	public void setNoMore(boolean nomore) {
+
+		this.noMore = nomore;
+		this.more.disable(nomore);
+		String text = this.noMore ? "/action/no-more" : UiClientConstants.AP_EXPM_MORE.toString();
+		this.more.setText(true, text);
 	}
 }

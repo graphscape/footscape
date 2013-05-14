@@ -40,13 +40,19 @@ public class ExpSearchMH extends MHSupport {
 		ExpSearchViewI esv = this.getControl(MainControlI.class, true).openExpSearch(false);
 
 		MessageData res = t.getMessage();
+		MessageData req = res.getSource();
+		int limit = (Integer) req.getPayload("maxResult", true);
 
 		List<ObjectPropertiesData> expL = (List<ObjectPropertiesData>) res.getPayloads().getProperty(
 				"expectations", true);
+
 		for (int i = 0; i < expL.size(); i++) {
 			ObjectPropertiesData oi = expL.get(i);
 			ExpItemModel ei = new ExpItemModel(oi);
 			esv.addExpItem(ei);
+		}
+		if (expL.size() < limit) {
+			esv.noMore();
 		}
 
 	}
