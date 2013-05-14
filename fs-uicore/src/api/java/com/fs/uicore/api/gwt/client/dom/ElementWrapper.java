@@ -12,7 +12,6 @@ import com.fs.uicore.api.gwt.client.commons.Point;
 import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.commons.Size;
 import com.fs.uicore.api.gwt.client.core.UiCallbackI;
-import com.fs.uicore.api.gwt.client.util.ObjectUtil;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
@@ -269,16 +268,15 @@ public class ElementWrapper {
 	}
 
 	public void resizeAndKeepCenter(Size size) {
-		
-		
+
 		Rectangle rect1 = this.getOffsetRectangle();
 		Size size1 = rect1.getSize();
 		Size sizeOffset = size1.minus(size);
 		sizeOffset = sizeOffset.divide(2.0d);//
-		Point topleft1= rect1.getTopLeft();
-		
+		Point topleft1 = rect1.getTopLeft();
+
 		Point topleft2 = topleft1.add(sizeOffset.getWidth(), sizeOffset.getHeight());
-		Rectangle rect2 = new Rectangle(topleft2,size);
+		Rectangle rect2 = new Rectangle(topleft2, size);
 		this.moveAndResize(rect2);
 
 	}
@@ -310,4 +308,20 @@ public class ElementWrapper {
 		}
 		return p;
 	}
+
+	public Rectangle getBoundingClientRect() {
+		RectJSO rjs = getBoundingClientRect(this.element);
+		Point topLeft = Point.valueOf(rjs.getTop(), rjs.getLeft());
+		Size size = Size.valueOf(rjs.getWidth(), rjs.getHeight());
+
+		Rectangle rt = new Rectangle(topLeft, size);
+
+		return rt;
+	}
+
+	private static native RectJSO getBoundingClientRect(Element ele)
+	/*-{
+		return ele.getBoundingClientRect();
+	}-*/;
+
 }

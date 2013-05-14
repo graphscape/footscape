@@ -21,10 +21,15 @@ import com.fs.uicommons.api.gwt.client.widget.event.ChangeEvent;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.ModelI;
+import com.fs.uicore.api.gwt.client.WindowI;
+import com.fs.uicore.api.gwt.client.commons.Point;
+import com.fs.uicore.api.gwt.client.commons.Rectangle;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
+import com.fs.uicore.api.gwt.client.event.ScrollEvent;
 import com.fs.uicore.api.gwt.client.support.MapProperties;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Window;
 
 /**
  * @author wu
@@ -40,7 +45,7 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 
 	protected ButtonI search;
 
-	protected ButtonI more;
+	protected ButtonI more;// NOTE
 
 	// protected ButtonI previousPage;
 
@@ -110,6 +115,31 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 				ExpSearchView.this.onMore();
 			}
 		});
+		// listen window scroll event to trigger the more button.
+		WindowI window = this.container.get(WindowI.class, true);
+		window.addScrollHandler(new EventHandlerI<ScrollEvent>() {
+
+			@Override
+			public void handle(ScrollEvent t) {
+				ExpSearchView.this.onWindowScroll(t);
+
+			}
+		});
+
+	}
+
+	protected void onWindowScroll(ScrollEvent se) {
+		Rectangle rect = this.more.getElementWrapper().getBoundingClientRect();
+		Point tl = rect.getTopLeft();
+		int top = rect.getTopY();
+		
+
+		WindowI w = (WindowI) se.getSource();
+		int wheight = Window.getClientHeight();
+
+		if (top < wheight) {//visible of button
+			this.onMore();
+		}
 
 	}
 
@@ -199,10 +229,9 @@ public class ExpSearchView extends ViewSupport implements ExpSearchViewI {
 		if (exp != null) {
 			text = exp.getTitle();
 			this.myexp.setExp(exp.getExpId(), text);
-		}else{
+		} else {
 			this.myexp.clearExp();
 		}
-		
 
 	}
 

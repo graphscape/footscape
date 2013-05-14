@@ -5,7 +5,9 @@
 package com.fs.uicore.api.gwt.client;
 
 import com.fs.uicore.api.gwt.client.commons.Size;
+import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.core.UiObjectI;
+import com.fs.uicore.api.gwt.client.event.ScrollEvent;
 import com.fs.uicore.api.gwt.client.state.State;
 import com.fs.uicore.api.gwt.client.state.StatefulI;
 import com.google.gwt.user.client.Window;
@@ -23,5 +25,7 @@ public interface WindowI extends UiObjectI, StatefulI {
 	public void resizeTo(Size size);
 
 	public Size getSize();
+
+	public void addScrollHandler(EventHandlerI<ScrollEvent> hdl);
 
 }
