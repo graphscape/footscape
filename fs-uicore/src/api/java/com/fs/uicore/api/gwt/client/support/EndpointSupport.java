@@ -7,6 +7,7 @@ package com.fs.uicore.api.gwt.client.support;
 import com.fs.uicore.api.gwt.client.CodecI;
 import com.fs.uicore.api.gwt.client.Console;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.HandlerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
 import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
@@ -178,23 +179,28 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	}
 
-	protected void assertSocketOpen(boolean appLevel) {
+	protected void assertIsReady() {
 
-		this.assertNativeIsOpen();
-		if (appLevel && !this.serverIsReady) {
+		if (!this.isReady()) {
 			throw new UiException(getShortName() + ",server is not ready");
 		}
 
 	}
 
-	protected abstract void assertNativeIsOpen();
+	protected boolean isReady() {
+		return this.isNativeSocketOpen() && this.serverIsReady;
+	}
+
+	protected abstract boolean isNativeSocketOpen();
 
 	/*
 	 * Dec 20, 2012
 	 */
 	@Override
 	public void sendMessage(MessageData req) {
-		this.assertSocketOpen(true);//
+		//applevel message sending.
+		this.assertIsReady();
+
 		if (this.userInfo != null) {
 			req.setHeader("sessionId", this.getSessionId());//
 		}
@@ -205,15 +211,28 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	}
 
-	private void sendMessageDirect(MessageData req) {
+	private void sendMessageDirect(final MessageData req) {
 		//
 		JSONValue js = (JSONValue) this.messageCodec.encode(req);
 		String jsS = js.toString();
 		this.messageCache.addMessage(req);// for later reference
-		this.doSendMessage(jsS);
+		this.doSendMessage(jsS, new HandlerI<String>() {
+
+			@Override
+			public void handle(String t) {
+				EndpointSupport.this.onSendFailure(req);
+			}
+		});
 	}
 
-	protected abstract void doSendMessage(String msg);
+	/**
+	 * @param req
+	 */
+	protected void onSendFailure(MessageData req) {
+		this.messageCache.removeMessage(req.getId());//
+	}
+
+	protected abstract void doSendMessage(String msg, HandlerI<String> onfailure);
 
 	protected void onConnected() {
 		// wait server is ready

@@ -87,6 +87,10 @@ public class AjaxGomet extends GometSupport {
 	}
 
 	protected void doRequest(final AjaxMsg am) {
+		this.doRequest(am, null);
+	}
+
+	protected void doRequest(final AjaxMsg am, final HandlerI<String> onfailure) {
 		this.requests++;
 		JSONArray jsa = new JSONArray();
 		jsa.set(0, am.getAsJsonObject());
@@ -108,7 +112,7 @@ public class AjaxGomet extends GometSupport {
 			public void onFailure(Method method, Throwable exception) {
 				//
 				// TODO
-				AjaxGomet.this.onRequestFailure(am, method, exception); //
+				AjaxGomet.this.onRequestFailure(onfailure, am, method, exception); //
 			}
 
 			@Override
@@ -193,7 +197,8 @@ public class AjaxGomet extends GometSupport {
 	 * @param method
 	 * @param exception
 	 */
-	protected void onRequestFailure(AjaxMsg req, Method method, Throwable exception) {
+	protected void onRequestFailure(HandlerI<String> onfailure, AjaxMsg req, Method method,
+			Throwable exception) {
 		this.requests--;
 
 		String data = "request failure for request:" + req + ",now:" + System.currentTimeMillis();
@@ -205,6 +210,11 @@ public class AjaxGomet extends GometSupport {
 		}
 		data += ",exceptions:\n" + ExceptionUtil.getStacktraceAsString(exception, "\n");
 
+		// app-level callback.
+		if (onfailure != null) {
+			onfailure.handle(data);
+		}
+		//
 		this.errorHandlers.handle(data);
 
 		// HOW this happen?,may be because the network issue?
@@ -306,11 +316,11 @@ public class AjaxGomet extends GometSupport {
 	 * May 9, 2013
 	 */
 	@Override
-	public void send(String jsS) {
+	public void send(String jsS, HandlerI<String> onfailure) {
 		//
 		AjaxMsg am = new AjaxMsg(AjaxMsg.MESSAGE);
 		am.setProperty(AjaxMsg.PK_TEXTMESSAGE, jsS);
-		this.doRequest(am);
+		this.doRequest(am, onfailure);
 	}
 
 	/*

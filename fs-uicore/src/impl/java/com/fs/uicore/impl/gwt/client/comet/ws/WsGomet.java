@@ -5,14 +5,13 @@
 package com.fs.uicore.impl.gwt.client.comet.ws;
 
 import com.fs.uicore.api.gwt.client.HandlerI;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.html5.CloseEventJSO;
 import com.fs.uicore.api.gwt.client.html5.ErrorJSO;
 import com.fs.uicore.api.gwt.client.html5.EventJSO;
 import com.fs.uicore.api.gwt.client.html5.WebSocketJSO;
-import com.fs.uicore.api.gwt.client.support.CollectionHandler;
-import com.fs.uicore.impl.gwt.client.comet.GometI;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.impl.gwt.client.comet.GometSupport;
 
 /**
@@ -20,6 +19,8 @@ import com.fs.uicore.impl.gwt.client.comet.GometSupport;
  * 
  */
 public class WsGomet extends GometSupport {
+
+	private UiLoggerI LOG = UiLoggerFactory.getLogger(WsGomet.class);
 
 	private WebSocketJSO socket;
 
@@ -124,7 +125,12 @@ public class WsGomet extends GometSupport {
 	 * May 9, 2013
 	 */
 	@Override
-	public void send(String jsS) {
+	public void send(String jsS, HandlerI<String> onfailure) {
+
+		// not supported failure callback.
+		if (onfailure != null) {
+			//
+		}
 		this.socket.send(jsS);
 	}
 

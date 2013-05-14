@@ -1,5 +1,5 @@
 <config>
-	
+
 	<age value="Age" />
 	<birthDay value="Birth Day" />
 	<body value="Detail" />
@@ -15,25 +15,25 @@
 	<isAgree value="Agree" />
 	<login value="Login" />
 	<logout value="Logout" />
-	<more value="More"/>
+	<more value="More" />
 	<name value="Your Name" />
-	<next.page value="Next"/>
-	<nick value="Nick" /> 
+	<next.page value="Next" />
+	<nick value="Nick" />
 	<ok value="OK" />
 	<password value="Password" />
 	<password2 value="Password Again" />
-	<profile value="Profile"/>
-	<previous.page value="Previous"/>
+	<profile value="Profile" />
+	<previous.page value="Previous" />
 	<signup value="Signup" />
 	<search value="Search" />
 	<savingAccount value="Remember Account" />
 	<subject value="Subject" />
 	<title value="Title" />
 	<pfId value="Confirm Code" />
-	<newPassword value="New Password"/>
-	
+	<newPassword value="New Password" />
+
 	<!-- Error Code -->
-	<property name="/error/unknow" value="Unkow Error"/>
+	<property name="/error/unknow" value="Unkow Error" />
 	<property name="/error/login/failure" value="Login Failed" />
 	<property name="/error/login/missing/email" value="Please input email" />
 	<property name="/error/login/missing/password" value="Please input password" />
@@ -48,83 +48,84 @@
 	<property name="/error/cttmsg/submit/email" value="Email is missing!" />
 	<property name="/error/cttmsg/submit/subject" value="Subject is missing!" />
 	<property name="/error/cttmsg/submit/body" value="Body is missing!" />
-	
+
 	<property name="/error/password-reset/pfId" value="We have not found your confirm code, please go to login view and click forget button again!" />
-	
+
 	<!-- Header Items,Tab title -->
 	<property name="/console" value="Console" />
 	<property name="/exp-search" value="Search" />
-	<property name="/search" value="Search"/>
+	<property name="/search" value="Search" />
 	<property name="/signup" value="Signup" />
 	<property name="/login" value="Login" />
 	<property name="/uelist" value="Expectations" />
 	<property name="/expe" value="New" />
 	<property name="/profile" value="Profile" />
-	<property name="/testers" value="Tests"/>
-	<property name="/tab-default" value="Default"/>
-	<property name="/tab-confirm" value="Confirm"/>
+	<property name="/testers" value="Tests" />
+	<property name="/tab-default" value="Default" />
+	<property name="/tab-confirm" value="Confirm" />
 	<property name="/expMessageCount" value="Messages" />
 	<property name="/myExp" value="Expectations" />
 	<property name="/logo" value="waitee" />
-	<property name="/about" value="About Us"/>
-	<property name="/contact" value="Contact Us"/>
-	<property name="/copyright" value="fs-v0.1.0-IR4 © 2012-2013 waitee.com.  All rights reserved." />
+	<property name="/about" value="About Us" />
+	<property name="/contact" value="Contact Us" />
+	<!-- NOTE,see ant build script,revision will be replaced before compile -->
+	<property name="/copyright" value="@@fs.revision@@ © 2012-2013 waitee.com.  All rights reserved." />
 	<!-- Tabs -->
 	<property name="/tab/contact-us" value="Contact-Us" />
-	<property name="/tab/uinfo" value="User Info"/>
-	<property name="/tab/password-reset" value="Password Reset"/>
+	<property name="/tab/uinfo" value="User Info" />
+	<property name="/tab/password-reset" value="Password Reset" />
 	<!-- Actions -->
 	<property name="/action/cooper/confirm" value="Connect" />
 	<property name="/action/cooper/reject" value="Reject" />
-	
+
 	<property name="/action/cttmsg/submit" value="Send" />
-	
+
 	<property name="/action/profile/submit" value="Save" />
 	<property name="/action/password/forgot" value="Forgot" />
 	<property name="/action/password/reset" value="Reset" />
-	<property name="/action/signup/submit" value="Signup"/>
-	<property name="/action/signup/confirm" value="Confirm"/>
-	<property name="/action/exps/search" value="Search"/>
-	<property name="/action/exps/cooper" value="Connect"/>
+	<property name="/action/signup/submit" value="Signup" />
+	<property name="/action/signup/confirm" value="Confirm" />
+	<property name="/action/exps/search" value="Search" />
+	<property name="/action/exps/cooper" value="Connect" />
 	<property name="/action/exps/more" value="More Results" />
-	<property name="/action/login/submit" value="Login"/>
-	<property name="/action/login/logout" value="Logout"/>
+	<property name="/action/login/submit" value="Login" />
+	<property name="/action/login/logout" value="Logout" />
 	<property name="/action/login/facebook" value="Log In" />
-	<property name="/action/uexpi/select" value="Select"/>
-	<property name="/action/uexpi/open" value="Detail"/>
-	
-	<property name="/action/uelist/create" value="New"/>
-	<property name="/action/expe/submit" value="Save"/>
+	<property name="/action/uexpi/select" value="Select" />
+	<property name="/action/uexpi/open" value="Detail" />
+
+	<property name="/action/uelist/create" value="New" />
+	<property name="/action/expe/submit" value="Save" />
 	<property name="/action/signup/fblogin" value="Log In" />
 	<property name="/action/expm/more" value="More Messages" />
 	<property name="/action/expm/send" value="Send" />
 	<property name="/action/myexp/close" value="Close" />
-	
+
 	<!-- tip -->
 	<property name="/tip/action/cooper/confirm" value="Agree this request, to make connection with this expecation." />
 	<property name="/tip/action/cooper/reject" value="Reject this request," />
 	<property name="/tip/action/profile/submit" value="Save" />
 	<property name="/tip/action/password/forgot" value="Forgot password? click will send a email to your for reset your password." />
 	<property name="/tip/action/password/reset" value="Reset Password" />
-	<property name="/tip/action/signup/submit" value="Signup"/>
-	<property name="/tip/action/exps/search" value="Search expectations."/>
-	<property name="/tip/action/exps/cooper" value="Send a message to this expecation to ask cooperation with."/>
+	<property name="/tip/action/signup/submit" value="Signup" />
+	<property name="/tip/action/exps/search" value="Search expectations." />
+	<property name="/tip/action/exps/cooper" value="Send a message to this expecation to ask cooperation with." />
 	<property name="/tip/action/exps/more" value="Show more search results." />
-	<property name="/tip/action/login/submit" value="Login"/>
-	<property name="/tip/action/login/logout" value="Logout"/>
+	<property name="/tip/action/login/submit" value="Login" />
+	<property name="/tip/action/login/logout" value="Logout" />
 	<property name="/tip/action/login/facebook" value="Log in by facebook account." />
 	<property name="/tip/action/myexp/close" value="Closed expectation will not accept new connection request!" />
-	<property name="/tip/action/uelist/create" value="Create a new expecation for you."/>
-	<property name="/tip/action/uexpi/open" value="To show the detail of this expecation."/>
-	<property name="/tip/action/uexpi/select" value="Navigate to search view for this expectation."/>
-	
-	<property name="/tip/action/expe/submit" value="Save"/>
+	<property name="/tip/action/uelist/create" value="Create a new expecation for you." />
+	<property name="/tip/action/uexpi/open" value="To show the detail of this expecation." />
+	<property name="/tip/action/uexpi/select" value="Navigate to search view for this expectation." />
+
+	<property name="/tip/action/expe/submit" value="Save" />
 	<property name="/tip/action/signup/fblogin" value="Log in by facebook account." />
-	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with."/>
+	<property name="/tip/action/exps/cooper" value="Click to send a request to this expectation for cooperation with." />
 	<property name="/tip/action/expm/more" value="Click to show more messages." />
-	
+
 	<!-- Open resource -->
 	<property name="/open/resource/html/about-us.html" value="About-Us" />
-	
-	
+
+
 </config>
