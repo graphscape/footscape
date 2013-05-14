@@ -13,11 +13,12 @@ public class UiCommonsConstants {
 
 	public static final String AK_FORMS_VIEW = "formsView";// action property
 
+	public static final Path P_TAB = Path.valueOf("tab");
 	public static final Path P_CONSOLE_VIEW = Path.valueOf("console");
 	
 	public static final Path LOGIN_VIEW = Path.valueOf("login");
 
-	public static final Path PASSWORDRESET_VIEW = Path.valueOf("password-reset");
+	public static final Path PASSWORDRESET_VIEW = P_TAB.getSubPath("password-reset");
 
 	public static String RK_COMET_HEARTBEATINTERVAL = "cometHeartBeatIntervalMs";
 

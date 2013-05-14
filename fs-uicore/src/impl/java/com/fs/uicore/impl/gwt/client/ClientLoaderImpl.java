@@ -19,7 +19,11 @@ import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.event.ClientConnectLostEvent;
 import com.fs.uicore.api.gwt.client.event.ClientStartFailureEvent;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.spi.GwtSPI;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -29,6 +33,8 @@ import com.google.gwt.user.client.Window;
  * @author wu Test support.
  */
 public class ClientLoaderImpl extends ClientLoader {
+
+	private UiLoggerI LOG = UiLoggerFactory.getLogger(ClientLoaderImpl.class);
 
 	private static Map<String, GwtSPI.Factory> CACHE = new HashMap<String, GwtSPI.Factory>();
 
@@ -49,6 +55,14 @@ public class ClientLoaderImpl extends ClientLoader {
 	private int retry;
 
 	public ClientLoaderImpl() {
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+
+			@Override
+			public void onUncaughtException(Throwable e) {
+				LOG.error("Uncaught exception is got", e);
+			}
+		});
+
 		Element root = RootWImpl.getRootElement();
 
 		this.element = DOM.createDiv();

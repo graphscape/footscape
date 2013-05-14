@@ -94,7 +94,7 @@ public class PasswordHandler extends ExpectorTMREHSupport {
 
 		PasswordForgot pf = this.dataService.getNewestById(PasswordForgot.class, pfId, false);
 		if (pf == null) {
-			res.getErrorInfos().addError("failure.password.reset");//
+			res.getErrorInfos().addError(Constants.P_ERROR_PASSWORD_FORGOT_RESET);//
 			return;
 		}
 		String aid = pf.getAccountId();

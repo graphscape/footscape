@@ -29,6 +29,8 @@
 	<savingAccount value="Remember Account" />
 	<subject value="Subject" />
 	<title value="Title" />
+	<pfId value="Confirm Code" />
+	<newPassword value="New Password"/>
 	
 	<!-- Error Code -->
 	<property name="/error/unknow" value="Unkow Error"/>
@@ -47,6 +49,7 @@
 	<property name="/error/cttmsg/submit/subject" value="Subject is missing!" />
 	<property name="/error/cttmsg/submit/body" value="Body is missing!" />
 	
+	<property name="/error/password-reset/pfId" value="We have not found your confirm code, please go to login view and click forget button again!" />
 	
 	<!-- Header Items,Tab title -->
 	<property name="/console" value="Console" />
@@ -69,6 +72,7 @@
 	<!-- Tabs -->
 	<property name="/tab/contact-us" value="Contact-Us" />
 	<property name="/tab/uinfo" value="User Info"/>
+	<property name="/tab/password-reset" value="Password Reset"/>
 	<!-- Actions -->
 	<property name="/action/cooper/confirm" value="Connect" />
 	<property name="/action/cooper/reject" value="Reject" />

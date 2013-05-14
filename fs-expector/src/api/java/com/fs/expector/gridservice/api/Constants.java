@@ -29,6 +29,12 @@ public interface Constants {
 	public static Path P_ERROR_SIGNUP_EMAIL = P_ERROR.getSubPath("signup").getSubPath("email");
 
 	public static Path P_ERROR_SIGNUP_PASSWORD = P_ERROR.getSubPath("signup").getSubPath("password");
+	//
+	public static Path P_ERROR_PASSWORD_FORGOT = P_ERROR.getSubPath("password-forgot");
+	
+	public static Path P_ERROR_PASSWORD_FORGOT_RESET = P_ERROR_PASSWORD_FORGOT.getSubPath("reset");
+
+	//
 
 	public static Path P_ERROR_EXPE = P_ERROR.getSubPath("expe");
 
