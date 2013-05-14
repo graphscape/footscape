@@ -62,9 +62,15 @@
 	</copy>
 	<javac srcdir="${dir.src}/${part}/java" destdir="${dir.target}/${part}/classes" classpathref="classpath.compile.${part}" source="1.7" target="1.7" debug="on" encoding="UTF-8" includeantruntime="false">
 	</javac>
+
 	<copy todir="${classes.dir}">
 		<fileset dir="${resources.dir}" />
 	</copy>
+	
+	<replace dir="${classes.dir}" token="@@fs.revision@@" value="${fs.revision}">
+		<include name="provider/**/*.xml" />
+	</replace>
+	
 </target>
 
 <target name="compile-api" depends="resolve">
@@ -271,7 +277,7 @@
 		<param name="part" value="impl" />
 	</antcall>
 	<antcall target="post-package">
-		
+
 	</antcall>
 </target>
 

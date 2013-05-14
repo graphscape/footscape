@@ -32,7 +32,7 @@ public class EndpointImpl extends EndpointSupport {
 	private GometI socket;
 
 	private Map<String, ProtocolI> protocols;
-	
+
 	private long openTimeout = 3000;//
 
 	/**
@@ -121,21 +121,19 @@ public class EndpointImpl extends EndpointSupport {
 	}
 
 	@Override
-	protected void assertNativeIsOpen() {
+	protected boolean isNativeSocketOpen() {
 		if (this.socket == null) {
-			throw new UiException("socket is null");
+			return false;
 		}
 
 		boolean rs = this.socket.isOpen();
-		if (!rs) {
-			throw new UiException("socket is not open,readyState:" + rs);
-		}
+		return rs;
 
 	}
 
 	@Override
-	protected void doSendMessage(String jsS) {
-		this.socket.send(jsS);
+	protected void doSendMessage(String jsS, HandlerI<String> failureHanlder) {
+		this.socket.send(jsS, failureHanlder);
 	}
 
 	@Override
