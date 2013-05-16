@@ -19,11 +19,4 @@
 		</config>
 	</config>
 
-	<config name="FLASH_POLICY_SERVER">
-		<property name="port" value="$flash.policyPort" />
-
-	</config>
-
-
-
 </config>

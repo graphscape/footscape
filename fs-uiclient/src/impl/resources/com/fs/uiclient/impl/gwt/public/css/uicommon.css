@@ -133,7 +133,7 @@ Console View
 .header-item {
 	padding:6px;
 	border-radius: 1px;
-	color: #fafafa;
+	color: #eeeeee;
 	cursor: pointer;
 	float: right;
 	text-decoration: none;
@@ -143,9 +143,8 @@ Console View
 }
 
 .header-item.selected,.header-item:hover {
-	background: #1b3c5a;
-	text-shadow: 0 1px 0 #034F82;
-	color: #fff;
+	color: #fafafa;
+	text-decoration: none;
 }
 
 
@@ -341,11 +340,9 @@ Console View
 
 /*HeaderView*/
 .wgt-HeaderView { /*background-color: #034F82;*/
-	background-image:
-		url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAAd0SU1FB90FBAwjGxgg+p8AAAAiSURBVAjXYxTQcfvPgAUwMeAAKBIsrOzYJf78/kmiUcgAAJkZBI30e/7NAAAAAElFTkSuQmCC);
-	
+	background-color: #303030;
 	width: 100%;
-	box-shadow: 0 1px 1px #fafafa inset;
+	/*box-shadow: 0 1px 1px #fafafa inset;*/
 	border-bottom: 1px solid #d0d0d0;
 	padding: 0px 0px;
 	margin-bottom: 1px;
@@ -391,8 +388,7 @@ Console View
 
 .wgt-MenuWImpl li:hover,.wgt-MenuWImpl li:focus,.wgt-MenuItemWImpl:hover
 	{
-	background: #4BA1DE;
-	color: #fff;
+	background: #eeeeee;
 }
 
 

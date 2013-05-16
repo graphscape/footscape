@@ -1,0 +1,18 @@
+<script type="text/javascript" src="com.fs.uiclient.impl.test.gwt.UiClientImplTest/web-socket-js/swfobject.js"></script>
+<script type="text/javascript" src="com.fs.uiclient.impl.test.gwt.UiClientImplTest/web-socket-js/web_socket.js"></script>
+<script type="text/javascript">
+	var host = window.location.host.split(":")[0];
+
+	WEB_SOCKET_SWF_LOCATION = "com.fs.uiclient.impl.test.gwt.UiClientImplTest/web-socket-js/WebSocketMain.swf";
+	
+	if(WebSocket.loadFlashPolicyFile){
+		
+		try{		
+			WebSocket.loadFlashPolicyFile("xmlsocket://" + host + ":10843");
+			window.WebSocket = WebSocket;
+		}catch(e){
+			window.alert(e);
+		}
+	}
+	
+</script>

@@ -11,7 +11,6 @@ import com.fs.webcomet.api.CometFactoryI;
 import com.fs.webcomet.api.CometProtocolI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebServerI;
-import com.fs.websocket.impl.flash.FlashPolicyServer;
 import com.fs.websocket.impl.jetty.JettyWsCometProtocol;
 
 /**
@@ -45,8 +44,10 @@ public class WebSocketSPI extends SPISupport {
 		cf.addManager(ac, "websocket", "default");//
 
 		// flash policy file
-		ac.activitor().context(ac).spi(this).name("FLASH_POLICY_SERVER").object(new FlashPolicyServer())
-				.active();
+		/*
+		 * ac.activitor().context(ac).spi(this).name("FLASH_POLICY_SERVER").object
+		 * (new FlashPolicyServer()) .active();
+		 */
 
 	}
 
