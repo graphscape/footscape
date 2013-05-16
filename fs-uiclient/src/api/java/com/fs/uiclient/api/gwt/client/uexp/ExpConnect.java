@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.uexp;
 
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 
 /**
@@ -41,7 +42,7 @@ public class ExpConnect extends PropertiesData<Object> {
 	public String getExpBody2(boolean force) {
 		return (String) this.getProperty("expBody2", force);
 	}
-	
+
 	public String getExpId1() {
 		return (String) this.getProperty("expId1", true);
 	}
@@ -54,8 +55,9 @@ public class ExpConnect extends PropertiesData<Object> {
 	/**
 	 * @return
 	 */
-	public String getIcon1() {
-		return (String) this.getProperty("icon1");
+	public ImageUrl getIcon1AsImageUrl() {
+		String rt = (String) this.getProperty("icon1");
+		return ImageUrl.parse(rt, true);
 
 	}
 

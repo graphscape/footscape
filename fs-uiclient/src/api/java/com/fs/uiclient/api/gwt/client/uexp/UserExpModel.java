@@ -8,6 +8,7 @@ import com.fs.uiclient.api.gwt.client.NodeFields;
 import com.fs.uiclient.api.gwt.client.coper.MyExp;
 import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.exps.ExpItemModel;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
 
@@ -16,7 +17,7 @@ import com.fs.uicore.api.gwt.client.data.property.ObjectPropertiesData;
  * 
  */
 public class UserExpModel {
-	
+
 	private ObjectPropertiesData target;
 	private boolean selected;
 
@@ -78,26 +79,26 @@ public class UserExpModel {
 	/**
 	 * Apr 14, 2013
 	 */
-	public String getIcon() {
+	public ImageUrl getIconUrl() {
 		//
 		String rt = (String) this.target.getProperty(ExpEditViewI.F_ICON);
-		return "n/a".equals(rt) ? null : rt;
+		return ImageUrl.parse(rt, true);
 
 	}
 
-	public String getImage() {
+	public ImageUrl getImageUrl() {
 		//
 		String rt = (String) this.target.getProperty(ExpEditViewI.F_IMAGE);
-		return "n/a".equals(rt) ? null : rt;
+		return ImageUrl.parse(rt, true);
 
 	}
 
 	/**
-	 *May 3, 2013
+	 * May 3, 2013
 	 */
 	public String getStatus() {
-		// 
-		return (String)this.target.getProperty(MyExp.F_STATUS);
+		//
+		return (String) this.target.getProperty(MyExp.F_STATUS);
 	}
 
 }

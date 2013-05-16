@@ -81,7 +81,7 @@ public abstract class ExpMessageView extends ViewSupport {
 				TDWrapper td0 = tr0.addTd();
 				td0.addClassName("expm-td0");
 				// anchor
-				UserIconView uiv = new UserIconView(this.container, msg.getAccountId1(), msg.getIcon1());//				
+				UserIconView uiv = new UserIconView(this.container, msg.getAccountId1(), msg.getIcon1AsImageUrl());//				
 				td0.append(uiv.getElement());
 				uiv.parent(this);//
 			}

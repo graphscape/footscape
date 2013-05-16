@@ -12,6 +12,7 @@ import com.fs.uicommons.api.gwt.client.widget.table.TableI.BodyI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.CellI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -38,7 +39,7 @@ public class ConnectedExpView extends ViewSupport {
 			{
 
 				String accId = ec.getAccountId1();
-				String icon = ec.getIcon1();
+				ImageUrl icon = ec.getIcon1AsImageUrl();
 				UserIconView iv = new UserIconView(c, accId, icon);
 				iv.parent(c00);
 			}

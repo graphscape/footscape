@@ -29,7 +29,15 @@ public class ImageContent extends NodeWrapper {
 	public ImageContent() {
 		super(NodeTypes.EXPECTATION);
 	}
-
+	
+	public void setProtocol(String pro){
+		this.setProperty(PROTOCOL, pro);
+	}
+	
+	public String getProtocol(){
+		return (String)this.getProperty(PROTOCOL);
+	}
+	
 	public String getEncode() {
 		return (String) this.getProperty(ENCODE);
 	}

@@ -5,16 +5,13 @@
 package com.fs.uiclient.impl.gwt.client.uexp;
 
 import com.fs.uiclient.api.gwt.client.Actions;
-import com.fs.uiclient.impl.gwt.client.exps.ExpItemView;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
-import com.fs.uicore.api.gwt.client.dom.ElementWrapper;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 
 /**
  * @author wu
@@ -24,20 +21,21 @@ public class UserIconView extends LightWeightView {
 
 	private String accId;
 
-	private String icon;
+	private ImageUrl icon;
 	private AnchorWI ar;
 
 	/**
 	 * @param c
 	 * @param ele
 	 */
-	public UserIconView(ContainerI c, String accId, String icon) {
+	public UserIconView(ContainerI c, String accId, ImageUrl icon) {
 		super(c);
 		this.accId = accId;
 		this.icon = icon;
 		ar = this.factory.create(AnchorWI.class);
 		ar.getElement().addClassName("user-icon");
-		ar.setImage(icon);//
+		ar.setImage(icon.getAsSrc(this.getClient(true)));//
+		
 		ar.addHandler(ClickEvent.TYPE, new EventHandlerI<ClickEvent>() {
 
 			@Override

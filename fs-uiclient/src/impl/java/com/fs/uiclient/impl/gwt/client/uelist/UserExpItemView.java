@@ -136,7 +136,7 @@ public class UserExpItemView extends ViewSupport {
 				TDWrapper td1 = tr1.addTd();
 
 				td1.addClassName("uel-item-expimage");
-				String img = t.getImage();
+				String img = t.getImageUrl().getAsSrc(this.getClient(true));
 				if (img != null) {
 					Element image = DOM.createImg();
 					image.setAttribute("src", img == null ? "" : img);

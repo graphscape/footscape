@@ -11,12 +11,12 @@ import com.fs.uiclient.impl.gwt.client.uexp.UserIconView;
 import com.fs.uicommons.api.gwt.client.event.ActionEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.ViewSupport;
 import com.fs.uicommons.api.gwt.client.widget.basic.ButtonI;
-import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicommons.impl.gwt.client.dom.TDWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TRWrapper;
 import com.fs.uicommons.impl.gwt.client.dom.TableWrapper;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.core.ElementObjectI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ClickEvent;
@@ -69,7 +69,7 @@ public class ExpItemView extends ViewSupport {
 				td0.addClassName("exps-item-usericon");
 				td0.setAttribute("rowspan", "" + rowspan);
 				//
-				UserIconView uiv = new UserIconView(this.container, ei.getAccountId(), ei.getUserIcon());
+				UserIconView uiv = new UserIconView(this.container, ei.getAccountId(), ei.getUserIconAsImageUrl());
 				td0.append(uiv.getElement());// NOTE,parent is not
 												// this.element,but td0,a nother
 												// element,see
@@ -127,10 +127,11 @@ public class ExpItemView extends ViewSupport {
 				TDWrapper td1 = tr1.addTd();
 
 				td1.addClassName("exps-item-expimage");
-				String img = ei.getImage();
+				ImageUrl img = ei.getImageUrl();
 				if (img != null) {// only add when as image
 					Element image = DOM.createImg();
-					image.setAttribute("src", img);
+					
+					image.setAttribute("src", img.getAsSrc(this.getClient(true)));//
 					td1.getElement().appendChild(image);
 				}
 			}

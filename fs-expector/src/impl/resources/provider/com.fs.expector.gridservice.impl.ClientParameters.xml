@@ -6,4 +6,5 @@
 	<property name="cometHeartBeatIntervalMs" value="$comet.heartBeatIntervalMs" />
 	<property name="rootUrl" value="$web.rootUrl"/>
 	<property name="textInputLengthLimit" value="1024" />
+	<property name="imagesUri" value="$client.imagesUri"/>
 </config>

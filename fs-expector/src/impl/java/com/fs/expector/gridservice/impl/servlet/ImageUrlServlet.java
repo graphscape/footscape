@@ -4,6 +4,7 @@
 package com.fs.expector.gridservice.impl.servlet;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.util.ImageUrl;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
+import com.fs.expector.dataservice.api.ExpectorDsFacadeI;
 import com.fs.expector.dataservice.api.wrapper.ImageContent;
 import com.fs.webserver.api.support.ConfigurableServletSupport;
 
@@ -41,17 +43,21 @@ public class ImageUrlServlet extends ConfigurableServletSupport {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException,
 			IOException {
-		String str = req.getParameter("imageUrl");
-		if (str == null) {
-			res.sendError(404, "imageUrl is missing.");//
+		
+		String str = req.getRequestURI();
+		int idxSlash = str.lastIndexOf("/");//
+		//get only the last part of path as the image url.
+		String urlEncoded = str.substring(idxSlash+1);
+		
+		String urlS = URLDecoder.decode(urlEncoded);
+		
+		ImageUrl iu = ImageUrl.parse(urlS, true);
+		
+		if (!ExpectorDsFacadeI.PROTOCOL_IID.equals(iu.getProtocol())) {
+			res.sendError(404, "protocol not support:"+iu.getProtocol());//
 			return;
 		}
-
-		ImageUrl iu = ImageUrl.parse(str, true);
-		if (!"img-id".equals(iu.getProtocol())) {
-			res.sendError(404, "protocol not support.");//
-			return;
-		}
+		
 		String id = iu.getData();
 		ImageContent ic = this.dataService.getNewestById(ImageContent.class, id, false);
 
@@ -62,6 +68,7 @@ public class ImageUrlServlet extends ConfigurableServletSupport {
 
 		String body = ic.getData();
 		res.setContentType(ic.getFormat());//
+		res.setHeader("Cache-Control", "public, max-age=3600");//second
 		byte[] bts = DatatypeConverter.parseBase64Binary(body);
 		res.getOutputStream().write(bts);
 

@@ -2,8 +2,8 @@
  *  
  */
 package com.fs.uiclient.api.gwt.client.coper;
-
 import com.fs.uiclient.api.gwt.client.UiClientConstants;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 
 /**
@@ -13,9 +13,9 @@ import com.fs.uicore.api.gwt.client.data.PropertiesData;
 public class MyExp extends PropertiesData<Object> {
 
 	public static final String F_STATUS = "status";
-	
-	public static String OPEN = "open";//NOTE see entity def.
-	
+
+	public static String OPEN = "open";// NOTE see entity def.
+
 	public MyExp(PropertiesData<Object> pts) {
 		super();
 		this.setProperties(pts);
@@ -33,23 +33,22 @@ public class MyExp extends PropertiesData<Object> {
 		return (String) this.getProperty("body");
 	}
 
-	public String getImage() {
+	public ImageUrl getImageUrl() {
 		String rt = (String) this.getProperty("image");
-		if ("n/a".equals(rt)) {
-			rt = null;
-		}
-		return rt;
+
+		return ImageUrl.parse(rt, true);
 
 	}
 
-	public String getStatus(){
-		return (String)this.getProperty("status");
+	public String getStatus() {
+		return (String) this.getProperty("status");
 	}
+
 	/**
-	 *May 3, 2013
+	 * May 3, 2013
 	 */
 	public boolean getIsOpen() {
-		// 
+		//
 		String status = this.getStatus();
 		return OPEN.equals(status);
 	}

@@ -5,8 +5,8 @@
 package com.fs.uiclient.api.gwt.client.coper;
 
 import com.fs.uiclient.api.gwt.client.NodeFields;
-import com.fs.uiclient.api.gwt.client.UiClientConstants;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.data.message.MessageData;
 
@@ -40,6 +40,7 @@ public class ExpMessage extends MsgWrapper {
 	public String getExpTitle1() {
 		return (String) this.getPayload("expTitle1", true);
 	}
+
 	/**
 	 * @return the expId1
 	 */
@@ -65,12 +66,10 @@ public class ExpMessage extends MsgWrapper {
 		return (String) this.getPayload("nick1", true);
 	}
 
-	public String getIcon1() {
-		String rt = (String) this.getPayload("icon1", false);
-		if (rt == null) {
-			rt = UiClientConstants.DEF_ICON;
-		}
-		return rt;
+	public ImageUrl getIcon1AsImageUrl() {
+		String rt = (String) this.getPayload("icon1", true);
+
+		return ImageUrl.parse(rt, true);
 
 	}
 

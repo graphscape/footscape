@@ -16,6 +16,7 @@ import com.fs.expector.dataservice.api.wrapper.Expectation;
  * 
  */
 public interface ExpectorDsFacadeI {
+	public static final String PROTOCOL_IID = "iid";
 
 	public int getOverflowConnectedExpCount(String expId1);
 
@@ -40,11 +41,11 @@ public interface ExpectorDsFacadeI {
 	public void acknowledgeExpMessage(String accId, String expId, Date ts);
 
 	/**
-	 *May 3, 2013
+	 * May 3, 2013
 	 */
-	
+
 	public int getExpectationOpenCount(String aid);
-	
+
 	public int getMaxLimitOfExpectationOpenCount();
 
 	public ImageUrl saveImage(ImageUrl data);

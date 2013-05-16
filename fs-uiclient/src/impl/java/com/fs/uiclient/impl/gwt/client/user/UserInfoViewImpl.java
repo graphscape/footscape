@@ -8,12 +8,12 @@ import com.fs.uiclient.api.gwt.client.user.UserInfoViewI;
 import com.fs.uicommons.api.gwt.client.mvc.simple.LightWeightView;
 import com.fs.uicommons.api.gwt.client.widget.basic.AnchorWI;
 import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
-import com.fs.uicommons.api.gwt.client.widget.html.HtmlElementWidgetI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.BodyI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.CellI;
 import com.fs.uicommons.api.gwt.client.widget.table.TableI.RowI;
 import com.fs.uicore.api.gwt.client.ContainerI;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 
 /**
  * @author wu
@@ -49,7 +49,8 @@ public class UserInfoViewImpl extends LightWeightView implements UserInfoViewI {
 				CellI cell = r.createCell().rowspan(rows);
 				cell.getElement().addClassName("user-icon");
 				AnchorWI ar = this.factory.create(AnchorWI.class);
-				String src = ui.getIconUrlData();
+				String src =  ui.getIconImageUrl().getAsSrc(this.getClient(true));
+				
 				ar.getElement().addClassName("user-icon");
 
 				ar.setImage(src);

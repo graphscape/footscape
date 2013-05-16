@@ -58,7 +58,7 @@
 	</config>
 	<config name="servletHolders">
 		<config name="imageUrlServlet">
-			<property name="path" value="/imgu" />
+			<property name="path" value="/imgs/*" />
 			<prefix name="servlet">
 				<property name="class" value="com.fs.expector.gridservice.impl.servlet.ImageUrlServlet" />
 			</prefix>

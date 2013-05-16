@@ -10,7 +10,7 @@ package com.fs.uicore.api.gwt.client.consts;
  */
 public class UiConstants {
 	
-	public static String ROOTURI = "/uicore/uidt/do";
+	public static String PK_IMAGES_URI = "imagesUri";
 	
 	public static String DEFAULT_CONFIG_ID = "com.fs.uicore.CfgFactory";
 	

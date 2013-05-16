@@ -1,9 +1,12 @@
 /**
  *  
  */
-package com.fs.commons.api.util;
+package com.fs.uicore.api.gwt.client.commons;
 
-import com.fs.commons.api.lang.ObjectUtil;
+import com.fs.uicore.api.gwt.client.UiClientI;
+import com.fs.uicore.api.gwt.client.consts.UiConstants;
+import com.fs.uicore.api.gwt.client.util.ObjectUtil;
+import com.google.gwt.http.client.URL;
 
 /**
  * @author wu
@@ -50,16 +53,31 @@ public class ImageUrl {
 	}
 
 	public boolean isNone() {
-		return NONE.equals(this);
+		return this.equals(NONE);
 	}
 
 	@Override
 	public String toString() {
-		if (isNone()) {
-			return this.protocol;
+		if (this.isNone()) {
+			return NONE.protocol;
+		}
+		return this.protocol + ":" + this.format + ";" + this.encode + "," + this.data;
+	}
+
+	public String getAsSrc(UiClientI uic) {
+		if (this.isNone()) {
+			return "";
 		}
 
-		return this.protocol + ":" + this.format + ";" + this.encode + "," + this.data;
+		String rt = this.toString();
+
+		if (this.protocol.equals("iid")) {
+			String uri = uic.getParameter(UiConstants.PK_IMAGES_URI, true);
+			rt = URL.encode(rt);
+			rt = uri + "/" + rt;
+		}
+
+		return rt;
 	}
 
 	@Override
@@ -77,12 +95,10 @@ public class ImageUrl {
 
 	// data:image/x-icon;base64,
 	public static ImageUrl parse(String str, boolean force) {
-		if (NONE.getProtocol().equals(str)) {
-			return ImageUrl.NONE;
+		if (NONE.protocol.equals(str)) {
+			return NONE;
 		}
-		
 		int idxCom = str.indexOf(":");
-
 		String protocol = str.substring(0, idxCom);
 
 		int idxSemiC = str.indexOf(";");

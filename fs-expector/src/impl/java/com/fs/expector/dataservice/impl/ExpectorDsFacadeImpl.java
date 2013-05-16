@@ -288,15 +288,19 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	 */
 	@Override
 	public ImageUrl saveImage(ImageUrl diu) {
+		
 		if (!"data".equals(diu.getProtocol())) {
+			
 			return diu;
 		}
-
+		//only data url need to save.
 		ImageContent ic = new ImageContent().forCreate(this.dataService);
+		ic.setProtocol(diu.getProtocol());
 		ic.setData(diu.getData());
 		ic.setEncode(diu.getEncode());
 		ic.setFormat(diu.getFormat());
-		ImageUrl rt = new ImageUrl("img-id", "n/a", "n/a", ic.getId());
+		ic.save(false);
+		ImageUrl rt = new ImageUrl(PROTOCOL_IID, "none", "none", ic.getId());
 
 		return rt;
 	}

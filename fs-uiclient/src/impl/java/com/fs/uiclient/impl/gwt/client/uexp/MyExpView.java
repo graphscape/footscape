@@ -19,6 +19,7 @@ import com.fs.uicommons.api.gwt.client.widget.basic.LabelI;
 import com.fs.uicommons.api.gwt.client.widget.list.ListI;
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.MsgWrapper;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.commons.UiPropertiesI;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
@@ -162,10 +163,10 @@ public class MyExpView extends ViewSupport implements MyExpViewI {
 		if(!me.getIsOpen()){
 			this.expClosed();
 		}
-		String img = me.getImage();
+		ImageUrl img = me.getImageUrl();
 		
 		if (img != null) {
-			this.image.setSrc(img);
+			this.image.setSrc(img.getAsSrc(this.getClient(true)));
 		}
 	}
 

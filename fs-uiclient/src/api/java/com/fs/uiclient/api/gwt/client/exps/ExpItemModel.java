@@ -5,6 +5,7 @@
 package com.fs.uiclient.api.gwt.client.exps;
 
 import com.fs.uiclient.api.gwt.client.NodeFields;
+import com.fs.uicore.api.gwt.client.commons.ImageUrl;
 import com.fs.uicore.api.gwt.client.data.PropertiesData;
 import com.fs.uicore.api.gwt.client.data.basic.DateData;
 import com.fs.uicore.api.gwt.client.util.ObjectUtil;
@@ -67,24 +68,23 @@ public class ExpItemModel extends PropertiesData<Object> {
 		return rt;
 	}
 
-	public String getIcon() {
+	public ImageUrl getIconUrl() {
 		String rt = (String) this.getProperty("icon");
-		return "n/a".equals(rt) ? null : rt;
+		return ImageUrl.parse(rt, true);
 
 	}
 
-	public String getImage() {
+	public ImageUrl getImageUrl() {
 
 		String rt = (String) this.getProperty("image");
-		if ("n/a".equals(rt)) {
-			rt = null;
-		}
-		return rt;
+
+		return ImageUrl.parse(rt, true);
 
 	}
 
-	public String getUserIcon() {
-		return (String) this.getProperty("userIcon");
+	public ImageUrl getUserIconAsImageUrl() {
+		String str = (String) this.getProperty("userIcon");
+		return ImageUrl.parse(str, true);
 
 	}
 

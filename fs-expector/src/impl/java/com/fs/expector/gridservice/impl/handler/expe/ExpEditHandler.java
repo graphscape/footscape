@@ -15,6 +15,7 @@ import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.message.support.MessageSupport;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.util.ImageUrl;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.ErrorInfo;
@@ -81,9 +82,12 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 		String title = (String) req.getPayload("title", true);
 		String format = (String) req.getPayload("format", true);
 		String summary = (String) req.getPayload("summary", true);
-		String icon = (String) req.getPayload("icon", "n/a");
-		String image = (String) req.getPayload("image", "n/a");
-
+		String icon = (String) req.getPayload("icon", ImageUrl.NONE.toString());//no use
+		String imageS = (String) req.getPayload("image", ImageUrl.NONE.toString());//
+		ImageUrl image = ImageUrl.parse(imageS, true);
+		
+		image = this.efacade.saveImage(image);
+		
 		Expectation exp = new Expectation().forCreate(this.dataService);
 
 		exp.setStatus(Expectation.ST_OPEN);
@@ -93,7 +97,7 @@ public class ExpEditHandler extends ExpectorTMREHSupport {
 		exp.setFormat(format);
 		exp.setBody(body);
 		exp.setIcon(icon);
-		exp.setImage(image);
+		exp.setImage(image.toString());
 		exp.save(true);
 
 		String eid = exp.getId();

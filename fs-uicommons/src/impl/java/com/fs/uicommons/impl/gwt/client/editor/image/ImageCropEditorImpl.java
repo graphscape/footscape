@@ -56,7 +56,12 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 	@Override
 	public void setData(String data) {
 		super.setData(data);
-		this.image.setAttribute("src", data);
+		String src = data;
+		if (data == null) {
+			src = "";
+		}
+
+		this.image.setAttribute("src", src);
 	}
 
 	// data is from file input,not setData directly,process it first,see
@@ -69,7 +74,8 @@ public class ImageCropEditorImpl extends FileUrlDataEditorSupport implements Ima
 			this.imageCroper = null;
 		}
 
-		imageCroper = new ImageCroper(this.container, this.targetSize, this.innerBoxZoom, this.outerBoxZoomX, this.outerBoxZoomY);
+		imageCroper = new ImageCroper(this.container, this.targetSize, this.innerBoxZoom, this.outerBoxZoomX,
+				this.outerBoxZoomY);
 
 		imageCroper.parent(this);//
 		imageCroper.addHandler(DataEvent.TYPE, new EventHandlerI<DataEvent>() {
