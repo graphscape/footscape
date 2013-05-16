@@ -29,27 +29,43 @@
 		<config name="client" path="/events/client" class="com.fs.expector.gridservice.impl.handler.client.ClientHandler">
 			<client.parameters value="com.fs.expector.gridservice.impl.ClientParameters" />
 		</config>
-		<config name="password" path="/events/password" class="com.fs.expector.gridservice.impl.handler.password.PasswordHandler" >
-			<rootUrl value="$web.rootUrl"/>
+		<config name="password" path="/events/password" class="com.fs.expector.gridservice.impl.handler.password.PasswordHandler">
+			<rootUrl value="$web.rootUrl" />
 		</config>
 		<config name="i18n" path="/events/i18n" class="com.fs.expector.gridservice.impl.handler.i18n.I18nHandler" />
 		<config name="imsg" path="/events/imsg" class="com.fs.expector.gridservice.impl.handler.internal.InternalMsgHandler" />
-		
+
 		<config name="cttmsg" path="/events/cttmsg" class="com.fs.expector.gridservice.impl.handler.cttmsg.ContactMessageHandler" />
-		
+
 		<config name="expc" path="/events/expc" class="com.fs.expector.gridservice.impl.handler.expc.ExpConnectHandler" />
 		<config name="expe" path="/events/expe" class="com.fs.expector.gridservice.impl.handler.expe.ExpEditHandler" />
 		<config name="exps" path="/events/exps" class="com.fs.expector.gridservice.impl.handler.exps.ExpSearchHandler">
 			<defaultSearchSlop value="3" />
-				
+
 		</config>
 		<config name="expm" path="/events/expm" class="com.fs.expector.gridservice.impl.handler.expm.ExpMessageHandler" />
-		
+
 		<config name="cooper" path="/events/cooper" class="com.fs.expector.gridservice.impl.handler.cooper.CooperHandler" />
 		<config name="profile" path="/events/profile" class="com.fs.expector.gridservice.impl.handler.profile.ProfileHandler" />
 		<config name="resource" path="/events/resource" class="com.fs.expector.gridservice.impl.handler.resource.ResourceHandler" />
 		<config name="uelist" path="/events/uelist" class="com.fs.expector.gridservice.impl.handler.uelist.UserExpListHandler" />
 		<config name="uinfo" path="/events/uinfo" class="com.fs.expector.gridservice.impl.handler.uinfo.UserInfoHandler" />
 
+	</config>
+	<!-- WEB app,Servlets -->
+	<config name="WebApp.GS">
+		<context.path value="/gs" />
+	</config>
+	<config name="servletHolders">
+		<config name="imageUrlServlet">
+			<property name="path" value="/imgu" />
+			<prefix name="servlet">
+				<property name="class" value="com.fs.expector.gridservice.impl.servlet.ImageUrlServlet" />
+			</prefix>
+			<config name="init-parameters">
+
+			</config>
+
+		</config>
 	</config>
 </config>

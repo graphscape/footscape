@@ -14,6 +14,7 @@ import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.util.ImageUrl;
 import com.fs.commons.api.validator.ValidateResult;
 import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.api.value.PropertiesI;
@@ -94,12 +95,16 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		Date bd = (Date) req.getPayload("birthDay", true);// just for display.
 		String gender = (String) req.getPayload("gender", true);
 		String icon = (String) req.getPayload("icon", true);
-
+		
+		ImageUrl diu = ImageUrl.parse(icon, true);
+		
+		ImageUrl diu2 = this.efacade.saveImage(diu);
+		
 		Profile pts = new Profile().forCreate(this.dataService);// NOTE
 		pts.setAccountId(login.getAccountId());//
 		pts.setBirthDay(bd);
 		pts.setGender(gender);
-		pts.setIcon(icon);
+		pts.setIcon(diu2.toString());
 		pts.save(true);
 
 	}

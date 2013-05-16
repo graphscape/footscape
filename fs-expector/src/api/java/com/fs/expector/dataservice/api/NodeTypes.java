@@ -32,4 +32,6 @@ public class NodeTypes {
 			.valueOf("connection");
 	
 	public static final NodeType CONTACT_MESSAGE = NodeType.valueOf("contact-message");
+	
+	public static final NodeType IMAGE_URL = NodeType.valueOf("image-url");
 }

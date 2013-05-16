@@ -9,6 +9,7 @@ import java.util.List;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
+import com.fs.commons.api.util.ImageUrl;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.DataServiceFactoryI;
 import com.fs.dataservice.api.core.DataServiceI;
@@ -24,6 +25,7 @@ import com.fs.expector.dataservice.api.wrapper.Acknowledge;
 import com.fs.expector.dataservice.api.wrapper.Connection;
 import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
+import com.fs.expector.dataservice.api.wrapper.ImageContent;
 import com.fs.expector.dataservice.api.wrapper.Profile;
 
 /**
@@ -275,6 +277,28 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	public int getMaxLimitOfExpectationOpenCount() {
 		//
 		return maxLimitOfOpenExpectation;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.expector.dataservice.api.ExpectorDsFacadeI#saveImage(java.lang
+	 * .String)
+	 */
+	@Override
+	public ImageUrl saveImage(ImageUrl diu) {
+		if (!"data".equals(diu.getProtocol())) {
+			return diu;
+		}
+
+		ImageContent ic = new ImageContent().forCreate(this.dataService);
+		ic.setData(diu.getData());
+		ic.setEncode(diu.getEncode());
+		ic.setFormat(diu.getFormat());
+		ImageUrl rt = new ImageUrl("img-id", "n/a", "n/a", ic.getId());
+
+		return rt;
 	}
 
 }

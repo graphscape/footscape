@@ -6,6 +6,7 @@ package com.fs.expector.dataservice.api;
 import java.util.Date;
 import java.util.List;
 
+import com.fs.commons.api.util.ImageUrl;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
@@ -45,5 +46,7 @@ public interface ExpectorDsFacadeI {
 	public int getExpectationOpenCount(String aid);
 	
 	public int getMaxLimitOfExpectationOpenCount();
+
+	public ImageUrl saveImage(ImageUrl data);
 
 }
