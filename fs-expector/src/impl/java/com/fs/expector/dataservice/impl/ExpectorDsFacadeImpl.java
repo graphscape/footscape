@@ -40,7 +40,11 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	public static int maxLimitOfOpenExpectation = 200;
 
-	private String defaultUserIconDataUrl;
+	private ImageUrl defaultUserIconDataUrl;
+
+	private String defaultUserIconDataUrl_male;
+
+	private String defaultUserIconDataUrl_female;
 
 	private DataServiceI dataService;
 
@@ -48,7 +52,11 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	public void configure(Configuration cfg) {
 		// TODO Auto-generated method stub
 		super.configure(cfg);
-		this.defaultUserIconDataUrl = this.config.getProperty("defaultUserIconDataUrl");
+		this.defaultUserIconDataUrl = ImageUrl.parse(this.config.getProperty("defaultUserIconDataUrl", true),
+				true);
+		this.defaultUserIconDataUrl_male = this.config.getProperty("defaultUserIconDataUrl_male", true);
+		this.defaultUserIconDataUrl_female = this.config.getProperty("defaultUserIconDataUrl_female", true);
+
 	}
 
 	/* */
@@ -101,7 +109,7 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		//
 		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
 		if (p == null) {
-			return this.defaultUserIconDataUrl;
+			return this.defaultUserIconDataUrl.toString();
 		}
 		return p.getIcon();
 	}
@@ -174,7 +182,7 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 				Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
 				String icon = pf == null ? null : pf.getIcon();
 				if (icon == null) {
-					icon = this.defaultUserIconDataUrl;
+					icon = this.defaultUserIconDataUrl.toString();
 				}
 				pts.setProperty("userIcon", icon);//
 			}
@@ -237,7 +245,7 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	 */
 	@Override
 	public String getDefaultUserIconDataUrl() {
-		return this.defaultUserIconDataUrl;
+		return this.defaultUserIconDataUrl.toString();
 	}
 
 	/*
@@ -288,19 +296,19 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	 */
 	@Override
 	public ImageUrl saveImage(ImageUrl diu) {
-		
+
 		if (!"data".equals(diu.getProtocol())) {
-			
+
 			return diu;
 		}
-		//only data url need to save.
+		// only data url need to save.
 		ImageContent ic = new ImageContent().forCreate(this.dataService);
 		ic.setProtocol(diu.getProtocol());
 		ic.setData(diu.getData());
 		ic.setEncode(diu.getEncode());
 		ic.setFormat(diu.getFormat());
 		ic.save(false);
-		ImageUrl rt = new ImageUrl(PROTOCOL_IID, "none", "none", ic.getId());
+		ImageUrl rt = new ImageUrl(IMG_PROTOCOL_IID, "none", "none", ic.getId());
 
 		return rt;
 	}

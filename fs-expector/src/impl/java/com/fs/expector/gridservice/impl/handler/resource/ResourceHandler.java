@@ -24,15 +24,15 @@ import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
  */
 public class ResourceHandler extends ExpectorTMREHSupport {
 
-	private Path[] allowedPathSegments = new Path[] { Path.valueOf("/open/resource") };
+	public static Path[] allowedPathSegments = new Path[] { Path.valueOf("/open/resource") };
 
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
 	}
 
-	public boolean isAllowed(Path p) {
-		for (Path pi : this.allowedPathSegments) {
+	public static boolean isAllowed(Path p) {
+		for (Path pi : allowedPathSegments) {
 			if (p.contains(pi)) {
 				return true;
 			}
@@ -55,7 +55,7 @@ public class ResourceHandler extends ExpectorTMREHSupport {
 		}
 		String pathS = uri.getPath();
 		Path path = Path.valueOf(pathS);
-		if (!this.isAllowed(path)) {
+		if (!isAllowed(path)) {
 			res.getErrorInfos().addError(Constants.P_ERROR_NOTALLOW);
 			return;
 		}
@@ -71,5 +71,6 @@ public class ResourceHandler extends ExpectorTMREHSupport {
 		res.setPayload("resource", rt);
 
 	}
+	
 
 }

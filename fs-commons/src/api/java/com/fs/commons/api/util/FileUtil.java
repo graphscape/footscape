@@ -6,9 +6,9 @@ package com.fs.commons.api.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
-import java.nio.CharBuffer;
 
 import com.fs.commons.api.lang.FsException;
 
@@ -48,5 +48,17 @@ public class FileUtil {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static void copy(InputStream from, OutputStream to) throws IOException {
+		byte[] buf = new byte[1024];
+		while (true) {
+			int l = from.read(buf);
+			if (l == -1) {
+				break;
+			}
+			to.write(buf, 0, l);
+
+		}
 	}
 }

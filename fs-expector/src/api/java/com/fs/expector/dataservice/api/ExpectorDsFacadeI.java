@@ -16,7 +16,11 @@ import com.fs.expector.dataservice.api.wrapper.Expectation;
  * 
  */
 public interface ExpectorDsFacadeI {
-	public static final String PROTOCOL_IID = "iid";
+	
+	public static final String IMG_PROTOCOL_IID = "iid";
+	
+	public static final String IMG_PROTOCOL_RES = "res";
+	
 
 	public int getOverflowConnectedExpCount(String expId1);
 

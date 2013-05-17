@@ -5,7 +5,6 @@ package com.fs.websocket.impl;
 
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.config.Configuration;
-import com.fs.commons.api.server.ServerI;
 import com.fs.commons.api.support.SPISupport;
 import com.fs.webcomet.api.CometFactoryI;
 import com.fs.webcomet.api.CometProtocolI;
@@ -57,8 +56,9 @@ public class WebSocketSPI extends SPISupport {
 	@Override
 	protected void doBeforeShutdown(int loop) {
 		//
-		ServerI fps = this.container.find(ServerI.class, "FLASH_POLICY_SERVER", true);
-		fps.shutdown();
+		// ServerI fps = this.container.find(ServerI.class,
+		// "FLASH_POLICY_SERVER", true);
+		// fps.shutdown();
 	}
 
 }

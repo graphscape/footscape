@@ -14,6 +14,9 @@ import com.google.gwt.http.client.URL;
  */
 public class ImageUrl {
 
+	public static final String PRO_IID = "iid";// internal id.
+	public static final String PRO_RES = "res";// resource.
+
 	private String protocol;
 
 	private String format;
@@ -70,12 +73,13 @@ public class ImageUrl {
 		}
 
 		String rt = this.toString();
-
-		if (this.protocol.equals("iid")) {
-			String uri = uic.getParameter(UiConstants.PK_IMAGES_URI, true);
-			rt = URL.encode(rt);
-			rt = uri + "/" + rt;
+		if (this.protocol.equals("data")) {
+			return rt;
 		}
+		// encode,and get from http.
+		String uri = uic.getParameter(UiConstants.PK_IMAGES_URI, true);
+		rt = URL.encodePathSegment(rt);
+		rt = uri + "/" + rt;
 
 		return rt;
 	}
