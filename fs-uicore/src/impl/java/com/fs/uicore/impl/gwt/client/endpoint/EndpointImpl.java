@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.HandlerI;
-import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.endpoint.Address;
 import com.fs.uicore.api.gwt.client.event.ClientClosingEvent;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;

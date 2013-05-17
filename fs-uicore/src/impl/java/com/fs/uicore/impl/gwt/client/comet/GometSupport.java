@@ -67,6 +67,7 @@ public abstract class GometSupport implements GometI {
 
 	protected void opened() {
 		this.setState(OPENED);
+		this.openHandlers.handle(this);
 	}
 	
 	protected void closed(){

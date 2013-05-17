@@ -234,9 +234,12 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 
 	protected abstract void doSendMessage(String msg, HandlerI<String> onfailure);
 
+	/**
+	 * Called after the underlying protocol(comet) is established.
+	 */
 	protected void onConnected() {
 		// wait server is ready
-		LOG.info(getShortName() + " is open, send client is ready to server,and wait server is ready.");
+		LOG.info(getShortName() + " is open, waiting server is ready.");
 		MessageData req = new MessageData("/control/status/clientIsReady");
 		this.sendMessageDirect(req);
 

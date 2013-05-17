@@ -47,7 +47,9 @@ public class StatefulUiObjectSupport extends UiObjectSupport implements Stateful
 	}
 
 	protected void setState(State news) {
+		State old = this.state;
 		this.state = news;
+		
 		new StateChangeEvent(this).dispatch();
 	}
 

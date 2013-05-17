@@ -31,6 +31,8 @@ import com.fs.uicore.api.gwt.client.event.EndpointCloseEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointErrorEvent;
 import com.fs.uicore.api.gwt.client.event.EndpointOpenEvent;
 import com.fs.uicore.api.gwt.client.gwthandlers.GwtClosingHandler;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.message.MessageDispatcherI;
 import com.fs.uicore.api.gwt.client.message.MessageHandlerI;
 import com.fs.uicore.api.gwt.client.state.State;
@@ -49,6 +51,8 @@ import com.google.gwt.user.client.Window.ClosingEvent;
  */
 public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiClientI {
 
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(UiClientImpl.class);
+	
 	private String clientId;
 
 	private CodecI.FactoryI cf;
@@ -143,7 +147,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 			@Override
 			public void handle(EndpointCloseEvent t) {
-				UiClientImpl.this.onEndpointClose(t.getEndPoint());
+				UiClientImpl.this.onEndpointClose(t);
 			}
 		});
 
@@ -163,6 +167,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		if (!this.isState(UNKNOWN)) {
 			throw new UiException("state should be:" + UNKNOWN + ",but state is:" + this.state);
 		}
+		
 		this.setState(STARTING);
 
 		this.uriList = new ArrayList<Address>();
@@ -207,6 +212,12 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		}
 
 		this.tryConnect(0);
+	}
+	
+	public void setState(State s){
+		State old = this.state;
+		super.setState(s);
+		LOG.info("state changed,old:" + old + ",new:" + this.state);
 	}
 
 	public boolean tryConnect(int uriIdx) {
@@ -298,8 +309,10 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		this.tryConnect(uriIdx + 1);
 	}
 
-	public void onEndpointClose(EndPointI ep) {
-
+	public void onEndpointClose(EndpointCloseEvent evt) {
+		
+		
+		//
 		if (this.isState(STARTED)) {//
 
 			new ClientConnectLostEvent(this).dispatch();
@@ -308,7 +321,7 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 		// ws error will delay the ajax request for that the limit is 2
 		// connections.
-
+		EndPointI ep = evt.getEndPoint();
 		if (ep.isOpen()) {
 			// this endpoint is open,but error before client/server is ready, so
 			// we

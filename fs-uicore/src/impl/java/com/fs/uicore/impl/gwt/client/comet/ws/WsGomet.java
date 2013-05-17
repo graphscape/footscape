@@ -59,7 +59,7 @@ public class WsGomet extends GometSupport {
 	}
 
 	private void onOpen(EventJSO evt) {
-		this.openHandlers.handle(this);
+		this.opened();
 	}
 
 	/*

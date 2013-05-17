@@ -68,7 +68,7 @@ public class ImageUrlServlet extends ConfigurableServletSupport {
 
 		String body = ic.getData();
 		res.setContentType(ic.getFormat());//
-		res.setHeader("Cache-Control", "public, max-age=3600");//second
+		res.setHeader("Cache-Control", "public");//second
 		byte[] bts = DatatypeConverter.parseBase64Binary(body);
 		res.getOutputStream().write(bts);
 

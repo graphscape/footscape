@@ -44,21 +44,22 @@ public class EndpointKeeper {
 			}
 		});
 
-
 		int hbI = this.client.getParameterAsInt(UiCommonsConstants.RK_COMET_HEARTBEATINTERVAL, -1);
-
-		if (hbI > 5 * 1000) {// must longer than 5 second
-
-			SchedulerI s = this.endpoint.getContainer().get(SchedulerI.class, true);
-
-			s.scheduleRepeat(taskName, hbI, new EventHandlerI<ScheduleEvent>() {
-
-				@Override
-				public void handle(ScheduleEvent t) {
-					EndpointKeeper.this.onScheduleEvent(t);
-				}
-			});// 30S to send ping
+		if (hbI < 5 * 1000) {// must longer than 5 second
+			LOG.error("parameter of interval for heart beat too short:"+hbI);
+			return;
 		}
+		
+		SchedulerI s = this.endpoint.getContainer().get(SchedulerI.class, true);
+
+		s.scheduleRepeat(taskName, hbI, new EventHandlerI<ScheduleEvent>() {
+
+			@Override
+			public void handle(ScheduleEvent t) {
+				EndpointKeeper.this.onScheduleEvent(t);
+			}
+		});// 30S to send ping
+
 	}
 
 	/**

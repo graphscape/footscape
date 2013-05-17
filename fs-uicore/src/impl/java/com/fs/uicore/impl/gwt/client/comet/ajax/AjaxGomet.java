@@ -291,9 +291,9 @@ public class AjaxGomet extends GometSupport {
 	 * @param sid2
 	 */
 	public void conected(String sid2) {
-		this.opened();
 		this.sid = sid2;
-		this.openHandlers.handle(this);
+		this.opened();
+		
 	}
 
 	/**
