@@ -32,7 +32,7 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 	 * com.fs.uicommons.api.gwt.client.frwk.login.LoginControlI#openLoginView()
 	 */
 	@Override
-	public LoginViewI openLoginView() {
+	public LoginViewI openLoginView(boolean show) {
 
 		// TODO creater
 		BodyViewI bv = this.getBodyView();
@@ -42,7 +42,9 @@ public class LoginControlImpl extends ControlSupport implements LoginControlI {
 
 			bv.addItem(UiCommonsConstants.LOGIN_VIEW, lv);
 		}
-		bv.select(UiCommonsConstants.LOGIN_VIEW);//
+		if(show){
+			bv.select(UiCommonsConstants.LOGIN_VIEW);//			
+		}
 		return lv;
 	}
 

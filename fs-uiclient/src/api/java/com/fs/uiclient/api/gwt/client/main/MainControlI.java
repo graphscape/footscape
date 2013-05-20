@@ -60,7 +60,7 @@ public interface MainControlI extends ControlI {
 
 	public HtmlElementWidgetI openHtmlResource(Path path, boolean refresh);
 
-	public LoginViewI openLoginView();
+	public LoginViewI openLoginView(boolean show);
 	
 	public ContactUsViewI openContactUsView(boolean show);
 

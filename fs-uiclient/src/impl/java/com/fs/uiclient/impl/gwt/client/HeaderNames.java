@@ -12,6 +12,7 @@ import com.fs.uicore.api.gwt.client.commons.Path;
  */
 public class HeaderNames {
 
+	public static final Path H1 = Path.valueOf("header");
 	public static final Path H1_LOGO = Path.valueOf("logo");
 
 	public static final Path H1_USER = Path.valueOf("user");
@@ -21,6 +22,8 @@ public class HeaderNames {
 	public static final Path H2_SIGNUP = H1_USER.getSubPath("signup");
 
 	public static final Path H1_MYEXP = Path.valueOf("myExp");
+
+	public static final Path H1_CREATE = Path.valueOf("createExp");
 
 	public static final Path H1_SEARCH = Path.valueOf("search");
 

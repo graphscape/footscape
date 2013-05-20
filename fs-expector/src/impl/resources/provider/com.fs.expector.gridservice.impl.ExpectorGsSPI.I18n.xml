@@ -64,7 +64,8 @@
 	<property name="/tab-default" value="Default" />
 	<property name="/tab-confirm" value="Confirm" />
 	<property name="/expMessageCount" value="Messages" />
-	<property name="/myExp" value="Expectations" />
+	<property name="/myExp" value="Mine" />
+	<property name="/createExp" value="Create" />
 	<property name="/logo" value="waitee" />
 	<property name="/about" value="About Us" />
 	<property name="/contact" value="Contact Us" />

@@ -69,12 +69,18 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 
 	public static final State UNKNOWN = State.valueOf("UNKNOWN");
 
+	//starting 
 	public static final State STARTING = State.valueOf("STARTING");
 
+	//failed to connect any endpoint protocol.
 	public static final State FAILED = State.valueOf("FAILED");
 
+	//ok state 
 	public static final State STARTED = State.valueOf("STARTED");
 
+	//connection is closed,then set to lost state.
+	public static final State LOST = State.valueOf("LOST");
+	
 	private static final String PK_TRYING_INDEX = "_trying_idx";
 
 	/**
@@ -284,9 +290,6 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		new AfterClientStartEvent(this).dispatch();
 	}
 
-	private void tryConnectAfterEndpoint(EndPointI ep) {
-
-	}
 
 	public void onEndpointError(EndPointI ep) {
 
@@ -313,8 +316,8 @@ public class UiClientImpl extends ContainerAwareUiObjectSupport implements UiCli
 		
 		
 		//
-		if (this.isState(STARTED)) {//
-
+		if (this.isState(STARTED)) {//if started,not try other method for connect
+			this.setState(LOST);
 			new ClientConnectLostEvent(this).dispatch();
 			return;// ignore ,because it may a applevel error.
 		}

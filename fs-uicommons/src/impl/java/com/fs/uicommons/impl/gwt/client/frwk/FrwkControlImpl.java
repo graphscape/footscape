@@ -58,10 +58,10 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	 * Feb 1, 2013
 	 */
 	@Override
-	public LoginViewI openLoginView() {
+	public LoginViewI openLoginView(boolean show) {
 		//
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		return lc.openLoginView();
+		return lc.openLoginView(show);
 
 	}
 
@@ -95,17 +95,17 @@ public class FrwkControlImpl extends ControlSupport implements FrwkControlI {
 	}
 
 	@Override
-	public ConsoleViewI openConsoleView() {
+	public ConsoleViewI openConsoleView(boolean show) {
 		BodyViewI bv = this.getFrwkView().getBodyView();
 		ConsoleViewI rt = bv.getOrCreateItem(UiCommonsConstants.P_CONSOLE_VIEW,
 				new com.fs.uicommons.api.gwt.client.CreaterI<ConsoleViewI>() {
 
 					@Override
 					public ConsoleViewI create(ContainerI ct) {
-						
+
 						return new ConsoleView(ct);
 					}
-				});
+				}, show);
 		return rt;
 	}
 }

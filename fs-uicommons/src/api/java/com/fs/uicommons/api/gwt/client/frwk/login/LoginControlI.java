@@ -8,7 +8,7 @@ public interface LoginControlI extends ControlI {
 	/**
 	 * @return
 	 */
-	public LoginViewI openLoginView();
+	public LoginViewI openLoginView(boolean show);
 	
 	public PasswordResetViewI openPasswordResetView();
 

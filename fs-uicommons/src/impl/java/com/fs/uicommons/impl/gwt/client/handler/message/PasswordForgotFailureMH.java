@@ -33,7 +33,7 @@ public class PasswordForgotFailureMH extends UiHandlerSupport implements Message
 	@Override
 	public void handle(EndpointMessageEvent t) {
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		LoginViewI pv = lc.openLoginView();
+		LoginViewI pv = lc.openLoginView(true);
 		MessageData req = t.getMessage();
 		ErrorInfosData eis = (ErrorInfosData) req.getPayload(UiResponse.ERROR_INFO_S);
 		pv.addErrorInfo(eis);//

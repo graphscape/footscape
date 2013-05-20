@@ -13,6 +13,8 @@ import com.fs.uicore.api.gwt.client.UiException;
 import com.fs.uicore.api.gwt.client.commons.Path;
 import com.fs.uicore.api.gwt.client.core.Event.EventHandlerI;
 import com.fs.uicore.api.gwt.client.event.ScheduleEvent;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerFactory;
+import com.fs.uicore.api.gwt.client.logger.UiLoggerI;
 import com.fs.uicore.api.gwt.client.scheduler.SchedulerI;
 import com.fs.uicore.api.gwt.client.support.UiObjectSupport;
 import com.google.gwt.core.client.Scheduler;
@@ -24,6 +26,8 @@ import com.google.gwt.user.client.Timer;
  * 
  */
 public class SchedulerImpl extends UiObjectSupport implements SchedulerI, ContainerI.AwareI {
+
+	private static final UiLoggerI LOG = UiLoggerFactory.getLogger(SchedulerImpl.class);
 
 	/**
 	 * @param c
@@ -55,6 +59,7 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI, Contai
 		@Override
 		public boolean execute() {
 			//
+			//LOG.debug("execute task:" + this.name);
 			new ScheduleEvent(this.scheduler, path).dispatch();
 			return true;
 		}
@@ -67,6 +72,7 @@ public class SchedulerImpl extends UiObjectSupport implements SchedulerI, Contai
 
 	@Override
 	public void scheduleRepeat(String name, int intervalMS) {
+		LOG.info("scheduleRepeat,name:" + name + ",intervalMS:" + intervalMS);
 		ScheduleTask rt = this.getTask(name, false);
 		if (rt == null) {
 			ScheduleTask rti = new ScheduleTask(this, name, intervalMS);

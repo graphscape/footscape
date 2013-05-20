@@ -63,6 +63,7 @@ public class ClientStartEventHandler extends UiHandlerSupport implements EventHa
 		// right
 		fc.addHeaderItemIfNotExist(HeaderNames.H1_SEARCH);
 		fc.addHeaderItemIfNotExist(HeaderNames.H1_MYEXP);//anonymous will notify:no right to show exp
+		fc.addHeaderItemIfNotExist(HeaderNames.H1_CREATE);//
 		fc.addHeaderItem(HeaderNames.H2_SIGNUP);
 		//
 		BottomViewI bv = fc.getBottomView();

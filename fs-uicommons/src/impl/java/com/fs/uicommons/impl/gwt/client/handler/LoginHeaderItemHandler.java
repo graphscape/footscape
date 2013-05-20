@@ -26,7 +26,7 @@ public class LoginHeaderItemHandler extends UiHandlerSupport implements EventHan
 	@Override
 	public void handle(HeaderItemEvent t) {
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		lc.openLoginView();
+		lc.openLoginView(true);
 	}
 
 }

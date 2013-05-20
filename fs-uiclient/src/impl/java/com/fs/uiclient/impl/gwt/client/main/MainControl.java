@@ -372,11 +372,11 @@ public class MainControl extends ControlSupport implements MainControlI {
 	 *May 2, 2013
 	 */
 	@Override
-	public LoginViewI openLoginView() {
+	public LoginViewI openLoginView(boolean show) {
 		// 
 		FrwkControlI fc = this.getControl(FrwkControlI.class, true);
 		
-		return fc.openLoginView();
+		return fc.openLoginView(show);
 	}
 
 	/*

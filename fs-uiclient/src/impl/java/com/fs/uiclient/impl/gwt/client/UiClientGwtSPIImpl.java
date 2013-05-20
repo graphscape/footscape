@@ -34,31 +34,9 @@ import com.fs.uiclient.impl.gwt.client.handler.action.ProfileInitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.ProfileSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.SignupSubmitAP;
 import com.fs.uiclient.impl.gwt.client.handler.action.UserExpSelectAP;
-import com.fs.uiclient.impl.gwt.client.handler.message.ContactMsgFailureMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ContactMsgSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.CooperConfirmSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.CooperRequestSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpClosedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectCreatedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpConnectSearchMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpDeletedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitFailureMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpEditSubmitSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpGetMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageCreatedNotifyMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpMessageMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ExpSearchMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ProfileInitSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitFailureMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ProfileSubmitSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.ResourceGetSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitFailureMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.SignupSubmitSuccessMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.SuccessOrFailureEventMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.UeListRefreshMH;
-import com.fs.uiclient.impl.gwt.client.handler.message.UserInfoSuccessMH;
 import com.fs.uiclient.impl.gwt.client.handler.other.ClientStartEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.ContactUsBottomItemHandler;
+import com.fs.uiclient.impl.gwt.client.handler.other.CreateHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.LoginEventHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.MyExpHeaderItemHandler;
 import com.fs.uiclient.impl.gwt.client.handler.other.OpenConsoleItemHandler;
@@ -82,8 +60,6 @@ import com.fs.uicore.api.gwt.client.ContainerI;
 import com.fs.uicore.api.gwt.client.EventBusI;
 import com.fs.uicore.api.gwt.client.RootI;
 import com.fs.uicore.api.gwt.client.UiClientI;
-import com.fs.uicore.api.gwt.client.commons.Path;
-import com.fs.uicore.api.gwt.client.endpoint.EndPointI;
 import com.fs.uicore.api.gwt.client.event.AfterClientStartEvent;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf;
 import com.fs.uicore.api.gwt.client.reflect.InstanceOf.CheckerSupport;
@@ -101,6 +77,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 		this.activeInstanceOfChecker(c);
 
 		this.activeActionHandlers(c, client);
+
+		this.activeHeaderItemHandlers(c, client);
+
 		this.activeOtherHandlers(c, client);
 
 		this.activeControls(c, client);
@@ -116,6 +95,11 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 
 		eb.addHandler(UserLoginEvent.TYPE, new LoginEventHandler(c));
 
+	}
+
+	private void activeHeaderItemHandlers(ContainerI c, UiClientI client) {
+		EventBusI eb = client.getEventBus(true);
+
 		// header item
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H2_SIGNUP),
 				new SignupHeaderItemHandler(c));
@@ -126,7 +110,9 @@ public class UiClientGwtSPIImpl implements UiClientGwtSPI {
 				new MyExpHeaderItemHandler(c));
 		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_SEARCH),
 				new SearchHeaderItemHandler(c));
-
+		eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_CREATE),
+				new CreateHeaderItemHandler(c));
+		
 		// bottom item
 		// eb.addHandler(HeaderItemEvent.TYPE.getAsPath().concat(HeaderNames.H1_ABOUT),
 		// new OpenResourceItemHandler(c, UiClientConstants.P_HTML_ABOUT));

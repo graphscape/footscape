@@ -3,6 +3,7 @@
  */
 package com.fs.uiclient.impl.gwt.client.handler.other;
 
+import com.fs.uiclient.api.gwt.client.exps.ExpEditViewI;
 import com.fs.uiclient.api.gwt.client.main.MainControlI;
 import com.fs.uicommons.api.gwt.client.event.HeaderItemEvent;
 import com.fs.uicommons.api.gwt.client.mvc.support.UiHandlerSupport;
@@ -15,14 +16,13 @@ import com.google.gwt.user.client.Window;
  * @author wuzhen
  * 
  */
-public class MyExpHeaderItemHandler extends UiHandlerSupport implements EventHandlerI<HeaderItemEvent> {
+public class CreateHeaderItemHandler extends UiHandlerSupport implements EventHandlerI<HeaderItemEvent> {
 
 	/**
 	 * @param c
 	 */
-	public MyExpHeaderItemHandler(ContainerI c) {
+	public CreateHeaderItemHandler(ContainerI c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 
 	/*
@@ -34,7 +34,7 @@ public class MyExpHeaderItemHandler extends UiHandlerSupport implements EventHan
 	public void handle(HeaderItemEvent t) {
 		UserInfo ui = this.getEndpoint().getUserInfo();
 		if (ui.isAnonymous()) {
-			boolean ok = Window.confirm("Please login before create your expecation.");
+			boolean ok = Window.confirm("Please login before create! Open login view?");
 
 			if (ok) {
 				this.getControl(MainControlI.class, true).openLoginView(true);
@@ -44,7 +44,7 @@ public class MyExpHeaderItemHandler extends UiHandlerSupport implements EventHan
 		}
 
 		MainControlI mc = this.getControl(MainControlI.class, true);
-		mc.openUeList(true);
+		ExpEditViewI ev = mc.openExpEditView();
 	}
 
 }

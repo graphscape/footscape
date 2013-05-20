@@ -39,8 +39,8 @@ public class PasswordResetSuccessMH extends UiHandlerSupport implements MessageH
 		
 		// notify user a message send to the email
 		Window.alert("Password reset successfully!");
-		LoginViewI lv = lc.openLoginView();
-		//TODO 
+		
+		LoginViewI lv = lc.openLoginView(true);
 		
 	}
 

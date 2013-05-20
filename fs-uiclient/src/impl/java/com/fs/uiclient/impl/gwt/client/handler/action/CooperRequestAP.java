@@ -52,7 +52,7 @@ public class CooperRequestAP extends ActionHandlerSupport {
 			if (!login) {
 				return;// do nothing
 			}
-			mc.openLoginView();
+			mc.openLoginView(true);
 			return;//anonymous user should not continue;
 		}
 		// is register user

@@ -49,7 +49,6 @@ public class EndpointKeeper {
 			LOG.error("parameter of interval for heart beat too short:"+hbI);
 			return;
 		}
-		
 		SchedulerI s = this.endpoint.getContainer().get(SchedulerI.class, true);
 
 		s.scheduleRepeat(taskName, hbI, new EventHandlerI<ScheduleEvent>() {
@@ -66,6 +65,7 @@ public class EndpointKeeper {
 	 * Jan 11, 2013
 	 */
 	protected void onScheduleEvent(ScheduleEvent t) {
+		LOG.info("sending ping request for keeping the endpoint.");
 		MsgWrapper req = new MsgWrapper("/ping/ping");
 		req.setPayload("text", "keeper");
 		this.endpoint.sendMessage(req);

@@ -38,8 +38,9 @@ public class SignupSubmitSuccessMH extends MHSupport {
 		String email = sv.getEmail();
 		String password = sv.getPassword();
 		mc.closeSignup();
+		
 		LoginControlI lc = this.getControl(LoginControlI.class, true);
-		LoginViewI lv = lc.openLoginView();
+		LoginViewI lv = lc.openLoginView(true);
 		lv.setEmail(email);
 		lv.setPassword(password);
 		

@@ -31,7 +31,7 @@ public final class LoginTestWorker extends SignupTestWorker {
 
 	@Override
 	protected void onSignup(String email, String pass) {
-		this.loginView = (LoginView) this.manager.getControl(LoginControlI.class, true).openLoginView();
+		this.loginView = (LoginView) this.manager.getControl(LoginControlI.class, true).openLoginView(true);
 
 		LoginControlI lc = this.manager.getControl(LoginControlI.class, true);
 		FormView fv = this.loginView.find(FormView.class, "default", true);

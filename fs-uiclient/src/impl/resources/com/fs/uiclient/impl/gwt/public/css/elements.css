@@ -42,10 +42,11 @@ select {
 
 button.disable,
 button.disable:hover {
-	color: #d0d0d0;
-	border: 1px solid #d0d0d0;
+	border: 1px solid #808080;
 	background: #d0d0d0;
-	cursor:not-allowed;
+	box-shadow: none;
+	color: #808080;
+	cursor: not-allowed;
 }
 
 button:hover,

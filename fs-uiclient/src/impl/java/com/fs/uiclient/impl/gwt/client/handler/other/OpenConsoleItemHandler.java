@@ -31,7 +31,7 @@ public class OpenConsoleItemHandler extends UiHandlerSupport implements EventHan
 	public void handle(HeaderItemEvent t) {
 
 		FrwkControlI mc = this.getControl(FrwkControlI.class, true);
-		mc.openConsoleView();
+		mc.openConsoleView(true);
 
 	}
 

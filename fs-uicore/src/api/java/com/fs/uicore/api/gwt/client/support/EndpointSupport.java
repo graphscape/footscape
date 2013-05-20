@@ -198,7 +198,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 	 */
 	@Override
 	public void sendMessage(MessageData req) {
-		//applevel message sending.
+		// applevel message sending.
 		this.assertIsReady();
 
 		if (this.userInfo != null) {
@@ -249,6 +249,7 @@ public abstract class EndpointSupport extends UiObjectSupport implements EndPoin
 		this.serverIsReady = false;
 		this.clientId = null;
 		this.terminalId = null;//
+		LOG.info(getShortName() + " is closed, code:" + code + ",reason:" + reason);
 		new EndpointCloseEvent(this, code, reason).dispatch();
 
 	}
