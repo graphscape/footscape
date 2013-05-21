@@ -53,7 +53,7 @@ public class CooperRequestAP extends ActionHandlerSupport {
 				return;// do nothing
 			}
 			mc.openLoginView(true);
-			return;//anonymous user should not continue;
+			return;// anonymous user should not continue;
 		}
 		// is register user
 		if (ue == null) {
@@ -65,10 +65,14 @@ public class CooperRequestAP extends ActionHandlerSupport {
 
 			// open my expecation list
 			mc.openUeList(true);
-			return;//if not select one exp, not continue;
+			return;// if not select one exp, not continue;
 		}
 
 		String expId1 = ue.getExpId();
+		if (expId1.equals(expId2)) {
+			Window.alert("Cannot connect to the same expectations!");
+			return;
+		}
 
 		// CooperControlI cc= c.getManager().find(CooperControlI.class, true);
 		MsgWrapper req = this.newRequest(Path.valueOf("/cooper/request"));
