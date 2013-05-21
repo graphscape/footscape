@@ -1,3 +1,11 @@
+====
+v0.1.1 issue
+commons:add component factory,remove the populate/activitor tools;configuration add type name
+uicore:abstract native layer(hide the element into the implementation layer)
+expector:add role for expectation,add activity flow;
+app:hide/move the current app into the implementation layer
+ 
+
 == Html5 file ==
 http://code.google.com/p/gwt-nes-port/wiki/FileAPI
 == ==
