@@ -31,6 +31,7 @@
 	<title value="Title" />
 	<pfId value="Confirm Code" />
 	<newPassword value="New Password" />
+	<image value="Attachment(Image)" />
 
 	<!-- Error Code -->
 	<property name="/error/unknow" value="Unkow Error" />
