@@ -75,17 +75,19 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 
 		qo.first(from);
 		qo.maxSize(max);
-		
+
 		boolean isOpen = true;
 		if (isOpen) {
 			qo.propertyEq(Expectation.STATUS, Expectation.ST_OPEN);
 		}
-		
+
 		if (!includeMe) {
 			String thisAccId = this.getAccountId(ew, true);//
 			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);
 		}
-		qo.propertyMatch(Expectation.BODY, phrase, slop);
+		qo.multiMatch(new String[] { Expectation.TITLE, Expectation.BODY }, phrase, slop);
+
+		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 		qo.sort(NodeI.PK_TIMESTAMP, true);
 		NodeSearchResultI<Expectation> rst = qo.execute().getResult().assertNoError();
 		this.processExpsResult(res, rst.list());

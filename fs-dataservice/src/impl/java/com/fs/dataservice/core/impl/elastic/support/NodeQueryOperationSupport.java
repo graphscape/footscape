@@ -184,6 +184,7 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 				MultiMatchQueryBuilder qbi = new MultiMatchQueryBuilder(mm.pharse,
 						mm.fieldList.toArray(new String[] {}));
 				qbi.slop(mm.slop);
+				qbi.type(Type.PHRASE);
 				qb.must(qbi);
 			}
 		}
