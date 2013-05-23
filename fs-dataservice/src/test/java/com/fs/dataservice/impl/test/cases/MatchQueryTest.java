@@ -130,6 +130,7 @@ curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 		mn2.setProperty(MockNode.FIELD2, "value22");
 		mn2.setProperty(MockNode.FIELD3, "value23 and value231 value232 value233");
 		mn2.save(true);
+
 		NodeSearchOperationI<MockNode> qo = this.datas.prepareNodeSearch(MockNode.class);
 		qo.propertyMatch(MockNode.FIELD3, "value13 value132");
 		List<MockNode> mnl = qo.execute().getResult().assertNoError().list();
@@ -137,7 +138,7 @@ curl -XGET 'http://localhost:9200/nodes/mockNode/_search?pretty=true' -d '
 		assertEquals("slop=0,should not match", 0, mnl.size());
 
 		qo = this.datas.prepareNodeSearch(MockNode.class);
-		qo.propertyMatch(MockNode.FIELD3, "value13 value132", 2);
+		qo.propertyMatch(MockNode.FIELD3, "value13 value132", 3);
 		mnl = qo.execute().getResult().assertNoError().list();
 		assertEquals("slop=3,should match one", 1, mnl.size());
 

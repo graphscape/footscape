@@ -29,7 +29,8 @@ public class MockNode extends NodeWrapper {
 	}
 
 	public static void config(DataSchema cfs) {
-		cfs.addConfig(TYPE, MockNode.class).field("field1").field("field2").field(FIELD3, AnalyzerType.TEXT);
+		cfs.addConfig(TYPE, MockNode.class).field("field1").field("field2", AnalyzerType.TEXT)
+				.field(FIELD3, AnalyzerType.TEXT);
 
 	}
 

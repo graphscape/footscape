@@ -5,6 +5,7 @@
 package com.fs.dataservice.core.impl.elastic.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.MatchQueryBuilder.Type;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.slf4j.Logger;
@@ -38,9 +40,8 @@ import com.fs.dataservice.core.impl.elastic.ElasticClientI;
  * 
  */
 public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O, W, R>, W extends NodeWrapper, R extends ResultI<R, ?>>
-		extends NodeOperationSupport<O,W, R> implements NodeQueryOperationI<O, W, R> {
+		extends NodeOperationSupport<O, W, R> implements NodeQueryOperationI<O, W, R> {
 
-	
 	private static Logger LOG = LoggerFactory.getLogger(NodeQueryOperationSupport.class);
 
 	public static class Term {
@@ -63,11 +64,19 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 		int slop;
 	}
 
+	public static class MultiMatch {
+		List<String> fieldList;
+		String pharse;
+		int slop;
+	}
+
 	private static final String PK_TERMS = "terms";
 
 	private static final String PK_RANGES = "ranges";
 
-	private static final String PK_MATCHES = "matches";
+	private static final String PK_MATCHES = "matches";//
+
+	private static final String PK_MULTI_MATCHS = "multi-matchs";
 
 	private ElasticClientI elastic;
 
@@ -165,6 +174,18 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 			qbi.slop(rg.slop);
 			qbi.operator(Operator.AND);//
 			qb.must(qbi);//
+		}
+		// multi matches
+		List<MultiMatch> mmL = (List<MultiMatch>) this.parameters.getProperty(PK_MULTI_MATCHS);
+
+		if (mmL != null) {
+			for (MultiMatch mm : mmL) {
+				this.validateKeyIsConfigedInType(mm.fieldList, rst.getErrorInfo());//check fields.
+				MultiMatchQueryBuilder qbi = new MultiMatchQueryBuilder(mm.pharse,
+						mm.fieldList.toArray(new String[] {}));
+				qbi.slop(mm.slop);
+				qb.must(qbi);
+			}
 		}
 
 		return qb;
@@ -323,7 +344,7 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 
 	@Override
 	public O propertyMatch(String key, String pharse, int slop) {
-		//
+		// TODO allow multiple phrases for one filed.
 		PropertiesI<Match> tes = (PropertiesI<Match>) this.parameters.getProperty(PK_MATCHES);
 		Match m = tes.getProperty(key);
 		if (m == null) {
@@ -333,6 +354,23 @@ public abstract class NodeQueryOperationSupport<O extends NodeQueryOperationI<O,
 			tes.setProperty(key, m);
 		}
 		m.pharse = pharse;
+		return (O) this;
+	}
+
+	@Override
+	public O multiMatch(String[] keys, String pharse, int slop) {
+		List<MultiMatch> mmL = (List<MultiMatch>) this.parameters.getProperty(PK_MULTI_MATCHS);
+		if (mmL == null) {
+			mmL = new ArrayList<MultiMatch>();
+			this.parameters.setProperty(PK_MULTI_MATCHS, mmL);
+		}
+		MultiMatch mm = new MultiMatch();
+		mm.fieldList = new ArrayList<String>();
+		mm.fieldList.addAll(Arrays.asList(keys));
+		mm.pharse = pharse;
+		mm.slop = slop;
+		mmL.add(mm);
+
 		return (O) this;
 	}
 

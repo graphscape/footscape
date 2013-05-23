@@ -24,6 +24,8 @@ public interface NodeQueryOperationI<O extends NodeQueryOperationI<O, W, R>, W e
 	public O propertyMatch(String key, String pharse);
 
 	public O propertyMatch(String key, String pharse, int slop);
+	
+	public O multiMatch(String[] fields, String phrase, int slop);
 
 	public O propertyLt(String key, Object value, boolean include);
 
