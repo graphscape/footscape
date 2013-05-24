@@ -13,14 +13,13 @@ import com.fs.commons.api.message.MessageContext;
 import com.fs.commons.api.message.MessageI;
 import com.fs.commons.api.message.ResponseI;
 import com.fs.commons.api.service.Handle;
+import com.fs.commons.api.util.ImageUrl;
 import com.fs.commons.api.value.PropertiesI;
 import com.fs.dataservice.api.core.operations.NodeSearchOperationI;
 import com.fs.dataservice.api.core.result.NodeSearchResultI;
 import com.fs.expector.dataservice.api.wrapper.Account;
 import com.fs.expector.dataservice.api.wrapper.Connection;
-import com.fs.expector.dataservice.api.wrapper.ExpMessage;
 import com.fs.expector.dataservice.api.wrapper.Expectation;
-import com.fs.expector.dataservice.api.wrapper.Profile;
 import com.fs.expector.dataservice.impl.ExpectorDsFacadeImpl;
 import com.fs.expector.gridservice.api.support.ExpectorTMREHSupport;
 import com.fs.gridservice.commons.api.wrapper.TerminalMsgReceiveEW;
@@ -97,8 +96,8 @@ public class ExpConnectHandler extends ExpectorTMREHSupport {
 			}
 			{
 				String accId1 = c.getAccountId1();
-				String icon1 = this.efacade.getIconByAccountId(accId1);
-				pts.setProperty("icon1", icon1);
+				ImageUrl icon1 = this.efacade.getIconByAccountId(accId1);
+				pts.setProperty("icon1", icon1.toString());//
 			}
 			el.add(pts);
 		}

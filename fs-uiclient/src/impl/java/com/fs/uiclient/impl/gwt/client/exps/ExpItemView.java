@@ -128,7 +128,7 @@ public class ExpItemView extends ViewSupport {
 
 				td1.addClassName("exps-item-expimage");
 				ImageUrl img = ei.getImageUrl();
-				if (img != null) {// only add when as image
+				if (!img.isNone()) {// only add when as image
 					Element image = DOM.createImg();
 					
 					image.setAttribute("src", img.getAsSrc(this.getClient(true)));//

@@ -263,7 +263,7 @@ public class ExpMessageHandler extends ExpectorTMREHSupport {
 				Account acc = this.dataService.getNewestById(Account.class, accId1, true);
 
 				msg.setPayload("nick1", acc.getNick());
-				String icon = this.efacade.getIconByAccountId(accId1);
+				String icon = this.efacade.getIconByAccountId(accId1).toString();
 				// icon of acc1
 				msg.setPayload("icon1", icon);
 			}

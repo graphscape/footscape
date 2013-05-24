@@ -26,7 +26,7 @@ public interface ExpectorDsFacadeI {
 
 	public int getConnectedExpCount(String expId);
 
-	public String getIconByAccountId(String accId1);
+	public ImageUrl getIconByAccountId(String accId1);
 
 	public Account getAccountByEmail(String email);
 
@@ -40,8 +40,6 @@ public interface ExpectorDsFacadeI {
 
 	public List<PropertiesI<Object>> convertToClientFormat(List<Expectation> el);
 
-	public String getDefaultUserIconDataUrl();
-
 	public void acknowledgeExpMessage(String accId, String expId, Date ts);
 
 	/**
@@ -53,5 +51,10 @@ public interface ExpectorDsFacadeI {
 	public int getMaxLimitOfExpectationOpenCount();
 
 	public ImageUrl saveImage(ImageUrl data);
+
+	/**
+	 *May 24, 2013
+	 */
+	public ImageUrl getDefaultUserIconImageUrl();
 
 }

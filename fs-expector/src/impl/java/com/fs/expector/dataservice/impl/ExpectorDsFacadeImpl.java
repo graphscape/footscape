@@ -42,9 +42,9 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 
 	private ImageUrl defaultUserIconDataUrl;
 
-	private String defaultUserIconDataUrl_male;
+	private ImageUrl defaultUserIconDataUrl_male;
 
-	private String defaultUserIconDataUrl_female;
+	private ImageUrl defaultUserIconDataUrl_female;
 
 	private DataServiceI dataService;
 
@@ -54,8 +54,10 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		super.configure(cfg);
 		this.defaultUserIconDataUrl = ImageUrl.parse(this.config.getProperty("defaultUserIconDataUrl", true),
 				true);
-		this.defaultUserIconDataUrl_male = this.config.getProperty("defaultUserIconDataUrl_male", true);
-		this.defaultUserIconDataUrl_female = this.config.getProperty("defaultUserIconDataUrl_female", true);
+		this.defaultUserIconDataUrl_male = ImageUrl.parse(
+				this.config.getProperty("defaultUserIconDataUrl_male", true), true);
+		this.defaultUserIconDataUrl_female = ImageUrl.parse(
+				this.config.getProperty("defaultUserIconDataUrl_female", true), true);
 
 	}
 
@@ -105,13 +107,25 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 	 * Mar 29, 2013
 	 */
 	@Override
-	public String getIconByAccountId(String accId1) {
+	public ImageUrl getIconByAccountId(String accId1) {
 		//
 		Profile p = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId1, false);
 		if (p == null) {
-			return this.defaultUserIconDataUrl.toString();
+			return this.defaultUserIconDataUrl;
 		}
-		return p.getIcon();
+
+		ImageUrl rt = ImageUrl.parse(p.getIcon(), true);
+		if (!rt.isNone()) {
+			return rt;
+		}
+		String gender = p.getGender();
+		if ("male".equals(gender)) {
+			return this.defaultUserIconDataUrl_male;
+		} else if ("female".equals(gender)) {
+			return this.defaultUserIconDataUrl_female;
+		} else {
+			return this.defaultUserIconDataUrl;
+		}
 	}
 
 	/*
@@ -179,12 +193,10 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 			}
 			{// profile may not exist.
 
-				Profile pf = this.dataService.getNewest(Profile.class, Profile.ACCOUNTID, accId, false);
-				String icon = pf == null ? null : pf.getIcon();
-				if (icon == null) {
-					icon = this.defaultUserIconDataUrl.toString();
-				}
-				pts.setProperty("userIcon", icon);//
+				
+				ImageUrl icon = this.getIconByAccountId(accId);
+				
+				pts.setProperty("userIcon", icon.toString());//
 			}
 			//
 			this.processExpIcon(pts);
@@ -234,18 +246,6 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 				expId }, false);
 
 		return rt;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.expector.dataservice.api.ExpectorDsFacadeI#getDefaultUserIconDataUrl
-	 * ()
-	 */
-	@Override
-	public String getDefaultUserIconDataUrl() {
-		return this.defaultUserIconDataUrl.toString();
 	}
 
 	/*
@@ -311,6 +311,14 @@ public class ExpectorDsFacadeImpl extends ConfigurableSupport implements Expecto
 		ImageUrl rt = new ImageUrl(IMG_PROTOCOL_IID, "none", "none", ic.getId());
 
 		return rt;
+	}
+
+	/*
+	 * May 24, 2013
+	 */
+	@Override
+	public ImageUrl getDefaultUserIconImageUrl() {
+		return this.defaultUserIconDataUrl;
 	}
 
 }
