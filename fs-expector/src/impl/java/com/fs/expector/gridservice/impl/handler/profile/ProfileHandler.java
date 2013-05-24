@@ -45,7 +45,8 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 			ValidatorI<MessageI> vl = this.createValidator("submit");
 			vl.addExpression(Constants.P_ERROR_PROFILE_BIRTHDAY, prefix + "['birthDay']!=null");
 			vl.addExpression(Constants.P_ERROR_PROFILE_GENDER, prefix + "['gender']!=null");
-			vl.addExpression(Constants.P_ERROR_PROFILE_ICON, prefix + "['icon']!=null");
+			// vl.addExpression(Constants.P_ERROR_PROFILE_ICON, prefix +
+			// "['icon']!=null");
 
 		}
 
@@ -94,12 +95,12 @@ public class ProfileHandler extends ExpectorTMREHSupport {
 		// here the data is valid for save processing.
 		Date bd = (Date) req.getPayload("birthDay", true);// just for display.
 		String gender = (String) req.getPayload("gender", true);
-		String icon = (String) req.getPayload("icon", true);
-		
-		ImageUrl diu = ImageUrl.parse(icon, true);
-		
-		ImageUrl diu2 = this.efacade.saveImage(diu);
-		
+		String icon = (String) req.getPayload("icon", false);
+
+		ImageUrl diu = icon == null ? ImageUrl.NONE : ImageUrl.parse(icon, true);
+
+		ImageUrl diu2 = this.efacade.saveImage(diu);//TODO rename to trySaveImage
+
 		Profile pts = new Profile().forCreate(this.dataService);// NOTE
 		pts.setAccountId(login.getAccountId());//
 		pts.setBirthDay(bd);

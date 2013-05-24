@@ -85,7 +85,10 @@ public class ExpSearchHandler extends ExpectorTMREHSupport {
 			String thisAccId = this.getAccountId(ew, true);//
 			qo.propertyNotEq(Expectation.ACCOUNT_ID, thisAccId);
 		}
-		qo.multiMatch(new String[] { Expectation.TITLE, Expectation.BODY }, phrase, slop);
+
+		if (phrase != null) {
+			qo.multiMatch(new String[] { Expectation.TITLE, Expectation.BODY }, phrase, slop);
+		}
 
 		// qo.propertyMatch(Expectation.BODY, phrase, slop);
 		qo.sort(NodeI.PK_TIMESTAMP, true);

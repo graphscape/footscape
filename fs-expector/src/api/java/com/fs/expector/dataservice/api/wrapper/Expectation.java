@@ -14,9 +14,9 @@ import com.fs.expector.dataservice.api.NodeTypes;
  * 
  */
 public class Expectation extends AuthedNode {
-	
+
 	public static final String ST_OPEN = "open";
-	
+
 	public static final String ST_CLOSE = "close";
 
 	public static final String BODY = "body";
@@ -26,11 +26,11 @@ public class Expectation extends AuthedNode {
 	public static final String TITLE = "title";
 
 	public static final String SUMMARY = "summary";
-	
+
 	public static final String ICON = "icon";
-	
+
 	public static final String IMAGE = "image";
-	
+
 	public static final String STATUS = "status";
 
 	/**
@@ -41,14 +41,14 @@ public class Expectation extends AuthedNode {
 		super(NodeTypes.EXPECTATION);
 	}
 
-	public String getStatus(){
-		return (String)this.getProperty(STATUS);
+	public String getStatus() {
+		return (String) this.getProperty(STATUS);
 	}
-	
-	public void setStatus(String status){
+
+	public void setStatus(String status) {
 		this.setProperty(STATUS, status);
 	}
-	
+
 	public String getBody() {
 		return (String) this.getProperty(BODY);
 	}
@@ -65,7 +65,6 @@ public class Expectation extends AuthedNode {
 		this.setProperty(TITLE, value);
 	}
 
-
 	public String getSummary() {
 		return (String) this.getProperty(SUMMARY);
 	}
@@ -81,20 +80,20 @@ public class Expectation extends AuthedNode {
 	public void setFormat(String value) {
 		this.setProperty(FORMAT, value);
 	}
-	
-	public String getIcon(){
+
+	public String getIcon() {
 		return (String) this.getProperty(ICON);
 	}
-	
-	public void setIcon(String value){
+
+	public void setIcon(String value) {
 		this.setProperty(ICON, value);
 	}
-	
-	public String getImage(){
+
+	public String getImage() {
 		return (String) this.getProperty(IMAGE);
 	}
-	
-	public void setImage(String value){
+
+	public void setImage(String value) {
 		this.setProperty(IMAGE, value);
 	}
 
@@ -103,7 +102,7 @@ public class Expectation extends AuthedNode {
 	 */
 	public static void config(DataSchema cfs) {
 		AuthedNode.config(cfs.addConfig(NodeTypes.EXPECTATION, Expectation.class)//
-				.field(TITLE)//
+				.field(TITLE, AnalyzerType.TEXT)//
 				.field(SUMMARY)//
 				.field(FORMAT)//
 				.field(ICON)//
