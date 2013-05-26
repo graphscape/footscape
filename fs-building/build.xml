@@ -73,7 +73,7 @@
 		<mkdir dir="target/eclipse" />
 		<property name="setting.file" value="ivy/ivysettings.for.ivyde.xml" />
 		<copy file="common-files/common.ivysettings.xml" tofile="${setting.file}" overwrite="true" />
-		<replace file="${setting.file}" token="$${env.FS_BUILD_HOME}" value="${env.FS_BUILD_HOME}" />
+		<replace file="${setting.file}" token="$${env.FS_MASTER_BUILD_HOME}" value="${env.FS_MASTER_BUILD_HOME}" />
 	</target>
 
 

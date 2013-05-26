@@ -1,7 +1,7 @@
 <ivysettings>
 	<properties environment="env" />
 
-	<property name="fs.build.home" value="${env.FS_BUILD_HOME}" />
+	<property name="fs.build.home" value="${env.FS_MASTER_BUILD_HOME}" />
 
 	<property name="dir.fs.building" value="${fs.build.home}/fs-building" />
 	
