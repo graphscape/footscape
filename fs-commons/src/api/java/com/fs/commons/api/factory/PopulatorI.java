@@ -9,7 +9,7 @@ import com.fs.commons.api.SPI;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated
  */
 public interface PopulatorI {
 

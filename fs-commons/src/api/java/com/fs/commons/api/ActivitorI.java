@@ -7,7 +7,7 @@ import com.fs.commons.api.config.Configuration;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public interface ActivitorI {
 

@@ -39,6 +39,20 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 		return Boolean.valueOf("" + rt);
 	}
 
+	@Override
+	public PropertiesI<T> mergeFrom(PropertiesI<T> pts) {
+		PropertiesI<T> rt = this.clone();
+		rt.setProperties(pts);
+		return rt;
+	}
+
+	@Override
+	public PropertiesI<T> clone() {
+		PropertiesI<T> rt = MapProperties.valueOf(this);
+		rt.setProperties(this);
+		return rt;
+	}
+
 	/* */
 	@Override
 	public void setProperties(PropertiesI<T> pts) {
@@ -149,6 +163,15 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 	/*
 	 * Dec 13, 2012
 	 */
+	@Override
+	public T getProperty(String key, T def) {
+		T rt = this.getProperty(key);
+		if (rt == null) {
+			return def;
+		}
+		return rt;
+	}
+
 	@Override
 	public T getProperty(String key, boolean force) {
 		//

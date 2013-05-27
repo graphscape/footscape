@@ -21,12 +21,6 @@ public interface ContainerI extends AttachableI {
 
 	}
 
-	public interface FactoryI {
-		public ContainerI newContainer();
-
-		public ContainerI newContainer(ContainerI parent);
-	}
-
 	public interface ObjectEntryI {
 		public Object getObject();
 
@@ -40,12 +34,16 @@ public interface ContainerI extends AttachableI {
 
 	}
 
+	public ContainerI parent(ContainerI prt);
+	
 	public ContainerI getParent();
 
 	public ContainerI getTop();
 
 	public EventBusI getEventBus();
 
+	public void addObject(SPI spi, Object o);
+	
 	public void addObject(SPI spi, String name, Object o);
 
 	public void forEach(CallbackI<ObjectEntryI, Boolean> cb);

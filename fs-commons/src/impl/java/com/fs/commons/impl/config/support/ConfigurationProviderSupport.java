@@ -1,19 +1,30 @@
 /**
- * Jun 15, 2012
  */
 package com.fs.commons.impl.config.support;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.ConfigurationProviderI;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
+import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wuzhen
  * 
  */
-public abstract class ConfigurationProviderSupport implements
-		ConfigurationProviderI {
+public abstract class ConfigurationProviderSupport implements ConfigurationProviderI {
+
+	private Map<String, Configuration> cfgCache;
+
+	public ConfigurationProviderSupport() {
+		this.cfgCache = new HashMap<String, Configuration>();
+	}
 
 	/*
 	
@@ -28,11 +39,25 @@ public abstract class ConfigurationProviderSupport implements
 	 */
 	@Override
 	public Configuration getConfiguration(String id) {
+		Configuration rt = this.cfgCache.get(id);
+		if (rt != null) {
+			return rt;
+		}
 
+		rt = this.doGetConfiguration(id);
+		this.cfgCache.put(id, rt);
+		return rt;
+	}
+
+	protected Configuration doGetConfiguration(String id) {
 		//
-		PropertiesWrapper pw = this.loadConfig(id);// load properties
+		List<String> childIdSet = new ArrayList<String>();
+		Map<String, String> configRefMap = new HashMap<String, String>();
+		Set<String> typeHolder = new HashSet<String>();
+		PropertiesI<String> pw = this.loadConfig(id, typeHolder, childIdSet, configRefMap);// load
+		// properties
 		//
-		PropertiesWrapper alias = this.loadAlias(id);
+		PropertiesI<String> alias = this.loadAlias(id);
 		//
 		for (String key : pw.keyList()) {
 			String v = pw.getProperty(key);
@@ -41,17 +66,28 @@ public abstract class ConfigurationProviderSupport implements
 			}
 			String a = v.substring(1);
 			String av = alias.getProperty(a);
+			
 			if (av == null) {
-				throw new FsException("alias not resolved," + key + "=" + v
-						+ "");
+				a.startsWith("env:");
+				a = a.substring("env:".length());
+				av = System.getProperty(a);
+			}
+			
+			if (av == null) {
+				throw new FsException("alias not resolved," + key + "=" + v + "");
 			}
 			pw.setProperty(key, av);
 		}
-		return new Configuration(id, this, pw);
+
+		Configuration.Type type = typeHolder.isEmpty() ? Configuration.ROOT : Configuration.Type
+				.valueOf(typeHolder.iterator().next());
+
+		return new Configuration(id, type, pw, childIdSet, configRefMap);
 	}
 
-	public abstract PropertiesWrapper loadAlias(String id);
+	public abstract PropertiesI<String> loadAlias(String id);
 
-	public abstract PropertiesWrapper loadConfig(String id);
+	public abstract PropertiesI<String> loadConfig(String id, Set<String> typeHolder,
+			List<String> childIdSet, Map<String, String> crmap);
 
 }

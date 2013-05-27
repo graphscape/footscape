@@ -157,4 +157,29 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.fs.commons.api.value.PropertiesI#mergeFrom(com.fs.commons.api.value
+	 * .PropertiesI)
+	 */
+	@Override
+	public PropertiesI<T> mergeFrom(PropertiesI<T> pts) {
+		this.target.mergeFrom(pts);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.fs.commons.api.value.PropertiesI#getProperty(java.lang.String,
+	 * java.lang.Object)
+	 */
+	@Override
+	public T getProperty(String key, T def) {
+		return this.target.getProperty(key, def);
+
+	}
+
 }

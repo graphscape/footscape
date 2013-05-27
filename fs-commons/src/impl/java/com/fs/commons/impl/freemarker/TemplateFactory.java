@@ -47,7 +47,7 @@ public class TemplateFactory extends ConfigurableSupport implements
 		this.tcfg = new Configuration();
 		String prefix = "freemarker.setting.";
 
-		List<String> kL = this.config.keyListStartWith(prefix);
+		List<String> kL = null;//TODO this.config.keyListStartWith(prefix);
 		for (String k : kL) {
 			String key = k.substring(prefix.length());
 			String value = this.config.getProperty(k);

@@ -163,4 +163,21 @@ public class ProxyContainerSupport implements ContainerI {
 		return this.target.getEventBus();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.ContainerI#addObject(com.fs.commons.api.SPI, java.lang.Object)
+	 */
+	@Override
+	public void addObject(SPI spi, Object o) {
+		this.target.addObject(spi, o);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.fs.commons.api.ContainerI#parent(com.fs.commons.api.ContainerI)
+	 */
+	@Override
+	public ContainerI parent(ContainerI prt) {
+		this.target.parent(prt);
+		return this;		
+	}
+
 }

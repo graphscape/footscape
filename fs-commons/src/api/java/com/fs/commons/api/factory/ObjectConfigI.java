@@ -8,7 +8,7 @@ import com.fs.commons.api.describe.DescribedI;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated
  */
 public interface ObjectConfigI extends DescribedI {
 

@@ -8,10 +8,12 @@
 package com.fs.commons.impl.config.xml;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import com.fs.commons.api.Assert;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
+import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.commons.impl.config.support.AbstractConfigurationProvider;
 
 /**
@@ -45,19 +47,27 @@ public class XmlConfigurationProvider extends AbstractConfigurationProvider {
 	
 	/* */
 	@Override
-	protected PropertiesWrapper loadResource(String prefix, String id) {
+	protected PropertiesI<String> loadResource(String prefix, String id, Set<String> typeHolder,
+			List<String> childIdSet, Map<String, String> crmap) {
 		Map<String, XmlConfigElement> map = this.loadAllFor(prefix, id);
 		// find the properties in all the map
 		for (XmlConfigElement ce : map.values()) {
 			XmlConfigElement xce = ce.findByConfigId(id, false);
 			if (xce != null) {
-				return PropertiesWrapper
-						.valueOf(xce.getProperties().getAsMap());
+				List<String> cidL = xce.getChildConfigNameList();
+				childIdSet.addAll(cidL);
+				crmap.putAll(xce.getConfigRefMap());
+				if (typeHolder != null) {
+					String type = xce.getType();
+					typeHolder.add(type);
+				}
+
+				return MapProperties.valueOf(xce.getProperties().getAsMap());
 
 			}
 		}
 
-		return PropertiesWrapper.empty();
+		return new MapProperties<String>();
 
 	}
 }

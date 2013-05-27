@@ -7,6 +7,7 @@ import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.SPI;
+import com.fs.commons.api.components.ComponentFactoryI;
 
 /**
  * @author wu
@@ -22,6 +23,8 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 
 	protected ActiveContext activeContext;
 
+	protected ComponentFactoryI components;
+
 	/* */
 	@Override
 	public void active(ActiveContext ac) {
@@ -29,6 +32,7 @@ public class ActivableSupport extends AttachableSupport implements ActivableI {
 		this.container = ac.getContainer();
 		this.top = this.container.getTop();//
 		this.spi = ac.getSpi();
+		this.components = this.top.find(ComponentFactoryI.class, true);
 	}
 
 	protected ActiveContext newActiveContext() {

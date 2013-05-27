@@ -29,19 +29,6 @@ import com.fs.commons.impl.event.EventBusImpl;
  */
 public class ContainerImpl extends AttachableSupport implements ContainerI {
 
-	public static class FactoryImpl implements ContainerI.FactoryI {
-		@Override
-		public ContainerI newContainer() {
-			return newContainer(null);
-		}
-
-		@Override
-		public ContainerI newContainer(ContainerI prt) {
-			return new ContainerImpl(prt);
-		}
-
-	}
-
 	private static class ObjectEntryImpl extends DescribedSupport implements ObjectEntryI {
 
 		private Object object;
@@ -109,20 +96,19 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	private Map<String, ObjectEntryImpl> hasIdEntryMap = new HashMap<String, ObjectEntryImpl>();
 
-	private ContainerImpl(ContainerI prt) {
-		this.parent = prt;
-
+	public ContainerImpl() {
 		this.eventBus = new EventBusImpl();
+	}
+
+	@Override
+	public void addObject(SPI spi, Object o) {
+		this.addObject(spi, "unknown", o);
 	}
 
 	/* */
 	@Override
-	public void addObject(SPI spi, String name, Object o) {// TODO more describe
+	public void addObject(SPI spi, String name, Object o) {//
 
-		if (ContainerI.AwareI.class.isAssignableFrom(o.getClass())) {
-			ContainerI.AwareI ca = ContainerI.AwareI.class.cast(o);
-			ca.setContainer(this);
-		}
 		ObjectEntryImpl oe = new ObjectEntryImpl(spi, name, o, this);
 
 		this.entryList.add(oe);
@@ -224,7 +210,6 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 
 	}
 
-
 	/*
 	 * Dec 14, 2012
 	 */
@@ -279,5 +264,14 @@ public class ContainerImpl extends AttachableSupport implements ContainerI {
 		return this.eventBus;
 	}
 
+	@Override
+	public ContainerI parent(ContainerI prt) {
+		if (this.parent != null) {
+			throw new FsException("parent duplicated");
+		}
+		this.parent = prt;
+		return this;
+
+	}
 
 }

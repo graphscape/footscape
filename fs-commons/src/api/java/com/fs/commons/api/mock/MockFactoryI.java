@@ -7,7 +7,7 @@ import com.fs.commons.api.factory.ObjectFactoryI;
 
 /**
  * @author wuzhen
- * 
+ * @deprecated
  */
 public interface MockFactoryI extends ObjectFactoryI<MockI> {
 

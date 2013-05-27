@@ -7,7 +7,7 @@ import java.io.File;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public interface ExecutorI {
 	public interface FactoryI {

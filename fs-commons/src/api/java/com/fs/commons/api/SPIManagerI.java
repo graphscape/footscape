@@ -33,6 +33,8 @@ public interface SPIManagerI {
 
 	public void load(String res);//
 
+	public SPI getSpi(String id, boolean force);
+	
 	public void add(String id);
 
 	public void add(String id, Class<? extends SPI> cls);

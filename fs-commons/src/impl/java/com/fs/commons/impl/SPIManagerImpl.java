@@ -17,7 +17,6 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.event.BeforeActiveEvent;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.support.CollectionInterceptor;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
 
 /**
@@ -45,9 +44,7 @@ public class SPIManagerImpl implements SPIManagerI {
 	private int maxShutdownLoop = 100;
 
 	public SPIManagerImpl() {
-		ContainerI.FactoryI tf = new ContainerImpl.FactoryImpl();
-		this.container = tf.newContainer();
-
+		this.container = new ContainerImpl();
 		this.spiList = new ArrayList<SPI>();
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -112,7 +109,7 @@ public class SPIManagerImpl implements SPIManagerI {
 
 	public void doShutdown() {
 		this.log("spi manager shutting down...");
-		for (int i = 0 ;i< this.maxShutdownLoop ; i++) {
+		for (int i = 0; i < this.maxShutdownLoop; i++) {
 			for (int j = this.spiList.size() - 1; j >= 0; j--) {
 
 				SPI spi = this.spiList.get(j);
@@ -136,7 +133,7 @@ public class SPIManagerImpl implements SPIManagerI {
 	/* */
 	@Override
 	public void add(String id, Class<? extends SPI> cls) {
-		if (null != this.getById(id, false)) {
+		if (null != this.getSpi(id, false)) {
 			throw new FsException("duplicated spi:" + id + ",cls:" + cls);
 		}
 		this.log("start	spi:" + id + ",cls:" + cls);
@@ -157,7 +154,7 @@ public class SPIManagerImpl implements SPIManagerI {
 	protected void assertDependenceList(SPI spi) {
 		List<String> missing = new ArrayList<String>();
 		for (String did : spi.getDependenceList()) {
-			SPI dSPI = this.getById(did, false);
+			SPI dSPI = this.getSpi(did, false);
 			if (dSPI == null) {
 				missing.add(did);
 			}
@@ -169,7 +166,8 @@ public class SPIManagerImpl implements SPIManagerI {
 		}
 	}
 
-	public SPI getById(String id, boolean force) {
+	@Override
+	public SPI getSpi(String id, boolean force) {
 		for (SPI spi : this.spiList) {
 			if (spi.getId().equals(id)) {
 				return spi;

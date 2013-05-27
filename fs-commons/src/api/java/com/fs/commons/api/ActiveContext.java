@@ -14,6 +14,7 @@ import com.fs.commons.api.lang.FsException;
  * 
  */
 public class ActiveContext {
+	
 	private static class Activitor implements ActivitorI {
 		private SPI spi;
 		private String name;
@@ -179,20 +180,24 @@ public class ActiveContext {
 		return spi;
 	}
 
+	@Deprecated
 	public <T> T active(String name) {
 		ActivitorI act = this.activitor().container(this.container).name(name);
 		act.active();
 		return act.getObject();
 	}
 
+	@Deprecated
 	public void active(String name, Object o) {
 		this.active(name, o, this.container);
 	}
 
+	@Deprecated
 	public void active(String name, Object o, ContainerI c) {
 		this.activitor().object(o).name(name).container(c).active();
 	}
 
+	@Deprecated
 	public void active(Configuration cfg, Object o) {
 
 		ActivitorI act = this.activitor().object(o);
@@ -208,9 +213,7 @@ public class ActiveContext {
 
 	}
 
-	/**
-	 * @param internal
-	 */
+	@Deprecated
 	public ActiveContext newActiveContext(ContainerI internal) {
 		return new ActiveContext(internal, this.spi);
 	}

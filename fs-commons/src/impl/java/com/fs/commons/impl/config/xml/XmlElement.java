@@ -42,7 +42,13 @@ public class XmlElement {
 			this.childList.add(xe);
 		}
 	}
-
+	/**
+	 * @return
+	 */
+	public String getName() {
+		return this.element.getName();
+	}
+	
 	public XmlPrefixElement getPrefixElement() {
 		if (this.parent != null
 				&& XmlPrefixElement.class.isInstance(this.parent)) {

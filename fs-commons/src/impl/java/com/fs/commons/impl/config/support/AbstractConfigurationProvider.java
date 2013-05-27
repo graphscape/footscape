@@ -3,15 +3,21 @@
  */
 package com.fs.commons.impl.config.support;
 
-import com.fs.commons.api.Assert;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.value.PropertiesI;
 import com.fs.commons.api.wrapper.PropertiesWrapper;
 
 /**
  * @author wuzhen
  * 
  */
-public abstract class AbstractConfigurationProvider extends
-		ConfigurationProviderSupport {
+public abstract class AbstractConfigurationProvider extends ConfigurationProviderSupport {
 
 	private String[] prefix = new String[] { "provider", "user", "env" };// NOTE,env
 																			// is
@@ -23,17 +29,15 @@ public abstract class AbstractConfigurationProvider extends
 																			// user.home/.fs/env
 
 	@Override
-	public PropertiesWrapper loadAlias(String id) {
+	public PropertiesI<String> loadAlias(String id) {
 		String resId = id;
-		PropertiesWrapper rt = null;
+		PropertiesI<String> rt = null;
 
 		int idx = resId.lastIndexOf(".");
 		do {
-			if (idx >= 0) {// no dot
-				resId = resId.substring(0, idx);
-			}
-
-			PropertiesWrapper pw = this.loadConfig("$" + resId);
+			List<String> childIdSet = new ArrayList<String>();
+			Map<String, String> crmap = new HashMap<String, String>();
+			PropertiesI<String> pw = this.loadConfig("$" + resId, null, childIdSet, crmap);
 
 			if (pw != null) {
 				if (rt == null) {
@@ -42,18 +46,25 @@ public abstract class AbstractConfigurationProvider extends
 					rt = pw.mergeFrom(rt);
 				}
 			}
+
 			idx = resId.lastIndexOf(".");
+			if (idx >= 0) {// no dot
+				resId = resId.substring(0, idx);
+			}
 		} while (idx >= 0);
 		return rt;
 	}
 
 	@Override
-	public PropertiesWrapper loadConfig(String id) {
-		Assert.assertNotNull(id, "config id is null.");
-		PropertiesWrapper pw = null;
+	public PropertiesI<String> loadConfig(String id, Set<String> typeHolder, List<String> childIdSet,
+			Map<String, String> crmap) {
+		if (id == null) {
+			throw new FsException("id is null");
+		}
+		PropertiesI<String> pw = null;
 		for (String pre : this.prefix) {
 
-			PropertiesWrapper next = this.loadResource(pre, id);
+			PropertiesI<String> next = this.loadResource(pre, id, typeHolder, childIdSet, crmap);
 			if (pw == null) {
 				pw = next;
 			} else {
@@ -65,6 +76,7 @@ public abstract class AbstractConfigurationProvider extends
 
 	}
 
-	protected abstract PropertiesWrapper loadResource(String prefix, String id);
+	protected abstract PropertiesI<String> loadResource(String prefix, String id, Set<String> typeHolder,
+			List<String> childIdSet, Map<String, String> crmap);
 
 }

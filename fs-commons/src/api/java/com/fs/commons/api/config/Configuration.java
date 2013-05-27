@@ -1,105 +1,154 @@
 /**
- * Jun 14, 2012
+ * Jun 14, 
  */
 package com.fs.commons.api.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.MapProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
+import com.fs.commons.impl.config.xml.XmlConfigurationProvider;
 
 /**
  * @author wuzhen
  * 
  */
-public class Configuration extends PropertiesWrapper {
+public class Configuration extends MapProperties<String> {
 
-	private static final String BOOTUP_PROPERTEIS_RES = "/boot/bootup.properties";
-	private static final String PROPERTIES_PROVIDER_CLASS = ConfigurationProviderI.class
-			.getName() + ".PROPERTIES.class";
+	public static class Type extends com.fs.commons.api.Enum {
 
-	protected ConfigurationProviderI provider;
+		/**
+		 * @param name
+		 */
+		public Type(String name) {
+			super(name);
+		}
+
+		public static Type valueOf(String vs) {
+			return new Type(vs);
+		}
+	}
+
+	public static Type ROOT = Type.valueOf("config");
+
+	protected static ConfigurationProviderI PROVIDER = new XmlConfigurationProvider();
 
 	protected String id;
 
-	protected String[] names;
+	protected Type type;
+
+	protected List<String> childNameList = new ArrayList<String>();
+
+	protected Map<String, String> configRefMap = new HashMap<String, String>();
 
 	/**
 	 * @param pts
 	 */
-	public Configuration(String id, ConfigurationProviderI provider) {
-		this(id, provider, PropertiesWrapper.empty());
+	public Configuration(String id, Type type) {
+		this(id, type, new MapProperties<String>(), new ArrayList<String>(), new HashMap<String, String>());
 	}
 
-	public Configuration(String id, ConfigurationProviderI provider,
-			PropertiesWrapper pw) {
-		super(id + ".properties");
+	public Configuration(String id, Type type, PropertiesI<String> pts, List<String> childIdSet,
+			Map<String, String> configRefMap) {
 		this.id = id;
-		this.provider = provider;
-		if (this.id != null) {
-			this.names = this.id.split("\\.");
-		}
-
-		this.setProperties(pw);
-
-	}
-
-	public String getName() {
-		return (this.names == null || this.names.length == 0) ? null
-				: this.names[this.names.length - 1];
-
+		this.type = type;
+		this.setProperties(pts);
+		this.childNameList.addAll(childIdSet);
+		this.configRefMap.putAll(configRefMap);
 	}
 
 	public Configuration getPropertyAsConfiguration(String key, boolean force) {
 		String cid = this.getProperty(key, force);
-		return this.provider.getConfiguration(cid);
+		return PROVIDER.getConfiguration(cid);
 
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public Configuration getChildConfiguration(String name) {
+		return this.getChildConfiguration(name, false);
+
+	}
+
+	public Configuration getReferenedConfiguration(String name, boolean force) {
+		String id = this.configRefMap.get(name);
+		if (id == null) {
+			if (force) {
+				throw new FsException("no config ref found:" + name + ",in config:" + this);
+			}
+			return null;
+		}
+		return Configuration.properties(id);
+	}
+
+	public Configuration getReferencedOrChildConfiguration(String name, boolean allowNull) {
+		Configuration rt = this.getReferenedConfiguration(name, false);
+		if (rt != null) {
+			return rt;
+		}
+		return this.getChildConfiguration(name, allowNull);
+	}
+
+	public Configuration getChildConfiguration(Type type, boolean force) {
+		List<Configuration> rtL = this.getChildConfigurationList(type);
+		if (rtL.isEmpty()) {
+			if (force) {
+				throw new FsException("no child config fount for type:" + type + ",in parent:" + this);
+			}
+			return null;
+		} else if (rtL.size() == 1) {
+			return rtL.get(0);//
+		} else {
+			throw new FsException("too much child for type:" + type + ",in parent:" + this);
+
+		}
+
+	}
+
+	public Configuration getChildConfiguration(String name, boolean allowNull) {
+
+		if (allowNull && !this.childNameList.contains(name)) {
+			return null;
+		}
+
+		String cid = this.id + "." + name;
+		Configuration rt = Configuration.properties(cid);
+		return rt;
+	}
+
+	public List<Configuration> getChildConfigurationList(Type type) {
+		List<Configuration> rt = new ArrayList<Configuration>();
+		for (String name : this.childNameList) {
+			String cid = this.id + "." + name;
+			Configuration cc = Configuration.properties(cid);
+			if (cc.getType().equals(type)) {
+				rt.add(cc);
+			}
+		}
+		return rt;
+	}
+
+	public List<Configuration> getChildConfigurationList() {
+		List<Configuration> rt = new ArrayList<Configuration>();
+		for (String name : this.childNameList) {
+			String cid = this.id + "." + name;
+			Configuration cc = Configuration.properties(cid);
+			rt.add(cc);
+		}
+		return rt;
 	}
 
 	public static ConfigurationProviderI getPropertiesProvider() {
-		PropertiesWrapper pw = PropertiesWrapper.load(BOOTUP_PROPERTEIS_RES);//
-		ConfigurationProviderI rt = pw
-				.getPropertyAsNewInstance(PROPERTIES_PROVIDER_CLASS);
-		return rt;
 
-	}
-
-	// prefix.1.keySuffix=key
-	// prefix.1.valueSuffix=value
-	// key=value
-	public PropertiesI<String> parseAsProperties(String prefix,
-			String keySufix, String valueSuffix) {
-		Map<String, String> keyMap = new HashMap<String, String>();
-		Map<String, String> valueMap = new HashMap<String, String>();
-
-		for (String key : this.keyListStartWith(prefix)) {
-
-			String value = this.getProperty(key);
-			if (key.endsWith(valueSuffix)) {
-				String key2 = key.substring(0,
-						key.length() - valueSuffix.length());
-				valueMap.put(key2, value);
-
-			}
-			if (key.endsWith(keySufix)) {
-				String key2 = key
-						.substring(0, key.length() - keySufix.length());
-				keyMap.put(key2, value);
-
-			}
-		}
-		PropertiesI<String> rt = new MapProperties<String>();
-		for (Map.Entry<String, String> e : keyMap.entrySet()) {
-			String key = e.getKey();
-			String key2 = e.getValue();
-			String value = valueMap.get(key);
-			rt.setProperty(key2, value);
-
-		}
-		return rt;
+		return PROVIDER;
 
 	}
 
@@ -116,19 +165,7 @@ public class Configuration extends PropertiesWrapper {
 	 */
 	public static Configuration nullConfig() {
 
-		return new Configuration(null, new ConfigurationProviderI() {
-
-			@Override
-			public Configuration getConfiguration(String id) {
-
-				return null;
-			}
-
-			@Override
-			public void add(Configuration cfg) {
-				throw new FsException("not allowed.");
-			}
-		});
+		return new Configuration(null, null);
 	}
 
 	@Override
@@ -143,4 +180,93 @@ public class Configuration extends PropertiesWrapper {
 		return id;
 	}
 
+	public <T> T getPropertyAsNewInstance(String key) {
+		return this.getPropertyAsNewInstance(key, false);
+	}
+
+	public <T> T getPropertyAsNewInstance(String key, Class[] clss, Object[] args) {
+		return this.getPropertyAsNewInstance(key, clss, args, false);
+	}
+
+	public <T> T getPropertyAsNewInstance(String key, boolean force) {
+		Class<T> cls = this.getPropertyAsClass(key, force);
+		if (cls == null) {
+			return null;
+		}
+		T rt = ClassUtil.newInstance(cls);
+
+		return rt;
+
+	}
+
+	public <T> T getPropertyAsNewInstance(String key, Class[] clss, Object[] args, boolean force) {
+		Class<T> cls = this.getPropertyAsClass(key, force);
+		if (cls == null) {
+			return null;
+		}
+		T rt = ClassUtil.newInstance(cls, clss, args);
+
+		return rt;
+	}
+
+	public List<String> getPropertyAsCSV(String key) {
+		List<String> rt = new ArrayList<String>();
+
+		String v = this.getProperty(key);
+		if (v == null || v.trim().length() == 0) {
+			return rt;
+		}
+		String[] vs = v.split(",");
+		rt.addAll(Arrays.asList(vs));
+		return rt;
+
+	}
+
+	public <T> Class<T> getPropertyAsClass(String key) {
+		return this.getPropertyAsClass(key, false);
+	}
+
+	public <T> Class<T> getPropertyAsClass(String key, boolean force) {
+		String cName = this.getProperty(key, false);
+
+		if (cName == null) {
+			if (force) {
+				throw new FsException("force:" + key + ", in cfg id:" + this.id);
+			}
+			return null;
+		}
+		try {
+			return ClassUtil.forName(cName);
+		} catch (FsException fe) {
+			if (fe.getCause() instanceof ClassNotFoundException) {
+				throw new FsException("class not found for key:" + key + ",value:" + cName + ",in cfg id:"
+						+ this.id);
+			}
+			throw fe;
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	public String getName() {
+		int idx = this.id.lastIndexOf('.');
+		if (idx < 0) {
+			return this.id;
+		}
+		return this.id.substring(idx + 1);
+	}
+
+	/**
+	 * @param string
+	 * @param i
+	 * @return
+	 */
+	public int getPropertyAsInt(String key, int i) {
+		String v = this.getProperty(key);
+		if (v == null) {
+			return i;
+		}
+		return Integer.parseInt(v);
+	}
 }

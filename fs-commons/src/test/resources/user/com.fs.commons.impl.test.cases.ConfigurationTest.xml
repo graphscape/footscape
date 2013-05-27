@@ -1,0 +1,13 @@
+
+<!-- Do not input id for the first config element -->
+
+<config>
+
+	<property name="pname0" value="pvalue0" />
+
+	<pname1 value="pvalue1" />
+	<pname2 value="pvalue2" />
+	<pname3 value="$alias3" />
+	
+
+</config>

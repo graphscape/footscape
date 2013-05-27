@@ -25,13 +25,11 @@ import com.fs.commons.api.support.IteratorSupport;
  * @author wuzhen
  * 
  */
-public class ChainImpl<REQ, RES> extends ConfigurableSupport implements
-		ChainI<REQ, RES> {
+public class ChainImpl<REQ, RES> extends ConfigurableSupport implements ChainI<REQ, RES> {
 
 	private FilterContainer<REQ, RES> internal;
 
-	private static class IteratorImpl<REQ, RES> extends
-			IteratorSupport<FilterI<REQ, RES>> {
+	private static class IteratorImpl<REQ, RES> extends IteratorSupport<FilterI<REQ, RES>> {
 
 		private int next = 0;
 
@@ -90,8 +88,7 @@ public class ChainImpl<REQ, RES> extends ConfigurableSupport implements
 	public void service(REQ req, RES res) {
 		List<FilterI<REQ, RES>> feL = this.internal.getFilterList();
 
-		FilterI.Context<REQ, RES> fc = new FilterI.Context<REQ, RES>(req, res,
-				this);//
+		FilterI.Context<REQ, RES> fc = new FilterI.Context<REQ, RES>(req, res, this);//
 
 		fc.next(true).filter(fc);
 	}
@@ -100,7 +97,8 @@ public class ChainImpl<REQ, RES> extends ConfigurableSupport implements
 	public void active(ActiveContext ac) {
 		//
 		super.active(ac);
-		ContainerI c2 = this.top.find(ContainerI.FactoryI.class).newContainer();
+		ContainerI c2 = this.components.newComponent(this.spi, ContainerI.class);
+		c2.parent(this.container);//
 		this.internal = new FilterContainer<REQ, RES>(c2);
 		//
 	}

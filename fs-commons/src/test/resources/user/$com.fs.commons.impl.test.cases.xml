@@ -1,0 +1,8 @@
+
+<!-- Do not input id for the first config element -->
+
+<config>
+
+	<alias3 value="pvalue3" />
+
+</config>

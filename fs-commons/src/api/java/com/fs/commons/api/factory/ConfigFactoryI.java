@@ -7,7 +7,7 @@ import com.fs.commons.api.FinderI;
 
 /**
  * @author wu
- * 
+ * @deprecated
  */
 public interface ConfigFactoryI {
 

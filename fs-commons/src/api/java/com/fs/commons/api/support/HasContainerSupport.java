@@ -12,16 +12,15 @@ import com.fs.commons.api.config.support.ConfigurableSupport;
  * @author wuzhen
  * 
  */
-public class HasContainerSupport extends ConfigurableSupport implements
-		HasContainerI {
+public class HasContainerSupport extends ConfigurableSupport implements HasContainerI {
 
 	protected ContainerI internal;
 
 	@Override
 	public void active(ActiveContext ac) {
 		super.active(ac);
-		ContainerI.FactoryI cf = this.top.find(ContainerI.FactoryI.class, true);
-		this.internal = cf.newContainer(this.container);
+		this.internal = this.components.newComponent(this.spi, ContainerI.class).parent(this.container);
+
 	}
 
 	@Override
@@ -29,7 +28,6 @@ public class HasContainerSupport extends ConfigurableSupport implements
 		super.doAttach();
 		this.internal.attach();
 	}
-
 
 	/*
 	 * (non-Javadoc)
