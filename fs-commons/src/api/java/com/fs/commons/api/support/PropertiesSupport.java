@@ -164,7 +164,7 @@ public abstract class PropertiesSupport<T> implements PropertiesI<T> {
 	 * Dec 13, 2012
 	 */
 	@Override
-	public T getProperty(String key, T def) {
+	public T getPropertyWithDefault(String key, T def) {
 		T rt = this.getProperty(key);
 		if (rt == null) {
 			return def;

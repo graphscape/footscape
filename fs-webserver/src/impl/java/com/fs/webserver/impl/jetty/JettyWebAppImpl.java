@@ -24,8 +24,7 @@ import com.fs.webserver.api.WebResourceI;
  */
 public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(JettyWebAppImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JettyWebAppImpl.class);
 
 	private ServletContainer internal;
 
@@ -47,19 +46,19 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 	public void active(ActiveContext ac) {
 
 		super.active(ac);
-		this.internal = new ServletContainer(ac.getContainer()
-				.find(ContainerI.FactoryI.class).newContainer(), this);// NOTE
-		this.internal2 = new WebResourceContainer(ac.getContainer()
-				.find(ContainerI.FactoryI.class).newContainer(), this);// NOTE
+
+		this.internal = new ServletContainer(this.components.newComponent(this.spi, ContainerI.class).parent(
+				ac.getContainer()), this);// NOTE
+		this.internal2 = new WebResourceContainer(this.components.newComponent(this.spi, ContainerI.class)
+				.parent(ac.getContainer()), this);// NOTE
 
 		this.jettyWebApp = new WebAppContext();
 		String cpath = this.config.getProperty("context.path", true);
 		String wpath = cpath;
-		if(cpath.length()==0){//is root
-			wpath="root";
+		if (cpath.length() == 0) {// is root
+			wpath = "root";
 		}
-		String war = this.jettyWebServer.getHome().getAbsolutePath()
-				+ File.separator + wpath;
+		String war = this.jettyWebServer.getHome().getAbsolutePath() + File.separator + wpath;
 		this.home = new File(war);
 
 		if (!this.home.exists()) {
@@ -84,8 +83,7 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 	}
 
 	@Override
-	public ServletHolderI addServlet(ActiveContext ac, String name,
-			Configuration cfg) {
+	public ServletHolderI addServlet(ActiveContext ac, String name, Configuration cfg) {
 		return this.addServlet(ac, name, cfg, null);
 	}
 
@@ -95,12 +93,10 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 		return this.addServlet(ac, name, null, cfgId);
 	}
 
-	protected ServletHolderI addServlet(ActiveContext ac, String name,
-			Configuration cfg, String cfgId) {
+	protected ServletHolderI addServlet(ActiveContext ac, String name, Configuration cfg, String cfgId) {
 		JettyWsServletHolder jsh = new JettyWsServletHolder();
 
-		ActivitorI act = ac.activitor().object(jsh).container(this.internal)
-				.name(name);
+		ActivitorI act = ac.activitor().object(jsh).container(this.internal).name(name);
 		if (cfgId != null) {
 			act.cfgId(cfgId);
 		}
@@ -108,12 +104,11 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 			act.configuration(cfg);
 		}
 		act.active();
-		
+
 		this.jettyWebApp.addServlet(jsh.jettyHolder, jsh.getPath());
 
-		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name
-				+ ",path:" + jsh.getPath() + ",cfgId:" + cfgId + ",spi:"
-				+ ac.getSpi());//
+		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name + ",path:" + jsh.getPath()
+				+ ",cfgId:" + cfgId + ",spi:" + ac.getSpi());//
 		return jsh;
 	}
 
@@ -121,16 +116,15 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 	@Override
 	public WebResourceI addResource(ActiveContext ac, String name, String cfgId) {
 		WebResourceI jsh = new WebResourceImpl(this);
-		ac.activitor().object(jsh).container(this.internal).cfgId(cfgId)
-				.name(name).active();
-		LOG.info("addResource,name" + name + ",cfgId:" + cfgId + ",spi:"
-				+ ac.getSpi());//
+		ac.activitor().object(jsh).container(this.internal).cfgId(cfgId).name(name).active();
+		LOG.info("addResource,name" + name + ",cfgId:" + cfgId + ",spi:" + ac.getSpi());//
 		return jsh;
 	}
 
-	public boolean isRootContextPath(){
+	public boolean isRootContextPath() {
 		return this.getContextPath().length() == 0;
 	}
+
 	/**
 	 * @return the jettyWebApp
 	 */
@@ -154,7 +148,9 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.fs.webserver.api.WebAppI#setWellcomeFiles(java.lang.String[])
 	 */
 	@Override

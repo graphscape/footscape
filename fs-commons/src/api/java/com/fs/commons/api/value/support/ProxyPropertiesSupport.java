@@ -177,8 +177,8 @@ public class ProxyPropertiesSupport<T> implements PropertiesI<T> {
 	 * java.lang.Object)
 	 */
 	@Override
-	public T getProperty(String key, T def) {
-		return this.target.getProperty(key, def);
+	public T getPropertyWithDefault(String key, T def) {
+		return this.target.getPropertyWithDefault(key, def);
 
 	}
 

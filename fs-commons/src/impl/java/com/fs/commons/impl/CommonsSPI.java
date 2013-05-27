@@ -6,6 +6,7 @@ package com.fs.commons.impl;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.components.ComponentFactoryI;
+import com.fs.commons.api.filter.ChainI;
 import com.fs.commons.api.future.FutureMonitorI;
 import com.fs.commons.api.jexl.JexlEngineI;
 import com.fs.commons.api.support.SPISupport;
@@ -13,6 +14,7 @@ import com.fs.commons.api.validator.ValidatorI;
 import com.fs.commons.impl.codec.JsonCodecFactory;
 import com.fs.commons.impl.components.ComponentFactoryImpl;
 import com.fs.commons.impl.factory.ConverterFactoryImpl;
+import com.fs.commons.impl.filter.ChainImpl;
 import com.fs.commons.impl.future.FutureMonitorImpl;
 import com.fs.commons.impl.jexl.JexlEngineImpl;
 import com.fs.commons.impl.mail.MailSenderImpl;
@@ -34,6 +36,7 @@ public class CommonsSPI extends SPISupport {
 	private void registerComponents(ComponentFactoryI cf) {
 		// register components
 		cf.addComponentClass(ContainerI.class, ContainerImpl.class);
+		cf.addComponentClass(ChainI.class, ChainImpl.class);
 
 	}
 

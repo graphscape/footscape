@@ -43,7 +43,7 @@ public class MailSenderImpl extends ConfigurableSupport implements MailSenderI {
 		super.active(ac);
 		sender = new JavaMailSenderImpl();
 		String host = this.config.getProperty("host", true);
-		String protocol = this.config.getProperty("protocol","smtps");
+		String protocol = this.config.getPropertyWithDefault("protocol","smtps");
 		int port = this.config.getPropertyAsInt("port", 465);
 		String username = this.config.getProperty("username",true);
 		String password = this.config.getProperty("password",true);

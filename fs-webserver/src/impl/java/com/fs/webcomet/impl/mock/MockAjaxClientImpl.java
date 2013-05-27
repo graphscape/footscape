@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -122,7 +123,7 @@ public class MockAjaxClientImpl extends AClientSupport {
 	}
 
 	protected void doRequest(AjaxMsg am) {
-		
+
 		try {
 			HttpPost req = new HttpPost(uri);
 			// req.addHeader(AjaxCometServlet.HK_ACTION, "message");
@@ -143,7 +144,11 @@ public class MockAjaxClientImpl extends AClientSupport {
 
 			// execute is here
 			final HttpResponse res = httpclient.execute(req);
-
+			StatusLine sl = res.getStatusLine();
+			int scode = sl.getStatusCode();
+			if (scode != 200) {
+				throw new FsException("status code error,code:" + scode + ",reason:" + sl.getReasonPhrase());
+			}
 			// process response,
 			InputStream is = res.getEntity().getContent();
 			Reader r = new InputStreamReader(is);
@@ -155,10 +160,11 @@ public class MockAjaxClientImpl extends AClientSupport {
 
 				this.onAjaxMsg(am2);
 			}
-			
+
 			// timer for heart beat.
-			long delay = 0;//no need to delay more time,unless some error situation.
-			//TODO cancle the old task if not executed.
+			long delay = 0;// no need to delay more time,unless some error
+							// situation.
+			// TODO cancle the old task if not executed.
 			this.heartBeatTimer.schedule(new TimerTask() {
 
 				@Override

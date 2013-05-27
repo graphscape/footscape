@@ -1,5 +1,7 @@
 <config>
-
+	<config name="messageTest">
+		<config name="/e/f" path="/e/f" strict="false" class="com.fs.commons.impl.test.cases.MessageTest$AnnotationTestHandler" />
+	</config>
 </config>
 
 

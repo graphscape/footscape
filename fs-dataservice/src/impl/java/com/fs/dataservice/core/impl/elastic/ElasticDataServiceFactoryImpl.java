@@ -92,7 +92,7 @@ public class ElasticDataServiceFactoryImpl extends ConfigurableSupport implement
 	}
 
 	private String getHost() {
-		return this.config.getProperty("host", "locahost");
+		return this.config.getPropertyWithDefault("host", "locahost");
 	}
 
 	private int getPort() {

@@ -132,7 +132,7 @@ public class JettyWebServerImpl extends ServerSupport implements WebServerI {
 
 		this.home.mkdirs();
 
-		this.internal = ac.getContainer().find(ContainerI.FactoryI.class, true).newContainer();//
+		this.internal = this.components.newComponent(this.spi, ContainerI.class).parent(ac.getContainer());//
 
 		this.server = new Server(port);
 		this.handlers = new HandlerList();

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fs.commons.api.ActivableI;
 import com.fs.commons.api.ActiveContext;
 import com.fs.commons.api.converter.ConverterI;
 import com.fs.commons.api.filter.ChainI;
@@ -62,9 +63,8 @@ public class MessageServiceImpl extends ServiceSupport<MessageI, ResponseI, Mess
 
 		this.dispatcher = this.top.find(DispatcherI.FactoryI.class, true).create("dispatcher-" + name);
 
-		this.chain = this.container.getTop().find(ChainI.FactoryI.class, true)
-				.createChain(ac, MessageI.class, ResponseI.class);
-
+		this.chain = this.components.newComponent(this.spi, ChainI.class);
+		((ActivableI)this.chain).active(ac);//
 		FilterI<MessageI, ResponseI> lf = new LastFilter(this);
 		this.chain.addFilter(ac.getSpi(), "LAST_FILTER", lf);
 

@@ -12,6 +12,7 @@ import com.fs.commons.api.service.ServiceI;
 public interface MessageServiceI extends
 		ServiceI<MessageI, ResponseI, MessageContext> {
 
+	@Deprecated
 	public static interface FactoryI {
 
 		public MessageServiceI create(String name);

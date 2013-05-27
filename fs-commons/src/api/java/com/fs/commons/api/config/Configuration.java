@@ -12,15 +12,17 @@ import java.util.Map;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
 import com.fs.commons.api.support.MapProperties;
+import com.fs.commons.api.support.StringProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.commons.impl.config.xml.XmlConfigurationProvider;
 
 /**
  * @author wuzhen
  * 
  */
 public class Configuration extends MapProperties<String> {
-
+	private static final String BOOTUP_PROPERTEIS_RES = "/boot/bootup.properties";
+	private static final String PROPERTIES_PROVIDER_CLASS = ConfigurationProviderI.class
+			.getName() + ".PROPERTIES.class";
 	public static class Type extends com.fs.commons.api.Enum {
 
 		/**
@@ -37,7 +39,7 @@ public class Configuration extends MapProperties<String> {
 
 	public static Type ROOT = Type.valueOf("config");
 
-	protected static ConfigurationProviderI PROVIDER = new XmlConfigurationProvider();
+	protected static ConfigurationProviderI PROVIDER;
 
 	protected String id;
 
@@ -63,6 +65,17 @@ public class Configuration extends MapProperties<String> {
 		this.configRefMap.putAll(configRefMap);
 	}
 
+	public static ConfigurationProviderI getPropertiesProvider() {
+		if(PROVIDER != null){
+			return PROVIDER;
+		}
+		StringProperties pw = StringProperties.load(BOOTUP_PROPERTEIS_RES);//
+		ConfigurationProviderI rt = pw
+				.getPropertyAsNewInstance(PROPERTIES_PROVIDER_CLASS);
+		PROVIDER = rt;
+		return rt;
+
+	}
 	public Configuration getPropertyAsConfiguration(String key, boolean force) {
 		String cid = this.getProperty(key, force);
 		return PROVIDER.getConfiguration(cid);
@@ -144,12 +157,6 @@ public class Configuration extends MapProperties<String> {
 			rt.add(cc);
 		}
 		return rt;
-	}
-
-	public static ConfigurationProviderI getPropertiesProvider() {
-
-		return PROVIDER;
-
 	}
 
 	public static Configuration properties(String id) {

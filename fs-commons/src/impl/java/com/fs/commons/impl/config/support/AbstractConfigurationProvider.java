@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fs.commons.api.lang.FsException;
+import com.fs.commons.api.support.StringProperties;
 import com.fs.commons.api.value.PropertiesI;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
 
 /**
  * @author wuzhen

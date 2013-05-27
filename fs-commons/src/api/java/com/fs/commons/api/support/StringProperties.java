@@ -1,7 +1,7 @@
 /**
  * Jun 14, 2012
  */
-package com.fs.commons.api.wrapper;
+package com.fs.commons.api.support;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,67 +17,44 @@ import java.util.Set;
 
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.support.MapProperties;
-import com.fs.commons.api.support.PropertiesSupport;
 import com.fs.commons.api.value.PropertiesI;
 
 /**
  * @author wuzhen
  * 
  */
-public class PropertiesWrapper extends PropertiesSupport<String> {
-
-	private Map<String, String> properties = new HashMap<String, String>();
+public class StringProperties extends MapProperties<String> {
 
 	private String res;
 
-	public PropertiesWrapper() {
+	public StringProperties() {
 		this("null");
 	}
 
-	public PropertiesWrapper(String res) {
-		this(res, new Properties());
-
+	public StringProperties(String res) {
+		this(res, new HashMap<String, String>());
 	}
 
-	public PropertiesWrapper(Map<String, String> pts) {
-		this.properties.putAll(pts);
+	public StringProperties(Map<String, String> pts) {
+		this("null", pts);
 	}
 
-	public PropertiesWrapper(String res, Properties pts) {
-		this.setProperties(pts);
-
+	public StringProperties(String res, Map<String, String> pts) {
+		super(pts);
 		this.res = res;
 	}
 
-	public PropertiesWrapper mergeFrom(PropertiesWrapper pts) {
-		PropertiesWrapper rt = PropertiesWrapper.valueOf(this);
-		rt.setProperties(this);
-		rt.setProperties(pts);
-		return rt;
+	public static StringProperties empty() {
+		return new StringProperties("empty");
 	}
 
-	public static PropertiesWrapper empty() {
-		return new PropertiesWrapper("empty");
-	}
-
-	public static PropertiesWrapper valueOf(PropertiesWrapper pts) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.putAll(pts.properties);
-		return PropertiesWrapper.valueOf(map);
-	}
-
-	public static PropertiesWrapper valueOf(Map<String, String> pts) {
-		return new PropertiesWrapper(pts);
-	}
-
-	public static PropertiesWrapper load(String resfile) {
+	public static StringProperties load(String resfile) {
 		return load(resfile, false);
 	}
 
-	public static PropertiesWrapper load(String resfile, boolean force) {
+	public static StringProperties load(String resfile, boolean force) {
 		Properties pts = new Properties();
-		InputStream is = PropertiesWrapper.class.getResourceAsStream(resfile);
+		InputStream is = StringProperties.class.getResourceAsStream(resfile);
 		if (is == null) {
 			if (force) {
 				throw new FsException("res:" + resfile);
@@ -89,11 +66,11 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 				throw FsException.toRtE(e);
 			}
 		}
-		return new PropertiesWrapper(resfile, pts);
-	}
 
-	public void setProperty(String key, String value) {
-		this.properties.put(key, value);
+		StringProperties rt = new StringProperties(resfile);
+		rt.setProperties(pts);
+		return rt;
+
 	}
 
 	private static Map<String, String> toMap(Properties pts) {
@@ -106,34 +83,9 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 		return rt;
 	}
 
-	public PropertiesWrapper setProperties(Properties pts) {
-		this.properties.putAll(toMap(pts));
+	public StringProperties setProperties(Properties pts) {
+		this.setProperties(toMap(pts));
 		return this;
-	}
-
-	public PropertiesWrapper setProperties(PropertiesWrapper pw) {
-		this.properties.putAll(pw.properties);
-		return this;
-	}
-
-	public String getProperty(String key) {
-		return this.properties.get(key);
-	}
-
-	public String getProperty(String key, boolean force) {
-		String rt = this.getProperty(key);
-		if (rt == null && force) {
-			throw new FsException("force:" + key + ",in:" + this.res);
-		}
-		return rt;
-	}
-
-	public String getProperty(String key, String def) {
-		String rt = this.getProperty(key);
-		if (rt == null) {
-			return def;
-		}
-		return rt;
 	}
 
 	public long getPropertyAsLong(String key, long def) {
@@ -192,8 +144,8 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 			return ClassUtil.forName(cName);
 		} catch (FsException fe) {
 			if (fe.getCause() instanceof ClassNotFoundException) {
-				throw new FsException("class not found for key:" + key
-						+ ",value:" + cName + ",in resource:" + this.res);
+				throw new FsException("class not found for key:" + key + ",value:" + cName + ",in resource:"
+						+ this.res);
 			}
 			throw fe;
 		}
@@ -210,29 +162,11 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 		return rt;
 	}
 
-	@Override
-	public List<String> keyList() {
-		List<String> rt = new ArrayList<String>();
-		for (Object o : this.properties.keySet()) {
-			rt.add((String) o);
-		}
-
-		return rt;
-	}
-
-	/**
-	 * @return the properties
-	 */
-	public Map<String, String> getProperties() {
-		return properties;
-	}
-
 	// prefix.1.keySuffix=key
 	// prefix.1.valueSuffix=value
 	// key=value
 	// sort by 1.2.3...
-	public List<PropertiesI<String>> parseAsPropertiesList(final String prefix,
-			String[] suffixs) {
+	public List<PropertiesI<String>> parseAsPropertiesList(final String prefix, String[] suffixs) {
 		Map<String, String>[] valueMaps = new HashMap[suffixs.length];
 		Set<String> kset = new HashSet<String>();// prefix.1=Map:{sufix1=value1
 		for (int i = 0; i < suffixs.length; i++) {
@@ -245,8 +179,7 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 			for (int i = 0; i < suffixs.length; i++) {
 				String suffix = suffixs[i];
 				if (key.endsWith(suffix)) {
-					String key2 = key.substring(0,
-							key.length() - suffix.length());
+					String key2 = key.substring(0, key.length() - suffix.length());
 					kset.add(key2);// NOTE this is the key
 					valueMaps[i].put(key2, value);
 
@@ -289,16 +222,4 @@ public class PropertiesWrapper extends PropertiesSupport<String> {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.fs.commons.api.value.PropertiesI#removeProperty(java.lang.String)
-	 */
-	@Override
-	public String removeProperty(String key) {
-		// TODO Auto-generated method stub
-		return this.properties.remove(key);
-
-	}
 }

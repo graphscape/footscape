@@ -2,3 +2,5 @@
 /gwt-unitCache
 /war
 /bin
+/.classpath
+/.project

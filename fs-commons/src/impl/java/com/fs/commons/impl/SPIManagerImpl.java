@@ -17,7 +17,7 @@ import com.fs.commons.api.SPIManagerI;
 import com.fs.commons.api.event.BeforeActiveEvent;
 import com.fs.commons.api.lang.ClassUtil;
 import com.fs.commons.api.lang.FsException;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
+import com.fs.commons.api.support.StringProperties;
 
 /**
  * @author wu
@@ -60,7 +60,7 @@ public class SPIManagerImpl implements SPIManagerI {
 			throw new FsException("status:" + this.status + " must be init before load.");
 		}
 
-		PropertiesWrapper pw = PropertiesWrapper.load(res, true);
+		StringProperties pw = StringProperties.load(res, true);
 
 		for (int i = 0;; i++) {
 
@@ -72,7 +72,7 @@ public class SPIManagerImpl implements SPIManagerI {
 			if (cls == null) {
 				break;
 			}
-			String id = pw.getProperty(ikey, cls.getName());
+			String id = pw.getPropertyWithDefault(ikey, cls.getName());
 
 			this.add(id, cls);
 		}

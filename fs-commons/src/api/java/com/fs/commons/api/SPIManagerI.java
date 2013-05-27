@@ -4,7 +4,7 @@
 package com.fs.commons.api;
 
 import com.fs.commons.api.lang.ClassUtil;
-import com.fs.commons.api.wrapper.PropertiesWrapper;
+import com.fs.commons.api.support.StringProperties;
 
 /**
  * @author wu
@@ -16,7 +16,7 @@ public interface SPIManagerI {
 		private static Class<SPIManagerI> CLS;
 		static {
 
-			PropertiesWrapper pw = PropertiesWrapper.load(
+			StringProperties pw = StringProperties.load(
 					"/boot/bootup.properties", true);
 			CLS = pw.getPropertyAsClass(SPIManagerI.class.getName(), true);
 		}

@@ -20,7 +20,7 @@ public interface PropertiesI<T> extends ValueI {
 
 	public T getProperty(String key);
 	
-	public T getProperty(String key, T def);
+	public T getPropertyWithDefault(String key, T def);
 
 	public T getProperty(String key, boolean force);
 
