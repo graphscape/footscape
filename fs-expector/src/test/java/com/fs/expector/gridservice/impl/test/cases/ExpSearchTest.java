@@ -9,6 +9,7 @@ import com.fs.commons.api.client.BClientFactoryI.ProtocolI;
 import com.fs.expector.gridservice.api.mock.MockExpItem;
 import com.fs.expector.gridservice.api.mock.MockExpectorClient;
 import com.fs.expector.gridservice.impl.test.cases.support.AuthedTestBase;
+import com.fs.webcomet.api.WebCometComponents;
 
 /**
  * @author wuzhen <code>
@@ -64,8 +65,12 @@ public class ExpSearchTest extends AuthedTestBase {
 	/**
 	 * @param p
 	 */
-	public ExpSearchTest(ProtocolI p) {
+	protected ExpSearchTest(ProtocolI p) {
 		super(p);
+	}
+
+	public ExpSearchTest() {
+		this(WebCometComponents.AJAX);
 	}
 
 	private MockExpectorClient client1;
@@ -94,24 +99,24 @@ public class ExpSearchTest extends AuthedTestBase {
 
 		}
 		// search by client 1
-		
-		String phrase = "user1 is expecting number0";//under 3
+
+		String phrase = "user1 is expecting number0";// under 3
 
 		List<MockExpItem> meL = this.client1.search(true, 0, totalExp * 3, null, phrase, 3);
 
 		//
 		assertEquals("", 1, meL.size());
-		
-		//test long slop
-		//TODO explain slop why is 4/5?
+
+		// test long slop
+		// TODO explain slop why is 4/5?
 		meL = this.client1.search(true, 0, max, null, "hello, expecting,number1,expected?", 4);
 		assertEquals("should be no match for slop=4", 0, meL.size());
-		
-		//test long slop
+
+		// test long slop
 		meL = this.client1.search(true, 0, max, null, "hello, expecting,number1,expected?", 5);
 		assertEquals("should be 2 match for slop=5", 2, meL.size());
-		
-		//test not include mine exp
+
+		// test not include mine exp
 		meL = this.client2.search(false, 0, max, null, "hello, expecting,number1", 3);
 		assertEquals("", 1, meL.size());
 		MockExpItem m0 = meL.get(0);

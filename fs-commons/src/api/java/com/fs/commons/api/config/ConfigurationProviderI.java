@@ -12,5 +12,7 @@ public interface ConfigurationProviderI {
 	public void add(Configuration cfg);
 
 	public Configuration getConfiguration(String id);
+	
+	public Configuration getConfiguration(String id, boolean cache);
 
 }

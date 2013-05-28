@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [
+	<!ENTITY common.build SYSTEM "../fs-building/common-files/common.build.xml">
+]>
+
+<project name="fs-grounder" default="publish" xmlns:ivy="antlib:org.apache.ivy.ant">
+	 &common.build;	
+	
+	<target name="post-package">
+	</target>
+			
+</project>

@@ -39,14 +39,23 @@ public abstract class ConfigurationProviderSupport implements ConfigurationProvi
 	 */
 	@Override
 	public Configuration getConfiguration(String id) {
+		return this.getConfiguration(id, true);
+	}
+
+	@Override
+	public Configuration getConfiguration(String id, boolean cache) {
+		if (!cache) {
+			return this.doGetConfiguration(id);
+		}
 		Configuration rt = this.cfgCache.get(id);
+
 		if (rt != null) {
 			return rt;
 		}
-
 		rt = this.doGetConfiguration(id);
 		this.cfgCache.put(id, rt);
 		return rt;
+
 	}
 
 	protected Configuration doGetConfiguration(String id) {
@@ -66,13 +75,13 @@ public abstract class ConfigurationProviderSupport implements ConfigurationProvi
 			}
 			String a = v.substring(1);
 			String av = alias.getProperty(a);
-			
+
 			if (av == null) {
 				a.startsWith("env:");
 				a = a.substring("env:".length());
 				av = System.getProperty(a);
 			}
-			
+
 			if (av == null) {
 				throw new FsException("alias not resolved," + key + "=" + v + "");
 			}

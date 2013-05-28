@@ -1,0 +1,28 @@
+<ivy-module version="2.0">
+	<info organisation="com.fs" module="expector" />
+	<configurations>
+		<conf name="api" />
+		<conf name="impl" extends="api" />
+		<conf name="runtime" extends="impl" />
+		<conf name="test" extends="runtime" />
+	</configurations>
+
+	<publications>
+
+		<artifact name="fs-expector-api" type="jar" conf="api" ext="jar" />
+		<artifact name="fs-expector-impl" type="jar" conf="impl" ext="jar" />
+	
+	</publications>
+	<dependencies>
+
+		<dependency org="com.fs" name="commons" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="dataservice" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		<dependency org="com.fs" name="gridservice" rev="${fs.revision}" force="true" conf="api->api(*);impl->impl(*);runtime->runtime(*)" />
+		
+		<dependency org="junit" name="junit" rev="4.10" force="true" conf="test->master(default)" />
+
+		<dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1" force="true" conf="test->master" />
+		<dependency org="log4j" name="log4j" rev="1.2.16" force="true" conf="test->master" />
+
+	</dependencies>
+</ivy-module>

@@ -114,7 +114,7 @@ public class AjaxCometServlet extends ConfigurableServletSupport {
 			String ccode = req.getCharacterEncoding();
 			String ctype = req.getContentType();
 			if (!"utf-8".equalsIgnoreCase(ccode)) {//
-				throw new FsException("only support utf-8");
+				throw new FsException("only support utf-8,but got:" + ccode+",please set content type to:application/json; charset=UTF-8");
 			}
 			int len = req.getContentLength();
 			if (len == 0) {//
