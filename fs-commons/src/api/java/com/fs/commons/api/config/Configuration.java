@@ -21,8 +21,9 @@ import com.fs.commons.api.value.PropertiesI;
  */
 public class Configuration extends MapProperties<String> {
 	private static final String BOOTUP_PROPERTEIS_RES = "/boot/bootup.properties";
-	private static final String PROPERTIES_PROVIDER_CLASS = ConfigurationProviderI.class
-			.getName() + ".PROPERTIES.class";
+	private static final String PROPERTIES_PROVIDER_CLASS = ConfigurationProviderI.class.getName()
+			+ ".PROPERTIES.class";
+
 	public static class Type extends com.fs.commons.api.Enum {
 
 		/**
@@ -66,16 +67,16 @@ public class Configuration extends MapProperties<String> {
 	}
 
 	public static ConfigurationProviderI getPropertiesProvider() {
-		if(PROVIDER != null){
+		if (PROVIDER != null) {
 			return PROVIDER;
 		}
 		StringProperties pw = StringProperties.load(BOOTUP_PROPERTEIS_RES);//
-		ConfigurationProviderI rt = pw
-				.getPropertyAsNewInstance(PROPERTIES_PROVIDER_CLASS);
+		ConfigurationProviderI rt = pw.getPropertyAsNewInstance(PROPERTIES_PROVIDER_CLASS);
 		PROVIDER = rt;
 		return rt;
 
 	}
+
 	public Configuration getPropertyAsConfiguration(String key, boolean force) {
 		String cid = this.getProperty(key, force);
 		return PROVIDER.getConfiguration(cid);
@@ -160,9 +161,13 @@ public class Configuration extends MapProperties<String> {
 	}
 
 	public static Configuration properties(String id) {
+		return properties(id, true);
+	}
+
+	public static Configuration properties(String id, boolean cache) {
 
 		ConfigurationProviderI pcp = getPropertiesProvider();
-		Configuration rt = pcp.getConfiguration(id);// ID
+		Configuration rt = pcp.getConfiguration(id, cache);// ID
 		return rt;
 
 	}

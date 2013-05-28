@@ -4,6 +4,8 @@
 package com.fs.webserver.impl.jetty;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import com.fs.commons.api.ActivitorI;
 import com.fs.commons.api.ContainerI;
 import com.fs.commons.api.config.Configuration;
 import com.fs.commons.api.config.support.ConfigurableSupport;
+import com.fs.commons.api.lang.FsException;
 import com.fs.webserver.api.ServletHolderI;
 import com.fs.webserver.api.WebAppI;
 import com.fs.webserver.api.WebResourceI;
@@ -36,9 +39,12 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 
 	private File home;
 
+	private Map<String, ServletHolderI> pathMap;
+
 	/** */
 	public JettyWebAppImpl(JettyWebServerImpl jettyWebServerImpl) {
 		this.jettyWebServer = jettyWebServerImpl;
+		this.pathMap = new HashMap<String, ServletHolderI>();
 	}
 
 	/* */
@@ -104,8 +110,12 @@ public class JettyWebAppImpl extends ConfigurableSupport implements WebAppI {
 			act.configuration(cfg);
 		}
 		act.active();
+		String path = jsh.getPath();
+		if (null != this.pathMap.get(path)) {
+			throw new FsException("path duplicated:" + path);
+		}
 
-		this.jettyWebApp.addServlet(jsh.jettyHolder, jsh.getPath());
+		this.jettyWebApp.addServlet(jsh.jettyHolder, path);
 
 		LOG.info("addServlet,webApp:" + this.getContextPath() + ",name:" + name + ",path:" + jsh.getPath()
 				+ ",cfgId:" + cfgId + ",spi:" + ac.getSpi());//

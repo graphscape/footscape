@@ -129,6 +129,7 @@ public class MockAjaxClientImpl extends AClientSupport {
 			// req.addHeader(AjaxCometServlet.HK_ACTION, "message");
 			// req.addHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
 
+			req.setHeader("Content-Type", "application/json; charset=UTF-8");
 			// only one element,but also in array.
 			if (this.sid != null) {
 				req.setHeader(AjaxCometServlet.HK_SESSION_ID, this.sid);
@@ -147,7 +148,7 @@ public class MockAjaxClientImpl extends AClientSupport {
 			StatusLine sl = res.getStatusLine();
 			int scode = sl.getStatusCode();
 			if (scode != 200) {
-				throw new FsException("status code error,code:" + scode + ",reason:" + sl.getReasonPhrase());
+				throw new FsException("status code error,code:" + scode + ",reason:" + sl.getReasonPhrase()+",uri:"+this.uri);
 			}
 			// process response,
 			InputStream is = res.getEntity().getContent();
