@@ -4,10 +4,10 @@
 	<classpathentry kind="src" path="src/api/resources"/>
 	<classpathentry kind="src" path="src/impl/java"/>
 	<classpathentry kind="src" path="src/impl/resources"/>
-	
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=fs-@module@&amp;ivyXmlPath=ivy.xml&amp;confs=*"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=${ant.project.name}.master&amp;ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=${ivy.settings.path}&amp;loadSettingsOnDemand=false&amp;propertyFiles="/>
+	
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>

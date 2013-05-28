@@ -66,11 +66,11 @@
 	<copy todir="${classes.dir}">
 		<fileset dir="${resources.dir}" />
 	</copy>
-	
+
 	<replace dir="${classes.dir}" token="@@fs.revision@@" value="${fs.revision}">
 		<include name="provider/**/*.xml" />
 	</replace>
-	
+
 </target>
 
 <target name="compile-api" depends="resolve">
@@ -131,13 +131,33 @@
 	</condition>
 </target>
 
-<target name="eclipse2" depends="setup">
+<target name="e2" depends="setup">
 	<antcall target="resolve" />
 	<!-- For gwt test in eclipse,copy java resource to classes folder;no need to compile package. -->
 	<antcall target="eclipse" />
 </target>
+<target name="eclipse">
+	<property name="ivy.settings.path" value="file:${fs.build.home}/fs-building/ivy/ivysettings.for.ivyde.xml" />
+	<script language="javascript">
+		var ivySettingsPath = project.getProperty("ivy.settings.path");
+		ivySettingsPath = ivySettingsPath.replaceAll("\\\\", "/");
+		ivySettingsPath = ivySettingsPath.replaceAll("/", "%2F");
+		ivySettingsPath = ivySettingsPath.replaceAll(":", "%3A");
+		project.setProperty("ivy.settings.path", ivySettingsPath);
+		
+	</script>
+	<echo message="copy : ${fs.build.home}/fs-building/template-project/.classpath to .classpath" />
+	<echo message="${ivy.settings.path}" />
+	<copy file="${fs.build.home}/fs-building/template-project/.classpath" tofile=".classpath" overwrite="true" />
+	<copy file="${fs.build.home}/fs-building/template-project/.project" tofile=".project" overwrite="true" />
+<!-- --> 
+	<replace file=".classpath" token="$${ivy.settings.path}" value="${ivy.settings.path}" />
+	<replace file=".classpath" token="$${ant.project.name}" value="${ant.project.name}" />
+	<replace file=".project" token="$${ant.project.name}" value="${ant.project.name}" />
 
-<target name="eclipse" depends="setup">
+	
+</target>
+<target name="e1" depends="setup">
 
 	<copy todir="${dir.target}/eclipse/classes">
 		<fileset dir="${dir.src}/api/java">

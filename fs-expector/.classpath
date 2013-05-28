@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=file%3A%2Fhome%2Fwu%2Fgit%2Ffsc%2Ffs-building%2Fivy%2Fivysettings.for.ivyde.xml&amp;loadSettingsOnDemand=false&amp;propertyFiles="/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=fs-expector.master&amp;ivyXmlPath=ivy.xml&amp;confs=*&amp;ivySettingsPath=file%3Ac%3A%2Fd%2Fgit%2Ffsc%2Ffs-building%2Fivy%2Fivysettings.for.ivyde.xml&amp;loadSettingsOnDemand=false&amp;propertyFiles="/>
+	
 	<classpathentry kind="output" path="target/eclipse/classes"/>
 </classpath>
