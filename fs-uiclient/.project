@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>fs-uiclient</name>
+	<name>fs-uiclient.master</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,20 +10,9 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-		<buildCommand>
-			<name>com.google.gdt.eclipse.core.webAppProjectValidator</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.apache.ivyde.eclipse.ivynature</nature>
-		<nature>com.google.gwt.eclipse.core.gwtNature</nature>
 	</natures>
 </projectDescription>

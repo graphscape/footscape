@@ -39,8 +39,7 @@ public class MessageSupport implements MessageI {
 		this.payloads = new MapProperties<Object>();
 		this.headers.setProperty(HK_PATH, path);
 		this.headers.setProperty(HK_ID, id);
-		ErrorInfos eis = new ErrorInfos();
-		this.setPayload(PK_ERROR_INFO_S, eis);
+
 	}
 
 	public static MessageI newMessage() {
@@ -50,8 +49,16 @@ public class MessageSupport implements MessageI {
 	/* */
 	@Override
 	public ErrorInfos getErrorInfos() {
+		return this.getOrCreateErrorInfos();
+	}
 
-		return (ErrorInfos) this.getPayload(PK_ERROR_INFO_S);
+	public ErrorInfos getOrCreateErrorInfos() {
+		ErrorInfos rt = (ErrorInfos) this.getPayload(PK_ERROR_INFO_S);
+		if (rt == null) {
+			rt = new ErrorInfos();
+			this.setPayload(PK_ERROR_INFO_S, rt);
+		}
+		return rt;
 
 	}
 
@@ -60,8 +67,8 @@ public class MessageSupport implements MessageI {
 	 */
 	@Override
 	public void assertNoError() {
-		ErrorInfos ers = this.getErrorInfos();
-		if (ers.hasError()) {
+		ErrorInfos ers = (ErrorInfos) this.getPayload(PK_ERROR_INFO_S);
+		if (ers != null && ers.hasError()) {
 			throw new FsException(ers.toString());
 
 		}

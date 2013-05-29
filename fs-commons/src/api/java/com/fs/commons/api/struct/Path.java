@@ -2,11 +2,15 @@ package com.fs.commons.api.struct;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fs.commons.api.lang.ObjectUtil;
 
 public class Path {
+
+	private static Map<String, Path> CACHE = new HashMap<String, Path>();
 
 	private List<String> nameList;
 
@@ -109,7 +113,14 @@ public class Path {
 	}
 
 	public static Path valueOf(String name) {
-		return valueOf(name, '/');
+		Path rt = CACHE.get(name);
+		if (rt != null) {
+			return rt;
+		}
+		rt = valueOf(name, '/');
+		CACHE.put(name, rt);
+		return rt;
+
 	}
 
 	public static Path valueOf(String name, char sep) {
